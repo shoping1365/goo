@@ -415,7 +415,6 @@ const generateCustomerCode = () => {
     result += chars.charAt(Math.floor(Math.random() * chars.length))
   }
   form.value.customerCode = result
-  return result
 }
 
 const onProvinceChange = () => {

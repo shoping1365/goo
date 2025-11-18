@@ -1064,8 +1064,10 @@ func (h *SMSGatewayHandler) GetInbox(c *gin.Context) {
 	// پارامترهای صفحه‌بندی
 	page, _ := strconv.ParseInt(c.DefaultQuery("page", "1"), 10, 64)
 	limit, _ := strconv.ParseInt(c.DefaultQuery("limit", "10"), 10, 64)
-	if page > 0 {
+	if page > 1 {
 		page = page - 1 // IPPanel SDK page is zero-based
+	} else {
+		page = 0 // حداقل مقدار برای page
 	}
 
 	// ساخت کلاینت
@@ -1137,8 +1139,10 @@ func (h *SMSGatewayHandler) GetOutbox(c *gin.Context) {
 	// پارامترهای صفحه‌بندی
 	page, _ := strconv.ParseInt(c.DefaultQuery("page", "1"), 10, 64)
 	limit, _ := strconv.ParseInt(c.DefaultQuery("limit", "10"), 10, 64)
-	if page > 0 {
+	if page > 1 {
 		page = page - 1 // IPPanel SDK page is zero-based
+	} else {
+		page = 0 // حداقل مقدار برای page
 	}
 
 	// تلاش برای دریافت پیامک‌های ارسالی با SDK
@@ -1407,7 +1411,13 @@ func (h *SMSGatewayHandler) getSampleOutboxData(gateway *models.SMSGateway, page
 	}
 
 	// اعمال صفحه‌بندی
+	if page < 1 {
+		page = 1
+	}
 	startIndex := (page - 1) * limit
+	if startIndex < 0 {
+		startIndex = 0
+	}
 	if startIndex >= len(sampleData) {
 		return []map[string]interface{}{}
 	}

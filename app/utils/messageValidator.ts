@@ -4,13 +4,15 @@ const SECURITY_CONFIG = {
   maxLength: 1000,
   
   // الگوهای مخرب (Regex patterns)
+  // Note: Regex-based filtering is not perfect. Consider using DOMPurify for production.
   maliciousPatterns: [
-    // JavaScript injection
-    /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
+    // JavaScript injection (improved regex)
+    /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gis,
     /javascript:/gi,
     /on\w+\s*=/gi,
     /eval\s*\(/gi,
     /Function\s*\(/gi,
+    /<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gis,
     
     // HTML injection  
     /<iframe\b[^>]*>/gi,

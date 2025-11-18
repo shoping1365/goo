@@ -125,30 +125,25 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 
-const props = defineProps({
-  videoUrl: String,
-  posterImage: String,
-  title: String,
-  description: String,
-  autoplay: {
-    type: Boolean,
-    default: false
-  },
-  showControls: {
-    type: Boolean,
-    default: true
-  },
-  showInGallery: {
-    type: Boolean,
-    default: true
-  },
-  lazyLoad: {
-    type: Boolean,
-    default: false
-  }
+interface Props {
+  videoUrl?: string
+  posterImage?: string
+  title?: string
+  description?: string
+  autoplay?: boolean
+  showControls?: boolean
+  showInGallery?: boolean
+  lazyLoad?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  autoplay: false,
+  showControls: true,
+  showInGallery: true,
+  lazyLoad: false
 })
 
 const showPlayer = ref(!props.lazyLoad)
@@ -158,26 +153,57 @@ function activatePlayer(){
   showPlayer.value = true
 }
 
-const videoPlayer = ref(null)
-const player = ref(null)
-const hlsInstance = ref(null)
+// Type definitions for external libraries
+type PlyrInstance = {
+  destroy: () => void
+  on: (event: string, callback: (data?: unknown) => void) => void
+}
+
+type HlsInstance = {
+  destroy: () => void
+  loadSource: (url: string) => void
+  attachMedia: (element: HTMLVideoElement) => void
+}
+
+const videoPlayer = ref<HTMLVideoElement | null>(null)
+const player = ref<PlyrInstance | null>(null)
+const hlsInstance = ref<HlsInstance | null>(null)
 const videoLoaded = ref(false)
 const videoError = ref(false)
 const isPlaying = ref(false)
 const currentTime = ref(0)
 const duration = ref(0)
 
-// Computed properties for video type detection
+// Helper function to safely check URL domain
+function isValidVideoDomain(url: string, allowedDomains: string[]): boolean {
+  if (!url) return false
+  try {
+    // If it's a relative URL, it's safe
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      return true
+    }
+    const urlObj = new URL(url)
+    const hostname = urlObj.hostname.toLowerCase()
+    return allowedDomains.some(domain => hostname === domain || hostname.endsWith('.' + domain))
+  } catch {
+    return false
+  }
+}
+
+// Computed properties for video type detection with proper URL validation
 const isYouTubeVideo = computed(() => {
-  return !!normalizedUrl.value && (normalizedUrl.value.includes('youtube.com') || normalizedUrl.value.includes('youtu.be'))
+  if (!normalizedUrl.value) return false
+  return isValidVideoDomain(normalizedUrl.value, ['youtube.com', 'youtu.be', 'www.youtube.com'])
 })
 
 const isVimeoVideo = computed(() => {
-  return !!normalizedUrl.value && normalizedUrl.value.includes('vimeo.com')
+  if (!normalizedUrl.value) return false
+  return isValidVideoDomain(normalizedUrl.value, ['vimeo.com', 'player.vimeo.com'])
 })
 
 const isAparatVideo = computed(() => {
-  return !!normalizedUrl.value && normalizedUrl.value.includes('aparat.com')
+  if (!normalizedUrl.value) return false
+  return isValidVideoDomain(normalizedUrl.value, ['aparat.com', 'www.aparat.com'])
 })
 
 const isExternalVideo = computed(() => {
@@ -219,26 +245,26 @@ const aparatEmbedUrl = computed(() => {
 })
 
 // Helper functions for extracting video IDs
-function extractYouTubeId(url) {
+function extractYouTubeId(url: string): string | null {
   const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/
   const match = url.match(regex)
   return match ? match[1] : null
 }
 
-function extractVimeoId(url) {
+function extractVimeoId(url: string): string | null {
   const regex = /vimeo\.com\/(?:.*#|.*\/videos\/)?([0-9]+)/
   const match = url.match(regex)
   return match ? match[1] : null
 }
 
-function extractAparatId(url) {
+function extractAparatId(url: string): string | null {
   const regex = /aparat\.com\/v\/([^\/\?]+)/
   const match = url.match(regex)
   return match ? match[1] : null
 }
 
 // Video event handlers
-const onVideoLoaded = () => {
+const onVideoLoaded = (): void => {
   videoLoaded.value = true
   videoError.value = false
   if (videoPlayer.value) {
@@ -246,7 +272,7 @@ const onVideoLoaded = () => {
   }
 }
 
-const onVideoError = (error) => {
+const onVideoError = (error: Event): void => {
   console.error('Video error:', error)
   videoError.value = true
   videoLoaded.value = false
@@ -298,8 +324,8 @@ const downloadVideo = () => {
 onMounted(async () => {
   if (import.meta.client && !isExternalVideo.value && normalizedUrl.value) {
     try {
-      const { default: Plyr } = await import('plyr')
-      const { default: Hls } = await import('hls.js')
+      const { default: Plyr } = await import('plyr') as { default: new (element: HTMLVideoElement, options?: unknown) => PlyrInstance }
+      const { default: Hls } = await import('hls.js') as { default: { isSupported: () => boolean, new (): HlsInstance } }
       
       await import('plyr/dist/plyr.css')
       

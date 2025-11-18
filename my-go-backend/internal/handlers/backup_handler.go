@@ -68,7 +68,14 @@ func (h *BackupHandler) RestorePeriod(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	root := backupRootBH()
-	srcDir := filepath.Join(root, period)
+	// اعتبارسنجی و پاکسازی مسیر برای جلوگیری از path traversal
+	srcDir, err := validateAndSanitizePath(root, period)
+	if err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(utils.New("VALIDATION_ERROR", "مسیر نامعتبر", err.Error()))
+		return
+	}
 	if _, err := os.Stat(srcDir); os.IsNotExist(err) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusNotFound)
@@ -81,7 +88,7 @@ func (h *BackupHandler) RestorePeriod(w http.ResponseWriter, r *http.Request) {
 
 	var totalFiles int
 	var totalBytes int64
-	err := filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
+	err = filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}

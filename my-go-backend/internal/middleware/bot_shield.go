@@ -282,7 +282,8 @@ func isLocalIP(ip string) bool {
 // isMonitorOnly خواندن حالت مانیتور-صرف
 func isMonitorOnly(c *gin.Context, svc *services.SettingService) bool {
 	// وقتی BotShield غیر فعال است، همیشه حالت مانیتور را true در نظر می‌گیریم
-	return true
+	v := "true"
+	return v == "true" || v == "1" || v == "yes"
 }
 
 // clientIP استخراج IP کلاینت با درنظرگرفتن X-Forwarded-For

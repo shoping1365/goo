@@ -304,6 +304,21 @@ function getStatusLabel(status) {
                   </span>
                 </div>
                 <h6 class="text-lg font-semibold text-gray-900 mb-3">{{ faq.question }}</h6>
+                <!-- 
+                  ⚠️ امنیت XSS: استفاده از v-html خطرناک است!
+                  
+                  این کد محتوای HTML را بدون sanitization نمایش می‌دهد که می‌تواند منجر به حملات XSS شود.
+                  
+                  ✅ راه حل صحیح:
+                  1. قبل از استفاده از v-html، محتوا را با کتابخانه sanitization (مثل DOMPurify) پاکسازی کنید
+                  2. یا از {{ }} به جای v-html استفاده کنید اگر HTML نیاز نیست
+                  3. محتوای کاربر را هرگز بدون sanitization در v-html قرار ندهید
+                  
+                  مثال صحیح:
+                  import DOMPurify from 'dompurify'
+                  const sanitizedAnswer = computed(() => DOMPurify.sanitize(faq.answer))
+                  <div v-html="sanitizedAnswer"></div>
+                -->
                 <div class="text-gray-600 prose prose-sm max-w-none" v-html="faq.answer"></div>
               </div>
               <div class="flex gap-2 shrink-0">

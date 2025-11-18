@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	"strconv"
 	"strings"
 
 	"my-go-backend/internal/models"
@@ -37,11 +36,15 @@ func (h *CompressionStatHandler) ListCompressionStats(w http.ResponseWriter, r *
 	case statType != "":
 		stats, err = h.Service.GetByType(r.Context(), statType)
 	case mediaIDStr != "":
-		mediaID, _ := strconv.ParseUint(mediaIDStr, 10, 64)
-		stats, err = h.Service.GetByMedia(r.Context(), uint(mediaID))
+		mediaID, err := parseUintFromString(mediaIDStr)
+		if err == nil {
+			stats, err = h.Service.GetByMedia(r.Context(), mediaID)
+		}
 	case userIDStr != "":
-		userID, _ := strconv.ParseUint(userIDStr, 10, 64)
-		stats, err = h.Service.GetByUser(r.Context(), uint(userID))
+		userID, err := parseUintFromString(userIDStr)
+		if err == nil {
+			stats, err = h.Service.GetByUser(r.Context(), userID)
+		}
 	case format != "":
 		stats, err = h.Service.GetByFormat(r.Context(), format)
 	case period != "":
@@ -62,13 +65,13 @@ func (h *CompressionStatHandler) ListCompressionStats(w http.ResponseWriter, r *
 // GetCompressionStat بازیابی آمار بر اساس ID
 func (h *CompressionStatHandler) GetCompressionStat(w http.ResponseWriter, r *http.Request) {
 	idStr := strings.TrimPrefix(r.URL.Path, "/api/compression-stat/")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(utils.New("VALIDATION_ERROR", utils.GetErrorMessage("VALIDATION_ERROR"), nil))
 		return
 	}
-	stat, err := h.Service.GetByID(r.Context(), uint(id))
+	stat, err := h.Service.GetByID(r.Context(), id)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(utils.New("NOT_FOUND", utils.GetErrorMessage("NOT_FOUND"), nil))
@@ -96,7 +99,7 @@ func (h *CompressionStatHandler) CreateCompressionStat(w http.ResponseWriter, r 
 // UpdateCompressionStat ویرایش آمار
 func (h *CompressionStatHandler) UpdateCompressionStat(w http.ResponseWriter, r *http.Request) {
 	idStr := strings.TrimPrefix(r.URL.Path, "/api/compression-stat/")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(utils.New("VALIDATION_ERROR", utils.GetErrorMessage("VALIDATION_ERROR"), nil))
@@ -108,7 +111,7 @@ func (h *CompressionStatHandler) UpdateCompressionStat(w http.ResponseWriter, r 
 		json.NewEncoder(w).Encode(utils.New("VALIDATION_ERROR", utils.GetErrorMessage("VALIDATION_ERROR"), err.Error()))
 		return
 	}
-	req.ID = uint(id)
+	req.ID = id
 	if err := h.Service.Update(context.Background(), &req); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(utils.New("DB_ERROR", utils.GetErrorMessage("DB_ERROR"), err.Error()))
@@ -120,13 +123,13 @@ func (h *CompressionStatHandler) UpdateCompressionStat(w http.ResponseWriter, r 
 // DeleteCompressionStat حذف آمار
 func (h *CompressionStatHandler) DeleteCompressionStat(w http.ResponseWriter, r *http.Request) {
 	idStr := r.URL.Query().Get("id")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(utils.New("VALIDATION_ERROR", utils.GetErrorMessage("VALIDATION_ERROR"), nil))
 		return
 	}
-	if err := h.Service.Delete(context.Background(), uint(id)); err != nil {
+	if err := h.Service.Delete(context.Background(), id); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(utils.New("DB_ERROR", utils.GetErrorMessage("DB_ERROR"), err.Error()))
 		return

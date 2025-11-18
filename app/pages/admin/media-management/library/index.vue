@@ -992,7 +992,7 @@ const deleteFile = async (file: MediaFile) => {
     }
     
     // Close viewer if the deleted file was being viewed
-    if (selectedFile.value && selectedFile.value.id === file.id) {
+    if (selectedFile.value?.id === file.id) {
       selectedFile.value = null;
     }
     

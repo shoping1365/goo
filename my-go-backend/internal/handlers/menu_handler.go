@@ -11,6 +11,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// parseUintFromString تبدیل ایمن string به uint برای جلوگیری از overflow
+func parseUintFromString(s string) (uint, error) {
+	val, err := strconv.ParseUint(s, 10, 32)
+	if err != nil {
+		return 0, err
+	}
+	return uint(val), nil
+}
+
 // MenuHandler کنترلر مدیریت منوها
 type MenuHandler struct {
 	menuService *services.MenuService
@@ -48,13 +57,13 @@ func (h *MenuHandler) CreateMenu(c *gin.Context) {
 // GetMenuByID دریافت منو بر اساس ID
 func (h *MenuHandler) GetMenuByID(c *gin.Context) {
 	idStr := c.Param("id")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه منو نامعتبر است", err.Error()))
 		return
 	}
 
-	menu, err := h.menuService.GetMenuByID(c.Request.Context(), uint(id))
+	menu, err := h.menuService.GetMenuByID(c.Request.Context(), id)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, utils.New("NOT_FOUND", "منو یافت نشد", err.Error()))
 		return
@@ -121,7 +130,7 @@ func (h *MenuHandler) GetEnabledMenus(c *gin.Context) {
 // UpdateMenu به‌روزرسانی منو
 func (h *MenuHandler) UpdateMenu(c *gin.Context) {
 	idStr := c.Param("id")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه منو نامعتبر است", err.Error()))
 		return
@@ -133,7 +142,7 @@ func (h *MenuHandler) UpdateMenu(c *gin.Context) {
 		return
 	}
 
-	menu.ID = uint(id)
+	menu.ID = id
 	if err := h.menuService.UpdateMenu(c.Request.Context(), &menu); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, utils.New("DB_ERROR", "خطا در به‌روزرسانی منو", err.Error()))
 		return
@@ -149,13 +158,13 @@ func (h *MenuHandler) UpdateMenu(c *gin.Context) {
 // DeleteMenu حذف منو
 func (h *MenuHandler) DeleteMenu(c *gin.Context) {
 	idStr := c.Param("id")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه منو نامعتبر است", err.Error()))
 		return
 	}
 
-	if err := h.menuService.DeleteMenu(c.Request.Context(), uint(id)); err != nil {
+	if err := h.menuService.DeleteMenu(c.Request.Context(), id); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, utils.New("DB_ERROR", "خطا در حذف منو", err.Error()))
 		return
 	}
@@ -191,13 +200,13 @@ func (h *MenuHandler) CreateMenuItem(c *gin.Context) {
 // GetMenuItemByID دریافت آیتم منو بر اساس ID
 func (h *MenuHandler) GetMenuItemByID(c *gin.Context) {
 	idStr := c.Param("id")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه آیتم منو نامعتبر است", err.Error()))
 		return
 	}
 
-	item, err := h.menuService.GetMenuItemByID(c.Request.Context(), uint(id))
+	item, err := h.menuService.GetMenuItemByID(c.Request.Context(), id)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, utils.New("NOT_FOUND", "آیتم منو یافت نشد", err.Error()))
 		return
@@ -213,13 +222,13 @@ func (h *MenuHandler) GetMenuItemByID(c *gin.Context) {
 // GetMenuItemsByMenuID دریافت آیتم‌های منو بر اساس ID منو
 func (h *MenuHandler) GetMenuItemsByMenuID(c *gin.Context) {
 	menuIDStr := c.Param("menuId")
-	menuID, err := strconv.ParseUint(menuIDStr, 10, 64)
+	menuID, err := parseUintFromString(menuIDStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه منو نامعتبر است", err.Error()))
 		return
 	}
 
-	items, err := h.menuService.GetMenuItemsByMenuID(c.Request.Context(), uint(menuID))
+	items, err := h.menuService.GetMenuItemsByMenuID(c.Request.Context(), menuID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, utils.New("DB_ERROR", "خطا در دریافت آیتم‌های منو", err.Error()))
 		return
@@ -235,7 +244,7 @@ func (h *MenuHandler) GetMenuItemsByMenuID(c *gin.Context) {
 // UpdateMenuItem به‌روزرسانی آیتم منو
 func (h *MenuHandler) UpdateMenuItem(c *gin.Context) {
 	idStr := c.Param("id")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه آیتم منو نامعتبر است", err.Error()))
 		return
@@ -247,7 +256,7 @@ func (h *MenuHandler) UpdateMenuItem(c *gin.Context) {
 		return
 	}
 
-	item.ID = uint(id)
+	item.ID = id
 	if err := h.menuService.UpdateMenuItem(c.Request.Context(), &item); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, utils.New("DB_ERROR", "خطا در به‌روزرسانی آیتم منو", err.Error()))
 		return
@@ -263,13 +272,13 @@ func (h *MenuHandler) UpdateMenuItem(c *gin.Context) {
 // DeleteMenuItem حذف آیتم منو
 func (h *MenuHandler) DeleteMenuItem(c *gin.Context) {
 	idStr := c.Param("id")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه آیتم منو نامعتبر است", err.Error()))
 		return
 	}
 
-	if err := h.menuService.DeleteMenuItem(c.Request.Context(), uint(id)); err != nil {
+	if err := h.menuService.DeleteMenuItem(c.Request.Context(), id); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, utils.New("DB_ERROR", "خطا در حذف آیتم منو", err.Error()))
 		return
 	}
@@ -283,7 +292,7 @@ func (h *MenuHandler) DeleteMenuItem(c *gin.Context) {
 // ReorderMenuItems تغییر ترتیب آیتم‌های منو
 func (h *MenuHandler) ReorderMenuItems(c *gin.Context) {
 	menuIDStr := c.Param("menuId")
-	menuID, err := strconv.ParseUint(menuIDStr, 10, 64)
+	menuID, err := parseUintFromString(menuIDStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه منو نامعتبر است", err.Error()))
 		return
@@ -298,7 +307,7 @@ func (h *MenuHandler) ReorderMenuItems(c *gin.Context) {
 		return
 	}
 
-	if err := h.menuService.ReorderMenuItems(c.Request.Context(), uint(menuID), itemOrders); err != nil {
+	if err := h.menuService.ReorderMenuItems(c.Request.Context(), menuID, itemOrders); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, utils.New("DB_ERROR", "خطا در تغییر ترتیب آیتم‌های منو", err.Error()))
 		return
 	}
@@ -334,13 +343,13 @@ func (h *MenuHandler) CreateMenuColumn(c *gin.Context) {
 // GetMenuColumnByID دریافت ستون منو بر اساس ID
 func (h *MenuHandler) GetMenuColumnByID(c *gin.Context) {
 	idStr := c.Param("id")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه ستون منو نامعتبر است", err.Error()))
 		return
 	}
 
-	column, err := h.menuService.GetMenuColumnByID(c.Request.Context(), uint(id))
+	column, err := h.menuService.GetMenuColumnByID(c.Request.Context(), id)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, utils.New("NOT_FOUND", "ستون منو یافت نشد", err.Error()))
 		return
@@ -356,13 +365,13 @@ func (h *MenuHandler) GetMenuColumnByID(c *gin.Context) {
 // GetMenuColumnsByMenuID دریافت ستون‌های منو بر اساس ID منو
 func (h *MenuHandler) GetMenuColumnsByMenuID(c *gin.Context) {
 	menuIDStr := c.Param("menuId")
-	menuID, err := strconv.ParseUint(menuIDStr, 10, 64)
+	menuID, err := parseUintFromString(menuIDStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه منو نامعتبر است", err.Error()))
 		return
 	}
 
-	columns, err := h.menuService.GetMenuColumnsByMenuID(c.Request.Context(), uint(menuID))
+	columns, err := h.menuService.GetMenuColumnsByMenuID(c.Request.Context(), menuID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, utils.New("DB_ERROR", "خطا در دریافت ستون‌های منو", err.Error()))
 		return
@@ -378,7 +387,7 @@ func (h *MenuHandler) GetMenuColumnsByMenuID(c *gin.Context) {
 // UpdateMenuColumn به‌روزرسانی ستون منو
 func (h *MenuHandler) UpdateMenuColumn(c *gin.Context) {
 	idStr := c.Param("id")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه ستون منو نامعتبر است", err.Error()))
 		return
@@ -390,7 +399,7 @@ func (h *MenuHandler) UpdateMenuColumn(c *gin.Context) {
 		return
 	}
 
-	column.ID = uint(id)
+	column.ID = id
 	if err := h.menuService.UpdateMenuColumn(c.Request.Context(), &column); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, utils.New("DB_ERROR", "خطا در به‌روزرسانی ستون منو", err.Error()))
 		return
@@ -406,13 +415,13 @@ func (h *MenuHandler) UpdateMenuColumn(c *gin.Context) {
 // DeleteMenuColumn حذف ستون منو
 func (h *MenuHandler) DeleteMenuColumn(c *gin.Context) {
 	idStr := c.Param("id")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه ستون منو نامعتبر است", err.Error()))
 		return
 	}
 
-	if err := h.menuService.DeleteMenuColumn(c.Request.Context(), uint(id)); err != nil {
+	if err := h.menuService.DeleteMenuColumn(c.Request.Context(), id); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, utils.New("DB_ERROR", "خطا در حذف ستون منو", err.Error()))
 		return
 	}
@@ -426,7 +435,7 @@ func (h *MenuHandler) DeleteMenuColumn(c *gin.Context) {
 // ReorderMenuColumns تغییر ترتیب ستون‌های منو
 func (h *MenuHandler) ReorderMenuColumns(c *gin.Context) {
 	menuIDStr := c.Param("menuId")
-	menuID, err := strconv.ParseUint(menuIDStr, 10, 64)
+	menuID, err := parseUintFromString(menuIDStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه منو نامعتبر است", err.Error()))
 		return
@@ -441,7 +450,7 @@ func (h *MenuHandler) ReorderMenuColumns(c *gin.Context) {
 		return
 	}
 
-	if err := h.menuService.ReorderMenuColumns(c.Request.Context(), uint(menuID), columnOrders); err != nil {
+	if err := h.menuService.ReorderMenuColumns(c.Request.Context(), menuID, columnOrders); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, utils.New("DB_ERROR", "خطا در تغییر ترتیب ستون‌های منو", err.Error()))
 		return
 	}
@@ -477,13 +486,13 @@ func (h *MenuHandler) CreateMenuLocation(c *gin.Context) {
 // GetMenuLocationByID دریافت جایگاه منو بر اساس ID
 func (h *MenuHandler) GetMenuLocationByID(c *gin.Context) {
 	idStr := c.Param("id")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه جایگاه منو نامعتبر است", err.Error()))
 		return
 	}
 
-	location, err := h.menuService.GetMenuLocationByID(c.Request.Context(), uint(id))
+	location, err := h.menuService.GetMenuLocationByID(c.Request.Context(), id)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, utils.New("NOT_FOUND", "جایگاه منو یافت نشد", err.Error()))
 		return
@@ -535,7 +544,7 @@ func (h *MenuHandler) GetAllMenuLocations(c *gin.Context) {
 // UpdateMenuLocation به‌روزرسانی جایگاه منو
 func (h *MenuHandler) UpdateMenuLocation(c *gin.Context) {
 	idStr := c.Param("id")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه جایگاه منو نامعتبر است", err.Error()))
 		return
@@ -547,7 +556,7 @@ func (h *MenuHandler) UpdateMenuLocation(c *gin.Context) {
 		return
 	}
 
-	location.ID = uint(id)
+	location.ID = id
 	if err := h.menuService.UpdateMenuLocation(c.Request.Context(), &location); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, utils.New("DB_ERROR", "خطا در به‌روزرسانی جایگاه منو", err.Error()))
 		return
@@ -563,13 +572,13 @@ func (h *MenuHandler) UpdateMenuLocation(c *gin.Context) {
 // DeleteMenuLocation حذف جایگاه منو
 func (h *MenuHandler) DeleteMenuLocation(c *gin.Context) {
 	idStr := c.Param("id")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه جایگاه منو نامعتبر است", err.Error()))
 		return
 	}
 
-	if err := h.menuService.DeleteMenuLocation(c.Request.Context(), uint(id)); err != nil {
+	if err := h.menuService.DeleteMenuLocation(c.Request.Context(), id); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, utils.New("DB_ERROR", "خطا در حذف جایگاه منو", err.Error()))
 		return
 	}
@@ -605,13 +614,13 @@ func (h *MenuHandler) CreateMenuAssignment(c *gin.Context) {
 // GetMenuAssignmentByID دریافت تخصیص منو بر اساس ID
 func (h *MenuHandler) GetMenuAssignmentByID(c *gin.Context) {
 	idStr := c.Param("id")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه تخصیص منو نامعتبر است", err.Error()))
 		return
 	}
 
-	assignment, err := h.menuService.GetMenuAssignmentByID(c.Request.Context(), uint(id))
+	assignment, err := h.menuService.GetMenuAssignmentByID(c.Request.Context(), id)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, utils.New("NOT_FOUND", "تخصیص منو یافت نشد", err.Error()))
 		return
@@ -627,13 +636,13 @@ func (h *MenuHandler) GetMenuAssignmentByID(c *gin.Context) {
 // GetMenuAssignmentsByLocationID دریافت تخصیص‌های منو بر اساس ID جایگاه
 func (h *MenuHandler) GetMenuAssignmentsByLocationID(c *gin.Context) {
 	locationIDStr := c.Param("locationId")
-	locationID, err := strconv.ParseUint(locationIDStr, 10, 64)
+	locationID, err := parseUintFromString(locationIDStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه جایگاه منو نامعتبر است", err.Error()))
 		return
 	}
 
-	assignments, err := h.menuService.GetMenuAssignmentsByLocationID(c.Request.Context(), uint(locationID))
+	assignments, err := h.menuService.GetMenuAssignmentsByLocationID(c.Request.Context(), locationID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, utils.New("DB_ERROR", "خطا در دریافت تخصیص‌های منو", err.Error()))
 		return
@@ -649,13 +658,13 @@ func (h *MenuHandler) GetMenuAssignmentsByLocationID(c *gin.Context) {
 // GetMenuAssignmentsByMenuID دریافت تخصیص‌های منو بر اساس ID منو
 func (h *MenuHandler) GetMenuAssignmentsByMenuID(c *gin.Context) {
 	menuIDStr := c.Param("menuId")
-	menuID, err := strconv.ParseUint(menuIDStr, 10, 64)
+	menuID, err := parseUintFromString(menuIDStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه منو نامعتبر است", err.Error()))
 		return
 	}
 
-	assignments, err := h.menuService.GetMenuAssignmentsByMenuID(c.Request.Context(), uint(menuID))
+	assignments, err := h.menuService.GetMenuAssignmentsByMenuID(c.Request.Context(), menuID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, utils.New("DB_ERROR", "خطا در دریافت تخصیص‌های منو", err.Error()))
 		return
@@ -671,7 +680,7 @@ func (h *MenuHandler) GetMenuAssignmentsByMenuID(c *gin.Context) {
 // UpdateMenuAssignment به‌روزرسانی تخصیص منو
 func (h *MenuHandler) UpdateMenuAssignment(c *gin.Context) {
 	idStr := c.Param("id")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه تخصیص منو نامعتبر است", err.Error()))
 		return
@@ -683,7 +692,7 @@ func (h *MenuHandler) UpdateMenuAssignment(c *gin.Context) {
 		return
 	}
 
-	assignment.ID = uint(id)
+	assignment.ID = id
 	if err := h.menuService.UpdateMenuAssignment(c.Request.Context(), &assignment); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, utils.New("DB_ERROR", "خطا در به‌روزرسانی تخصیص منو", err.Error()))
 		return
@@ -699,13 +708,13 @@ func (h *MenuHandler) UpdateMenuAssignment(c *gin.Context) {
 // DeleteMenuAssignment حذف تخصیص منو
 func (h *MenuHandler) DeleteMenuAssignment(c *gin.Context) {
 	idStr := c.Param("id")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "شناسه تخصیص منو نامعتبر است", err.Error()))
 		return
 	}
 
-	if err := h.menuService.DeleteMenuAssignment(c.Request.Context(), uint(id)); err != nil {
+	if err := h.menuService.DeleteMenuAssignment(c.Request.Context(), id); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, utils.New("DB_ERROR", "خطا در حذف تخصیص منو", err.Error()))
 		return
 	}

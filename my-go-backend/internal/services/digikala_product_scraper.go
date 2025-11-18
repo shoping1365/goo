@@ -2,7 +2,7 @@ package services
 
 import (
 	"context"
-	"crypto/md5"
+	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -486,7 +486,8 @@ func (s *DigikalaProductScraperService) setHumanLikeHeaders(req *http.Request) {
 // downloadImage دانلود تصویر و ذخیره در public/uploads/media
 func (s *DigikalaProductScraperService) downloadImage(imageURL string) (string, error) {
 	// ساخت hash از URL برای نام فایل یکتا
-	hasher := md5.New()
+	// استفاده از SHA-256 به جای MD5 برای امنیت بیشتر
+	hasher := sha256.New()
 	hasher.Write([]byte(imageURL))
 	hash := hex.EncodeToString(hasher.Sum(nil))
 

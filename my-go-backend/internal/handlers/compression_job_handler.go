@@ -7,7 +7,6 @@ import (
 	"my-go-backend/internal/services"
 	"my-go-backend/internal/utils"
 	"net/http"
-	"strconv"
 	"strings"
 )
 
@@ -32,13 +31,17 @@ func (h *CompressionJobHandler) ListCompressionJobs(w http.ResponseWriter, r *ht
 	var err error
 	switch {
 	case mediaIDStr != "":
-		mediaID, _ := strconv.ParseUint(mediaIDStr, 10, 64)
-		jobs, err = h.Service.GetByMedia(r.Context(), uint(mediaID))
+		mediaID, err := parseUintFromString(mediaIDStr)
+		if err == nil {
+			jobs, err = h.Service.GetByMedia(r.Context(), mediaID)
+		}
 	case status != "":
 		jobs, err = h.Service.GetByStatus(r.Context(), status)
 	case batchIDStr != "":
-		batchID, _ := strconv.ParseUint(batchIDStr, 10, 64)
-		jobs, err = h.Service.ListByBatch(r.Context(), uint(batchID))
+		batchID, err := parseUintFromString(batchIDStr)
+		if err == nil {
+			jobs, err = h.Service.ListByBatch(r.Context(), batchID)
+		}
 	default:
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(utils.New("VALIDATION_ERROR", utils.GetErrorMessage("VALIDATION_ERROR"), nil))
@@ -55,13 +58,13 @@ func (h *CompressionJobHandler) ListCompressionJobs(w http.ResponseWriter, r *ht
 // GetCompressionJob بازیابی job بر اساس ID
 func (h *CompressionJobHandler) GetCompressionJob(w http.ResponseWriter, r *http.Request) {
 	idStr := strings.TrimPrefix(r.URL.Path, "/api/compression-job/")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(utils.New("VALIDATION_ERROR", utils.GetErrorMessage("VALIDATION_ERROR"), nil))
 		return
 	}
-	job, err := h.Service.GetByID(r.Context(), uint(id))
+	job, err := h.Service.GetByID(r.Context(), id)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(utils.New("NOT_FOUND", utils.GetErrorMessage("NOT_FOUND"), nil))
@@ -89,7 +92,7 @@ func (h *CompressionJobHandler) CreateCompressionJob(w http.ResponseWriter, r *h
 // UpdateCompressionJob ویرایش job
 func (h *CompressionJobHandler) UpdateCompressionJob(w http.ResponseWriter, r *http.Request) {
 	idStr := strings.TrimPrefix(r.URL.Path, "/api/compression-job/")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(utils.New("VALIDATION_ERROR", utils.GetErrorMessage("VALIDATION_ERROR"), nil))
@@ -101,7 +104,7 @@ func (h *CompressionJobHandler) UpdateCompressionJob(w http.ResponseWriter, r *h
 		json.NewEncoder(w).Encode(utils.New("VALIDATION_ERROR", utils.GetErrorMessage("VALIDATION_ERROR"), err.Error()))
 		return
 	}
-	req.ID = uint(id)
+	req.ID = id
 	if err := h.Service.Update(context.Background(), &req); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(utils.New("DB_ERROR", utils.GetErrorMessage("DB_ERROR"), err.Error()))
@@ -113,13 +116,13 @@ func (h *CompressionJobHandler) UpdateCompressionJob(w http.ResponseWriter, r *h
 // DeleteCompressionJob حذف job
 func (h *CompressionJobHandler) DeleteCompressionJob(w http.ResponseWriter, r *http.Request) {
 	idStr := r.URL.Query().Get("id")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(utils.New("VALIDATION_ERROR", utils.GetErrorMessage("VALIDATION_ERROR"), nil))
 		return
 	}
-	if err := h.Service.Delete(context.Background(), uint(id)); err != nil {
+	if err := h.Service.Delete(context.Background(), id); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(utils.New("DB_ERROR", utils.GetErrorMessage("DB_ERROR"), err.Error()))
 		return

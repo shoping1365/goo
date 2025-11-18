@@ -1,7 +1,7 @@
+import eslintPluginVue from 'eslint-plugin-vue'
+import eslintConfigPrettier from 'eslint-config-prettier'
 import tseslint from '@typescript-eslint/eslint-plugin'
 import tsparser from '@typescript-eslint/parser'
-import eslintConfigPrettier from 'eslint-config-prettier'
-import eslintPluginVue from 'eslint-plugin-vue'
 
 export default [
     {
@@ -15,7 +15,11 @@ export default [
             'my-go-backend/**',
             'android-app/**',
             'codeql-dbs/**',
-            'public/tinymce-assets/**'
+            // Ignore TinyMCE third-party library files
+            'public/tinymce-assets/**',
+            '**/tinymce.js',
+            '**/tinymce.min.js',
+            '**/tinymce-assets/**'
         ]
     },
     ...eslintPluginVue.configs['flat/recommended'],

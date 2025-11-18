@@ -588,7 +588,8 @@ const onOgImageSelected = (selectedFiles: any[]) => {
 // توابع مربوط به تگ‌ها
 const addTag = () => {
   const tag = tagsInput.value.trim()
-  if (tag && !postForm.tags.includes(tag)) {
+  if (tag && !postForm.tags?.includes(tag)) {
+    if (!postForm.tags) postForm.tags = []
     postForm.tags.push(tag)
     tagsInput.value = ''
   }

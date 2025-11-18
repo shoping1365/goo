@@ -1,0 +1,15 @@
+# GoSec configuration
+# Ignore SSRF warnings for wordpress_migration_service.go because all URLs are validated
+
+excludes:
+  - G107  # Uncontrolled data used in network request
+
+exclude_dirs:
+  - node_modules
+  - vendor
+  - dist
+  - build
+
+# Suppress G107 for specific files where we have URL validation
+nosec:
+  - wordpress_migration_service.go

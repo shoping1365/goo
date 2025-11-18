@@ -58,9 +58,14 @@ func (h *MediaHandler) CropImageHandler(w http.ResponseWriter, r *http.Request) 
 	}
 	publicDir := filepath.Join(projectRoot, "public")
 
-	// پاک کردن / از ابتدای src
-	srcPath := strings.TrimPrefix(req.Src, "/")
-	absSrcPath := filepath.Join(publicDir, srcPath)
+	// اعتبارسنجی و پاکسازی مسیر برای جلوگیری از path traversal
+	absSrcPath, err := validateAndSanitizePath(publicDir, req.Src)
+	if err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(utils.New("VALIDATION_ERROR", "مسیر نامعتبر", err.Error()))
+		return
+	}
 
 	if _, err := os.Stat(absSrcPath); err != nil {
 		w.Header().Set("Content-Type", "application/json")
@@ -252,8 +257,14 @@ func (h *MediaHandler) GetCroppedImageHandler(w http.ResponseWriter, r *http.Req
 	}
 	publicDir := filepath.Join(projectRoot, "public")
 
-	srcPath := strings.TrimPrefix(src, "/")
-	absSrcPath := filepath.Join(publicDir, srcPath)
+	// اعتبارسنجی و پاکسازی مسیر برای جلوگیری از path traversal
+	absSrcPath, err := validateAndSanitizePath(publicDir, src)
+	if err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(utils.New("VALIDATION_ERROR", "مسیر نامعتبر", err.Error()))
+		return
+	}
 
 	if _, err := os.Stat(absSrcPath); err != nil {
 		w.Header().Set("Content-Type", "application/json")

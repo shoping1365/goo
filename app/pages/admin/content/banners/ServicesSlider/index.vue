@@ -231,17 +231,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-
-// تعریف definePageMeta و useHead برای Nuxt 3
-declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
-declare const useHead: (head: { title?: string }) => void
-
 // Page meta definition
 definePageMeta({
   layout: 'admin',
   middleware: 'admin'
 })
+
+import { ref, computed } from 'vue'
+
+// تعریف definePageMeta و useHead برای Nuxt 3
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+declare const useHead: (head: { title?: string }) => void
 
 // Page title
 useHead({

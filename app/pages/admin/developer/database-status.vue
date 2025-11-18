@@ -388,8 +388,8 @@
 </template>
 
 <script setup>
+import { ref, onMounted, onUnmounted, watch, computed } from 'vue';
 import dayjs from 'dayjs/esm/index.js';
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 
 definePageMeta({
   layout: 'admin-main',
@@ -397,7 +397,7 @@ definePageMeta({
 });
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth();
+const { user, hasPermission } = useAuth()
 
 const connectionStatus = ref('checking');
 const dbInfo = ref({
@@ -801,14 +801,14 @@ async function loadPool() {
       }
     }
   } catch {}
-};
+}
 
 async function savePool() {
   try {
-    await $fetch('/api/admin/system/db-pool', { method: 'POST', body: pool.value });
-    alert('تنظیمات اعمال شد');
+    await $fetch('/api/admin/system/db-pool', { method: 'POST', body: pool.value })
+    alert('تنظیمات اعمال شد')
   } catch (e) {
-    alert('خطا در ذخیره تنظیمات: ' + (e?.message || e));
+    alert('خطا در ذخیره تنظیمات: ' + (e?.message || e))
   }
-};
+}
 </script>

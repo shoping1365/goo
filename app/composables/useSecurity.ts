@@ -61,11 +61,50 @@ export const useSecurity = () => {
 
   /**
    * بررسی امنیت URL
+   * بررسی کامل پروتکل و جلوگیری از URLهای خطرناک
    */
   const isSafeUrl = (url: string): boolean => {
+    if (!url || typeof url !== 'string') {
+      return false
+    }
+
     try {
       const urlObj = new URL(url)
-      return ['http:', 'https:'].includes(urlObj.protocol)
+      const protocol = urlObj.protocol.toLowerCase()
+      
+      // فقط http و https مجاز هستند
+      if (!['http:', 'https:'].includes(protocol)) {
+        return false
+      }
+
+      // بررسی hostname برای جلوگیری از localhost و IPهای داخلی
+      const hostname = urlObj.hostname.toLowerCase()
+      if (hostname === 'localhost' || 
+          hostname === '127.0.0.1' || 
+          hostname === '::1' ||
+          hostname === '0.0.0.0' ||
+          hostname.startsWith('192.168.') ||
+          hostname.startsWith('10.') ||
+          hostname.startsWith('172.16.') ||
+          hostname.startsWith('172.17.') ||
+          hostname.startsWith('172.18.') ||
+          hostname.startsWith('172.19.') ||
+          hostname.startsWith('172.20.') ||
+          hostname.startsWith('172.21.') ||
+          hostname.startsWith('172.22.') ||
+          hostname.startsWith('172.23.') ||
+          hostname.startsWith('172.24.') ||
+          hostname.startsWith('172.25.') ||
+          hostname.startsWith('172.26.') ||
+          hostname.startsWith('172.27.') ||
+          hostname.startsWith('172.28.') ||
+          hostname.startsWith('172.29.') ||
+          hostname.startsWith('172.30.') ||
+          hostname.startsWith('172.31.')) {
+        return false
+      }
+
+      return true
     } catch {
       return false
     }

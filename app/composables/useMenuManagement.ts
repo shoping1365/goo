@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { ref, reactive, computed } from 'vue'
 
 export interface MenuItem {
   id?: number
@@ -62,21 +62,21 @@ export const useMenuManagement = () => {
     return Date.now() * 1000 + tempClientIdSequence
   }
 
-
+  
   const isLoading = ref(false)
   const isSaving = ref(false)
-
+  
   // Content data - wrapped in computed to ensure arrays
   const _pages = ref([])
   const _posts = ref([])
   const _categories = ref([])
   const _productCategories = ref([])
-
+  
   const pages = computed(() => Array.isArray(_pages.value) ? _pages.value : [])
   const posts = computed(() => Array.isArray(_posts.value) ? _posts.value : [])
   const categories = computed(() => Array.isArray(_categories.value) ? _categories.value : [])
   const productCategories = computed(() => Array.isArray(_productCategories.value) ? _productCategories.value : [])
-
+  
   const menuLocations = ref<MenuLocation[]>([
     { id: 1, name: 'منوی اصلی', slug: 'main-menu', description: 'منوی اصلی سایت' },
     { id: 2, name: 'منوی فوتر', slug: 'footer-menu', description: 'منوی پایین صفحه' },
@@ -218,7 +218,7 @@ export const useMenuManagement = () => {
     const titleKey = (item?.title ?? '').toString().trim().toLowerCase()
     const parentKey = item?.parentId ?? item?.parentClientId ?? 'root'
     const depthKey = item?.depth ?? 0
-
+    
     // Signature شامل parent و depth هم میشه تا آیتم‌های یکسان در سطوح مختلف unique باشن
     return `${typeKey}::${pathKey || titleKey}::parent-${parentKey}::depth-${depthKey}`
   }
@@ -379,9 +379,9 @@ export const useMenuManagement = () => {
       enabled = false
     }
 
-    const persistedId = raw?.id ?? raw?.item_id
-    const clientId = raw?.clientId ?? raw?.client_id ?? persistedId ?? index
-    const menuId = menuIdOverride ?? raw?.menuId ?? raw?.menu_id ?? raw?.menuID ?? raw?.menu ?? undefined
+  const persistedId = raw?.id ?? raw?.item_id
+  const clientId = raw?.clientId ?? raw?.client_id ?? persistedId ?? index
+  const menuId = menuIdOverride ?? raw?.menuId ?? raw?.menu_id ?? raw?.menuID ?? raw?.menu ?? undefined
 
     return {
       id: persistedId,
@@ -485,22 +485,22 @@ export const useMenuManagement = () => {
 
     const menuId = raw?.id ?? raw?.menu_id
     const rawItems = raw?.items ?? raw?.menuItems ?? []
-
+    
     console.log('📥 Raw items from backend:', JSON.parse(JSON.stringify(rawItems)))
-
+    
     // First flatten all items
     const flatItems = flattenMenuItems(rawItems, null, menuId)
-
-    console.log('📋 Flattened items:', flatItems.map(i => ({
-      id: i.id,
-      title: i.title,
-      enabled: i.enabled,
-      parentId: i.parentId
+    
+    console.log('📋 Flattened items:', flatItems.map(i => ({ 
+      id: i.id, 
+      title: i.title, 
+      enabled: i.enabled, 
+      parentId: i.parentId 
     })))
-
+    
     // Then build tree structure
     const treeItems = buildMenuTree(flatItems)
-
+    
     console.log('🌳 Built menu tree:', treeItems)
 
     return {
@@ -546,7 +546,7 @@ export const useMenuManagement = () => {
   const flattenMenuItemsForSave = (items: MenuItem[], parentLink: number | null = null, currentOrder = 0): any[] => {
     const result: any[] = []
     let order = currentOrder
-
+    
     items.forEach((item) => {
       order++
       const source = item as any
@@ -558,7 +558,7 @@ export const useMenuManagement = () => {
       const depth = typeof source?.depth === 'number' ? source.depth : 0
       const effectiveParentLink = typeof parentLink === 'number' ? parentLink : null
       const resolvedParentClientId = parentClientId ?? effectiveParentLink
-
+      
       // Add current item
       const flatItem = {
         id: shouldCreate ? undefined : persistedId,
@@ -577,8 +577,8 @@ export const useMenuManagement = () => {
         sort_order: order,
         parentId: parentDbId,
         parent_id: parentDbId,
-        parentClientId: resolvedParentClientId,
-        parent_client_id: resolvedParentClientId,
+  parentClientId: resolvedParentClientId,
+  parent_client_id: resolvedParentClientId,
         clientId: clientId ?? null,
         client_id: clientId ?? null,
         depth,
@@ -605,13 +605,13 @@ export const useMenuManagement = () => {
         showOnTablet: source?.showOnTablet ?? source?.show_on_tablet ?? true,
         show_on_tablet: source?.showOnTablet ?? source?.show_on_tablet ?? true
       }
-
+      
       result.push(flatItem)
-
+      
       // Recursively process children
       if (item.children && item.children.length > 0) {
         const childItems = flattenMenuItemsForSave(
-          item.children,
+          item.children, 
           persistedId ?? clientId ?? parentLink ?? null,
           order
         )
@@ -619,7 +619,7 @@ export const useMenuManagement = () => {
         order += childItems.length
       }
     })
-
+    
     return result
   }
 
@@ -754,7 +754,7 @@ export const useMenuManagement = () => {
           if (typeof clientId === 'number') registerPersisted(clientId, currentId)
           item.id = currentId
           if (item && typeof item === 'object') {
-            ; (item as any).isNew = false
+            ;(item as any).isNew = false
           }
         }
 
@@ -835,12 +835,12 @@ export const useMenuManagement = () => {
       if (!menu.slug || menu.slug === '') {
         menu.slug = generateSlug(menu.name)
       }
-
+      
       console.log('🔵 Original menu structure:', JSON.parse(JSON.stringify(menu.items)))
-
+      
       // Flatten the tree structure
       const flattenedItems = flattenMenuItemsForSave(menu.items || [])
-
+      
       console.log('📦 Flattened items for save:', flattenedItems)
 
       // Add menuId to all items
@@ -856,9 +856,9 @@ export const useMenuManagement = () => {
         enabled: menu.enabled !== false, // اضافه شد - حفظ وضعیت فعال/غیرفعال منو
         items: itemsWithMenuId
       }
-
+      
       console.log('📤 Final payload:', JSON.parse(JSON.stringify(payload)))
-
+      
       let response
       if (menu.id) {
         // Update existing menu
@@ -907,10 +907,10 @@ export const useMenuManagement = () => {
       await $fetch(`/api/admin/menus/${id}`, {
         method: 'DELETE'
       })
-
+      
       // Remove from local list
       menus.value = menus.value.filter(menu => menu.id !== id)
-
+      
       // Clear current menu if it was the deleted one
       if (currentMenu.value.id === id) {
         currentMenu.value = { id: undefined, name: '', items: [] }
@@ -1036,13 +1036,13 @@ export const useMenuManagement = () => {
     const nextOrder = currentMenu.value.items.length + 1
     const prepared = normalizeIncomingItem(item, nextOrder)
     const signature = computeItemSignature(prepared)
-
+    
     // لیست تمام signature های موجود
     const existingSignatures = currentMenu.value.items.map(i => ({
       title: i.title,
       signature: computeItemSignature(i)
     }))
-
+    
     console.log('🔍 addMenuItem:', {
       incoming: {
         title: prepared.title,
@@ -1053,7 +1053,7 @@ export const useMenuManagement = () => {
       existing: existingSignatures,
       currentMenuItems: currentMenu.value.items.length
     })
-
+    
     if (menuContainsSignature(currentMenu.value.items, signature)) {
       console.log('⚠️ Duplicate detected! Signature already exists:', signature)
       console.log('📋 Existing items:', currentMenu.value.items.map(i => ({
@@ -1063,7 +1063,7 @@ export const useMenuManagement = () => {
       })))
       return
     }
-
+    
     console.log('✅ Adding item with signature:', signature)
     currentMenu.value.items.push(prepared)
   }
@@ -1081,19 +1081,19 @@ export const useMenuManagement = () => {
     const items = [...currentMenu.value.items]
     const [movedItem] = items.splice(fromIndex, 1)
     items.splice(toIndex, 0, movedItem)
-
+    
     // Update order
     items.forEach((item, index) => {
       item.order = index + 1
     })
-
+    
     currentMenu.value.items = items
   }
 
   // Helper to get item by path
   const getItemByPath = (items: MenuItem[], path: number[]): MenuItem | null => {
     if (!path || path.length === 0) return null
-
+    
     let current = items[path[0]]
     for (let i = 1; i < path.length; i++) {
       if (!current?.children || !current.children[path[i]]) return null
@@ -1105,39 +1105,69 @@ export const useMenuManagement = () => {
   // Helper to remove item by path
   const removeItemByPath = (items: MenuItem[], path: number[]): MenuItem | null => {
     if (!path || path.length === 0) return null
-
+    
     if (path.length === 1) {
       const [removed] = items.splice(path[0], 1)
       return removed
     }
-
+    
     let current = items[path[0]]
     for (let i = 1; i < path.length - 1; i++) {
       if (!current?.children) return null
       current = current.children[path[i]]
     }
-
+    
     if (!current?.children) return null
     const [removed] = current.children.splice(path[path.length - 1], 1)
     return removed
   }
 
+  // Helper to insert item by path
+  const insertItemByPath = (items: MenuItem[], path: number[], item: MenuItem, position: 'before' | 'after' | 'inside') => {
+    if (!path || path.length === 0) return
+    
+    if (path.length === 1) {
+      const index = position === 'after' ? path[0] + 1 : path[0]
+      items.splice(index, 0, item)
+      return
+    }
+    
+    let current = items[path[0]]
+    for (let i = 1; i < path.length - 1; i++) {
+      if (!current?.children) return
+      current = current.children[path[i]]
+    }
+    
+    const targetIndex = path[path.length - 1]
+    
+    if (position === 'inside') {
+      if (!current.children) current.children = []
+      const target = current.children[targetIndex]
+      if (!target.children) target.children = []
+      target.children.push(item)
+    } else {
+      const index = position === 'after' ? targetIndex + 1 : targetIndex
+      if (!current.children) current.children = []
+      current.children.splice(index, 0, item)
+    }
+  }
+
   // Simple drag & drop: just change depth based on horizontal movement
-  const handleDropItem = (dropData: { draggedPath: number[], targetPath: number[], newDepth: number }) => {
+  const handleDropItem = (dropData: {draggedPath: number[], targetPath: number[], newDepth: number}) => {
     const { draggedPath, targetPath, newDepth } = dropData
-
+    
     console.log('🎯 Simple Drop:', { draggedPath, targetPath, newDepth })
-
+    
     // پیدا کردن آیتمی که drag شده
     const draggedItem = getItemByPath(currentMenu.value.items, draggedPath)
     if (!draggedItem) {
       console.log('⚠️ Dragged item not found')
       return
     }
-
+    
     // حذف از جای قبلی
     removeItemByPath(currentMenu.value.items, draggedPath)
-
+    
     // تنظیم depth جدید با parentId
     // depth 0 = parentId: null
     // depth > 0 = parentId: آیتم بالایی
@@ -1150,14 +1180,14 @@ export const useMenuManagement = () => {
         draggedItem.parentId = targetItem.id || targetItem.clientId
       }
     }
-
+    
     // اضافه کردن به جای جدید
     currentMenu.value.items.push(draggedItem)
-
+    
     // Rebuild tree
     const flatItems = flattenMenuItems(currentMenu.value.items, null, currentMenu.value.id)
     currentMenu.value.items = buildMenuTree(flatItems)
-
+    
     console.log('✅ Drop completed, new tree:', currentMenu.value.items)
   }
 
@@ -1189,7 +1219,7 @@ export const useMenuManagement = () => {
     categories,
     productCategories,
     menuLocations,
-
+    
     // API Methods
     fetchMenus,
     fetchMenu,
@@ -1198,9 +1228,9 @@ export const useMenuManagement = () => {
     reorderMenuItems,
     assignMenuToLocation,
     unassignMenuFromLocation,
-    markMenuItemDeleted,
-    registerDeletedMenuBranch,
-
+  markMenuItemDeleted,
+  registerDeletedMenuBranch,
+    
     // Content API Methods
     fetchPages,
     fetchPosts,
@@ -1208,7 +1238,7 @@ export const useMenuManagement = () => {
     fetchProductCategories,
     initializeContent,
     refreshContent,
-
+    
     // Utility Methods
     createNewMenu,
     generateSlug,

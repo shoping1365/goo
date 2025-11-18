@@ -91,18 +91,24 @@ const generateMockData = () => {
   const mockLogs: SearchLog[] = []
   
   for (let i = 0; i < 100; i++) {
-    const query = queries[Math.floor(Math.random() * queries.length)]
+    // استفاده از crypto.getRandomValues برای تولید اعداد تصادفی امن در mock data
+    const randomArray = new Uint32Array(8)
+    crypto.getRandomValues(randomArray)
+    const randomValues = Array.from(randomArray).map(val => val / 4294967296) // Normalize to 0-1
+    
+    const query = queries[Math.floor(randomValues[0] * queries.length)]
+    
     mockLogs.push({
       id: `log_${i}`,
       query: query,
-      timestamp: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString(),
-      userId: Math.random() > 0.3 ? `user_${Math.floor(Math.random() * 50)}` : undefined,
-      resultsCount: Math.floor(Math.random() * 100),
-      clickedResults: Math.floor(Math.random() * 5),
-      searchDuration: Math.floor(Math.random() * 500) + 50,
-      filters: Math.random() > 0.5 ? { category: 'electronics', priceRange: '1000000-5000000' } : undefined,
+      timestamp: new Date(Date.now() - randomValues[1] * 7 * 24 * 60 * 60 * 1000).toISOString(),
+      userId: randomValues[2] > 0.3 ? `user_${Math.floor(randomValues[3] * 50)}` : undefined,
+      resultsCount: Math.floor(randomValues[4] * 100),
+      clickedResults: Math.floor(randomValues[5] * 5),
+      searchDuration: Math.floor(randomValues[6] * 500) + 50,
+      filters: randomValues[7] > 0.5 ? { category: 'electronics', priceRange: '1000000-5000000' } : undefined,
       userAgent: 'Mozilla/5.0',
-      ip: `192.168.1.${Math.floor(Math.random() * 255)}`
+      ip: `192.168.1.${Math.floor(randomValues[0] * 255)}`
     })
   }
   

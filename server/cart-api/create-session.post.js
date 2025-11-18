@@ -1,9 +1,11 @@
 import { defineEventHandler, setCookie, createError } from 'h3'
 
+import { randomUUID } from 'crypto'
+
 export default defineEventHandler(async (event) => {
   try {
-    // ایجاد session ID جدید
-    const sessionId = `cart_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    // ایجاد session ID جدید با استفاده از crypto.randomUUID برای امنیت بیشتر
+    const sessionId = `cart_${Date.now()}_${randomUUID()}`
     
     // تنظیم cookie با نام session_id برای هماهنگی با بقیه سیستم
     setCookie(event, 'session_id', sessionId, {

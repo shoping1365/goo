@@ -12,8 +12,11 @@ export default defineNuxtRouteMiddleware((to, from) => {
     const cartSessionId = useCookie('session_id')
 
     if (!cartSessionId.value) {
-      // ایجاد session ID جدید
-      const sessionId = `cart_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+      // ایجاد session ID جدید با استفاده از crypto.getRandomValues برای امنیت بیشتر
+      const array = new Uint8Array(16)
+      crypto.getRandomValues(array)
+      const randomPart = Array.from(array, byte => byte.toString(36)).join('').substring(0, 16)
+      const sessionId = `cart_${Date.now()}_${randomPart}`
       cartSessionId.value = sessionId
     }
   }

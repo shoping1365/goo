@@ -11,20 +11,23 @@ import { describe, it, expect } from 'vitest'
 describe('XSS Prevention', () => {
   it('should sanitize HTML tags', () => {
     const malicious = '<script>alert("XSS")</script>Hello'
-    const clean = malicious.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    // Note: This regex is for testing purposes only. Production should use DOMPurify
+    const clean = malicious.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gis, '')
     expect(clean).not.toContain('<script>')
     expect(clean).toBe('Hello')
   })
 
   it('should remove event handlers', () => {
     const malicious = '<div onclick="alert(\'XSS\')">Click me</div>'
-    const clean = malicious.replace(/on\w+\s*=\s*["'][^"']*["']/gi, '')
+    // Note: This regex is for testing purposes only. Production should use DOMPurify
+    const clean = malicious.replace(/\s*on\w+\s*=\s*["'][^"']*["']/gi, '')
     expect(clean).not.toContain('onclick')
   })
 
   it('should allow safe HTML', () => {
     const safe = '<div><p>Hello</p></div>'
-    const clean = safe.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    // Note: This regex is for testing purposes only. Production should use DOMPurify
+    const clean = safe.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gis, '')
     expect(clean).toContain('<p>Hello</p>')
   })
 })

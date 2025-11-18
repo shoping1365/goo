@@ -10,18 +10,31 @@
 export const sanitizeHtml = (input: string): string => {
   if (!input) return ''
 
-  // Remove script tags
-  let sanitized = input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+  // Use a more comprehensive approach: remove all potentially dangerous content
+  // Note: For production, consider using DOMPurify library for better security
+  let sanitized = input
 
-  // Remove event handlers
-  sanitized = sanitized.replace(/on\w+\s*=\s*["'][^"']*["']/gi, '')
-  sanitized = sanitized.replace(/on\w+\s*=\s*[^\s>]*/gi, '')
+  // Remove script tags (improved regex to handle nested tags and edge cases)
+  sanitized = sanitized.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gis, '')
+  
+  // Remove style tags that could contain malicious CSS
+  sanitized = sanitized.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gis, '')
 
-  // Remove iframe tags
-  sanitized = sanitized.replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+  // Remove event handlers (improved to catch all variations)
+  sanitized = sanitized.replace(/\s*on\w+\s*=\s*["'][^"']*["']/gi, '')
+  sanitized = sanitized.replace(/\s*on\w+\s*=\s*[^\s>]*/gi, '')
 
-  // Remove object/embed tags
-  sanitized = sanitized.replace(/<(object|embed)[^>]*>/gi, '')
+  // Remove iframe tags completely
+  sanitized = sanitized.replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gis, '')
+
+  // Remove object/embed tags completely
+  sanitized = sanitized.replace(/<(object|embed)\b[^<]*(?:(?!<\/\1>)<[^<]*)*<\/\1>/gis, '')
+
+  // Remove javascript: protocol in attributes
+  sanitized = sanitized.replace(/javascript:/gi, '')
+
+  // Remove data: URLs that could contain scripts
+  sanitized = sanitized.replace(/data:text\/html/gi, '')
 
   return sanitized
 }

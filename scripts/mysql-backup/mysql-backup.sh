@@ -50,6 +50,26 @@ SYSTEMD_UNIT_NAME=${SYSTEMD_UNIT_NAME:-mysql-backup.service}
 # Define databases as multi-line entries for readability.
 # Required keys per entry: NAME, USER, PASSWORD.
 # Optional keys: HOST (default localhost), REMOTE_DIR (default NAME).
+#
+# ⚠️ امنیت: ذخیره password در کد منبع خطرناک است!
+#
+# ✅ راه حل صحیح:
+# 1. از environment variables استفاده کنید: PASSWORD=${DB_PASSWORD:-"default"}
+# 2. از secret management systems استفاده کنید (مثل HashiCorp Vault, AWS Secrets Manager)
+# 3. از فایل‌های config خارج از repository استفاده کنید که در .gitignore هستند
+# 4. هرگز password ها را در کد منبع commit نکنید
+#
+# مثال صحیح:
+# DATABASES=(
+#   "NAME=my_database
+#    USER=my_user
+#    PASSWORD=${MY_DB_PASSWORD}
+#    HOST=localhost"
+# )
+#
+# سپس در environment variables تنظیم کنید:
+# export MY_DB_PASSWORD="secure_password_here"
+#
 DATABASES=(
   "NAME=abanwtr_database
 USER=abanwtr_user

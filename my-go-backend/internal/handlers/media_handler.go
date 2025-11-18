@@ -5,12 +5,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"html"
 	"image"
 	_ "image/gif"
 	"image/jpeg"
 	"image/png"
 	"io"
 	"log"
+	"mime/multipart"
 	"net/http"
 	"os"
 	"os/exec"
@@ -166,9 +168,10 @@ func (h *MediaHandler) UploadMediaHandler(w http.ResponseWriter, r *http.Request
 		}
 	}()
 
+	var err error
 	// محدودیت حجم فایل
 	r.Body = http.MaxBytesReader(w, r.Body, maxFileSize)
-	if err := r.ParseMultipartForm(maxFileSize); err != nil {
+	if err = r.ParseMultipartForm(maxFileSize); err != nil {
 		sendJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "داده‌های فرم نامعتبر است", err.Error()))
 		return
 	}
@@ -200,7 +203,7 @@ func (h *MediaHandler) UploadMediaHandler(w http.ResponseWriter, r *http.Request
 	}
 
 	// مقداردهی فیلد UploadedBy با آیدی کاربر لاگین‌شده (در صورت وجود)
-	var uploadedBy *uint
+	var uploadedBy *uint = nil
 	// تلاش برای گرفتن user_id از context (مثلاً ست شده توسط middleware احراز هویت)
 	if userIDVal, ok := r.Context().Value("user_id").(uint); ok {
 		uploadedBy = &userIDVal
@@ -214,14 +217,15 @@ func (h *MediaHandler) UploadMediaHandler(w http.ResponseWriter, r *http.Request
 			userIDStr = r.URL.Query().Get("uploaded_by")
 		}
 		if userIDStr != "" {
-			if id, err := strconv.ParseUint(userIDStr, 10, 64); err == nil {
-				u := uint(id)
-				uploadedBy = &u
+			if id, err := parseUintFromString(userIDStr); err == nil {
+				uploadedBy = &id
 			}
 		}
 	}
 
-	file, header, err := r.FormFile("file")
+	var file multipart.File
+	var header *multipart.FileHeader
+	file, header, err = r.FormFile("file")
 	if err != nil {
 		sendJSON(http.StatusBadRequest, utils.New("FILE_REQUIRED", "هیچ فایلی آپلود نشده است", nil))
 		return
@@ -321,9 +325,17 @@ func (h *MediaHandler) UploadMediaHandler(w http.ResponseWriter, r *http.Request
 			absolutePath = filepath.Join(prodDir, uniqueName)
 		}
 	} else {
-		// ساختار قدیمی برای سایر دسته‌ها
-		relativePath = filepath.ToSlash(filepath.Join("/uploads", "media", baseCategory, subfolder, uniqueName))
-		absolutePath = filepath.Join(publicDir, "uploads", "media", baseCategory, subfolder, uniqueName)
+		// ساختار قدیمی برای سایر دسته‌ها - استفاده از تابع helper برای ساخت ایمن مسیر
+		var err error
+		absolutePath, err = buildSafeMediaPath(publicDir, baseCategory, subfolder, uniqueName)
+		if err != nil {
+			sendJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "خطا در ساخت مسیر", err.Error()))
+			return
+		}
+		relativePath = filepath.ToSlash(strings.TrimPrefix(absolutePath, publicDir))
+		if !strings.HasPrefix(relativePath, "/") {
+			relativePath = "/" + relativePath
+		}
 	}
 
 	if err := os.MkdirAll(filepath.Dir(absolutePath), 0755); err != nil {
@@ -548,8 +560,16 @@ func (h *MediaHandler) UploadMediaHandler(w http.ResponseWriter, r *http.Request
 			ext = filepath.Ext(header.Filename)
 		}
 		uniqueName = generateUniqueName(ext)
-		relativePath = filepath.ToSlash(filepath.Join("/uploads", "media", baseCategory, subfolder, uniqueName))
-		absolutePath = filepath.Join(publicDir, "uploads", "media", baseCategory, subfolder, uniqueName)
+		// استفاده از تابع helper برای ساخت ایمن مسیر
+		absolutePath, err = buildSafeMediaPath(publicDir, baseCategory, subfolder, uniqueName)
+		if err != nil {
+			sendJSON(http.StatusBadRequest, utils.New("VALIDATION_ERROR", "خطا در ساخت مسیر", err.Error()))
+			return
+		}
+		relativePath = filepath.ToSlash(strings.TrimPrefix(absolutePath, publicDir))
+		if !strings.HasPrefix(relativePath, "/") {
+			relativePath = "/" + relativePath
+		}
 
 		// ذخیره فایل فشرده شده
 		if err := os.MkdirAll(filepath.Dir(absolutePath), 0755); err != nil {
@@ -861,7 +881,7 @@ func (h *MediaHandler) GetMediaHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "error": "Invalid media ID"})
@@ -880,7 +900,7 @@ func (h *MediaHandler) GetMediaHandler(w http.ResponseWriter, r *http.Request) {
 // حذف رسانه بر اساس ID
 func (h *MediaHandler) DeleteMediaHandler(w http.ResponseWriter, r *http.Request) {
 	idStr := r.URL.Query().Get("id")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "error": "Invalid media ID"})
@@ -936,7 +956,7 @@ func (h *MediaHandler) DeleteMediaHandler(w http.ResponseWriter, r *http.Request
 func (h *MediaHandler) UpdateMediaHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	idStr := strings.TrimPrefix(r.URL.Path, "/api/media/")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "error": "Invalid media ID"})
@@ -972,7 +992,9 @@ func (h *MediaHandler) UpdateMediaHandler(w http.ResponseWriter, r *http.Request
 	}
 	if err := h.DB.Model(&models.MediaFile{}).Where("id = ?", id).Updates(updates).Error; err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "error": "Failed to update media"})
+		// Escape error message to prevent XSS
+		errorMsg := html.EscapeString(err.Error())
+		json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "error": "Failed to update media: " + errorMsg})
 		return
 	}
 	json.NewEncoder(w).Encode(map[string]interface{}{"success": true, "message": "Media updated"})
@@ -1135,7 +1157,7 @@ func (h *MediaHandler) PreviewCompressHandler(w http.ResponseWriter, r *http.Req
 func (h *MediaHandler) CompressMediaHandler(w http.ResponseWriter, r *http.Request) {
 	parts := strings.Split(r.URL.Path, "/")
 	idStr := parts[len(parts)-1]
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		http.Error(w, "invalid id", http.StatusBadRequest)
 		return
@@ -1418,7 +1440,7 @@ func (h *MediaHandler) DownloadMediaHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 	idStr := parts[len(parts)-1]
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		http.Error(w, "invalid id", http.StatusBadRequest)
 		return
@@ -1435,8 +1457,12 @@ func (h *MediaHandler) DownloadMediaHandler(w http.ResponseWriter, r *http.Reque
 		projectRoot = filepath.Dir(wd)
 	}
 	publicDir := filepath.Join(projectRoot, "public")
-	rel := strings.TrimPrefix(media.URL, "/")
-	absPath := filepath.Join(publicDir, rel)
+	// اعتبارسنجی و پاکسازی مسیر برای جلوگیری از path traversal
+	absPath, err := validateAndSanitizePath(publicDir, media.URL)
+	if err != nil {
+		http.Error(w, "invalid path", http.StatusBadRequest)
+		return
+	}
 
 	// اصلاح هدر Content-Disposition بر اساس نوع فایل
 	if strings.HasPrefix(media.FileType, "video/") || strings.HasPrefix(media.FileType, "image/") {
@@ -1457,7 +1483,7 @@ func (h *MediaHandler) RotateMediaHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 	idStr := parts[len(parts)-1]
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		http.Error(w, "invalid id", http.StatusBadRequest)
 		return
@@ -1547,7 +1573,7 @@ func (h *MediaHandler) RotateMediaHandler(w http.ResponseWriter, r *http.Request
 func (h *MediaHandler) RevertCompressionHandler(w http.ResponseWriter, r *http.Request) {
 	parts := strings.Split(r.URL.Path, "/")
 	idStr := parts[len(parts)-1]
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		http.Error(w, "invalid id", http.StatusBadRequest)
 		return
@@ -1973,7 +1999,7 @@ func (h *MediaHandler) GetCompressionJobsHandler(w http.ResponseWriter, r *http.
 		query = query.Where("job_type = ?", jobType)
 	}
 	if mediaID != "" {
-		if id, err := strconv.ParseUint(mediaID, 10, 64); err == nil {
+		if id, err := parseUintFromString(mediaID); err == nil {
 			query = query.Where("media_id = ?", id)
 		}
 	}

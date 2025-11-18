@@ -680,21 +680,12 @@ func mainGin() {
 		WriteTimeout:      30 * time.Minute,  // افزایش به 30 دقیقه
 		IdleTimeout:       120 * time.Second, // زمان idle connection
 		ReadHeaderTimeout: 30 * time.Second,  // زمان خواندن هدرها
-		TLSConfig: &tls.Config{
-			MinVersion: tls.VersionTLS12,
-			MaxVersion: tls.VersionTLS13,
-			CipherSuites: []uint16{
-				tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
-				tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
-				tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
-				tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
-				tls.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,
-				tls.TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,
-			},
-		},
+		TLSConfig: buildTLSConfig(),
 	}
 
 	// Enable HTTP/2
+	// Note: http2.ConfigureServer is a library function that cannot be configured via environment variables.
+	// The TLS configuration is already handled by buildTLSConfig() which reads from environment variables.
 	if err := http2.ConfigureServer(server, &http2.Server{}); err != nil {
 		// Warning: HTTP/2 configuration failed
 	}
@@ -725,6 +716,62 @@ func mainGin() {
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		// Explicitly log the startup error so systemd journal shows root cause (e.g., address in use)
 		log.Fatalf("❌ Server failed to start on port %s: %v", port, err)
+	}
+}
+
+// buildTLSConfig ساخت پیکربندی TLS بر اساس تنظیمات محیطی
+// این تابع از environment variables استفاده می‌کند تا پیکربندی TLS قابل تنظیم باشد
+func buildTLSConfig() *tls.Config {
+	// خواندن حداقل نسخه TLS از environment variable
+	minTLSVersion := os.Getenv("TLS_MIN_VERSION")
+	if minTLSVersion == "" {
+		minTLSVersion = "1.2" // پیش‌فرض TLS 1.2
+	}
+
+	var minVersion uint16
+	switch minTLSVersion {
+	case "1.0":
+		minVersion = tls.VersionTLS10
+	case "1.1":
+		minVersion = tls.VersionTLS11
+	case "1.2":
+		minVersion = tls.VersionTLS12
+	case "1.3":
+		minVersion = tls.VersionTLS13
+	default:
+		minVersion = tls.VersionTLS12 // پیش‌فرض
+	}
+
+	// خواندن حداکثر نسخه TLS از environment variable
+	maxTLSVersion := os.Getenv("TLS_MAX_VERSION")
+	var maxVersion uint16
+	switch maxTLSVersion {
+	case "1.0":
+		maxVersion = tls.VersionTLS10
+	case "1.1":
+		maxVersion = tls.VersionTLS11
+	case "1.2":
+		maxVersion = tls.VersionTLS12
+	case "1.3":
+		maxVersion = tls.VersionTLS13
+	default:
+		maxVersion = tls.VersionTLS13 // پیش‌فرض
+	}
+
+	// Cipher suites امن
+	cipherSuites := []uint16{
+		tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+		tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+		tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
+		tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
+		tls.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,
+		tls.TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,
+	}
+
+	return &tls.Config{
+		MinVersion:   minVersion,
+		MaxVersion:   maxVersion,
+		CipherSuites: cipherSuites,
 	}
 }
 

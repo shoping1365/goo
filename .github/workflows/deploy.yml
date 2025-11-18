@@ -1,31 +1,72 @@
 name: Deploy to Production
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Quality Check", "Security Scan", "CodeQL Advanced", "ESLint", "Semgrep", "DevSkim", "njsscan sarif", "OSV-Scanner", "OSSAR", "Codacy Security Scan"]
-    types:
-      - completed
-    branches:
-      - main
+  # Remove workflow_run trigger - we'll use a different approach
+  # Only deploy manually or via another mechanism after all checks pass
 
 concurrency:
   group: deploy-production
   cancel-in-progress: false
 
 jobs:
+  # Check all workflows status before deployment
+  check-all-workflows:
+    name: Verify All Quality Gates
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check all required workflows
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const requiredWorkflows = [
+              'Quality Check',
+              'Security Scan', 
+              'CodeQL Advanced',
+              'ESLint',
+              'Semgrep',
+              'DevSkim',
+              'njsscan sarif',
+              'OSV-Scanner',
+              'OSSAR',
+              'Codacy Security Scan'
+            ];
+            
+            const { data: runs } = await github.rest.actions.listWorkflowRunsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              branch: 'main',
+              per_page: 100
+            });
+            
+            const latestRuns = {};
+            for (const run of runs.workflow_runs) {
+              if (!latestRuns[run.name] || new Date(run.created_at) > new Date(latestRuns[run.name].created_at)) {
+                latestRuns[run.name] = run;
+              }
+            }
+            
+            const failedWorkflows = [];
+            for (const workflow of requiredWorkflows) {
+              const run = latestRuns[workflow];
+              if (!run || run.conclusion !== 'success') {
+                failedWorkflows.push(workflow);
+              }
+            }
+            
+            if (failedWorkflows.length > 0) {
+              core.setFailed(`❌ Following workflows must pass before deployment: ${failedWorkflows.join(', ')}`);
+            } else {
+              console.log('✅ All required workflows passed!');
+            }
+
   # Pre-deployment checks job
   pre-deploy-checks:
     name: Pre-Deployment Validation
     runs-on: ubuntu-latest
-    if: |
-      github.ref == 'refs/heads/main' &&
-      (github.event_name == 'workflow_dispatch' || 
-       github.event_name == 'push' ||
-       (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'))
+    needs: check-all-workflows
     
     steps:
       - name: Check Quality workflow status

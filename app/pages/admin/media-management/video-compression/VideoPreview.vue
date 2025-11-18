@@ -142,12 +142,30 @@ function onPreviewFileChange(e: Event) {
   previewInfo.compressedDuration = ''
   
   // استخراج اطلاعات ویدیو با استفاده از video element
+  // Validate URL before using it
+  let safeUrl = url
+  try {
+    // If it's a relative URL, it's safe
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      const urlObj = new URL(url)
+      // Only allow http and https protocols
+      if (!['http:', 'https:'].includes(urlObj.protocol)) {
+        console.error('Invalid URL protocol:', urlObj.protocol)
+        return
+      }
+      safeUrl = urlObj.toString()
+    }
+  } catch (e) {
+    console.error('Invalid URL:', url, e)
+    return
+  }
+  
   const video = document.createElement('video')
   video.onloadedmetadata = () => {
     previewInfo.originalResolution = `${video.videoWidth}x${video.videoHeight}`
     previewInfo.originalDuration = formatTime(video.duration * 1000)
   }
-  video.src = url
+  video.src = safeUrl
 }
 
 // تابع تولید پیش‌نمایش

@@ -1,5 +1,5 @@
 import type { H3Event } from 'h3'
-import { createError, defineEventHandler } from 'h3'
+import { defineEventHandler, createError } from 'h3'
 import { z } from 'zod'
 import { getDatabase } from '~/server/api/_utils/database'
 import { getAllCarts } from '~/server/api/cart/data'
@@ -60,21 +60,23 @@ export default defineEventHandler(async (event) => {
     // اعتبارسنجی query parameters
     const query = await getQuery(event)
     const { page, limit } = querySchema.parse(query)
-
+    
     const pageNum = parseInt(page)
     const limitNum = parseInt(limit)
     const offset = (pageNum - 1) * limitNum
 
     // دریافت سبد خرید از دیتابیس
     const db = await getDatabase()
-
-    // شمارش کل رکوردها برای pagination
-    await db.query(`
+    
+    // شمارش کل رکوردها
+    const totalCount = await db.query(`
       SELECT COUNT(*) as count 
       FROM cart_items ci
       JOIN carts c ON ci.cart_id = c.id
       WHERE c.user_id = $1 AND ci.deleted_at IS NULL AND ci.is_next_purchase = false
-    `, [userId])
+    `, [userId]) as unknown as { count: string }[]
+    
+    const total = parseInt(totalCount[0].count)
 
     // دریافت رکوردها با pagination
     const result = await db.query(`
@@ -116,9 +118,9 @@ export default defineEventHandler(async (event) => {
       try {
         const allCarts = getAllCarts()
         const sessionCartItems = []
-
+        
         // پیدا کردن همه آیتم‌های سبد خرید جاری در همه session ها
-        for (const [, cart] of Object.entries(allCarts)) {
+        for (const [sessionId, cart] of Object.entries(allCarts)) {
           const cartData = cart as any
           if (cartData && cartData.items && Array.isArray(cartData.items)) {
             for (const item of cartData.items) {
@@ -129,7 +131,7 @@ export default defineEventHandler(async (event) => {
                   SELECT id, name, image, sku, price, sale_price 
                   FROM products WHERE id = $1
                 `, [item.product_id]) as any[]
-
+                
                 if (productInfo && productInfo.length > 0) {
                   const product = productInfo[0]
                   sessionCartItems.push({
@@ -149,7 +151,7 @@ export default defineEventHandler(async (event) => {
             }
           }
         }
-
+        
         cartItems = sessionCartItems
       } catch (sessionError) {
         console.error('خطا در خواندن session cart:', sessionError)
@@ -171,11 +173,11 @@ export default defineEventHandler(async (event) => {
 
   } catch (error) {
     console.error('خطا در دریافت سبد خرید:', error)
-
+    
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error
     }
-
+    
     throw createError({
       statusCode: 500,
       message: 'خطا در دریافت سبد خرید'

@@ -175,6 +175,7 @@ func (m *MellatService) CreatePayment(amount int, callbackURL, description, emai
 	localTime := now.Format("150405")   // HHMMSS
 
 	// ساخت درخواست SOAP
+	// Note: These are XML namespace URIs (not actual HTTP URLs) required by SOAP protocol standard
 	request := mellatPayRequest{
 		XMLNS: "http://schemas.xmlsoap.org/soap/envelope/",
 	}
@@ -254,6 +255,7 @@ func (m *MellatService) VerifyPayment(amount int, authority string) (bool, strin
 	}
 
 	// ساخت درخواست تایید SOAP
+	// Note: These are XML namespace URIs (not actual HTTP URLs) required by SOAP protocol standard
 	request := mellatVerifyRequest{
 		XMLNS: "http://schemas.xmlsoap.org/soap/envelope/",
 	}
@@ -304,6 +306,7 @@ func (m *MellatService) RefundPayment(refID string, amount int) error {
 	}
 
 	// ساخت درخواست بازگشت وجه SOAP
+	// Note: These are XML namespace URIs (not actual HTTP URLs) required by SOAP protocol standard
 	request := mellatRefundRequest{
 		XMLNS: "http://schemas.xmlsoap.org/soap/envelope/",
 	}
@@ -347,6 +350,7 @@ func (m *MellatService) inquiryTransaction(refId string) (int64, int64, error) {
 	}
 
 	// ساخت درخواست استعلام SOAP
+	// Note: These are XML namespace URIs (not actual HTTP URLs) required by SOAP protocol standard
 	request := mellatInquiryRequest{
 		XMLNS: "http://schemas.xmlsoap.org/soap/envelope/",
 	}
@@ -392,7 +396,7 @@ func (m *MellatService) inquiryTransaction(refId string) (int64, int64, error) {
 func (m *MellatService) GetPaymentURL(transaction *models.PaymentTransaction, callbackURL string) string {
 	// ملت از فرم HTML برای پرداخت استفاده می‌کند
 	// این آدرس باید به فرم پرداخت ملت هدایت شود
-	var baseURL string
+	baseURL := m.gateway.ApiEndpoints.Payment
 	if m.gateway.IsTestMode {
 		baseURL = "https://pgwstest.bpm.bankmellat.ir/pgwchannel/startpay.mellat"
 	} else {
@@ -438,6 +442,7 @@ func (m *MellatService) TestConnection() error {
 	localTime := now.Format("150405")
 
 	// ساخت درخواست تست SOAP
+	// Note: These are XML namespace URIs (not actual HTTP URLs) required by SOAP protocol standard
 	request := mellatPayRequest{
 		XMLNS: "http://schemas.xmlsoap.org/soap/envelope/",
 	}
@@ -495,6 +500,7 @@ func (m *MellatService) makeSOAPRequest(action string, request interface{}, resp
 	}
 
 	// ایجاد درخواست HTTP
+	// Note: This is a SOAP Action URI (not an actual HTTP URL) required by SOAP protocol standard
 	soapAction := fmt.Sprintf("http://interfaces.core.sw.bps.com/%s", action)
 	req, err := http.NewRequest("POST", wsURL, bytes.NewBuffer(xmlData))
 	if err != nil {

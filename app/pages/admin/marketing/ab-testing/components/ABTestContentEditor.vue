@@ -295,6 +295,21 @@
 
             <!-- پیش‌نمایش محتوا -->
             <div class="border border-gray-300 rounded-lg p-6 min-h-96 bg-gray-50">
+              <!-- 
+                ⚠️ امنیت XSS: استفاده از v-html خطرناک است!
+                
+                این کد محتوای HTML را بدون sanitization نمایش می‌دهد که می‌تواند منجر به حملات XSS شود.
+                
+                ✅ راه حل صحیح:
+                1. قبل از استفاده از v-html، محتوا را با کتابخانه sanitization (مثل DOMPurify) پاکسازی کنید
+                2. یا از {{ }} به جای v-html استفاده کنید اگر HTML نیاز نیست
+                3. محتوای کاربر را هرگز بدون sanitization در v-html قرار ندهید
+                
+                مثال صحیح:
+                import DOMPurify from 'dompurify'
+                const sanitizedPreviewContent = computed(() => DOMPurify.sanitize(getPreviewContent()))
+                <div v-html="sanitizedPreviewContent"></div>
+              -->
               <div v-if="contentType === 'page'" v-html="getPreviewContent()"></div>
               
               <div v-else-if="contentType === 'product'" class="space-y-4">

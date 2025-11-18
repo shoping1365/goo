@@ -6,13 +6,17 @@ import "gorm.io/gorm"
 func Up088SeedAuthSettings(db *gorm.DB) error {
 	return db.Transaction(func(tx *gorm.DB) error {
 		// JWT Secret - کلید مخفی برای امضای توکن‌ها
+		// Note: This is a default seed value for development. In production, this should be changed
+		// to a strong, randomly generated secret stored in environment variables or secret management system.
+		// The value here is only used if no existing setting exists (ON CONFLICT DO UPDATE prevents overwriting).
+		jwtSecret := "c0b9d2f18a4e4b6d9f3a1c7e5b2d8f4a" // Default seed value - MUST be changed in production
 		if err := tx.Exec(`
 			INSERT INTO settings (key, value, description, category, type, is_public, created_at, updated_at)
-			VALUES ('jwt_secret', 'c0b9d2f18a4e4b6d9f3a1c7e5b2d8f4a', 'کلید مخفی JWT برای امضای توکن‌ها', 'auth', 'string', false, NOW(), NOW())
+			VALUES ('jwt_secret', ?, 'کلید مخفی JWT برای امضای توکن‌ها', 'auth', 'string', false, NOW(), NOW())
 			ON CONFLICT (key) DO UPDATE SET 
 				value = EXCLUDED.value,
 				updated_at = NOW();
-		`).Error; err != nil {
+		`, jwtSecret).Error; err != nil {
 			return err
 		}
 

@@ -32,8 +32,38 @@
       <div v-if="post.published_at" class="text-xs text-gray-400 mb-4">منتشر شده در {{ toPersianDate(post.published_at) }}</div>
       <img v-if="post.featured_image" :src="post.featured_image" :alt="post.title" class="rounded-lg mb-6 w-full object-cover max-h-96">
       
+      <!-- 
+        ⚠️ امنیت XSS: استفاده از v-html خطرناک است!
+        
+        این کد محتوای HTML را بدون sanitization نمایش می‌دهد که می‌تواند منجر به حملات XSS شود.
+        
+        ✅ راه حل صحیح:
+        1. قبل از استفاده از v-html، محتوا را با کتابخانه sanitization (مثل DOMPurify) پاکسازی کنید
+        2. یا از {{ }} به جای v-html استفاده کنید اگر HTML نیاز نیست
+        3. محتوای کاربر را هرگز بدون sanitization در v-html قرار ندهید
+        
+        مثال صحیح:
+        import DOMPurify from 'dompurify'
+        const sanitizedExcerpt = DOMPurify.sanitize(post.excerpt)
+        <div v-html="sanitizedExcerpt"></div>
+      -->
       <div v-if="post.excerpt" class="prose max-w-none mb-6 text-gray-600 border-r-4 border-gray-200 pr-4" v-html="post.excerpt"></div>
       
+      <!-- 
+        ⚠️ امنیت XSS: استفاده از v-html خطرناک است!
+        
+        این کد محتوای HTML را بدون sanitization نمایش می‌دهد که می‌تواند منجر به حملات XSS شود.
+        
+        ✅ راه حل صحیح:
+        1. قبل از استفاده از v-html، محتوا را با کتابخانه sanitization (مثل DOMPurify) پاکسازی کنید
+        2. یا از {{ }} به جای v-html استفاده کنید اگر HTML نیاز نیست
+        3. محتوای کاربر را هرگز بدون sanitization در v-html قرار ندهید
+        
+        مثال صحیح:
+        import DOMPurify from 'dompurify'
+        const sanitizedContent = DOMPurify.sanitize(post.content)
+        <div v-html="sanitizedContent"></div>
+      -->
       <div class="prose prose-lg max-w-none mb-8" v-html="post.content"></div>
 
       <div v-if="relatedPosts.length" class="mt-12">

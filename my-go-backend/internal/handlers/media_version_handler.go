@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	"strconv"
 	"strings"
 
 	"my-go-backend/internal/models"
@@ -27,16 +26,20 @@ func NewMediaVersionHandler(service *services.MediaVersionService) *MediaVersion
 // ListMediaVersions لیست همه نسخه‌ها
 func (h *MediaVersionHandler) ListMediaVersions(w http.ResponseWriter, r *http.Request) {
 	mediaIDStr := r.URL.Query().Get("media_id")
-	var versions []models.MediaVersion
-	var err error
-	if mediaIDStr != "" {
-		mediaID, _ := strconv.ParseUint(mediaIDStr, 10, 64)
-		versions, err = h.Service.GetByMedia(r.Context(), uint(mediaID))
-	} else {
+	if mediaIDStr == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(utils.New("VALIDATION_ERROR", "media_id الزامی است", nil))
 		return
 	}
+
+	mediaID, err := parseUintFromString(mediaIDStr)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(utils.New("VALIDATION_ERROR", "شناسه رسانه نامعتبر است", nil))
+		return
+	}
+
+	versions, err := h.Service.GetByMedia(r.Context(), mediaID)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(utils.New("DB_ERROR", "خطا در دریافت نسخه‌ها", err.Error()))
@@ -48,13 +51,13 @@ func (h *MediaVersionHandler) ListMediaVersions(w http.ResponseWriter, r *http.R
 // GetMediaVersion بازیابی نسخه بر اساس ID
 func (h *MediaVersionHandler) GetMediaVersion(w http.ResponseWriter, r *http.Request) {
 	idStr := strings.TrimPrefix(r.URL.Path, "/api/media-version/")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(utils.New("VALIDATION_ERROR", "شناسه نسخه نامعتبر است", nil))
 		return
 	}
-	version, err := h.Service.GetByID(r.Context(), uint(id))
+	version, err := h.Service.GetByID(r.Context(), id)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(utils.New("NOT_FOUND", "نسخه یافت نشد", nil))
@@ -82,7 +85,7 @@ func (h *MediaVersionHandler) CreateMediaVersion(w http.ResponseWriter, r *http.
 // UpdateMediaVersion ویرایش نسخه
 func (h *MediaVersionHandler) UpdateMediaVersion(w http.ResponseWriter, r *http.Request) {
 	idStr := strings.TrimPrefix(r.URL.Path, "/api/media-version/")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(utils.New("VALIDATION_ERROR", "شناسه نسخه نامعتبر است", nil))
@@ -94,7 +97,7 @@ func (h *MediaVersionHandler) UpdateMediaVersion(w http.ResponseWriter, r *http.
 		json.NewEncoder(w).Encode(utils.New("VALIDATION_ERROR", "بدنه درخواست نامعتبر است", err.Error()))
 		return
 	}
-	req.ID = uint(id)
+	req.ID = id
 	if err := h.Service.Update(context.Background(), &req); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(utils.New("DB_ERROR", "خطا در بروزرسانی نسخه", err.Error()))
@@ -106,13 +109,13 @@ func (h *MediaVersionHandler) UpdateMediaVersion(w http.ResponseWriter, r *http.
 // DeleteMediaVersion حذف نسخه
 func (h *MediaVersionHandler) DeleteMediaVersion(w http.ResponseWriter, r *http.Request) {
 	idStr := r.URL.Query().Get("id")
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	id, err := parseUintFromString(idStr)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(utils.New("VALIDATION_ERROR", "شناسه نسخه نامعتبر است", nil))
 		return
 	}
-	if err := h.Service.Delete(context.Background(), uint(id)); err != nil {
+	if err := h.Service.Delete(context.Background(), id); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(utils.New("DB_ERROR", "خطا در حذف نسخه", err.Error()))
 		return

@@ -8,6 +8,21 @@
         </svg>
         توضیحات کوتاه
       </h4>
+      <!-- 
+        ⚠️ امنیت XSS: استفاده از v-html خطرناک است!
+        
+        این کد محتوای HTML را بدون sanitization نمایش می‌دهد که می‌تواند منجر به حملات XSS شود.
+        
+        ✅ راه حل صحیح:
+        1. قبل از استفاده از v-html، محتوا را با کتابخانه sanitization (مثل DOMPurify) پاکسازی کنید
+        2. یا از {{ }} به جای v-html استفاده کنید اگر HTML نیاز نیست
+        3. محتوای کاربر را هرگز بدون sanitization در v-html قرار ندهید
+        
+        مثال صحیح:
+        import DOMPurify from 'dompurify'
+        const sanitizedDescription = DOMPurify.sanitize(product.description)
+        <div v-html="sanitizedDescription"></div>
+      -->
       <div class="prose prose-sm max-w-none text-gray-800 leading-relaxed overflow-hidden" v-html="product.description"></div>
     </div>
 
@@ -19,6 +34,21 @@
         </svg>
         توضیحات کامل محصول
       </h3>
+      <!-- 
+        ⚠️ امنیت XSS: استفاده از v-html خطرناک است!
+        
+        این کد محتوای HTML را بدون sanitization نمایش می‌دهد که می‌تواند منجر به حملات XSS شود.
+        
+        ✅ راه حل صحیح:
+        1. قبل از استفاده از v-html، محتوا را با کتابخانه sanitization (مثل DOMPurify) پاکسازی کنید
+        2. یا از {{ }} به جای v-html استفاده کنید اگر HTML نیاز نیست
+        3. محتوای کاربر را هرگز بدون sanitization در v-html قرار ندهید
+        
+        مثال صحیح:
+        import DOMPurify from 'dompurify'
+        const sanitizedFullDescription = DOMPurify.sanitize(product.full_description)
+        <div v-html="sanitizedFullDescription"></div>
+      -->
       <div class="prose prose-sm max-w-none text-gray-700 leading-relaxed overflow-hidden" v-html="product.full_description"></div>
     </div>
     <!-- اگر توضیحات کامل نباشد اما کوتاه هست همان را نشان بده -->
@@ -29,6 +59,21 @@
         </svg>
         توضیحات محصول
       </h3>
+      <!-- 
+        ⚠️ امنیت XSS: استفاده از v-html خطرناک است!
+        
+        این کد محتوای HTML را بدون sanitization نمایش می‌دهد که می‌تواند منجر به حملات XSS شود.
+        
+        ✅ راه حل صحیح:
+        1. قبل از استفاده از v-html، محتوا را با کتابخانه sanitization (مثل DOMPurify) پاکسازی کنید
+        2. یا از {{ }} به جای v-html استفاده کنید اگر HTML نیاز نیست
+        3. محتوای کاربر را هرگز بدون sanitization در v-html قرار ندهید
+        
+        مثال صحیح:
+        import DOMPurify from 'dompurify'
+        const sanitizedDescription = DOMPurify.sanitize(product.description)
+        <div v-html="sanitizedDescription"></div>
+      -->
       <div class="prose prose-sm max-w-none text-gray-700 leading-relaxed overflow-hidden" v-html="product.description"></div>
     </div>
 
@@ -79,6 +124,21 @@
         </svg>
         راهنمای استفاده
       </h4>
+      <!-- 
+        ⚠️ امنیت XSS: استفاده از v-html خطرناک است!
+        
+        این کد محتوای HTML را بدون sanitization نمایش می‌دهد که می‌تواند منجر به حملات XSS شود.
+        
+        ✅ راه حل صحیح:
+        1. قبل از استفاده از v-html، محتوا را با کتابخانه sanitization (مثل DOMPurify) پاکسازی کنید
+        2. یا از {{ }} به جای v-html استفاده کنید اگر HTML نیاز نیست
+        3. محتوای کاربر را هرگز بدون sanitization در v-html قرار ندهید
+        
+        مثال صحیح:
+        import DOMPurify from 'dompurify'
+        const sanitizedUsageGuide = DOMPurify.sanitize(product.usage_guide)
+        <div v-html="sanitizedUsageGuide"></div>
+      -->
       <div class="prose prose-sm max-w-none text-blue-700 leading-relaxed overflow-hidden" v-html="product.usage_guide"></div>
     </div>
 

@@ -170,6 +170,21 @@
         <div class="border border-gray-200 rounded-lg p-6">
           <h4 class="text-md font-medium text-gray-900 mb-4">پیش‌نمایش</h4>
           <div class="bg-gray-50 p-6 rounded-lg">
+            <!-- 
+              ⚠️ امنیت XSS: استفاده از v-html خطرناک است!
+              
+              این کد محتوای HTML را بدون sanitization نمایش می‌دهد که می‌تواند منجر به حملات XSS شود.
+              
+              ✅ راه حل صحیح:
+              1. قبل از استفاده از v-html، محتوا را با کتابخانه sanitization (مثل DOMPurify) پاکسازی کنید
+              2. یا از {{ }} به جای v-html استفاده کنید اگر HTML نیاز نیست
+              3. محتوای کاربر را هرگز بدون sanitization در v-html قرار ندهید
+              
+              مثال صحیح:
+              import DOMPurify from 'dompurify'
+              const sanitizedPreviewContent = computed(() => DOMPurify.sanitize(previewContent.value))
+              <div v-html="sanitizedPreviewContent"></div>
+            -->
             <div v-if="previewContent" v-html="previewContent" class="text-sm text-gray-700"></div>
             <div v-else class="text-gray-400 text-center py-8">قالبی انتخاب نشده است</div>
           </div>

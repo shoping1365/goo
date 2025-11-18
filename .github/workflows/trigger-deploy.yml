@@ -1,0 +1,95 @@
+name: Trigger Deploy
+
+on:
+  workflow_run:
+    workflows: ["Quality Check", "Security Scan", "CodeQL Advanced", "ESLint", "Semgrep", "DevSkim", "njsscan sarif", "OSV-Scanner", "OSSAR", "Codacy Security Scan"]
+    types:
+      - completed
+    branches:
+      - main
+
+jobs:
+  check-and-deploy:
+    name: Check All Workflows and Deploy
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
+    
+    steps:
+      - name: Check if all workflows succeeded
+        id: check
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const requiredWorkflows = [
+              'Quality Check',
+              'Security Scan', 
+              'CodeQL Advanced',
+              'ESLint',
+              'Semgrep',
+              'DevSkim',
+              'njsscan sarif',
+              'OSV-Scanner',
+              'OSSAR',
+              'Codacy Security Scan'
+            ];
+            
+            // Get latest run for each workflow
+            const { data: runs } = await github.rest.actions.listWorkflowRunsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              branch: 'main',
+              per_page: 100
+            });
+            
+            const latestRuns = {};
+            for (const run of runs.workflow_runs) {
+              if (requiredWorkflows.includes(run.name)) {
+                if (!latestRuns[run.name] || new Date(run.created_at) > new Date(latestRuns[run.name].created_at)) {
+                  latestRuns[run.name] = run;
+                }
+              }
+            }
+            
+            // Check if all workflows passed
+            const results = {};
+            let allPassed = true;
+            
+            for (const workflow of requiredWorkflows) {
+              const run = latestRuns[workflow];
+              const passed = run && run.conclusion === 'success';
+              results[workflow] = passed ? '✅' : '❌';
+              
+              if (!passed) {
+                allPassed = false;
+              }
+              
+              console.log(`${results[workflow]} ${workflow}: ${run ? run.conclusion : 'not found'}`);
+            }
+            
+            core.setOutput('all_passed', allPassed);
+            
+            if (allPassed) {
+              console.log('🎉 All workflows passed! Ready to deploy.');
+            } else {
+              console.log('⏳ Waiting for all workflows to pass...');
+            }
+            
+            return allPassed;
+
+      - name: Trigger deployment
+        if: steps.check.outputs.all_passed == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            console.log('🚀 Triggering deployment workflow...');
+            
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'deploy.yml',
+              ref: 'main'
+            });
+            
+            console.log('✅ Deployment triggered successfully!');

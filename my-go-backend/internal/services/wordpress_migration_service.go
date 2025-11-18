@@ -3,7 +3,7 @@ package services
 import (
 	"bytes"
 	"context"
-	"crypto/md5"
+	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -434,6 +434,51 @@ func validateURLForNetworkRequest(rawURL string) (string, error) {
 	return parsedURL.String(), nil
 }
 
+// buildSafeURL ساخت ایمن URL با query parameters برای جلوگیری از URL injection
+// این تابع تمام query parameters را به صورت صحیح encode می‌کند
+func buildSafeURL(baseURL, path string, queryParams map[string]string) (string, error) {
+	// ساخت URL پایه
+	base := normalizeSiteURL(baseURL)
+	parsedBase, err := url.Parse(base)
+	if err != nil {
+		return "", fmt.Errorf("خطا در parse کردن URL پایه: %v", err)
+	}
+
+	// اضافه کردن path
+	if path != "" {
+		// اگر path با / شروع نشده باشد، اضافه می‌کنیم
+		if !strings.HasPrefix(path, "/") {
+			path = "/" + path
+		}
+		// ترکیب path با base path
+		if parsedBase.Path != "" {
+			parsedBase.Path = strings.TrimSuffix(parsedBase.Path, "/") + path
+		} else {
+			parsedBase.Path = path
+		}
+	}
+
+	// ساخت query parameters با استفاده از url.Values برای encode صحیح
+	if len(queryParams) > 0 {
+		values := url.Values{}
+		for key, val := range queryParams {
+			if val != "" {
+				values.Set(key, val)
+			}
+		}
+		parsedBase.RawQuery = values.Encode()
+	}
+
+	// اعتبارسنجی URL نهایی
+	finalURL := parsedBase.String()
+	validatedURL, err := validateURLForNetworkRequest(finalURL)
+	if err != nil {
+		return "", fmt.Errorf("URL نامعتبر پس از ساخت: %v", err)
+	}
+
+	return validatedURL, nil
+}
+
 // -----------------------------
 // WooCommerce Products (Import)
 // -----------------------------
@@ -490,20 +535,23 @@ type wcProduct struct {
 
 // FetchWCCategoriesPage دریافت دسته‌بندی‌های کامل از WooCommerce API
 func (s *WordPressMigrationService) FetchWCCategoriesPage(siteURL, ck, cs string, page, perPage int) ([]wcCategory, error) {
-	base := normalizeSiteURL(siteURL)
 	log.Printf("[FetchWCCategoriesPage] شروع واکشی دسته‌بندی‌ها: siteURL=%s, page=%d, perPage=%d", siteURL, page, perPage)
 
 	client := &http.Client{Timeout: 30 * time.Second}
 	versions := []string{"v3", "v2", "v1"}
 
 	for _, ver := range versions {
-		apiURL := fmt.Sprintf("%s/wp-json/wc/%s/products/categories?per_page=%d&page=%d", base, ver, perPage, page)
+		// ساخت ایمن URL با query parameters
+		queryParams := map[string]string{
+			"per_page": fmt.Sprintf("%d", perPage),
+			"page":     fmt.Sprintf("%d", page),
+		}
 		if ck != "" && cs != "" {
-			apiURL = apiURL + fmt.Sprintf("&consumer_key=%s&consumer_secret=%s", ck, cs)
+			queryParams["consumer_key"] = ck
+			queryParams["consumer_secret"] = cs
 		}
 
-		// اعتبارسنجی URL برای جلوگیری از SSRF
-		validatedURL, err := validateURLForNetworkRequest(apiURL)
+		validatedURL, err := buildSafeURL(siteURL, fmt.Sprintf("/wp-json/wc/%s/products/categories", ver), queryParams)
 		if err != nil {
 			log.Printf("[FetchWCCategoriesPage] URL نامعتبر: %v", err)
 			continue
@@ -571,20 +619,24 @@ func (s *WordPressMigrationService) FetchAllWCCategories(siteURL, ck, cs string)
 }
 
 func (s *WordPressMigrationService) FetchWCProductsPage(siteURL, ck, cs string, page, perPage int) ([]wcProduct, error) {
-	base := normalizeSiteURL(siteURL)
 	log.Printf("[FetchWCProductsPage] شروع واکشی محصولات: siteURL=%s, page=%d, perPage=%d", siteURL, page, perPage)
 
 	client := &http.Client{Timeout: 30 * time.Second}
 	versions := []string{"v3", "v2", "v1"}
 
 	for _, ver := range versions {
-		apiURL := fmt.Sprintf("%s/wp-json/wc/%s/products?per_page=%d&page=%d&status=publish", base, ver, perPage, page)
+		// ساخت ایمن URL با query parameters
+		queryParams := map[string]string{
+			"per_page": fmt.Sprintf("%d", perPage),
+			"page":     fmt.Sprintf("%d", page),
+			"status":   "publish",
+		}
 		if ck != "" && cs != "" {
-			apiURL = apiURL + fmt.Sprintf("&consumer_key=%s&consumer_secret=%s", ck, cs)
+			queryParams["consumer_key"] = ck
+			queryParams["consumer_secret"] = cs
 		}
 
-		// اعتبارسنجی URL برای جلوگیری از SSRF
-		validatedURL, err := validateURLForNetworkRequest(apiURL)
+		validatedURL, err := buildSafeURL(siteURL, fmt.Sprintf("/wp-json/wc/%s/products", ver), queryParams)
 		if err != nil {
 			log.Printf("[FetchWCProductsPage] URL نامعتبر: %v", err)
 			continue
@@ -638,16 +690,21 @@ func (s *WordPressMigrationService) FetchWCProductsPage(siteURL, ck, cs string, 
 
 // FetchWCProductsPageWithMeta مشابه FetchWCProductsPage ولی همراه برگرداندن تعداد کل محصولات (X-WP-Total)
 func (s *WordPressMigrationService) FetchWCProductsPageWithMeta(siteURL, ck, cs string, page, perPage int) ([]wcProduct, int, error) {
-	base := normalizeSiteURL(siteURL)
 	client := &http.Client{Timeout: 30 * time.Second}
 	versions := []string{"v3", "v2", "v1"}
 	for _, ver := range versions {
-		url := fmt.Sprintf("%s/wp-json/wc/%s/products?per_page=%d&page=%d&status=publish", base, ver, perPage, page)
-		if ck != "" && cs != "" {
-			url = url + fmt.Sprintf("&consumer_key=%s&consumer_secret=%s", ck, cs)
+		// ساخت ایمن URL با query parameters
+		queryParams := map[string]string{
+			"per_page": fmt.Sprintf("%d", perPage),
+			"page":     fmt.Sprintf("%d", page),
+			"status":   "publish",
 		}
-		// اعتبارسنجی URL برای جلوگیری از SSRF
-		validatedURL, err := validateURLForNetworkRequest(url)
+		if ck != "" && cs != "" {
+			queryParams["consumer_key"] = ck
+			queryParams["consumer_secret"] = cs
+		}
+
+		validatedURL, err := buildSafeURL(siteURL, fmt.Sprintf("/wp-json/wc/%s/products", ver), queryParams)
 		if err != nil {
 			continue
 		}
@@ -1575,8 +1632,13 @@ func (s *WordPressMigrationService) FetchJSON(url string, apiKey string, out int
 // FetchTest یک درخواست سبک به وردپرس ارسال می‌کند تا اتصال بررسی شود
 // این تابع یک پست را از WP می‌خواند تا صحت آدرس و کلید API سنجیده شود
 func (s *WordPressMigrationService) FetchTest(siteURL, apiKey string, out interface{}) error {
-	base := normalizeSiteURL(siteURL)
-	url := fmt.Sprintf("%s/wp-json/wp/v2/posts?per_page=1", base)
+	queryParams := map[string]string{
+		"per_page": "1",
+	}
+	url, err := buildSafeURL(siteURL, "/wp-json/wp/v2/posts", queryParams)
+	if err != nil {
+		return fmt.Errorf("خطا در ساخت URL: %v", err)
+	}
 	return s.FetchJSON(url, apiKey, out)
 }
 
@@ -1585,13 +1647,17 @@ func (s *WordPressMigrationService) FetchTest(siteURL, apiKey string, out interf
 func (s *WordPressMigrationService) TestWooCustomers(siteURL, consumerKey, consumerSecret string) (int, error) {
 	client := &http.Client{}
 	versions := []string{"v3", "v2", "v1"}
-	base := normalizeSiteURL(siteURL)
 
 	// 1) Try query-string auth (common in WC REST)
 	for _, ver := range versions {
-		url := base + fmt.Sprintf("/wp-json/wc/%s/customers?per_page=1&consumer_key=%s&consumer_secret=%s", ver, consumerKey, consumerSecret)
-		// اعتبارسنجی URL برای جلوگیری از SSRF
-		validatedURL, err := validateURLForNetworkRequest(url)
+		// ساخت ایمن URL با query parameters
+		queryParams := map[string]string{
+			"per_page":       "1",
+			"consumer_key":    consumerKey,
+			"consumer_secret": consumerSecret,
+		}
+
+		validatedURL, err := buildSafeURL(siteURL, fmt.Sprintf("/wp-json/wc/%s/customers", ver), queryParams)
 		if err != nil {
 			continue
 		}
@@ -1622,9 +1688,12 @@ func (s *WordPressMigrationService) TestWooCustomers(siteURL, consumerKey, consu
 
 	// 2) Fallback to Basic Auth (some hosts disable query credentials)
 	for _, ver := range versions {
-		url := base + fmt.Sprintf("/wp-json/wc/%s/customers?per_page=1", ver)
-		// اعتبارسنجی URL برای جلوگیری از SSRF
-		validatedURL, err := validateURLForNetworkRequest(url)
+		// ساخت ایمن URL با query parameters
+		queryParams := map[string]string{
+			"per_page": "1",
+		}
+
+		validatedURL, err := buildSafeURL(siteURL, fmt.Sprintf("/wp-json/wc/%s/customers", ver), queryParams)
 		if err != nil {
 			continue
 		}
@@ -1723,15 +1792,20 @@ func parseWooCommerceDate(dateStr string) time.Time {
 }
 
 func (s *WordPressMigrationService) fetchWCCustomersPage(ctx context.Context, siteURL, ck, cs string, page, perPage int) ([]wcCustomer, error) {
-	base := normalizeSiteURL(siteURL)
 	client := &http.Client{}
 	versions := []string{"v3", "v2", "v1"}
 
 	// Try query-string auth
 	for _, ver := range versions {
-		url := fmt.Sprintf("%s/wp-json/wc/%s/customers?per_page=%d&page=%d&consumer_key=%s&consumer_secret=%s", base, ver, perPage, page, ck, cs)
-		// اعتبارسنجی URL برای جلوگیری از SSRF
-		validatedURL, err := validateURLForNetworkRequest(url)
+		// ساخت ایمن URL با query parameters
+		queryParams := map[string]string{
+			"per_page":       fmt.Sprintf("%d", perPage),
+			"page":           fmt.Sprintf("%d", page),
+			"consumer_key":   ck,
+			"consumer_secret": cs,
+		}
+
+		validatedURL, err := buildSafeURL(siteURL, fmt.Sprintf("/wp-json/wc/%s/customers", ver), queryParams)
 		if err != nil {
 			continue
 		}
@@ -1762,9 +1836,13 @@ func (s *WordPressMigrationService) fetchWCCustomersPage(ctx context.Context, si
 
 	// Fallback to Basic Auth
 	for _, ver := range versions {
-		url := fmt.Sprintf("%s/wp-json/wc/%s/customers?per_page=%d&page=%d", base, ver, perPage, page)
-		// اعتبارسنجی URL برای جلوگیری از SSRF
-		validatedURL, err := validateURLForNetworkRequest(url)
+		// ساخت ایمن URL با query parameters
+		queryParams := map[string]string{
+			"per_page": fmt.Sprintf("%d", perPage),
+			"page":     fmt.Sprintf("%d", page),
+		}
+
+		validatedURL, err := buildSafeURL(siteURL, fmt.Sprintf("/wp-json/wc/%s/customers", ver), queryParams)
 		if err != nil {
 			continue
 		}
@@ -2376,15 +2454,21 @@ type wcOrder struct {
 }
 
 func (s *WordPressMigrationService) FetchWCOrdersPage(ctx context.Context, siteURL, ck, cs string, page, perPage int) ([]wcOrder, error) {
-	base := normalizeSiteURL(siteURL)
 	client := &http.Client{}
 	versions := []string{"v3", "v2", "v1"}
 	var lastErr error
 	// 1) Query-string credentials (رایج در WC)
 	for _, ver := range versions {
-		url := fmt.Sprintf("%s/wp-json/wc/%s/orders?status=any&per_page=%d&page=%d&consumer_key=%s&consumer_secret=%s", base, ver, perPage, page, ck, cs)
-		// اعتبارسنجی URL برای جلوگیری از SSRF
-		validatedURL, err := validateURLForNetworkRequest(url)
+		// ساخت ایمن URL با query parameters
+		queryParams := map[string]string{
+			"status":          "any",
+			"per_page":       fmt.Sprintf("%d", perPage),
+			"page":           fmt.Sprintf("%d", page),
+			"consumer_key":   ck,
+			"consumer_secret": cs,
+		}
+
+		validatedURL, err := buildSafeURL(siteURL, fmt.Sprintf("/wp-json/wc/%s/orders", ver), queryParams)
 		if err != nil {
 			continue
 		}
@@ -2412,9 +2496,14 @@ func (s *WordPressMigrationService) FetchWCOrdersPage(ctx context.Context, siteU
 	}
 	// 2) Fallback: Basic Auth (برخی هاست‌ها کوئری استرینگ را می‌بندند)
 	for _, ver := range versions {
-		url := fmt.Sprintf("%s/wp-json/wc/%s/orders?status=any&per_page=%d&page=%d", base, ver, perPage, page)
-		// اعتبارسنجی URL برای جلوگیری از SSRF
-		validatedURL, err := validateURLForNetworkRequest(url)
+		// ساخت ایمن URL با query parameters
+		queryParams := map[string]string{
+			"status":   "any",
+			"per_page": fmt.Sprintf("%d", perPage),
+			"page":     fmt.Sprintf("%d", page),
+		}
+
+		validatedURL, err := buildSafeURL(siteURL, fmt.Sprintf("/wp-json/wc/%s/orders", ver), queryParams)
 		if err != nil {
 			continue
 		}
@@ -2446,9 +2535,16 @@ func (s *WordPressMigrationService) FetchWCOrdersPage(ctx context.Context, siteU
 	}
 	// 3) Legacy Woo endpoints: /wc-api/v{ver}/orders
 	for _, ver := range versions { // v3, v2, v1
-		url := fmt.Sprintf("%s/wc-api/%s/orders?status=any&per_page=%d&page=%d&consumer_key=%s&consumer_secret=%s", base, ver, perPage, page, ck, cs)
-		// اعتبارسنجی URL برای جلوگیری از SSRF
-		validatedURL, err := validateURLForNetworkRequest(url)
+		// ساخت ایمن URL با query parameters
+		queryParams := map[string]string{
+			"status":          "any",
+			"per_page":       fmt.Sprintf("%d", perPage),
+			"page":           fmt.Sprintf("%d", page),
+			"consumer_key":   ck,
+			"consumer_secret": cs,
+		}
+
+		validatedURL, err := buildSafeURL(siteURL, fmt.Sprintf("/wc-api/%s/orders", ver), queryParams)
 		if err != nil {
 			continue
 		}
@@ -3210,18 +3306,20 @@ type wcAttributeTerm struct {
 }
 
 func (s *WordPressMigrationService) FetchWCAttributes(ctx context.Context, siteURL, ck, cs string) ([]wcAttribute, error) {
-	base := normalizeSiteURL(siteURL)
 	client := &http.Client{}
 	versions := []string{"v3", "v2", "v1"}
 	all := make([]wcAttribute, 0, 64)
 	for _, ver := range versions {
 		// درخواست با per_page بسیار بزرگ تا همه ویژگی‌ها در یک پاسخ برگردند
-		url := fmt.Sprintf("%s/wp-json/wc/%s/products/attributes?per_page=%d", base, ver, 10000000)
-		if ck != "" && cs != "" {
-			url += fmt.Sprintf("&consumer_key=%s&consumer_secret=%s", ck, cs)
+		queryParams := map[string]string{
+			"per_page": "10000000",
 		}
-		// اعتبارسنجی URL برای جلوگیری از SSRF
-		validatedURL, err := validateURLForNetworkRequest(url)
+		if ck != "" && cs != "" {
+			queryParams["consumer_key"] = ck
+			queryParams["consumer_secret"] = cs
+		}
+
+		validatedURL, err := buildSafeURL(siteURL, fmt.Sprintf("/wp-json/wc/%s/products/attributes", ver), queryParams)
 		if err != nil {
 			continue
 		}
@@ -3249,16 +3347,20 @@ func (s *WordPressMigrationService) FetchWCAttributes(ctx context.Context, siteU
 }
 
 func (s *WordPressMigrationService) FetchWCAttributeTerms(ctx context.Context, siteURL, ck, cs string, attrID int, page, perPage int) ([]wcAttributeTerm, error) {
-	base := normalizeSiteURL(siteURL)
 	client := &http.Client{}
 	versions := []string{"v3", "v2", "v1"}
 	for _, ver := range versions {
-		url := fmt.Sprintf("%s/wp-json/wc/%s/products/attributes/%d/terms?per_page=%d&page=%d", base, ver, attrID, perPage, page)
-		if ck != "" && cs != "" {
-			url += fmt.Sprintf("&consumer_key=%s&consumer_secret=%s", ck, cs)
+		// ساخت ایمن URL با query parameters
+		queryParams := map[string]string{
+			"per_page": fmt.Sprintf("%d", perPage),
+			"page":     fmt.Sprintf("%d", page),
 		}
-		// اعتبارسنجی URL برای جلوگیری از SSRF
-		validatedURL, err := validateURLForNetworkRequest(url)
+		if ck != "" && cs != "" {
+			queryParams["consumer_key"] = ck
+			queryParams["consumer_secret"] = cs
+		}
+
+		validatedURL, err := buildSafeURL(siteURL, fmt.Sprintf("/wp-json/wc/%s/products/attributes/%d/terms", ver, attrID), queryParams)
 		if err != nil {
 			continue
 		}
@@ -3441,8 +3543,9 @@ func downloadAndSaveImage(ctx context.Context, src string, destDir string, baseN
 		return "", err
 	}
 	// نام فایل بر اساس hash از URL تا یکتا شود
-	sum := md5.Sum([]byte(src))
-	fn := fmt.Sprintf("%s-%x%s", baseName, sum[:4], guessExtFromURL(src))
+	// استفاده از SHA-256 به جای MD5 برای امنیت بیشتر
+	hash := sha256.Sum256([]byte(src))
+	fn := fmt.Sprintf("%s-%x%s", baseName, hash[:8], guessExtFromURL(src))
 	destPath := filepath.Join(destDir, fn)
 
 	// اعتبارسنجی URL برای جلوگیری از SSRF
@@ -3661,7 +3764,9 @@ func (s *WordPressMigrationService) ProcessHTML(ctx context.Context, html, siteU
 			prefix = "short-desc"
 		}
 		// پارامتر آخر را false قرار می‌دهیم تا واریانت ساخته نشود
-		savedPath, err := downloadAndSaveImage(ctx, imgSrc, destImgDir, fmt.Sprintf("%s-img-%x", prefix, md5.Sum([]byte(imgSrc))), false)
+		// استفاده از SHA-256 به جای MD5 برای امنیت بیشتر
+		hash := sha256.Sum256([]byte(imgSrc))
+		savedPath, err := downloadAndSaveImage(ctx, imgSrc, destImgDir, fmt.Sprintf("%s-img-%x", prefix, hash[:8]), false)
 		if err != nil {
 			// در صورت خطا، از همان آدرس اصلی استفاده می‌کنیم
 			return imgTag
@@ -3707,7 +3812,9 @@ func (s *WordPressMigrationService) ProcessHTML(ctx context.Context, html, siteU
 			prefix = "short-desc"
 		}
 		// برای ویدیوها نیز واریانت ساخته نشود
-		savedPath, err := downloadAndSaveImage(ctx, videoSrc, vidDir, fmt.Sprintf("%s-video-%x", prefix, md5.Sum([]byte(videoSrc))), false)
+		// استفاده از SHA-256 به جای MD5 برای امنیت بیشتر
+		hash := sha256.Sum256([]byte(videoSrc))
+		savedPath, err := downloadAndSaveImage(ctx, videoSrc, vidDir, fmt.Sprintf("%s-video-%x", prefix, hash[:8]), false)
 		if err != nil {
 			// در صورت خطا، از همان آدرس اصلی استفاده می‌کنیم
 			return videoTag

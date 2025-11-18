@@ -52,17 +52,30 @@ func UploadVideoHandler(c *gin.Context) {
 		category = "library"
 	}
 
-	// ایجاد مسیر ذخیره بر اساس category
-	uploadPath := filepath.Join("public", "uploads", "media", category, "videos")
+	// ساخت ایمن مسیر ذخیره
+	projectRoot := ""
+	if wd, err := os.Getwd(); err == nil {
+		projectRoot = filepath.Dir(wd)
+	}
+	publicDir := filepath.Join(projectRoot, "public")
+
+	// استفاده از تابع helper برای ساخت ایمن مسیر
+	filePath, err := buildSafeMediaPath(publicDir, category, "videos", filename)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	// ایجاد پوشه در صورت نیاز
+	uploadPath := filepath.Dir(filePath)
 	if err := os.MkdirAll(uploadPath, 0755); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "خطا در ایجاد پوشه",
 		})
 		return
 	}
-
-	// ذخیره فایل
-	filePath := filepath.Join(uploadPath, filename)
 	out, err := os.Create(filePath)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{

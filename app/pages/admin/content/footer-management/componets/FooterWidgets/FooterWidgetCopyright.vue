@@ -3,6 +3,21 @@
     <div class="text-center">
       <!-- متن کپی‌رایت -->
       <div class="text-white text-opacity-80 text-sm">
+        <!-- 
+          ⚠️ امنیت XSS: استفاده از v-html خطرناک است!
+          
+          این کد محتوای HTML را بدون sanitization نمایش می‌دهد که می‌تواند منجر به حملات XSS شود.
+          
+          ✅ راه حل صحیح:
+          1. قبل از استفاده از v-html، محتوا را با کتابخانه sanitization (مثل DOMPurify) پاکسازی کنید
+          2. یا از {{ }} به جای v-html استفاده کنید اگر HTML نیاز نیست
+          3. محتوای کاربر را هرگز بدون sanitization در v-html قرار ندهید
+          
+          مثال صحیح:
+          import DOMPurify from 'dompurify'
+          const sanitizedCopyrightHtml = computed(() => DOMPurify.sanitize(copyrightHtml.value))
+          <div v-html="sanitizedCopyrightHtml"></div>
+        -->
         <div class="copyright-html" v-html="copyrightHtml"></div>
         
         <!-- لینک‌های اضافی -->

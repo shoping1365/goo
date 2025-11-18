@@ -275,14 +275,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-
 // Page meta definition
 definePageMeta({
   layout: 'admin',
   middleware: 'admin'
 })
+
+import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 // تعریف definePageMeta، useHead و navigateTo برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void

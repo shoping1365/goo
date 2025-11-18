@@ -97,7 +97,7 @@ func (s *MelliService) CreatePayment(amount int, callbackURL, description, email
 	}
 
 	// ارسال درخواست
-	var apiURL string
+	apiURL := s.gateway.ApiEndpoints.Payment
 	if s.gateway.IsTestMode {
 		apiURL = "https://test.sadad.shaparak.ir/vpg/api/v0/Request/PaymentRequest"
 	} else {
@@ -143,7 +143,7 @@ func (s *MelliService) VerifyPayment(amount int, token string) (bool, string, er
 	}
 
 	// ارسال درخواست تایید
-	var apiURL string
+	apiURL := s.gateway.ApiEndpoints.Verification
 	if s.gateway.IsTestMode {
 		apiURL = "https://test.sadad.shaparak.ir/vpg/api/v0/Advice/Verify"
 	} else {
@@ -186,7 +186,7 @@ func (s *MelliService) RefundPayment(token string, amount int) error {
 	}
 
 	// ارسال درخواست بازگشت وجه
-	var apiURL string
+	apiURL := s.gateway.ApiEndpoints.Refund
 	if s.gateway.IsTestMode {
 		apiURL = "https://test.sadad.shaparak.ir/vpg/api/v0/Advice/Refund"
 	} else {
@@ -229,7 +229,7 @@ func (s *MelliService) InquiryPayment(token string) (int, error) {
 	}
 
 	// ارسال درخواست استعلام
-	var apiURL string
+	apiURL := s.gateway.ApiEndpoints.Balance
 	if s.gateway.IsTestMode {
 		apiURL = "https://test.sadad.shaparak.ir/vpg/api/v0/Advice/Inquiry"
 	} else {

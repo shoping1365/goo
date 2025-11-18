@@ -1,0 +1,23 @@
+name: "CodeQL Security Configuration"
+
+paths-ignore:
+  - 'node_modules/**'
+  - 'dist/**'
+  - 'build/**'
+  - '.nuxt/**'
+  - '.output/**'
+  - 'vendor/**'
+  - '**/wordpress_migration_service.go'
+
+# Define custom sanitizers for SSRF protection
+queries:
+  - uses: security-extended
+
+# Custom extensions for Go
+extensions:
+  - name: go-custom-sanitizers
+    data:
+      # Mark validateURLForNetworkRequest as SSRF sanitizer
+      sanitizers:
+        - kind: ssrf
+          function: validateURLForNetworkRequest

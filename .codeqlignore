@@ -1,0 +1,7 @@
+# Ignore TinyMCE files from CodeQL analysis
+# These are third-party library files that we don't control
+public/tinymce-assets/**
+**/tinymce.js
+**/tinymce.min.js
+**/tinymce-assets/**
+
