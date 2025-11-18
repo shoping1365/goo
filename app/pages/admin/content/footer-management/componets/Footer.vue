@@ -37,8 +37,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useState } from 'nuxt/app'
+import { computed, onMounted, ref, watch } from 'vue'
 import { usePublicFooters } from '~/composables/usePublicFooters'
 
 const route = useRoute()
@@ -76,8 +76,8 @@ const getSocialMediaSettings = async () => {
           response = result
           break
         }
-      } catch (fetchError) {
-        lastFetchError = fetchError
+      } catch {
+        // Ignore fetch errors and try next endpoint
       }
     }
 

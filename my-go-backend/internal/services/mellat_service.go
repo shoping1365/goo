@@ -392,7 +392,7 @@ func (m *MellatService) inquiryTransaction(refId string) (int64, int64, error) {
 func (m *MellatService) GetPaymentURL(transaction *models.PaymentTransaction, callbackURL string) string {
 	// ملت از فرم HTML برای پرداخت استفاده می‌کند
 	// این آدرس باید به فرم پرداخت ملت هدایت شود
-	baseURL := m.gateway.ApiEndpoints.Payment
+	var baseURL string
 	if m.gateway.IsTestMode {
 		baseURL = "https://pgwstest.bpm.bankmellat.ir/pgwchannel/startpay.mellat"
 	} else {

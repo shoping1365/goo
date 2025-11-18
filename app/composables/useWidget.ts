@@ -1,15 +1,15 @@
-import { ref, computed, readonly, watch } from 'vue'
 import { useRequestHeaders } from 'nuxt/app'
+import { computed, readonly, ref } from 'vue'
 import type {
-  Widget,
-  WidgetType,
-  WidgetStatus,
-  WidgetPage,
   CreateWidgetRequest,
-  UpdateWidgetRequest,
   UpdateWidgetOrderRequest,
+  UpdateWidgetRequest,
+  Widget,
+  WidgetListResponse,
+  WidgetPage,
   WidgetResponse,
-  WidgetListResponse
+  WidgetStatus,
+  WidgetType
 } from '~/types/widget'
 
 // تعریف useAuth برای Nuxt 3
@@ -36,7 +36,6 @@ export const useWidget = () => {
 
   // Cache for widgets by page
   const widgetCache = new Map<string, { data: Widget[], timestamp: number }>()
-  const CACHE_DURATION = 0 // حذف کامل کش
 
   // API Base URL - استفاده از endpoint ادمین برای مدیریت ویجت‌ها
   const baseURL = '/api/admin/widgets'

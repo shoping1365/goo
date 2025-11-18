@@ -111,7 +111,7 @@ func (s *SamanService) CreatePayment(amount int, callbackURL, description, email
 	}
 
 	// ارسال درخواست
-	apiURL := s.gateway.ApiEndpoints.Payment
+	var apiURL string
 	if s.gateway.IsTestMode {
 		apiURL = "https://sep.shaparak.ir/api/v1/Payment/GetToken"
 	} else {
@@ -160,7 +160,7 @@ func (s *SamanService) VerifyPayment(amount int, token string) (bool, string, er
 	}
 
 	// ارسال درخواست
-	apiURL := s.gateway.ApiEndpoints.Verification
+	var apiURL string
 	if s.gateway.IsTestMode {
 		apiURL = "https://sep.shaparak.ir/api/v1/Payment/VerifyPayment"
 	} else {
@@ -216,7 +216,7 @@ func (s *SamanService) RefundPayment(transactionID string, amount int) error {
 	}
 
 	// ارسال درخواست
-	apiURL := s.gateway.ApiEndpoints.Refund
+	var apiURL string
 	if s.gateway.IsTestMode {
 		apiURL = "https://sep.shaparak.ir/api/v1/Payment/ReversePayment"
 	} else {
@@ -260,9 +260,11 @@ func (s *SamanService) TestConnection() error {
 		Action:      "Token",
 	}
 
-	apiURL := s.gateway.ApiEndpoints.Payment
+	var apiURL string
 	if s.gateway.IsTestMode {
 		apiURL = "https://sep.shaparak.ir/api/v1/Payment/GetToken"
+	} else {
+		apiURL = s.gateway.ApiEndpoints.Payment
 	}
 
 	_, err := s.sendAPIRequest(apiURL, testRequest)
@@ -320,9 +322,11 @@ func (s *SamanService) ProcessCallback(params map[string]string) (*models.Paymen
 // GetPaymentURL دریافت آدرس پرداخت
 func (s *SamanService) GetPaymentURL(transaction *models.PaymentTransaction, callbackURL string) string {
 	// سامان از فرم HTML برای پرداخت استفاده می‌کند
-	baseURL := s.gateway.ApiEndpoints.Payment
+	var baseURL string
 	if s.gateway.IsTestMode {
 		baseURL = "https://sep.shaparak.ir/api/v1/Payment/GetToken"
+	} else {
+		baseURL = s.gateway.ApiEndpoints.Payment
 	}
 	return baseURL
 }

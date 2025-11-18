@@ -171,7 +171,7 @@ export default defineEventHandler(async (event) => {
     creditScore = Math.max(0, Math.min(1000, creditScore))
 
     // تعیین وضعیت
-    let status = 'رد شده'
+    let status: string
     let maxAmount = 0
 
     if (creditScore >= 700) {

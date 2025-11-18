@@ -293,12 +293,6 @@
 </template>
 
 <script setup lang="ts">
-// Page meta definition
-definePageMeta({
-  layout: 'admin-main',
-  middleware: 'admin'
-})
-
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -306,6 +300,12 @@ import { useRoute, useRouter } from 'vue-router';
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 declare const useHead: (head: { title?: string }) => void
 declare const navigateTo: (to: string) => Promise<void>
+
+// Page meta definition
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 
 // Page title
 useHead({

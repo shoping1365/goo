@@ -1,5 +1,5 @@
 import type { H3Event } from 'h3'
-import { defineEventHandler, createError } from 'h3'
+import { createError, defineEventHandler } from 'h3'
 import { z } from 'zod'
 import { getDatabase } from '~/server/api/_utils/database'
 
@@ -49,21 +49,21 @@ export default defineEventHandler(async (event) => {
     // اعتبارسنجی query parameters
     const query = await getQuery(event)
     const { page, limit } = querySchema.parse(query)
-    
+
     const pageNum = parseInt(page)
     const limitNum = parseInt(limit)
     const offset = (pageNum - 1) * limitNum
 
     // دریافت سشن‌های فعال از دیتابیس
     const db = await getDatabase()
-    
+
     // شمارش کل رکوردها
     const totalCount = await db.query(`
       SELECT COUNT(*) as count 
       FROM sessions 
       WHERE user_id = $1 AND is_active = true AND expires_at > NOW()
     `, [userId]) as unknown as { count: string }[]
-    
+
     const total = parseInt(totalCount[0].count)
 
     // دریافت رکوردها با pagination
@@ -91,9 +91,9 @@ export default defineEventHandler(async (event) => {
     const activeSessions = result.map((row) => {
       // Parse User-Agent to extract device info
       const userAgent = row.user_agent || ''
-      let deviceType = 'نامشخص'
-      let browser = 'نامشخص'
-      
+      let deviceType: string
+      let browser: string
+
       if (userAgent.includes('Mobile') || userAgent.includes('Android')) {
         deviceType = 'موبایل'
       } else if (userAgent.includes('Tablet') || userAgent.includes('iPad')) {
@@ -101,7 +101,7 @@ export default defineEventHandler(async (event) => {
       } else {
         deviceType = 'دسکتاپ'
       }
-      
+
       if (userAgent.includes('Chrome')) {
         browser = 'Chrome'
       } else if (userAgent.includes('Firefox')) {
@@ -146,11 +146,11 @@ export default defineEventHandler(async (event) => {
 
   } catch (error) {
     console.error('خطا در دریافت سشن‌های فعال:', error)
-    
+
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error
     }
-    
+
     throw createError({
       statusCode: 500,
       message: 'خطا در دریافت سشن‌های فعال'

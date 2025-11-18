@@ -200,7 +200,7 @@ func (h *MediaHandler) UploadMediaHandler(w http.ResponseWriter, r *http.Request
 	}
 
 	// مقداردهی فیلد UploadedBy با آیدی کاربر لاگین‌شده (در صورت وجود)
-	var uploadedBy *uint = nil
+	var uploadedBy *uint
 	// تلاش برای گرفتن user_id از context (مثلاً ست شده توسط middleware احراز هویت)
 	if userIDVal, ok := r.Context().Value("user_id").(uint); ok {
 		uploadedBy = &userIDVal

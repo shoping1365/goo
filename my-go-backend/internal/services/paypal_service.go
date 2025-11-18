@@ -174,7 +174,7 @@ func (p *PayPalService) CreatePayment(amount int, callbackURL, description, emai
 	}
 
 	// ارسال درخواست
-	apiURL := p.gateway.ApiEndpoints.Payment
+	var apiURL string
 	if p.gateway.IsTestMode {
 		apiURL = "https://api-m.sandbox.paypal.com/v1/payments/payment"
 	} else {
@@ -232,7 +232,7 @@ func (p *PayPalService) VerifyPayment(amount int, token string) (bool, string, e
 	}
 
 	// دریافت اطلاعات پرداخت
-	apiURL := p.gateway.ApiEndpoints.Verification
+	var apiURL string
 	if p.gateway.IsTestMode {
 		apiURL = fmt.Sprintf("https://api-m.sandbox.paypal.com/v1/payments/payment/%s", token)
 	} else {
@@ -305,7 +305,7 @@ func (p *PayPalService) RefundPayment(transactionID string, amount int) error {
 	}
 
 	// ارسال درخواست
-	apiURL := p.gateway.ApiEndpoints.Refund
+	var apiURL string
 	if p.gateway.IsTestMode {
 		apiURL = fmt.Sprintf("https://api-m.sandbox.paypal.com/v1/payments/sale/%s/refund", transactionID)
 	} else {
@@ -410,9 +410,11 @@ func (p *PayPalService) getAccessToken() (string, error) {
 	}
 
 	// تعیین آدرس API
-	apiURL := "https://api-m.paypal.com/v1/oauth2/token"
+	var apiURL string
 	if p.gateway.IsTestMode {
 		apiURL = "https://api-m.sandbox.paypal.com/v1/oauth2/token"
+	} else {
+		apiURL = "https://api-m.paypal.com/v1/oauth2/token"
 	}
 
 	// ایجاد درخواست HTTP

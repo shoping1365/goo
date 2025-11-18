@@ -139,7 +139,7 @@ func (s *StripeService) CreatePayment(amount int, callbackURL, description, emai
 	}
 
 	// ارسال درخواست
-	apiURL := s.gateway.ApiEndpoints.Payment
+	var apiURL string
 	if s.gateway.IsTestMode {
 		apiURL = "https://api.stripe.com/v1/payment_intents"
 	} else {
@@ -236,9 +236,9 @@ func (s *StripeService) RefundPayment(transactionID string, amount int) error {
 	}
 
 	// ارسال درخواست
-	apiURL := s.gateway.ApiEndpoints.Refund
+	var apiURL string
 	if s.gateway.IsTestMode {
-		apiURL = fmt.Sprintf("https://api.stripe.com/v1/refunds")
+		apiURL = "https://api.stripe.com/v1/refunds"
 	} else {
 		apiURL = fmt.Sprintf("https://api.stripe.com/v1/refunds")
 	}

@@ -1,4 +1,4 @@
-// Pe
+// Performance cache plugin
 export default defineNitroPlugin((nitroApp) => {
   // Configure cache headers for better performance
   nitroApp.hooks.hook('render:response', (response, { event }) => {
@@ -24,7 +24,7 @@ export default defineNitroPlugin((nitroApp) => {
       if (event.node.req.url?.startsWith('/api/')) {
         headers.set('Cache-Control', 'public,max-age=60,stale-while-revalidate=300')
       }
-    } else if (typeof headers === 'object' && headers !== null) {
+    } else if (headers !== null) {
       // Handle plain object
       // Add cache headers for static assets
       if (event.node.req.url?.includes('/_nuxt/')) {

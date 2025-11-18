@@ -3,8 +3,6 @@
 import { eventHandler } from 'h3'
 
 export default eventHandler(async (event) => {
-  // غیرفعال کردن کامل middleware برای رفع مشکلات encoding
-  return
   // بررسی وضعیت response stream در ابتدای درخواست
   const originalEnd = event.node.res.end
   const originalWrite = event.node.res.write
@@ -41,7 +39,7 @@ export default eventHandler(async (event) => {
     }
     // همه آرگومان‌ها را عیناً پاس بده تا هدرها از بین نروند
     // پشتیبانی از همه امضاهای Node: writeHead(status), writeHead(status, headers), writeHead(status, reason, headers)
-    return originalWriteHead.apply(this, [statusCode, ...args])
+    return (originalWriteHead as any).apply(this, [statusCode, ...args])
   }
 
   // بررسی وضعیت stream در صورت بسته شدن زودهنگام

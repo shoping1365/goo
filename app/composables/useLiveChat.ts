@@ -1,4 +1,4 @@
-import { ref, computed, onUnmounted } from 'vue'
+import { onUnmounted, ref } from 'vue'
 
 export function useLiveChat() {
   // State

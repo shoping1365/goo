@@ -264,19 +264,19 @@
 </template>
 
 <script setup lang="ts">
-// Page meta definition
-definePageMeta({
-  layout: 'admin',
-  middleware: 'admin'
-})
-
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 // تعریف definePageMeta و useHead و navigateTo برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 declare const useHead: (head: { title?: string }) => void
 declare const navigateTo: (to: string) => Promise<void>
+
+// Page meta definition
+definePageMeta({
+  layout: 'admin',
+  middleware: 'admin'
+})
 
 // Page title
 useHead({

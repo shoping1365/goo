@@ -1,4 +1,4 @@
-import { ref, reactive, computed, watch } from 'vue'
+import { reactive, ref, watch } from 'vue'
 
 /*
 کامپوزابل مدیریت فشرده سازی تصاویر (image compression)

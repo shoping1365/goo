@@ -41,9 +41,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
 import { useNuxtApp } from '#app'
-
+import { useAuth } from '@/composables/useAuth'
+import { onMounted, ref } from 'vue'
 
 const props = defineProps({
   productId: {
@@ -52,10 +52,8 @@ const props = defineProps({
   }
 })
 
-// احراز هویت - غیرفعال شده
-const user = null
-const isAuthenticated = false
-const fetchUser = null
+// احراز هویت
+const { user, isAuthenticated, fetchCurrentUser } = useAuth()
 const isLoading = ref(false)
 
 const questions = ref([])
@@ -130,10 +128,12 @@ const ensureProfileNameOnce = async () => {
     if (!isAuthenticated.value) return
     // اطمینان از تازه بودن اطلاعات کاربر
     if (!user.value) {
-      await fetchUser()
+      await fetchCurrentUser()
     }
     if (!user.value?.id) return
-    const askedKey = `profile-name-asked:${user.value.id}`
+    
+    const userId = user.value.id
+    const askedKey = `profile-name-asked:${userId}`
     if (import.meta.client && localStorage.getItem(askedKey) === '1') return
     const currentName = user.value?.name || ''
     const currentMobile = user.value?.mobile || ''
@@ -143,11 +143,11 @@ const ensureProfileNameOnce = async () => {
       const fullName = window.prompt('لطفاً نام و نام خانوادگی خود را وارد کنید:') || ''
       if (fullName.trim()) {
         const { $fetch } = useNuxtApp()
-        await $fetch(`/api/users/${user.value.id}`, {
+        await $fetch(`/api/users/${userId}`, {
           method: 'PUT',
           body: { name: fullName.trim() }
         })
-        await fetchUser()
+        await fetchCurrentUser()
       }
       // حتی در صورت انصراف، یک‌بار پرسیده شده است
       if (import.meta.client) localStorage.setItem(askedKey, '1')
@@ -158,11 +158,11 @@ const ensureProfileNameOnce = async () => {
       const mobile = window.prompt('شماره موبایل خود را وارد کنید:') || ''
       if (mobile.trim()) {
         const { $fetch } = useNuxtApp()
-        await $fetch(`/api/users/${user.value.id}`, {
+        await $fetch(`/api/users/${userId}`, {
           method: 'PUT',
           body: { mobile: mobile.trim() }
         })
-        await fetchUser()
+        await fetchCurrentUser()
       }
     }
   } catch (e) {

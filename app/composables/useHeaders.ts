@@ -1,4 +1,4 @@
-import { ref, reactive, readonly } from 'vue'
+import { readonly, ref } from 'vue'
 
 // تعریف useFetch برای Nuxt 3
 declare const useFetch: any

@@ -9,12 +9,9 @@ export default defineNuxtPlugin((nuxtApp) => {
     // Attach structured error response in Farsi if possible
     try {
       const status = (error as any)?.statusCode || (error as any)?.status || 500
-      const url = event?.path || ''
-      const method = event?.node?.req?.method || ''
-      const ip = event?.node?.req?.headers['x-forwarded-for'] || event?.node?.req?.socket?.remoteAddress
 
       // Server error logged
-      console.error(`Server Error [${status}]: ${method} ${url} - ${error.message}`)
+      console.error(`Server Error [${status}]: ${error.message}`)
 
       // Ensure we always have a user-friendly message in Persian
       if (status >= 500) {

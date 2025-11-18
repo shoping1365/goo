@@ -162,17 +162,16 @@
 
 <script setup lang="ts">
 // // import ProductCarousel from  '~/components/widgets/ProductCarousel.vue'
+import { ref } from 'vue';
+
+// استفاده از useAuth برای چک کردن پرمیژن‌ها
+// const { user, hasPermission } = useAuth()
 
 // Page meta definition
 definePageMeta({
   layout: 'admin',
   middleware: 'admin'
 })
-
-// استفاده از useAuth برای چک کردن پرمیژن‌ها
-// const { user, hasPermission } = useAuth()
-
-import { ref } from 'vue'
 
 // تعریف definePageMeta و useHead برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void

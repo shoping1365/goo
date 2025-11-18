@@ -357,11 +357,11 @@ watch(fetched, (val: any) => {
   // Normalize response shape
   let list: any = val
   if (!Array.isArray(list)) {
-    if (Array.isArray(list?.data)) {
+    if (Array.isArray(list.data)) {
       list = list.data
-    } else if (Array.isArray(list?.attributes)) {
+    } else if (Array.isArray(list.attributes)) {
       list = list.attributes
-    } else if (Array.isArray(list?.items)) {
+    } else if (Array.isArray(list.items)) {
       list = list.items
     } else {
       list = []
