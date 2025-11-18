@@ -109,7 +109,7 @@ export default defineEventHandler(async (event) => {
       } else if (userAgent.includes('Safari')) {
         browser = 'Safari'
       } else if (userAgent.includes('Edge')) {
-        browser = 'Edge';
+        browser = 'Edge'
       }
 
       return {
@@ -157,5 +157,3 @@ export default defineEventHandler(async (event) => {
     })
   }
 })
-
-
