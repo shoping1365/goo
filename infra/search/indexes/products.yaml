@@ -1,0 +1,76 @@
+version: 0.7
+index_id: products
+doc_mapping:
+  field_mappings:
+    - name: id
+      type: text
+      stored: true
+      fast: true
+    - name: sku
+      type: text
+      stored: true
+    - name: title
+      type: text
+      stored: true
+      tokenizer: default
+    - name: description
+      type: text
+      stored: true
+      tokenizer: default
+    - name: categories
+      type: text
+      stored: true
+    - name: brand
+      type: text
+      stored: true
+    - name: price
+      type: f64
+      stored: true
+      fast: true
+    - name: discount_percent
+      type: f64
+      stored: true
+      fast: true
+    - name: inventory
+      type: i64
+      stored: true
+      fast: true
+    - name: is_available
+      type: bool
+      stored: true
+    - name: rating
+      type: f64
+      stored: true
+      fast: true
+    - name: sales_rank
+      type: i64
+      stored: true
+      fast: true
+    - name: created_at
+      type: datetime
+      stored: true
+      fast: true
+    - name: updated_at
+      type: datetime
+      stored: true
+      fast: true
+    - name: lang
+      type: text
+      stored: true
+    - name: vector_embedding
+      type: array<f64>
+      stored: true
+  timestamp_field: updated_at
+search_settings:
+  default_search_fields:
+    - title
+    - description
+    - categories
+  exact_match_fields:
+    - sku
+    - brand
+    - lang
+indexing_settings:
+  commit_timeout: 30s
+  merge_policy:
+    max_merge_ops: 2

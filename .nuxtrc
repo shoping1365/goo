@@ -1,0 +1,13 @@
+# Nuxt configuration file
+# Fix for RefImpl warnings
+
+# Disable SSR temporarily to fix RefImpl warnings
+ssr=false
+
+# Disable experimental features
+experimental.payloadExtraction=false
+experimental.componentIslands=false
+experimental.renderJsonPayloads=false
+experimental.asyncContext=false
+experimental.asyncEntry=false
+experimental.viewTransition=false

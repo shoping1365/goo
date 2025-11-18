@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  quickwit:
+    image: quickwit/quickwit:0.7.2
+    command: ["run"]
+    environment:
+      QW_HOME: /srv/quickwit
+      QW_STORAGE__MAIN__TYPE: fs
+      QW_STORAGE__MAIN__PATH: /srv/quickwit/data
+      QW_DEFAULT_INDEXES_DIR: /etc/quickwit/indexes
+      QW_REST_LISTEN_ADDR: 0.0.0.0:7280
+      QW_GRPC_LISTEN_ADDR: 0.0.0.0:7281
+    volumes:
+      - ./data:/srv/quickwit/data
+      - ./indexes:/etc/quickwit/indexes
+    ports:
+      - "7280:7280"
+      - "7281:7281"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7280/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  quickwit-data:
+    driver: local

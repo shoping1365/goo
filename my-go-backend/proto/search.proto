@@ -1,0 +1,136 @@
+syntax = "proto3";
+
+package search.v1;
+
+option go_package = "my-go-backend/internal/search/api/gen;gen";
+
+message SearchRequest {
+  string index = 1;
+  string query = 2;
+  repeated Filter filters = 3;
+  repeated Sort sorts = 4;
+  PageCursor page = 5;
+  OptionalVectorQuery vector = 6;
+  ClientContext client = 7;
+}
+
+message Filter {
+  string field = 1;
+  oneof value {
+    string string_value = 2;
+    double double_value = 3;
+    bool bool_value = 4;
+    Range range_value = 5;
+    repeated string string_list = 6;
+  }
+  enum Operator {
+    OPERATOR_UNSPECIFIED = 0;
+    OPERATOR_EQ = 1;
+    OPERATOR_GT = 2;
+    OPERATOR_GTE = 3;
+    OPERATOR_LT = 4;
+    OPERATOR_LTE = 5;
+    OPERATOR_IN = 6;
+  }
+  Operator op = 7;
+}
+
+message Range {
+  double from = 1;
+  double to = 2;
+}
+
+message Sort {
+  string field = 1;
+  bool descending = 2;
+}
+
+message PageCursor {
+  int32 size = 1;
+  string cursor = 2;
+}
+
+message OptionalVectorQuery {
+  bool enabled = 1;
+  repeated float embedding = 2;
+  int32 top_k = 3;
+  double weight = 4;
+}
+
+message ClientContext {
+  string user_id = 1;
+  string session_id = 2;
+  string locale = 3;
+  map<string, string> tags = 4;
+}
+
+message SearchResponse {
+  repeated Hit hits = 1;
+  string next_cursor = 2;
+  repeated Facet facets = 3;
+  repeated Diagnostic diagnostics = 4;
+  double processing_time_ms = 5;
+}
+
+message Hit {
+  string id = 1;
+  double score = 2;
+  map<string, string> fields = 3;
+  Highlight highlight = 4;
+  map<string, double> scores = 5;
+}
+
+message Highlight {
+  map<string, repeated string> fragments = 1;
+}
+
+message Facet {
+  string field = 1;
+  repeated FacetBucket buckets = 2;
+}
+
+message FacetBucket {
+  string value = 1;
+  int64 count = 2;
+}
+
+message Diagnostic {
+  string name = 1;
+  string value = 2;
+}
+
+message SuggestRequest {
+  string index = 1;
+  string prefix = 2;
+  int32 limit = 3;
+  string locale = 4;
+}
+
+message SuggestResponse {
+  repeated Suggestion suggestions = 1;
+}
+
+message Suggestion {
+  string text = 1;
+  double score = 2;
+  string type = 3;
+}
+
+message HealthRequest {}
+
+message HealthResponse {
+  enum Status {
+    STATUS_HEALTH_UNKNOWN = 0;
+    STATUS_HEALTHY = 1;
+    STATUS_DEGRADED = 2;
+    STATUS_DOWN = 3;
+  }
+  Status status = 1;
+  string details = 2;
+}
+
+service SearchService {
+  rpc Search(SearchRequest) returns (SearchResponse);
+  rpc Suggest(SuggestRequest) returns (SuggestResponse);
+  rpc Health(HealthRequest) returns (HealthResponse);
+}

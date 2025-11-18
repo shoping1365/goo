@@ -1,0 +1,59 @@
+{
+  "name": "Article",
+  "type": "Article",
+  "description": "تمپلیت برای مقالات",
+  "isActive": true,
+  "template": {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{{title}}",
+    "author": {
+      "@type": "Person",
+      "name": "{{author}}",
+      "url": "{{author_url}}"
+    },
+    "description": "{{excerpt}}",
+    "datePublished": "{{published_at}}",
+    "dateModified": "{{updated_at}}",
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{site_name}}",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "{{site_logo}}"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "{{url}}"
+    },
+    "image": {
+      "@type": "ImageObject",
+      "url": "{{featured_image}}",
+      "width": "{{image_width}}",
+      "height": "{{image_height}}"
+    },
+    "articleSection": "{{category_name}}",
+    "keywords": "{{keywords}}",
+    "wordCount": "{{word_count}}",
+    "timeRequired": "PT{{reading_time}}M",
+    "articleBody": "{{content}}",
+    "inLanguage": "fa",
+    "isAccessibleForFree": "true"
+  },
+  "meta": {
+    "title": "{{title}} - {{site_name}}",
+    "description": "{{excerpt}}",
+    "keywords": "{{keywords}}"
+  },
+  "openGraph": {
+    "title": "{{title}}",
+    "description": "{{excerpt}}",
+    "image": "{{featured_image}}",
+    "type": "article",
+    "site_name": "{{site_name}}",
+    "published_time": "{{published_at}}",
+    "modified_time": "{{updated_at}}",
+    "author": "{{author}}"
+  }
+} 

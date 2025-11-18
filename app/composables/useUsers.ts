@@ -1,0 +1,163 @@
+import { ref, computed } from 'vue'
+import { useApiClient } from '@/utils/api'
+import { User } from '@/stores/auth'
+
+export const useUsers = () => {
+  const { api } = useApiClient()
+  
+  const users = ref<User[]>([])
+  const loading = ref(false)
+  const error = ref('')
+  const totalCount = ref(0)
+
+  // دریافت تمام کاربران
+  const fetchUsers = async (page: number = 1, limit: number = 20) => {
+    loading.value = true
+    error.value = ''
+
+    try {
+      const response = await api.get<{
+        data: User[]
+        total: number
+      }>(`/api/admin/users?page=${page}&limit=${limit}`)
+
+      users.value = response.data
+      totalCount.value = response.total
+    } catch (err: any) {
+      error.value = err.error || 'خطا در دریافت کاربران'
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // دریافت یک کاربر
+  const getUser = async (id: string): Promise<User | null> => {
+    try {
+      return await api.get<User>(`/api/admin/users/${id}`)
+    } catch (err: any) {
+      error.value = err.error
+      return null
+    }
+  }
+
+  // جستجوی کاربران
+  const searchUsers = async (query: string) => {
+    loading.value = true
+    error.value = ''
+
+    try {
+      const response = await api.get<User[]>(
+        `/api/admin/users/search?q=${encodeURIComponent(query)}`
+      )
+      users.value = response
+    } catch (err: any) {
+      error.value = err.error
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // ایجاد کاربر
+  const createUser = async (userData: Partial<User>): Promise<User | null> => {
+    loading.value = true
+    error.value = ''
+
+    try {
+      const response = await api.post<User>('/api/admin/users', userData)
+      users.value.push(response)
+      return response
+    } catch (err: any) {
+      error.value = err.error
+      return null
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // ویرایش کاربر
+  const updateUser = async (id: string, userData: Partial<User>): Promise<User | null> => {
+    loading.value = true
+    error.value = ''
+
+    try {
+      const response = await api.put<User>(`/api/admin/users/${id}`, userData)
+      const index = users.value.findIndex(u => u.id === id)
+      if (index !== -1) {
+        users.value[index] = response
+      }
+      return response
+    } catch (err: any) {
+      error.value = err.error
+      return null
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // حذف کاربر
+  const deleteUser = async (id: string): Promise<boolean> => {
+    loading.value = true
+    error.value = ''
+
+    try {
+      await api.delete(`/api/admin/users/${id}`)
+      users.value = users.value.filter(u => u.id !== id)
+      return true
+    } catch (err: any) {
+      error.value = err.error
+      return false
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // تغییر نقش کاربر
+  const changeUserRole = async (id: string, roleId: string): Promise<boolean> => {
+    try {
+      const response = await api.put<User>(`/api/admin/users/${id}/role`, {
+        role_id: roleId,
+      })
+      const index = users.value.findIndex(u => u.id === id)
+      if (index !== -1) {
+        users.value[index] = response
+      }
+      return true
+    } catch (err: any) {
+      error.value = err.error
+      return false
+    }
+  }
+
+  // دسترسی‌های کاربر
+  const getUserPermissions = async (id: string): Promise<string[]> => {
+    try {
+      const response = await api.get<{
+        permissions: string[]
+      }>(`/api/admin/users/${id}/permissions`)
+      return response.permissions
+    } catch (err: any) {
+      error.value = err.error
+      return []
+    }
+  }
+
+  const filteredUsers = computed(() => {
+    return users.value
+  })
+
+  return {
+    users: computed(() => users.value),
+    filteredUsers,
+    loading: computed(() => loading.value),
+    error: computed(() => error.value),
+    totalCount: computed(() => totalCount.value),
+    fetchUsers,
+    getUser,
+    searchUsers,
+    createUser,
+    updateUser,
+    deleteUser,
+    changeUserRole,
+    getUserPermissions,
+  }
+}

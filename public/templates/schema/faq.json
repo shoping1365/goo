@@ -1,0 +1,50 @@
+{
+  "name": "FAQ Page",
+  "type": "FAQPage",
+  "description": "تمپلیت برای سوالات متداول",
+  "isActive": true,
+  "template": {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "name": "{{title}}",
+    "description": "{{excerpt}}",
+    "url": "{{url}}",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "{{question_1}}",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "{{answer_1}}"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "{{question_2}}",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "{{answer_2}}"
+        }
+      }
+    ],
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{site_name}}",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "{{site_logo}}"
+      }
+    }
+  },
+  "meta": {
+    "title": "{{title}} - {{site_name}}",
+    "description": "{{excerpt}}",
+    "keywords": "{{keywords}}"
+  },
+  "openGraph": {
+    "title": "{{title}}",
+    "description": "{{excerpt}}",
+    "type": "website",
+    "site_name": "{{site_name}}"
+  }
+} 

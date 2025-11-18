@@ -1,0 +1,39 @@
+{
+  "name": "Web Page",
+  "type": "WebPage",
+  "description": "تمپلیت برای صفحات وب",
+  "isActive": true,
+  "template": {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "{{title}}",
+    "description": "{{excerpt}}",
+    "url": "{{url}}",
+    "mainEntity": "{{content}}",
+    "breadcrumb": "{{breadcrumb}}",
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{site_name}}",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "{{site_logo}}"
+      }
+    },
+    "datePublished": "{{published_at}}",
+    "dateModified": "{{updated_at}}",
+    "inLanguage": "fa",
+    "isAccessibleForFree": "true"
+  },
+  "meta": {
+    "title": "{{title}} - {{site_name}}",
+    "description": "{{excerpt}}",
+    "keywords": "{{keywords}}"
+  },
+  "openGraph": {
+    "title": "{{title}}",
+    "description": "{{excerpt}}",
+    "image": "{{featured_image}}",
+    "type": "website",
+    "site_name": "{{site_name}}"
+  }
+} 

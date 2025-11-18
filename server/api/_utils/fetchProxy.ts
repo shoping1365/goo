@@ -1,0 +1,170 @@
+import { createError, H3Event, appendHeader } from 'h3'
+
+function parseCookieHeader(header?: string | null) {
+  const map = new Map<string, string>()
+  if (!header) return map
+
+  const parts = header.split(';')
+  for (const part of parts) {
+    const [rawName, ...rawValueParts] = part.split('=')
+    if (!rawName) continue
+    const name = rawName.trim()
+    if (!name) continue
+    const rawValue = rawValueParts.join('=').trim()
+    if (!rawValue) {
+      map.set(name, '')
+      continue
+    }
+    try {
+      map.set(name, decodeURIComponent(rawValue))
+    } catch {
+      map.set(name, rawValue)
+    }
+  }
+
+  return map
+}
+
+const getCookieCompat = (event: H3Event, name: string) => {
+  try {
+    // Try h3 v2 way: event.req.headers (Headers object)
+    const reqHeaders = (event as any).req?.headers || event.node?.req?.headers
+    
+    if (!reqHeaders) return undefined
+    
+    let cookieHeader: string | undefined
+    
+    // Try Headers API (h3 v2)
+    if (typeof reqHeaders.get === 'function') {
+      cookieHeader = reqHeaders.get('cookie') || undefined
+    } else {
+      // Fallback: plain object (legacy)
+      const cookie = reqHeaders.cookie || reqHeaders.Cookie
+      cookieHeader = cookie ? (Array.isArray(cookie) ? cookie.join('; ') : cookie) : undefined
+    }
+    
+    if (cookieHeader) {
+      return parseCookieHeader(cookieHeader).get(name)
+    }
+  } catch (e) {
+    // Ignore errors
+  }
+  
+  return undefined
+}
+
+export async function proxy(
+  event: H3Event,
+  url: string,
+  opts: RequestInit & { retry?: number; timeout?: number } = {}
+) {
+  // درخواست اصلی از Nuxt شامل body (stream) و رأس‌های اصلی است؛ آن‌ها را به backend فوروارد می‌کنیم
+  const nodeReq = event.node?.req || (event.req as any)
+  if (!nodeReq || !nodeReq.headers) {
+    throw createError({ statusCode: 500, message: 'Request headers are unavailable for proxying' })
+  }
+
+  // تنظیمات پیش‌فرض: همان متد، همان body، و کپی هدرها (به جز host و content-length که توسط fetch تنظیم می‌شود)
+  const { host, "content-length": _cl, ...forwardHeaders } = nodeReq.headers as Record<string, string>
+
+  // انتقال کل هدر Cookie ورودی (برای دسترسی به refresh_token و سایر کوکی‌ها)
+  if (nodeReq.headers.cookie) {
+    forwardHeaders['Cookie'] = nodeReq.headers.cookie as string
+  }
+
+  // هدرها را با هدرهای سفارشی ادغام می‌کنیم تا کوکی/IP/UA حفظ شوند و بتوانیم هدرهای اضافه مانند X-User را بیافزاییم
+  const { headers: overrideHeaders, method: overrideMethod, body: providedBody, timeout, ...restOpts } = opts
+  const customHeaders = (overrideHeaders || {}) as Record<string, string>
+  const mergedHeaders: Record<string, string> = { ...forwardHeaders, ...customHeaders }
+
+  // اگر فراخواننده Authorization را ننوشته بود، از access_token موجود در کوکی بسازیم
+  if (!('authorization' in mergedHeaders) && !('Authorization' in mergedHeaders)) {
+    const authToken = getCookieCompat(event, 'access_token') || getCookieCompat(event, 'auth-token')
+    if (authToken) {
+      mergedHeaders['Authorization'] = `Bearer ${authToken}`
+    }
+  }
+
+  // ممنوعیت هدرهای سفارشی (X-User-ID, X-User-Role) طبق سیاست امنیتی
+
+
+  const method = (overrideMethod || nodeReq.method || 'GET').toUpperCase()
+  const requestInit: RequestInit & { timeout?: number } = {
+    ...restOpts,
+    method,
+    headers: mergedHeaders,
+    timeout: timeout || 60000
+  }
+
+  // اگر opts.body ارائه شده، از آن استفاده کن، در غیر این صورت از nodeReq
+  if (providedBody) {
+    requestInit.body = providedBody
+  } else if (method !== 'GET' && method !== 'HEAD') {
+    requestInit.body = nodeReq as any
+    // Required for streaming bodies with undici/fetch in Node 18+
+    // @ts-ignore
+    requestInit.duplex = 'half'
+  }
+
+  try {
+    // Validate URL before making request
+    try {
+      new URL(url)
+    } catch (urlError: any) {
+      console.error('[fetchProxy] Invalid URL:', { url, error: urlError?.message })
+      throw createError({
+        statusCode: 500,
+        message: `Invalid URL: ${urlError?.message || 'Unknown error'}`,
+        data: { url, error: urlError?.message }
+      })
+    }
+    
+    // @ts-ignore - $fetch provided by Nitro runtime
+    const res = await $fetch.raw(url, requestInit)
+
+    return processResponse(event, res)
+  } catch (error: any) {
+    // اگر خطا از createError است، مستقیماً throw کن
+    if (error?.statusCode) {
+      throw error
+    }
+    
+    const msg = String(error?.message || '')
+    const streamLike = msg.includes('premature close') || msg.includes('Cannot pipe to a closed') || msg.includes('write after end') || msg.includes('destroyed stream')
+    if (streamLike) {
+      // تبدیل به خطای بی‌خطر 499 (Client Closed Request)
+      throw createError({ statusCode: 499, message: 'Client closed request' })
+    }
+    console.error('❌ fetchProxy error:', error)
+    console.error('URL:', url)
+    try { console.error('Options:', JSON.stringify({ ...requestInit, body: undefined }, null, 2)) } catch {}
+    throw error
+  }
+}
+
+function processResponse(event: H3Event, res: any) {
+  // Forward Set-Cookie headers from upstream so browser stores auth cookies
+  try {
+    const anyHeaders: any = res.headers as any
+    const setCookies: string[] = typeof anyHeaders?.getSetCookie === 'function'
+      ? anyHeaders.getSetCookie()
+      : ([] as string[])
+    if (Array.isArray(setCookies) && setCookies.length > 0) {
+      for (const sc of setCookies) appendHeader(event, 'set-cookie', sc)
+    } else {
+      const single = res.headers.get('set-cookie')
+      if (single) appendHeader(event, 'set-cookie', single)
+    }
+  } catch { }
+
+  const data: any = res._data
+  if (!res.ok) {
+    const msg = data?.message || data?.error || res.statusText || 'خطا'
+    throw createError({
+      statusCode: res.status,
+      message: msg,
+      data,
+    })
+  }
+  return data
+}

@@ -1,0 +1,68 @@
+{
+  "name": "Digital Product",
+  "type": "Product",
+  "description": "تمپلیت برای محصولات دیجیتال",
+  "isActive": true,
+  "template": {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "{{title}}",
+    "description": "{{excerpt}}",
+    "image": "{{featured_image}}",
+    "brand": {
+      "@type": "Brand",
+      "name": "{{brand_name}}",
+      "url": "{{brand_url}}"
+    },
+    "category": "{{category_name}}",
+    "sku": "{{sku}}",
+    "mpn": "{{mpn}}",
+    "model": "{{model}}",
+    "softwareVersion": "{{software_version}}",
+    "operatingSystem": "{{operating_system}}",
+    "applicationCategory": "{{application_category}}",
+    "applicationSubCategory": "{{application_subcategory}}",
+    "fileSize": "{{file_size}}",
+    "downloadUrl": "{{download_url}}",
+    "installUrl": "{{install_url}}",
+    "releaseNotes": "{{release_notes}}",
+    "offers": {
+      "@type": "Offer",
+      "price": "{{price}}",
+      "priceCurrency": "{{currency}}",
+      "priceValidUntil": "{{price_valid_until}}",
+      "availability": "{{availability}}",
+      "url": "{{url}}",
+      "seller": {
+        "@type": "Organization",
+        "name": "{{site_name}}"
+      },
+      "deliveryMethod": "https://purl.org/goodrelations/v1#OnSite",
+      "eligibleRegion": {
+        "@type": "Country",
+        "name": "{{eligible_region}}"
+      }
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "{{rating}}",
+      "reviewCount": "{{review_count}}",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "review": "{{reviews}}",
+    "additionalProperty": "{{additional_properties}}"
+  },
+  "meta": {
+    "title": "{{title}} - {{site_name}}",
+    "description": "{{excerpt}}",
+    "keywords": "{{keywords}}"
+  },
+  "openGraph": {
+    "title": "{{title}}",
+    "description": "{{excerpt}}",
+    "image": "{{featured_image}}",
+    "type": "product",
+    "site_name": "{{site_name}}"
+  }
+} 

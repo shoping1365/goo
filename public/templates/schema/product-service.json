@@ -1,0 +1,66 @@
+{
+  "name": "Service Product",
+  "type": "Service",
+  "description": "تمپلیت برای محصولات خدماتی",
+  "isActive": true,
+  "template": {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "{{title}}",
+    "description": "{{excerpt}}",
+    "image": "{{featured_image}}",
+    "provider": {
+      "@type": "Organization",
+      "name": "{{site_name}}",
+      "url": "{{site_url}}"
+    },
+    "serviceType": "{{service_type}}",
+    "category": "{{category_name}}",
+    "areaServed": {
+      "@type": "Country",
+      "name": "{{area_served}}"
+    },
+    "availableChannel": {
+      "@type": "ServiceChannel",
+      "serviceUrl": "{{service_url}}"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "{{catalog_name}}",
+      "itemListElement": "{{service_items}}"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "{{price}}",
+      "priceCurrency": "{{currency}}",
+      "priceValidUntil": "{{price_valid_until}}",
+      "availability": "{{availability}}",
+      "url": "{{url}}",
+      "seller": {
+        "@type": "Organization",
+        "name": "{{site_name}}"
+      }
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "{{rating}}",
+      "reviewCount": "{{review_count}}",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "review": "{{reviews}}",
+    "additionalProperty": "{{additional_properties}}"
+  },
+  "meta": {
+    "title": "{{title}} - {{site_name}}",
+    "description": "{{excerpt}}",
+    "keywords": "{{keywords}}"
+  },
+  "openGraph": {
+    "title": "{{title}}",
+    "description": "{{excerpt}}",
+    "image": "{{featured_image}}",
+    "type": "website",
+    "site_name": "{{site_name}}"
+  }
+} 

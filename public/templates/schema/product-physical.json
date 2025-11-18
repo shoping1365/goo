@@ -1,0 +1,93 @@
+{
+  "name": "Physical Product",
+  "type": "Product",
+  "description": "تمپلیت برای محصولات فیزیکی",
+  "isActive": true,
+  "template": {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "{{title}}",
+    "description": "{{excerpt}}",
+    "image": "{{featured_image}}",
+    "brand": {
+      "@type": "Brand",
+      "name": "{{brand_name}}",
+      "url": "{{brand_url}}"
+    },
+    "category": "{{category_name}}",
+    "sku": "{{sku}}",
+    "mpn": "{{mpn}}",
+    "gtin": "{{gtin}}",
+    "model": "{{model}}",
+    "color": "{{color}}",
+    "size": "{{size}}",
+    "weight": {
+      "@type": "QuantitativeValue",
+      "value": "{{weight_value}}",
+      "unitText": "{{weight_unit}}"
+    },
+    "dimensions": {
+      "@type": "QuantitativeValue",
+      "width": "{{width}}",
+      "height": "{{height}}",
+      "depth": "{{depth}}",
+      "unitText": "{{dimension_unit}}"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "{{price}}",
+      "priceCurrency": "{{currency}}",
+      "priceValidUntil": "{{price_valid_until}}",
+      "availability": "{{availability}}",
+      "url": "{{url}}",
+      "seller": {
+        "@type": "Organization",
+        "name": "{{site_name}}"
+      },
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingRate": {
+          "@type": "MonetaryAmount",
+          "value": "{{shipping_cost}}",
+          "currency": "{{currency}}"
+        },
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "handlingTime": {
+            "@type": "QuantitativeValue",
+            "minValue": "{{handling_time_min}}",
+            "maxValue": "{{handling_time_max}}",
+            "unitCode": "DAY"
+          },
+          "transitTime": {
+            "@type": "QuantitativeValue",
+            "minValue": "{{transit_time_min}}",
+            "maxValue": "{{transit_time_max}}",
+            "unitCode": "DAY"
+          }
+        }
+      }
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "{{rating}}",
+      "reviewCount": "{{review_count}}",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "review": "{{reviews}}",
+    "additionalProperty": "{{additional_properties}}"
+  },
+  "meta": {
+    "title": "{{title}} - {{site_name}}",
+    "description": "{{excerpt}}",
+    "keywords": "{{keywords}}"
+  },
+  "openGraph": {
+    "title": "{{title}}",
+    "description": "{{excerpt}}",
+    "image": "{{featured_image}}",
+    "type": "product",
+    "site_name": "{{site_name}}"
+  }
+} 

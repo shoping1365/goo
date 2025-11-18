@@ -1,0 +1,287 @@
+# فایل‌های تصویری (همه ignore می‌شوند مگر نمونه‌ها)
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.tiff
+*.webp
+*.ico
+*.psd
+*.ai
+*.eps
+*.raw
+*.cr2
+*.nef
+*.arw
+*.heic
+*.heif
+
+# EXCEPTION: نمونه عکس‌های کوچک برای تست (اگر لازم باشد)
+# !public/uploads/media/**/sample.jpg
+# !public/uploads/media/**/sample.webp
+
+# فایل‌های ویدیویی
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.wmv
+*.flv
+*.webm
+*.m4v
+*.mpg
+*.mpeg
+*.3gp
+*.mts
+*.m2ts
+
+*.vob
+*.ogv
+*.mxf
+
+# فایل‌های صوتی
+*.mp3
+*.wav
+*.ogg
+*.m4a
+*.aac
+*.flac
+*.wma
+*.aiff
+
+# فایل‌های اسناد و آرشیو
+*.pdf
+*.doc
+*.docx
+*.xls
+*.xlsx
+*.ppt
+*.pptx
+*.zip
+*.rar
+*.7z
+*.tar
+*.gz
+*.bz2
+*.iso
+*.dmg
+
+# ===================================
+# 📚 فایل‌های مستندات (نباید روی سرور بروند)
+# ===================================
+docs/
+*.md
+!README.md
+# مستندات فارسی
+*.md
+نصب_*.md
+راهنمای_*.md
+
+# فایل‌های بزرگ و بسته‌های نرم‌افزاری
+pack for windows/
+pack for windows/**/*
+*.7z
+*.zip
+
+# فایل‌های توسعه
+node_modules/
+.nuxt/
+.output/
+dist/
+build/
+coverage/
+.next/
+.cache/
+.temp/
+.tmp/
+
+# فایل‌های محیطی
+.env
+.env.local
+.env.*.local
+!/my-go-backend/.env.example
+#/my-go-backend/.env is intentionally allowed for backend local config
+*.env.local
+*.env.development
+*.env.production
+
+# ===================================
+# 🔐 فایل‌های حساس و SSL
+# ===================================
+# SSL Certificates - این فایل‌ها هرگز نباید در Git قرار بگیرند
+*.pem
+*.key
+*.crt
+*.cert
+*.p12
+*.pfx
+*.ca-bundle
+
+# SSL directories (برای هر پروژه)
+ssl/
+certs/
+certificates/
+*/ssl/
+*/certs/
+*/certificates/
+
+# Private keys
+*.priv
+*.private
+id_rsa
+id_rsa.pub
+*.ppk
+
+# Database files - از commit شدن دیتابیس جلوگیری می‌کند
+*.db
+*.sqlite
+*.sqlite3
+
+# Backup files
+*.backup
+*.bak
+*.old
+backup/
+backups/
+
+# Environment-specific configs (هر پروژه .env خودش رو داره)
+# این فایل‌ها فقط روی سرور هستند و نباید commit بشن
+
+# ===================================
+# 📝 نکته مهم:
+# - فایل‌های SSL باید دستی روی سرور نصب بشن
+# - فایل‌های .env باید دستی روی سرور ایجاد بشن
+# - این فایل‌ها با rsync کپی نمی‌شن (--exclude)
+# ===================================
+
+# فایل‌های IDE و ویرایشگر
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+.project
+.classpath
+.settings/
+*.code-workspace
+
+# فایل‌های سیستمی
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# فایل‌های لاگ
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# فایل‌های موقت
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# فایل‌های بیلد
+*.exe
+*.dll
+*.so
+*.dylib
+*.class
+*.jar
+*.war
+*.ear
+*.apk
+*.ipa
+
+# Misc
+.fleet
+
+# Media files
+my-go-backend/media/
+public/uploads/
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+vendor/
+
+# Go workspace file
+go.work
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Database files
+*.db
+*.sqlite
+
+# Redis files
+dump.rdb
+*.rdb
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Nuxt.js
+.nuxt/
+dist/
+.output/
+
+# PM2 ecosystem config (server-specific)
+ecosystem.config.cjs
+
+# Patch files (temporary development changes)
+patches/
+*.diff
+*.patch
+
+# Docker volumes
+postgres_data/
+redis_data/
+
+# --- Video transport stream files (only under media/public directories) ---
+# If you need to ignore MPEG-TS video chunks, specify the directory explicitly instead
+# For example, ignore ".ts" only inside public/uploads or assets/videos
+# public/uploads/**/*.ts
+# assets/videos/**/*.ts
+#
+# The previous blanket "*.ts" rule prevented new TypeScript source files from being committed
+# and is therefore removed.
+
+# Test Reports
+pre-deploy-tests-*.log
+security-report-*.txt
+npm-audit.json
+vulncheck.json
+coverage.out

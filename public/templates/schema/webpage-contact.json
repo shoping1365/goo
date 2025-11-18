@@ -1,0 +1,48 @@
+{
+  "name": "Contact Page",
+  "type": "ContactPage",
+  "description": "تمپلیت برای صفحات تماس",
+  "isActive": true,
+  "template": {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "{{title}}",
+    "description": "{{excerpt}}",
+    "url": "{{url}}",
+    "mainEntity": "{{content}}",
+    "breadcrumb": "{{breadcrumb}}",
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{site_name}}",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "{{site_logo}}"
+      }
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "{{telephone}}",
+      "email": "{{email}}",
+      "contactType": "customer service",
+      "availableLanguage": "fa",
+      "hoursAvailable": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "{{working_days}}",
+        "opens": "{{opens_time}}",
+        "closes": "{{closes_time}}"
+      }
+    }
+  },
+  "meta": {
+    "title": "{{title}} - {{site_name}}",
+    "description": "{{excerpt}}",
+    "keywords": "{{keywords}}"
+  },
+  "openGraph": {
+    "title": "{{title}}",
+    "description": "{{excerpt}}",
+    "image": "{{featured_image}}",
+    "type": "website",
+    "site_name": "{{site_name}}"
+  }
+} 

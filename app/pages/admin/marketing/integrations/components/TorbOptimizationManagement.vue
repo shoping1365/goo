@@ -1,0 +1,51 @@
+<template>
+  <div class="bg-white rounded-lg shadow-md p-6">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">مدیریت بهینه‌سازی سرویس Torb</h3>
+    
+    <!-- آمار بهینه‌سازی -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+      <div class="bg-blue-50 p-6 rounded-lg">
+        <div class="text-sm text-blue-600">نمره عملکرد</div>
+        <div class="text-2xl font-bold text-blue-800">۸۹</div>
+      </div>
+      <div class="bg-green-50 p-6 rounded-lg">
+        <div class="text-sm text-green-600">بهینه‌سازی‌های انجام شده</div>
+        <div class="text-2xl font-bold text-green-800">۲۴</div>
+      </div>
+      <div class="bg-purple-50 p-6 rounded-lg">
+        <div class="text-sm text-purple-600">صرفه‌جویی در منابع</div>
+        <div class="text-2xl font-bold text-purple-800">۳۵٪</div>
+      </div>
+      <div class="bg-orange-50 p-6 rounded-lg">
+        <div class="text-sm text-orange-600">زمان بارگذاری</div>
+        <div class="text-2xl font-bold text-orange-800">۱.۲ ثانیه</div>
+      </div>
+    </div>
+
+    <!-- نمودار بهینه‌سازی -->
+    <div class="mb-6">
+      <h4 class="text-md font-medium text-gray-700 mb-3">نمودار بهینه‌سازی</h4>
+      <div class="bg-gray-50 p-6 rounded-lg h-64 flex items-center justify-center">
+        <div class="text-center">
+          <div class="text-gray-500 mb-2">نمودار بهینه‌سازی</div>
+          <div class="text-sm text-gray-400">نمایش روند بهینه‌سازی‌ها</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- دکمه‌های عملیات -->
+    <div class="flex justify-end space-x-3 space-x-reverse">
+      <button class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+        صادر کردن گزارش
+      </button>
+      <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+        بروزرسانی
+      </button>
+    </div>
+  </div>
+</template>
+
+<script setup>
+// کامپوننت مدیریت بهینه‌سازی سرویس Torb
+// این کامپوننت مدیریت و نظارت بر بهینه‌سازی را فراهم می‌کند
+</script> 

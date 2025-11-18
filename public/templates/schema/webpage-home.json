@@ -1,0 +1,50 @@
+{
+  "name": "Homepage",
+  "type": "WebPage",
+  "description": "تمپلیت برای صفحه اصلی",
+  "isActive": true,
+  "template": {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "{{title}}",
+    "description": "{{excerpt}}",
+    "url": "{{url}}",
+    "mainEntity": "{{content}}",
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "خانه",
+          "item": "{{home_url}}"
+        }
+      ]
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{site_name}}",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "{{site_logo}}"
+      }
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "{{search_url}}",
+      "query-input": "required name=search_term_string"
+    }
+  },
+  "meta": {
+    "title": "{{title}} - {{site_name}}",
+    "description": "{{excerpt}}",
+    "keywords": "{{keywords}}"
+  },
+  "openGraph": {
+    "title": "{{title}}",
+    "description": "{{excerpt}}",
+    "image": "{{featured_image}}",
+    "type": "website",
+    "site_name": "{{site_name}}"
+  }
+} 

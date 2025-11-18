@@ -1,0 +1,158 @@
+{
+  "templates": [
+    {
+      "id": "article",
+      "name": "Article",
+      "type": "Article",
+      "description": "تمپلیت برای مقالات",
+      "file": "article.json",
+      "isActive": true
+    },
+    {
+      "id": "article-blog",
+      "name": "Blog Posting",
+      "type": "BlogPosting",
+      "description": "تمپلیت برای مقالات وبلاگ",
+      "file": "article-blog.json",
+      "isActive": true
+    },
+    {
+      "id": "article-news",
+      "name": "News Article",
+      "type": "NewsArticle",
+      "description": "تمپلیت برای مقالات خبری",
+      "file": "article-news.json",
+      "isActive": true
+    },
+    {
+      "id": "article-technical",
+      "name": "Technical Article",
+      "type": "TechArticle",
+      "description": "تمپلیت برای مقالات فنی و تخصصی",
+      "file": "article-technical.json",
+      "isActive": true
+    },
+    {
+      "id": "product",
+      "name": "Product",
+      "type": "Product",
+      "description": "تمپلیت برای محصولات",
+      "file": "product.json",
+      "isActive": true
+    },
+    {
+      "id": "product-physical",
+      "name": "Physical Product",
+      "type": "Product",
+      "description": "تمپلیت برای محصولات فیزیکی",
+      "file": "product-physical.json",
+      "isActive": true
+    },
+    {
+      "id": "product-digital",
+      "name": "Digital Product",
+      "type": "Product",
+      "description": "تمپلیت برای محصولات دیجیتال",
+      "file": "product-digital.json",
+      "isActive": true
+    },
+    {
+      "id": "product-service",
+      "name": "Service Product",
+      "type": "Service",
+      "description": "تمپلیت برای محصولات خدماتی",
+      "file": "product-service.json",
+      "isActive": true
+    },
+    {
+      "id": "organization",
+      "name": "Organization",
+      "type": "Organization",
+      "description": "تمپلیت برای سازمان‌ها",
+      "file": "organization.json",
+      "isActive": true
+    },
+    {
+      "id": "organization-corporation",
+      "name": "Corporation",
+      "type": "Corporation",
+      "description": "تمپلیت برای شرکت‌های بزرگ",
+      "file": "organization-corporation.json",
+      "isActive": true
+    },
+    {
+      "id": "organization-ngo",
+      "name": "NGO",
+      "type": "NGO",
+      "description": "تمپلیت برای سازمان‌های غیردولتی",
+      "file": "organization-ngo.json",
+      "isActive": true
+    },
+    {
+      "id": "webpage",
+      "name": "Web Page",
+      "type": "WebPage",
+      "description": "تمپلیت برای صفحات وب",
+      "file": "webpage.json",
+      "isActive": true
+    },
+    {
+      "id": "webpage-home",
+      "name": "Homepage",
+      "type": "WebPage",
+      "description": "تمپلیت برای صفحه اصلی",
+      "file": "webpage-home.json",
+      "isActive": true
+    },
+    {
+      "id": "webpage-contact",
+      "name": "Contact Page",
+      "type": "ContactPage",
+      "description": "تمپلیت برای صفحات تماس",
+      "file": "webpage-contact.json",
+      "isActive": true
+    },
+    {
+      "id": "webpage-about",
+      "name": "About Page",
+      "type": "AboutPage",
+      "description": "تمپلیت برای صفحات درباره ما",
+      "file": "webpage-about.json",
+      "isActive": true
+    },
+    {
+      "id": "breadcrumb",
+      "name": "Breadcrumb List",
+      "type": "BreadcrumbList",
+      "description": "تمپلیت برای مسیر ناوبری",
+      "file": "breadcrumb.json",
+      "isActive": true
+    },
+    {
+      "id": "faq",
+      "name": "FAQ Page",
+      "type": "FAQPage",
+      "description": "تمپلیت برای سوالات متداول",
+      "file": "faq.json",
+      "isActive": true
+    },
+    {
+      "id": "localbusiness",
+      "name": "Local Business",
+      "type": "LocalBusiness",
+      "description": "تمپلیت برای کسب و کار محلی",
+      "file": "localbusiness.json",
+      "isActive": true
+    },
+    {
+      "id": "review",
+      "name": "Review",
+      "type": "Review",
+      "description": "تمپلیت برای نظرات",
+      "file": "review.json",
+      "isActive": true
+    }
+  ],
+  "total": 19,
+  "lastUpdated": "2024-12-19T10:00:00Z"
+} 

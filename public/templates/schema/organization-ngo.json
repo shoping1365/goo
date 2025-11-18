@@ -1,0 +1,61 @@
+{
+  "name": "NGO",
+  "type": "NGO",
+  "description": "تمپلیت برای سازمان‌های غیردولتی",
+  "isActive": true,
+  "template": {
+    "@context": "https://schema.org",
+    "@type": "NGO",
+    "name": "{{title}}",
+    "description": "{{description}}",
+    "url": "{{url}}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{logo}}",
+      "width": "{{logo_width}}",
+      "height": "{{logo_height}}"
+    },
+    "foundingDate": "{{founding_date}}",
+    "numberOfEmployees": {
+      "@type": "QuantitativeValue",
+      "value": "{{employee_count}}"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "{{address}}",
+      "addressLocality": "{{city}}",
+      "addressRegion": "{{state}}",
+      "postalCode": "{{postal_code}}",
+      "addressCountry": "{{country}}"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "{{telephone}}",
+      "email": "{{email}}",
+      "contactType": "customer service",
+      "availableLanguage": "fa"
+    },
+    "sameAs": "{{social_media_links}}",
+    "mission": "{{mission}}",
+    "areaServed": {
+      "@type": "Country",
+      "name": "{{area_served}}"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "{{catalog_name}}",
+      "itemListElement": "{{catalog_items}}"
+    }
+  },
+  "meta": {
+    "title": "{{title}} - {{site_name}}",
+    "description": "{{description}}"
+  },
+  "openGraph": {
+    "title": "{{title}}",
+    "description": "{{description}}",
+    "image": "{{logo}}",
+    "type": "website",
+    "site_name": "{{site_name}}"
+  }
+} 

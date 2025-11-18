@@ -1,0 +1,58 @@
+{
+  "name": "Product",
+  "type": "Product",
+  "description": "تمپلیت برای محصولات",
+  "isActive": true,
+  "template": {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "{{title}}",
+    "description": "{{excerpt}}",
+    "image": {
+      "@type": "ImageObject",
+      "url": "{{featured_image}}",
+      "width": "{{image_width}}",
+      "height": "{{image_height}}"
+    },
+    "brand": {
+      "@type": "Brand",
+      "name": "{{brand_name}}",
+      "url": "{{brand_url}}"
+    },
+    "category": "{{category_name}}",
+    "sku": "{{sku}}",
+    "mpn": "{{mpn}}",
+    "gtin": "{{gtin}}",
+    "offers": {
+      "@type": "Offer",
+      "price": "{{price}}",
+      "priceCurrency": "{{currency}}",
+      "priceValidUntil": "{{price_valid_until}}",
+      "availability": "{{availability}}",
+      "url": "{{url}}",
+      "seller": {
+        "@type": "Organization",
+        "name": "{{site_name}}"
+      }
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "{{rating}}",
+      "reviewCount": "{{review_count}}",
+      "bestRating": "5",
+      "worstRating": "1"
+    }
+  },
+  "meta": {
+    "title": "{{title}} - {{site_name}}",
+    "description": "{{excerpt}}",
+    "keywords": "{{keywords}}"
+  },
+  "openGraph": {
+    "title": "{{title}}",
+    "description": "{{excerpt}}",
+    "image": "{{featured_image}}",
+    "type": "product",
+    "site_name": "{{site_name}}"
+  }
+} 

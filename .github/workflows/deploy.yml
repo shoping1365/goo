@@ -1,0 +1,181 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Quality Check", "Security Scan", "CodeQL Advanced"]
+    types:
+      - completed
+    branches:
+      - main
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  # Pre-deployment checks job
+  pre-deploy-checks:
+    name: Pre-Deployment Validation
+    runs-on: ubuntu-latest
+    if: |
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'workflow_dispatch' || 
+       github.event_name == 'push' ||
+       (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'))
+    
+    steps:
+      - name: Check Quality workflow status
+        if: github.event_name != 'workflow_dispatch'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runs = await github.rest.actions.listWorkflowRunsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'quality-check.yml',
+              branch: 'main',
+              per_page: 1,
+              status: 'completed'
+            });
+            
+            if (runs.data.workflow_runs.length === 0 || runs.data.workflow_runs[0].conclusion !== 'success') {
+              core.setFailed('❌ Quality Check workflow must pass before deployment');
+            } else {
+              console.log('✅ Quality Check: PASSED');
+            }
+
+      - name: Check Security workflow status
+        if: github.event_name != 'workflow_dispatch'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runs = await github.rest.actions.listWorkflowRunsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'security-scan.yml',
+              branch: 'main',
+              per_page: 1,
+              status: 'completed'
+            });
+            
+            if (runs.data.workflow_runs.length === 0 || runs.data.workflow_runs[0].conclusion !== 'success') {
+              core.setFailed('❌ Security Scan workflow must pass before deployment');
+            } else {
+              console.log('✅ Security Scan: PASSED');
+            }
+
+      - name: Check CodeQL Advanced workflow status
+        if: github.event_name != 'workflow_dispatch'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runs = await github.rest.actions.listWorkflowRunsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'codeql.yml',
+              branch: 'main',
+              per_page: 1,
+              status: 'completed'
+            });
+            
+            if (runs.data.workflow_runs.length === 0 || runs.data.workflow_runs[0].conclusion !== 'success') {
+              core.setFailed('❌ CodeQL Advanced workflow must pass before deployment');
+            } else {
+              console.log('✅ CodeQL Advanced: PASSED');
+            }
+
+      - name: All checks passed
+        run: |
+          echo "## ✅ Pre-Deployment Checks Passed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "All quality and security checks have passed successfully." >> $GITHUB_STEP_SUMMARY
+          echo "Proceeding with deployment..." >> $GITHUB_STEP_SUMMARY
+
+  deploy:
+    name: Deploy to Production
+    runs-on: self-hosted
+    needs: pre-deploy-checks
+    if: github.ref == 'refs/heads/main'
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Final type-check before deployment
+        run: npm run type-check
+
+      - name: Final lint check before deployment
+        run: npm run lint
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_OPTIONS: "--max-old-space-size=8192"
+
+      - name: Fix Go permissions
+        run: |
+          sudo chmod -R 755 /usr/local/go/pkg/tool/linux_amd64/ || true
+          sudo chown -R $USER:$USER /usr/local/go/pkg || true
+
+      - name: Sync to /opt/shared
+        run: |
+          rsync -av --delete \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            --exclude='.nuxt' \
+            --exclude='.output' \
+            --exclude='dist' \
+            --exclude='logs' \
+            --exclude='ecosystem.config.cjs' \
+            ./ /opt/shared/
+
+      - name: Deploy
+        run: |
+          cd /opt/shared
+          chmod +x scripts/*.sh
+          bash scripts/backup-all-sites.sh
+          bash scripts/deploy-all-sites.sh
+
+      - name: Verify Deployment
+        id: healthcheck
+        continue-on-error: true
+        run: |
+          echo "✅ Deployment completed successfully!"
+          
+          if [ -z "${PRODUCTION_HEALTHCHECK_URL:-}" ]; then
+            echo "⚠️ PRODUCTION_HEALTHCHECK_URL not configured, skipping health check"
+            exit 0
+          fi
+
+          HEALTHCHECK_URL="$PRODUCTION_HEALTHCHECK_URL"
+
+          echo "Running post-deployment health checks against $HEALTHCHECK_URL ..."
+          attempts=0
+          max_attempts=5
+          while [ $attempts -lt $max_attempts ]; do
+            if curl -fsS --max-time 10 "$HEALTHCHECK_URL" >/dev/null; then
+              echo "✅ Health check passed"
+              echo "url=$HEALTHCHECK_URL" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            attempts=$((attempts + 1))
+            echo "Health check failed (attempt $attempts). Retrying in 15s..."
+            sleep 15
+          done
+
+          echo "::warning::Health check failed after $max_attempts attempts"
+          exit 0

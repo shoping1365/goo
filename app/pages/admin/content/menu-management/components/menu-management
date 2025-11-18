@@ -1,0 +1,174 @@
+<template>
+  <div class="menu-options-panel bg-white rounded-lg shadow-md p-0 w-full">
+    <div class="border-b px-4 py-3 font-bold text-center text-gray-700 text-sm">افزودن گزینه‌های فهرست</div>
+    <div>
+      <AccordionSection
+        v-for="section in sections"
+        :key="section.id"
+        :title="section.title"
+        v-model:open="openSections[section.id]"
+      >
+        <template v-if="section.id === 'custom'">
+          <form @submit.prevent="addCustomLink" class="space-y-2 mt-2">
+            <div>
+              <label class="block text-xs mb-1">نشانی اینترنتی</label>
+              <input v-model="customLink.url" type="url" class="w-full border rounded px-2 py-1 text-xs" placeholder="https://" required />
+            </div>
+            <div>
+              <label class="block text-xs mb-1">متن پیوند</label>
+              <input v-model="customLink.title" type="text" class="w-full border rounded px-2 py-1 text-xs" required />
+            </div>
+            <button type="submit" class="w-full border border-red-400 text-red-600 rounded py-1 text-xs mt-1 hover:bg-red-50 disabled:opacity-50" :disabled="!customLink.url || !customLink.title">
+              افزودن به فهرست
+            </button>
+          </form>
+        </template>
+        <template v-else>
+          <div class="space-y-2 mt-2">
+            <div v-if="section.searchable" class="mb-2 flex items-center gap-2">
+              <input v-model="search[section.id]" type="text" class="w-full border rounded px-2 py-1 text-xs" placeholder="جستجو" />
+            </div>
+            <div class="max-h-40 overflow-y-auto pr-1">
+              <div v-for="item in filteredItems(section)" :key="item.id" class="flex items-center gap-2 py-1">
+                <input type="checkbox" :id="section.id + '-' + item.id" v-model="selected[section.id]" :value="item.id" class="accent-blue-600" />
+                <label :for="section.id + '-' + item.id" class="text-xs cursor-pointer">{{ item.title }}</label>
+              </div>
+              <div v-if="filteredItems(section).length === 0" class="text-xs text-gray-400 py-2 text-center">موردی یافت نشد</div>
+            </div>
+            <div class="flex items-center justify-between mt-2">
+              <div class="flex items-center gap-1">
+                <input type="checkbox" :id="'select-all-' + section.id" @change="toggleSelectAll(section)" :checked="allSelected(section)" class="accent-blue-600" />
+                <label :for="'select-all-' + section.id" class="text-xs cursor-pointer">انتخاب همه</label>
+              </div>
+              <button @click="addSelected(section)" class="border border-red-400 text-red-600 rounded px-2 py-1 text-xs hover:bg-red-50 disabled:opacity-50" :disabled="selected[section.id].length === 0">
+                افزودن به فهرست
+              </button>
+            </div>
+          </div>
+        </template>
+      </AccordionSection>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, reactive } from 'vue'
+import AccordionSection from './MenuOptionsPanelAccordion.vue'
+
+// داده‌های نمونه (در پروژه واقعی از API یا props)
+const sections = [
+  { id: 'pages', title: 'برگه‌ها', items: [
+    { id: 'home', title: 'خانه' },
+    { id: 'about', title: 'درباره ما' },
+    { id: 'contact', title: 'تماس با ما' },
+    { id: 'blog', title: 'وبلاگ' },
+  ] },
+  { id: 'posts', title: 'نوشته‌ها', items: [
+    { id: 'post1', title: 'پست اول' },
+    { id: 'post2', title: 'پست دوم' },
+  ] },
+  { id: 'custom', title: 'پیوندهای دلخواه' },
+  { id: 'categories', title: 'دسته‌ها', items: [
+    { id: 'cat1', title: 'مجله ابزارشیا' },
+    { id: 'cat2', title: 'آموزش' },
+  ], searchable: true },
+  { id: 'product-categories', title: 'دسته‌های محصولات', items: [
+    { id: 'pcat1', title: 'لوازم جانبی جارو رباتیک' },
+    { id: 'pcat2', title: 'کاور موبایل' },
+    { id: 'pcat3', title: 'محافظ صفحه و لنز' },
+    { id: 'pcat4', title: 'ساعت هوشمند' },
+    { id: 'pcat5', title: 'هدفون و هندزفری' },
+    { id: 'pcat6', title: 'جارو برقی و جارو رباتیک' },
+    { id: 'pcat7', title: 'آشپزخانه' },
+    { id: 'pcat8', title: 'لوازم پیرایش' },
+    { id: 'pcat9', title: 'گوشی هوشمند' },
+    { id: 'pcat10', title: 'ماشین‌آلات' },
+  ], searchable: true },
+  { id: 'digits', title: 'آیتم های منوی دیجیتس', items: [
+    { id: 'digits1', title: 'ورود با پیامک' },
+    { id: 'digits2', title: 'ثبت‌نام سریع' },
+  ] },
+  { id: 'woocommerce', title: 'گام پایانی ووکامرس', items: [
+    { id: 'woo1', title: 'تکمیل خرید' },
+    { id: 'woo2', title: 'پرداخت' },
+  ] },
+]
+
+const openSections = reactive({
+  pages: false,
+  posts: false,
+  custom: true,
+  categories: false,
+  'product-categories': false,
+  digits: false,
+  woocommerce: false
+})
+
+const selected = reactive({
+  pages: [],
+  posts: [],
+  categories: [],
+  'product-categories': [],
+  digits: [],
+  woocommerce: []
+})
+
+const search = reactive({
+  categories: '',
+  'product-categories': ''
+})
+
+const customLink = reactive({
+  url: '',
+  title: ''
+})
+
+function filteredItems(section) {
+  if (!section.items) return []
+  if (!section.searchable) return section.items
+  const q = (search[section.id] || '').toLowerCase()
+  return section.items.filter(i => i.title.toLowerCase().includes(q))
+}
+
+function allSelected(section) {
+  if (!section.items) return false
+  return selected[section.id]?.length === filteredItems(section).length && filteredItems(section).length > 0
+}
+
+function toggleSelectAll(section) {
+  if (!section.items) return
+  if (allSelected(section)) {
+    selected[section.id] = []
+  } else {
+    selected[section.id] = filteredItems(section).map(i => i.id)
+  }
+}
+
+function addSelected(section) {
+  // اینجا باید emit شود یا به والد اطلاع داده شود
+  // برای دمو فقط reset می‌کنیم
+  selected[section.id] = []
+}
+
+function addCustomLink() {
+  // اینجا باید emit شود یا به والد اطلاع داده شود
+  // برای دمو فقط reset می‌کنیم
+  customLink.url = ''
+  customLink.title = ''
+}
+</script>
+
+<!-- AccordionSection SFC -->
+<!-- components/admin/MenuOptionsPanelAccordion.vue -->
+
+<style scoped>
+.menu-options-panel {
+  min-width: 260px;
+  max-width: 320px;
+  font-family: inherit;
+}
+input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+}
+</style> 

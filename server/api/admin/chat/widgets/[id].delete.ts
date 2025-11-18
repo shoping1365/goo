@@ -1,0 +1,21 @@
+import type { H3Event } from 'h3'
+import { defineEventHandler, getRouterParam } from 'h3'
+import { getCookieValue } from '../../../_utils/cookieHelper'
+
+declare const requireAuth: (event: H3Event) => Promise<{ [key: string]: unknown } | null>
+declare const useRuntimeConfig: () => { public: { goApiBase: string } }
+declare const $fetch: <T = unknown>(url: string, options?: { method?: string; headers?: Record<string, string>; body?: unknown }) => Promise<T>
+
+export default defineEventHandler(async (event: H3Event) => {
+  const id = getRouterParam(event, 'id')
+  await requireAuth(event)
+
+  const config = useRuntimeConfig()
+  const base = config.public.goApiBase
+  const token = getCookieValue(event, 'access_token')
+
+  return await $fetch(`${base}/api/chat/admin/widgets/${encodeURIComponent(id!)}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` }
+  })
+})

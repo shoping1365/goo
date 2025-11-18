@@ -1,0 +1,13 @@
+# Ignore environment variables
+.env
+
+# Ignore Go binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+
+# Ignore vendor directory
+/vendor/ 
