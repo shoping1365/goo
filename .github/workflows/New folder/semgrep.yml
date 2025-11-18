@@ -45,8 +45,8 @@ jobs:
         with:
           # Optional: Only set if you have Semgrep Cloud Platform account
           # publishToken: ${{ secrets.SEMGREP_APP_TOKEN }}
-          generateSarif: "1"
           config: "auto"
+          args: "--sarif --output semgrep.sarif"
 
       # Verify that Semgrep scan completed and SARIF file was generated
       - name: Verify Semgrep scan results
@@ -75,7 +75,6 @@ jobs:
       # Upload SARIF file generated in previous step
       # Only upload if scan was successful (verify step passed)
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v4
+        uses: github/codeql-action/upload-sarif@main
         with:
           sarif_file: semgrep.sarif
-          wait-for-processing: true

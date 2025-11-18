@@ -59,7 +59,6 @@ jobs:
       # Upload SARIF file generated in previous step
       # Only upload if scan was successful (verify step passed)
       - name: Upload DevSkim scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v4
+        uses: github/codeql-action/upload-sarif@main
         with:
           sarif_file: devskim-results.sarif
-          wait-for-processing: true

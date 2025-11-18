@@ -1,0 +1,264 @@
+name: Check All Tests and Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+concurrency:
+  # Only one check-and-deploy per commit
+  group: check-and-deploy-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  check-all-tests:
+    name: Wait for All Tests to Pass
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - name: Wait for all required workflows to complete
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const commitSha = context.sha;
+            const requiredWorkflows = [
+              'Quality Check',
+              'Security Scan', 
+              'CodeQL Advanced',
+              'ESLint',
+              'Semgrep',
+              'DevSkim',
+              'njsscan sarif',
+              'OSV-Scanner',
+              'OSSAR',
+              'Codacy Security Scan'
+            ];
+            
+            console.log(`Waiting for all workflows to complete for commit ${commitSha.substring(0, 7)}...`);
+            
+            // Wait up to 30 minutes for all workflows to complete
+            const maxWaitTime = 30 * 60 * 1000; // 30 minutes in milliseconds
+            const checkInterval = 10 * 1000; // Check every 10 seconds
+            const startTime = Date.now();
+            
+            while (Date.now() - startTime < maxWaitTime) {
+              // Get all workflow runs for this commit
+              const { data: runs } = await github.rest.actions.listWorkflowRunsForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                branch: 'main',
+                per_page: 100
+              });
+              
+              // Filter runs for this specific commit
+              const commitRuns = runs.workflow_runs.filter(run => run.head_sha === commitSha);
+              
+              const workflowStatus = {};
+              for (const run of commitRuns) {
+                if (!workflowStatus[run.name] || new Date(run.created_at) > new Date(workflowStatus[run.name].created_at)) {
+                  workflowStatus[run.name] = run;
+                }
+              }
+              
+              const failedWorkflows = [];
+              const pendingWorkflows = [];
+              const passedWorkflows = [];
+              
+              for (const workflow of requiredWorkflows) {
+                const run = workflowStatus[workflow];
+                if (!run) {
+                  pendingWorkflows.push(workflow);
+                } else if (run.status !== 'completed') {
+                  pendingWorkflows.push(workflow);
+                } else if (run.conclusion !== 'success') {
+                  failedWorkflows.push(workflow);
+                } else {
+                  passedWorkflows.push(workflow);
+                }
+              }
+              
+              if (failedWorkflows.length > 0) {
+                core.setFailed(`❌ Following workflows failed: ${failedWorkflows.join(', ')}`);
+                return;
+              }
+              
+              if (pendingWorkflows.length > 0) {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                console.log(`⏳ Still waiting for: ${pendingWorkflows.join(', ')} (${elapsed}s elapsed)`);
+                console.log(`✅ Passed: ${passedWorkflows.length}/${requiredWorkflows.length}`);
+                await new Promise(resolve => setTimeout(resolve, checkInterval));
+                continue;
+              }
+              
+              // All workflows passed!
+              console.log('✅ All required workflows passed!');
+              console.log(`Passed workflows: ${passedWorkflows.join(', ')}`);
+              core.setOutput('all_passed', 'true');
+              return;
+            }
+            
+            // Timeout
+            core.setFailed('❌ Timeout: Not all workflows completed within 30 minutes');
+
+  trigger-deploy:
+    name: Trigger Deployment
+    runs-on: ubuntu-latest
+    needs: check-all-tests
+    if: needs.check-all-tests.outputs.all_passed == 'true'
+    # Timeout for waiting for deploy to complete (deploy may take up to 10 minutes)
+    timeout-minutes: 55
+    
+    steps:
+      - name: Check if deploy already completed
+        id: check_deploy
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const commitSha = context.sha;
+            
+            // Check if deploy already completed successfully for this commit
+            const { data: deployRuns } = await github.rest.actions.listWorkflowRunsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'deploy.yml',
+              branch: 'main',
+              per_page: 10,
+              status: 'completed'
+            });
+            
+            const successfulDeploys = deployRuns.workflow_runs.filter(run => 
+              run.head_sha === commitSha && 
+              run.conclusion === 'success'
+            );
+            
+            if (successfulDeploys.length > 0) {
+              console.log(`✅ Deploy already completed successfully for commit ${commitSha.substring(0, 7)}. Skipping...`);
+              core.setOutput('should_deploy', 'false');
+              return;
+            }
+            
+            // Check if deploy is in progress
+            const { data: inProgressDeploys } = await github.rest.actions.listWorkflowRunsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'deploy.yml',
+              branch: 'main',
+              per_page: 10,
+              status: 'in_progress'
+            });
+            
+            const inProgress = inProgressDeploys.workflow_runs.filter(run => 
+              run.head_sha === commitSha
+            );
+            
+            if (inProgress.length > 0) {
+              console.log(`⏳ Deploy already in progress for commit ${commitSha.substring(0, 7)}. Skipping...`);
+              core.setOutput('should_deploy', 'false');
+              return;
+            }
+            
+            core.setOutput('should_deploy', 'true');
+
+      - name: Verify deployment status
+        if: steps.check_deploy.outputs.should_deploy != 'true'
+        run: |
+          echo "⚠️ Deployment was skipped (already completed or in progress)"
+          # If deploy was skipped, we should still consider this a success
+          # because deploy already happened or is happening
+
+      - name: Trigger deployment and wait for completion
+        if: steps.check_deploy.outputs.should_deploy == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const commitSha = context.sha;
+            console.log(`🚀 Triggering deployment for commit ${commitSha.substring(0, 7)}...`);
+            
+            // Trigger the deploy workflow
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'deploy.yml',
+              ref: 'main',
+              inputs: {
+                commit_sha: commitSha
+              }
+            });
+            
+            console.log('✅ Deployment workflow triggered. Waiting for completion...');
+            
+            // Wait for deploy workflow to start
+            await new Promise(resolve => setTimeout(resolve, 5000));
+            
+            // Find the deploy workflow run
+            let deployRun = null;
+            let attempts = 0;
+            const maxAttempts = 12; // 1 minute (12 * 5 seconds)
+            
+            while (!deployRun && attempts < maxAttempts) {
+              const { data: deployRuns } = await github.rest.actions.listWorkflowRunsForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'deploy.yml',
+                branch: 'main',
+                per_page: 5
+              });
+              
+              // Find deploy run for this commit that was just triggered
+              deployRun = deployRuns.workflow_runs.find(run => 
+                run.head_sha === commitSha &&
+                (run.status === 'in_progress' || run.status === 'queued' || run.status === 'completed')
+              );
+              
+              if (!deployRun) {
+                attempts++;
+                console.log(`⏳ Waiting for deployment workflow to start... (attempt ${attempts}/${maxAttempts})`);
+                await new Promise(resolve => setTimeout(resolve, 5000));
+              }
+            }
+            
+            if (!deployRun) {
+              core.setFailed('❌ Deployment workflow did not start within expected time');
+              return;
+            }
+            
+            console.log(`📦 Deployment workflow started: Run #${deployRun.run_number}`);
+            
+            // Wait for deploy workflow to complete
+            let isCompleted = false;
+            attempts = 0;
+            const maxWaitAttempts = 120; // 10 minutes (120 * 5 seconds)
+            
+            while (!isCompleted && attempts < maxWaitAttempts) {
+              const { data: run } = await github.rest.actions.getWorkflowRun({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                run_id: deployRun.id
+              });
+              
+              if (run.status === 'completed') {
+                isCompleted = true;
+                if (run.conclusion === 'success') {
+                  console.log('✅ Deployment completed successfully!');
+                  return;
+                } else {
+                  core.setFailed(`❌ Deployment failed with conclusion: ${run.conclusion}`);
+                  return;
+                }
+              }
+              
+              attempts++;
+              if (attempts % 12 === 0) { // Log every 1 minute
+                console.log(`⏳ Deployment still running... (${attempts * 5} seconds elapsed)`);
+              }
+              await new Promise(resolve => setTimeout(resolve, 5000));
+            }
+            
+            if (!isCompleted) {
+              core.setFailed('❌ Deployment workflow did not complete within expected time (10 minutes)');
+              return;
+            }
+
