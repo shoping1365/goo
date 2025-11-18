@@ -87,8 +87,8 @@ func (h *MediaHandler) CropImageHandler(w http.ResponseWriter, r *http.Request) 
 		}
 	}
 
-	// خواندن تصویر اصلی
-	img, err := imaging.Open(absSrcPath)
+	// خواندن تصویر اصلی با استفاده از safeOpenImage برای جلوگیری از panic (CVE-2023-36308)
+	img, err := safeOpenImage(absSrcPath)
 	if err != nil {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusInternalServerError)
@@ -286,8 +286,8 @@ func (h *MediaHandler) GetCroppedImageHandler(w http.ResponseWriter, r *http.Req
 		}
 	}
 
-	// خواندن تصویر اصلی
-	img, err := imaging.Open(absSrcPath)
+	// خواندن تصویر اصلی با استفاده از safeOpenImage برای جلوگیری از panic (CVE-2023-36308)
+	img, err := safeOpenImage(absSrcPath)
 	if err != nil {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusInternalServerError)

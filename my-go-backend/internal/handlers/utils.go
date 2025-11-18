@@ -2,11 +2,14 @@ package handlers
 
 import (
 	"fmt"
+	"image"
 	"math/rand"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/disintegration/imaging"
 )
 
 // generateUniqueName تولید نام یکتا برای فایل‌ها
@@ -86,4 +89,34 @@ func buildSafeMediaPath(baseDir, category, subfolder, fileName string) (string, 
 	// ساخت مسیر
 	path := filepath.Join(baseDir, "uploads", "media", category, subfolder, fileName)
 	return filepath.Clean(path), nil
+}
+
+// safeOpenImage باز کردن ایمن تصویر با panic recovery برای جلوگیری از CVE-2023-36308
+// این تابع imaging.Open را wrap می‌کند و در صورت panic، خطا را به صورت کنترل شده برمی‌گرداند
+func safeOpenImage(filename string) (image.Image, error) {
+	var img image.Image
+	var err error
+	var panicErr interface{}
+
+	// استفاده از defer/recover برای catch کردن panic
+	func() {
+		defer func() {
+			if r := recover(); r != nil {
+				panicErr = r
+			}
+		}()
+		img, err = imaging.Open(filename)
+	}()
+
+	// اگر panic رخ داده باشد، خطا برگردان
+	if panicErr != nil {
+		return nil, fmt.Errorf("panic در پردازش تصویر (احتمالاً فایل TIFF آسیب‌پذیر): %v", panicErr)
+	}
+
+	// اگر خطای عادی رخ داده باشد، همان را برگردان
+	if err != nil {
+		return nil, err
+	}
+
+	return img, nil
 }

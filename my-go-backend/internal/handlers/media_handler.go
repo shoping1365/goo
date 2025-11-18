@@ -1527,9 +1527,10 @@ func (h *MediaHandler) RotateMediaHandler(w http.ResponseWriter, r *http.Request
 		}
 	}
 
-	img, err := imaging.Open(absPath)
+	// استفاده از safeOpenImage برای جلوگیری از panic (CVE-2023-36308)
+	img, err := safeOpenImage(absPath)
 	if err != nil {
-		http.Error(w, "cannot open image", http.StatusInternalServerError)
+		http.Error(w, "cannot open image: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 

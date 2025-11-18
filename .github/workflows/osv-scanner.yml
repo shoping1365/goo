@@ -29,7 +29,8 @@ permissions:
 
 jobs:
   scan-scheduled:
-    if: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
+    # اجرا برای push عادی (غیر merge) و schedule
+    if: ${{ (github.event_name == 'push' && !contains(github.event.head_commit.message, 'Merge')) || github.event_name == 'schedule' }}
     uses: "google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@1f1242919d8a60496dd1874b24b62b2370ed4c78" # v1.7.1
     with:
       # Example of specifying custom arguments
@@ -38,7 +39,8 @@ jobs:
         --skip-git
         ./
   scan-pr:
-    if: ${{ github.event_name == 'pull_request' || github.event_name == 'merge_group' }}
+    # اجرا برای pull_request، merge_group، و push هایی که merge commit هستند
+    if: ${{ github.event_name == 'pull_request' || github.event_name == 'merge_group' || (github.event_name == 'push' && contains(github.event.head_commit.message, 'Merge')) }}
     uses: "google/osv-scanner-action/.github/workflows/osv-scanner-reusable-pr.yml@1f1242919d8a60496dd1874b24b62b2370ed4c78" # v1.7.1
     with:
       # Example of specifying custom arguments

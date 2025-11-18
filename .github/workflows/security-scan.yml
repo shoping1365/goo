@@ -28,7 +28,7 @@ jobs:
 
       - name: Run npm audit
         run: |
-          npm audit --audit-level=high || true
+          npm audit --audit-level=high
           echo "✅ Dependency audit completed"
 
       - name: Setup Go
@@ -40,7 +40,7 @@ jobs:
         working-directory: ./my-go-backend
         run: |
           go install golang.org/x/vuln/cmd/govulncheck@latest
-          govulncheck ./... || true
+          govulncheck ./...
           echo "✅ Go vulnerability check completed"
 
   container-scan:

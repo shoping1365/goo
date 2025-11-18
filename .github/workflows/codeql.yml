@@ -85,12 +85,22 @@ jobs:
     # to build your code.
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
+    - name: Setup Go environment
+      if: matrix.language == 'go'
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.25.4'
+
     - name: Run manual build steps
       if: matrix.build-mode == 'manual'
       shell: bash
       run: |
         if [ "${{ matrix.language }}" == "go" ]; then
           cd my-go-backend
+          # Download dependencies first
+          go mod download
+          go mod tidy
+          # Build the project - fail if build fails
           go build -buildvcs=false -o api ./cmd/api
         elif [ "${{ matrix.language }}" == "java-kotlin" ]; then
           cd android-app

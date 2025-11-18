@@ -8,6 +8,11 @@ on:
     branches:
       - main
 
+# جلوگیری از اجرای همزمان چندین instance - فقط یک trigger-deploy در یک زمان
+concurrency:
+  group: trigger-deploy-main
+  cancel-in-progress: false
+
 jobs:
   check-and-deploy:
     name: Check All Workflows and Deploy
@@ -15,7 +20,7 @@ jobs:
     if: github.event.workflow_run.conclusion == 'success'
     
     steps:
-      - name: Check if all workflows succeeded
+      - name: Check if all workflows succeeded for this commit
         id: check
         uses: actions/github-script@v7
         with:
@@ -34,7 +39,11 @@ jobs:
               'Codacy Security Scan'
             ];
             
-            // Get latest run for each workflow
+            // دریافت commit SHA از workflow_run که trigger شده
+            const commitSha = context.payload.workflow_run.head_sha;
+            console.log(`🔍 Checking workflows for commit: ${commitSha.substring(0, 7)}`);
+            
+            // دریافت تمام workflow runs برای این commit
             const { data: runs } = await github.rest.actions.listWorkflowRunsForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -42,48 +51,124 @@ jobs:
               per_page: 100
             });
             
-            const latestRuns = {};
+            // فیلتر کردن workflow های مربوط به همین commit
+            const commitRuns = {};
             for (const run of runs.workflow_runs) {
-              if (requiredWorkflows.includes(run.name)) {
-                if (!latestRuns[run.name] || new Date(run.created_at) > new Date(latestRuns[run.name].created_at)) {
-                  latestRuns[run.name] = run;
+              if (requiredWorkflows.includes(run.name) && run.head_sha === commitSha) {
+                // اگر workflow هنوز در حال اجراست، منتظر بمان
+                if (run.status === 'in_progress' || run.status === 'queued') {
+                  console.log(`⏳ ${run.name} is still running or queued`);
+                  core.setOutput('all_passed', 'false');
+                  return false;
+                }
+                
+                // اگر workflow برای این commit وجود دارد، ذخیره کن
+                if (!commitRuns[run.name] || new Date(run.created_at) > new Date(commitRuns[run.name].created_at)) {
+                  commitRuns[run.name] = run;
                 }
               }
             }
             
-            // Check if all workflows passed
+            // بررسی اینکه آیا همه workflow ها برای این commit پاس شده‌اند
             const results = {};
             let allPassed = true;
+            let allCompleted = true;
             
             for (const workflow of requiredWorkflows) {
-              const run = latestRuns[workflow];
-              const passed = run && run.conclusion === 'success';
-              results[workflow] = passed ? '✅' : '❌';
+              const run = commitRuns[workflow];
               
-              if (!passed) {
+              if (!run) {
+                // اگر workflow برای این commit اجرا نشده، منتظر بمان
+                console.log(`⏳ ${workflow}: Not found for this commit`);
+                allCompleted = false;
                 allPassed = false;
+                results[workflow] = '⏳';
+              } else if (run.status === 'in_progress' || run.status === 'queued') {
+                // اگر workflow هنوز در حال اجراست
+                console.log(`⏳ ${workflow}: Still running`);
+                allCompleted = false;
+                allPassed = false;
+                results[workflow] = '⏳';
+              } else if (run.conclusion === 'success') {
+                results[workflow] = '✅';
+                console.log(`✅ ${workflow}: Passed`);
+              } else {
+                results[workflow] = '❌';
+                allPassed = false;
+                console.log(`❌ ${workflow}: ${run.conclusion || 'failed'}`);
               }
-              
-              console.log(`${results[workflow]} ${workflow}: ${run ? run.conclusion : 'not found'}`);
             }
             
-            core.setOutput('all_passed', allPassed);
+            core.setOutput('all_passed', allPassed && allCompleted);
+            core.setOutput('all_completed', allCompleted);
+            
+            if (!allCompleted) {
+              console.log('⏳ Waiting for all workflows to complete for this commit...');
+              return false;
+            }
             
             if (allPassed) {
-              console.log('🎉 All workflows passed! Ready to deploy.');
+              console.log('🎉 All workflows passed for this commit! Ready to deploy.');
             } else {
-              console.log('⏳ Waiting for all workflows to pass...');
+              console.log('❌ Some workflows failed for this commit. Deployment cancelled.');
             }
             
-            return allPassed;
+            return allPassed && allCompleted;
+
+      - name: Check if deployment already triggered or in progress
+        id: check_deployment
+        uses: actions/github-script@v7
+        if: steps.check.outputs.all_passed == 'true' && steps.check.outputs.all_completed == 'true'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const commitSha = context.payload.workflow_run.head_sha;
+            
+            // بررسی اینکه آیا deploy در حال اجراست یا قبلاً انجام شده
+            const { data: deployRuns } = await github.rest.actions.listWorkflowRunsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'deploy.yml',
+              branch: 'main',
+              per_page: 10
+            });
+            
+            // بررسی اینکه آیا deploy در حال اجراست (برای هر commit)
+            const deploymentInProgress = deployRuns.workflow_runs.some(run => 
+              run.status === 'in_progress' || run.status === 'queued'
+            );
+            
+            // بررسی اینکه آیا برای همین commit قبلاً deploy شده
+            const alreadyDeployedForCommit = deployRuns.workflow_runs.some(run => 
+              run.head_sha === commitSha && run.conclusion === 'success'
+            );
+            
+            if (deploymentInProgress) {
+              console.log(`⏸️ Another deployment is already in progress. Skipping...`);
+              core.setOutput('already_deployed', 'true');
+              core.setOutput('reason', 'deployment_in_progress');
+              return false;
+            }
+            
+            if (alreadyDeployedForCommit) {
+              console.log(`⏭️ Deployment already completed for commit ${commitSha.substring(0, 7)}`);
+              core.setOutput('already_deployed', 'true');
+              core.setOutput('reason', 'already_deployed');
+              return false;
+            }
+            
+            console.log(`✅ No deployment in progress. Ready to deploy commit ${commitSha.substring(0, 7)}`);
+            core.setOutput('already_deployed', 'false');
+            return true;
 
       - name: Trigger deployment
-        if: steps.check.outputs.all_passed == 'true'
+        if: steps.check.outputs.all_passed == 'true' && steps.check.outputs.all_completed == 'true' && (steps.check_deployment.outputs.already_deployed != 'true' || steps.check_deployment.outputs.already_deployed == '')
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            console.log('🚀 Triggering deployment workflow...');
+            const commitSha = context.payload.workflow_run.head_sha;
+            console.log(`🚀 All tests passed! Triggering deployment workflow for commit ${commitSha.substring(0, 7)}...`);
             
             await github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner,

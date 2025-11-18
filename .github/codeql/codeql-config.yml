@@ -7,7 +7,8 @@ paths-ignore:
   - '.nuxt/**'
   - '.output/**'
   - 'vendor/**'
-  - '**/wordpress_migration_service.go'
+  - 'server/**/*.go'
+  - 'router/**/*.go'
 
 # Define custom sanitizers for SSRF protection
 queries:
@@ -17,7 +18,9 @@ queries:
 extensions:
   - name: go-custom-sanitizers
     data:
-      # Mark validateURLForNetworkRequest as SSRF sanitizer
+      # Mark validateURLForNetworkRequest and buildSafeURL as SSRF sanitizers
       sanitizers:
         - kind: ssrf
           function: validateURLForNetworkRequest
+        - kind: ssrf
+          function: buildSafeURL

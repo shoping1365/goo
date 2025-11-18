@@ -35,8 +35,14 @@ jobs:
       id: njsscan
       uses: ajinabraham/njsscan-action@7237412fdd36af517e2745077cedbf9d6900d711
       with:
-        args: '. --sarif --output results.sarif || true'
+        args: '. --sarif --output results.sarif'
+    - name: Ensure SARIF file exists
+      run: |
+        if [ ! -f results.sarif ]; then
+          echo "Creating empty SARIF file..."
+          echo '{"version":"2.1.0","$schema":"https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json","runs":[{"tool":{"driver":{"name":"njsscan","version":"0.0.0"}},"results":[]}]}' > results.sarif
+        fi
     - name: Upload njsscan report
-      uses: github/codeql-action/upload-sarif@v3
+      uses: github/codeql-action/upload-sarif@v4
       with:
         sarif_file: results.sarif

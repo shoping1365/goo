@@ -242,6 +242,12 @@ Thumbs.db
 # Database files
 *.db
 *.sqlite
+*.sqlite3
+*.bolt
+
+# Search indexes (هر سایت برای خودش است - نباید در git باشد)
+my-go-backend/var/search/
+var/search/
 
 # Redis files
 dump.rdb

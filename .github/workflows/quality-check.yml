@@ -96,7 +96,7 @@ jobs:
           files: ./my-go-backend/coverage.out
           flags: backend
           fail_ci_if_error: false
-        continue-on-error: true
+        continue-on-error: true  # Coverage upload is optional, don't fail workflow
 
   frontend-tests:
     name: Frontend Type Check & Tests
@@ -118,8 +118,7 @@ jobs:
         run: npm run type-check
 
       - name: Run frontend tests
-        run: npm run test || echo "No tests configured yet"
-        continue-on-error: true
+        run: npm run test
 
   bundle-size-check:
     name: Bundle Size Analysis
@@ -180,9 +179,8 @@ jobs:
       - name: Detect unused exports
         run: |
           echo "Checking for unused exports..."
-          ts-prune --project tsconfig.json --ignore "(test|spec|stories)" || true
+          ts-prune --project tsconfig.json --ignore "(test|spec|stories)"
           echo "✅ Dead code check completed"
-        continue-on-error: true
 
   secrets-scan:
     name: Git Secrets & Credential Scan
