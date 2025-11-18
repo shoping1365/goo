@@ -66,6 +66,8 @@ jobs:
   go-tests:
     name: Go Unit Tests & Coverage
     runs-on: ubuntu-latest
+    env:
+      GOTOOLCHAIN: local
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -73,7 +75,8 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.21'
+          go-version: '1.25.4'
+          cache-dependency-path: my-go-backend/go.sum
 
       - name: Run Go tests with coverage
         working-directory: ./my-go-backend
