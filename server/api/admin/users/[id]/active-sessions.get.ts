@@ -1,5 +1,5 @@
 import type { H3Event } from 'h3'
-import { defineEventHandler, createError } from 'h3'
+import { createError, defineEventHandler, getQuery, getRouterParam } from 'h3'
 import { z } from 'zod'
 import { getDatabase } from '~/server/api/_utils/database'
 
@@ -109,7 +109,7 @@ export default defineEventHandler(async (event) => {
       } else if (userAgent.includes('Safari')) {
         browser = 'Safari'
       } else if (userAgent.includes('Edge')) {
-        browser = 'Edge'
+        browser = 'Edge';
       }
 
       return {
