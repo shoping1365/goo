@@ -2,8 +2,17 @@ name: Deploy to Production
 
 on:
   workflow_dispatch:
-  # Remove workflow_run trigger - we'll use a different approach
-  # Only deploy manually or via another mechanism after all checks pass
+    inputs:
+      commit_sha:
+        description: 'Commit SHA to deploy (optional, defaults to latest)'
+        required: false
+        type: string
+  workflow_run:
+    workflows: ["Quality Check", "Security Scan", "CodeQL Advanced", "ESLint", "Semgrep", "DevSkim", "njsscan sarif", "OSV-Scanner", "OSSAR", "Codacy Security Scan"]
+    types:
+      - completed
+    branches:
+      - main
 
 concurrency:
   group: deploy-production
@@ -14,6 +23,8 @@ jobs:
   check-all-workflows:
     name: Verify All Quality Gates
     runs-on: ubuntu-latest
+    # Only run if triggered by workflow_run and the triggering workflow succeeded
+    if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'
     
     steps:
       - name: Check all required workflows
@@ -21,6 +32,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const commitSha = context.payload.workflow_run.head_sha;
             const requiredWorkflows = [
               'Quality Check',
               'Security Scan', 
@@ -34,6 +46,9 @@ jobs:
               'Codacy Security Scan'
             ];
             
+            console.log(`Checking workflows for commit ${commitSha.substring(0, 7)}...`);
+            
+            // Get all workflow runs for this commit
             const { data: runs } = await github.rest.actions.listWorkflowRunsForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -41,32 +56,59 @@ jobs:
               per_page: 100
             });
             
-            const latestRuns = {};
-            for (const run of runs.workflow_runs) {
-              if (!latestRuns[run.name] || new Date(run.created_at) > new Date(latestRuns[run.name].created_at)) {
-                latestRuns[run.name] = run;
+            // Filter runs for this specific commit
+            const commitRuns = runs.workflow_runs.filter(run => run.head_sha === commitSha);
+            
+            const workflowStatus = {};
+            for (const run of commitRuns) {
+              if (!workflowStatus[run.name] || new Date(run.created_at) > new Date(workflowStatus[run.name].created_at)) {
+                workflowStatus[run.name] = run;
               }
             }
             
             const failedWorkflows = [];
+            const pendingWorkflows = [];
+            
             for (const workflow of requiredWorkflows) {
-              const run = latestRuns[workflow];
-              if (!run || run.conclusion !== 'success') {
+              const run = workflowStatus[workflow];
+              if (!run) {
+                pendingWorkflows.push(workflow);
+              } else if (run.status !== 'completed') {
+                pendingWorkflows.push(workflow);
+              } else if (run.conclusion !== 'success') {
                 failedWorkflows.push(workflow);
               }
             }
             
+            if (pendingWorkflows.length > 0) {
+              console.log(`⏳ Waiting for workflows: ${pendingWorkflows.join(', ')}`);
+              core.setOutput('all_passed', 'false');
+              core.setOutput('all_completed', 'false');
+              return;
+            }
+            
             if (failedWorkflows.length > 0) {
               core.setFailed(`❌ Following workflows must pass before deployment: ${failedWorkflows.join(', ')}`);
-            } else {
-              console.log('✅ All required workflows passed!');
+              core.setOutput('all_passed', 'false');
+              core.setOutput('all_completed', 'true');
+              return;
             }
+            
+            console.log('✅ All required workflows passed!');
+            core.setOutput('all_passed', 'true');
+            core.setOutput('all_completed', 'true');
 
   # Pre-deployment checks job
   pre-deploy-checks:
     name: Pre-Deployment Validation
     runs-on: ubuntu-latest
     needs: check-all-workflows
+    # Only proceed if all workflows passed
+    if: |
+      always() &&
+      needs.check-all-workflows.result == 'success' &&
+      needs.check-all-workflows.outputs.all_passed == 'true' &&
+      needs.check-all-workflows.outputs.all_completed == 'true'
     
     steps:
       - name: Check Quality workflow status
@@ -141,6 +183,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # Use commit SHA from workflow_run if triggered by workflow_run, otherwise use input or current SHA
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.event.inputs.commit_sha || github.sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4

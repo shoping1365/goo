@@ -10,8 +10,6 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  schedule:
-    - cron: '21 5 * * 3'
 
 jobs:
   lint:
@@ -25,10 +23,43 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Clean up any existing SARIF files
+      - name: Clean up existing SARIF files
+        run: |
+          rm -f devskim-results.sarif *.sarif || true
+
       - name: Run DevSkim scanner
+        id: devskim_scan
         uses: microsoft/DevSkim-Action@v1
 
+      # Verify that DevSkim scan completed and SARIF file was generated
+      - name: Verify DevSkim scan results
+        if: always()
+        run: |
+          if [ ! -f devskim-results.sarif ]; then
+            echo "❌ ERROR: DevSkim scan failed - SARIF file was not generated"
+            echo "This indicates the scan did not complete successfully."
+            exit 1
+          fi
+          
+          # Check if SARIF file is valid JSON and not empty
+          if ! python3 -m json.tool devskim-results.sarif > /dev/null 2>&1; then
+            echo "❌ ERROR: DevSkim SARIF file is not valid JSON"
+            exit 1
+          fi
+          
+          # Check if file is not empty
+          if [ ! -s devskim-results.sarif ]; then
+            echo "❌ ERROR: DevSkim SARIF file is empty"
+            exit 1
+          fi
+          
+          echo "✅ DevSkim scan completed successfully. SARIF file generated."
+
+      # Upload SARIF file generated in previous step
+      # Only upload if scan was successful (verify step passed)
       - name: Upload DevSkim scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: devskim-results.sarif
+          wait-for-processing: true

@@ -1,5 +1,9 @@
 name: "CodeQL Security Configuration"
 
+# For Go projects in subdirectories, specify paths to include
+paths:
+  - 'my-go-backend/**'
+
 paths-ignore:
   - 'node_modules/**'
   - 'dist/**'

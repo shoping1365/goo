@@ -16,8 +16,6 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  schedule:
-    - cron: '42 22 * * 1'
 
 jobs:
   analyze:
@@ -59,11 +57,15 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # Add any setup steps before running the `github/codeql-action/init` action.
-    # This includes steps like installing compilers or runtimes (`actions/setup-node`
-    # or others). This is typically only required for manual builds.
-    # - name: Setup runtime (example)
-    #   uses: actions/setup-example@v1
+    # Setup Go environment BEFORE initializing CodeQL
+    # This is critical - CodeQL needs Go to be installed before it can trace Go builds
+    - name: Setup Go environment
+      if: matrix.language == 'go'
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.25.4'
+        # Tell CodeQL where Go code is located
+        cache-dependency-path: my-go-backend/go.sum
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
@@ -79,29 +81,48 @@ jobs:
         # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         # queries: security-extended,security-and-quality
 
-    # If the analyze step fails for one of the languages you are analyzing with
-    # "We were unable to automatically build your code", modify the matrix above
-    # to set the build mode to "manual" for that language. Then modify this step
-    # to build your code.
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
-    - name: Setup Go environment
-      if: matrix.language == 'go'
-      uses: actions/setup-go@v5
-      with:
-        go-version: '1.25.4'
-
     - name: Run manual build steps
       if: matrix.build-mode == 'manual'
       shell: bash
+      env:
+        # Set Go environment variables for CodeQL tracing
+        CODEQL_EXTRACTOR_GO_BUILD_TRACING: "on"
+        CODEQL_EXTRACTOR_GO_BUILD_COMMAND: "go build"
       run: |
         if [ "${{ matrix.language }}" == "go" ]; then
+          echo "Building Go project in my-go-backend directory..."
           cd my-go-backend
-          # Download dependencies first
+          
+          # Verify go.mod and go.sum exist
+          if [ ! -f go.mod ]; then
+            echo "❌ ERROR: go.mod not found in my-go-backend"
+            exit 1
+          fi
+          
+          if [ ! -f go.sum ]; then
+            echo "⚠️ WARNING: go.sum not found, running go mod tidy..."
+            go mod tidy
+          fi
+          
+          # Download dependencies first (required for CodeQL)
+          echo "Downloading Go dependencies..."
           go mod download
-          go mod tidy
-          # Build the project - fail if build fails
-          go build -buildvcs=false -o api ./cmd/api
+          
+          # Verify Go is accessible
+          echo "Go version: $(go version)"
+          echo "GOPATH: $GOPATH"
+          echo "GOROOT: $GOROOT"
+          
+          # Build the project - CodeQL will trace this build
+          echo "Building Go project for CodeQL analysis..."
+          go build -buildvcs=false -v -o api ./cmd/api
+          
+          if [ $? -ne 0 ]; then
+            echo "❌ ERROR: Go build failed"
+            exit 1
+          fi
+          
+          echo "✅ Go build completed successfully"
         elif [ "${{ matrix.language }}" == "java-kotlin" ]; then
           cd android-app
           chmod +x ./gradlew
