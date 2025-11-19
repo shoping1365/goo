@@ -107,9 +107,6 @@
                <!-- Flex container with reversed order -->
                <div class="flex items-center space-x-4 space-x-reverse">
 
-                 <!-- Default image placeholder - moved to the right -->
-                 <img src="/statics/images/default-image_100.png" alt="No Image" class="w-12 h-12 object-contain opacity-60" />
-
                  <!-- Custom file input appearance - moved to the left -->
                  <div class="flex items-center">
                    <!-- Buttons container -->
