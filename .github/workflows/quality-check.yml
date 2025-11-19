@@ -58,11 +58,32 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+    needs: [encoding-check, duplicate-code-detection, go-tests, frontend-tests, bundle-size-check, dead-code-detection, secrets-scan, sql-security-check]
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.25.4'
+        run: echo "✅ All quality checks completed successfully"
+
+  trigger-deploy:
+    name: Trigger Production Deploy
+    needs: all-checks-complete
+    if: ${{ success() && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch deploy workflow
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'deploy.yml',
+              ref: 'main',
+              inputs: {
+                commit_sha: context.sha
+              }
+            })
           cache-dependency-path: my-go-backend/go.sum
 
       - name: Pin Go toolchain version

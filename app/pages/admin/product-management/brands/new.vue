@@ -62,7 +62,6 @@
             <div>
               <label for="brand-image" class="block text-sm font-medium text-gray-700 mb-1 text-right">تصویر</label>
               <div class="flex items-center space-x-4 space-x-reverse">
-                <img src="/statics/images/default-image_100.png" alt="No Image" class="w-16 h-16 object-contain opacity-60 border rounded" />
                 <div class="flex items-center">
                   <!-- Buttons container -->
                   <div class="flex gap-2">
