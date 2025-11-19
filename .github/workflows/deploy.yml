@@ -45,14 +45,11 @@ jobs:
 
       - name: Final type-check before deployment
         run: npm run type-check
+        env:
+          NODE_OPTIONS: "--max-old-space-size=8192"
 
       - name: Final lint check before deployment
         run: npm run lint
-
-      - name: Build application
-        run: npm run build
-        env:
-          NODE_OPTIONS: "--max-old-space-size=8192"
 
       - name: Fix Go permissions
         run: |
