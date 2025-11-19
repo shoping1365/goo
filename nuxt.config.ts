@@ -267,7 +267,7 @@ export default defineNuxtConfig({
     build: {
       sourcemap: false, // غیرفعال کردن sourcemap برای رفع warning های Tailwind
       rollupOptions: {
-        external: [],
+        external: ['/statics/images/default-image_100.png'],
         output: {
           manualChunks: undefined
         }
