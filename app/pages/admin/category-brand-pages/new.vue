@@ -481,7 +481,8 @@ const { user, hasPermission } = useAuth()
      return url.slice(0, dotIdx) + '_thumbnail' + url.slice(dotIdx)
    }
    // Use absolute path for public assets to avoid build resolution issues
-   return '/statics/images/default-image_100.png'
+   const defaultImage = '/statics/images/default-image_100.png'
+   return defaultImage
  }
 
  const fetchProducts = async () => {

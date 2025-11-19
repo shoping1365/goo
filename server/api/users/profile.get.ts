@@ -1,11 +1,11 @@
-import { defineEventHandler, createError } from 'h3'
+import { createError, defineEventHandler } from 'h3'
 
 export default defineEventHandler(async (event) => {
   try {
     const { getDatabase } = await import('../_utils/database')
     const db = await getDatabase()
 
-    // 
+    // Fetch user profile from database
     const userResult = await db.query(
       'SELECT id, name, email, mobile, profile_data FROM users WHERE id = $1',
       [event.context?.user?.id || 0]
@@ -14,22 +14,23 @@ export default defineEventHandler(async (event) => {
     if (!userResult || userResult.length === 0) {
       throw createError({
         statusCode: 404,
-        message: 'ò«—»— Ì«›  ‰‘œ'
+        message: 'User not found'
       })
     }
     
-    const userData = userResult[0] as any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const user: any = userResult[0]
     
     return {
-      id: userData.id,
-      name: userData.name,
-      email: userData.email,
-      mobile: userData.mobile,
-      profile_data: userData.profile_data
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      mobile: user.mobile,
+      profile_data: user.profile_data
     }
 
   } catch (error: any) {
-    console.error('Œÿ« œ— œ—Ì«›  Å—Ê›«Ì· ò«—»—:', error)
+    console.error('Error fetching user profile:', error)
     
     if (error.statusCode) {
       throw error
@@ -37,7 +38,7 @@ export default defineEventHandler(async (event) => {
     
     throw createError({
       statusCode: 500,
-      message: 'Œÿ« œ— œ—Ì«›  Å—Ê›«Ì· ò«—»—'
+      message: 'Error fetching user profile'
     })
   }
 })

@@ -1,4 +1,4 @@
-import { defineEventHandler, createError } from 'h3'
+import { createError, defineEventHandler } from 'h3'
 
 export default defineEventHandler(async (event) => {
   const { fetchGo } = await import('./_utils/fetchGo')
@@ -7,12 +7,12 @@ export default defineEventHandler(async (event) => {
   if (!userId) {
     throw createError({
       statusCode: 401,
-      message: '˜ÇÑÈÑ ÇÍÑÇÒ åæíÊ äÔÏå ÇÓÊ'
+      message: 'Ú©Ø§Ø±Ø¨Ø± Ø§Ø­Ø±Ø§Ø² Ù‡ÙˆÛŒØª Ù†Ø´Ø¯Ù‡ Ø§Ø³Øª'
     })
   }
 
   try {
-    // ÇÑÓÇá ÏÑÎæÇÓÊ Èå ÓÑæíÓ Go ÈÑÇí ÏÑíÇİÊ áíÓÊ ÈÇÒÏíÏåÇí ÇÎíÑ ˜ÇÑÈÑ
+    // Fetch recent views from Go backend service
     const response = await fetchGo(event, '/api/recent-views', { method: 'GET' })
 
     const data = Array.isArray((response as any)?.data)
@@ -25,11 +25,11 @@ export default defineEventHandler(async (event) => {
       count: data.length
     }
   } catch (error: any) {
-    // ËÈÊ ÎØÇ ÈÑÇí ÈÑÑÓí æ ÇÑÓÇá íÇã ãäÇÓÈ Èå ˜ÇÑÈÑ
-    console.error('ÎØÇ ÏÑ ÏÑíÇİÊ ÈÇÒÏíÏåÇí ÇÎíÑ:', error)
+    // Handle errors from Go backend or network issues
+    console.error('Error fetching recent views:', error)
     throw createError({
       statusCode: error?.statusCode || 500,
-      message: error?.statusMessage || 'ÎØÇ ÏÑ ÏÑíÇİÊ ÈÇÒÏíÏåÇí ÇÎíÑ'
+      message: error?.statusMessage || 'Error fetching recent views'
     })
   }
 })

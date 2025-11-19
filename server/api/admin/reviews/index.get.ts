@@ -1,13 +1,12 @@
-import { defineEventHandler, getQuery } from 'h3'
-import { getRequestHeader, getCookie } from 'h3'
 import { useRuntimeConfig } from '#imports'
+import { defineEventHandler, getCookie, getQuery, getRequestHeader } from 'h3'
 import { proxy } from '~/server/api/_utils/fetchProxy'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const base = config.public.goApiBase
 
-  // ����� ���� �����
+  // شبیه‌سازی کاربر مدیر پیش‌فرض
   const user = event.context.user || { id: 1, role: 'admin' }
   const cookie = getRequestHeader(event, 'cookie') || ''
   const token = getCookie(event, 'access_token') || getCookie(event, 'auth-token')

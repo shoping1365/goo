@@ -28,6 +28,14 @@ var (
 
 // getSecretKey کلید مخفی JWT را از تنظیمات یا متغیر محیطی می‌خواند
 func getSecretKey() []byte {
+	// اگر اتصال GormDB مقداردهی نشده باشد، مستقیماً از env یا مقدار پیش‌فرض استفاده می‌کنیم
+	if database.GormDB == nil {
+		if envKey := os.Getenv("JWT_SECRET"); envKey != "" {
+			return []byte(envKey)
+		}
+		return secretKey
+	}
+
 	// تلاش برای خواندن از جدول settings (دسته auth)
 	var jwtSetting models.Setting
 	if err := database.GormDB.Where("category = ? AND key = ?", "auth", "jwt_secret").First(&jwtSetting).Error; err == nil && jwtSetting.Value != "" {
@@ -35,8 +43,8 @@ func getSecretKey() []byte {
 	}
 
 	// تلاش برای خواندن از متغیر محیطی
-	if secretKey := os.Getenv("JWT_SECRET"); secretKey != "" {
-		return []byte(secretKey)
+	if envKey := os.Getenv("JWT_SECRET"); envKey != "" {
+		return []byte(envKey)
 	}
 
 	// استفاده از کلید مخفی ثابت (پیش‌فرض)

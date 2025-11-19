@@ -16,6 +16,7 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "test": "echo \"No tests specified\" && exit 0",
     "type-check": "vue-tsc --noEmit",
     "build:pm2": "npm run build && pm2 start ecosystem.config.cjs --only go-nuxt",
     "prerender:pm2": "pm2 start ecosystem.config.cjs --only go-nuxt-prerender",

@@ -1,27 +1,26 @@
-import { defineEventHandler, createError } from 'h3'
+import { createError, defineEventHandler } from 'h3'
 import { getDatabase } from '../_utils/database'
 
 export default defineEventHandler(async (event) => {
   try {
-    console.log('ÏÑÎæÇÓÊ ÏÑíÇİÊ áíÓÊ ÚáÇŞåãäÏíåÇí ˜ÇÑÈÑ')
+    // Fetching wishlist items
 
     const userId = event.context?.user?.id
 
-    console.log('˜ÇÑÈÑ ÇÍÑÇÒ åæíÊ ÔÏå:', userId ? { id: userId } : 'null')
+    // User ID check
 
     if (!userId) {
-      console.log('˜ÇÑÈÑ ÇÍÑÇÒ åæíÊ äÔÏå ÇÓÊ')
       throw createError({
         statusCode: 401,
-        message: '˜ÇÑÈÑ ÇÍÑÇÒ åæíÊ äÔÏå ÇÓÊ'
+        message: 'User not authenticated'
       })
     }
 
-    // ÏÑíÇİÊ ÇÊÕÇá ÏíÊÇÈíÓ
+    // Get database connection
     const db = await getDatabase()
-    console.log('ÇÊÕÇá ÏíÊÇÈíÓ ÈÑŞÑÇÑ ÔÏ')
+    // Connected to database
 
-    // ÏÑíÇİÊ ãÍÕæáÇÊ ÚáÇŞåãäÏí ˜ÇÑÈÑ ÇÒ ÏíÊÇÈíÓ
+    // Get wishlist items
     const wishlistItems = await db.query(`
       SELECT 
         uci.id,
@@ -53,26 +52,26 @@ export default defineEventHandler(async (event) => {
       ORDER BY uci.created_at DESC
     `, [userId])
 
-    console.log('ÊÚÏÇÏ ãÍÕæáÇÊ ÚáÇŞåãäÏí íÇİÊ ÔÏå:', wishlistItems.length)
+    // Found wishlist items
 
-    // ÊÈÏíá ÏÇÏååÇ Èå İÑãÊ ãäÇÓÈ
+    // Convert to product objects
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const products = wishlistItems.map((item: any) => {
       const available = !item.disable_buy_button && !item.call_for_price && (item.stock_quantity > 0 || !item.track_inventory)
       const rawPrice = item.effective_price ?? item.sale_price ?? item.base_price
-      // ÇÑ ÊãÇÓ ÈÑÇí ŞíãÊ ÈÇÔÏ¡ ŞíãÊ ÑÇ null ÈÑãíÑÏÇäíã ÊÇ UI "ŞíãÊ äÇãÔÎÕ" äãÇíÔ ÏåÏ
       const price = item.call_for_price ? null : (rawPrice == null ? null : Number(rawPrice))
 
       return {
         id: item.product_id,
-        name: item.name || `ãÍÕæá ${item.product_id}`,
+        name: item.name || `Product ${item.product_id}`,
         price,
         image: item.image || '/default-product.svg',
         stock_quantity: Number(item.stock_quantity || 0),
         available,
-        stock_status: item.call_for_price ? 'ÊãÇÓ ÈÑÇí ŞíãÊ' :
-          item.disable_buy_button ? 'ÛíÑŞÇÈá İÑæÔ' :
-            (item.track_inventory && Number(item.stock_quantity) <= 0) ? 'äÇãæÌæÏ' :
-              (item.track_inventory && Number(item.stock_quantity) > 0 && Number(item.stock_quantity) <= 5) ? `ÊäåÇ ${item.stock_quantity} ÚÏÏ ÏÑ ÇäÈÇÑ ÈÇŞí ãÇäÏå` : null
+        stock_status: item.call_for_price ? 'Call for price' :
+          item.disable_buy_button ? 'Out of stock' :
+            (item.track_inventory && Number(item.stock_quantity) <= 0) ? 'Out of stock' :
+              (item.track_inventory && Number(item.stock_quantity) > 0 && Number(item.stock_quantity) <= 5) ? `In stock ${item.stock_quantity} units` : null
       }
     })
 
@@ -82,12 +81,13 @@ export default defineEventHandler(async (event) => {
       count: products.length
     }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.error('ÎØÇ ÏÑ ÏÑíÇİÊ áíÓÊ ÚáÇŞåãäÏíåÇ:', error)
+    console.error('Error fetching wishlist items:', error)
 
     throw createError({
       statusCode: error.statusCode || 500,
-      message: error.message || error.statusMessage || 'ÎØÇ ÏÑ ÏÑíÇİÊ áíÓÊ ÚáÇŞåãäÏíåÇ'
+      message: error.message || error.statusMessage || 'Error fetching wishlist items'
     })
   }
 })
