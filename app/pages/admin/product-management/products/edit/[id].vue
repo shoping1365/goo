@@ -70,15 +70,16 @@
 </template>
 
 <script setup lang="ts">
+// @ts-ignore: Nuxt macro
 definePageMeta({ layout: 'admin-main' })
 
-import { ref, computed, onMounted, onUnmounted, defineAsyncComponent, provide } from 'vue'
-import { useProductCreateStore } from '~/stores/productCreate'
-import { useRouter, useRoute } from 'vue-router'
+import { computed, defineAsyncComponent, onMounted, onUnmounted, provide, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import ProductImagesTab from '~/components/product/ProductImagesTab.vue'
 import ProductSeoTab from '~/components/product/ProductSeoTab.vue'
 import ProductVideoTab from '~/components/product/ProductVideoTab.vue'
 import { useProductLink } from '~/composables/useProductLink'
+import { useProductCreateStore } from '~/stores/productCreate'
 
 const pStore = useProductCreateStore()
 const isSaving = computed(() => pStore.isSaving)

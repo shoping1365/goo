@@ -37,6 +37,7 @@
 
 <script setup lang="ts">
 // صفحه اختصاصی 403
+// @ts-ignore: Nuxt macro
 definePageMeta({
   layout: false
 })

@@ -103,9 +103,10 @@
 </template>
 
 <script setup lang="ts">
+// @ts-ignore: Nuxt macro
 definePageMeta({ layout: 'admin-main' })
 
-import { ref, computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 // لیست انواع درگاه و فیلدهای هرکدام

@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
 // صفحه اختصاصی 500
+// @ts-ignore: Nuxt macro
 definePageMeta({
   layout: false
 })

@@ -280,16 +280,17 @@
     </template>
 
     <script setup lang="ts">
+    // @ts-ignore: Nuxt macro
     definePageMeta({
       layout: 'admin-main',
       middleware: 'admin'
     })
 
       // Import دستی کامپوننت PatternCard
-    import PatternCard from '~/components/admin/sms/PatternCard.vue'
-    import TemplateCard from '~/components/common/TemplateCard.vue'
-    import PatternForm from '~/components/common/PatternForm.vue'
-    import { ref, computed, onMounted, watch } from 'vue'
+    import { computed, onMounted, ref, watch } from 'vue'
+import PatternCard from '~/components/admin/sms/PatternCard.vue'
+import PatternForm from '~/components/common/PatternForm.vue'
+import TemplateCard from '~/components/common/TemplateCard.vue'
 
     // تعریف interface ها
     interface Pattern {

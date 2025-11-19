@@ -125,15 +125,15 @@
 </template>
 
 <script setup lang="ts">
+// @ts-ignore: Nuxt macro
 definePageMeta({
   layout: 'admin-main',
   middleware: 'admin'
 })
 
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import DraggableGatewayList from '~/components/admin/sms/DraggableGatewayList.vue'
 import TemplateCard from '~/components/common/TemplateCard.vue'
-import type { Ref } from 'vue'
 
 // تعریف نوع SMSGateway (نمونه ساده)
 type SMSGateway = {

@@ -126,7 +126,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 
 interface Props {
   videoUrl?: string
@@ -327,6 +327,7 @@ onMounted(async () => {
       const { default: Plyr } = await import('plyr') as { default: new (element: HTMLVideoElement, options?: unknown) => PlyrInstance }
       const { default: Hls } = await import('hls.js') as { default: { isSupported: () => boolean, new (): HlsInstance } }
       
+      // @ts-ignore: CSS import
       await import('plyr/dist/plyr.css')
       
       if (videoPlayer.value) {

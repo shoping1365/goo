@@ -321,6 +321,7 @@ import { useAuth } from '~/composables/useAuth';
 import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue';
 
 // تعریف definePageMeta برای Nuxt 3
+// @ts-ignore: Nuxt macro
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 
  definePageMeta({
@@ -479,6 +480,7 @@ const { user, hasPermission } = useAuth()
      if (dotIdx === -1) return url
      return url.slice(0, dotIdx) + '_thumbnail' + url.slice(dotIdx)
    }
+   // Use absolute path for public assets to avoid build resolution issues
    return '/statics/images/default-image_100.png'
  }
 

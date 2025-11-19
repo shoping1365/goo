@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// @ts-ignore: Nuxt macro
 definePageMeta({
   layout: 'admin-main',
   middleware: 'admin'

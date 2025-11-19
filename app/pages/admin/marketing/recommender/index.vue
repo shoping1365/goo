@@ -353,40 +353,41 @@
 
 <script setup lang="ts">
 // صفحه مدیریت پیشنهادات هوشمند
+// @ts-ignore: Nuxt macro
 definePageMeta({ layout: 'admin-main' })
 
 // Import Vue composables
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
 // Import کامپوننت‌های موجود
-import SmartRecommendations from './components/SmartRecommendations.vue'
-import UserBehaviorAnalysis from './components/UserBehaviorAnalysis.vue'
-import AlgorithmManagement from './components/AlgorithmManagement.vue'
-import PersonalizationSettings from './components/PersonalizationSettings.vue'
-import PerformanceAnalysis from './components/PerformanceAnalysis.vue'
-import ContentManagement from './components/ContentManagement.vue'
-import AdvancedSettings from './components/AdvancedSettings.vue'
-import ReportingMonitoring from './components/ReportingMonitoring.vue'
-import AdvancedPersonalization from './components/AdvancedPersonalization.vue'
-import SentimentEmotionAnalysis from './components/SentimentEmotionAnalysis.vue'
-import IntelligentAssistantChatbot from './components/IntelligentAssistantChatbot.vue'
+import AdvancedAnalytics from './components/AdvancedAnalytics.vue'
 import AdvancedBehaviorAnalytics from './components/AdvancedBehaviorAnalytics.vue'
-import PerformanceOptimization from './components/PerformanceOptimization.vue'
+import AdvancedPersonalization from './components/AdvancedPersonalization.vue'
+import AdvancedSettings from './components/AdvancedSettings.vue'
+import AdvancedUX from './components/AdvancedUX.vue'
+import AlgorithmManagement from './components/AlgorithmManagement.vue'
+import ContentManagement from './components/ContentManagement.vue'
+import ContinuousLearningOptimization from './components/ContinuousLearningOptimization.vue'
+import DataQualityManagement from './components/DataQualityManagement.vue'
+import DeepLearningNeuralNetworks from './components/DeepLearningNeuralNetworks.vue'
 import EthicsTransparency from './components/EthicsTransparency.vue'
 import ExternalIntegration from './components/ExternalIntegration.vue'
-import Gamification from './components/Gamification.vue'
-import AdvancedUX from './components/AdvancedUX.vue'
-import DeepLearningNeuralNetworks from './components/DeepLearningNeuralNetworks.vue'
-import PredictionAdvancedAnalytics from './components/PredictionAdvancedAnalytics.vue'
-import AdvancedAnalytics from './components/AdvancedAnalytics.vue'
-import DataQualityManagement from './components/DataQualityManagement.vue'
-import MachineLearningAlgorithms from './components/MachineLearningAlgorithms.vue'
-import OptimizationPerformance from './components/OptimizationPerformance.vue'
-import IntegrationSettings from './components/IntegrationSettings.vue'
-import NaturalLanguageProcessing from './components/NaturalLanguageProcessing.vue'
-import ImageVideoRecognition from './components/ImageVideoRecognition.vue'
-import ContinuousLearningOptimization from './components/ContinuousLearningOptimization.vue'
 import FraudDetectionSecurity from './components/FraudDetectionSecurity.vue'
+import Gamification from './components/Gamification.vue'
+import ImageVideoRecognition from './components/ImageVideoRecognition.vue'
+import IntegrationSettings from './components/IntegrationSettings.vue'
+import IntelligentAssistantChatbot from './components/IntelligentAssistantChatbot.vue'
+import MachineLearningAlgorithms from './components/MachineLearningAlgorithms.vue'
+import NaturalLanguageProcessing from './components/NaturalLanguageProcessing.vue'
+import OptimizationPerformance from './components/OptimizationPerformance.vue'
+import PerformanceAnalysis from './components/PerformanceAnalysis.vue'
+import PerformanceOptimization from './components/PerformanceOptimization.vue'
+import PersonalizationSettings from './components/PersonalizationSettings.vue'
+import PredictionAdvancedAnalytics from './components/PredictionAdvancedAnalytics.vue'
+import ReportingMonitoring from './components/ReportingMonitoring.vue'
+import SentimentEmotionAnalysis from './components/SentimentEmotionAnalysis.vue'
+import SmartRecommendations from './components/SmartRecommendations.vue'
+import UserBehaviorAnalysis from './components/UserBehaviorAnalysis.vue'
 
 // متغیرهای صفحه
 const pageTitle = ref('مدیریت پیشنهادات هوشمند')
