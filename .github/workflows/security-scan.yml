@@ -16,7 +16,7 @@ jobs:
     name: Dependency Vulnerability Scan
     runs-on: ubuntu-latest
     env:
-      GOTOOLCHAIN: local
+      GOTOOLCHAIN: go1.25.4
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -36,6 +36,9 @@ jobs:
         with:
           go-version: '1.25.4'
           cache-dependency-path: my-go-backend/go.sum
+
+      - name: Pin Go toolchain version
+        run: go env -w GOTOOLCHAIN=go1.25.4
 
       - name: Run govulncheck
         working-directory: ./my-go-backend

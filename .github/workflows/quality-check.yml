@@ -21,20 +21,34 @@ jobs:
       - name: Check file encodings
         run: |
           echo "Checking UTF-8 encoding for Persian/Farsi support..."
-          find . -type f \( -name "*.ts" -o -name "*.vue" -o -name "*.js" -o -name "*.md" -o -name "*.json" \) \
-            -not -path "*/node_modules/*" \
-            -not -path "*/.nuxt/*" \
-            -not -path "*/.output/*" \
-            -not -path "*/dist/*" \
-            -exec file --mime-encoding {} \; | grep -v "utf-8" | grep -v "us-ascii" > encoding-issues.txt || true
-          
-          if [ -s encoding-issues.txt ]; then
-            echo "❌ Files with non-UTF-8 encoding found:"
-            cat encoding-issues.txt
-            exit 1
-          else
-            echo "✅ All files are UTF-8 encoded"
-          fi
+            python3 <<'PY'
+            from pathlib import Path
+            import sys
+
+            TEXT_EXTS = {'.ts', '.tsx', '.js', '.jsx', '.vue', '.md', '.json', '.cjs', '.mjs', '.go'}
+            EXCLUDE_PARTS = {'node_modules', '.nuxt', '.output', 'dist', 'logs', '.git'}
+
+            bad = []
+            for path in Path('.').rglob('*'):
+              if not path.is_file():
+                continue
+              if any(part in EXCLUDE_PARTS for part in path.parts):
+                continue
+              if path.suffix.lower() not in TEXT_EXTS:
+                continue
+              try:
+                path.read_text(encoding='utf-8')
+              except UnicodeDecodeError:
+                bad.append(str(path))
+
+            if bad:
+              print('❌ Files with non-UTF-8 encoding found:')
+              for item in bad:
+                print(item)
+              sys.exit(1)
+            else:
+              print('✅ All checked files are UTF-8 encoded')
+            PY
 
   duplicate-code-detection:
     name: Duplicate Code Detection
@@ -67,7 +81,7 @@ jobs:
     name: Go Unit Tests & Coverage
     runs-on: ubuntu-latest
     env:
-      GOTOOLCHAIN: local
+      GOTOOLCHAIN: go1.25.4
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -77,6 +91,9 @@ jobs:
         with:
           go-version: '1.25.4'
           cache-dependency-path: my-go-backend/go.sum
+
+      - name: Pin Go toolchain version
+        run: go env -w GOTOOLCHAIN=go1.25.4
 
       - name: Run Go tests with coverage
         working-directory: ./my-go-backend
@@ -104,6 +121,8 @@ jobs:
   frontend-tests:
     name: Frontend Type Check & Tests
     runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: "--max-old-space-size=8192"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -195,6 +214,7 @@ jobs:
           fetch-depth: 0
 
       - name: TruffleHog OSS
+        if: github.event_name != 'push' || github.event.before != github.event.after
         uses: trufflesecurity/trufflehog@main
         with:
           path: ./
