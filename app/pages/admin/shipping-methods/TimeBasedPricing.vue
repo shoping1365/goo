@@ -4,7 +4,7 @@
       <div class="card-header">
         <h3>قیمت بر اساس زمان</h3>
         <div class="toggle-switch">
-          <input type="checkbox" v-model="enabled" id="timeToggle" />
+          <input id="timeToggle" v-model="enabled" type="checkbox" />
           <label for="timeToggle"></label>
         </div>
       </div>
@@ -24,7 +24,7 @@
           <div class="time-ranges">
             <div class="table-header">
               <h4>بازه‌های زمانی</h4>
-              <button @click="addTimeRange" class="add-btn">
+              <button class="add-btn" @click="addTimeRange">
                 <span>+</span> افزودن بازه
               </button>
             </div>
@@ -70,7 +70,7 @@
                   </div>
                 </div>
                 <div class="col actions">
-                  <button @click="removeTimeRange(index)" class="remove-btn">
+                  <button class="remove-btn" @click="removeTimeRange(index)">
                     حذف
                   </button>
                 </div>

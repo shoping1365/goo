@@ -7,14 +7,14 @@
           <p class="text-gray-600 mt-1">مدیریت تنظیمات عمومی و پیش‌فرض درگاه‌های پرداخت</p>
         </div>
         <TemplateButton 
-          @click="saveSettings" 
           :disabled="saving" 
-          bgGradient="bg-gradient-to-r from-blue-500 to-indigo-600"
-          textColor="text-white"
-          borderColor="border border-blue-500"
-          hoverClass="hover:from-blue-600 hover:to-indigo-700"
-          focusClass="focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          bg-gradient="bg-gradient-to-r from-blue-500 to-indigo-600" 
+          text-color="text-white"
+          border-color="border border-blue-500"
+          hover-class="hover:from-blue-600 hover:to-indigo-700"
+          focus-class="focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           size="medium"
+          @click="saveSettings"
         >
           <span v-if="saving" class="i-heroicons-arrow-path animate-spin ml-2"></span>
           <span v-else class="i-heroicons-check ml-2"></span>
@@ -26,8 +26,9 @@
     <div class="p-6">
       <!-- تب‌های تنظیمات -->
       <div class="flex border-b border-gray-200 mb-6">
-        <button v-for="tab in settingsTabs" :key="tab.value" @click="activeTab = tab.value"
-          :class="['px-4 py-2 -mb-px font-medium text-sm focus:outline-none', activeTab === tab.value ? 'border-b-2 border-blue-600 text-blue-700' : 'text-gray-500 hover:text-blue-600']">
+        <button
+v-for="tab in settingsTabs" :key="tab.value" :class="['px-4 py-2 -mb-px font-medium text-sm focus:outline-none', activeTab === tab.value ? 'border-b-2 border-blue-600 text-blue-700' : 'text-gray-500 hover:text-blue-600']"
+          @click="activeTab = tab.value">
           {{ tab.label }}
         </button>
       </div>
@@ -75,15 +76,15 @@
 
           <div class="space-y-4">
             <div class="flex items-center">
-              <input v-model="settings.autoRetryFailed" type="checkbox" id="autoRetry" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+              <input id="autoRetry" v-model="settings.autoRetryFailed" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
               <label for="autoRetry" class="mr-2 text-sm font-medium text-gray-700">تلاش مجدد خودکار برای تراکنش‌های ناموفق</label>
             </div>
             <div class="flex items-center">
-              <input v-model="settings.enableFallback" type="checkbox" id="fallback" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+              <input id="fallback" v-model="settings.enableFallback" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
               <label for="fallback" class="mr-2 text-sm font-medium text-gray-700">فعال‌سازی درگاه پشتیبان</label>
             </div>
             <div class="flex items-center">
-              <input v-model="settings.enableTestMode" type="checkbox" id="testMode" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+              <input id="testMode" v-model="settings.enableTestMode" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
               <label for="testMode" class="mr-2 text-sm font-medium text-gray-700">فعال‌سازی حالت تست</label>
             </div>
           </div>
@@ -113,11 +114,11 @@
 
           <div class="space-y-4">
             <div class="flex items-center">
-              <input v-model="settings.enableRateLimiting" type="checkbox" id="rateLimit" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+              <input id="rateLimit" v-model="settings.enableRateLimiting" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
               <label for="rateLimit" class="mr-2 text-sm font-medium text-gray-700">فعال‌سازی محدودیت نرخ درخواست</label>
             </div>
             <div class="flex items-center">
-              <input v-model="settings.logAllTransactions" type="checkbox" id="logTransactions" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+              <input id="logTransactions" v-model="settings.logAllTransactions" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
               <label for="logTransactions" class="mr-2 text-sm font-medium text-gray-700">ثبت تمام تراکنش‌ها در لاگ</label>
             </div>
           </div>
@@ -151,11 +152,11 @@
 
           <div class="space-y-4">
             <div class="flex items-center">
-              <input v-model="settings.autoCalculateFee" type="checkbox" id="autoFee" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+              <input id="autoFee" v-model="settings.autoCalculateFee" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
               <label for="autoFee" class="mr-2 text-sm font-medium text-gray-700">محاسبه خودکار کارمزد</label>
             </div>
             <div class="flex items-center">
-              <input v-model="settings.roundFees" type="checkbox" id="roundFees" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+              <input id="roundFees" v-model="settings.roundFees" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
               <label for="roundFees" class="mr-2 text-sm font-medium text-gray-700">گرد کردن کارمزدها</label>
             </div>
           </div>
@@ -176,19 +177,19 @@
 
           <div class="space-y-4">
             <div class="flex items-center">
-              <input v-model="settings.notifyOnGatewayFailure" type="checkbox" id="gatewayFailure" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+              <input id="gatewayFailure" v-model="settings.notifyOnGatewayFailure" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
               <label for="gatewayFailure" class="mr-2 text-sm font-medium text-gray-700">اعلان در صورت خرابی درگاه</label>
             </div>
             <div class="flex items-center">
-              <input v-model="settings.notifyOnHighVolume" type="checkbox" id="highVolume" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+              <input id="highVolume" v-model="settings.notifyOnHighVolume" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
               <label for="highVolume" class="mr-2 text-sm font-medium text-gray-700">اعلان در صورت حجم بالای تراکنش</label>
             </div>
             <div class="flex items-center">
-              <input v-model="settings.notifyOnSuspiciousActivity" type="checkbox" id="suspicious" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+              <input id="suspicious" v-model="settings.notifyOnSuspiciousActivity" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
               <label for="suspicious" class="mr-2 text-sm font-medium text-gray-700">اعلان در صورت فعالیت مشکوک</label>
             </div>
             <div class="flex items-center">
-              <input v-model="settings.notifyOnLowBalance" type="checkbox" id="lowBalance" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+              <input id="lowBalance" v-model="settings.notifyOnLowBalance" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
               <label for="lowBalance" class="mr-2 text-sm font-medium text-gray-700">اعلان در صورت کمبود موجودی</label>
             </div>
           </div>

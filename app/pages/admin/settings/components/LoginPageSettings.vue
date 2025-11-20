@@ -261,16 +261,16 @@
     <!-- دکمه‌های عملیات -->
     <div class="settings-actions mt-8 flex justify-end space-x-4 space-x-reverse">
       <button
-        @click="resetSettings"
         type="button"
         class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        @click="resetSettings"
       >
         بازنشانی
       </button>
       <button
-        @click="saveSettings"
         :disabled="saving"
         class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        @click="saveSettings"
       >
         <span v-if="saving">در حال ذخیره...</span>
         <span v-else>ذخیره تنظیمات</span>
@@ -280,7 +280,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { reactive, watch } from 'vue'
 
 const props = defineProps({
   settings: {

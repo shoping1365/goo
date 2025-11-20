@@ -4,7 +4,7 @@ import { ref } from 'vue'
  * Composable برای debounce کردن توابع
  * این composable تعداد اجرای توابع را کاهش می‌دهد و عملکرد را بهبود می‌بخشد
  */
-export const useDebounce = <T extends (...args: any[]) => any>(
+export const useDebounce = <T extends (...args: unknown[]) => unknown>(
   fn: T,
   delay: number = 300
 ) => {

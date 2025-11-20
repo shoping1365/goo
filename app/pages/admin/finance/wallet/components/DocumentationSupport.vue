@@ -9,46 +9,46 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button
-            @click="activeTab = 'guide'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'guide'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'guide'"
           >
             راهنما
           </button>
           <button
-            @click="activeTab = 'faq'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'faq'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'faq'"
           >
             سوالات متداول
           </button>
           <button
-            @click="activeTab = 'support'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'support'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'support'"
           >
             پشتیبانی
           </button>
           <button
-            @click="activeTab = 'api'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'api'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'api'"
           >
             مستندات API
           </button>
@@ -137,8 +137,8 @@
             class="border border-gray-200 rounded-lg"
           >
             <button
-              @click="toggleFaq(index)"
               class="w-full px-6 py-4 text-right flex items-center justify-between hover:bg-gray-50 transition-colors"
+              @click="toggleFaq(index)"
             >
               <span class="font-medium text-gray-900">{{ faq.question }}</span>
               <svg
@@ -169,7 +169,7 @@
           <!-- فرم تماس -->
           <div class="space-y-4">
             <h3 class="text-lg font-semibold text-gray-900">تماس با پشتیبانی</h3>
-            <form @submit.prevent="submitSupportForm" class="space-y-4">
+            <form class="space-y-4" @submit.prevent="submitSupportForm">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">موضوع</label>
                 <select

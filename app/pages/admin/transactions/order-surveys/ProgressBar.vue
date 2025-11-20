@@ -55,9 +55,9 @@
        <!-- Step Navigation -->
        <div class="flex justify-between mt-4">
          <button 
-           @click="previousStep"
            :disabled="currentStep === 0"
            class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200"
+           @click="previousStep"
          >
            مرحله قبل
          </button>
@@ -66,18 +66,18 @@
            <button 
              v-for="(step, index) in steps" 
              :key="index"
-             @click="goToStep(index)"
              class="px-3 py-1 rounded-lg text-sm font-medium transition-colors"
              :class="getStepButtonClass(index)"
+             @click="goToStep(index)"
            >
              {{ step.title }}
            </button>
          </div>
    
          <button 
-           @click="nextStep"
            :disabled="currentStep === steps.length - 1"
            class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700"
+           @click="nextStep"
          >
            مرحله بعد
          </button>

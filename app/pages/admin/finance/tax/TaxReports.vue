@@ -10,8 +10,8 @@
       <!-- دکمه‌های عملیاتی -->
       <div class="flex gap-2">
         <button 
-          @click="generateAllReports"
           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
+          @click="generateAllReports"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -19,8 +19,8 @@
           تولید تمام گزارش‌ها
         </button>
         <button 
-          @click="exportReports"
           class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-200"
+          @click="exportReports"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -37,8 +37,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">دوره زمانی</label>
           <select 
             v-model="reportFilters.period"
-            @change="updateReports"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="updateReports"
           >
             <option value="monthly">ماهانه</option>
             <option value="quarterly">فصلی</option>
@@ -52,8 +52,8 @@
           <input 
             v-model="reportFilters.dateFrom"
             type="date"
-            @change="updateReports"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="updateReports"
           />
         </div>
         
@@ -62,8 +62,8 @@
           <input 
             v-model="reportFilters.dateTo"
             type="date"
-            @change="updateReports"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="updateReports"
           />
         </div>
         
@@ -71,8 +71,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">نوع گزارش</label>
           <select 
             v-model="reportFilters.reportType"
-            @change="updateReports"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="updateReports"
           >
             <option value="all">همه گزارش‌ها</option>
             <option value="vat">مالیات بر ارزش افزوده</option>
@@ -91,13 +91,13 @@
           <button 
             v-for="tab in reportTabs" 
             :key="tab.id"
-            @click="activeReportTab = tab.id"
             :class="[
               'py-2 px-1 border-b-2 font-medium text-sm transition-colors duration-200',
               activeReportTab === tab.id 
                 ? 'border-blue-500 text-blue-600' 
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             ]"
+            @click="activeReportTab = tab.id"
           >
             {{ tab.label }}
           </button>
@@ -388,8 +388,8 @@
               <label class="block text-sm font-medium text-gray-700 mb-2">دسته‌بندی محصول</label>
               <select 
                 v-model="detailedFilters.category"
-                @change="updateDetailedReport"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                @change="updateDetailedReport"
               >
                 <option value="">همه دسته‌ها</option>
                 <option value="electronics">الکترونیک</option>
@@ -403,8 +403,8 @@
               <label class="block text-sm font-medium text-gray-700 mb-2">نوع مشتری</label>
               <select 
                 v-model="detailedFilters.customerType"
-                @change="updateDetailedReport"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                @change="updateDetailedReport"
               >
                 <option value="">همه انواع</option>
                 <option value="individual">شخصی</option>
@@ -417,8 +417,8 @@
               <label class="block text-sm font-medium text-gray-700 mb-2">منطقه</label>
               <select 
                 v-model="detailedFilters.region"
-                @change="updateDetailedReport"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                @change="updateDetailedReport"
               >
                 <option value="">همه مناطق</option>
                 <option value="tehran">تهران</option>

@@ -15,7 +15,7 @@
         <textarea v-model="content.rules" rows="4" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
       </div>
       <div class="flex justify-end">
-        <button @click="saveContent" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" @click="saveContent">
           ذخیره محتوا
         </button>
       </div>

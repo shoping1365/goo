@@ -54,13 +54,15 @@
   </div>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ user: any }>()
+import type { User } from '~/types/user';
 
-async function post(url: string, body?: any) {
+const props = defineProps<{ user: User }>()
+
+async function post(url: string, body?: Record<string, unknown>) {
   try {
     await $fetch(url, { method: 'POST', body, credentials: 'include' })
     // optionally toast success
-  } catch (e: any) {
+  } catch {
     // optionally toast error
   }
 }

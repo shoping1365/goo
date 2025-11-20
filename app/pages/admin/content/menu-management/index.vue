@@ -8,7 +8,7 @@
           <p class="page-subtitle">لیست منوهای ثبت شده در سامانه</p>
         </div>
         <div class="header-actions">
-          <button class="btn btn-secondary" @click="refreshMenus" :disabled="isLoading">
+          <button class="btn btn-secondary" :disabled="isLoading" @click="refreshMenus">
             <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v6h6M20 20v-6h-6M5 19A9 9 0 1120 9" />
             </svg>
@@ -23,7 +23,7 @@
       <div class="content-card bg-white rounded-lg shadow-soft">
         <div class="table-header">
           <h2 class="table-title">لیست منوها</h2>
-          <span class="table-count" v-if="menusList.length">{{ menusList.length }} منو</span>
+          <span v-if="menusList.length" class="table-count">{{ menusList.length }} منو</span>
         </div>
 
         <div v-if="isLoading" class="table-loading">
@@ -62,9 +62,9 @@
               </div>
               <span 
                 :class="['status-badge', menu.enabled ? 'status-active' : 'status-inactive']"
-                @click.stop="toggleMenuStatus(menu)"
                 style="cursor: pointer;"
                 title="کلیک کنید برای تغییر وضعیت"
+                @click.stop="toggleMenuStatus(menu)"
               >
                 {{ menu.enabled ? 'فعال' : 'غیرفعال' }}
               </span>
@@ -75,7 +75,7 @@
                 <span class="info-label">شناسه:</span>
                 <code class="info-value">{{ truncateSlug(menu.slug) }}</code>
               </div>
-              <div class="info-row" v-if="menu.updatedAt || menu.updated_at || menu.createdAt || menu.created_at">
+              <div v-if="menu.updatedAt || menu.updated_at || menu.createdAt || menu.created_at" class="info-row">
                 <span class="info-label">آخرین تغییر:</span>
                 <span class="info-value">{{ formatDate(menu.updatedAt || menu.updated_at || menu.createdAt || menu.created_at) }}</span>
               </div>
@@ -88,7 +88,7 @@
                 </svg>
                 ویرایش
               </button>
-              <button class="btn-card btn-delete" @click="handleDeleteClick(menu)" :disabled="isDeletingId === menu.id">
+              <button class="btn-card btn-delete" :disabled="isDeletingId === menu.id" @click="handleDeleteClick(menu)">
                 <svg v-if="isDeletingId !== menu.id" class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                 </svg>

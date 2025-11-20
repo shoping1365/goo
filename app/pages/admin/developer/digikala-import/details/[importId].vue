@@ -5,8 +5,8 @@
       <div class="mb-6">
         <div class="flex items-center gap-4 mb-4">
           <button
-            @click="$router.back()"
             class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            @click="$router.back()"
           >
             <Icon name="mdi:arrow-right" class="text-xl text-gray-600" />
           </button>
@@ -150,7 +150,8 @@
                 <div class="text-xs text-gray-600 mt-1">حداکثر</div>
               </div>
               <div class="text-center p-4 bg-gray-50 rounded-lg">
-                <Icon :name="importData.settings?.skipExisting ? 'mdi:check-circle' : 'mdi:close-circle'" 
+                <Icon
+:name="importData.settings?.skipExisting ? 'mdi:check-circle' : 'mdi:close-circle'" 
                       :class="importData.settings?.skipExisting ? 'text-green-600' : 'text-red-600'" 
                       class="text-2xl mx-auto mb-2" />
                 <div class="text-xs text-gray-600">رد موجود</div>
@@ -159,7 +160,8 @@
                 </div>
               </div>
               <div class="text-center p-4 bg-gray-50 rounded-lg">
-                <Icon :name="importData.settings?.importImages ? 'mdi:check-circle' : 'mdi:close-circle'" 
+                <Icon
+:name="importData.settings?.importImages ? 'mdi:check-circle' : 'mdi:close-circle'" 
                       :class="importData.settings?.importImages ? 'text-green-600' : 'text-red-600'" 
                       class="text-2xl mx-auto mb-2" />
                 <div class="text-xs text-gray-600">تصاویر</div>
@@ -178,16 +180,16 @@
               <h2 class="text-lg font-semibold text-gray-900">لاگ‌های Import</h2>
               <div class="flex items-center gap-2">
                 <button
-                  @click="refreshLogs"
                   :disabled="isRefreshingLogs"
                   class="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 text-sm flex items-center gap-2"
+                  @click="refreshLogs"
                 >
                   <Icon :name="isRefreshingLogs ? 'mdi:loading' : 'mdi:refresh'" :class="{ 'animate-spin': isRefreshingLogs }" />
                   بروزرسانی
                 </button>
                 <button
-                  @click="downloadLogs"
                   class="px-3 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 text-sm flex items-center gap-2"
+                  @click="downloadLogs"
                 >
                   <Icon name="mdi:download" />
                   دانلود

@@ -4,7 +4,7 @@
       <div class="card-header">
         <h3>تخفیف‌های خاص</h3>
         <div class="toggle-switch">
-          <input type="checkbox" v-model="enabled" id="discountToggle" />
+          <input id="discountToggle" v-model="enabled" type="checkbox" />
           <label for="discountToggle"></label>
         </div>
       </div>
@@ -13,7 +13,7 @@
         <div class="discount-list">
           <div class="list-header">
             <h4>کدهای تخفیف</h4>
-            <button @click="addDiscount" class="add-btn">
+            <button class="add-btn" @click="addDiscount">
               <span>+</span> افزودن تخفیف
             </button>
           </div>
@@ -21,7 +21,7 @@
           <div v-for="(discount, index) in discounts" :key="index" class="discount-item">
             <div class="discount-header">
               <h5>تخفیف {{ index + 1 }}</h5>
-              <button @click="removeDiscount(index)" class="remove-btn">
+              <button class="remove-btn" @click="removeDiscount(index)">
                 حذف
               </button>
             </div>

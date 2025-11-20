@@ -79,7 +79,8 @@
                 <div v-for="node in clusterNodes" :key="node.name" class="flex items-center justify-between p-3 border rounded-lg">
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <span class="font-medium text-gray-900">{{ node.name }}</span>
-                    <span :class="[
+                    <span
+:class="[
                       'px-2 py-1 rounded text-xs font-medium',
                       node.status === 'Ready' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                     ]">
@@ -127,8 +128,8 @@
             <div class="flex items-center justify-between">
               <h2 class="text-xl font-semibold text-gray-900">مدیریت Pod ها</h2>
               <button 
-                @click="refreshPods"
                 class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                @click="refreshPods"
               >
                 بروزرسانی
               </button>
@@ -140,7 +141,8 @@
                 <div class="flex items-center justify-between mb-2">
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <span class="font-medium text-gray-900">{{ pod.name }}</span>
-                    <span :class="[
+                    <span
+:class="[
                       'px-2 py-1 rounded text-xs font-medium',
                       pod.status === 'Running' ? 'bg-green-100 text-green-800' :
                       pod.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
@@ -151,14 +153,14 @@
                   </div>
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <button 
-                      @click="viewPodLogs(pod)"
                       class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      @click="viewPodLogs(pod)"
                     >
                       لاگ‌ها
                     </button>
                     <button 
-                      @click="deletePod(pod)"
                       class="text-red-600 hover:text-red-800 text-sm font-medium"
+                      @click="deletePod(pod)"
                     >
                       حذف
                     </button>
@@ -189,14 +191,14 @@
                   </div>
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <button 
-                      @click="scaleDeployment(deployment)"
                       class="text-green-600 hover:text-green-800 text-sm font-medium"
+                      @click="scaleDeployment(deployment)"
                     >
                       مقیاس
                     </button>
                     <button 
-                      @click="rolloutDeployment(deployment)"
                       class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      @click="rolloutDeployment(deployment)"
                     >
                       Rollout
                     </button>
@@ -227,14 +229,14 @@
                   </div>
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <button 
-                      @click="editConfigMap(config)"
                       class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      @click="editConfigMap(config)"
                     >
                       ویرایش
                     </button>
                     <button 
-                      @click="deleteConfigMap(config)"
                       class="text-red-600 hover:text-red-800 text-sm font-medium"
+                      @click="deleteConfigMap(config)"
                     >
                       حذف
                     </button>
@@ -253,14 +255,14 @@
                   </div>
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <button 
-                      @click="editSecret(secret)"
                       class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      @click="editSecret(secret)"
                     >
                       ویرایش
                     </button>
                     <button 
-                      @click="deleteSecret(secret)"
                       class="text-red-600 hover:text-red-800 text-sm font-medium"
+                      @click="deleteSecret(secret)"
                     >
                       حذف
                     </button>
@@ -321,14 +323,14 @@
             <h2 class="text-xl font-semibold text-gray-900">ویرایشگر YAML</h2>
             <div class="flex items-center space-x-2 space-x-reverse">
               <button 
-                @click="applyYaml"
                 class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                @click="applyYaml"
               >
                 اعمال
               </button>
               <button 
-                @click="validateYaml"
                 class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                @click="validateYaml"
               >
                 اعتبارسنجی
               </button>
@@ -351,7 +353,7 @@
           <div class="p-6 border-b border-gray-200">
             <div class="flex items-center justify-between">
               <h3 class="text-lg font-semibold text-gray-900">لاگ‌های {{ logsModal.pod?.name }}</h3>
-              <button @click="logsModal.show = false" class="text-gray-400 hover:text-gray-600">
+              <button class="text-gray-400 hover:text-gray-600" @click="logsModal.show = false">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>

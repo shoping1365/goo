@@ -8,8 +8,8 @@
       </div>
       <div class="flex items-center space-x-3 space-x-reverse">
         <button 
-          @click="testSchedule"
           class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700 transition-colors"
+          @click="testSchedule"
         >
           تست زمان‌بندی
         </button>
@@ -27,16 +27,16 @@
           <div class="flex items-center justify-between">
             <label class="text-sm font-medium text-gray-700">فعال‌سازی ارسال خودکار</label>
             <button 
-              @click="settings.enabled = !settings.enabled"
               :class="[
                 'relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
-                settings.enabled ? 'bg-green-600' : 'bg-gray-200'
+                localSettings.enabled ? 'bg-green-600' : 'bg-gray-200'
               ]"
+              @click="localSettings.enabled = !localSettings.enabled"
             >
               <span 
                 :class="[
                   'inline-block h-4 w-4 transform rounded-full bg-white transition-transform',
-                  settings.enabled ? 'translate-x-6' : 'translate-x-1'
+                  localSettings.enabled ? 'translate-x-6' : 'translate-x-1'
                 ]"
               ></span>
             </button>
@@ -48,7 +48,7 @@
               تأخیر ارسال (روز)
             </label>
             <input 
-              v-model.number="settings.delayDays"
+              v-model.number="localSettings.delayDays"
               type="number"
               min="1"
               max="30"
@@ -63,7 +63,7 @@
               محدودیت روزانه
             </label>
             <input 
-              v-model.number="settings.dailyLimit"
+              v-model.number="localSettings.dailyLimit"
               type="number"
               min="1"
               max="1000"
@@ -88,7 +88,7 @@
               <div>
                 <label class="block text-xs text-gray-500 mb-1">از ساعت</label>
                 <input 
-                  v-model="settings.allowedHours.start"
+                  v-model="localSettings.allowedHours.start"
                   type="time"
                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
@@ -96,7 +96,7 @@
               <div>
                 <label class="block text-xs text-gray-500 mb-1">تا ساعت</label>
                 <input 
-                  v-model="settings.allowedHours.end"
+                  v-model="localSettings.allowedHours.end"
                   type="time"
                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
@@ -114,10 +114,10 @@
                 v-for="(day, index) in weekDays" 
                 :key="index"
                 class="flex items-center justify-center p-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50"
-                :class="{ 'bg-blue-100 border-blue-300': settings.allowedDays.includes(index) }"
+                :class="{ 'bg-blue-100 border-blue-300': localSettings.allowedDays.includes(index) }"
               >
                 <input 
-                  v-model="settings.allowedDays"
+                  v-model="localSettings.allowedDays"
                   :value="index"
                   type="checkbox"
                   class="sr-only"
@@ -133,7 +133,7 @@
               منطقه زمانی
             </label>
             <select 
-              v-model="settings.timezone"
+              v-model="localSettings.timezone"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="Asia/Tehran">تهران (UTC+3:30)</option>
@@ -150,8 +150,8 @@
       <div class="flex items-center justify-between mb-4">
         <h4 class="text-lg font-semibold text-gray-800">قوانین ارسال</h4>
         <button 
-          @click="addRule"
           class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors"
+          @click="addRule"
         >
           افزودن قانون جدید
         </button>
@@ -159,18 +159,18 @@
 
       <div class="space-y-4">
         <div 
-          v-for="rule in settings.rules" 
+          v-for="rule in localSettings.rules" 
           :key="rule.id"
           class="border border-gray-200 rounded-lg px-4 py-4"
         >
           <div class="flex items-center justify-between mb-3">
             <div class="flex items-center space-x-3 space-x-reverse">
               <button 
-                @click="rule.enabled = !rule.enabled"
                 :class="[
                   'relative inline-flex h-5 w-10 items-center rounded-full transition-colors',
                   rule.enabled ? 'bg-green-600' : 'bg-gray-200'
                 ]"
+                @click="rule.enabled = !rule.enabled"
               >
                 <span 
                   :class="[
@@ -182,8 +182,8 @@
               <h5 class="font-medium text-gray-800">{{ rule.name }}</h5>
             </div>
             <button 
-              @click="deleteRule(rule.id)"
               class="text-red-600 hover:text-red-800 transition-colors"
+              @click="deleteRule(rule.id)"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -318,8 +318,8 @@
     <!-- Save Button -->
     <div class="flex justify-end">
       <button 
-        @click="saveSettings"
         class="px-6 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors"
+        @click="saveSettings"
       >
         ذخیره تنظیمات
       </button>
@@ -328,7 +328,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 
 interface AutoSettings {
   enabled: boolean
@@ -361,6 +361,29 @@ const emit = defineEmits<{
   'test-schedule': []
 }>()
 
+// Local state to avoid mutating props
+const localSettings = ref<AutoSettings>({
+  enabled: false,
+  delayDays: 1,
+  dailyLimit: 100,
+  allowedHours: { start: '09:00', end: '21:00' },
+  allowedDays: [],
+  timezone: 'Asia/Tehran',
+  rules: []
+})
+
+// Sync local state with props
+watch(() => props.settings, (newSettings) => {
+  if (newSettings) {
+    localSettings.value = JSON.parse(JSON.stringify(newSettings))
+  }
+}, { deep: true, immediate: true })
+
+// Emit updates when local state changes
+watch(localSettings, (newSettings) => {
+  emit('update-settings', newSettings)
+}, { deep: true })
+
 // Reactive data
 const weekDays = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
 
@@ -381,18 +404,18 @@ const addRule = () => {
     priority: 'medium',
     enabled: true
   }
-  props.settings.rules.push(newRule)
+  localSettings.value.rules.push(newRule)
 }
 
 const deleteRule = (ruleId: number) => {
-  const index = props.settings.rules.findIndex(rule => rule.id === ruleId)
+  const index = localSettings.value.rules.findIndex(rule => rule.id === ruleId)
   if (index > -1) {
-    props.settings.rules.splice(index, 1)
+    localSettings.value.rules.splice(index, 1)
   }
 }
 
 const saveSettings = () => {
-  emit('update-settings', props.settings)
+  emit('update-settings', localSettings.value)
 }
 
 const testSchedule = () => {
@@ -402,8 +425,8 @@ const testSchedule = () => {
 // Lifecycle
 onMounted(() => {
   // Initialize default allowed days if not set
-  if (!props.settings.allowedDays || props.settings.allowedDays.length === 0) {
-    props.settings.allowedDays = [0, 1, 2, 3, 4, 5, 6] // All days
+  if (!localSettings.value.allowedDays || localSettings.value.allowedDays.length === 0) {
+    localSettings.value.allowedDays = [0, 1, 2, 3, 4, 5, 6] // All days
   }
 })
 </script>

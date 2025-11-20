@@ -46,8 +46,8 @@
         </div>
         <div class="flex items-end">
           <button 
-            @click="refreshData"
             class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            @click="refreshData"
           >
             <span class="i-heroicons-arrow-path ml-2"></span>
             به‌روزرسانی
@@ -154,14 +154,14 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <button 
-                  @click="viewDriverDetails(driver)"
                   class="text-blue-600 hover:text-blue-900 ml-4"
+                  @click="viewDriverDetails(driver)"
                 >
                   جزئیات
                 </button>
                 <button 
-                  @click="sendMessage(driver)"
                   class="text-green-600 hover:text-green-900"
+                  @click="sendMessage(driver)"
                 >
                   پیام
                 </button>
@@ -175,16 +175,16 @@
       <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
         <div class="flex-1 flex justify-between sm:hidden">
           <button 
-            @click="previousPage"
             :disabled="currentPage === 1"
             class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+            @click="previousPage"
           >
             قبلی
           </button>
           <button 
-            @click="nextPage"
             :disabled="currentPage === totalPages"
             class="mr-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+            @click="nextPage"
           >
             بعدی
           </button>
@@ -204,29 +204,29 @@
           <div>
             <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
               <button 
-                @click="previousPage"
                 :disabled="currentPage === 1"
                 class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                @click="previousPage"
               >
                 <span class="i-heroicons-chevron-left"></span>
               </button>
               <button 
                 v-for="page in visiblePages" 
                 :key="page"
-                @click="goToPage(page)"
                 :class="[
                   'relative inline-flex items-center px-4 py-2 border text-sm font-medium',
                   page === currentPage
                     ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
                     : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
                 ]"
+                @click="goToPage(page)"
               >
                 {{ page }}
               </button>
               <button 
-                @click="nextPage"
                 :disabled="currentPage === totalPages"
                 class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                @click="nextPage"
               >
                 <span class="i-heroicons-chevron-right"></span>
               </button>
@@ -242,7 +242,7 @@
         <div class="mt-3">
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-medium text-gray-900">جزئیات راننده</h3>
-            <button @click="showDriverModal = false" class="text-gray-400 hover:text-gray-600">
+            <button class="text-gray-400 hover:text-gray-600" @click="showDriverModal = false">
               <span class="i-heroicons-x-mark text-xl"></span>
             </button>
           </div>
@@ -276,10 +276,10 @@
             </div>
             
             <div class="flex justify-end space-x-2 space-x-reverse">
-              <button @click="showDriverModal = false" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
+              <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400" @click="showDriverModal = false">
                 بستن
               </button>
-              <button @click="sendMessage(selectedDriver)" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+              <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" @click="sendMessage(selectedDriver)">
                 ارسال پیام
               </button>
             </div>
@@ -295,7 +295,7 @@ declare const definePageMeta: (meta: { layout?: string; title?: string }) => voi
 </script>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue';
 // تعریف interface برای راننده
 interface Driver {
   id: number;
@@ -445,7 +445,7 @@ const formatTime = (timeString: string) => {
 
 const refreshData = () => {
   // اینجا می‌توانید API call برای به‌روزرسانی داده‌ها اضافه کنید
-  console.log('به‌روزرسانی داده‌ها...');
+  // console.log('به‌روزرسانی داده‌ها...');
 };
 
 const viewDriverDetails = (driver: Driver) => {

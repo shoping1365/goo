@@ -54,15 +54,15 @@
        <div class="flex flex-wrap gap-3 mb-6">
          <button
            v-if="selectedResults.length > 0"
-           @click="deleteSelectedResults"
            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium"
+           @click="deleteSelectedResults"
          >
            حذف انتخاب شده‌ها
          </button>
          <button
            v-if="selectedResults.length > 0"
-           @click="batchDownload"
            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium"
+           @click="batchDownload"
          >
            دانلود انتخاب شده‌ها
          </button>
@@ -84,8 +84,8 @@
                 <input
                   v-model="selectAllResults"
                   type="checkbox"
-                  @change="toggleSelectAllResults"
                   class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  @change="toggleSelectAllResults"
                 >
               </th>
               <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">ویدیو</th>
@@ -126,7 +126,8 @@
                 {{ formatFileSize(job.compressed_size || 0) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span v-if="job.original_size && job.compressed_size" class="inline-flex px-2 py-1 text-xs font-semibold rounded-full" :class="{
+                <span
+v-if="job.original_size && job.compressed_size" class="inline-flex px-2 py-1 text-xs font-semibold rounded-full" :class="{
                   'bg-green-100 text-green-800': calculateReduction(job.original_size, job.compressed_size) > 50,
                   'bg-yellow-100 text-yellow-800': calculateReduction(job.original_size, job.compressed_size) > 20 && calculateReduction(job.original_size, job.compressed_size) <= 50,
                   'bg-red-100 text-red-800': calculateReduction(job.original_size, job.compressed_size) <= 20
@@ -144,9 +145,9 @@
                 <div class="flex space-x-2 space-x-reverse">
                   <button
                     v-if="job.status === 'completed' && job.media?.file_path"
-                    @click="downloadCompressed(job)"
                     class="text-blue-600 hover:text-blue-900"
                     title="دانلود"
+                    @click="downloadCompressed(job)"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -154,18 +155,18 @@
                   </button>
                   <button
                     v-if="job.status === 'completed'"
-                    @click="compareVideos(job)"
                     class="text-green-600 hover:text-green-900"
                     title="مقایسه"
+                    @click="compareVideos(job)"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                     </svg>
                   </button>
                   <button
-                    @click="removeResult(job)"
                     class="text-red-600 hover:text-red-900"
                     title="حذف"
+                    @click="removeResult(job)"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>

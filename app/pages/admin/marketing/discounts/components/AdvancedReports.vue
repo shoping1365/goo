@@ -8,11 +8,11 @@
           <p class="text-gray-600 mt-1">گزارش‌های جامع، تحلیل‌های پیشرفته و داشبوردهای تعاملی</p>
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
-          <button @click="exportReport" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+          <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors" @click="exportReport">
             <span class="i-heroicons-arrow-down-tray ml-2"></span>
             صادرات گزارش
           </button>
-          <button @click="scheduleReport" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="scheduleReport">
             <span class="i-heroicons-clock ml-2"></span>
             برنامه‌ریزی گزارش
           </button>
@@ -25,7 +25,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">بازه زمانی</label>
-          <select v-model="reportFilters.timeRange" @change="updateReport" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
+          <select v-model="reportFilters.timeRange" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" @change="updateReport">
             <option value="today">امروز</option>
             <option value="week">هفته جاری</option>
             <option value="month">ماه جاری</option>
@@ -36,7 +36,7 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">نوع گزارش</label>
-          <select v-model="reportFilters.reportType" @change="updateReport" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
+          <select v-model="reportFilters.reportType" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" @change="updateReport">
             <option value="performance">عملکرد</option>
             <option value="financial">مالی</option>
             <option value="user">کاربران</option>
@@ -45,7 +45,7 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">دسته‌بندی</label>
-          <select v-model="reportFilters.category" @change="updateReport" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
+          <select v-model="reportFilters.category" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" @change="updateReport">
             <option value="">همه</option>
             <option value="coupons">کوپن‌ها</option>
             <option value="campaigns">کمپین‌ها</option>
@@ -67,8 +67,9 @@
     <!-- تب‌های گزارش -->
     <div class="border-b border-gray-200">
       <div class="flex border-b border-gray-200 overflow-x-auto">
-        <button v-for="tab in tabs" :key="tab.value" @click="activeTab = tab.value"
-          :class="['px-6 py-3 -mb-px font-medium text-sm focus:outline-none whitespace-nowrap', activeTab === tab.value ? 'border-b-2 border-blue-600 text-blue-700' : 'text-gray-500 hover:text-blue-600']">
+        <button
+v-for="tab in tabs" :key="tab.value" :class="['px-6 py-3 -mb-px font-medium text-sm focus:outline-none whitespace-nowrap', activeTab === tab.value ? 'border-b-2 border-blue-600 text-blue-700' : 'text-gray-500 hover:text-blue-600']"
+          @click="activeTab = tab.value">
           {{ tab.label }}
         </button>
       </div>
@@ -327,7 +328,7 @@
                 </select>
               </div>
               
-              <button @click="generateCustomReport" class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+              <button class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="generateCustomReport">
                 تولید گزارش سفارشی
               </button>
             </div>
@@ -347,7 +348,7 @@
           <div class="border border-gray-200 rounded-lg p-6">
             <div class="flex items-center justify-between mb-4">
               <h5 class="font-medium text-gray-900">گزارش‌های برنامه‌ریزی شده</h5>
-              <button @click="showScheduleForm = true" class="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
+              <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700" @click="showScheduleForm = true">
                 <span class="i-heroicons-plus ml-1"></span>
                 افزودن
               </button>
@@ -367,11 +368,11 @@
                   <span class="text-gray-500">آخرین ارسال: {{ formatDate(schedule.lastSent) }}</span>
                 </div>
                 <div class="mt-3 flex items-center space-x-2 space-x-reverse">
-                  <button @click="editSchedule(schedule)" class="text-blue-600 hover:text-blue-900 text-sm">
+                  <button class="text-blue-600 hover:text-blue-900 text-sm" @click="editSchedule(schedule)">
                     <span class="i-heroicons-pencil-square ml-1"></span>
                     ویرایش
                   </button>
-                  <button @click="deleteSchedule(schedule)" class="text-red-600 hover:text-red-900 text-sm">
+                  <button class="text-red-600 hover:text-red-900 text-sm" @click="deleteSchedule(schedule)">
                     <span class="i-heroicons-trash ml-1"></span>
                     حذف
                   </button>

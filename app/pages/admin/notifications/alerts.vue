@@ -9,10 +9,10 @@
             <p class="mt-1 text-sm text-gray-600">مدیریت و تنظیم اعلان‌های سیستم</p>
           </div>
           <div class="flex items-center space-x-3 space-x-reverse">
-            <button @click="showCreateModal = true" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+            <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors" @click="showCreateModal = true">
               ایجاد اعلان جدید
             </button>
-            <button @click="bulkAction" class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors">
+            <button class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors" @click="bulkAction">
               عملیات گروهی
             </button>
           </div>
@@ -56,7 +56,7 @@
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">جستجو</label>
-              <input type="text" v-model="filters.search" placeholder="جستجو در عنوان یا محتوا..." class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+              <input v-model="filters.search" type="text" placeholder="جستجو در عنوان یا محتوا..." class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
             </div>
           </div>
         </div>
@@ -159,7 +159,7 @@
             <h3 class="text-lg font-medium text-gray-900">لیست اعلان‌ها</h3>
             <div class="flex items-center space-x-3 space-x-reverse">
               <span class="text-sm text-gray-500">{{ filteredAlerts.length }} اعلان</span>
-              <button @click="selectAll" class="text-sm text-blue-600 hover:text-blue-800">
+              <button class="text-sm text-blue-600 hover:text-blue-800" @click="selectAll">
                 انتخاب همه
               </button>
             </div>
@@ -170,7 +170,7 @@
             <thead class="bg-gray-50">
               <tr>
                 <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  <input type="checkbox" v-model="selectAllAlerts" @change="toggleSelectAll" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                  <input v-model="selectAllAlerts" type="checkbox" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" @change="toggleSelectAll">
                 </th>
                 <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">عنوان</th>
                 <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">نوع</th>
@@ -183,7 +183,7 @@
             <tbody class="bg-white divide-y divide-gray-200">
               <tr v-for="alert in filteredAlerts" :key="alert.id" class="hover:bg-gray-50">
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <input type="checkbox" v-model="selectedAlerts" :value="alert.id" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                  <input v-model="selectedAlerts" type="checkbox" :value="alert.id" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div>
@@ -209,14 +209,14 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ alert.createdAt }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div class="flex items-center space-x-2 space-x-reverse">
-                    <button @click="editAlert(alert)" class="text-blue-600 hover:text-blue-900">ویرایش</button>
-                    <button @click="toggleAlertStatus(alert)" class="text-green-600 hover:text-green-900">
+                    <button class="text-blue-600 hover:text-blue-900" @click="editAlert(alert)">ویرایش</button>
+                    <button class="text-green-600 hover:text-green-900" @click="toggleAlertStatus(alert)">
                       {{ alert.status === 'active' ? 'غیرفعال' : 'فعال' }}
                     </button>
                     <button 
                   v-if="canDeleteAlert"
-                  @click="deleteAlert(alert.id)" 
-                  class="text-red-600 hover:text-red-900"
+                  class="text-red-600 hover:text-red-900" 
+                  @click="deleteAlert(alert.id)"
                 >
                   حذف
                 </button>
@@ -245,10 +245,10 @@
       <div class="relative top-20 mx-auto p-5 border w-full max-w-md sm:max-w-lg md:max-w-xl shadow-lg rounded-md bg-white">
         <div class="mt-3">
           <h3 class="text-lg font-medium text-gray-900 mb-4">{{ editingAlert ? 'ویرایش اعلان' : 'ایجاد اعلان جدید' }}</h3>
-          <form @submit.prevent="saveAlert" class="space-y-4">
+          <form class="space-y-4" @submit.prevent="saveAlert">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">عنوان</label>
-              <input type="text" v-model="alertForm.title" required class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+              <input v-model="alertForm.title" type="text" required class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">توضیحات</label>
@@ -273,12 +273,12 @@
             </div>
             <div>
               <label class="flex items-center">
-                <input type="checkbox" v-model="alertForm.isActive" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                <input v-model="alertForm.isActive" type="checkbox" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                 <span class="mr-3 text-sm text-gray-900">فعال</span>
               </label>
             </div>
             <div class="flex items-center justify-end space-x-3 space-x-reverse">
-              <button type="button" @click="showCreateModal = false" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
+              <button type="button" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400" @click="showCreateModal = false">
                 انصراف
               </button>
               <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">

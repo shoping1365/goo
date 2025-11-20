@@ -10,5 +10,5 @@
   </div>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ locations: any[] }>()
+defineProps<{ locations: Record<string, unknown>[] }>()
 </script> 

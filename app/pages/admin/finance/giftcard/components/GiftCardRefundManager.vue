@@ -8,8 +8,8 @@
       </div>
       <div class="flex gap-2">
         <button
-          @click="showNewRefundModal = true"
           class="inline-flex items-center px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          @click="showNewRefundModal = true"
         >
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
@@ -17,8 +17,8 @@
           درخواست بازپرداخت جدید
         </button>
         <button
-          @click="exportRefunds"
           class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          @click="exportRefunds"
         >
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -217,22 +217,22 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex gap-2">
                   <button
-                    @click="viewRefundDetails(refund)"
                     class="text-blue-600 hover:text-blue-900"
+                    @click="viewRefundDetails(refund)"
                   >
                     جزئیات
                   </button>
                   <button
                     v-if="refund.status === 'pending'"
-                    @click="approveRefund(refund)"
                     class="text-green-600 hover:text-green-900"
+                    @click="approveRefund(refund)"
                   >
                     تایید
                   </button>
                   <button
                     v-if="refund.status === 'pending'"
-                    @click="rejectRefund(refund)"
                     class="text-red-600 hover:text-red-900"
+                    @click="rejectRefund(refund)"
                   >
                     رد
                   </button>
@@ -248,16 +248,16 @@
         <div class="flex items-center justify-between">
           <div class="flex-1 flex justify-between sm:hidden">
             <button
-              @click="previousPage"
               :disabled="currentPage === 1"
               class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+              @click="previousPage"
             >
               قبلی
             </button>
             <button
-              @click="nextPage"
               :disabled="currentPage >= totalPages"
               class="mr-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+              @click="nextPage"
             >
               بعدی
             </button>
@@ -277,16 +277,16 @@
             <div>
               <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
                 <button
-                  @click="previousPage"
                   :disabled="currentPage === 1"
                   class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                  @click="previousPage"
                 >
                   قبلی
                 </button>
                 <button
-                  @click="nextPage"
                   :disabled="currentPage >= totalPages"
                   class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                  @click="nextPage"
                 >
                   بعدی
                 </button>

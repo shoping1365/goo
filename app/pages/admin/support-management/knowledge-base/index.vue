@@ -11,24 +11,24 @@
       <div class="border-b border-gray-200">
         <nav class="flex space-x-8 space-x-reverse px-6">
           <button 
-            @click="activeTab = 'faq'"
             :class="[
               'py-4 px-1 border-b-2 font-medium text-sm transition-colors',
               activeTab === 'faq' 
                 ? 'border-purple-500 text-purple-600' 
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             ]"
+            @click="activeTab = 'faq'"
           >
             سوالات متداول
           </button>
           <button 
-            @click="activeTab = 'customization'"
             :class="[
               'py-4 px-1 border-b-2 font-medium text-sm transition-colors',
               activeTab === 'customization' 
                 ? 'border-purple-500 text-purple-600' 
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             ]"
+            @click="activeTab = 'customization'"
           >
             شخصی‌سازی
           </button>
@@ -39,7 +39,7 @@
       <div v-if="activeTab === 'faq'" class="p-6">
         <!-- دکمه افزودن -->
         <div class="flex justify-end mb-6">
-          <button @click="addNewFaq" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2 space-x-reverse">
+          <button class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2 space-x-reverse" @click="addNewFaq">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
             </svg>
@@ -58,20 +58,20 @@
                 <input 
                   type="checkbox" 
                   :checked="item.isActive" 
-                  @change="toggleFaqStatus(item.id)"
                   class="sr-only peer"
+                  @change="toggleFaqStatus(item.id)"
                 >
                 <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
               </label>
                           <span class="text-gray-900">{{ item.title }}</span>
           </div>
           <div class="flex items-center space-x-2 space-x-reverse">
-            <button @click="editFaqItem(item.id)" class="text-blue-600 hover:text-blue-900 transition-colors" title="ویرایش">
+            <button class="text-blue-600 hover:text-blue-900 transition-colors" title="ویرایش" @click="editFaqItem(item.id)">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
               </svg>
             </button>
-            <button @click="deleteFaqItem(item.id)" class="text-red-500 hover:text-red-700" title="حذف">
+            <button class="text-red-500 hover:text-red-700" title="حذف" @click="deleteFaqItem(item.id)">
               <span class="text-xl">🗑️</span>
             </button>
           </div>
@@ -89,13 +89,13 @@
               <button 
                 v-for="color in colors" 
                 :key="color.name"
-                @click="selectedColor = color.value"
                 :class="[
                   'w-12 h-12 rounded-full border-2 transition-all',
                   selectedColor === color.value ? 'border-gray-400 scale-110' : 'border-gray-200 hover:border-gray-300'
                 ]"
                 :style="{ backgroundColor: color.value }"
                 :title="color.name"
+                @click="selectedColor = color.value"
               ></button>
             </div>
           </div>
@@ -193,7 +193,7 @@
 
           <!-- دکمه ذخیره -->
           <div class="flex justify-end pt-6">
-            <button @click="saveSettings" class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 transition-colors">
+            <button class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 transition-colors" @click="saveSettings">
               ذخیره
             </button>
           </div>
@@ -275,10 +275,10 @@ function toggleFaqStatus(id) {
 // تابع ذخیره تنظیمات
 function saveSettings() {
   // اینجا می‌توانید کد ذخیره تنظیمات را اضافه کنید
-  console.log('تنظیمات ذخیره شد:', {
-    color: selectedColor.value,
-    settings: settings.value
-  })
+  // console.log('تنظیمات ذخیره شد:', {
+  //   color: selectedColor.value,
+  //   settings: settings.value
+  // })
   
   // نمایش پیام موفقیت
   alert('تنظیمات با موفقیت ذخیره شد!')

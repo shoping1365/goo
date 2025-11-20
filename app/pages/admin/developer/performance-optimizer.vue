@@ -10,25 +10,25 @@
       <h2 class="text-lg font-semibold text-gray-900 mb-4">عملیات سریع</h2>
       <div class="flex flex-wrap gap-6">
         <button 
-          @click="clearCache"
           :disabled="isClearing"
           class="bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-6 rounded-lg transition-colors disabled:opacity-50"
+          @click="clearCache"
         >
           {{ isClearing ? 'در حال پاک کردن...' : 'پاک کردن کش' }}
         </button>
         
         <button 
-          @click="reloadServer"
           :disabled="isReloading"
           class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors disabled:opacity-50"
+          @click="reloadServer"
         >
           {{ isReloading ? 'در حال ری‌استارت...' : 'ری‌استارت سرور' }}
         </button>
         
         <button 
-          @click="analyzeBundle"
           :disabled="isAnalyzing"
           class="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-colors disabled:opacity-50"
+          @click="analyzeBundle"
         >
           {{ isAnalyzing ? 'در حال تحلیل...' : 'تحلیل باندل' }}
         </button>
@@ -41,9 +41,9 @@
         <h2 class="text-lg font-semibold text-gray-900">تنظیمات کش</h2>
         <div class="flex items-center">
           <input 
+            id="cache-enabled" 
             v-model="settings.cache.enabled" 
-            type="checkbox" 
-            id="cache-enabled"
+            type="checkbox"
             class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
           />
           <label for="cache-enabled" class="mr-2 text-sm font-medium text-gray-700">فعال</label>
@@ -87,9 +87,9 @@
         <h2 class="text-lg font-semibold text-gray-900">فشردگی</h2>
         <div class="flex items-center">
           <input 
+            id="compression-enabled" 
             v-model="settings.compression.enabled" 
-            type="checkbox" 
-            id="compression-enabled"
+            type="checkbox"
             class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
           />
           <label for="compression-enabled" class="mr-2 text-sm font-medium text-gray-700">فعال</label>
@@ -133,9 +133,9 @@
         <h2 class="text-lg font-semibold text-gray-900">بارگذاری تنبل (Lazy Loading)</h2>
         <div class="flex items-center">
           <input 
+            id="lazy-enabled" 
             v-model="settings.lazyLoading.enabled" 
-            type="checkbox" 
-            id="lazy-enabled"
+            type="checkbox"
             class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
           />
           <label for="lazy-enabled" class="mr-2 text-sm font-medium text-gray-700">فعال</label>
@@ -147,9 +147,9 @@
         <div class="space-y-4">
           <div class="flex items-center">
             <input 
+              id="lazy-admin" 
               v-model="settings.lazyLoading.adminComponents" 
-              type="checkbox" 
-              id="lazy-admin"
+              type="checkbox"
               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
             <label for="lazy-admin" class="mr-3 text-sm font-medium text-gray-700">
@@ -160,9 +160,9 @@
           
           <div class="flex items-center">
             <input 
+              id="lazy-libs" 
               v-model="settings.lazyLoading.heavyLibraries" 
-              type="checkbox" 
-              id="lazy-libs"
+              type="checkbox"
               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
             <label for="lazy-libs" class="mr-3 text-sm font-medium text-gray-700">
@@ -173,9 +173,9 @@
           
           <div class="flex items-center">
             <input 
+              id="lazy-images" 
               v-model="settings.lazyLoading.images" 
-              type="checkbox" 
-              id="lazy-images"
+              type="checkbox"
               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
             <label for="lazy-images" class="mr-3 text-sm font-medium text-gray-700">
@@ -193,7 +193,8 @@
           <div class="bg-gray-50 p-6 rounded-md mb-4">
             <h5 class="font-medium text-gray-800 mb-2">کامپوننت‌های Lazy:</h5>
             <div class="space-y-2">
-              <div v-for="(component, index) in settings.lazyLoading.customComponents" :key="index" 
+              <div
+v-for="(component, index) in settings.lazyLoading.customComponents" :key="index" 
                    class="flex items-center justify-between bg-white p-2 rounded border">
                 <div class="flex-1">
                   <span class="font-medium text-sm">{{ component.name }}</span>
@@ -204,15 +205,15 @@
                     {{ component.enabled ? 'فعال' : 'غیرفعال' }}
                   </span>
                   <button 
-                    @click="toggleLazyComponent(index)"
                     :class="component.enabled ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400 hover:bg-gray-500'"
                     class="text-white px-2 py-1 rounded text-xs"
+                    @click="toggleLazyComponent(index)"
                   >
                     {{ component.enabled ? 'غیرفعال' : 'فعال' }}
                   </button>
                   <button 
-                    @click="removeLazyComponent(index)"
                     class="text-red-600 hover:text-red-800 text-xs"
+                    @click="removeLazyComponent(index)"
                   >
                     حذف
                   </button>
@@ -237,8 +238,8 @@
                 class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
               />
               <button 
-                @click="addLazyComponent"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm"
+                @click="addLazyComponent"
               >
                 افزودن
               </button>
@@ -258,9 +259,9 @@
         <div class="space-y-4">
           <div class="flex items-center">
             <input 
+              id="vendor-chunk" 
               v-model="settings.bundleSplitting.vendorChunk" 
-              type="checkbox" 
-              id="vendor-chunk"
+              type="checkbox"
               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
             <label for="vendor-chunk" class="mr-3 text-sm font-medium text-gray-700">
@@ -271,9 +272,9 @@
           
           <div class="flex items-center">
             <input 
+              id="admin-chunk" 
               v-model="settings.bundleSplitting.adminChunk" 
-              type="checkbox" 
-              id="admin-chunk"
+              type="checkbox"
               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
             <label for="admin-chunk" class="mr-3 text-sm font-medium text-gray-700">
@@ -284,9 +285,9 @@
           
           <div class="flex items-center">
             <input 
+              id="editor-chunk" 
               v-model="settings.bundleSplitting.editorChunk" 
-              type="checkbox" 
-              id="editor-chunk"
+              type="checkbox"
               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
             <label for="editor-chunk" class="mr-3 text-sm font-medium text-gray-700">
@@ -304,15 +305,16 @@
           <div class="bg-gray-50 p-6 rounded-md mb-4">
             <h5 class="font-medium text-gray-800 mb-2">Chunk های تنظیم شده:</h5>
             <div class="space-y-2">
-              <div v-for="(chunk, index) in settings.bundleSplitting.customChunks" :key="index" 
+              <div
+v-for="(chunk, index) in settings.bundleSplitting.customChunks" :key="index" 
                    class="flex items-center justify-between bg-white p-2 rounded border">
                 <div class="flex-1">
                   <span class="font-medium text-sm">{{ chunk.name }}</span>
                   <span class="text-gray-500 text-xs block">{{ chunk.pattern }}</span>
                 </div>
                 <button 
-                  @click="removeCustomChunk(index)"
                   class="text-red-600 hover:text-red-800 text-xs"
+                  @click="removeCustomChunk(index)"
                 >
                   حذف
                 </button>
@@ -336,8 +338,8 @@
                 class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
               />
               <button 
-                @click="addCustomChunk"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm"
+                @click="addCustomChunk"
               >
                 افزودن
               </button>
@@ -374,7 +376,8 @@
           <div class="bg-gray-50 p-6 rounded-md mb-4">
             <h5 class="font-medium text-gray-800 mb-2">صفحات تنظیم شده:</h5>
             <div class="space-y-2">
-              <div v-for="(route, index) in settings.ssr.customRoutes" :key="index" 
+              <div
+v-for="(route, index) in settings.ssr.customRoutes" :key="index" 
                    class="flex items-center justify-between bg-white p-2 rounded border">
                 <div class="flex-1">
                   <span class="font-mono text-sm">{{ route.path }}</span>
@@ -388,8 +391,8 @@
                     <option value="spa">SPA</option>
                   </select>
                   <button 
-                    @click="removeCustomRoute(index)"
                     class="text-red-600 hover:text-red-800 text-xs"
+                    @click="removeCustomRoute(index)"
                   >
                     حذف
                   </button>
@@ -414,8 +417,8 @@
               <option value="spa">SPA</option>
             </select>
             <button 
-              @click="addCustomRoute"
               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm"
+              @click="addCustomRoute"
             >
               افزودن
             </button>
@@ -435,16 +438,16 @@
         
         <div class="flex gap-3">
           <button 
-            @click="resetSettings"
             class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors"
+            @click="resetSettings"
           >
             بازگردانی پیش‌فرض
           </button>
           
           <button 
-            @click="saveSettings"
             :disabled="isSaving"
             class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors disabled:opacity-50"
+            @click="saveSettings"
           >
             {{ isSaving ? 'در حال ذخیره...' : 'ذخیره تنظیمات' }}
           </button>

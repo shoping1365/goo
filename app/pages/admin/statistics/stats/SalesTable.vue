@@ -38,5 +38,5 @@
   </div>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ sales: any[] }>()
+defineProps<{ sales: unknown[] }>()
 </script> 

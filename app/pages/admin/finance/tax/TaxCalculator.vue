@@ -9,8 +9,8 @@
       
       <!-- دکمه محاسبه دسته‌ای -->
       <button 
-        @click="showBulkCalculationModal = true"
         class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors duration-200"
+        @click="showBulkCalculationModal = true"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
@@ -31,8 +31,8 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">نوع مشتری</label>
             <select 
               v-model="calculationForm.customerType"
-              @change="updateCustomerType"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              @change="updateCustomerType"
             >
               <option value="individual">شخصی</option>
               <option value="business">شرکتی</option>
@@ -46,8 +46,8 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">منطقه</label>
             <select 
               v-model="calculationForm.region"
-              @change="updateRegion"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              @change="updateRegion"
             >
               <option value="">انتخاب منطقه</option>
               <option v-for="region in regions" :key="region.id" :value="region.id">
@@ -61,8 +61,8 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">دسته‌بندی محصولات</label>
             <select 
               v-model="calculationForm.category"
-              @change="updateCategory"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              @change="updateCategory"
             >
               <option value="">انتخاب دسته‌بندی</option>
               <option value="products">محصولات</option>
@@ -79,8 +79,8 @@
               v-model.number="calculationForm.totalAmount"
               type="number"
               min="0"
-              @input="calculateTax"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              @input="calculateTax"
             />
           </div>
 
@@ -95,8 +95,8 @@
                 class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
               <button 
-                @click="validateDiscountCode"
                 class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition-colors duration-200"
+                @click="validateDiscountCode"
               >
                 اعتبارسنجی
               </button>
@@ -113,8 +113,8 @@
               <input 
                 v-model="calculationForm.applyVAT"
                 type="checkbox"
-                @change="calculateTax"
                 class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                @change="calculateTax"
               />
               <span class="mr-2 text-sm text-gray-700">اعمال مالیات بر ارزش افزوده</span>
             </label>
@@ -123,8 +123,8 @@
               <input 
                 v-model="calculationForm.applyIncomeTax"
                 type="checkbox"
-                @change="calculateTax"
                 class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                @change="calculateTax"
               />
               <span class="mr-2 text-sm text-gray-700">اعمال مالیات بر درآمد</span>
             </label>
@@ -133,8 +133,8 @@
               <input 
                 v-model="calculationForm.applyCustomsTax"
                 type="checkbox"
-                @change="calculateTax"
                 class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                @change="calculateTax"
               />
               <span class="mr-2 text-sm text-gray-700">اعمال مالیات گمرکی</span>
             </label>
@@ -143,8 +143,8 @@
               <input 
                 v-model="calculationForm.roundToNearest"
                 type="checkbox"
-                @change="calculateTax"
                 class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                @change="calculateTax"
               />
               <span class="mr-2 text-sm text-gray-700">گرد کردن به نزدیک‌ترین عدد</span>
             </label>
@@ -235,20 +235,20 @@
         <!-- دکمه‌های عملیاتی -->
         <div class="flex gap-3">
           <button 
-            @click="saveCalculation"
             class="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-200"
+            @click="saveCalculation"
           >
             ذخیره محاسبه
           </button>
           <button 
-            @click="exportCalculation"
             class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
+            @click="exportCalculation"
           >
             خروجی PDF
           </button>
           <button 
-            @click="resetCalculation"
             class="flex-1 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition-colors duration-200"
+            @click="resetCalculation"
           >
             ریست
           </button>
@@ -261,7 +261,7 @@
       <div class="bg-white rounded-xl p-6 w-full max-w-2xl mx-4">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-gray-900">محاسبه دسته‌ای مالیات</h3>
-          <button @click="showBulkCalculationModal = false" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="showBulkCalculationModal = false">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -307,8 +307,8 @@
               شروع محاسبه
             </button>
             <button 
-              @click="showBulkCalculationModal = false"
               class="flex-1 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition-colors duration-200"
+              @click="showBulkCalculationModal = false"
             >
               انصراف
             </button>

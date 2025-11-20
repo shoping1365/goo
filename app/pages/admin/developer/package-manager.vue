@@ -74,11 +74,11 @@
         <div class="p-6">
           <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
             <button 
-              @click="selectPackageManager('npm')"
               :class="[
                 'flex items-center justify-center p-6 rounded-lg border-2 transition-colors',
                 selectedManager === 'npm' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
               ]"
+              @click="selectPackageManager('npm')"
             >
               <div class="text-center">
                 <div class="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center mx-auto mb-2">
@@ -89,11 +89,11 @@
             </button>
 
             <button 
-              @click="selectPackageManager('yarn')"
               :class="[
                 'flex items-center justify-center p-6 rounded-lg border-2 transition-colors',
                 selectedManager === 'yarn' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
               ]"
+              @click="selectPackageManager('yarn')"
             >
               <div class="text-center">
                 <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-2">
@@ -104,11 +104,11 @@
             </button>
 
             <button 
-              @click="selectPackageManager('pnpm')"
               :class="[
                 'flex items-center justify-center p-6 rounded-lg border-2 transition-colors',
                 selectedManager === 'pnpm' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
               ]"
+              @click="selectPackageManager('pnpm')"
             >
               <div class="text-center">
                 <div class="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center mx-auto mb-2">
@@ -119,11 +119,11 @@
             </button>
 
             <button 
-              @click="selectPackageManager('go')"
               :class="[
                 'flex items-center justify-center p-6 rounded-lg border-2 transition-colors',
                 selectedManager === 'go' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
               ]"
+              @click="selectPackageManager('go')"
             >
               <div class="text-center">
                 <div class="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mx-auto mb-2">
@@ -150,14 +150,14 @@
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <input 
                     v-model="searchQuery"
-                    @input="searchPackages"
                     type="text"
                     class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="نام پکیج را وارد کنید..."
+                    @input="searchPackages"
                   >
                   <button 
-                    @click="searchPackages"
                     class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                    @click="searchPackages"
                   >
                     جستجو
                   </button>
@@ -175,8 +175,8 @@
                        <p class="text-xs text-gray-400">نسخه: {{ pkg.version }}</p>
                      </div>
                      <button 
-                       @click="installPackage(pkg)"
                        class="bg-green-600 hover:bg-green-700 text-white font-medium py-1 px-3 rounded text-sm transition-colors"
+                       @click="installPackage(pkg)"
                      >
                        نصب
                      </button>
@@ -189,20 +189,20 @@
                 <label class="block text-sm font-medium text-gray-700 mb-2">نصب سریع</label>
                 <div class="space-y-2">
                   <button 
-                    @click="quickInstall('vue')"
                     class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                    @click="quickInstall('vue')"
                   >
                     نصب Vue.js
                   </button>
                   <button 
-                    @click="quickInstall('axios')"
                     class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                    @click="quickInstall('axios')"
                   >
                     نصب Axios
                   </button>
                   <button 
-                    @click="quickInstall('tailwindcss')"
                     class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                    @click="quickInstall('tailwindcss')"
                   >
                     نصب Tailwind CSS
                   </button>
@@ -219,14 +219,14 @@
               <h2 class="text-xl font-semibold text-gray-900">پکیج‌های نصب شده</h2>
               <div class="flex items-center space-x-2 space-x-reverse">
                 <button 
-                  @click="updateAllPackages"
                   class="bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="updateAllPackages"
                 >
                   به‌روزرسانی همه
                 </button>
                 <button 
-                  @click="auditPackages"
                   class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="auditPackages"
                 >
                   بررسی امنیت
                 </button>
@@ -251,21 +251,21 @@
                  </div>
                  <div class="flex items-center space-x-2 space-x-reverse">
                    <button 
-                     @click="updatePackage(pkg)"
                      v-if="pkg.latest !== pkg.version"
                      class="text-yellow-600 hover:text-yellow-800 text-sm font-medium"
+                     @click="updatePackage(pkg)"
                    >
                      به‌روزرسانی
                    </button>
                    <button 
-                     @click="removePackage(pkg)"
                      class="text-red-600 hover:text-red-800 text-sm font-medium"
+                     @click="removePackage(pkg)"
                    >
                      حذف
                    </button>
                    <button 
-                     @click="viewPackageDetails(pkg)"
                      class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                     @click="viewPackageDetails(pkg)"
                    >
                      جزئیات
                    </button>
@@ -290,8 +290,8 @@
               </div>
               <p class="text-sm text-gray-500 mb-3">{{ script.description }}</p>
               <button 
-                @click="runScript(script)"
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                @click="runScript(script)"
               >
                 اجرا
               </button>
@@ -306,7 +306,7 @@
           <div class="p-6 border-b border-gray-200">
             <div class="flex items-center justify-between">
               <h3 class="text-lg font-semibold text-gray-900">{{ packageModal.package?.name }}</h3>
-              <button @click="packageModal.show = false" class="text-gray-400 hover:text-gray-600">
+              <button class="text-gray-400 hover:text-gray-600" @click="packageModal.show = false">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>

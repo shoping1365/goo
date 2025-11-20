@@ -4,7 +4,7 @@
       <div class="card-header">
         <h3>قیمت بر اساس وزن</h3>
         <div class="toggle-switch">
-          <input type="checkbox" v-model="enabled" id="weightToggle" />
+          <input id="weightToggle" v-model="enabled" type="checkbox" />
           <label for="weightToggle"></label>
         </div>
       </div>
@@ -22,7 +22,7 @@
         <div class="table-section">
           <div class="table-header">
             <h4>بازه‌های وزنی</h4>
-            <button @click="addWeightRange" class="add-btn">
+            <button class="add-btn" @click="addWeightRange">
               <span>+</span> افزودن بازه
             </button>
           </div>
@@ -70,7 +70,7 @@
                 </div>
               </div>
               <div class="col actions">
-                <button @click="removeWeightRange(index)" class="remove-btn">
+                <button class="remove-btn" @click="removeWeightRange(index)">
                   حذف
                 </button>
               </div>

@@ -426,8 +426,8 @@
       
       <div class="flex flex-wrap gapx-4 py-4">
         <button 
-          @click="generateReport"
           class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center text-sm"
+          @click="generateReport"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -436,8 +436,8 @@
         </button>
 
         <button 
-          @click="exportData"
           class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center text-sm"
+          @click="exportData"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -446,8 +446,8 @@
         </button>
 
         <button 
-          @click="printReport"
           class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center text-sm"
+          @click="printReport"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
@@ -456,8 +456,8 @@
         </button>
 
         <button 
-          @click="refreshStats"
           class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors flex items-center text-sm"
+          @click="refreshStats"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -532,22 +532,22 @@ const formatPrice = (price) => {
 
 const generateReport = () => {
   // تولید گزارش
-  console.log('تولید گزارش...')
+  // console.log('تولید گزارش...')
 }
 
 const exportData = () => {
   // خروجی اکسل
-  console.log('خروجی اکسل...')
+  // console.log('خروجی اکسل...')
 }
 
 const printReport = () => {
   // چاپ گزارش
-  console.log('چاپ گزارش...')
+  // console.log('چاپ گزارش...')
 }
 
 const refreshStats = () => {
   // به‌روزرسانی آمار
-  console.log('به‌روزرسانی آمار...')
+  // console.log('به‌روزرسانی آمار...')
 }
 
 // نظارت بر تغییرات

@@ -44,7 +44,8 @@
               <span>+{{ salesStats.weeklyGrowth }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full transition-all duration-300"
+              <div
+class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full transition-all duration-300"
                    :style="{ width: salesStats.weeklyGrowth + '%' }"></div>
             </div>
           </div>
@@ -74,7 +75,8 @@
               </div>
               <div class="flex items-center">
                 <div class="w-24 bg-gray-200 rounded-full h-2 ml-2">
-                  <div :class="category.color + ' h-2 rounded-full transition-all duration-300'"
+                  <div
+:class="category.color + ' h-2 rounded-full transition-all duration-300'"
                        :style="{ width: category.percentage + '%' }"></div>
                 </div>
                 <span class="text-sm font-bold text-gray-900">{{ formatCurrency(category.sales) }}</span>
@@ -138,7 +140,8 @@
               <span>{{ behaviorStats.monthlyPattern }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full transition-all duration-300"
+              <div
+class="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full transition-all duration-300"
                    :style="{ width: behaviorStats.monthlyPattern + '%' }"></div>
             </div>
           </div>
@@ -165,7 +168,8 @@
               <span class="text-sm text-gray-600">{{ hour.time }}</span>
               <div class="flex items-center">
                 <div class="w-24 bg-gray-200 rounded-full h-2 ml-2">
-                  <div class="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full transition-all duration-300"
+                  <div
+class="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full transition-all duration-300"
                        :style="{ width: hour.percentage + '%' }"></div>
                 </div>
                 <span class="text-sm font-bold text-gray-900">{{ hour.orderCount }}</span>
@@ -229,7 +233,8 @@
               <span>{{ forecastStats.accuracy }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-300"
+              <div
+class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-300"
                    :style="{ width: forecastStats.accuracy + '%' }"></div>
             </div>
           </div>
@@ -322,7 +327,8 @@
               <span>+{{ comparisonStats.monthlyGrowth }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full transition-all duration-300"
+              <div
+class="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full transition-all duration-300"
                    :style="{ width: Math.min(comparisonStats.monthlyGrowth, 100) + '%' }"></div>
             </div>
           </div>
@@ -406,9 +412,11 @@
           <div class="overflow-x-auto">
             <div class="flex items-end space-x-2 space-x-reverse h-20 min-w-[900px]">
               <div v-for="(month, index) in interactiveTrend" :key="index" class="flex flex-col items-center min-w-[40px] max-w-[60px]">
-                <div class="w-full bg-gray-200 rounded-t"
+                <div
+class="w-full bg-gray-200 rounded-t"
                      :style="{ height: (month.sales / 1000000 * 80) + 'px' }">
-                  <div class="w-full bg-gradient-to-t from-blue-500 to-purple-500 rounded-t transition-all duration-300"
+                  <div
+class="w-full bg-gradient-to-t from-blue-500 to-purple-500 rounded-t transition-all duration-300"
                        :style="{ height: (month.sales / 1000000 * 80) + 'px' }"></div>
                 </div>
                 <span class="text-xs text-gray-500 mt-1">{{ month.label }}</span>

@@ -26,7 +26,9 @@
   </div>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ user?: any }>();
+import type { User } from '~/types/user';
+
+defineProps<{ user?: User }>();
 const alerts = [
   { id: 1, name: 'کنسول بازی', date: '1402/03/05', status: 'ارسال شد' },
   { id: 2, name: 'کفش ورزشی', date: '1402/03/04', status: 'در انتظار' },

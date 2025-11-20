@@ -14,7 +14,7 @@
           <option value="podcast">پادکست</option>
           <option value="infographic">اینفوگرافیک</option>
         </select>
-        <button @click="refreshContentData" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+        <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" @click="refreshContentData">
           <svg class="w-4 h-4 ml-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
           </svg>
@@ -151,7 +151,7 @@
             placeholder="جستجو در محتوا..."
             class="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-          <button @click="createContent" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm">
+          <button class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm" @click="createContent">
             <svg class="w-4 h-4 ml-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
             </svg>
@@ -181,7 +181,8 @@
                 </span>
               </div>
             </div>
-            <span :class="[
+            <span
+:class="[
               content.performance === 'excellent' ? 'bg-green-100 text-green-800' :
               content.performance === 'good' ? 'bg-blue-100 text-blue-800' :
               content.performance === 'fair' ? 'bg-yellow-100 text-yellow-800' :
@@ -214,7 +215,8 @@
             </div>
             <div class="flex justify-between">
               <span class="text-gray-500">وضعیت SEO:</span>
-              <span :class="[
+              <span
+:class="[
                 content.seoScore >= 80 ? 'text-green-600' :
                 content.seoScore >= 60 ? 'text-yellow-600' :
                 'text-red-600',
@@ -285,7 +287,7 @@
                 <span class="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded-full">
                   {{ recommendation.priority }}
                 </span>
-                <button @click="implementRecommendation(recommendation.id)" class="text-xs text-blue-600 hover:text-blue-800">
+                <button class="text-xs text-blue-600 hover:text-blue-800" @click="implementRecommendation(recommendation.id)">
                   پیاده‌سازی
                 </button>
               </div>

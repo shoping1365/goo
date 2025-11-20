@@ -33,8 +33,8 @@
           </div>
           <div class="mr-4 flex flex-shrink-0">
             <button
-              @click="close"
               class="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              @click="close"
             >
               <span class="sr-only">بستن</span>
               <span class="i-heroicons-x-mark text-lg"></span>

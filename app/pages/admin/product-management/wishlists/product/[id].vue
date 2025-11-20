@@ -6,9 +6,9 @@
         <div class="flex justify-between items-center py-3">
           <div class="flex items-center">
             <button 
-              @click="$router.back()"
               class="ml-4 p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
               title="بازگشت"
+              @click="$router.back()"
             >
               ←
             </button>
@@ -19,14 +19,14 @@
           </div>
           <div class="flex space-x-2 space-x-reverse">
             <button 
-              @click="showPriceModal = true"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+              @click="showPriceModal = true"
             >
               تغییر قیمت
             </button>
             <button 
-              @click="showSmsModal = true"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+              @click="showSmsModal = true"
             >
               ارسال پیام
             </button>
@@ -108,9 +108,9 @@
                 <th class="px-4 py-3 text-center text-xs font-medium text-gray-600 uppercase tracking-wider">
                   <input 
                     type="checkbox" 
-                    @change="toggleSelectAll"
                     :checked="isAllSelected"
                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    @change="toggleSelectAll"
                   />
                 </th>
                 <th class="px-4 py-3 text-center text-xs font-medium text-gray-600 uppercase tracking-wider">کاربر</th>
@@ -123,9 +123,9 @@
               <tr v-for="userWishlist in paginatedUsers" :key="userWishlist.id" class="hover:bg-gray-50">
                 <td class="px-4 py-4 whitespace-nowrap text-center">
                   <input 
-                    type="checkbox" 
+                    v-model="selectedUsers" 
+                    type="checkbox"
                     :value="userWishlist.id"
-                    v-model="selectedUsers"
                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
                 </td>
@@ -155,23 +155,23 @@
                 <td class="px-4 py-4 whitespace-nowrap text-center">
                   <div class="flex items-center justify-center space-x-1 space-x-reverse">
                     <button 
-                      @click="sendPersonalSms(userWishlist.user)"
                       class="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors"
                       title="ارسال پیام شخصی"
+                      @click="sendPersonalSms(userWishlist.user)"
                     >
                       💬
                     </button>
                     <button 
-                      @click="viewUserProfile(userWishlist.user.id)"
                       class="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors"
                       title="مشاهده پروفایل"
+                      @click="viewUserProfile(userWishlist.user.id)"
                     >
                       👤
                     </button>
                     <button 
-                      @click="removeFromWishlist(userWishlist.id)"
                       class="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
                       title="حذف از لیست"
+                      @click="removeFromWishlist(userWishlist.id)"
                     >
                       🗑️
                     </button>
@@ -191,31 +191,31 @@
           </div>
           <div class="flex items-center space-x-1 space-x-reverse">
             <button 
-              @click="currentPage = Math.max(1, currentPage - 1)"
               :disabled="currentPage === 1"
               class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              @click="currentPage = Math.max(1, currentPage - 1)"
             >
               قبلی
             </button>
             <template v-for="page in visiblePages" :key="page">
               <button 
                 v-if="page !== '...'"
-                @click="currentPage = Number(page)"
                 :class="[
                   'px-3 py-1 border text-sm font-medium rounded-md',
                   currentPage === page 
                     ? 'border-blue-500 bg-blue-50 text-blue-600' 
                     : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
                 ]"
+                @click="currentPage = Number(page)"
               >
                 {{ page }}
               </button>
               <span v-else class="px-3 py-1 text-gray-500">...</span>
             </template>
             <button 
-              @click="currentPage = Math.min(totalPages, currentPage + 1)"
               :disabled="currentPage === totalPages"
               class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              @click="currentPage = Math.min(totalPages, currentPage + 1)"
             >
               بعدی
             </button>
@@ -228,20 +228,20 @@
         <div class="flex items-center space-x-3 space-x-reverse">
           <span class="text-sm font-medium text-gray-700">{{ selectedUsers.length }} کاربر انتخاب شده</span>
           <button 
-            @click="sendBulkSms"
             class="px-3 py-1.5 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
+            @click="sendBulkSms"
           >
             ارسال پیام گروهی
           </button>
           <button 
-            @click="removeBulkFromWishlist"
             class="px-3 py-1.5 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors"
+            @click="removeBulkFromWishlist"
           >
             حذف گروهی
           </button>
           <button 
-            @click="selectedUsers = []"
             class="px-3 py-1.5 bg-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-400 transition-colors"
+            @click="selectedUsers = []"
           >
             لغو انتخاب
           </button>
@@ -285,14 +285,14 @@
         </div>
         <div class="flex justify-end space-x-2 space-x-reverse mt-6">
           <button 
-            @click="showPriceModal = false"
             class="px-4 py-2 bg-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-400 transition-colors"
+            @click="showPriceModal = false"
           >
             انصراف
           </button>
           <button 
-            @click="updatePrice"
             class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+            @click="updatePrice"
           >
             ذخیره تغییرات
           </button>
@@ -349,14 +349,14 @@
         </div>
         <div class="flex justify-end space-x-2 space-x-reverse mt-6">
           <button 
-            @click="showSmsModal = false"
             class="px-4 py-2 bg-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-400 transition-colors"
+            @click="showSmsModal = false"
           >
             انصراف
           </button>
           <button 
-            @click="sendSms"
             class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
+            @click="sendSms"
           >
             ارسال پیام
           </button>
@@ -615,7 +615,7 @@ const updatePrice = () => {
     
     if (notifyUsersOfPriceChange.value) {
       // Send price change notification
-      console.log('اطلاع‌رسانی تغییر قیمت به کاربران...')
+      // console.log('اطلاع‌رسانی تغییر قیمت به کاربران...')
     }
     
     showPriceModal.value = false
@@ -647,7 +647,7 @@ const sendSms = () => {
     ? wishlistUsers.value.filter(w => selectedUsers.value.includes(w.id))
     : wishlistUsers.value
   
-  console.log('ارسال پیام به', recipients.length, 'کاربر:', smsMessage.value)
+  // console.log('ارسال پیام به', recipients.length, 'کاربر:', smsMessage.value)
   
   showSmsModal.value = false
   selectedUsers.value = []
@@ -660,7 +660,7 @@ const sendBulkSms = () => {
 }
 
 const sendPersonalSms = (user: User) => {
-  console.log('ارسال پیام شخصی به', user.name)
+  // console.log('ارسال پیام شخصی به', user.name)
   alert(`پیام شخصی به ${user.name} ارسال شد!`)
 }
 

@@ -3,9 +3,9 @@
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-bold text-gray-800">📊 بازدیدهای اخیر کاربر (تحلیل بازاریابی)</h2>
       <button 
-        @click="cleanupUnknownViews"
         :disabled="cleaning"
         class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg disabled:bg-gray-400 transition-colors"
+        @click="cleanupUnknownViews"
       >
         {{ cleaning ? '🔄 در حال پاکسازی...' : '🗑️ پاک کردن Unknown ها' }}
       </button>
@@ -137,19 +137,47 @@
   </div>
 </template>
 
-<script lang="ts">
-declare const $fetch: <T = unknown>(url: string, options?: { credentials?: string; method?: string; body?: unknown }) => Promise<T>
-</script>
-
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue';
+import type { User } from '~/types/user';
 
 const props = defineProps<{
-  user: any
+  user: User
 }>()
 
-const views = ref<any[]>([])
-const analytics = ref<any>({ count: 0, total_duration: 0, avg_duration: 0 })
+interface View {
+  id: number
+  url: string
+  title?: string
+  duration?: number
+  created_at?: string
+  duration_seconds: number
+  view_count: number
+  product: {
+    id: number
+    name: string
+    image_url?: string
+    image?: string
+  }
+  device_type: string
+  device_model?: string
+  os: string
+  os_version?: string
+  ip_address: string
+  browser: string
+  browser_version?: string
+  viewed_at: string
+  last_updated_at: string
+}
+
+interface Analytics {
+  count: number
+  total_duration: number
+  avg_duration: number
+}
+
+const views = ref<View[]>([])
+const analytics = ref<Analytics>({ count: 0, total_duration: 0, avg_duration: 0 })
 const loading = ref(true)
 const error = ref('')
 const cleaning = ref(false)
@@ -166,20 +194,17 @@ async function cleanupUnknownViews() {
   cleaning.value = true
   
   try {
-    const response: any = await $fetch('/api/admin/recent-views/cleanup-unknown', {
+    const response = await $fetch<{ deleted_count?: number; data?: { deleted_count?: number } }>('/api/admin/recent-views/cleanup-unknown', {
       method: 'DELETE',
       credentials: 'include'
     })
-    
-    console.log('🔍 Response:', response) // برای debug
     
     const deletedCount = response?.deleted_count || response?.data?.deleted_count || 0
     alert(`✅ ${deletedCount} بازدید قدیمی با موفقیت پاک شد`)
     
     // بروزرسانی لیست
     await fetchRecentViews()
-  } catch (err: any) {
-    console.error('خطا در پاکسازی:', err)
+  } catch {
     alert('❌ خطا در پاکسازی بازدیدهای قدیمی')
   } finally {
     cleaning.value = false
@@ -195,16 +220,15 @@ async function fetchRecentViews() {
   try {
     const response = await $fetch(`/api/admin/recent-views/user/${props.user.id}?limit=50`, {
       credentials: 'include'
-    }) as { data?: unknown[]; count?: number; total_duration?: number; avg_duration?: number }
+    }) as { data?: View[]; count?: number; total_duration?: number; avg_duration?: number }
     
-    views.value = (response.data || []) as any[]
+    views.value = response.data || []
     analytics.value = {
       count: response.count || 0,
       total_duration: response.total_duration || 0,
       avg_duration: response.avg_duration || 0
     }
-  } catch (err: any) {
-    console.error('خطا در دریافت بازدیدها:', err)
+  } catch {
     error.value = 'خطا در دریافت بازدیدهای کاربر'
   } finally {
     loading.value = false

@@ -9,32 +9,32 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button 
-            @click="activeTab = 'quick'"
             :class="{
               'bg-blue-600 text-white': activeTab === 'quick',
               'bg-gray-200 text-gray-700 hover:bg-gray-300': activeTab !== 'quick'
             }"
             class="px-4 py-2 text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            @click="activeTab = 'quick'"
           >
             جستجوی سریع
           </button>
           <button 
-            @click="activeTab = 'advanced'"
             :class="{
               'bg-blue-600 text-white': activeTab === 'advanced',
               'bg-gray-200 text-gray-700 hover:bg-gray-300': activeTab !== 'advanced'
             }"
             class="px-4 py-2 text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            @click="activeTab = 'advanced'"
           >
             جستجوی پیشرفته
           </button>
           <button 
-            @click="activeTab = 'saved'"
             :class="{
               'bg-blue-600 text-white': activeTab === 'saved',
               'bg-gray-200 text-gray-700 hover:bg-gray-300': activeTab !== 'saved'
             }"
             class="px-4 py-2 text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            @click="activeTab = 'saved'"
           >
             فیلترهای ذخیره شده
           </button>
@@ -137,14 +137,14 @@
         <div class="flex items-center space-x-2 space-x-reverse">
           <span class="text-sm text-gray-500">{{ selectedCards.length }} کارت انتخاب شده</span>
           <button 
-            @click="selectAllCards"
             class="text-sm text-blue-600 hover:text-blue-800"
+            @click="selectAllCards"
           >
             انتخاب همه
           </button>
           <button 
-            @click="clearSelection"
             class="text-sm text-gray-600 hover:text-gray-800"
+            @click="clearSelection"
           >
             پاک کردن انتخاب
           </button>
@@ -153,33 +153,33 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <button 
-          @click="bulkExport"
           :disabled="selectedCards.length === 0"
           class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+          @click="bulkExport"
         >
           خروجی Excel
         </button>
         
         <button 
-          @click="bulkSendEmail"
           :disabled="selectedCards.length === 0"
           class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          @click="bulkSendEmail"
         >
           ارسال ایمیل
         </button>
         
         <button 
-          @click="bulkSendSMS"
           :disabled="selectedCards.length === 0"
           class="px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+          @click="bulkSendSMS"
         >
           ارسال پیامک
         </button>
         
         <button 
-          @click="bulkUpdateStatus"
           :disabled="selectedCards.length === 0"
           class="px-4 py-2 bg-yellow-600 text-white text-sm font-medium rounded-lg hover:bg-yellow-700 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
+          @click="bulkUpdateStatus"
         >
           تغییر وضعیت
         </button>
@@ -196,8 +196,8 @@
               <span class="text-sm text-gray-500">مرتب‌سازی:</span>
               <select
                 v-model="sortBy"
-                @change="handleSort"
                 class="px-3 py-1 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                @change="handleSort"
               >
                 <option value="createdAt">تاریخ ایجاد</option>
                 <option value="amount">مبلغ</option>
@@ -207,8 +207,8 @@
               </select>
               <select
                 v-model="sortOrder"
-                @change="handleSort"
                 class="px-3 py-1 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                @change="handleSort"
               >
                 <option value="desc">نزولی</option>
                 <option value="asc">صعودی</option>
@@ -258,14 +258,14 @@
               </div>
               <div class="flex items-center space-x-2 space-x-reverse">
                 <button 
-                  @click="handleViewDetails(card)"
                   class="text-blue-600 hover:text-blue-800 text-sm"
+                  @click="handleViewDetails(card)"
                 >
                   جزئیات
                 </button>
                 <button 
-                  @click="handleEditCard(card)"
                   class="text-green-600 hover:text-green-800 text-sm"
+                  @click="handleEditCard(card)"
                 >
                   ویرایش
                 </button>
@@ -308,14 +308,14 @@
             </div>
             <div class="flex items-center space-x-2 space-x-reverse">
               <button 
-                @click="handleViewDetails(card)"
                 class="flex-1 px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                @click="handleViewDetails(card)"
               >
                 جزئیات
               </button>
               <button 
-                @click="handleEditCard(card)"
                 class="flex-1 px-3 py-1 bg-green-600 text-white text-xs font-medium rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                @click="handleEditCard(card)"
               >
                 ویرایش
               </button>
@@ -331,9 +331,9 @@
                 <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   <input
                     v-model="selectAll"
-                    @change="toggleSelectAll"
                     type="checkbox"
                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    @change="toggleSelectAll"
                   />
                 </th>
                 <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">کد کارت</th>
@@ -366,14 +366,14 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <button 
-                      @click="handleViewDetails(card)"
                       class="text-blue-600 hover:text-blue-900"
+                      @click="handleViewDetails(card)"
                     >
                       جزئیات
                     </button>
                     <button 
-                      @click="handleEditCard(card)"
                       class="text-green-600 hover:text-green-900"
+                      @click="handleEditCard(card)"
                     >
                       ویرایش
                     </button>
@@ -388,9 +388,9 @@
         <div v-if="totalPages > 1" class="mt-6 flex items-center justify-between">
           <div class="flex items-center space-x-2 space-x-reverse">
             <button 
-              @click="previousPage"
               :disabled="currentPage === 1"
               class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              @click="previousPage"
             >
               قبلی
             </button>
@@ -398,9 +398,9 @@
               صفحه {{ currentPage }} از {{ totalPages }}
             </span>
             <button 
-              @click="nextPage"
               :disabled="currentPage === totalPages"
               class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              @click="nextPage"
             >
               بعدی
             </button>
@@ -409,8 +409,8 @@
             <span class="text-sm text-gray-500">نمایش:</span>
             <select 
               v-model="pageSize"
-              @change="currentPage = 1"
               class="px-2 py-1 border border-gray-300 rounded-md text-sm"
+              @change="currentPage = 1"
             >
               <option value="10">10</option>
               <option value="25">25</option>

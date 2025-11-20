@@ -7,8 +7,8 @@
         <p class="text-gray-600 text-sm">بررسی دقیق علل خطا و راه‌حل‌های پیشنهادی</p>
       </div>
       <button 
-        @click="$emit('close')"
         class="text-gray-400 hover:text-gray-600 transition-colors"
+        @click="$emit('close')"
       >
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -144,9 +144,9 @@
       <div class="space-y-4">
         <div class="flex items-center space-x-4 space-x-reverse">
           <button 
-            @click="resendSMS"
             :disabled="resending"
             class="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg text-sm transition-colors flex items-center space-x-2 space-x-reverse"
+            @click="resendSMS"
           >
             <svg v-if="resending" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -159,22 +159,22 @@
           </button>
           
           <button 
-            @click="markAsResolved"
             class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm transition-colors"
+            @click="markAsResolved"
           >
             علامت‌گذاری به عنوان حل شده
           </button>
           
           <button 
-            @click="updatePhoneNumber"
             class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm transition-colors"
+            @click="updatePhoneNumber"
           >
             بروزرسانی شماره تلفن
           </button>
           
           <button 
-            @click="excludeFromSMS"
             class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm transition-colors"
+            @click="excludeFromSMS"
           >
             حذف از لیست SMS
           </button>
@@ -182,15 +182,15 @@
         
         <div class="flex items-center space-x-4 space-x-reverse">
           <button 
-            @click="addToBlacklist"
             class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg text-sm transition-colors"
+            @click="addToBlacklist"
           >
             افزودن به لیست سیاه
           </button>
           
           <button 
-            @click="createTicket"
             class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-sm transition-colors"
+            @click="createTicket"
           >
             ایجاد تیکت پشتیبانی
           </button>
@@ -252,9 +252,9 @@
           rows="3"
         ></textarea>
         <button 
-          @click="addNote"
           :disabled="!newNote.trim()"
           class="mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg text-sm transition-colors"
+          @click="addNote"
         >
           افزودن یادداشت
         </button>

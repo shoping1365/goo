@@ -38,8 +38,9 @@
 </template>
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import type { User } from '~/types/user';
 
-const props = defineProps<{ user: any }>();
+defineProps<{ user: User }>();
 const showAll = ref(false);
 
 // Mock data for activity

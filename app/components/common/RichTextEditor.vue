@@ -1,17 +1,17 @@
 <template>
   <Editor
     :model-value="modelValue"
-    @update:modelValue="val => emit('update:modelValue', val)"
     :tinymce-script-src="scriptSrc"
     :init="editorConfig"
     :api-key="apiKey"
     class="rich-text-editor"
+    @update:model-value="val => emit('update:modelValue', val)"
   />
   <!-- Media Library modal for image/video pick -->
   <MediaLibraryModal
     v-model="showMediaModal"
-    :fileType="requestedFileType"
-    :defaultCategory="'product-categories'"
+    :file-type="requestedFileType"
+    :default-category="'product-categories'"
     @confirm="onMediaPicked"
   />
 </template>

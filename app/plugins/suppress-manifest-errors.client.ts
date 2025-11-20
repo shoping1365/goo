@@ -3,7 +3,7 @@
 export default defineNuxtPlugin(() => {
   if (process.client) {
     const originalError = console.error
-    console.error = (...args: any[]) => {
+    console.error = (...args: unknown[]) => {
       const message = args[0]
       // فیلتر کردن خطاهای manifest
       if (

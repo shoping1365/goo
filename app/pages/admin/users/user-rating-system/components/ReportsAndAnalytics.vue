@@ -79,7 +79,7 @@
               <option value="week">هفته جاری</option>
               <option value="day">امروز</option>
             </select>
-            <button @click="exportChart" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">
+            <button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors" @click="exportChart">
               خروجی نمودار
             </button>
           </div>
@@ -128,7 +128,7 @@
       <div class="px-6 py-4 border-b border-gray-200">
         <div class="flex items-center justify-between">
           <h3 class="text-lg font-medium text-gray-900">فعالیت‌های کاربران برتر</h3>
-          <button @click="exportTopUsersReport" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+          <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors" @click="exportTopUsersReport">
             خروجی اکسل
           </button>
         </div>
@@ -228,14 +228,63 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  avatar: string;
+  score: number;
+  monthlyReviews: number;
+  monthlyPurchases: number;
+  monthlyReferrals: number;
+  lastActivity: string;
+  [key: string]: unknown;
+}
+
+interface Stats {
+  totalUsers: number;
+  averageScore: number;
+  topUsers: number;
+  blockedUsers: number;
+}
+
+interface LevelDistribution {
+  name: string;
+  count: number;
+  percentage: number;
+  color: string;
+}
+
+interface TrendData {
+  label: string;
+  value: number;
+}
+
+interface Activity {
+  type: string;
+  name: string;
+  description: string;
+  count: number;
+  change: number;
+}
+
+interface LevelStat {
+  name: string;
+  minScore: number;
+  maxScore: number;
+  count: number;
+  percentage: number;
+  color: string;
+}
+
 // Props
-const props = defineProps<{
-  users: any[]
+defineProps<{
+  users: User[]
 }>()
 
 // Emits
 const emit = defineEmits<{
-  exportData: [type: string, data: any]
+  exportData: [type: string, data: Record<string, unknown>]
 }>()
 
 // Reactive data
@@ -243,14 +292,14 @@ const selectedPeriod = ref('all')
 const trendPeriod = ref('30')
 
 // Sample data
-const stats = ref({
+const stats = ref<Stats>({
   totalUsers: 1250,
   averageScore: 450,
   topUsers: 89,
   blockedUsers: 12
 })
 
-const levelDistribution = ref([
+const levelDistribution = ref<LevelDistribution[]>([
   { name: 'برنزی', count: 450, percentage: 36, color: 'bg-orange-400' },
   { name: 'نقره‌ای', count: 380, percentage: 30.4, color: 'bg-gray-400' },
   { name: 'طلایی', count: 250, percentage: 20, color: 'bg-yellow-400' },
@@ -258,7 +307,7 @@ const levelDistribution = ref([
   { name: 'الماس', count: 50, percentage: 4, color: 'bg-purple-400' }
 ])
 
-const trendData = ref([
+const trendData = ref<TrendData[]>([
   { label: '1', value: 120 },
   { label: '2', value: 135 },
   { label: '3', value: 110 },
@@ -268,7 +317,7 @@ const trendData = ref([
   { label: '7', value: 155 }
 ])
 
-const topUsers = ref([
+const topUsers = ref<User[]>([
   {
     id: 1,
     name: 'علی احمدی',
@@ -293,14 +342,14 @@ const topUsers = ref([
   }
 ])
 
-const dailyActivities = ref([
+const dailyActivities = ref<Activity[]>([
   { type: 'reviews', name: 'نظرات جدید', description: 'تعداد نظرات ثبت شده', count: 45, change: 12 },
   { type: 'purchases', name: 'خریدهای جدید', description: 'تعداد خریدهای انجام شده', count: 23, change: 8 },
   { type: 'referrals', name: 'ارجاعات جدید', description: 'تعداد ارجاعات موفق', count: 8, change: 25 },
   { type: 'logins', name: 'ورودهای جدید', description: 'تعداد ورودهای روزانه', count: 156, change: -5 }
 ])
 
-const levelStats = ref([
+const levelStats = ref<LevelStat[]>([
   { name: 'برنزی', minScore: 0, maxScore: 100, count: 450, percentage: 36, color: 'bg-orange-400' },
   { name: 'نقره‌ای', minScore: 101, maxScore: 500, count: 380, percentage: 30.4, color: 'bg-gray-400' },
   { name: 'طلایی', minScore: 501, maxScore: 1000, count: 250, percentage: 20, color: 'bg-yellow-400' },
@@ -333,13 +382,11 @@ const exportTopUsersReport = () => {
 }
 
 // Watchers
-watch(selectedPeriod, (newPeriod) => {
+watch(selectedPeriod, (_newPeriod) => {
   // در اینجا می‌توانید داده‌ها را بر اساس دوره انتخاب شده فیلتر کنید
-  console.log('دوره انتخاب شده:', newPeriod)
 })
 
-watch(trendPeriod, (newPeriod) => {
+watch(trendPeriod, (_newPeriod) => {
   // در اینجا می‌توانید داده‌های روند را بر اساس دوره انتخاب شده به‌روزرسانی کنید
-  console.log('دوره روند:', newPeriod)
 })
 </script> 

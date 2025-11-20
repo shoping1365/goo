@@ -4,17 +4,17 @@
     <form @submit.prevent="saveSettings">
       <div class="mb-4">
         <label class="block mb-1 font-semibold">فعال بودن سیستم پرسش و پاسخ</label>
-        <input type="checkbox" v-model="settings.enabled" class="form-checkbox ml-2" />
+        <input v-model="settings.enabled" type="checkbox" class="form-checkbox ml-2" />
         <span>سیستم فعال باشد</span>
       </div>
       <div class="mb-4">
         <label class="block mb-1 font-semibold">نیاز به تایید مدیر برای نمایش پرسش</label>
-        <input type="checkbox" v-model="settings.requireApproval" class="form-checkbox ml-2" />
+        <input v-model="settings.requireApproval" type="checkbox" class="form-checkbox ml-2" />
         <span>پرسش‌ها پس از تایید مدیر نمایش داده شوند</span>
       </div>
       <div class="mb-4">
         <label class="block mb-1 font-semibold">نمایش عمومی پاسخ‌ها</label>
-        <input type="checkbox" v-model="settings.publicAnswers" class="form-checkbox ml-2" />
+        <input v-model="settings.publicAnswers" type="checkbox" class="form-checkbox ml-2" />
         <span>پاسخ‌ها برای همه کاربران قابل مشاهده باشد</span>
       </div>
       <div class="flex justify-end">

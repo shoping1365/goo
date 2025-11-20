@@ -94,7 +94,7 @@
       </div>
 
       <!-- فیلترهای جستجو -->
-      <ProductFilters @filtersChanged="handleFiltersChanged" />
+      <ProductFilters @filters-changed="handleFiltersChanged" />
       
       <!-- مدیریت محصولات - کارت اصلی -->
       <div class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">

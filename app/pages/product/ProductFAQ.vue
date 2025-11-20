@@ -11,14 +11,14 @@
       
       <div class="flex gap-2">
         <button
-          @click="expandAll"
           class="px-3 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-sm"
+          @click="expandAll"
         >
           باز کردن همه
         </button>
         <button
-          @click="collapseAll"
           class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm"
+          @click="collapseAll"
         >
           بستن همه
         </button>
@@ -33,8 +33,8 @@
         class="bg-white rounded-lg border border-gray-200 overflow-hidden"
       >
         <button
-          @click="toggleFaq(index)"
           class="w-full px-6 py-4 text-right hover:bg-gray-50 transition-colors flex items-center justify-between"
+          @click="toggleFaq(index)"
         >
           <h4 class="font-medium text-gray-900 flex-1">
             {{ faq.question }}
@@ -68,6 +68,7 @@
             const sanitizedAnswer = DOMPurify.sanitize(faq.answer)
             <div v-html="sanitizedAnswer"></div>
           -->
+          <!-- eslint-disable-next-line vue/no-v-html -->
           <div class="text-gray-700 leading-relaxed" v-html="faq.answer"></div>
         </div>
       </div>
@@ -101,8 +102,8 @@
           تماس با ما
         </NuxtLink>
         <button
-          @click="scrollToReviews"
           class="bg-white border border-blue-300 text-blue-700 hover:bg-blue-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          @click="scrollToReviews"
         >
           ثبت نظر
         </button>
@@ -112,10 +113,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { computed, reactive } from 'vue';
 
 interface Props {
-  product: any
+  product: Record<string, unknown>
 }
 
 const props = defineProps<Props>()
@@ -134,13 +135,13 @@ const toggleFaq = (index: number) => {
 }
 
 const expandAll = () => {
-  faqs.value.forEach((_: any, index: number) => {
+  faqs.value.forEach((_: unknown, index: number) => {
     expandedFaqs[index] = true
   })
 }
 
 const collapseAll = () => {
-  faqs.value.forEach((_: any, index: number) => {
+  faqs.value.forEach((_: unknown, index: number) => {
     expandedFaqs[index] = false
   })
 }

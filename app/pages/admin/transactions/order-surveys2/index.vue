@@ -30,13 +30,13 @@
           <button
               v-for="(tab, index) in tabs" 
               :key="index"
-            @click="activeTab = tab.id"
             :class="[
                 'w-full text-right px-4 py-3 rounded-lg transition-all duration-200 flex items-center justify-between',
               activeTab === tab.id
                   ? 'bg-blue-100 text-blue-700 border-r-4 border-blue-500' 
                   : 'text-gray-700 hover:bg-gray-100'
             ]"
+            @click="activeTab = tab.id"
           >
               <span class="text-sm font-medium">{{ tab.name }}</span>
               <component :is="tab.icon" class="w-4 h-4" />
@@ -212,7 +212,7 @@ const sampleGateway = ref({
 })
 
 const handleGatewayDeleted = (id: number) => {
-  console.log('Gateway deleted:', id)
+  // console.log('Gateway deleted:', id)
 }
 
 // Tab icons components

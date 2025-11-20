@@ -8,7 +8,7 @@
           <p class="text-gray-600 mt-1">مدیریت کمپین‌های تخفیف شخصی‌سازی شده بر اساس رفتار کاربران</p>
         </div>
         <div class="flex items-center gap-3 flex-shrink-0">
-          <button @click="showAddCampaign = true" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap">
+          <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap" @click="showAddCampaign = true">
             <span class="i-heroicons-plus ml-2"></span>
             افزودن کمپین جدید
           </button>
@@ -21,7 +21,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div class="min-w-0">
           <label class="block text-sm font-medium text-gray-700 mb-2">نوع شخصی‌سازی</label>
-          <select v-model="filters.personalizationType" @change="applyFilters" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <select v-model="filters.personalizationType" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" @change="applyFilters">
             <option value="">همه انواع</option>
             <option value="behavioral">رفتاری</option>
             <option value="demographic">جمعیت‌شناختی</option>
@@ -32,7 +32,7 @@
         </div>
         <div class="min-w-0">
           <label class="block text-sm font-medium text-gray-700 mb-2">وضعیت</label>
-          <select v-model="filters.status" @change="applyFilters" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <select v-model="filters.status" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" @change="applyFilters">
             <option value="">همه وضعیت‌ها</option>
             <option value="active">فعال</option>
             <option value="paused">متوقف</option>
@@ -42,10 +42,10 @@
         </div>
         <div class="min-w-0">
           <label class="block text-sm font-medium text-gray-700 mb-2">جستجو</label>
-          <input v-model="filters.search" @input="applyFilters" type="text" placeholder="جستجو در نام یا توضیحات..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <input v-model="filters.search" type="text" placeholder="جستجو در نام یا توضیحات..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" @input="applyFilters">
         </div>
         <div class="flex items-end min-w-0">
-          <button @click="resetFilters" class="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors whitespace-nowrap">
+          <button class="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors whitespace-nowrap" @click="resetFilters">
             پاک کردن فیلترها
           </button>
         </div>
@@ -58,7 +58,7 @@
         <thead class="bg-gray-50">
           <tr>
             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-              <input v-model="selectAll" @change="toggleSelectAll" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+              <input v-model="selectAll" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" @change="toggleSelectAll">
             </th>
             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">نام کمپین</th>
             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">نوع شخصی‌سازی</th>
@@ -111,19 +111,19 @@
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
               <div class="flex items-center gap-2">
-                <button @click="viewCampaign(campaign)" class="text-blue-600 hover:text-blue-900">
+                <button class="text-blue-600 hover:text-blue-900" @click="viewCampaign(campaign)">
                   <span class="i-heroicons-eye"></span>
                 </button>
-                <button @click="editCampaign(campaign)" class="text-indigo-600 hover:text-indigo-900">
+                <button class="text-indigo-600 hover:text-indigo-900" @click="editCampaign(campaign)">
                   <span class="i-heroicons-pencil-square"></span>
                 </button>
-                <button @click="duplicateCampaign(campaign)" class="text-green-600 hover:text-green-900">
+                <button class="text-green-600 hover:text-green-900" @click="duplicateCampaign(campaign)">
                   <span class="i-heroicons-document-duplicate"></span>
                 </button>
                                   <button 
                     v-if="canDeleteCampaign"
-                    @click="deleteCampaign(campaign)" 
-                    class="text-red-600 hover:text-red-900"
+                    class="text-red-600 hover:text-red-900" 
+                    @click="deleteCampaign(campaign)"
                   >
                   <span class="i-heroicons-trash"></span>
                 </button>
@@ -148,13 +148,13 @@
       <div class="flex items-center justify-between">
         <span class="text-sm text-gray-700">{{ selectedCampaigns.length }} کمپین انتخاب شده</span>
         <div class="flex items-center gap-2">
-          <button @click="bulkActivate" class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition-colors">
+          <button class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition-colors" @click="bulkActivate">
             فعال‌سازی
           </button>
-          <button @click="bulkPause" class="px-3 py-1 bg-yellow-600 text-white text-sm rounded hover:bg-yellow-700 transition-colors">
+          <button class="px-3 py-1 bg-yellow-600 text-white text-sm rounded hover:bg-yellow-700 transition-colors" @click="bulkPause">
             توقف
           </button>
-          <button @click="bulkDelete" class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition-colors">
+          <button class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition-colors" @click="bulkDelete">
             حذف
           </button>
         </div>

@@ -11,8 +11,8 @@
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-2xl font-bold text-gray-900">پروفایل کاربر</h3>
             <button 
-              @click="$emit('close')"
               class="text-gray-400 hover:text-gray-600 transition-colors"
+              @click="$emit('close')"
             >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -73,8 +73,8 @@
           <!-- Quick Actions -->
           <div class="flex space-x-3 space-x-reverse mb-6">
             <button 
-              @click="blockUser"
               class="flex-1 px-4 py-2 text-sm font-medium text-red-700 bg-red-100 border border-red-300 rounded-lg hover:bg-red-200 transition-colors"
+              @click="blockUser"
             >
               <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728"></path>
@@ -82,8 +82,8 @@
               بلاک کردن
             </button>
             <button 
-              @click="exportChat"
               class="flex-1 px-4 py-2 text-sm font-medium text-blue-700 bg-blue-100 border border-blue-300 rounded-lg hover:bg-blue-200 transition-colors"
+              @click="exportChat"
             >
               <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -91,8 +91,8 @@
               خروجی چت
             </button>
             <button 
-              @click="createTicket"
               class="flex-1 px-4 py-2 text-sm font-medium text-green-700 bg-green-100 border border-green-300 rounded-lg hover:bg-green-200 transition-colors"
+              @click="createTicket"
             >
               <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -128,8 +128,8 @@
         <!-- Footer -->
         <div class="bg-gray-50 px-6 py-4 flex justify-end">
           <button 
-            @click="$emit('close')"
             class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            @click="$emit('close')"
           >
             بستن
           </button>
@@ -140,47 +140,36 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+defineEmits(['close'])
 
-const props = defineProps<{
+interface User {
+  name: string
+  email: string
+  avatar?: string
+  isOnline: boolean
+  status: string
+  lastSeen: Date
+}
+
+interface UserStats {
+  totalMessages: number | string
+  avgResponseTime: number | string
+  satisfactionRate: number | string
+}
+
+interface Message {
+  id: number | string
+  sender: string
+  content: string
+  timestamp: Date
+}
+
+defineProps<{
   isOpen: boolean
-  user: any
+  user: User
+  userStats: UserStats
+  recentMessages: Message[]
 }>()
-
-// User stats
-const userStats = ref({
-  totalMessages: 156,
-  avgResponseTime: 2.5,
-  satisfactionRate: 94
-})
-
-// Recent messages
-const recentMessages = ref([
-  {
-    id: 1,
-    sender: 'user',
-    content: 'سلام، سوالی در مورد محصول شما دارم',
-    timestamp: new Date(Date.now() - 300000)
-  },
-  {
-    id: 2,
-    sender: 'admin',
-    content: 'سلام! خوشحالم که با شما صحبت می‌کنم. چطور می‌تونم کمکتون کنم؟',
-    timestamp: new Date(Date.now() - 240000)
-  },
-  {
-    id: 3,
-    sender: 'user',
-    content: 'می‌خوام بدونم این محصول چه ویژگی‌هایی داره',
-    timestamp: new Date(Date.now() - 180000)
-  },
-  {
-    id: 4,
-    sender: 'admin',
-    content: 'این محصول دارای ویژگی‌های پیشرفته‌ای است که شامل...',
-    timestamp: new Date(Date.now() - 120000)
-  }
-])
 
 // Methods
 const formatLastSeen = (timestamp: Date): string => {
@@ -204,21 +193,21 @@ const formatTime = (timestamp: Date): string => {
 }
 
 const blockUser = () => {
-  console.log('Blocking user:', props.user?.name)
+  // console.log('Blocking user:', props.user?.name)
   // Implementation for blocking user
 }
 
 const exportChat = () => {
-  console.log('Exporting chat for user:', props.user?.name)
+  // console.log('Exporting chat for user:', props.user?.name)
   // Implementation for exporting chat
 }
 
 const createTicket = () => {
-  console.log('Creating ticket for user:', props.user?.name)
+  // console.log('Creating ticket for user:', props.user?.name)
   // Implementation for creating ticket
 }
 </script>
 
 <style scoped>
 /* Custom styles for modal */
-</style> 
+</style>

@@ -3,8 +3,8 @@
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xl font-semibold text-gray-900">مدیریت سطوح وفاداری</h2>
       <button 
-        @click="showLevelForm = true; editingLevel = null"
         class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+        @click="showLevelForm = true; editingLevel = null"
       >
         افزودن سطح جدید
       </button>
@@ -73,14 +73,14 @@
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
               <button 
-                @click="editingLevel = level; showLevelForm = true"
                 class="text-blue-600 hover:text-blue-900 ml-4"
+                @click="editingLevel = level; showLevelForm = true"
               >
                 ویرایش
               </button>
               <button 
-                @click="toggleLevelStatus(level)"
                 :class="level.active ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900'"
+                @click="toggleLevelStatus(level)"
               >
                 {{ level.active ? 'غیرفعال' : 'فعال' }}
               </button>
@@ -180,8 +180,8 @@
             <div class="flex justify-end space-x-3 space-x-reverse mt-6">
               <button 
                 type="button"
-                @click="showLevelForm = false"
                 class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors"
+                @click="showLevelForm = false"
               >
                 انصراف
               </button>

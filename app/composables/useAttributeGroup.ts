@@ -81,7 +81,7 @@ export function useAttributeGroup() {
     loadingGroup.value = true
     try {
       const res: any = await $fetch(`/api/attribute-groups/${groupId}`)
-      console.log('group-res', res)
+      // console.log('group-res', res)
       const list = res?.attributes || res?.Attributes || res?.attribute_group_attributes || res?.data || []
       if (Array.isArray(list)) {
         attributes.value = list.map((a: any) => ({

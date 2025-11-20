@@ -2,7 +2,7 @@
   <div class="w-full max-w-md">
     <div class="flex flex-row items-center justify-between mb-4">
       <h3 class="font-bold">مدیریت سطوح کاربران</h3>
-      <button @click="addLevelDialog = true" class="px-2 py-1 text-xs rounded bg-blue-600 text-white">افزودن سطح</button>
+      <button class="px-2 py-1 text-xs rounded bg-blue-600 text-white" @click="addLevelDialog = true">افزودن سطح</button>
     </div>
     <table class="min-w-full text-sm text-right border border-gray-200 rounded-lg overflow-hidden">
       <thead class="bg-gray-50">
@@ -34,8 +34,8 @@
       <label>مزایا:</label>
       <input v-model="levelForm.benefits" class="input" />
       <div class="mt-2 flex gap-2">
-        <button @click="saveLevel" class="bg-blue-500 text-white px-2 rounded">ذخیره</button>
-        <button @click="resetForm" class="bg-gray-200 px-2 rounded">انصراف</button>
+        <button class="bg-blue-500 text-white px-2 rounded" @click="saveLevel">ذخیره</button>
+        <button class="bg-gray-200 px-2 rounded" @click="resetForm">انصراف</button>
       </div>
     </div>
   </div>

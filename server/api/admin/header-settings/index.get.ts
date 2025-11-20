@@ -16,7 +16,7 @@ export default defineEventHandler(async (event): Promise<HeaderListResponse> => 
   try {
     const config = useRuntimeConfig()
 
-    console.log('درخواست دریافت لیست هدرها (ادمین)')
+    // console.log('درخواست دریافت لیست هدرها (ادمین)')
 
     // دریافت cookies از درخواست
     const cookies = parseCookies(event)
@@ -39,7 +39,7 @@ export default defineEventHandler(async (event): Promise<HeaderListResponse> => 
 
     const responseData = await response.json()
 
-    console.log('پاسخ لیست هدرها:', responseData)
+    // console.log('پاسخ لیست هدرها:', responseData)
 
     return {
       success: true,
@@ -47,7 +47,7 @@ export default defineEventHandler(async (event): Promise<HeaderListResponse> => 
     }
 
   } catch (error: unknown) {
-    console.error('خطا در دریافت لیست هدرها:', error)
+    // console.error('خطا در دریافت لیست هدرها:', error)
 
     // اگر خطا از سرور Go آمده باشد
     const errorWithData = error as { data?: { message?: string; error?: string } }

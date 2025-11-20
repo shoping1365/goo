@@ -1,17 +1,17 @@
 <template>
-  <div class="mobile-search" ref="searchContainer">
+  <div ref="searchContainer" class="mobile-search">
     <div class="mobile-search__input">
       <input
         ref="searchInput"
         v-model="searchQuery"
         type="text"
         :placeholder="placeholder"
+        autocomplete="off"
+        dir="rtl"
         @input="handleSearchInput"
         @focus="handleFocus"
         @blur="handleBlur"
         @keydown="handleKeydown"
-        autocomplete="off"
-        dir="rtl"
       />
       <button type="button" class="mobile-search__icon" @mousedown.prevent @click="submitQuery">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">

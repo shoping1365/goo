@@ -1,5 +1,5 @@
-import { ref, computed } from 'vue'
 import { useApiClient } from '@/utils/api'
+import { computed, ref } from 'vue'
 
 export interface Role {
   id: string
@@ -8,6 +8,10 @@ export interface Role {
   permissions?: string[]
   created_at?: string
   updated_at?: string
+}
+
+interface ApiError {
+  error?: string
 }
 
 export const useRoles = () => {
@@ -25,8 +29,9 @@ export const useRoles = () => {
     try {
       const response = await api.get<Role[]>('/api/admin/roles')
       roles.value = response
-    } catch (err: any) {
-      error.value = err.error || 'خطا در دریافت نقش‌ها'
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e.error || 'خطا در دریافت نقش‌ها'
     } finally {
       loading.value = false
     }
@@ -36,8 +41,9 @@ export const useRoles = () => {
   const getRole = async (id: string): Promise<Role | null> => {
     try {
       return await api.get<Role>(`/api/admin/roles/${id}`)
-    } catch (err: any) {
-      error.value = err.error
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e.error || ''
       return null
     }
   }
@@ -51,8 +57,9 @@ export const useRoles = () => {
       const response = await api.post<Role>('/api/admin/roles', roleData)
       roles.value.push(response)
       return response
-    } catch (err: any) {
-      error.value = err.error
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e.error || ''
       return null
     } finally {
       loading.value = false
@@ -71,8 +78,9 @@ export const useRoles = () => {
         roles.value[index] = response
       }
       return response
-    } catch (err: any) {
-      error.value = err.error
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e.error || ''
       return null
     } finally {
       loading.value = false
@@ -88,8 +96,9 @@ export const useRoles = () => {
       await api.delete(`/api/admin/roles/${id}`)
       roles.value = roles.value.filter(r => r.id !== id)
       return true
-    } catch (err: any) {
-      error.value = err.error
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e.error || ''
       return false
     } finally {
       loading.value = false
@@ -103,8 +112,9 @@ export const useRoles = () => {
         permissions: string[]
       }>(`/api/admin/roles/${id}/permissions`)
       return response.permissions
-    } catch (err: any) {
-      error.value = err.error
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e.error || ''
       return []
     }
   }
@@ -116,8 +126,9 @@ export const useRoles = () => {
         permission_ids: permissionIds,
       })
       return true
-    } catch (err: any) {
-      error.value = err.error
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e.error || ''
       return false
     }
   }

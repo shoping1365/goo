@@ -3,7 +3,8 @@
     <!-- تایتل بالای صفحه -->
     <div class="bg-white w-full py-6 px-6 border-b border-gray-200 flex items-center justify-between">
       <h1 class="text-2xl font-bold text-gray-900 text-right">تنظیمات سامانه پیامک و اعلان‌ها</h1>
-      <NuxtLink to="/admin/notifications/system-settings-create"
+      <NuxtLink
+to="/admin/notifications/system-settings-create"
         class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105">
         <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -93,7 +94,7 @@
           </div>
           <h3 class="text-lg font-medium text-red-800 mb-2">خطا در بارگذاری درگاه‌ها</h3>
           <p class="text-red-600 mb-4">متأسفانه در بارگذاری درگاه‌های پیامک مشکلی پیش آمده است.</p>
-          <button @click="() => refresh()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+          <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" @click="() => refresh()">
             تلاش مجدد
           </button>
         </div>

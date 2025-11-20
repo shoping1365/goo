@@ -1,9 +1,14 @@
-import { ref, computed, readonly } from 'vue'
 import type { Ref } from 'vue'
+import { computed, readonly, ref } from 'vue'
 
 interface ApiResponse<T> {
      success: boolean
      data: T
+     message?: string
+}
+
+interface ApiError {
+     data?: { message?: string }
      message?: string
 }
 
@@ -62,9 +67,10 @@ export const usePublicMobileHeaders = () => {
                } else {
                     error.value = response.message || 'خطا در بارگذاری هدرهای موبایل'
                }
-          } catch (err: any) {
-               error.value = err.data?.message || err.message || 'خطا در اتصال به سرور'
-               console.error('Error loading mobile headers:', err)
+          } catch (err) {
+               const e = err as ApiError
+               error.value = e.data?.message || e.message || 'خطا در اتصال به سرور'
+               console.error('Error loading mobile headers:', e)
           } finally {
                loading.value = false
           }

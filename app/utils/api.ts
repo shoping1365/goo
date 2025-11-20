@@ -10,7 +10,7 @@ export const useApiClient = () => {
   const apiBase = (config.public.goApiBase as string)
 
   // Error handling with safe messages  
-  const handleError = (error: any): string => {
+  const _handleError = (error: unknown): string => {
     return getSafeErrorMessage(error)
   }
 
@@ -36,7 +36,7 @@ export const useApiClient = () => {
       }
     },
 
-    post: async <T>(endpoint: string, body?: any) => {
+    post: async <T>(endpoint: string, body?: unknown) => {
       try {
         let headers: Record<string, string> = {
           'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ export const useApiClient = () => {
       }
     },
 
-    put: async <T>(endpoint: string, body?: any) => {
+    put: async <T>(endpoint: string, body?: unknown) => {
       try {
         let headers: Record<string, string> = {
           'Content-Type': 'application/json',

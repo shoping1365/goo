@@ -8,27 +8,27 @@
       </div>
       <div class="mb-4">
         <label class="block mb-1 font-semibold">اجازه ثبت نظر توسط مهمان</label>
-        <input type="checkbox" v-model="settings.allowGuest" class="form-checkbox ml-2" />
+        <input v-model="settings.allowGuest" type="checkbox" class="form-checkbox ml-2" />
         <span>مهمان‌ها بتوانند نظر ثبت کنند</span>
       </div>
       <div class="mb-4">
         <label class="block mb-1 font-semibold">اجازه آپلود ویدیو</label>
-        <input type="checkbox" v-model="settings.allowVideo" class="form-checkbox ml-2" />
+        <input v-model="settings.allowVideo" type="checkbox" class="form-checkbox ml-2" />
         <span>کاربران بتوانند ویدیو ارسال کنند</span>
       </div>
       <div class="mb-4">
         <label class="block mb-1 font-semibold">آپلود فایل فعال باشد</label>
-        <input type="checkbox" v-model="settings.enableFileUpload" class="form-checkbox ml-2" />
+        <input v-model="settings.enableFileUpload" type="checkbox" class="form-checkbox ml-2" />
         <span>کاربران بتوانند فایل ضمیمه کنند</span>
       </div>
       <div class="mb-4">
         <label class="block mb-1 font-semibold">ایمیل الزامی باشد</label>
-        <input type="checkbox" v-model="settings.requireEmail" class="form-checkbox ml-2" />
+        <input v-model="settings.requireEmail" type="checkbox" class="form-checkbox ml-2" />
         <span>ایمیل برای ثبت نظر الزامی باشد</span>
       </div>
       <div class="mb-4">
         <label class="block mb-1 font-semibold">تلفن الزامی باشد</label>
-        <input type="checkbox" v-model="settings.requirePhone" class="form-checkbox ml-2" />
+        <input v-model="settings.requirePhone" type="checkbox" class="form-checkbox ml-2" />
         <span>تلفن برای ثبت نظر الزامی باشد</span>
       </div>
       <div class="flex justify-end">
@@ -40,7 +40,7 @@
 
 <script setup>
 definePageMeta({ layout: 'admin-main' })
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const settings = ref({
   maxImages: 5,
@@ -59,7 +59,7 @@ async function loadSettings() {
       const data = await res.json()
       if (data.value) Object.assign(settings.value, data.value)
     }
-  } catch (e) { /* silent */ }
+  } catch { /* silent */ }
 }
 onMounted(loadSettings)
 
@@ -76,7 +76,7 @@ async function saveSettings() {
     } else {
       alert('خطا در ذخیره تنظیمات')
     }
-  } catch (e) {
+  } catch {
     alert('خطا در ارتباط با سرور')
   }
   loading.value = false

@@ -8,8 +8,8 @@
       </div>
       <div class="flex items-center space-x-3 space-x-reverse">
         <button
-          @click="openVideoLibrary"
           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          @click="openVideoLibrary"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -71,8 +71,8 @@
             />
             <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
               <button
-                @click="playVideo(video)"
                 class="bg-white bg-opacity-90 rounded-full p-3 hover:bg-opacity-100 transition-all"
+                @click="playVideo(video)"
               >
                 <svg class="w-6 h-6 text-gray-800" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8 5v14l11-7z"/>
@@ -144,8 +144,8 @@
                   <span>{{ video.uploadDate }}</span>
                 </div>
                 <button
-                  @click="playVideo(video)"
                   class="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  @click="playVideo(video)"
                 >
                   <svg class="w-3 h-3 ml-1" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z"/>
@@ -169,8 +169,8 @@
         <div class="flex items-center justify-between mb-4">
           <h5 class="text-lg font-medium text-gray-900">{{ selectedVideo?.title }}</h5>
           <button
-            @click="closeVideoModal"
             class="text-gray-400 hover:text-gray-600"
+            @click="closeVideoModal"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

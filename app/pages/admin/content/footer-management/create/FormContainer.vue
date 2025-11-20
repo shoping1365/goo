@@ -5,15 +5,15 @@
         <h3>مدیریت لایه‌ها</h3>
         <div class="layers-actions">
           <button
-            @click="showLayerSettings = true"
             class="btn btn-primary"
+            @click="showLayerSettings = true"
           >
             افزودن لایه جدید
           </button>
           <button
             v-if="createdLayers.length > 0"
-            @click="clearAllLayers"
             class="btn btn-danger"
+            @click="clearAllLayers"
           >
             پاک کردن همه لایه‌ها
           </button>
@@ -48,14 +48,14 @@
           
           <div class="layer-actions">
             <button
-              @click="editLayer(layer)"
               class="btn btn-sm btn-secondary"
+              @click="editLayer(layer)"
             >
               ویرایش
             </button>
             <button
-              @click="deleteLayer(layer.id)"
               class="btn btn-sm btn-danger"
+              @click="deleteLayer(layer.id)"
             >
               حذف
             </button>

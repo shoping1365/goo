@@ -77,11 +77,11 @@
             <div class="space-y-4">
               <div v-for="table in databaseSchema" :key="table.name" class="space-y-2">
                 <div 
-                  @click="selectTable(table)"
                   :class="[
                     'flex items-center justify-between p-3 rounded-lg cursor-pointer hover:bg-gray-50',
                     selectedTable?.name === table.name ? 'bg-blue-50 border border-blue-200' : 'border border-gray-200'
                   ]"
+                  @click="selectTable(table)"
                 >
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -111,15 +111,15 @@
               <h2 class="text-xl font-semibold text-gray-900">ویرایشگر کوئری</h2>
               <div class="flex items-center space-x-2 space-x-reverse">
                 <button 
-                  @click="executeQuery"
                   :disabled="!queryText"
                   class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="executeQuery"
                 >
                   اجرا
                 </button>
                 <button 
-                  @click="clearQuery"
                   class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="clearQuery"
                 >
                   پاک کردن
                 </button>
@@ -144,26 +144,26 @@
                 <label class="block text-sm font-medium text-gray-700 mb-2">کوئری‌های سریع</label>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
                   <button 
-                    @click="loadQuickQuery('select')"
                     class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-3 rounded text-sm transition-colors"
+                    @click="loadQuickQuery('select')"
                   >
                     SELECT
                   </button>
                   <button 
-                    @click="loadQuickQuery('insert')"
                     class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-3 rounded text-sm transition-colors"
+                    @click="loadQuickQuery('insert')"
                   >
                     INSERT
                   </button>
                   <button 
-                    @click="loadQuickQuery('update')"
                     class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-3 rounded text-sm transition-colors"
+                    @click="loadQuickQuery('update')"
                   >
                     UPDATE
                   </button>
                   <button 
-                    @click="loadQuickQuery('delete')"
                     class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-3 rounded text-sm transition-colors"
+                    @click="loadQuickQuery('delete')"
                   >
                     DELETE
                   </button>
@@ -221,14 +221,14 @@
               <h3 class="font-medium text-gray-900">پشتیبان‌گیری</h3>
               <div class="space-y-2">
                 <button 
-                  @click="createBackup"
                   class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="createBackup"
                 >
                   ایجاد پشتیبان
                 </button>
                 <button 
-                  @click="restoreBackup"
                   class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="restoreBackup"
                 >
                   بازیابی
                 </button>
@@ -240,14 +240,14 @@
               <h3 class="font-medium text-gray-900">بهینه‌سازی</h3>
               <div class="space-y-2">
                 <button 
-                  @click="optimizeTables"
                   class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="optimizeTables"
                 >
                   بهینه‌سازی جداول
                 </button>
                 <button 
-                  @click="analyzeTables"
                   class="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="analyzeTables"
                 >
                   تحلیل جداول
                 </button>
@@ -259,14 +259,14 @@
               <h3 class="font-medium text-gray-900">نگهداری</h3>
               <div class="space-y-2">
                 <button 
-                  @click="checkIntegrity"
                   class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="checkIntegrity"
                 >
                   بررسی یکپارچگی
                 </button>
                 <button 
-                  @click="vacuumDatabase"
                   class="w-full bg-pink-600 hover:bg-pink-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="vacuumDatabase"
                 >
                   پاکسازی
                 </button>
@@ -278,14 +278,14 @@
               <h3 class="font-medium text-gray-900">نظارت</h3>
               <div class="space-y-2">
                 <button 
-                  @click="showSlowQueries"
                   class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="showSlowQueries"
                 >
                   کوئری‌های کند
                 </button>
                 <button 
-                  @click="showLocks"
                   class="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="showLocks"
                 >
                   قفل‌ها
                 </button>
@@ -308,15 +308,16 @@
                 <p class="text-xs text-gray-500 mt-1">{{ query.timestamp }} - {{ query.executionTime }}ms</p>
               </div>
               <div class="flex items-center space-x-2 space-x-reverse">
-                <span :class="[
+                <span
+:class="[
                   'px-2 py-1 rounded text-xs font-medium',
                   query.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                 ]">
                   {{ query.success ? 'موفق' : 'ناموفق' }}
                 </span>
                 <button 
-                  @click="loadQuery(query)"
                   class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                  @click="loadQuery(query)"
                 >
                   بارگذاری
                 </button>

@@ -11,8 +11,8 @@
           <div class="flex space-x-2 space-x-reverse">
             <button 
               v-if="hasPermission('attribute-group.create')"
-              @click="createNewGroup"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+              @click="createNewGroup"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
@@ -120,8 +120,8 @@
                     <input 
                       type="checkbox" 
                       :checked="isAllSelected"
-                      @change="toggleSelectAll"
                       class="h-3 w-3 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      @change="toggleSelectAll"
                     />
                   </th>
                   <th scope="col" class="px-4 py-2 text-center text-xs font-medium text-gray-600 uppercase tracking-wider">
@@ -146,9 +146,9 @@
                   <!-- Checkbox -->
                   <td class="px-4 py-3 whitespace-nowrap text-center">
                     <input 
-                      type="checkbox" 
+                      v-model="selectedGroups" 
+                      type="checkbox"
                       :value="group.id"
-                      v-model="selectedGroups"
                       class="h-3 w-3 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                     />
                   </td>
@@ -180,19 +180,19 @@
                     <div class="flex items-center justify-center space-x-1.5 space-x-reverse">
                       <button 
                         v-if="hasPermission('attribute-group.update')"
+                        class="inline-flex items-center px-2 py-1 border border-blue-300 text-xs font-medium rounded-sm text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors"
                         @click="() => { 
                           // Edit button clicked for group 
                           // Current route
                           navigateToEdit(group.id); 
                         }"
-                        class="inline-flex items-center px-2 py-1 border border-blue-300 text-xs font-medium rounded-sm text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors"
                       >
                         ✏️ ویرایش گروه
                       </button>
                       <button 
                         v-if="hasPermission('attribute-group.delete')"
-                        @click="confirmDelete(group)"
                         class="inline-flex items-center px-2 py-1 border border-red-300 text-xs font-medium rounded-sm text-red-700 bg-red-50 hover:bg-red-100 transition-colors"
+                        @click="confirmDelete(group)"
                       >
                         🗑️ حذف
                       </button>
@@ -225,8 +225,8 @@
             <p class="text-xs text-gray-500 mb-4">برای شروع، یک گروه جدید اضافه کنید.</p>
             <button 
               v-if="hasPermission('attribute-group.create')"
-              @click="createNewGroup"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+              @click="createNewGroup"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
@@ -255,11 +255,11 @@ declare const useHead: (head: { title?: string }) => void
 </script>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuth } from '~/composables/useAuth'
 import Pagination from '@/components/admin/common/Pagination.vue'
 import TemplateCard from '@/components/common/TemplateCard.vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuth } from '~/composables/useAuth'
 import { useConfirmDialog } from '~/composables/useConfirmDialog'
 import { useNotifier } from '~/composables/useNotifier'
 // 
@@ -269,7 +269,7 @@ definePageMeta({
 })
 
 // Import useAuth for permission checking
-const { user, hasPermission } = useAuth()
+const { hasPermission } = useAuth()
 
 
 // Set page title

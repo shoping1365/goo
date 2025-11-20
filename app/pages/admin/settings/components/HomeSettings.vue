@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <form @submit.prevent="saveSettings" class="space-y-8">
+    <form class="space-y-8" @submit.prevent="saveSettings">
       <!-- اطلاعات پایه -->
       <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
         <div class="bg-gradient-to-r from-blue-500 to-indigo-600 px-6 py-4">
@@ -37,7 +37,7 @@
               </label>
               <div class="relative">
                 <input 
-                  v-model="settings.shopNameFa" 
+                  v-model="localSettings.shopNameFa" 
                   type="text" 
                   class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 group-hover:border-gray-300"
                   placeholder="نام فروشگاه به فارسی"
@@ -55,7 +55,7 @@
               </label>
               <div class="relative">
                 <input 
-                  v-model="settings.shopNameEn" 
+                  v-model="localSettings.shopNameEn" 
                   type="text" 
                   class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-200 group-hover:border-gray-300"
                   placeholder="Shop name in English"
@@ -75,15 +75,15 @@
               </label>
               <div class="relative">
                 <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-purple-400 transition-colors duration-200 group-hover:bg-purple-50">
-                  <div v-if="settings.logo" class="mb-3 cursor-pointer" @click="openLogoUploader('logo')">
-                    <img :src="settings.logo" alt="لوگو" class="w-16 h-16 object-contain mx-auto rounded-lg shadow-md hover:scale-110 transition-transform duration-200">
+                  <div v-if="localSettings.logo" class="mb-3 cursor-pointer" @click="openLogoUploader('logo')">
+                    <img :src="localSettings.logo" alt="لوگو" class="w-16 h-16 object-contain mx-auto rounded-lg shadow-md hover:scale-110 transition-transform duration-200">
                     <p class="text-xs text-gray-500 mt-1">برای تغییر کلیک کنید</p>
                   </div>
                   <div v-else class="mb-3">
                     <i class="i-heroicons-photo text-4xl text-gray-400 mx-auto"></i>
                   </div>
                                      <div class="space-y-2">
-                     <button type="button" @click="openMediaLibrary('logo')" class="w-full px-4 py-2 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-lg hover:from-indigo-600 hover:to-indigo-700 transition-all duration-200 shadow-md hover:shadow-lg">
+                     <button type="button" class="w-full px-4 py-2 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-lg hover:from-indigo-600 hover:to-indigo-700 transition-all duration-200 shadow-md hover:shadow-lg" @click="openMediaLibrary('logo')">
                        <i class="i-heroicons-arrow-up-tray mr-2"></i>
                        آپلود
                      </button>
@@ -99,15 +99,15 @@
               </label>
               <div class="relative">
                 <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-indigo-400 transition-colors duration-200 group-hover:bg-indigo-50">
-                  <div v-if="settings.logoRetina" class="mb-3 cursor-pointer" @click="openLogoUploader('logoRetina')">
-                    <img :src="settings.logoRetina" alt="لوگو رتینا" class="w-16 h-16 object-contain mx-auto rounded-lg shadow-md hover:scale-110 transition-transform duration-200">
+                  <div v-if="localSettings.logoRetina" class="mb-3 cursor-pointer" @click="openLogoUploader('logoRetina')">
+                    <img :src="localSettings.logoRetina" alt="لوگو رتینا" class="w-16 h-16 object-contain mx-auto rounded-lg shadow-md hover:scale-110 transition-transform duration-200">
                     <p class="text-xs text-gray-500 mt-1">برای تغییر کلیک کنید</p>
                   </div>
                   <div v-else class="mb-3">
                     <i class="i-heroicons-device-phone-mobile text-4xl text-gray-400 mx-auto"></i>
                   </div>
                                      <div class="space-y-2">
-                     <button type="button" @click="openMediaLibrary('logoRetina')" class="w-full px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg">
+                     <button type="button" class="w-full px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg" @click="openMediaLibrary('logoRetina')">
                        <i class="i-heroicons-arrow-up-tray mr-2"></i>
                        آپلود
                      </button>
@@ -123,15 +123,15 @@
               </label>
               <div class="relative">
                 <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-pink-400 transition-colors duration-200 group-hover:bg-pink-50">
-                  <div v-if="settings.favicon" class="mb-3 cursor-pointer" @click="openLogoUploader('favicon')">
-                    <img :src="settings.favicon" alt="فاویکون" class="w-12 h-12 object-contain mx-auto rounded-lg shadow-md hover:scale-110 transition-transform duration-200">
+                  <div v-if="localSettings.favicon" class="mb-3 cursor-pointer" @click="openLogoUploader('favicon')">
+                    <img :src="localSettings.favicon" alt="فاویکون" class="w-12 h-12 object-contain mx-auto rounded-lg shadow-md hover:scale-110 transition-transform duration-200">
                     <p class="text-xs text-gray-500 mt-1">برای تغییر کلیک کنید</p>
                   </div>
                   <div v-else class="mb-3">
                     <i class="i-heroicons-heart text-3xl text-gray-400 mx-auto"></i>
                   </div>
                                      <div class="space-y-2">
-                     <button type="button" @click="openMediaLibrary('favicon')" class="w-full px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-200 text-sm">
+                     <button type="button" class="w-full px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-200 text-sm" @click="openMediaLibrary('favicon')">
                        <i class="i-heroicons-arrow-up-tray mr-2"></i>
                        آپلود
                      </button>
@@ -160,7 +160,7 @@
                 زبان پیش‌فرض
               </label>
               <div class="relative">
-                <select v-model="settings.defaultLanguage" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-200 group-hover:border-gray-300 appearance-none bg-white">
+                <select v-model="localSettings.defaultLanguage" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-200 group-hover:border-gray-300 appearance-none bg-white">
                   <option value="fa">🇮🇷 فارسی</option>
                   <option value="en">🇺🇸 English</option>
                   <option value="ar">🇸🇦 العربية</option>
@@ -177,7 +177,7 @@
                 منطقه زمانی
               </label>
               <div class="relative">
-                <select v-model="settings.timezone" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 group-hover:border-gray-300 appearance-none bg-white">
+                <select v-model="localSettings.timezone" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 group-hover:border-gray-300 appearance-none bg-white">
                   <option value="Asia/Tehran">🇮🇷 تهران (UTC+3:30)</option>
                   <option value="UTC">🌍 UTC</option>
                   <option value="Europe/London">🇬🇧 لندن (UTC+0)</option>
@@ -195,7 +195,7 @@
                 واحد پول پیش‌فرض
               </label>
               <div class="relative">
-                <select v-model="settings.defaultCurrency" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-yellow-500 focus:ring-4 focus:ring-yellow-100 transition-all duration-200 group-hover:border-gray-300 appearance-none bg-white">
+                <select v-model="localSettings.defaultCurrency" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-yellow-500 focus:ring-4 focus:ring-yellow-100 transition-all duration-200 group-hover:border-gray-300 appearance-none bg-white">
                   <option value="IRR">🇮🇷 ریال ایران</option>
                   <option value="USD">🇺🇸 دلار آمریکا</option>
                   <option value="EUR">🇪🇺 یورو</option>
@@ -222,9 +222,9 @@
         <div class="p-6">
           <div class="flex items-center p-6 bg-gradient-to-r from-orange-50 to-red-50 rounded-xl border border-orange-200">
             <input 
-              v-model="settings.maintenanceMode" 
-              type="checkbox" 
-              id="maintenanceMode"
+              id="maintenanceMode" 
+              v-model="localSettings.maintenanceMode" 
+              type="checkbox"
               class="w-5 h-5 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
             >
             <label for="maintenanceMode" class="mr-3 text-sm font-semibold text-gray-700 flex items-center">
@@ -239,13 +239,13 @@
             </div>
           </div>
           
-          <div v-if="settings.maintenanceMode" class="mt-4">
+          <div v-if="localSettings.maintenanceMode" class="mt-4">
             <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center">
               <i class="i-heroicons-chat-bubble-left-right text-red-500 mr-2"></i>
               پیام حالت تعمیر
             </label>
             <textarea 
-              v-model="settings.maintenanceMessage" 
+              v-model="localSettings.maintenanceMessage" 
               rows="3"
               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-red-500 focus:ring-4 focus:ring-red-100 transition-all duration-200 resize-none"
               placeholder="پیام نمایش داده شده در حالت تعمیر..."
@@ -264,8 +264,8 @@
             </div>
             <button
               type="button"
-              @click="addLocation"
               class="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all duration-200 text-sm flex items-center backdrop-blur-sm"
+              @click="addLocation"
             >
               <i class="i-heroicons-plus mr-2"></i>
               افزودن آدرس جدید
@@ -279,7 +279,7 @@
 
             <div class="space-y-6">
               <div
-                v-for="(location, index) in settings.locations"
+                v-for="(location, index) in localSettings.locations"
                 :key="location.id || index"
                 class="border border-gray-200 rounded-xl bg-gray-50/60 p-5 space-y-5"
               >
@@ -289,10 +289,10 @@
                     <span>آدرس {{ index + 1 }}</span>
                   </div>
                   <button
-                    v-if="settings.locations.length > 1"
+                    v-if="localSettings.locations.length > 1"
                     type="button"
-                    @click="removeLocation(index)"
                     class="text-sm text-red-600 hover:text-red-700 flex items-center gap-1"
+                    @click="removeLocation(index)"
                   >
                     <i class="i-heroicons-trash text-base"></i>
                     حذف آدرس
@@ -347,16 +347,16 @@
                       <button
                         v-if="location.phones.length > 1"
                         type="button"
-                        @click="removeLocationPhone(index, phoneIndex)"
                         class="px-3 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-200"
+                        @click="removeLocationPhone(index, phoneIndex)"
                       >
                         <i class="i-heroicons-trash text-sm"></i>
                       </button>
                     </div>
                     <button
                       type="button"
-                      @click="addLocationPhone(index)"
                       class="w-full px-4 py-2 bg-gradient-to-r from-teal-500 to-teal-600 text-white rounded-lg hover:from-teal-600 hover:to-teal-700 transition-all duration-200 text-sm"
+                      @click="addLocationPhone(index)"
                     >
                       <i class="i-heroicons-plus mr-2"></i>
                       افزودن شماره برای این آدرس
@@ -375,29 +375,29 @@
             </label>
             <div class="space-y-3">
               <div
-                v-for="(phone, index) in settings.adminPhones"
+                v-for="(phone, index) in localSettings.adminPhones"
                 :key="`admin-phone-${index}`"
                 class="flex gap-2"
               >
                 <input
-                  v-model="settings.adminPhones[index]"
+                  v-model="localSettings.adminPhones[index]"
                   type="tel"
                   class="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-200"
                   placeholder="09123456789"
                 >
                 <button
-                  v-if="settings.adminPhones.length > 1"
+                  v-if="localSettings.adminPhones.length > 1"
                   type="button"
-                  @click="removeAdminPhone(index)"
                   class="px-3 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-200"
+                  @click="removeAdminPhone(index)"
                 >
                   <i class="i-heroicons-trash text-sm"></i>
                 </button>
               </div>
               <button
                 type="button"
-                @click="addAdminPhone"
                 class="w-full px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 text-sm"
+                @click="addAdminPhone"
               >
                 <i class="i-heroicons-plus mr-2"></i>
                 افزودن شماره جدید
@@ -413,7 +413,7 @@
                 ایمیل فروشگاه
               </label>
               <input
-                v-model="settings.email"
+                v-model="localSettings.email"
                 type="email"
                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 group-hover:border-gray-300"
                 placeholder="info@shop.com"
@@ -425,7 +425,7 @@
                 مختصات جغرافیایی
               </label>
               <input
-                v-model="settings.coordinates"
+                v-model="localSettings.coordinates"
                 type="text"
                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-100 transition-all duration-200 group-hover:border-gray-300"
                 placeholder="مثلاً: 35.6892, 51.3890"
@@ -453,26 +453,26 @@
               ساعات کاری
             </label>
             <div class="space-y-3">
-              <div v-for="(hour, index) in settings.workingHours" :key="index" class="flex gap-2">
+              <div v-for="(hour, index) in localSettings.workingHours" :key="index" class="flex gap-2">
                 <input 
-                  v-model="settings.workingHours[index]" 
+                  v-model="localSettings.workingHours[index]" 
                   type="text" 
                   class="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-200"
                   placeholder="مثلاً: شنبه تا چهارشنبه: 9 صبح تا 6 عصر"
                 >
                 <button 
-                  v-if="settings.workingHours.length > 1"
+                  v-if="localSettings.workingHours.length > 1"
                   type="button" 
-                  @click="removeWorkingHour(index)"
                   class="px-3 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-200"
+                  @click="removeWorkingHour(index)"
                 >
                   <i class="i-heroicons-trash text-sm"></i>
                 </button>
               </div>
               <button 
                 type="button" 
-                @click="addWorkingHour"
                 class="w-full px-4 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-xl hover:from-purple-600 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg"
+                @click="addWorkingHour"
               >
                 <i class="i-heroicons-plus mr-2"></i>
                 افزودن ساعت کاری جدید
@@ -487,7 +487,7 @@
               توضیحات کوتاه
             </label>
             <textarea 
-              v-model="settings.shortDescription" 
+              v-model="localSettings.shortDescription" 
               rows="4"
               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-4 focus:ring-pink-100 transition-all duration-200 group-hover:border-gray-300 resize-none"
               placeholder="توضیحات کوتاه درباره فروشگاه..."
@@ -501,8 +501,8 @@
         <div class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3 sm:space-x-reverse">
           <button 
             type="button" 
-            @click="resetSettings"
             class="px-8 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 font-semibold flex items-center justify-center"
+            @click="resetSettings"
           >
             <i class="i-heroicons-arrow-path mr-2"></i>
             بازنشانی تنظیمات
@@ -533,7 +533,6 @@
 </template>
 
 <script setup>
-import IconSelector from '~/components/admin/ui/IconSelector.vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
 
 const props = defineProps({
@@ -547,7 +546,17 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['save', 'reset', 'selectImage', 'addPhone', 'removePhone', 'addAdminPhone', 'removeAdminPhone', 'addWorkingHour', 'removeWorkingHour', 'addLocation', 'removeLocation', 'addLocationPhone', 'removeLocationPhone'])
+const emit = defineEmits(['save', 'reset', 'selectImage', 'addPhone', 'removePhone', 'addAdminPhone', 'removeAdminPhone', 'addWorkingHour', 'removeWorkingHour', 'addLocation', 'removeLocation', 'addLocationPhone', 'removeLocationPhone', 'update:settings'])
+
+const localSettings = ref({ ...props.settings })
+
+watch(() => props.settings, (newVal) => {
+  localSettings.value = { ...newVal }
+}, { deep: true })
+
+watch(localSettings, (newVal) => {
+  emit('update:settings', newVal)
+}, { deep: true })
 
 // State for modals
 const showLogoUploader = ref(false)
@@ -561,10 +570,6 @@ const saveSettings = () => {
 
 const resetSettings = () => {
   emit('reset')
-}
-
-const selectImage = (type) => {
-  emit('selectImage', type)
 }
 
 // Logo upload methods
@@ -583,13 +588,13 @@ const handleLogoUploaded = (imageData) => {
     // به‌روزرسانی لوگو در تنظیمات
     switch (currentLogoType.value) {
       case 'logo':
-        props.settings.logo = imageData.url
+        localSettings.value.logo = imageData.url
         break
       case 'logoRetina':
-        props.settings.logoRetina = imageData.url
+        localSettings.value.logoRetina = imageData.url
         break
       case 'favicon':
-        props.settings.favicon = imageData.url
+        localSettings.value.favicon = imageData.url
         break
     }
     
@@ -603,23 +608,6 @@ const handleMediaSelected = (selectedMedia) => {
     const media = selectedMedia[0]
     handleLogoUploaded({ url: media.url || media.path })
   }
-}
-
-const getLogoTypeLabel = (type) => {
-  switch (type) {
-    case 'logo': return 'لوگو معمولی'
-    case 'logoRetina': return 'لوگو رتینا'
-    case 'favicon': return 'فاویکون'
-    default: return 'لوگو'
-  }
-}
-
-const addPhone = () => {
-  emit('addPhone')
-}
-
-const removePhone = (index) => {
-  emit('removePhone', index)
 }
 
 const addAdminPhone = () => {
@@ -653,4 +641,4 @@ const addLocationPhone = (locationIndex) => {
 const removeLocationPhone = (locationIndex, phoneIndex) => {
   emit('removeLocationPhone', locationIndex, phoneIndex)
 }
-</script> 
+</script>

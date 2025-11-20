@@ -1,6 +1,6 @@
 <template>
   <div class="footer-widget footer-widget--trust" :style="containerStyle">
-    <div class="footer-widget__header" v-if="viewModel.title || viewModel.description">
+    <div v-if="viewModel.title || viewModel.description" class="footer-widget__header">
       <h4 v-if="viewModel.title" class="footer-widget__title">{{ viewModel.title }}</h4>
       <p v-if="viewModel.description" class="footer-widget__description">{{ viewModel.description }}</p>
     </div>
@@ -17,14 +17,14 @@
         v-if="viewModel.showArrows && viewModel.badges.length > 1"
         type="button"
         class="trust-slider__control trust-slider__control--prev"
-        @click="showPrevious()"
         aria-label="نمایش لوگوی قبلی"
+        @click="showPrevious()"
       >
         ‹
       </button>
 
       <transition name="trust-fade" mode="out-in">
-        <div v-if="activeBadge" class="trust-slide" :key="activeBadge.id">
+        <div v-if="activeBadge" :key="activeBadge.id" class="trust-slide">
           <!-- 
             ⚠️ امنیت XSS: استفاده از v-html خطرناک است!
             
@@ -76,8 +76,8 @@
         v-if="viewModel.showArrows && viewModel.badges.length > 1"
         type="button"
         class="trust-slider__control trust-slider__control--next"
-        @click="showNext()"
         aria-label="نمایش لوگوی بعدی"
+        @click="showNext()"
       >
         ›
       </button>
@@ -97,9 +97,9 @@
         type="button"
         class="trust-indicator"
         :class="{ 'trust-indicator--active': index === currentIndex }"
-        @click="goTo(index)"
         :aria-label="`نمایش نشان شماره ${index + 1}`"
         :aria-current="index === currentIndex"
+        @click="goTo(index)"
       ></button>
     </div>
   </div>

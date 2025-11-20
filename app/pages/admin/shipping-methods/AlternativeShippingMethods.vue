@@ -31,15 +31,15 @@
               </span>
           </td>
           <td>
-            <button @click="editMethod(method.id)" class="btn btn-secondary">
+            <button class="btn btn-secondary" @click="editMethod(method.id)">
               <i class="fas fa-edit"></i>
               ویرایش
             </button>
-            <button @click="toggleMethod(method.id)" class="btn" :class="method.active ? 'btn-warning' : 'btn-success'">
+            <button class="btn" :class="method.active ? 'btn-warning' : 'btn-success'" @click="toggleMethod(method.id)">
               <i :class="method.active ? 'fas fa-pause' : 'fas fa-play'"></i>
               {{ method.active ? 'غیرفعال' : 'فعال' }}
             </button>
-            <button @click="deleteMethod(method.id)" class="btn btn-danger">
+            <button class="btn btn-danger" @click="deleteMethod(method.id)">
               <i class="fas fa-trash"></i>
               حذف
             </button>
@@ -74,7 +74,7 @@
         <div class="form-row">
           <div class="form-group">
             <label>شرط فعال‌سازی:</label>
-            <input type="text" v-model="newMethod.activationCondition" placeholder="مثال: عدم موجودی">
+            <input v-model="newMethod.activationCondition" type="text" placeholder="مثال: عدم موجودی">
           </div>
           <div class="form-group">
             <label>اولویت:</label>
@@ -86,11 +86,11 @@
           </div>
         </div>
         <div class="form-actions">
-          <button @click="addMethod" class="btn btn-success">
+          <button class="btn btn-success" @click="addMethod">
             <i class="fas fa-plus"></i>
             افزودن روش
           </button>
-          <button @click="resetNewMethod" class="btn btn-secondary">
+          <button class="btn btn-secondary" @click="resetNewMethod">
             <i class="fas fa-undo"></i>
             بازنشانی
           </button>

@@ -324,7 +324,7 @@
 
               <!-- دکمه ذخیره -->
               <div class="flex justify-end">
-                <button @click="saveDDoSSettings" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors" @click="saveDDoSSettings">
                   ذخیره تنظیمات
                 </button>
               </div>

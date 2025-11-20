@@ -7,13 +7,13 @@
         <p class="text-gray-600 text-sm">تحلیل جامع عملکرد سیستم نظرسنجی</p>
       </div>
       <div class="flex space-x-3 space-x-reverse">
-        <button @click="exportReport" class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700 flex items-center space-x-2 space-x-reverse">
+        <button class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700 flex items-center space-x-2 space-x-reverse" @click="exportReport">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
           </svg>
           <span>خروجی PDF</span>
         </button>
-        <button @click="refreshReports" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
+        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700" @click="refreshReports">
           بروزرسانی
         </button>
       </div>
@@ -25,13 +25,13 @@
         <button 
           v-for="tab in tabs" 
           :key="tab.id"
-          @click="activeTab = tab.id"
           :class="[
             'py-2 px-1 border-b-2 font-medium text-sm transition-colors',
             activeTab === tab.id
               ? 'border-blue-500 text-blue-600'
               : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
           ]"
+          @click="activeTab = tab.id"
         >
           {{ tab.name }}
         </button>
@@ -318,7 +318,7 @@ const regionalDetailData = ref([
 
 // Methods
 const exportReport = () => {
-  console.log('Exporting report...')
+  // console.log('Exporting report...')
   // Implementation for PDF export
 }
 
@@ -327,9 +327,9 @@ const refreshReports = async () => {
   try {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000))
-    console.log('Reports refreshed')
-  } catch (error) {
-    console.error('Error refreshing reports:', error)
+    // console.log('Reports refreshed')
+  } catch {
+    // console.error('Error refreshing reports:', error)
   } finally {
     loading.value = false
   }

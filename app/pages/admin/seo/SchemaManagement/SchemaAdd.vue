@@ -8,7 +8,7 @@
   <!-- فرم اصلی جداگانه با عرض بزرگ‌تر -->
   <div class="max-w-6xl mx-auto">
     <div class="bg-white rounded-lg shadow p-8">
-      <form @submit.prevent="handleSubmit" class="space-y-8">
+      <form class="space-y-8" @submit.prevent="handleSubmit">
         <!-- نوع اسکیما -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">نوع اسکیما <span class="text-red-500">*</span></label>
@@ -197,6 +197,7 @@
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string }) => void
 declare const navigateTo: (to: string) => Promise<void>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const useSchema: () => any
 </script>
 
@@ -206,7 +207,7 @@ import { onMounted, reactive, ref } from 'vue'
 definePageMeta({ layout: 'admin-main' })
 
 // استفاده از composable
-const { createTemplate, fetchSchemaTypes, loading, error } = useSchema()
+const { createTemplate, fetchSchemaTypes, loading } = useSchema()
 
 // فرم واکنشی برای اسکیما
 const form = reactive({

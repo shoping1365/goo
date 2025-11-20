@@ -6,9 +6,9 @@
         <div class="flex justify-between items-center py-6">
           <div class="flex items-center space-x-4 space-x-reverse">
             <button
-              @click="goBack"
               class="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100"
               title="بازگشت"
+              @click="goBack"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -21,27 +21,27 @@
           </div>
           <div class="flex gap-3">
             <button
-              @click="saveAndContinueEdit"
               class="inline-flex items-center px-4 py-2 rounded-lg text-white bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 font-semibold"
+              @click="saveAndContinueEdit"
             >
               ذخیره و ادامه ویرایش
             </button>
             <button
-              @click="saveChanges"
               class="inline-flex items-center px-4 py-2 rounded-lg text-white bg-gradient-to-r from-emerald-400 to-green-600 hover:from-emerald-500 hover:to-green-700 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 font-semibold"
+              @click="saveChanges"
             >
               ذخیره
             </button>
             <button
               v-if="formData.name"
-              @click="deleteAttribute"
               class="inline-flex items-center px-4 py-2 rounded-lg text-white bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 font-semibold"
+              @click="deleteAttribute"
             >
               حذف
             </button>
             <button
-              @click="goBack"
               class="flex items-center px-4 py-2 border border-gray-300 rounded-md text-gray-600 hover:bg-gray-100 transition-colors font-semibold"
+              @click="goBack"
             >
               {{ cancelLabel }}
             </button>
@@ -171,8 +171,8 @@
                 مقادیر مختلف این ویژگی
               </div>
               <button
-                @click="openAddOptionModal"
                 class="inline-flex items-center px-4 py-2 rounded-lg text-white bg-gradient-to-r from-emerald-400 to-green-600 hover:from-emerald-500 hover:to-green-700 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 text-sm font-semibold"
+                @click="openAddOptionModal"
               >
                 افزودن گزینه جدید
               </button>
@@ -205,8 +205,8 @@
                     <!-- عملیات -->
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-left">
                       <div class="flex flex-row items-center space-x-2 space-x-reverse justify-end">
-                        <button @click="editOption(opt.name)" class="text-blue-600 hover:text-blue-900 w-max" title="ویرایش">✏️ ویرایش</button>
-                        <button @click="deleteOption(opt.name)" class="text-red-600 hover:text-red-900 w-max" title="حذف">🗑️ حذف</button>
+                        <button class="text-blue-600 hover:text-blue-900 w-max" title="ویرایش" @click="editOption(opt.name)">✏️ ویرایش</button>
+                        <button class="text-red-600 hover:text-red-900 w-max" title="حذف" @click="deleteOption(opt.name)">🗑️ حذف</button>
                       </div>
                     </td>
                   </tr>
@@ -220,9 +220,9 @@
               :total-pages="optionsTotalPages"
               :total="optionsTotal"
               :per-page="optionsPerPage"
+              class="mt-4"
               @page-changed="handleOptionsPageChange"
               @per-page-changed="val => { optionsPerPage = val; optionsPage = 1 }"
-              class="mt-4"
             />
           </div>
         </div>
@@ -260,7 +260,7 @@
                       <input type="checkbox" :checked="prod.published" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-center">
-                      <button @click="viewProduct(prod.name)" class="inline-flex items-center px-3 py-1 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">👁️ مشاهده</button>
+                      <button class="inline-flex items-center px-3 py-1 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" @click="viewProduct(prod.name)">👁️ مشاهده</button>
                     </td>
                   </tr>
                 </tbody>
@@ -272,9 +272,9 @@
               :total-pages="usedProductsTotalPages"
               :total="usedProductsTotal"
               :per-page="usedProductsPerPage"
+              class="mt-4 px-4"
               @page-changed="handleUsedProductsPageChange"
               @per-page-changed="val => { usedProductsPerPage = val; usedProductsPage = 1 }"
-              class="mt-4 px-4"
             />
           </div>
         </div>
@@ -287,7 +287,7 @@
           </div>
 
           <div v-show="expandedSections.attrGroups" class="mt-4">
-            <table class="min-w-full divide-y divide-gray-200" v-if="groups.length">
+            <table v-if="groups.length" class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <tr>
                   <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">نام گروه</th>
@@ -317,7 +317,7 @@
       <div class="relative w-full max-w-md mx-auto p-0 md:p-0 animate-fade-in">
         <div class="bg-white rounded-2xl shadow-2xl border border-blue-200 px-6 py-7 md:px-8 md:py-8 transition-transform duration-200 hover:scale-[1.02]" dir="rtl">
           <!-- Close Button -->
-          <button @click="closeAddOptionModal" class="absolute left-4 top-6 text-gray-400 hover:text-red-500 transition-colors text-2xl focus:outline-none">
+          <button class="absolute left-4 top-6 text-gray-400 hover:text-red-500 transition-colors text-2xl focus:outline-none" @click="closeAddOptionModal">
             <span aria-hidden="true">×</span>
           </button>
           <!-- Title -->
@@ -326,7 +326,7 @@
           </div>
           <hr class="mb-6 border-blue-100">
           <!-- Form -->
-          <form @submit.prevent="saveNewOption" class="space-y-6">
+          <form class="space-y-6" @submit.prevent="saveNewOption">
             <div>
               <label class="block text-sm font-bold text-gray-700 mb-2">نام</label>
               <input
@@ -342,8 +342,8 @@
               <label class="inline-flex items-center cursor-pointer gap-2">
                 <input
                   id="has-color"
-                  type="checkbox"
                   v-model="newOption.hasColor"
+                  type="checkbox"
                   class="form-checkbox accent-blue-500 w-5 h-5 rounded border-gray-300 focus:ring-2 focus:ring-blue-400 transition-all"
                 />
                 <span class="text-sm font-bold text-gray-700">انتخاب رنگ</span>
@@ -384,8 +384,8 @@
               </button>
               <button
                 type="button"
-                @click="closeAddOptionModal"
                 class="inline-flex items-center justify-center px-6 py-2 rounded-lg text-gray-700 bg-gradient-to-r from-gray-200 to-gray-300 hover:from-gray-300 hover:to-gray-400 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 text-base font-bold gap-2"
+                @click="closeAddOptionModal"
               >
                 <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                 انصراف
@@ -401,9 +401,9 @@
 </template>
 
 <script setup>
-import { ref, watch, computed, onMounted } from 'vue'
-import Pagination from '~/components/admin/common/Pagination.vue'
 import { navigateTo } from '#app'
+import { computed, onMounted, ref, watch } from 'vue'
+import Pagination from '~/components/admin/common/Pagination.vue'
 import UnitManagerModal from '~/components/admin/modals/UnitManagerModal.vue'
 // بارگذاری داینامیک slugify با فول‌بک داخلی (بدون TypeScript annotation)
 let slugify = null
@@ -568,7 +568,6 @@ const isColorAttr = computed(() => formData.value.dataType === 'color')
 
 // Methods
 const goBack = () => {
-  console.log('🔙 Going back to attributes list')
   navigateTo('/admin/product-management/attributes')
 }
 
@@ -645,7 +644,7 @@ const clearDraft = () => {
   if (typeof window !== 'undefined') localStorage.removeItem(DRAFT_KEY)
 }
 
-const showToast = (msg, type = 'success') => {
+const showToast = (msg) => {
   // You can replace with your own toast library
   alert(msg)
 }
@@ -772,7 +771,7 @@ const deleteAttribute = async () => {
       showToast('🗑️ ویژگی با موفقیت حذف شد!')
       clearDraft()
       navigateTo('/admin/product-management/attributes')
-    } catch (e) {
+    } catch {
       showToast('خطا در حذف ویژگی', 'error')
     }
   }
@@ -848,7 +847,7 @@ const deleteOption = (optionName) => {
   }
 }
 
-const editOption = (optionName) => {
+const editOption = () => {
   // ویرایش برای ویژگی رنگ مجاز است؛ فقط حذف محدود شده است.
 }
 
@@ -902,14 +901,12 @@ const loadUnits = () => {
   try {
     const saved = localStorage.getItem('measurementUnits')
     unitOptions.value = saved ? JSON.parse(saved) : DEFAULT_UNITS
-  } catch (_) {
+  } catch {
     unitOptions.value = DEFAULT_UNITS
   }
 }
 
-const saveUnits = () => {
-  localStorage.setItem('measurementUnits', JSON.stringify(unitOptions.value))
-}
+
 
 const refreshUnits = () => {
   loadUnits()
@@ -976,7 +973,7 @@ const fetchAttributeValues = async (attrId) => {
       options.value = vals.map(v => {
         let metaObj = {}
         if (v.meta) {
-          try { metaObj = typeof v.meta === 'string' ? JSON.parse(v.meta) : v.meta } catch (_) { metaObj = {} }
+          try { metaObj = typeof v.meta === 'string' ? JSON.parse(v.meta) : v.meta } catch { metaObj = {} }
         }
         return {
           id: Number(v.id),
@@ -997,7 +994,7 @@ const fetchAttributeValues = async (attrId) => {
 const groups = ref([])
 
 const loadAttributeGroups = async () => {
-  if (!attributeId || !attributeId.value) return
+  if (!attributeId.value || !attributeId.value) return
   try {
     const res = await $fetch(`/api/attribute-groups/by-attribute/${attributeId.value}`)
     groups.value = Array.isArray(res) ? res : (res.data || [])
@@ -1011,11 +1008,9 @@ const fetchAttribute = async () => {
   if (!attributeId.value) return;
   try {
     const attribute = await $fetch(`/api/attributes/${attributeId.value}`);
-    console.log('attribute from API', attribute);
     if (attribute) {
       formData.value.name = attribute.name || '';
       formData.value.displayText = attribute.display_name || '';
-      console.log('formData.displayText', formData.value.displayText);
       formData.value.dataType = attribute.data_type || 'auto';
       formData.value.unit = attribute.unit || '';
       // سایر فیلدها اگر لازم بود
@@ -1034,7 +1029,7 @@ watch(() => formData.value.displayText, (val, oldVal) => {
   }
 })
 
-watch(() => formData.value.name, (newName, oldName) => {
+watch(() => formData.value.name, (newName) => {
   if (!displayTextManuallyChanged) {
     formData.value.displayText = newName || ''
   }

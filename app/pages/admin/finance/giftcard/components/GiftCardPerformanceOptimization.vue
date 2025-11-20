@@ -44,7 +44,8 @@
               <span>{{ optimizationStats.cacheUsage }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full transition-all duration-300"
+              <div
+class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full transition-all duration-300"
                    :style="{ width: optimizationStats.cacheUsage + '%' }"></div>
             </div>
           </div>
@@ -95,7 +96,8 @@
               <span>{{ optimizationStats.performanceImprovement }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300"
+              <div
+class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300"
                    :style="{ width: optimizationStats.performanceImprovement + '%' }"></div>
             </div>
           </div>
@@ -146,7 +148,8 @@
               <span>{{ optimizationStats.compressionProgress }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-300"
+              <div
+class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-300"
                    :style="{ width: optimizationStats.compressionProgress + '%' }"></div>
             </div>
           </div>
@@ -197,7 +200,8 @@
               <span>{{ optimizationStats.cdnCoverage }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full transition-all duration-300"
+              <div
+class="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full transition-all duration-300"
                    :style="{ width: optimizationStats.cdnCoverage + '%' }"></div>
             </div>
           </div>
@@ -258,7 +262,8 @@
               <span>{{ monitoringStats.overallHealth }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full transition-all duration-300"
+              <div
+class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full transition-all duration-300"
                    :style="{ width: monitoringStats.overallHealth + '%' }"></div>
             </div>
           </div>
@@ -309,7 +314,8 @@
               <span>{{ monitoringStats.errorRate }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-red-500 to-orange-500 h-2 rounded-full transition-all duration-300"
+              <div
+class="bg-gradient-to-r from-red-500 to-orange-500 h-2 rounded-full transition-all duration-300"
                    :style="{ width: monitoringStats.errorRate + '%' }"></div>
             </div>
           </div>
@@ -360,7 +366,8 @@
               <span>{{ monitoringStats.reportCoverage }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full transition-all duration-300"
+              <div
+class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full transition-all duration-300"
                    :style="{ width: monitoringStats.reportCoverage + '%' }"></div>
             </div>
           </div>
@@ -411,7 +418,8 @@
               <span>{{ monitoringStats.systemLoad }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-300"
+              <div
+class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-300"
                    :style="{ width: monitoringStats.systemLoad + '%' }"></div>
             </div>
           </div>
@@ -460,9 +468,11 @@
           <h4 class="text-sm font-medium text-gray-900 mb-3">روند عملکرد (7 روز گذشته)</h4>
           <div class="flex items-end space-x-2 space-x-reverse h-32 overflow-x-auto">
             <div v-for="(day, index) in performanceTrend" :key="index" class="flex-shrink-0 flex flex-col items-center min-w-16">
-              <div class="w-full bg-gray-200 rounded-t relative"
+              <div
+class="w-full bg-gray-200 rounded-t relative"
                    :style="{ height: getChartHeight(day.performance) + 'px' }">
-                <div class="w-full bg-gradient-to-t from-blue-500 to-purple-500 rounded-t transition-all duration-300 absolute bottom-0"
+                <div
+class="w-full bg-gradient-to-t from-blue-500 to-purple-500 rounded-t transition-all duration-300 absolute bottom-0"
                      :style="{ height: getChartHeight(day.performance) + 'px' }"></div>
               </div>
               <span class="text-xs text-gray-500 mt-1 text-center">{{ day.label }}</span>

@@ -8,7 +8,7 @@
           <p class="text-gray-600 mt-1">مدیریت کامل گیفت کارت‌ها، تراکنش‌ها و گزارش‌ها</p>
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
-          <button @click="showCreateModal = true" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+          <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" @click="showCreateModal = true">
             <i class="fas fa-plus ml-2"></i>
             ایجاد گیفت کارت جدید
           </button>
@@ -86,13 +86,13 @@
           <button
             v-for="tab in tabs"
             :key="tab.id"
-            @click="activeTab = tab.id"
             class="flex items-center space-x-2 space-x-reverse px-4 py-4 transition-colors whitespace-nowrap border-b-2"
             :class="[
               activeTab === tab.id
                 ? 'text-blue-600 border-blue-500'
                 : 'text-gray-600 hover:text-gray-900 border-transparent'
             ]"
+            @click="activeTab = tab.id"
           >
             <i :class="tab.icon + ' text-lg'"></i>
             <span class="font-medium">{{ tab.title }}</span>
@@ -104,7 +104,7 @@
       <div class="p-6">
         <!-- داشبورد -->
         <div v-if="activeTab === 'dashboard'" class="space-y-6">
-          <GiftCardDashboard :giftCards="giftCards" />
+          <GiftCardDashboard :gift-cards="giftCards" />
         </div>
 
         <!-- مدیریت کارت‌ها -->
@@ -112,7 +112,7 @@
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
               <h3 class="text-lg font-semibold mb-4">لیست کارت‌ها</h3>
-              <GiftCardList :giftCards="giftCards" />
+              <GiftCardList :gift-cards="giftCards" />
             </div>
             <div>
               <h3 class="text-lg font-semibold mb-4">جزئیات کارت</h3>
@@ -121,7 +121,7 @@
           </div>
           <div class="mt-6">
             <h3 class="text-lg font-semibold mb-4">مدیریت چرخه حیات</h3>
-            <GiftCardLifecycleManagement :giftCards="giftCards" />
+            <GiftCardLifecycleManagement :gift-cards="giftCards" />
           </div>
         </div>
 
@@ -130,7 +130,7 @@
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
               <h3 class="text-lg font-semibold mb-4">تراکنش‌ها</h3>
-              <GiftCardTransactions :giftCards="giftCards" />
+              <GiftCardTransactions :gift-cards="giftCards" />
             </div>
             <div>
               <h3 class="text-lg font-semibold mb-4">فعالیت‌های اخیر</h3>
@@ -184,20 +184,21 @@
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
               <h3 class="text-lg font-semibold mb-4">گزارش‌های مالی</h3>
-              <GiftCardFinancialReports :giftCards="giftCards" />
+              <GiftCardFinancialReports :gift-cards="giftCards" />
             </div>
             <div>
               <h3 class="text-lg font-semibold mb-4">گزارش‌های تحلیلی</h3>
-              <GiftCardAnalyticsReports :giftCards="giftCards" />
+              <GiftCardAnalyticsReports :gift-cards="giftCards" />
             </div>
           </div>
           <div class="mt-6">
             <h3 class="text-lg font-semibold mb-4">گزارش‌های کلی</h3>
-            <GiftCardReports :giftCards="giftCards" />
+            <GiftCardReports :gift-cards="giftCards" />
           </div>
           <div class="mt-6">
             <h3 class="text-lg font-semibold mb-4">آمار کارت‌ها</h3>
-            <GiftCardStats :stats="{
+            <GiftCardStats
+:stats="{
               totalCards: 1250,
               activeCards: 980,
               usedCards: 200,
@@ -215,11 +216,11 @@
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
               <h3 class="text-lg font-semibold mb-4">مدیریت مالی</h3>
-              <GiftCardFinancialManagement :financialData="{}" />
+              <GiftCardFinancialManagement :financial-data="{}" />
             </div>
             <div>
               <h3 class="text-lg font-semibold mb-4">مدیریت قیمت‌ها</h3>
-              <GiftCardPricingManager :pricingData="{}" />
+              <GiftCardPricingManager :pricing-data="{}" />
             </div>
           </div>
           <div class="mt-6">
@@ -233,24 +234,24 @@
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
               <h3 class="text-lg font-semibold mb-4">جستجوی سریع</h3>
-              <GiftCardQuickSearch :giftCards="giftCards" />
+              <GiftCardQuickSearch :gift-cards="giftCards" />
             </div>
             <div>
               <h3 class="text-lg font-semibold mb-4">جستجوی پیشرفته</h3>
-              <GiftCardAdvancedSearch :giftCards="giftCards" />
+              <GiftCardAdvancedSearch :gift-cards="giftCards" />
             </div>
           </div>
           <div class="mt-6">
             <h3 class="text-lg font-semibold mb-4">جستجو و فیلتر</h3>
-            <GiftCardSearchAndFilter :giftCards="giftCards" />
+            <GiftCardSearchAndFilter :gift-cards="giftCards" />
           </div>
           <div class="mt-6">
             <h3 class="text-lg font-semibold mb-4">فیلترها</h3>
-            <GiftCardFilters :giftCards="giftCards" />
+            <GiftCardFilters :gift-cards="giftCards" />
           </div>
           <div class="mt-6">
             <h3 class="text-lg font-semibold mb-4">فیلترهای ذخیره‌شده</h3>
-            <GiftCardSavedFilters :currentFilters="{}" />
+            <GiftCardSavedFilters :current-filters="{}" />
           </div>
         </div>
 
@@ -272,7 +273,7 @@
           </div>
           <div class="mt-6">
             <h3 class="text-lg font-semibold mb-4">تست اطلاع‌رسانی</h3>
-            <GiftCardNotificationTest :testData="{}" />
+            <GiftCardNotificationTest :test-data="{}" />
           </div>
         </div>
 
@@ -285,16 +286,16 @@
             </div>
             <div>
               <h3 class="text-lg font-semibold mb-4">تنظیمات امنیتی</h3>
-              <GiftCardSecuritySettings :securitySettings="{}" />
+              <GiftCardSecuritySettings :security-settings="{}" />
             </div>
           </div>
           <div class="mt-6">
             <h3 class="text-lg font-semibold mb-4">تنظیمات حریم خصوصی</h3>
-            <GiftCardPrivacySettings :privacySettings="{}" />
+            <GiftCardPrivacySettings :privacy-settings="{}" />
           </div>
           <div class="mt-6">
             <h3 class="text-lg font-semibold mb-4">تنظیمات سیستمی</h3>
-            <GiftCardSystemSettings :systemSettings="{}" />
+            <GiftCardSystemSettings :system-settings="{}" />
           </div>
         </div>
 
@@ -303,16 +304,16 @@
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
               <h3 class="text-lg font-semibold mb-4">عملیات سریع</h3>
-              <GiftCardQuickActions :giftCards="giftCards" />
+              <GiftCardQuickActions :gift-cards="giftCards" />
             </div>
             <div>
               <h3 class="text-lg font-semibold mb-4">مدیریت فیزیکی</h3>
-              <GiftCardPhysicalManagement :physicalCards="[]" />
+              <GiftCardPhysicalManagement :physical-cards="[]" />
             </div>
           </div>
           <div class="mt-6">
             <h3 class="text-lg font-semibold mb-4">بهینه‌سازی عملکرد</h3>
-            <GiftCardPerformanceOptimization :performanceData="{}" />
+            <GiftCardPerformanceOptimization :performance-data="{}" />
           </div>
           <div class="mt-6">
             <h3 class="text-lg font-semibold mb-4">امکانات پیشرفته</h3>
@@ -320,7 +321,7 @@
           </div>
           <div class="mt-6">
             <h3 class="text-lg font-semibold mb-4">راهنمای API</h3>
-            <APIIntegrationGuide :apiData="{}" />
+            <APIIntegrationGuide :api-data="{}" />
           </div>
         </div>
       </div>

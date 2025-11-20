@@ -7,8 +7,8 @@
         <p class="text-gray-600">مدیریت قرعه‌کشی‌ها و جوایز</p>
       </div>
       <button 
-        @click="showLuckyDrawForm = true"
         class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+        @click="showLuckyDrawForm = true"
       >
         ایجاد گرونه جدید
       </button>
@@ -75,7 +75,7 @@
 
     <!-- کارت‌های ابزار -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div @click="showPrizeManagement = true" class="bg-white p-6 rounded-lg shadow border hover:shadow-lg transition-shadow cursor-pointer">
+      <div class="bg-white p-6 rounded-lg shadow border hover:shadow-lg transition-shadow cursor-pointer" @click="showPrizeManagement = true">
         <div class="text-center">
           <div class="mx-auto w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
             <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -87,7 +87,7 @@
         </div>
       </div>
 
-      <div @click="showLuckyDrawReports = true" class="bg-white p-6 rounded-lg shadow border hover:shadow-lg transition-shadow cursor-pointer">
+      <div class="bg-white p-6 rounded-lg shadow border hover:shadow-lg transition-shadow cursor-pointer" @click="showLuckyDrawReports = true">
         <div class="text-center">
           <div class="mx-auto w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
             <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -99,7 +99,7 @@
         </div>
       </div>
 
-      <div @click="showLuckyDrawSettings = true" class="bg-white p-6 rounded-lg shadow border hover:shadow-lg transition-shadow cursor-pointer">
+      <div class="bg-white p-6 rounded-lg shadow border hover:shadow-lg transition-shadow cursor-pointer" @click="showLuckyDrawSettings = true">
         <div class="text-center">
           <div class="mx-auto w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-4">
             <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -112,7 +112,7 @@
         </div>
       </div>
 
-      <div @click="showLuckyDrawForm = true" class="bg-white p-6 rounded-lg shadow border hover:shadow-lg transition-shadow cursor-pointer">
+      <div class="bg-white p-6 rounded-lg shadow border hover:shadow-lg transition-shadow cursor-pointer" @click="showLuckyDrawForm = true">
         <div class="text-center">
           <div class="mx-auto w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mb-4">
             <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -163,8 +163,8 @@
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button @click="editLuckyDraw(draw)" class="text-blue-600 hover:text-blue-900 ml-3">ویرایش</button>
-                <button @click="deleteLuckyDraw(draw.id)" class="text-red-600 hover:text-red-900">حذف</button>
+                <button class="text-blue-600 hover:text-blue-900 ml-3" @click="editLuckyDraw(draw)">ویرایش</button>
+                <button class="text-red-600 hover:text-red-900" @click="deleteLuckyDraw(draw.id)">حذف</button>
               </td>
             </tr>
           </tbody>

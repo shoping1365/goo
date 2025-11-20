@@ -6,9 +6,9 @@
         <h1 class="text-2xl font-bold text-gray-800">ایجاد {{ widget?.title || 'ابزارک' }}</h1>
         <div class="flex items-center gap-6">
           <button
-            @click="saveWidget"
             :disabled="isSaving"
             class="bg-green-500 text-white px-6 py-2 rounded-md font-bold hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            @click="saveWidget"
           >
             <svg v-if="isSaving" class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -19,13 +19,13 @@
             {{ isSaving ? 'در حال ذخیره...' : 'ذخیره' }}
           </button>
           <TemplateButton
-            @click="$router.push('/admin/content/banners')"
-            bgGradient="bg-gradient-to-r from-purple-400 to-purple-600"
-            textColor="text-white"
-            borderColor="border border-purple-500"
-            hoverClass="hover:from-purple-500 hover:to-purple-700"
+            bg-gradient="bg-gradient-to-r from-purple-400 to-purple-600"
+            text-color="text-white"
+            border-color="border border-purple-500"
+            hover-class="hover:from-purple-500 hover:to-purple-700"
             size="medium"
             class="flex items-center gap-2"
+            @click="$router.push('/admin/content/banners')"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -65,9 +65,9 @@
             style="font-family: 'Yekan', sans-serif;"
             :class="{ 'border-red-500 focus:ring-red-500': titleError }"
             placeholder="عنوان ابزارک را وارد کنید"
+            required
             @input="validateTitle"
             @blur="validateTitle"
-            required
           />
         </div>
 
@@ -120,13 +120,13 @@
     <!-- تنظیمات بنر -->
     <DeviceTabs
       ref="deviceTabsRef"
-      :bannerConfig="bannerConfig"
-      :currentPreviewBanner="currentPreviewBanner"
-      :openAddBannerModal="openAddBannerModal"
-      :editBanner="editBanner"
-      :removeBanner="removeBanner"
-      :getBannerClasses="() => ''"
-      :getBannerWidth="() => ''"
+      :banner-config="bannerConfig"
+      :current-preview-banner="currentPreviewBanner"
+      :open-add-banner-modal="openAddBannerModal"
+      :edit-banner="editBanner"
+      :remove-banner="removeBanner"
+      :get-banner-classes="() => ''"
+      :get-banner-width="() => ''"
     >
       <!-- محتوای تب دسکتاپ -->
       <template #desktop-content>
@@ -164,8 +164,8 @@
             <div v-if="bannerConfig.bg_enabled">
               <label class="block mb-2 text-sm font-medium text-gray-700">رنگ پس‌زمینه</label>
               <input
-                type="color"
                 v-model="bannerConfig.bg_color"
+                type="color"
                 class="w-full h-10 border border-gray-300 rounded-md"
               />
             </div>
@@ -203,14 +203,14 @@
               <input
                 type="number"
                 :value="bannerConfig.center_width !== undefined ? bannerConfig.center_width : ''"
-                @input="(e: Event) => {
-                  const target = e.target as HTMLInputElement
-                  bannerConfig.center_width = target.value === '' ? undefined : Number(target.value)
-                }"
                 min="200"
                 max="2000"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="1000"
+                @input="(e: Event) => {
+                  const target = e.target as HTMLInputElement
+                  bannerConfig.center_width = target.value === '' ? undefined : Number(target.value)
+                }"
               />
             </div>
 
@@ -220,14 +220,14 @@
               <input
                 type="number"
                 :value="bannerConfig.padding_top !== undefined ? bannerConfig.padding_top : ''"
-                @input="(e: Event) => {
-                  const target = e.target as HTMLInputElement
-                  bannerConfig.padding_top = target.value === '' ? undefined : Number(target.value)
-                }"
                 min="0"
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
+                @input="(e: Event) => {
+                  const target = e.target as HTMLInputElement
+                  bannerConfig.padding_top = target.value === '' ? undefined : Number(target.value)
+                }"
               />
             </div>
 
@@ -237,14 +237,14 @@
               <input
                 type="number"
                 :value="bannerConfig.padding_bottom !== undefined ? bannerConfig.padding_bottom : ''"
-                @input="(e: Event) => {
-                  const target = e.target as HTMLInputElement
-                  bannerConfig.padding_bottom = target.value === '' ? undefined : Number(target.value)
-                }"
                 min="0"
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
+                @input="(e: Event) => {
+                  const target = e.target as HTMLInputElement
+                  bannerConfig.padding_bottom = target.value === '' ? undefined : Number(target.value)
+                }"
               />
             </div>
 
@@ -254,14 +254,14 @@
               <input
                 type="number"
                 :value="bannerConfig.margin_right !== undefined ? bannerConfig.margin_right : ''"
-                @input="(e: Event) => {
-                  const target = e.target as HTMLInputElement
-                  bannerConfig.margin_right = target.value === '' ? undefined : Number(target.value)
-                }"
                 min="0"
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
+                @input="(e: Event) => {
+                  const target = e.target as HTMLInputElement
+                  bannerConfig.margin_right = target.value === '' ? undefined : Number(target.value)
+                }"
               />
             </div>
 
@@ -271,14 +271,14 @@
               <input
                 type="number"
                 :value="bannerConfig.margin_left !== undefined ? bannerConfig.margin_left : ''"
-                @input="(e: Event) => {
-                  const target = e.target as HTMLInputElement
-                  bannerConfig.margin_left = target.value === '' ? undefined : Number(target.value)
-                }"
                 min="0"
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
+                @input="(e: Event) => {
+                  const target = e.target as HTMLInputElement
+                  bannerConfig.margin_left = target.value === '' ? undefined : Number(target.value)
+                }"
               />
             </div>
           </div>
@@ -340,14 +340,14 @@
               <input
                 type="number"
                 :value="bannerConfig.mobile_padding_top !== undefined ? bannerConfig.mobile_padding_top : ''"
-                @input="(e: Event) => {
-                  const target = e.target as HTMLInputElement
-                  bannerConfig.mobile_padding_top = target.value === '' ? undefined : Number(target.value)
-                }"
                 min="0"
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
+                @input="(e: Event) => {
+                  const target = e.target as HTMLInputElement
+                  bannerConfig.mobile_padding_top = target.value === '' ? undefined : Number(target.value)
+                }"
               />
             </div>
 
@@ -357,14 +357,14 @@
               <input
                 type="number"
                 :value="bannerConfig.mobile_padding_bottom !== undefined ? bannerConfig.mobile_padding_bottom : ''"
-                @input="(e: Event) => {
-                  const target = e.target as HTMLInputElement
-                  bannerConfig.mobile_padding_bottom = target.value === '' ? undefined : Number(target.value)
-                }"
                 min="0"
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
+                @input="(e: Event) => {
+                  const target = e.target as HTMLInputElement
+                  bannerConfig.mobile_padding_bottom = target.value === '' ? undefined : Number(target.value)
+                }"
               />
             </div>
           </div>
@@ -432,16 +432,16 @@
                 </div>
                 <div class="flex gap-2">
                   <button
-                    @click="editBanner(idx)"
                     class="text-blue-500 hover:text-blue-700 p-1"
+                    @click="editBanner(idx)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 11l6 6M3 17v4h4l10.293-10.293a1 1 0 00-1.414-1.414L3 17z"></path>
                     </svg>
                   </button>
                   <button
-                    @click="removeBanner(idx)"
                     class="text-red-500 hover:text-red-700 p-1"
+                    @click="removeBanner(idx)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -561,16 +561,16 @@
           </div>
           <div class="flex gap-2">
             <button
-              @click="editBanner(idx)"
               class="text-blue-500 hover:text-blue-700 p-1"
+              @click="editBanner(idx)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 11l6 6M3 17v4h4l10.293-10.293a1 1 0 00-1.414-1.414L3 17z"></path>
               </svg>
             </button>
             <button
-              @click="removeBanner(idx)"
               class="text-red-500 hover:text-red-700 p-1"
+              @click="removeBanner(idx)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -583,14 +583,14 @@
 
     <!-- Banner Modal Component -->
     <BannerModal
-      :isVisible="showBannerModal"
-      :isEditing="editingBannerIndex !== null"
-      :bannerData="editingBanner"
-      :showTitle="showTitleInBanner"
-      :deviceType="activeDeviceTab"
-      @update:isVisible="showBannerModal = $event"
-      @update:showTitle="showTitleInBanner = $event"
-      @update:bannerData="editingBanner = $event"
+      :is-visible="showBannerModal"
+      :is-editing="editingBannerIndex !== null"
+      :banner-data="editingBanner"
+      :show-title="showTitleInBanner"
+      :device-type="activeDeviceTab"
+      @update:is-visible="showBannerModal = $event"
+      @update:show-title="showTitleInBanner = $event"
+      @update:banner-data="editingBanner = $event"
       @save="handleBannerSave"
       @open-media-library="openMediaLibrary"
       @remove-image="removeImage"

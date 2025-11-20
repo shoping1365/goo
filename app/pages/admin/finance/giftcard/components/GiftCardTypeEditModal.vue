@@ -5,8 +5,8 @@
       <div class="flex items-center justify-between p-6 border-b border-gray-200">
         <h2 class="text-xl font-bold text-gray-900">ویرایش نوع گیفت کارت</h2>
         <button 
-          @click="$emit('close')"
           class="text-gray-400 hover:text-gray-600 transition-colors"
+          @click="$emit('close')"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -15,7 +15,7 @@
       </div>
       
       <!-- Form -->
-      <form @submit.prevent="handleSubmit" class="p-6 space-y-6">
+      <form class="p-6 space-y-6" @submit.prevent="handleSubmit">
         <!-- اطلاعات اصلی -->
         <div class="space-y-4">
           <div>
@@ -283,8 +283,8 @@
         <div class="flex items-center justify-end space-x-3 space-x-reverse pt-6 border-t border-gray-200">
           <button
             type="button"
-            @click="$emit('close')"
             class="px-6 py-3 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+            @click="$emit('close')"
           >
             انصراف
           </button>

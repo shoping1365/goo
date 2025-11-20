@@ -12,13 +12,13 @@
         <button 
           v-for="period in periods" 
           :key="period.value"
-          @click="selectedPeriod = period.value"
           :class="[
             'px-3 py-1.5 text-sm rounded-lg transition-colors duration-200',
             selectedPeriod === period.value 
               ? 'bg-blue-100 text-blue-700' 
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
           ]"
+          @click="selectedPeriod = period.value"
         >
           {{ period.label }}
         </button>

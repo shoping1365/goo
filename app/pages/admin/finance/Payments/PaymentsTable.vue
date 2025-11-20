@@ -6,10 +6,10 @@
         <p class="text-sm text-gray-500 mt-1">Payments Table</p>
       </div>
       <div class="flex items-center space-x-2 space-x-reverse">
-        <button @click="refreshTable" class="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+        <button class="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors" @click="refreshTable">
           بروزرسانی
         </button>
-        <button @click="search = ''" class="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+        <button class="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors" @click="search = ''">
           پاک‌کردن جستجو
         </button>
       </div>
@@ -49,7 +49,7 @@
             <td class="py-2 px-4">
               <!-- منوی عملیات -->
               <div class="relative inline-block text-left">
-                <button @click="openActionMenu(payment.id)" class="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button class="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" @click="openActionMenu(payment.id)">
                   <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <circle cx="12" cy="6" r="1.5" />
                     <circle cx="12" cy="12" r="1.5" />
@@ -58,10 +58,10 @@
                 </button>
                 <div v-if="actionMenuOpen === payment.id" class="origin-top-left absolute right-0 mt-2 w-44 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-20">
                   <div class="py-1">
-                    <button @click="showManualConfirm(payment)" class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">تایید پرداخت دستی</button>
-                    <button @click="showRefund(payment)" class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">مرجوع کردن وجه</button>
-                    <button @click="showSendReceipt(payment)" class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">ارسال رسید</button>
-                    <button @click="showNote(payment)" class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">یادداشت</button>
+                    <button class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" @click="showManualConfirm(payment)">تایید پرداخت دستی</button>
+                    <button class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" @click="showRefund(payment)">مرجوع کردن وجه</button>
+                    <button class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" @click="showSendReceipt(payment)">ارسال رسید</button>
+                    <button class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" @click="showNote(payment)">یادداشت</button>
                   </div>
                 </div>
               </div>
@@ -80,8 +80,8 @@
         <h4 class="text-lg font-bold mb-4">تایید پرداخت دستی</h4>
         <p class="mb-4 text-gray-700">آیا از تایید پرداخت کارت به کارت برای <span class="font-semibold">{{ selectedPayment?.customerName }}</span> با مبلغ <span class="font-semibold">{{ formatPrice(selectedPayment?.amount) }}</span> مطمئن هستید؟</p>
         <div class="flex justify-end space-x-2 space-x-reverse">
-          <button @click="confirmManualPayment" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">تایید</button>
-          <button @click="closeModal" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">انصراف</button>
+          <button class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600" @click="confirmManualPayment">تایید</button>
+          <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200" @click="closeModal">انصراف</button>
         </div>
       </div>
     </div>
@@ -92,8 +92,8 @@
         <h4 class="text-lg font-bold mb-4">مرجوع کردن وجه</h4>
         <p class="mb-4 text-gray-700">آیا از مرجوع کردن وجه برای <span class="font-semibold">{{ selectedPayment?.customerName }}</span> با مبلغ <span class="font-semibold">{{ formatPrice(selectedPayment?.amount) }}</span> مطمئن هستید؟</p>
         <div class="flex justify-end space-x-2 space-x-reverse">
-          <button @click="confirmRefund" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">مرجوع</button>
-          <button @click="closeModal" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">انصراف</button>
+          <button class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600" @click="confirmRefund">مرجوع</button>
+          <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200" @click="closeModal">انصراف</button>
         </div>
       </div>
     </div>
@@ -104,8 +104,8 @@
         <h4 class="text-lg font-bold mb-4">ارسال رسید به مشتری</h4>
         <p class="mb-4 text-gray-700">آیا رسید پرداخت برای <span class="font-semibold">{{ selectedPayment?.customerName }}</span> ارسال شود؟</p>
         <div class="flex justify-end space-x-2 space-x-reverse">
-          <button @click="confirmSendReceipt" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">ارسال</button>
-          <button @click="closeModal" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">انصراف</button>
+          <button class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600" @click="confirmSendReceipt">ارسال</button>
+          <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200" @click="closeModal">انصراف</button>
         </div>
       </div>
     </div>
@@ -116,8 +116,8 @@
         <h4 class="text-lg font-bold mb-4">یادداشت تراکنش</h4>
         <textarea v-model="noteText" rows="4" class="w-full border border-gray-300 rounded-lg p-2 mb-4 text-sm" placeholder="یادداشت خود را وارد کنید..."></textarea>
         <div class="flex justify-end space-x-2 space-x-reverse">
-          <button @click="saveNote" class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600">ذخیره</button>
-          <button @click="closeModal" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">انصراف</button>
+          <button class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600" @click="saveNote">ذخیره</button>
+          <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200" @click="closeModal">انصراف</button>
         </div>
       </div>
     </div>

@@ -30,21 +30,21 @@
           <div 
             v-for="video in videos" 
             :key="video.id"
-            @click="toggleVideoSelection(video.id)"
             :class="[
               'relative group cursor-pointer rounded-xl border-2 transition-all duration-200 overflow-hidden shadow-md hover:shadow-lg',
               selectedVideos.includes(video.id) 
                 ? 'border-blue-500 bg-blue-50' 
                 : 'border-gray-200 hover:border-gray-300'
             ]"
+            @click="toggleVideoSelection(video.id)"
           >
             <!-- Checkbox -->
             <div class="absolute top-2 right-2 z-10">
               <input
                 type="checkbox"
                 :checked="selectedVideos.includes(video.id)"
-                @click.stop="toggleVideoSelection(video.id)"
                 class="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500"
+                @click.stop="toggleVideoSelection(video.id)"
               >
             </div>
             <!-- Video Preview -->

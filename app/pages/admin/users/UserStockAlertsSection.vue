@@ -32,7 +32,7 @@
   </div>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ user?: any }>();
+defineEmits(['view-all-stock-alerts']);
 const alerts = [
   { id: 1, name: 'تلویزیون ال‌جی', date: '1402/03/08', status: 'ارسال شد' },
   { id: 2, name: 'دوربین عکاسی', date: '1402/03/07', status: 'در انتظار' },

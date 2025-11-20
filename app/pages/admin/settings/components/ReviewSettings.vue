@@ -24,16 +24,16 @@
       </div>
 
       <div class="mt-6 flex gap-3">
-        <button @click="onSave" class="px-4 py-2 bg-blue-600 text-white rounded">ذخیره</button>
+        <button class="px-4 py-2 bg-blue-600 text-white rounded" @click="onSave">ذخیره</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive } from 'vue';
 
-const props = defineProps<{ config: any }>()
+const props = defineProps<{ config: Record<string, unknown> }>()
 const emit = defineEmits(['save'])
 
 const local = reactive({

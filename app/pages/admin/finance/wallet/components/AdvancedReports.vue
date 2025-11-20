@@ -168,9 +168,11 @@
         <div>
           <div class="h-64 flex items-end space-x-4 space-x-reverse">
             <div v-for="(region, index) in geographicStats" :key="index" class="flex flex-col items-center flex-1">
-              <div class="w-full bg-gray-200 rounded-t relative"
+              <div
+class="w-full bg-gray-200 rounded-t relative"
                    :style="{ height: getChartHeight(region.revenue) + 'px' }">
-                <div class="w-full bg-gradient-to-t from-blue-500 to-indigo-500 rounded-t transition-all duration-300 absolute bottom-0"
+                <div
+class="w-full bg-gradient-to-t from-blue-500 to-indigo-500 rounded-t transition-all duration-300 absolute bottom-0"
                      :style="{ height: getChartHeight(region.revenue) + 'px' }"></div>
               </div>
               <span class="text-xs text-gray-500 mt-2 text-center">{{ region.name }}</span>

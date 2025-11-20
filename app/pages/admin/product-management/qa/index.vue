@@ -10,8 +10,8 @@
           </div>
           <div class="flex space-x-2 space-x-reverse">
             <button
-                @click="showCategoriesModal = true"
                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+                @click="showCategoriesModal = true"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
@@ -20,8 +20,8 @@
             </button>
             <ExportExcelButton :data="exportQuestionsData" filename="questions.csv" />
             <button
-                @click="showFilters = !showFilters"
                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-cyan-400 to-cyan-600 hover:from-cyan-500 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+                @click="showFilters = !showFilters"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"></path>
@@ -29,8 +29,8 @@
               فیلترها
             </button>
             <button 
-              @click="showSettingsModal = true" 
-              class="inline-flex items-center px-3 py-2 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 transition-all shadow-md"
+              class="inline-flex items-center px-3 py-2 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 transition-all shadow-md" 
+              @click="showSettingsModal = true"
             >
               <svg v-if="settingsLoading" class="w-5 h-5 text-gray-500 animate-spin" fill="none" viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none" />
@@ -245,8 +245,8 @@
           <div class="flex space-x-2 space-x-reverse">
             <div class="relative">
               <button
-                  @click="showTransferDropdown = !showTransferDropdown"
                   class="inline-flex items-center px-3 py-2 border border-transparent text-xs font-medium rounded text-white bg-orange-600 hover:bg-orange-700"
+                  @click="showTransferDropdown = !showTransferDropdown"
               >
                 <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
@@ -264,15 +264,15 @@
                   <button
                       v-for="category in categories"
                       :key="category.key"
-                      @click="bulkTransferToCategory(category.key)"
                       class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      @click="bulkTransferToCategory(category.key)"
                   >
                     {{ category.name }}
                   </button>
                   <div class="border-t">
                     <button
-                        @click="showTransferDropdown = false"
                         class="block w-full text-right px-4 py-2 text-sm text-gray-500 hover:bg-gray-100"
+                        @click="showTransferDropdown = false"
                     >
                       لغو
                     </button>
@@ -281,14 +281,14 @@
               </div>
             </div>
             <button
-                @click="bulkReject"
                 class="inline-flex items-center px-3 py-2 border border-transparent text-xs font-medium rounded text-white bg-red-600 hover:bg-red-700"
+                @click="bulkReject"
             >
               رد {{ selectedQuestions.length }} آیتم
             </button>
             <button
-                @click="bulkDelete"
                 class="inline-flex items-center px-3 py-2 border border-transparent text-xs font-medium rounded text-white bg-gray-600 hover:bg-gray-700"
+                @click="bulkDelete"
             >
               حذف {{ selectedQuestions.length }} آیتم
             </button>
@@ -313,9 +313,9 @@
               <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 <input
                     type="checkbox"
-                    @change="toggleSelectAll"
                     :checked="allSelected"
                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    @change="toggleSelectAll"
                 />
               </th>
               <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -345,8 +345,8 @@
             <tr v-for="question in paginatedQuestions" :key="question.id" class="hover:bg-gray-50">
               <td class="px-6 py-4 whitespace-nowrap">
                 <input
-                    type="checkbox"
                     v-model="selectedQuestions"
+                    type="checkbox"
                     :value="question.id"
                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
@@ -393,18 +393,18 @@
               <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <button
-                      @click="openEditModal(question)"
                       class="text-blue-600 hover:text-blue-900 p-1 rounded-full hover:bg-blue-100"
                       title="ویرایش"
+                      @click="openEditModal(question)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                     </svg>
                   </button>
                   <button
-                      @click="deleteQuestion(question.id)"
                       class="text-red-600 hover:text-red-900 p-1 rounded-full hover:bg-red-100"
                       title="حذف"
+                      @click="deleteQuestion(question.id)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -421,16 +421,16 @@
           <div class="flex items-center justify-between">
             <div class="flex-1 flex justify-between sm:hidden">
               <button
-                  @click="previousPage"
                   :disabled="currentPage === 1"
                   class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+                  @click="previousPage"
               >
                 قبلی
               </button>
               <button
-                  @click="nextPage"
                   :disabled="currentPage >= totalPages"
                   class="mr-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+                  @click="nextPage"
               >
                 بعدی
               </button>
@@ -450,9 +450,9 @@
               <div>
                 <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
                   <button
-                      @click="previousPage"
                       :disabled="currentPage === 1"
                       class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                      @click="previousPage"
                   >
                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -462,9 +462,9 @@
                   <span v-for="page in visiblePages" :key="page">
                     <button
                         v-if="page !== '...'"
-                        @click="goToPage(Number(page))"
                         :class="page === currentPage ? 'bg-blue-50 border-blue-500 text-blue-600' : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'"
                         class="relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+                        @click="goToPage(Number(page))"
                     >
                       {{ page }}
                     </button>
@@ -474,9 +474,9 @@
                   </span>
 
                   <button
-                      @click="nextPage"
                       :disabled="currentPage >= totalPages"
                       class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                      @click="nextPage"
                   >
                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
@@ -504,7 +504,7 @@
                 </div>
                 <div><h3 class="text-lg font-bold text-white">جزئیات پرسش مشتری</h3></div>
               </div>
-              <button @click="closeDetailModal" class="text-white/80 hover:text-white hover:bg-white/10 rounded-lg p-1 transition-all">
+              <button class="text-white/80 hover:text-white hover:bg-white/10 rounded-lg p-1 transition-all" @click="closeDetailModal">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
               </button>
             </div>
@@ -535,7 +535,7 @@
                     <div class="bg-white rounded-lg p-3 flex items-center shadow-sm">
                       <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center ml-2">
                         <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 002-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                         </svg>
                       </div>
                       <div class="flex-1">
@@ -609,7 +609,7 @@
                     <div v-if="selectedQuestion.customer_id" class="bg-white rounded-lg p-3 flex items-center shadow-sm">
                       <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center ml-2">
                         <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4m4 0V9a2 2 0 00-2-2H6a2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2V9a2 2 0 00-2-2m-6 0V3"></path>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4m4 0V9a2 2 0 00-2-2H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2V9a2 2 0 00-2-2m-6 0V3"></path>
                         </svg>
                       </div>
                       <div class="flex-1">
@@ -689,7 +689,7 @@
                     </span>
                   </div>
                   <div class="flex items-center space-x-2 space-x-reverse">
-                    <button v-if="!isEditingQuestionInline" @click="startInlineQuestionEdit" class="inline-flex items-center gap-1 px-3 py-1 text-xs font-bold text-white rounded-lg shadow-lg bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z"></path></svg><span>ویرایش</span></button>
+                    <button v-if="!isEditingQuestionInline" class="inline-flex items-center gap-1 px-3 py-1 text-xs font-bold text-white rounded-lg shadow-lg bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500" @click="startInlineQuestionEdit"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z"></path></svg><span>ویرایش</span></button>
                     <span :class="getCategoryClass(selectedQuestion.category)" class="inline-flex px-2 py-1 text-xs font-semibold rounded-lg shadow-sm">{{ getCategoryLabel(selectedQuestion.category) }}</span>
                   </div>
                 </div>
@@ -709,8 +709,8 @@
                     dir="rtl"
                   ></textarea>
                   <div class="flex justify-end gap-2 mt-3">
-                    <button @click="cancelInlineQuestionEdit" class="px-4 py-2 rounded-lg text-sm bg-gray-200 hover:bg-gray-300 text-gray-700">انصراف</button>
-                    <button @click="saveInlineQuestionEdit" class="px-4 py-2 rounded-lg text-sm text-white bg-green-600 hover:bg-green-700">ذخیره</button>
+                    <button class="px-4 py-2 rounded-lg text-sm bg-gray-200 hover:bg-gray-300 text-gray-700" @click="cancelInlineQuestionEdit">انصراف</button>
+                    <button class="px-4 py-2 rounded-lg text-sm text-white bg-green-600 hover:bg-green-700" @click="saveInlineQuestionEdit">ذخیره</button>
                   </div>
                 </div>
 
@@ -718,8 +718,8 @@
                   <h5 class="text-lg font-bold text-green-900 mb-3">{{ selectedQuestion.answer ? 'ویرایش پاسخ' : 'ثبت پاسخ جدید' }}</h5>
                   <textarea v-model="inlineAnswerText" rows="5" class="block w-full border-green-300 rounded-lg shadow-sm p-3" placeholder="پاسخ خود را اینجا بنویسید..."></textarea>
                   <div class="flex justify-end gap-2 mt-3">
-                    <button @click="isAnsweringInline = false" class="px-4 py-2 rounded-lg text-sm bg-gray-200 hover:bg-gray-300">انصراف</button>
-                    <button @click="submitInlineAnswer" class="px-4 py-2 rounded-lg text-sm text-white bg-green-600 hover:bg-green-700">ارسال پاسخ</button>
+                    <button class="px-4 py-2 rounded-lg text-sm bg-gray-200 hover:bg-gray-300" @click="isAnsweringInline = false">انصراف</button>
+                    <button class="px-4 py-2 rounded-lg text-sm text-white bg-green-600 hover:bg-green-700" @click="submitInlineAnswer">ارسال پاسخ</button>
                   </div>
                 </div>
 
@@ -730,7 +730,7 @@
               </div>
 
               <div class="bg-slate-50 rounded-xl border border-slate-200 shadow-sm">
-                <button @click="isAdditionalInfoOpen = !isAdditionalInfoOpen" class="w-full p-6 flex items-center justify-between cursor-pointer">
+                <button class="w-full p-6 flex items-center justify-between cursor-pointer" @click="isAdditionalInfoOpen = !isAdditionalInfoOpen">
                   <h4 class="text-base font-semibold text-gray-900">اطلاعات اضافی</h4>
                   <svg class="w-5 h-5 text-gray-600 transition-transform" :class="{'rotate-180': isAdditionalInfoOpen}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
@@ -753,7 +753,7 @@
                           
                           <!-- رهگیری IP - کاملاً چپ -->
                           <div class="flex-1 flex justify-start">
-                            <button v-if="selectedQuestion.ip_address" @click="trackIP(selectedQuestion.ip_address)"   class="bg-blue-500 hover:bg-blue-600 text-white text-xs px-3 py-1 rounded-lg transition-colors duration-200 flex items-center gap-1 whitespace-nowrap ml-4"
+                            <button v-if="selectedQuestion.ip_address" class="bg-blue-500 hover:bg-blue-600 text-white text-xs px-3 py-1 rounded-lg transition-colors duration-200 flex items-center gap-1 whitespace-nowrap ml-4"   @click="trackIP(selectedQuestion.ip_address)"
                             >
                               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
@@ -769,16 +769,16 @@
               </div>
 
               <div class="bg-blue-50 rounded-xl border border-blue-200 shadow-sm">
-                <button @click="isStatusSectionOpen = !isStatusSectionOpen" class="w-full p-6 flex items-center justify-between cursor-pointer">
+                <button class="w-full p-6 flex items-center justify-between cursor-pointer" @click="isStatusSectionOpen = !isStatusSectionOpen">
                   <h4 class="text-base font-semibold text-gray-900">تغییر وضعیت</h4>
                   <svg class="w-5 h-5 text-gray-600 transition-transform" :class="{'rotate-180': isStatusSectionOpen}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 <div v-if="isStatusSectionOpen" class="p-6 border-t border-blue-200">
                   <div class="flex flex-wrap gap-3">
-                    <button @click="changeQuestionStatus('pending')" :disabled="selectedQuestion.status === 'pending'" :class="selectedQuestion.status === 'pending' ? 'bg-yellow-400 text-yellow-900 border-2 border-yellow-500 font-bold' : 'bg-amber-100 text-amber-800 hover:bg-amber-200 border border-amber-300'" class="flex-1 btn-status-no-shadow disabled:opacity-50 transition-all duration-150"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>در انتظار پاسخ</button>
-                    <button @click="changeQuestionStatus('reviewing')" :disabled="selectedQuestion.status === 'reviewing'" :class="selectedQuestion.status === 'reviewing' ? 'bg-cyan-600 text-white border-2 border-cyan-700 font-bold' : 'bg-cyan-100 text-cyan-800 hover:bg-cyan-200 border border-cyan-300'" class="flex-1 btn-status-no-shadow disabled:opacity-50 transition-all duration-150"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>در حال بررسی</button>
-                    <button @click="changeQuestionStatus('answered')" :disabled="selectedQuestion.status === 'answered' || !selectedQuestion.answer" :class="selectedQuestion.status === 'answered' ? 'bg-green-600 text-white border-2 border-green-700 font-bold' : 'bg-green-100 text-green-800 hover:bg-green-200 border border-green-300'" class="flex-1 btn-status-no-shadow disabled:opacity-50 transition-all duration-150"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>پاسخ داده شده</button>
-                    <button @click="changeQuestionStatus('rejected')" :disabled="selectedQuestion.status === 'rejected'" :class="selectedQuestion.status === 'rejected' ? 'bg-red-600 text-white border-2 border-red-700 font-bold' : 'bg-red-100 text-red-800 hover:bg-red-200 border border-red-300'" class="flex-1 btn-status-no-shadow disabled:opacity-50 transition-all duration-150"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>رد شده</button>
+                    <button :disabled="selectedQuestion.status === 'pending'" :class="selectedQuestion.status === 'pending' ? 'bg-yellow-400 text-yellow-900 border-2 border-yellow-500 font-bold' : 'bg-amber-100 text-amber-800 hover:bg-amber-200 border border-amber-300'" class="flex-1 btn-status-no-shadow disabled:opacity-50 transition-all duration-150" @click="changeQuestionStatus('pending')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>در انتظار پاسخ</button>
+                    <button :disabled="selectedQuestion.status === 'reviewing'" :class="selectedQuestion.status === 'reviewing' ? 'bg-cyan-600 text-white border-2 border-cyan-700 font-bold' : 'bg-cyan-100 text-cyan-800 hover:bg-cyan-200 border border-cyan-300'" class="flex-1 btn-status-no-shadow disabled:opacity-50 transition-all duration-150" @click="changeQuestionStatus('reviewing')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>در حال بررسی</button>
+                    <button :disabled="selectedQuestion.status === 'answered' || !selectedQuestion.answer" :class="selectedQuestion.status === 'answered' ? 'bg-green-600 text-white border-2 border-green-700 font-bold' : 'bg-green-100 text-green-800 hover:bg-green-200 border border-green-300'" class="flex-1 btn-status-no-shadow disabled:opacity-50 transition-all duration-150" @click="changeQuestionStatus('answered')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>پاسخ داده شده</button>
+                    <button :disabled="selectedQuestion.status === 'rejected'" :class="selectedQuestion.status === 'rejected' ? 'bg-red-600 text-white border-2 border-red-700 font-bold' : 'bg-red-100 text-red-800 hover:bg-red-200 border border-red-300'" class="flex-1 btn-status-no-shadow disabled:opacity-50 transition-all duration-150" @click="changeQuestionStatus('rejected')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>رد شده</button>
                   </div>
                 </div>
               </div>
@@ -787,8 +787,8 @@
 
           <div class="bg-gray-50 px-4 py-3 border-t">
             <div class="flex gap-2 justify-end">
-              <button v-if="!isAnsweringInline && selectedQuestion && selectedQuestion.status !== 'rejected'" @click="startInlineAnswer" class="btn bg-green-600 text-white hover:bg-green-700">{{ selectedQuestion && selectedQuestion.answer ? 'ویرایش پاسخ' : 'پاسخ دادن' }}</button>
-              <button @click="closeDetailModal" class="btn bg-gray-200 text-gray-700 hover:bg-gray-300">بستن</button>
+              <button v-if="!isAnsweringInline && selectedQuestion && selectedQuestion.status !== 'rejected'" class="btn bg-green-600 text-white hover:bg-green-700" @click="startInlineAnswer">{{ selectedQuestion && selectedQuestion.answer ? 'ویرایش پاسخ' : 'پاسخ دادن' }}</button>
+              <button class="btn bg-gray-200 text-gray-700 hover:bg-gray-300" @click="closeDetailModal">بستن</button>
             </div>
           </div>
         </div>
@@ -822,8 +822,8 @@
             </div>
           </div>
           <div class="p-6 bg-gray-50 flex justify-end gap-3">
-            <button @click="saveEdit" class="btn bg-green-600 text-white hover:bg-green-700">ذخیره</button>
-            <button @click="showEditModal = false" class="btn bg-gray-200 text-gray-700 hover:bg-gray-300">انصراف</button>
+            <button class="btn bg-green-600 text-white hover:bg-green-700" @click="saveEdit">ذخیره</button>
+            <button class="btn bg-gray-200 text-gray-700 hover:bg-gray-300" @click="showEditModal = false">انصراف</button>
           </div>
         </div>
       </div>
@@ -835,7 +835,8 @@
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75" @click="showCategoriesModal = false"></div>
         <div class="relative bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl shadow-2xl w-full max-w-4xl border border-purple-200" dir="rtl">
           <div class="p-6 border-b border-purple-200 flex items-center gap-2">
-            <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+            <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+            </svg>
             <h3 class="text-lg font-bold text-purple-900">مدیریت دسته‌بندی‌های پرسش و پاسخ</h3>
           </div>
           <div class="p-6">
@@ -855,7 +856,7 @@
                   <input v-model="newCategory.name" type="text" class="form-input rounded-lg border-purple-300 focus:border-purple-500 focus:ring-purple-500" placeholder="فنی" />
                 </div>
                 <div class="flex items-end">
-                  <button @click="createCategory" class="inline-flex items-center gap-2 px-6 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold shadow hover:from-purple-600 hover:to-pink-600 transition w-full">
+                  <button class="inline-flex items-center gap-2 px-6 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold shadow hover:from-purple-600 hover:to-pink-600 transition w-full" @click="createCategory">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     افزودن
                   </button>
@@ -880,9 +881,9 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-purple-700">{{ category.question_count || 0 }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <button 
-                        @click="deleteCategory(category.key)" 
-                        :disabled="(category.question_count || 0) > 0"
+                        :disabled="(category.question_count || 0) > 0" 
                         :class="(category.question_count || 0) > 0 ? 'text-gray-400 cursor-not-allowed' : 'inline-flex items-center gap-1 font-bold bg-gradient-to-r from-rose-400 to-red-400 text-white px-4 py-1 rounded-lg shadow hover:from-rose-500 hover:to-red-500 transition'"
+                        @click="deleteCategory(category.key)"
                       >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                         حذف
@@ -894,7 +895,7 @@
             </div>
           </div>
           <div class="p-6 bg-gradient-to-r from-purple-50 to-pink-50 flex justify-end rounded-b-2xl border-t border-purple-100">
-            <button @click="showCategoriesModal = false" class="inline-flex items-center gap-2 px-6 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold shadow hover:from-blue-600 hover:to-cyan-600 transition">
+            <button class="inline-flex items-center gap-2 px-6 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold shadow hover:from-blue-600 hover:to-cyan-600 transition" @click="showCategoriesModal = false">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
               بستن
             </button>
@@ -957,6 +958,9 @@ interface Question {
   ip_address?: string; priority: 'low' | 'medium' | 'high'; isAnonymous?: boolean;
   customer_name?: string; customer_mobile?: string; customer_id?: number | null;
   created_at?: string;
+  user_agent?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  device_info?: any;
 }
 
 // Component State
@@ -1048,7 +1052,7 @@ const exportQuestionsData = computed(() => questions.value.map(q => ({
   'اولویت': getPriorityLabel(q.priority),
   'تاریخ ثبت': formatDate(q.createdAt),
   'ساعت ثبت': formatTime(q.createdAt),
-  'آی‌پی': q.ip_address || '',
+  'آی‌پی': q.ip_address || ''
 })));
 
 // Data Fetching & Handling
@@ -1058,6 +1062,7 @@ async function loadData() {
 
 async function loadQuestions() {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data = await $fetch<any[]>('/api/questions/admin');
     questions.value = data.map((q): Question => {
       const mapped = {
@@ -1093,6 +1098,7 @@ async function loadQuestions() {
 
 async function loadCategories() {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     categories.value = await $fetch<any[]>('/api/categories-qa');
   } catch (error) {
     // Error loading categories
@@ -1113,7 +1119,7 @@ const statusMap: Record<Status, { label: string; class: string }> = {
 const getStatusLabel = (status: Status) => statusMap[status]?.label || status;
 const getStatusClass = (status: Status) => statusMap[status]?.class || 'bg-gray-100 text-gray-800';
 
-const getCategoryLabel = (val: any) => {
+const getCategoryLabel = (val: string | number | null | undefined) => {
   if (val === null || typeof val === 'undefined' || val === '') return 'بدون دسته'
   // اگر مقدار عددی باشد، بر اساس شناسه جستجو کن
   const isNumeric = typeof val === 'number' || (/^\d+$/.test(String(val)))
@@ -1122,7 +1128,7 @@ const getCategoryLabel = (val: any) => {
     : categories.value.find(c => c.key === String(val))
   return cat?.name || String(val)
 }
-const getCategoryClass = (val: any) => {
+const getCategoryClass = (val: string | number | null | undefined) => {
   if (val === null || typeof val === 'undefined' || val === '') return 'bg-gray-100 text-gray-800'
   const key = String(val)
   let hash = 0
@@ -1136,7 +1142,7 @@ const toggleSelectAll = (e: Event) => {
 };
 
 // Modal Controls
-function viewQuestion(q: Question) { selectedQuestion.value = q; showQuestionModal.value = true; }
+
 function closeDetailModal() { showQuestionModal.value = false; isAnsweringInline.value = false; isAdditionalInfoOpen.value = true; isStatusSectionOpen.value = true; }
 function trackIP(ipAddress: string) {
   // Copy IP to clipboard
@@ -1271,6 +1277,7 @@ async function deleteQuestion(id: string) {
   const ok = confirm('آیا از حذف این پرسش اطمینان دارید؟');
   if (ok) {
     try {
+       
       await $fetch(`/api/questions/${id}`, { method: 'DELETE' as const });
       await loadData();
     } catch (error) { console.error('Error deleting question:', error); }
@@ -1285,6 +1292,7 @@ async function saveEdit() {
   const qd = editQuestionData.value;
   if (!qd || !qd.id) return;
   try {
+     
     await $fetch(`/api/questions/${qd.id}`, { method: 'PUT', body: qd });
     showEditModal.value = false;
     await loadQuestions(); // Reload all questions
@@ -1300,7 +1308,7 @@ async function saveEdit() {
 async function bulkReject() {
   if (!selectedQuestions.value.length) return;
   const ok = confirm(`آیا از رد کردن ${selectedQuestions.value.length} پرسش اطمینان دارید؟`);
-  if (!ok) return;
+   
   await Promise.all(selectedQuestions.value.map(id => $fetch(`/api/questions/${id}`, { method: 'PUT', body: { status: 'rejected' } })));
   selectedQuestions.value = [];
   await loadData();
@@ -1310,6 +1318,7 @@ async function bulkDelete() {
   if (!selectedQuestions.value.length) return;
   const ok = confirm(`آیا از حذف ${selectedQuestions.value.length} پرسش اطمینان دارید؟`);
   if (!ok) return;
+   
   await Promise.all(selectedQuestions.value.map(id => $fetch(`/api/questions/${id}`, { method: 'DELETE' as const })));
   selectedQuestions.value = [];
   await loadData();
@@ -1323,6 +1332,7 @@ async function createCategory() {
   }
   
   try {
+     
     await $fetch('/api/categories-qa', { method: 'POST', body: { key: newCategory.value.key, name: newCategory.value.name } });
     
     newCategory.value = { key: '', name: '' };
@@ -1339,6 +1349,7 @@ async function deleteCategory(key: string) {
   if (!ok) return;
   
   try {
+     
     await $fetch(`/api/categories-qa/${key}`, {
       method: 'DELETE' as const
     });
@@ -1359,6 +1370,7 @@ async function bulkTransferToCategory(categoryKey: string) {
   if (!ok) return;
   
   try {
+     
     await $fetch(`/api/admin/qa/questions/bulk-transfer`, {
       method: 'POST',
       body: {
@@ -1378,23 +1390,15 @@ async function bulkTransferToCategory(categoryKey: string) {
 }
 
 // Missing utility functions
-function exportQuestions() {
-  // Export functionality - can be implemented later
-  alert('قابلیت صادرات در حال توسعه است');
-}
+
 
 function setStatusFilter(status: string) {
   filters.value.status = status;
 }
 
-function applyFilters() {
-  currentPage.value = 1;
-}
 
-function clearFilters() {
-  filters.value = { search: '', status: '', category: '', dateRange: '' };
-  currentPage.value = 1;
-}
+
+
 
 function previousPage() {
   if (currentPage.value > 1) {
@@ -1439,16 +1443,15 @@ const showSettingsModal = ref(false)
 const settingsLoading = ref(false)
 
 // Helper: resolve category id from key or id
-function resolveCategoryId(val: any): number | undefined {
+function resolveCategoryId(val: string | number): number | undefined {
   if (typeof val === 'number') return val
   const found = categories.value.find(c => c.key === String(val))
   return found?.id
 }
-
 </script>
 
 <style scoped>
-.line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .form-input { 
   display: block; 
   width: 100%; 
@@ -1489,5 +1492,4 @@ function resolveCategoryId(val: any): number | undefined {
   position: fixed;
 }
 </style>
-```
 

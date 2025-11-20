@@ -134,15 +134,15 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">فاکتورهای تاثیرگذار</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="demandPrediction.factors" value="seasonal" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="demandPrediction.factors" type="checkbox" value="seasonal" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">فصلی</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="demandPrediction.factors" value="trending" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="demandPrediction.factors" type="checkbox" value="trending" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">روند</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="demandPrediction.factors" value="promotional" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="demandPrediction.factors" type="checkbox" value="promotional" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">تبلیغاتی</span>
               </label>
             </div>
@@ -209,15 +209,15 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">فاکتورهای قیمت</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="pricePrediction.factors" value="inflation" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="pricePrediction.factors" type="checkbox" value="inflation" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">تورم</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="pricePrediction.factors" value="demand" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="pricePrediction.factors" type="checkbox" value="demand" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">تقاضا</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="pricePrediction.factors" value="competition" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="pricePrediction.factors" type="checkbox" value="competition" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">رقابت</span>
               </label>
             </div>
@@ -265,7 +265,7 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">آستانه هشدار</label>
-            <input type="number" v-model="inventoryPrediction.threshold" min="1" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+            <input v-model="inventoryPrediction.threshold" type="number" min="1" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
             <p class="text-xs text-gray-500 mt-1">درصد موجودی</p>
           </div>
           
@@ -283,15 +283,15 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">نوع محصولات</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="inventoryPrediction.productTypes" value="fast_moving" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
+                <input v-model="inventoryPrediction.productTypes" type="checkbox" value="fast_moving" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
                 <span class="mr-2 text-sm text-gray-700">پرفروش</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="inventoryPrediction.productTypes" value="seasonal" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
+                <input v-model="inventoryPrediction.productTypes" type="checkbox" value="seasonal" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
                 <span class="mr-2 text-sm text-gray-700">فصلی</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="inventoryPrediction.productTypes" value="all" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
+                <input v-model="inventoryPrediction.productTypes" type="checkbox" value="all" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
                 <span class="mr-2 text-sm text-gray-700">همه</span>
               </label>
             </div>
@@ -336,7 +336,7 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">آستانه ریزش</label>
-            <input type="number" v-model="churnPrediction.threshold" min="1" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+            <input v-model="churnPrediction.threshold" type="number" min="1" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
             <p class="text-xs text-gray-500 mt-1">درصد احتمال ریزش</p>
           </div>
           
@@ -354,15 +354,15 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">فاکتورهای ریزش</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="churnPrediction.factors" value="inactivity" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                <input v-model="churnPrediction.factors" type="checkbox" value="inactivity" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
                 <span class="mr-2 text-sm text-gray-700">عدم فعالیت</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="churnPrediction.factors" value="complaints" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                <input v-model="churnPrediction.factors" type="checkbox" value="complaints" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
                 <span class="mr-2 text-sm text-gray-700">شکایات</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="churnPrediction.factors" value="price_sensitivity" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                <input v-model="churnPrediction.factors" type="checkbox" value="price_sensitivity" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
                 <span class="mr-2 text-sm text-gray-700">حساسیت قیمت</span>
               </label>
             </div>
@@ -431,15 +431,15 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">فاکتورهای محاسبه</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="clvPrediction.factors" value="purchase_frequency" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                <input v-model="clvPrediction.factors" type="checkbox" value="purchase_frequency" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                 <span class="mr-2 text-sm text-gray-700">فرکانس خرید</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="clvPrediction.factors" value="average_order" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                <input v-model="clvPrediction.factors" type="checkbox" value="average_order" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                 <span class="mr-2 text-sm text-gray-700">میانگین سفارش</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="clvPrediction.factors" value="retention_rate" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                <input v-model="clvPrediction.factors" type="checkbox" value="retention_rate" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                 <span class="mr-2 text-sm text-gray-700">نرخ نگهداری</span>
               </label>
             </div>

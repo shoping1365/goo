@@ -2,11 +2,11 @@
   <div class="help-tooltip-container">
     <!-- دکمه راهنما -->
     <button
-      @click="toggleTooltip"
       class="help-button"
       type="button"
       :aria-label="'راهنمای نمایش هدر و لایه‌ها'"
       :aria-expanded="isTooltipVisible"
+      @click="toggleTooltip"
     >
       <svg
         class="help-icon"
@@ -30,10 +30,10 @@
       <div class="tooltip-header">
         <h4 class="tooltip-title">راهنمای نمایش هدر و لایه‌ها</h4>
         <button
-          @click="closeTooltip"
           class="close-button"
           type="button"
           aria-label="بستن راهنما"
+          @click="closeTooltip"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
             <path

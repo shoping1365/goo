@@ -5,24 +5,24 @@
     <div class="mb-6">
       <nav class="flex rounded-lg overflow-hidden">
         <button
-          @click="activeTab = 'desktop'"
           :class="[
             'w-1/2 text-center py-3 font-medium text-sm transition-colors',
             activeTab === 'desktop'
               ? 'bg-purple-200 text-purple-800'
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
           ]"
+          @click="activeTab = 'desktop'"
         >
           دسکتاپ
         </button>
         <button
-          @click="activeTab = 'mobile'"
           :class="[
             'w-1/2 text-center py-3 font-medium text-sm transition-colors',
             activeTab === 'mobile'
               ? 'bg-purple-200 text-purple-800'
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
           ]"
+          @click="activeTab = 'mobile'"
         >
           موبایل
         </button>
@@ -167,8 +167,8 @@
         <div class="mb-6">
           <label class="block text-sm font-medium text-gray-700 mb-2">ارتفاع موبایل (پیکسل)</label>
           <input
-            type="number"
             v-model.number="bannerConfig.mobile_height"
+            type="number"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
             placeholder="150"
           />
@@ -179,8 +179,8 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">فاصله بالا (پیکسل)</label>
             <input
-              type="number"
               v-model.number="bannerConfig.mobile_padding_top"
+              type="number"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
               placeholder="0"
             />
@@ -188,8 +188,8 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">فاصله پایین (پیکسل)</label>
             <input
-              type="number"
               v-model.number="bannerConfig.mobile_padding_bottom"
+              type="number"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
               placeholder="0"
             />

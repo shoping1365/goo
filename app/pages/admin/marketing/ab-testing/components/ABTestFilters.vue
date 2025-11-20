@@ -3,8 +3,8 @@
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-lg font-semibold text-gray-900">فیلترها و جستجو</h3>
       <button 
-        @click="clearAllFilters" 
-        class="text-sm text-gray-500 hover:text-gray-700 flex items-center"
+        class="text-sm text-gray-500 hover:text-gray-700 flex items-center" 
+        @click="clearAllFilters"
       >
         <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -36,8 +36,8 @@
         <label class="block text-sm font-medium text-gray-700 mb-2">نوع تست</label>
         <select 
           v-model="filters.testType" 
-          @change="applyFilters"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          @change="applyFilters"
         >
           <option value="">همه انواع</option>
           <option value="page">صفحه</option>
@@ -53,8 +53,8 @@
         <label class="block text-sm font-medium text-gray-700 mb-2">وضعیت</label>
         <select 
           v-model="filters.status" 
-          @change="applyFilters"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          @change="applyFilters"
         >
           <option value="">همه وضعیت‌ها</option>
           <option value="active">فعال</option>
@@ -70,8 +70,8 @@
         <input
           v-model="filters.startDate"
           type="date"
-          @change="applyFilters"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          @change="applyFilters"
         />
       </div>
 
@@ -81,8 +81,8 @@
         <input
           v-model="filters.endDate"
           type="date"
-          @change="applyFilters"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          @change="applyFilters"
         />
       </div>
     </div>
@@ -94,8 +94,8 @@
         <label class="block text-sm font-medium text-gray-700 mb-2">نتیجه</label>
         <select 
           v-model="filters.result" 
-          @change="applyFilters"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          @change="applyFilters"
         >
           <option value="">همه نتایج</option>
           <option value="winner">برنده</option>
@@ -115,8 +115,8 @@
           max="100"
           step="0.1"
           placeholder="0.0"
-          @input="applyFilters"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          @input="applyFilters"
         />
       </div>
 
@@ -128,8 +128,8 @@
           type="number"
           min="0"
           placeholder="0"
-          @input="applyFilters"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          @input="applyFilters"
         />
       </div>
     </div>
@@ -137,8 +137,8 @@
     <!-- فیلترهای پیشرفته -->
     <div class="mt-6">
       <button 
-        @click="toggleAdvancedFilters"
         class="text-sm text-blue-600 hover:text-blue-800 flex items-center"
+        @click="toggleAdvancedFilters"
       >
         <svg 
           :class="['w-4 h-4 ml-1 transition-transform', { 'rotate-90': showAdvancedFilters }]" 
@@ -158,8 +158,8 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">سطح اطمینان (حداقل)</label>
             <select 
               v-model="filters.minConfidenceLevel" 
-              @change="applyFilters"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              @change="applyFilters"
             >
               <option value="">همه سطوح</option>
               <option value="90">90%</option>
@@ -173,8 +173,8 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">معیار موفقیت</label>
             <select 
               v-model="filters.successMetric" 
-              @change="applyFilters"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              @change="applyFilters"
             >
               <option value="">همه معیارها</option>
               <option value="conversion_rate">نرخ تبدیل</option>
@@ -189,8 +189,8 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">ایجادکننده</label>
             <select 
               v-model="filters.createdBy" 
-              @change="applyFilters"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              @change="applyFilters"
             >
               <option value="">همه کاربران</option>
               <option value="admin">مدیر</option>
@@ -213,8 +213,8 @@
         >
           {{ filter.label }}: {{ filter.value }}
           <button 
-            @click="removeFilter(String(key))"
             class="mr-1 text-blue-600 hover:text-blue-800"
+            @click="removeFilter(String(key))"
           >
             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

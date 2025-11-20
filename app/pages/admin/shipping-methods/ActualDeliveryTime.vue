@@ -21,11 +21,11 @@
          <div v-if="selectedPeriod === 'custom'" class="custom-date-range">
            <div class="form-group">
              <label>از تاریخ:</label>
-             <input type="date" v-model="customStartDate" @change="updateDeliveryData">
+             <input v-model="customStartDate" type="date" @change="updateDeliveryData">
            </div>
            <div class="form-group">
              <label>تا تاریخ:</label>
-             <input type="date" v-model="customEndDate" @change="updateDeliveryData">
+             <input v-model="customEndDate" type="date" @change="updateDeliveryData">
            </div>
          </div>
        </div>
@@ -108,7 +108,7 @@
        <div class="method-performance">
          <h4>عملکرد تحویل بر اساس روش ارسال</h4>
          <div class="method-grid">
-           <div class="method-card" v-for="method in methodPerformance" :key="method.id">
+           <div v-for="method in methodPerformance" :key="method.id" class="method-card">
              <div class="method-header">
                <h5>{{ method.name }}</h5>
                <span class="method-type">{{ method.type }}</span>
@@ -246,15 +246,15 @@
        <div class="export-section">
          <h4>خروجی گزارش تحویل</h4>
          <div class="export-buttons">
-           <button @click="exportToExcel" class="btn btn-secondary">
+           <button class="btn btn-secondary" @click="exportToExcel">
              <i class="fas fa-file-excel"></i>
              خروجی اکسل
            </button>
-           <button @click="exportToPDF" class="btn btn-secondary">
+           <button class="btn btn-secondary" @click="exportToPDF">
              <i class="fas fa-file-pdf"></i>
              خروجی PDF
            </button>
-           <button @click="printReport" class="btn btn-secondary">
+           <button class="btn btn-secondary" @click="printReport">
              <i class="fas fa-print"></i>
              چاپ گزارش
            </button>
@@ -264,18 +264,18 @@
    </template>
    
    <script setup lang="ts">
-   import { ref, reactive, onMounted, nextTick } from 'vue'
+   import { nextTick, onMounted, reactive, ref } from 'vue';
    
    // Props
    interface Props {
-     shippingMethods?: any[]
+     shippingMethods?: unknown[]
    }
    
-   const props = defineProps<Props>()
+   defineProps<Props>()
    
    // Emits
    const emit = defineEmits<{
-     exportData: [data: any, format: string]
+     exportData: [data: unknown, format: string]
    }>()
    
    // Reactive data

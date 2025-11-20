@@ -6,9 +6,9 @@
         <h1 class="text-2xl font-bold text-gray-800">ویرایش {{ widget?.title || 'ابزارک' }}</h1>
         <div class="flex items-center gap-6">
           <button
-            @click="saveWidget"
             :disabled="isSaving"
             class="bg-green-500 text-white px-6 py-2 rounded-md font-bold hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            @click="saveWidget"
           >
             <svg v-if="isSaving" class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -19,13 +19,13 @@
             {{ isSaving ? 'در حال ذخیره...' : 'ذخیره' }}
           </button>
           <TemplateButton
-            @click="$router.push('/admin/content/banners')"
-            bgGradient="bg-gradient-to-r from-purple-400 to-purple-600"
-            textColor="text-white"
-            borderColor="border border-purple-500"
-            hoverClass="hover:from-purple-500 hover:to-purple-700"
+            bg-gradient="bg-gradient-to-r from-purple-400 to-purple-600"
+            text-color="text-white"
+            border-color="border border-purple-500"
+            hover-class="hover:from-purple-500 hover:to-purple-700"
             size="medium"
             class="flex items-center gap-2"
+            @click="$router.push('/admin/content/banners')"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -65,9 +65,9 @@
             style="font-family: 'Yekan', sans-serif;"
             :class="{ 'border-red-500 focus:ring-red-500': titleError }"
             placeholder="عنوان ابزارک را وارد کنید"
+            required
             @input="validateTitle"
             @blur="validateTitle"
-            required
           />
         </div>
 
@@ -153,8 +153,8 @@
         <div v-if="bannerConfig.bg_enabled">
           <label class="block mb-2 text-sm font-medium text-gray-700">رنگ پس‌زمینه</label>
           <input
-            type="color"
             v-model="bannerConfig.bg_color"
+            type="color"
             class="w-full h-8 border border-gray-300 rounded-md"
           />
         </div>
@@ -206,8 +206,8 @@
           <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 1</label>
           <select
             v-model="bannerConfig.banner1_ratio"
-            @change="updateBannerRatios('banner1')"
             class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+            @change="updateBannerRatios('banner1')"
           >
             <option :value="20">20%</option>
             <option :value="25">25%</option>
@@ -222,8 +222,8 @@
           <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 2</label>
           <select
             v-model="bannerConfig.banner2_ratio"
-            @change="updateBannerRatios('banner2')"
             class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+            @change="updateBannerRatios('banner2')"
           >
             <option :value="15">15%</option>
             <option :value="20">20%</option>
@@ -238,8 +238,8 @@
           <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 3</label>
           <select
             v-model="bannerConfig.banner3_ratio"
-            @change="updateBannerRatios('banner3')"
             class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+            @change="updateBannerRatios('banner3')"
           >
             <option :value="15">15%</option>
             <option :value="20">20%</option>
@@ -254,8 +254,8 @@
           <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 4</label>
           <select
             v-model="bannerConfig.banner4_ratio"
-            @change="updateBannerRatios('banner4')"
             class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+            @change="updateBannerRatios('banner4')"
           >
             <option :value="15">15%</option>
             <option :value="20">20%</option>
@@ -271,11 +271,11 @@
           <input
             type="number"
             :value="bannerConfig.padding_top !== undefined ? bannerConfig.padding_top : ''"
-            @input="(e: Event) => bannerConfig.padding_top = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             min="0"
             max="100"
             class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             placeholder="0"
+            @input="(e: Event) => bannerConfig.padding_top = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
           />
         </div>
 
@@ -285,11 +285,11 @@
           <input
             type="number"
             :value="bannerConfig.padding_bottom !== undefined ? bannerConfig.padding_bottom : ''"
-            @input="(e: Event) => bannerConfig.padding_bottom = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             min="0"
             max="100"
             class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             placeholder="0"
+            @input="(e: Event) => bannerConfig.padding_bottom = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
           />
         </div>
 
@@ -299,11 +299,11 @@
           <input
             type="number"
             :value="bannerConfig.margin_right !== undefined ? bannerConfig.margin_right : ''"
-            @input="(e: Event) => bannerConfig.margin_right = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             min="0"
             max="100"
             class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             placeholder="0"
+            @input="(e: Event) => bannerConfig.margin_right = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
           />
         </div>
 
@@ -313,11 +313,11 @@
           <input
             type="number"
             :value="bannerConfig.margin_left !== undefined ? bannerConfig.margin_left : ''"
-            @input="(e: Event) => bannerConfig.margin_left = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             min="0"
             max="100"
             class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             placeholder="0"
+            @input="(e: Event) => bannerConfig.margin_left = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
           />
         </div>
 
@@ -339,8 +339,8 @@
             <div class="flex items-center gap-6 mb-4">
               <label class="flex items-center gap-2">
                 <input
-                  type="radio"
                   v-model="bannerConfig.mobile_image_mode"
+                  type="radio"
                   value="auto"
                   class="w-4 h-4 text-blue-600"
                 />
@@ -348,8 +348,8 @@
               </label>
               <label class="flex items-center gap-2">
                 <input
-                  type="radio"
                   v-model="bannerConfig.mobile_image_mode"
+                  type="radio"
                   value="separate"
                   class="w-4 h-4 text-blue-600"
                 />
@@ -357,8 +357,8 @@
               </label>
               <button
                 type="button"
-                @click="applyMobileCrop"
                 class="bg-green-500 text-white px-3 py-2 rounded-md text-sm hover:bg-green-600 transition-colors"
+                @click="applyMobileCrop"
               >
                 اعمال برش موبایل
               </button>
@@ -376,8 +376,8 @@
                 <div>
                   <label class="block mb-2 text-sm font-medium text-gray-700">عرض موبایل (پیکسل)</label>
                   <input
-                    type="number"
                     v-model="bannerConfig.mobile_crop_width"
+                    type="number"
                     min="200"
                     max="800"
                     class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
@@ -387,8 +387,8 @@
                 <div>
                   <label class="block mb-2 text-sm font-medium text-gray-700">ارتفاع موبایل (پیکسل)</label>
                   <input
-                    type="number"
                     v-model="bannerConfig.mobile_crop_height"
+                    type="number"
                     min="100"
                     max="600"
                     class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
@@ -637,16 +637,16 @@
           </div>
           <div class="flex gap-2">
             <button
-              @click="editBanner(idx)"
               class="text-blue-500 hover:text-blue-700 p-1"
+              @click="editBanner(idx)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 11l6 6M3 17v4h4l10.293-10.293a1 1 0 00-1.414-1.414L3 17z"></path>
               </svg>
             </button>
             <button
-              @click="removeBanner(idx)"
               class="text-red-500 hover:text-red-700 p-1"
+              @click="removeBanner(idx)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -665,14 +665,14 @@
             <h3 class="text-xl font-bold text-gray-800" style="font-family: 'Yekan', sans-serif;">
               {{ editingBannerIndex !== null ? 'ویرایش بنر' : 'افزودن بنر جدید' }}
             </h3>
-            <button @click="closeBannerModal" class="text-gray-400 hover:text-gray-600">
+            <button class="text-gray-400 hover:text-gray-600" @click="closeBannerModal">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
               </svg>
             </button>
           </div>
 
-          <form @submit.prevent="handleBannerSave" class="space-y-4">
+          <form class="space-y-4" @submit.prevent="handleBannerSave">
             <!-- عنوان بنر -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1" style="font-family: 'Yekan', sans-serif;">عنوان بنر *</label>
@@ -726,16 +726,16 @@
                 <div class="flex flex-col gap-2">
                   <button
                     type="button"
-                    @click="openMediaLibrary"
                     class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+                    @click="openMediaLibrary"
                   >
                     انتخاب تصویر
                   </button>
                   <button
                     v-if="editingBanner.image"
                     type="button"
-                    @click="removeImage"
                     class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors"
+                    @click="removeImage"
                   >
                     حذف تصویر
                   </button>
@@ -746,9 +746,9 @@
             <!-- نمایش عنوان -->
             <div class="flex items-center gap-2">
               <input
-                type="checkbox"
                 id="showTitle"
                 v-model="showTitleInBanner"
+                type="checkbox"
                 class="w-4 h-4 text-blue-600 bg-blue-100 border-blue-300 rounded focus:ring-blue-500 focus:ring-2"
               />
               <label for="showTitle" class="text-sm font-medium text-gray-700">نمایش عنوان روی بنر</label>
@@ -758,8 +758,8 @@
             <div class="flex justify-end gap-6 pt-4">
               <button
                 type="button"
-                @click="closeBannerModal"
                 class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
+                @click="closeBannerModal"
               >
                 انصراف
               </button>

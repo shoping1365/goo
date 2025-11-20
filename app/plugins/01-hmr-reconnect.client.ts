@@ -1,16 +1,16 @@
 // Plugin for handling HMR reconnection issues
-declare const defineNuxtPlugin: (plugin: (nuxtApp: any) => void | Promise<void>) => { provide?: Record<string, any> }
+declare const defineNuxtPlugin: (plugin: (nuxtApp: unknown) => void | Promise<void>) => { provide?: Record<string, unknown> }
 
 export default defineNuxtPlugin(() => {
   if (import.meta.client) {
     // Handle HMR disconnection
     let isReconnecting = false
 
-    const handleHMRDisconnect = () => {
+    const _handleHMRDisconnect = () => {
       if (isReconnecting) return
       isReconnecting = true
 
-      console.log('🔄 HMR disconnected, attempting to reconnect...')
+      // console.log('🔄 HMR disconnected, attempting to reconnect...')
 
       // Wait a bit before attempting to reconnect
       setTimeout(() => {

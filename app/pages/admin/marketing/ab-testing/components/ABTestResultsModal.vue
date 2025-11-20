@@ -10,10 +10,10 @@
         <div class="flex items-center justify-between mb-6">
           <h3 class="text-lg font-medium text-gray-900">نتایج و تحلیل تست</h3>
           <div class="flex items-center space-x-4 space-x-reverse">
-            <button @click="exportResults" class="px-3 py-1 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200">
+            <button class="px-3 py-1 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200" @click="exportResults">
               صادرات
             </button>
-            <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">
+            <button class="text-gray-400 hover:text-gray-600" @click="$emit('close')">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -208,14 +208,14 @@
         <!-- دکمه‌های عملیات -->
         <div class="flex items-center justify-end space-x-4 space-x-reverse pt-6 border-t mt-6">
           <button
-            @click="$emit('close')"
             class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+            @click="$emit('close')"
           >
             بستن
           </button>
           <button
-            @click="exportResults"
             class="px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-lg hover:bg-green-700"
+            @click="exportResults"
           >
             صادرات نتایج
           </button>

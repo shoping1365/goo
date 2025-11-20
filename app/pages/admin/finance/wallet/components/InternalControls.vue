@@ -9,46 +9,46 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button
-            @click="activeTab = 'monitoring'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'monitoring'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'monitoring'"
           >
             نظارت
           </button>
           <button
-            @click="activeTab = 'risk'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'risk'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'risk'"
           >
             مدیریت ریسک
           </button>
           <button
-            @click="activeTab = 'compliance'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'compliance'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'compliance'"
           >
             انطباق
           </button>
           <button
-            @click="activeTab = 'audit'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'audit'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'audit'"
           >
             حسابرسی
           </button>
@@ -243,7 +243,7 @@
                 </div>
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" v-model="rule.active" class="sr-only peer">
+                    <input v-model="rule.active" type="checkbox" class="sr-only peer">
                     <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
                   <button class="text-blue-600 hover:text-blue-800 text-sm">ویرایش</button>

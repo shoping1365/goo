@@ -5,7 +5,7 @@
         <div class="bg-white border border-gray-200 shadow-2xl rounded-2xl w-full max-w-4xl mx-4 p-6 text-right transition-all duration-300" @click.stop>
           <h2 class="text-2xl font-extrabold mb-2 flex flex-row-reverse items-center justify-between w-full text-right">
             مدیریت نمایش بخش‌های صفحه محصول
-            <button @click="$emit('update:show', false)" class="text-gray-400 hover:text-gray-600">
+            <button class="text-gray-400 hover:text-gray-600" @click="$emit('update:show', false)">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -19,13 +19,13 @@
               <button 
                 v-for="tab in mainTabs" 
                 :key="tab.value"
-                @click="activeTab = tab.value"
                 :class="[
                   'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap',
                   activeTab === tab.value
                     ? 'bg-blue-600 text-white shadow-lg'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 ]"
+                @click="activeTab = tab.value"
               >
                 {{ tab.label }}
               </button>
@@ -38,8 +38,8 @@
               <div v-for="section in infoSections" :key="section.value" class="bg-gray-50 rounded-xl p-6 shadow-sm hover:shadow-lg hover:bg-blue-50 transition-all duration-200 cursor-pointer">
                 <label class="flex flex-row-reverse items-center gap-3 cursor-pointer">
                   <input 
-                    type="checkbox" 
                     v-model="sections[section.value]" 
+                    type="checkbox" 
                     class="accent-blue-600 w-5 h-5" 
                   />
                   <div class="flex flex-col">
@@ -54,14 +54,15 @@
           <!-- محتوای سایر تب‌ها -->
           <div v-else class="max-h-[60vh] overflow-x-auto overflow-y-auto pr-1">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" dir="rtl">
-              <div v-for="section in getCurrentTabSections()" :key="section.value"
+              <div
+v-for="section in getCurrentTabSections()" :key="section.value"
                 class="bg-gray-50 rounded-xl p-6 text-right shadow-sm hover:shadow-lg hover:bg-blue-50 transition-all duration-200 cursor-pointer"
                 dir="rtl"
               >
                 <label class="flex flex-row-reverse items-center gap-3 cursor-pointer w-full">
                   <input 
-                    type="checkbox" 
                     v-model="sections[section.value]" 
+                    type="checkbox" 
                     class="accent-blue-600 w-5 h-5" 
                   />
                   <div class="flex flex-col w-full">
@@ -80,10 +81,10 @@
           </div>
 
           <div class="flex justify-start gap-3 mt-6 pt-4 border-t">
-            <button @click="$emit('update:show', false)" class="px-4 py-2 rounded-lg text-sm border border-gray-300 bg-white hover:bg-gray-100 transition-colors shadow-sm font-semibold">
+            <button class="px-4 py-2 rounded-lg text-sm border border-gray-300 bg-white hover:bg-gray-100 transition-colors shadow-sm font-semibold" @click="$emit('update:show', false)">
               انصراف
             </button>
-            <button @click="save" class="px-4 py-2 rounded-lg text-sm bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-md font-bold">
+            <button class="px-4 py-2 rounded-lg text-sm bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-md font-bold" @click="save">
               ذخیره تنظیمات
             </button>
           </div>

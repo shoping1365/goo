@@ -1,10 +1,10 @@
 <template>
   <div class="relative">
     <button
-      @click="toggleDropdown"
       type="button"
       class="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-left focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-gray-900 font-medium"
       :class="{ 'border-purple-500 ring-2 ring-purple-500': showDropdown }"
+      @click="toggleDropdown"
     >
       <div class="flex items-center justify-between">
         <span class="text-gray-900">
@@ -37,9 +37,9 @@
 
       <!-- گزینه همه محصولات -->
       <div
-        @click="selectCategory(null)"
         class="px-4 py-3 cursor-pointer hover:bg-gray-50 border-b border-gray-200"
         :class="{ 'bg-purple-50 text-purple-700': modelValue === null }"
+        @click="selectCategory(null)"
       >
         <div class="flex items-center">
           <i class="fas fa-th-large ml-2 text-gray-400"></i>
@@ -51,9 +51,9 @@
       <!-- لیست دسته‌بندی‌ها -->
       <div v-for="category in filteredCategories" :key="category.id">
         <div
-          @click="selectCategory(category.id)"
           class="px-4 py-3 cursor-pointer hover:bg-gray-50"
           :class="{ 'bg-purple-50 text-purple-700': modelValue === category.id }"
+          @click="selectCategory(category.id)"
         >
           <div class="flex items-center justify-between">
             <div class="flex items-center">
@@ -79,8 +79,8 @@
     <!-- Overlay برای بستن dropdown -->
     <div
       v-if="showDropdown"
-      @click="closeDropdown"
       class="fixed inset-0 z-40"
+      @click="closeDropdown"
     ></div>
 
     <!-- نمایش دسته‌بندی انتخاب شده -->
@@ -91,8 +91,8 @@
           <span class="text-sm font-medium text-gray-900">دسته‌بندی انتخاب شده:</span>
         </div>
         <button
-          @click="selectCategory(null)"
           class="text-blue-600 hover:text-blue-800 text-sm"
+          @click="selectCategory(null)"
         >
           <i class="fas fa-times"></i>
         </button>

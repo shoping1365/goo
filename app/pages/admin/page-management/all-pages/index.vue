@@ -9,10 +9,10 @@
         </div>
         <NuxtLink to="/admin/page-management/create-page">
           <TemplateButton
-            bgGradient="bg-gradient-to-r from-blue-400 to-blue-600"
-            textColor="text-white"
-            hoverClass="hover:from-blue-500 hover:to-blue-700 hover:shadow-lg hover:scale-105"
-            focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            bg-gradient="bg-gradient-to-r from-blue-400 to-blue-600"
+            text-color="text-white"
+            hover-class="hover:from-blue-500 hover:to-blue-700 hover:shadow-lg hover:scale-105"
+            focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             size="medium"
           >
             ایجاد صفحه جدید
@@ -62,13 +62,13 @@
         </div>
         <div class="flex items-end">
           <TemplateButton
-            @click="applyFilters"
-            bgGradient="bg-gradient-to-r from-gray-400 to-gray-600"
-            textColor="text-white"
-            hoverClass="hover:from-gray-500 hover:to-gray-700 hover:shadow-lg hover:scale-105"
-            focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            bg-gradient="bg-gradient-to-r from-gray-400 to-gray-600"
+            text-color="text-white"
+            hover-class="hover:from-gray-500 hover:to-gray-700 hover:shadow-lg hover:scale-105"
+            focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
             size="medium"
             class="w-full"
+            @click="applyFilters"
           >
             اعمال فیلتر
           </TemplateButton>
@@ -139,33 +139,33 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex space-x-2 space-x-reverse">
                   <TemplateButton
-                    @click="editPage(page.id)"
-                    textColor="text-blue-600"
-                    bgGradient="bg-blue-50"
-                    hoverClass="hover:bg-blue-100"
+                    text-color="text-blue-600"
+                    bg-gradient="bg-blue-50"
+                    hover-class="hover:bg-blue-100"
                     size="small"
-                    :borderColor="'border-0'"
+                    :border-color="'border-0'"
+                    @click="editPage(page.id)"
                   >
                     ویرایش
                   </TemplateButton>
                   <TemplateButton
-                    @click="previewPage(page.id)"
-                    textColor="text-green-600"
-                    bgGradient="bg-green-50"
-                    hoverClass="hover:bg-green-100"
+                    text-color="text-green-600"
+                    bg-gradient="bg-green-50"
+                    hover-class="hover:bg-green-100"
                     size="small"
-                    :borderColor="'border-0'"
+                    :border-color="'border-0'"
+                    @click="previewPage(page.id)"
                   >
                     پیش‌نمایش
                   </TemplateButton>
                   <TemplateButton
                     v-if="canDeletePage"
-                    @click="deletePage(page.id)"
-                    textColor="text-red-600"
-                    bgGradient="bg-red-50"
-                    hoverClass="hover:bg-red-100"
+                    text-color="text-red-600"
+                    bg-gradient="bg-red-50"
+                    hover-class="hover:bg-red-100"
                     size="small"
-                    :borderColor="'border-0'"
+                    :border-color="'border-0'"
+                    @click="deletePage(page.id)"
                   >
                     حذف
                   </TemplateButton>
@@ -180,26 +180,26 @@
       <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
         <div class="flex-1 flex justify-between sm:hidden">
           <TemplateButton
-            @click="previousPage"
             :disabled="currentPage === 1"
-            bgGradient="bg-white"
-            textColor="text-gray-700"
-            borderColor="border border-gray-300"
-            hoverClass="hover:bg-gray-50"
+            bg-gradient="bg-white"
+            text-color="text-gray-700"
+            border-color="border border-gray-300"
+            hover-class="hover:bg-gray-50"
             size="small"
             class="disabled:opacity-50 disabled:cursor-not-allowed"
+            @click="previousPage"
           >
             قبلی
           </TemplateButton>
           <TemplateButton
-            @click="nextPage"
             :disabled="currentPage === totalPages"
-            bgGradient="bg-white"
-            textColor="text-gray-700"
-            borderColor="border border-gray-300"
-            hoverClass="hover:bg-gray-50"
+            bg-gradient="bg-white"
+            text-color="text-gray-700"
+            border-color="border border-gray-300"
+            hover-class="hover:bg-gray-50"
             size="small"
             class="mr-3 disabled:opacity-50 disabled:cursor-not-allowed"
+            @click="nextPage"
           >
             بعدی
           </TemplateButton>
@@ -219,14 +219,14 @@
           <div>
             <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
               <TemplateButton
-                @click="previousPage"
                 :disabled="currentPage === 1"
-                bgGradient="bg-white"
-                textColor="text-gray-500"
-                borderColor="border border-gray-300"
-                hoverClass="hover:bg-gray-50"
+                bg-gradient="bg-white"
+                text-color="text-gray-500"
+                border-color="border border-gray-300"
+                hover-class="hover:bg-gray-50"
                 size="small"
                 class="rounded-r-md px-2 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                @click="previousPage"
               >
                 <span class="sr-only">قبلی</span>
                 <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -236,26 +236,26 @@
               <TemplateButton
                 v-for="page in visiblePages"
                 :key="page"
-                @click="goToPage(page)"
-                :bgGradient="page === currentPage ? 'bg-blue-50' : 'bg-white'"
-                :textColor="page === currentPage ? 'text-blue-600' : 'text-gray-500'"
-                :borderColor="page === currentPage ? 'border-blue-500' : 'border-gray-300'"
-                :hoverClass="page === currentPage ? '' : 'hover:bg-gray-50'"
+                :bg-gradient="page === currentPage ? 'bg-blue-50' : 'bg-white'"
+                :text-color="page === currentPage ? 'text-blue-600' : 'text-gray-500'"
+                :border-color="page === currentPage ? 'border-blue-500' : 'border-gray-300'"
+                :hover-class="page === currentPage ? '' : 'hover:bg-gray-50'"
                 size="small"
                 class="relative inline-flex items-center px-4 py-2 border text-sm font-medium"
                 :class="page === currentPage ? 'z-10' : ''"
+                @click="goToPage(page)"
               >
                 {{ page }}
               </TemplateButton>
               <TemplateButton
-                @click="nextPage"
                 :disabled="currentPage === totalPages"
-                bgGradient="bg-white"
-                textColor="text-gray-500"
-                borderColor="border border-gray-300"
-                hoverClass="hover:bg-gray-50"
+                bg-gradient="bg-white"
+                text-color="text-gray-500"
+                border-color="border border-gray-300"
+                hover-class="hover:bg-gray-50"
                 size="small"
                 class="rounded-l-md px-2 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                @click="nextPage"
               >
                 <span class="sr-only">بعدی</span>
                 <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

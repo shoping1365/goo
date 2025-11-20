@@ -4,7 +4,8 @@
     <div>
       <!-- Desktop Layout -->
       <div class="hidden md:block">
-        <div v-if="desktopBanners.length > 0" class="grid gap-6" :style="{
+        <div
+v-if="desktopBanners.length > 0" class="grid gap-6" :style="{
           '--banner1-ratio': `${config.banner1_ratio || 50}fr`,
           '--banner2-ratio': `${config.banner2_ratio || 50}fr`
         }">

@@ -16,7 +16,7 @@
             <span class="social-name">اینستاگرام</span>
           </div>
           <label class="toggle-switch">
-            <input type="checkbox" v-model="localSettings.instagram_enabled" />
+            <input v-model="localSettings.instagram_enabled" type="checkbox" />
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -38,7 +38,7 @@
             <span class="social-name">تلگرام</span>
           </div>
           <label class="toggle-switch">
-            <input type="checkbox" v-model="localSettings.telegram_enabled" />
+            <input v-model="localSettings.telegram_enabled" type="checkbox" />
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -60,7 +60,7 @@
             <span class="social-name">واتساپ</span>
           </div>
           <label class="toggle-switch">
-            <input type="checkbox" v-model="localSettings.whatsapp_enabled" />
+            <input v-model="localSettings.whatsapp_enabled" type="checkbox" />
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -82,7 +82,7 @@
             <span class="social-name">توییتر (X)</span>
           </div>
           <label class="toggle-switch">
-            <input type="checkbox" v-model="localSettings.twitter_enabled" />
+            <input v-model="localSettings.twitter_enabled" type="checkbox" />
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -104,7 +104,7 @@
             <span class="social-name">لینکدین</span>
           </div>
           <label class="toggle-switch">
-            <input type="checkbox" v-model="localSettings.linkedin_enabled" />
+            <input v-model="localSettings.linkedin_enabled" type="checkbox" />
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -126,7 +126,7 @@
             <span class="social-name">فیسبوک</span>
           </div>
           <label class="toggle-switch">
-            <input type="checkbox" v-model="localSettings.facebook_enabled" />
+            <input v-model="localSettings.facebook_enabled" type="checkbox" />
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -148,7 +148,7 @@
             <span class="social-name">یوتیوب</span>
           </div>
           <label class="toggle-switch">
-            <input type="checkbox" v-model="localSettings.youtube_enabled" />
+            <input v-model="localSettings.youtube_enabled" type="checkbox" />
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -170,7 +170,7 @@
             <span class="social-name">آپارات</span>
           </div>
           <label class="toggle-switch">
-            <input type="checkbox" v-model="localSettings.aparat_enabled" />
+            <input v-model="localSettings.aparat_enabled" type="checkbox" />
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -192,7 +192,7 @@
             <span class="social-name">روبیکا</span>
           </div>
           <label class="toggle-switch">
-            <input type="checkbox" v-model="localSettings.rubika_enabled" />
+            <input v-model="localSettings.rubika_enabled" type="checkbox" />
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -214,7 +214,7 @@
             <span class="social-name">ایتا</span>
           </div>
           <label class="toggle-switch">
-            <input type="checkbox" v-model="localSettings.eitaa_enabled" />
+            <input v-model="localSettings.eitaa_enabled" type="checkbox" />
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -236,7 +236,7 @@
             <span class="social-name">بله</span>
           </div>
           <label class="toggle-switch">
-            <input type="checkbox" v-model="localSettings.bale_enabled" />
+            <input v-model="localSettings.bale_enabled" type="checkbox" />
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -258,7 +258,7 @@
             <span class="social-name">تیک‌تاک</span>
           </div>
           <label class="toggle-switch">
-            <input type="checkbox" v-model="localSettings.tiktok_enabled" />
+            <input v-model="localSettings.tiktok_enabled" type="checkbox" />
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -280,7 +280,7 @@
             <span class="social-name">پینترست</span>
           </div>
           <label class="toggle-switch">
-            <input type="checkbox" v-model="localSettings.pinterest_enabled" />
+            <input v-model="localSettings.pinterest_enabled" type="checkbox" />
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -302,7 +302,7 @@
             <span class="social-name">دیسکورد</span>
           </div>
           <label class="toggle-switch">
-            <input type="checkbox" v-model="localSettings.discord_enabled" />
+            <input v-model="localSettings.discord_enabled" type="checkbox" />
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -324,7 +324,7 @@
             <span class="social-name">گیت‌هاب</span>
           </div>
           <label class="toggle-switch">
-            <input type="checkbox" v-model="localSettings.github_enabled" />
+            <input v-model="localSettings.github_enabled" type="checkbox" />
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -342,7 +342,7 @@
       <div class="custom-links-section mt-8">
         <div class="flex justify-between items-center mb-4">
           <h3 class="text-lg font-semibold">لینک‌های سفارشی</h3>
-          <button @click="addCustomLink" class="btn-add" type="button">
+          <button class="btn-add" type="button" @click="addCustomLink">
             <span class="i-heroicons-plus"></span>
             افزودن لینک
           </button>
@@ -370,9 +370,9 @@
                   dir="ltr"
                 />
                 <button 
-                  @click="removeCustomLink(index)" 
-                  class="btn-remove"
+                  class="btn-remove" 
                   type="button"
+                  @click="removeCustomLink(index)"
                 >
                   <span class="i-heroicons-trash"></span>
                 </button>
@@ -386,10 +386,10 @@
     <!-- Action Buttons -->
     <div class="settings-actions">
       <button 
-        @click="handleSave" 
         :disabled="saving" 
-        class="btn-primary"
+        class="btn-primary" 
         type="button"
+        @click="handleSave"
       >
         <span v-if="!saving">ذخیره تنظیمات</span>
         <span v-else class="flex items-center gap-2">
@@ -398,10 +398,10 @@
         </span>
       </button>
       <button 
-        @click="handleReset" 
         :disabled="saving" 
-        class="btn-secondary"
+        class="btn-secondary" 
         type="button"
+        @click="handleReset"
       >
         بازنشانی
       </button>
@@ -410,7 +410,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { reactive, watch } from 'vue'
 
 const props = defineProps({
   settings: {

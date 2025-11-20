@@ -122,9 +122,9 @@
 
               <!-- Send Button -->
               <button 
-                @click="sendRequest" 
-                :disabled="sending"
+                :disabled="sending" 
                 class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+                @click="sendRequest"
               >
                 <span v-if="sending">در حال ارسال...</span>
                 <span v-else>ارسال درخواست</span>
@@ -143,7 +143,8 @@
               <!-- Status -->
               <div class="flex items-center justify-between">
                 <span class="text-sm font-medium text-gray-700">وضعیت:</span>
-                <span :class="[
+                <span
+:class="[
                   'px-2 py-1 rounded text-sm font-medium',
                   response.status >= 200 && response.status < 300 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                 ]">
@@ -187,20 +188,20 @@
         <div class="p-6">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <button 
-              @click="quickTest('health')"
               class="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+              @click="quickTest('health')"
             >
               تست سلامت سیستم
             </button>
             <button 
-              @click="quickTest('database')"
               class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+              @click="quickTest('database')"
             >
               تست دیتابیس
             </button>
             <button 
-              @click="quickTest('auth')"
               class="bg-purple-500 hover:bg-purple-600 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+              @click="quickTest('auth')"
             >
               تست احراز هویت
             </button>
@@ -217,7 +218,8 @@
           <div class="space-y-3">
             <div v-for="test in testHistory" :key="test.id" class="flex items-center justify-between p-6 border rounded-lg">
               <div class="flex items-center space-x-4 space-x-reverse">
-                <div :class="[
+                <div
+:class="[
                   'w-3 h-3 rounded-full',
                   test.success ? 'bg-green-500' : 'bg-red-500'
                 ]"></div>
@@ -227,8 +229,8 @@
                 </div>
               </div>
               <button 
-                @click="loadTest(test)"
                 class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                @click="loadTest(test)"
               >
                 بارگذاری مجدد
               </button>

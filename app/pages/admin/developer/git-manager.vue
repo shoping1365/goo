@@ -85,8 +85,8 @@
                     placeholder="https://github.com/user/repo.git"
                   >
                   <button 
-                    @click="cloneRepository"
                     class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                    @click="cloneRepository"
                   >
                     کلون
                   </button>
@@ -97,8 +97,8 @@
                 <label class="block text-sm font-medium text-gray-700 mb-2">شاخه فعلی</label>
                 <select 
                   v-model="currentBranch"
-                  @change="switchBranch"
                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  @change="switchBranch"
                 >
                   <option v-for="branch in branches" :key="branch.name" :value="branch.name">
                     {{ branch.name }} {{ branch.current ? '(فعلی)' : '' }}
@@ -133,8 +133,8 @@
             <div class="flex items-center justify-between">
               <h2 class="text-xl font-semibold text-gray-900">تاریخچه کامیت‌ها</h2>
               <button 
-                @click="refreshCommits"
                 class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                @click="refreshCommits"
               >
                 بروزرسانی
               </button>
@@ -157,14 +157,14 @@
                   </div>
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <button 
-                      @click="viewCommit(commit)"
                       class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      @click="viewCommit(commit)"
                     >
                       مشاهده
                     </button>
                     <button 
-                      @click="revertCommit(commit)"
                       class="text-red-600 hover:text-red-800 text-sm font-medium"
+                      @click="revertCommit(commit)"
                     >
                       بازگشت
                     </button>
@@ -188,14 +188,14 @@
               <h3 class="font-medium text-gray-900">مرحله‌بندی</h3>
               <div class="space-y-2">
                 <button 
-                  @click="stageAll"
                   class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="stageAll"
                 >
                   اضافه کردن همه
                 </button>
                 <button 
-                  @click="unstageAll"
                   class="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="unstageAll"
                 >
                   حذف از مرحله
                 </button>
@@ -213,9 +213,9 @@
                   class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                 <button 
-                  @click="commitChanges"
                   :disabled="!commitMessage"
                   class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="commitChanges"
                 >
                   کامیت
                 </button>
@@ -227,14 +227,14 @@
               <h3 class="font-medium text-gray-900">ارسال</h3>
               <div class="space-y-2">
                 <button 
-                  @click="pushChanges"
                   class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="pushChanges"
                 >
                   ارسال تغییرات
                 </button>
                 <button 
-                  @click="pullChanges"
                   class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="pullChanges"
                 >
                   دریافت تغییرات
                 </button>
@@ -252,9 +252,9 @@
                   class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                 <button 
-                  @click="createBranch"
                   :disabled="!newBranchName"
                   class="w-full bg-yellow-600 hover:bg-yellow-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="createBranch"
                 >
                   ایجاد شاخه
                 </button>
@@ -273,7 +273,8 @@
           <div class="space-y-4">
             <div v-for="file in changedFiles" :key="file.path" class="flex items-center justify-between p-6 border rounded-lg">
               <div class="flex items-center space-x-3 space-x-reverse">
-                <span :class="[
+                <span
+:class="[
                   'px-2 py-1 rounded text-xs font-medium',
                   file.status === 'modified' ? 'bg-yellow-100 text-yellow-800' :
                   file.status === 'added' ? 'bg-green-100 text-green-800' :
@@ -285,22 +286,22 @@
               </div>
               <div class="flex items-center space-x-2 space-x-reverse">
                 <button 
-                  @click="stageFile(file)"
                   v-if="!file.staged"
                   class="text-green-600 hover:text-green-800 text-sm font-medium"
+                  @click="stageFile(file)"
                 >
                   اضافه کردن
                 </button>
                 <button 
-                  @click="unstageFile(file)"
                   v-if="file.staged"
                   class="text-gray-600 hover:text-gray-800 text-sm font-medium"
+                  @click="unstageFile(file)"
                 >
                   حذف
                 </button>
                 <button 
-                  @click="viewDiff(file)"
                   class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                  @click="viewDiff(file)"
                 >
                   مشاهده تغییرات
                 </button>
@@ -316,7 +317,7 @@
           <div class="p-6 border-b border-gray-200">
             <div class="flex items-center justify-between">
               <h3 class="text-lg font-semibold text-gray-900">تغییرات {{ diffModal.file?.path }}</h3>
-              <button @click="diffModal.show = false" class="text-gray-400 hover:text-gray-600">
+              <button class="text-gray-400 hover:text-gray-600" @click="diffModal.show = false">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>

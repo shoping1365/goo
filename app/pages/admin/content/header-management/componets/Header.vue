@@ -6,8 +6,8 @@
       <template v-for="(item, idx) in getLayerItems(layer)" :key="item.id || idx">
         <div :style="getItemStyle(item)" class="header-item-wrapper">
           <component
-            v-if="resolveWidgetComponent(item)"
             :is="resolveWidgetComponent(item)"
+            v-if="resolveWidgetComponent(item)"
             v-bind="{
               ...(typeof item === 'object' ? (item.props || {}) : {}),
               paddingRight: typeof item.paddingRight === 'string' ? parseInt(item.paddingRight) || 0 : item.paddingRight || 0,

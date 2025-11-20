@@ -33,8 +33,8 @@
           <button 
             v-for="star in 5" 
             :key="star"
-            @click="selectedRating = star"
             class="transition-transform hover:scale-110"
+            @click="selectedRating = star"
           >
             <svg 
               :class="[
@@ -61,13 +61,13 @@
             <button 
               v-for="option in qualityOptions" 
               :key="option.value"
-              @click="qualityRating = option.value"
               :class="[
                 'px-4 py-2 rounded-lg text-sm transition-all',
                 qualityRating === option.value 
                   ? 'bg-amber-500 text-white shadow-md' 
                   : 'bg-gray-100 hover:bg-amber-50 text-gray-700 hover:text-amber-700'
               ]"
+              @click="qualityRating = option.value"
             >
               {{ option.label }}
             </button>
@@ -80,13 +80,13 @@
             <button 
               v-for="option in deliveryOptions" 
               :key="option.value"
-              @click="deliveryRating = option.value"
               :class="[
                 'px-3 py-2 rounded-lg text-sm transition-all',
                 deliveryRating === option.value 
                   ? 'bg-amber-500 text-white shadow-md' 
                   : 'bg-gray-100 hover:bg-amber-50 text-gray-700 hover:text-amber-700'
               ]"
+              @click="deliveryRating = option.value"
             >
               {{ option.label }}
             </button>
@@ -107,9 +107,9 @@
 
       <!-- Submit Button -->
       <button 
-        @click="submitSurvey"
         :disabled="!selectedRating || submitting"
         class="w-full bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 disabled:from-gray-400 disabled:to-gray-500 text-white font-medium py-3 px-4 rounded-lg transition-all transform hover:scale-105 flex items-center justify-center space-x-2 space-x-reverse"
+        @click="submitSurvey"
       >
         <svg v-if="submitting" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

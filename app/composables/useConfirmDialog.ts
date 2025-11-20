@@ -10,7 +10,7 @@ interface ConfirmDialogOptions {
 
 export const useConfirmDialog = () => {
   // استفاده از inject در setup function
-  const confirmDialogRef = inject<{ show: (options: any) => Promise<boolean> } | null>('confirmDialogRef', null)
+  const confirmDialogRef = inject<{ show: (options: ConfirmDialogOptions) => Promise<boolean> } | null>('confirmDialogRef', null)
 
   const confirm = async (options: ConfirmDialogOptions | string): Promise<boolean> => {
     if (!confirmDialogRef) {

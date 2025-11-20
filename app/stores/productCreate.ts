@@ -93,15 +93,6 @@ export const useProductCreateStore = defineStore('productCreate', () => {
     pricingForm.profit = newPrice - newCost
   })
 
-  // Watch for editingProductId changes
-  watch(editingProductId, (newId, oldId) => {
-    if (newId) {
-      // editingProductId is now available
-    } else {
-      // editingProductId is now null/undefined
-    }
-  })
-
   // ---------------- تبدیل تاریخ: ISO ↔ جلالی ----------------
   /**
    * تبدیل رشتهٔ جلالی به ISO8601 (UTC)
@@ -201,11 +192,11 @@ export const useProductCreateStore = defineStore('productCreate', () => {
     if (isEditMode.value && editingProductId.value && pricingLoaded.value) {
       try {
         await savePricingData(editingProductId.value)
-      } catch (error) {
+      } catch {
         // خطا در ذخیره خودکار قیمت
       }
     }
-  }, { debounce: 1000 } as any)
+  })
 
   // همگام‌سازی خودکار: تغییر رشتهٔ شمسی → به‌روزرسانی ISO
   watch(() => [pricingForm.sale_start_jalali, pricingForm.sale_end_jalali], ([sj, ej]) => {
@@ -274,7 +265,7 @@ export const useProductCreateStore = defineStore('productCreate', () => {
   })
 
   // --- Images ---
-  interface MediaImage { id: number; url: string; thumbnail: string; name?: string; size?: number;[key: string]: any }
+  interface MediaImage { id: number; url: string; thumbnail: string; name?: string; size?: number;[key: string]: unknown }
   const images = ref<MediaImage[]>([])
   // --- Product Specifications (attribute values) ---
   interface SpecPayload { attribute_id: number; option_id?: number | null; option_ids?: number[]; value_text?: string | null }
@@ -407,9 +398,9 @@ export const useProductCreateStore = defineStore('productCreate', () => {
       editingProductId.value = null
 
       // استفاده از any برای جلوگیری از خطای TypeScript «excessively deep»
-      const response = await ($fetch as any)(`/api/admin/products/${productId}`)
+      const response = await $fetch<Record<string, unknown>>(`/api/admin/products/${productId}`)
 
-      const product = response as any
+      const product = response
 
       // اطمینان از ست شدن شناسه صحیح برای کال‌های بعدی (قیمت/موجودی)
       if (product && product.id) {
@@ -418,61 +409,62 @@ export const useProductCreateStore = defineStore('productCreate', () => {
       }
 
       // Fill form with existing data
-      productForm.name = product.name || ''
-      productForm.englishName = product.name_en || ''
-      productForm.description = product.description || ''
-      productForm.fullDescription = product.full_description || ''
-      productForm.status = product.status || 'active'
-      productForm.sku = product.sku || ''
-      productForm.slug = product.slug || ''
-      productForm.seo_title = product.seo_title || product.name || ''
-      productForm.meta_description = product.meta_description || ''
-      productForm.url = product.url || ''
-      productForm.brand_id = product.brand_id || ''
-      console.log('✅ URL loaded in store:', product.url)
+      productForm.name = (product.name as string) || ''
+      productForm.englishName = (product.name_en as string) || ''
+      productForm.description = (product.description as string) || ''
+      productForm.fullDescription = (product.full_description as string) || ''
+      productForm.status = (product.status as string) || 'active'
+      productForm.sku = (product.sku as string) || ''
+      productForm.slug = (product.slug as string) || ''
+      productForm.seo_title = (product.seo_title as string) || (product.name as string) || ''
+      productForm.meta_description = (product.meta_description as string) || ''
+      productForm.url = (product.url as string) || ''
+      productForm.brand_id = (product.brand_id as string | number) ? String(product.brand_id) : ''
+      // console.log('✅ URL loaded in store:', product.url)
       // اگر دستهبندی والد وجود داشته باشد، آن را بعنوان دسته اصلی و خود دسته محصول را بعنوان فرعی تنظیم میکنیم
-      if (product.category && product.category.parent_id) {
-        productForm.category_id = product.category.parent_id
-        productForm.sub_category_id = product.category_id || product.category.id || ''
+      const category = product.category as { parent_id?: number; id?: number } | undefined
+      if (category && category.parent_id) {
+        productForm.category_id = String(category.parent_id)
+        productForm.sub_category_id = (product.category_id as number) ? String(product.category_id) : (category.id ? String(category.id) : '')
       } else {
-        productForm.category_id = product.category_id || ''
+        productForm.category_id = (product.category_id as number) ? String(product.category_id) : ''
         productForm.sub_category_id = ''
       }
 
       // Load pricing data
-      pricingForm.price = product.price || 0
-      pricingForm.old_price = product.old_price || 0
-      pricingForm.cost = product.cost || 0
-      pricingForm.discount_percent = product.discount_percent || 0
-      pricingForm.discount_amount = product.discount_amount || 0
-      pricingForm.profit = product.profit || 0
-      pricingForm.disableBuyButton = product.disable_buy_button || false
-      pricingForm.callForPrice = product.call_for_price || false
+      pricingForm.price = (product.price as number) || 0
+      pricingForm.old_price = (product.old_price as number) || 0
+      pricingForm.cost = (product.cost as number) || 0
+      pricingForm.discount_percent = (product.discount_percent as number) || 0
+      pricingForm.discount_amount = (product.discount_amount as number) || 0
+      pricingForm.profit = (product.profit as number) || 0
+      pricingForm.disableBuyButton = (product.disable_buy_button as boolean) || false
+      pricingForm.callForPrice = (product.call_for_price as boolean) || false
 
       // Load images if exists (normalize image_url -> url)
       if (product.images && Array.isArray(product.images)) {
-        images.value = product.images.map((img: any) => ({
+        images.value = product.images.map((img: Record<string, unknown>) => ({
           ...img,
           url: img.url || img.image_url,
           thumbnail: img.thumbnail || img.url || img.image_url
-        }))
+        })) as MediaImage[]
       }
 
       // ----- Load existing specifications -----
       try {
-        const specsRes: any = await ($fetch as any)(`/api/admin/products/${productId}/specs`)
-        const arr = specsRes?.data || specsRes || []
+        const specsRes = await $fetch<Record<string, unknown>>(`/api/admin/products/${productId}/specs`)
+        const arr = (specsRes?.data as Record<string, unknown>[]) || (specsRes as unknown as Record<string, unknown>[]) || []
         if (Array.isArray(arr)) {
-          const map: Record<number, any> = {}
+          const map: Record<number, { attribute_id: number; option_ids: number[]; option_id?: number; value_text?: string }> = {}
           for (const s of arr) {
             const aid = Number(s.attribute_id)
             const optId = s.attribute_value_id !== undefined && s.attribute_value_id !== null && s.attribute_value_id !== 0
               ? Number(s.attribute_value_id)
               : null
-            const valText = s.value_text ?? null
+            const valText = (s.value_text as string) ?? null
 
             if (!map[aid]) {
-              map[aid] = { attribute_id: aid }
+              map[aid] = { attribute_id: aid, option_ids: [] }
             }
 
             // multi-select: accumulate option_ids
@@ -485,16 +477,17 @@ export const useProductCreateStore = defineStore('productCreate', () => {
               map[aid].value_text = valText
             }
           }
-          productSpecs.value = Object.values(map)
+          productSpecs.value = Object.values(map) as SpecPayload[]
           if (process.env.NODE_ENV === 'development') {
-            console.debug('💡 Loaded productSpecs', JSON.stringify(productSpecs.value))
+            // console.debug('💡 Loaded productSpecs', JSON.stringify(productSpecs.value))
           }
         } else {
           productSpecs.value = []
         }
-      } catch (err: any) {
+      } catch (err) {
         // در صورت نبودن مشخصات (404) این وضعیت را عادی در نظر می‌گیریم
-        const status = err?.status || err?.response?.status || err?.response?.statusCode
+        const e = err as { status?: number; response?: { status?: number; statusCode?: number } }
+        const status = e?.status || e?.response?.status || e?.response?.statusCode
         if (status === 404) {
           productSpecs.value = []
         } else {
@@ -542,30 +535,30 @@ export const useProductCreateStore = defineStore('productCreate', () => {
 
 
       const response = await $fetch(`/api/admin/products/${productId}`, {
-        method: 'put' as any,
+        method: 'PUT',
         body: payload
       })
 
       // send specifications only if user provided values
-      if (response && (response as any).id && productSpecs.value.length > 0) {
-        await saveSpecsToBackend((response as any).id)
+      if (response && (response as Record<string, unknown>).id && productSpecs.value.length > 0) {
+        await saveSpecsToBackend((response as Record<string, unknown>).id as number)
       }
 
       // Save pricing data after core product updated
       try {
         await savePricingData(productId)
-      } catch (err) {
+      } catch {
         // Failed to save pricing data after update
       }
 
       // Save inventory data after core product updated
       try {
         await saveInventoryData(productId)
-      } catch (err) {
+      } catch {
         // Failed to save inventory data after update
       }
 
-      return response as any
+      return response
     } finally {
       isSaving.value = false
     }
@@ -604,27 +597,27 @@ export const useProductCreateStore = defineStore('productCreate', () => {
         if (!isEditMode.value) {
           if (!productForm.name || !productForm.name.trim()) {
             notifier.error('نام محصول الزامی است', 'خطای اعتبارسنجی')
-            const err: any = new Error('validation:name')
-            err.skipToast = true
+            const err = new Error('validation:name');
+            (err as unknown as { skipToast: boolean }).skipToast = true
             throw err
           }
           if (!productForm.sub_category_id && !productForm.category_id) {
             notifier.error('دسته‌بندی الزامی است', 'خطای اعتبارسنجی')
-            const err: any = new Error('validation:category')
-            err.skipToast = true
+            const err = new Error('validation:category');
+            (err as unknown as { skipToast: boolean }).skipToast = true
             throw err
           }
         }
         if (isEditMode.value && editingProductId.value) {
           // Update existing product
           response = await $fetch(`/api/admin/products/${editingProductId.value}`, {
-            method: 'put' as any,
+            method: 'PUT',
             body: payload
           })
         } else {
           // Create new product
           response = await $fetch('/api/admin/products', {
-            method: 'POST' as any,
+            method: 'POST',
             body: payload
           })
           // بعد از ساخت موفق، حالت ویرایش فعال شود و موجودی ذخیره شود
@@ -635,19 +628,19 @@ export const useProductCreateStore = defineStore('productCreate', () => {
         }
 
         // همگام‌سازی فوری SKU و slug با پاسخ سرور تا لینک پیش‌نمایش درست ساخته شود
-        if (response && (response as any).sku) {
-          productForm.sku = String((response as any).sku)
+        if (response && (response as Record<string, unknown>).sku) {
+          productForm.sku = String((response as Record<string, unknown>).sku)
         }
-        if (response && (response as any).slug) {
-          productForm.slug = String((response as any).slug)
+        if (response && (response as Record<string, unknown>).slug) {
+          productForm.slug = String((response as Record<string, unknown>).slug)
         }
 
         // Save specifications only if user provided any values
-        if (response && (response as any).id && productSpecs.value.length > 0) {
-          await saveSpecsToBackend((response as any).id).catch(() => { })
+        if (response && (response as Record<string, unknown>).id && productSpecs.value.length > 0) {
+          await saveSpecsToBackend((response as Record<string, unknown>).id as number).catch(() => { })
         }
 
-        return response as any // product object
+        return response // product object
       } catch (fetchError) {
         // خطا در ذخیره محصول
         throw fetchError;
@@ -664,14 +657,14 @@ export const useProductCreateStore = defineStore('productCreate', () => {
       // پیش‌اعتبارسنجی سمت کلاینت
       if (!productForm.name || !productForm.name.trim()) {
         notifier.error('نام محصول الزامی است', 'خطای اعتبارسنجی')
-        const err: any = new Error('validation:name')
-        err.skipToast = true
+        const err = new Error('validation:name');
+        (err as unknown as { skipToast: boolean }).skipToast = true
         throw err
       }
       if (!productForm.sub_category_id && !productForm.category_id) {
         notifier.error('دسته‌بندی الزامی است', 'خطای اعتبارسنجی')
-        const err: any = new Error('validation:category')
-        err.skipToast = true
+        const err = new Error('validation:category');
+        (err as unknown as { skipToast: boolean }).skipToast = true
         throw err
       }
       // Debug: بررسی مقدار قیمت
@@ -702,16 +695,16 @@ export const useProductCreateStore = defineStore('productCreate', () => {
 
 
       try {
-        const response = await ($fetch as any)('/api/admin/products', {
+        const response = await $fetch<Record<string, unknown>>('/api/admin/products', {
           method: 'POST',
           body: payload
         })
         // بعد از ایجاد موفق محصول، اطلاعات تکمیلی را ذخیره کنیم
         if (response && response.id) {
           // فقط در صورت داشتن مشخصات، ذخیره کن (به صورت موازی)
-          const followUps: Promise<any>[] = []
+          const followUps: Promise<void>[] = []
           if (productSpecs.value && productSpecs.value.length > 0) {
-            followUps.push(saveSpecsToBackend(response.id).catch(() => { }))
+            followUps.push(saveSpecsToBackend(response.id as number).catch(() => { }))
           }
           // قیمت و موجودی در create ارسال شده‌اند، نیازی به فراخوانی روت‌های جدا نیست
           if (followUps.length > 0) {
@@ -720,9 +713,10 @@ export const useProductCreateStore = defineStore('productCreate', () => {
         }
 
         return response;
-      } catch (fetchError: any) {
+      } catch (fetchError) {
         // خطا در ایجاد محصول
-        const msg = fetchError?.response?._data?.user_message || fetchError?.message || 'خطا در ایجاد محصول'
+        const e = fetchError as Record<string, unknown>
+        const msg = (e?.response as { _data?: { user_message?: string } })?._data?.user_message || (e?.message as string) || 'خطا در ایجاد محصول'
         notifier.error(msg, 'خطا')
         throw fetchError
       }
@@ -755,19 +749,19 @@ export const useProductCreateStore = defineStore('productCreate', () => {
   // ---------------------------
   // AI content generation (stub)
   // ---------------------------
-  function generateAIContent(type: 'short' | 'full') {
+  function generateAIContent(_type: 'short' | 'full') {
     const n = useNotifier(); n.info('قابلیت تولید محتوا با AI به زودی اضافه خواهد شد')
   }
 
-  const categories = ref<any[]>([])
-  const brands = ref<any[]>([])
+  const categories = ref<Record<string, unknown>[]>([])
+  const brands = ref<Record<string, unknown>[]>([])
 
   /**
    * Load product brands.
    */
   async function loadBrands() {
     try {
-      const response = await ($fetch as any)('/api/admin/brands') as any[]
+      const response = await $fetch<Record<string, unknown>[]>('/api/admin/brands')
       if (Array.isArray(response)) {
         brands.value = response.map(brand => ({
           ...brand,
@@ -778,7 +772,7 @@ export const useProductCreateStore = defineStore('productCreate', () => {
       } else {
         brands.value = []
       }
-    } catch (error) {
+    } catch {
       brands.value = []
     }
   }
@@ -795,7 +789,7 @@ export const useProductCreateStore = defineStore('productCreate', () => {
     try {
       const endpoint = all ? '/api/admin/product-categories?all=1' : '/api/admin/product-categories'
       // جلوگیری از خطای TypeScript 'Excessive stack depth' روی امضای $fetch
-      const response = await ($fetch as any)(endpoint) as any[]
+      const response = await $fetch<Record<string, unknown>[]>(endpoint)
 
       // The API now reliably returns an array of category objects.
       if (Array.isArray(response)) {
@@ -810,7 +804,7 @@ export const useProductCreateStore = defineStore('productCreate', () => {
         // Handle cases where the response is not an array, maybe log an error.
         categories.value = []
       }
-    } catch (error) {
+    } catch {
       // Failed to load categories
       categories.value = [] // Ensure categories are empty on error
     } finally {
@@ -825,22 +819,23 @@ export const useProductCreateStore = defineStore('productCreate', () => {
       // همواره از شناسهٔ تثبیت‌شده در Store استفاده می‌کنیم تا اشتباهاً با ID قدیمی ارسال نشود
       const id = Number(editingProductId.value ?? prodId)
       const res = await $fetch.raw(`/api/admin/products/${id}/specs`, {
-        method: 'POST' as any,
+        method: 'POST',
         body: { values: vals },
         retry: 0
       })
 
       if (!res.ok) {
-        const d: any = res._data as any
-        const msg = d?.user_message || d?.error || d?.statusMessage || d?.message || `خطا در ذخیره مشخصات (کد ${res.status})`
+        const d = res._data as Record<string, unknown>
+        const msg = (d?.user_message as string) || (d?.error as string) || (d?.statusMessage as string) || (d?.message as string) || `خطا در ذخیره مشخصات (کد ${res.status})`
         notifier.error(msg, 'خطا در ذخیره مشخصات')
         throw new Error(msg)
       }
-    } catch (err: any) {
+    } catch (err) {
       // Failed saving specs
-      let msg = err?.message || 'خطا در ذخیره مشخصات فنی'
-      if (err?.response?._data) {
-        msg = resolveErrorMessage(err.response._data)
+      const e = err as Record<string, unknown>
+      let msg = (e?.message as string) || 'خطا در ذخیره مشخصات فنی'
+      if ((e?.response as { _data?: unknown })?._data) {
+        msg = resolveErrorMessage((e.response as { _data: unknown })._data)
       }
       notifier.error(msg, 'خطا')
       throw err
@@ -852,25 +847,25 @@ export const useProductCreateStore = defineStore('productCreate', () => {
   // ---------------------------
   async function loadPricingData(productId: string | number) {
     try {
-      const response = await ($fetch as any)(`/api/product-prices/${productId}`) as any
+      const response = await $fetch<Record<string, unknown>>(`/api/product-prices/${productId}`)
       if (response) {
-        pricingForm.price = response.price || 0
-        pricingForm.old_price = response.old_price || 0
-        pricingForm.cost = response.cost || 0
-        pricingForm.discount_percent = response.discount_percent || 0
-        pricingForm.discount_amount = response.discount_amount || 0
-        pricingForm.profit = response.profit || 0
-        pricingForm.disableBuyButton = response.disable_buy_button || false
-        pricingForm.callForPrice = response.call_for_price || false
-        pricingForm.sale_price = response.sale_price || 0
+        pricingForm.price = (response.price as number) || 0
+        pricingForm.old_price = (response.old_price as number) || 0
+        pricingForm.cost = (response.cost as number) || 0
+        pricingForm.discount_percent = (response.discount_percent as number) || 0
+        pricingForm.discount_amount = (response.discount_amount as number) || 0
+        pricingForm.profit = (response.profit as number) || 0
+        pricingForm.disableBuyButton = (response.disable_buy_button as boolean) || false
+        pricingForm.callForPrice = (response.call_for_price as boolean) || false
+        pricingForm.sale_price = (response.sale_price as number) || 0
         // زمان‌بندی قیمت ویژه
-        pricingForm.sale_start_at = response.sale_start_at || null
-        pricingForm.sale_end_at = response.sale_end_at || null
+        pricingForm.sale_start_at = (response.sale_start_at as string) || null
+        pricingForm.sale_end_at = (response.sale_end_at as string) || null
         pricingForm.sale_start_jalali = formatJalaliFromISO(pricingForm.sale_start_at)
         pricingForm.sale_end_jalali = formatJalaliFromISO(pricingForm.sale_end_at)
         // پله‌های فروش ویژه
         specialOffers.value = Array.isArray(response.special_offers)
-          ? response.special_offers.map((o: any) => ({
+          ? (response.special_offers as Record<string, unknown>[]).map((o: Record<string, unknown>) => ({
             base_price: Number(o.base_price ?? pricingForm.price ?? 0),
             price: Number(o.price) || 0,
             quantity: Number(o.quantity) || 0
@@ -878,7 +873,7 @@ export const useProductCreateStore = defineStore('productCreate', () => {
           : []
         pricingLoaded.value = true
       }
-    } catch (error) {
+    } catch {
       // خطا در بارگیری قیمت‌ها
     }
   }
@@ -886,13 +881,13 @@ export const useProductCreateStore = defineStore('productCreate', () => {
   async function savePricingData(productId: string | number) {
     try {
       // همواره ترجیح با شناسه فعلی در Store است تا از ارسال با ID قدیمی جلوگیری شود
-      let numericId: number | null = Number((editingProductId.value as any))
+      let numericId: number | null = Number(editingProductId.value)
       if (!Number.isFinite(numericId)) {
-        numericId = Number(productId as any)
+        numericId = Number(productId)
       }
       if (!Number.isFinite(numericId)) {
         try {
-          const prod: any = await ($fetch as any)(`/api/admin/products/${productId}`)
+          const prod = await $fetch<Record<string, unknown>>(`/api/admin/products/${productId}`)
           numericId = Number(prod?.id)
         } catch { }
       }
@@ -919,14 +914,14 @@ export const useProductCreateStore = defineStore('productCreate', () => {
         special_offers: (specialOffers.value || []).map((o, idx) => ({ base_price: Number(o.base_price || pricingForm.price || 0), price: Number(o.price) || 0, quantity: Number(o.quantity) || 0, sort_order: idx + 1 }))
       }
 
-      const response = await ($fetch as any)(`/api/product-prices/${numericId}`, {
+      const response = await $fetch<Record<string, unknown>>(`/api/product-prices/${numericId}`, {
         method: 'PUT',
         body: payload
-      }) as any
+      })
 
       // Update computed fields from response
-      if (response && response.product) {
-        pricingForm.profit = response.product.profit || 0
+      if (response && (response as { product?: { profit?: number } }).product) {
+        pricingForm.profit = (response as { product: { profit: number } }).product.profit || 0
       }
 
       return response
@@ -941,12 +936,12 @@ export const useProductCreateStore = defineStore('productCreate', () => {
   // ---------------------------
   async function loadInventoryData(productId: string | number) {
     try {
-      const response = await ($fetch as any)(`/api/product-inventories/${productId}`) as any
+      const response = await $fetch<Record<string, unknown>>(`/api/product-inventories/${productId}`)
       if (response) {
-        inventoryForm.stock_quantity = response.stock_quantity || 0
-        inventoryForm.min_stock_quantity = response.min_stock_quantity || 0
-        inventoryForm.max_stock_quantity = response.max_stock_quantity || 0
-        inventoryForm.stock_status = response.stock_status || 'in_stock'
+        inventoryForm.stock_quantity = (response.stock_quantity as number) || 0
+        inventoryForm.min_stock_quantity = (response.min_stock_quantity as number) || 0
+        inventoryForm.max_stock_quantity = (response.max_stock_quantity as number) || 0
+        inventoryForm.stock_status = (response.stock_status as string) || 'in_stock'
         inventoryForm.show_stock_to_customer = !!response.show_stock_to_customer
         inventoryForm.track_inventory = response.track_inventory !== undefined ? !!response.track_inventory : true
         inventoryForm.allow_reservation = !!response.allow_reservation
@@ -956,9 +951,10 @@ export const useProductCreateStore = defineStore('productCreate', () => {
           inventoryForm.shipping_enabled = true
         }
       }
-    } catch (error: any) {
+    } catch (error) {
       // اگر رکورد موجودی هنوز ایجاد نشده باشد، 404 حالت طبیعی است
-      const status = error?.status || error?.response?.status || error?.response?.statusCode
+      const e = error as Record<string, unknown>
+      const status = (e?.status as number) || (e?.response as { status?: number; statusCode?: number })?.status || (e?.response as { status?: number; statusCode?: number })?.statusCode
       if (status === 404) {
         // مقداردهی پیش‌فرض برای فرم موجودی
         inventoryForm.stock_quantity = 0
@@ -976,13 +972,13 @@ export const useProductCreateStore = defineStore('productCreate', () => {
   async function saveInventoryData(productId: string | number) {
     try {
       // همواره ترجیح با شناسه فعلی در Store است تا از ارسال با ID قدیمی جلوگیری شود
-      let numericId: number | null = Number((editingProductId.value as any))
+      let numericId: number | null = Number(editingProductId.value)
       if (!Number.isFinite(numericId)) {
-        numericId = Number(productId as any)
+        numericId = Number(productId)
       }
       if (!Number.isFinite(numericId)) {
         try {
-          const prod: any = await ($fetch as any)(`/api/admin/products/${productId}`)
+          const prod = await $fetch<Record<string, unknown>>(`/api/admin/products/${productId}`)
           numericId = Number(prod?.id)
         } catch { }
       }
@@ -998,7 +994,7 @@ export const useProductCreateStore = defineStore('productCreate', () => {
         allow_reservation: inventoryForm.allow_reservation
       }
 
-      await ($fetch as any)(`/api/product-inventories/${numericId}`, {
+      await $fetch(`/api/product-inventories/${numericId}`, {
         method: 'PUT',
         body: payload,
       })
@@ -1016,19 +1012,19 @@ export const useProductCreateStore = defineStore('productCreate', () => {
   // ---------------------------
   async function loadShippingData(productId: string | number) {
     try {
-      const response = await ($fetch as any)(`/api/product-shipping/${productId}`) as any
+      const response = await $fetch<Record<string, unknown>>(`/api/product-shipping/${productId}`)
       if (response) {
         // map to local UI state if needed (shipping.vue currently uses local inputs)
         // This enables prefill when editing existing product
       }
-    } catch (error) {
+    } catch {
       // خطا در بارگیری اطلاعات حمل‌ونقل
     }
   }
 
   async function saveShippingData(productId: string | number, payload: { weight?: number; length?: number; width?: number; height?: number; shipping_cost?: number; shipping_time?: number }) {
     try {
-      await ($fetch as any)(`/api/product-shipping/${productId}`, {
+      await $fetch(`/api/product-shipping/${productId}`, {
         method: 'PUT',
         body: payload
       })
@@ -1052,7 +1048,7 @@ export const useProductCreateStore = defineStore('productCreate', () => {
     if (isEditMode.value && editingProductId.value) {
       await saveInventoryData(editingProductId.value)
     }
-  }, { debounce: 1000 } as any)
+  })
 
   return {
     // state

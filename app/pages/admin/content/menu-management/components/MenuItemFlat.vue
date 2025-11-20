@@ -9,18 +9,18 @@
           <button
             type="button"
             class="control-button"
-            @click.stop="$emit('move-up', index)"
             :disabled="disableMoveUp"
             title="انتقال به بالا"
+            @click.stop="$emit('move-up', index)"
           >
             ▲
           </button>
           <button
             type="button"
             class="control-button"
-            @click.stop="$emit('move-down', index)"
             :disabled="disableMoveDown"
             title="انتقال به پایین"
+            @click.stop="$emit('move-down', index)"
           >
             ▼
           </button>
@@ -40,18 +40,18 @@
 
         <button
           type="button"
-          @click.stop="item.enabled = !item.enabled"
           :class="item.enabled ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
           class="px-2 py-1 text-xs rounded-full font-medium transition-colors"
+          @click.stop="item.enabled = !item.enabled"
         >
           {{ item.enabled ? 'فعال' : 'غیرفعال' }}
         </button>
 
         <button
           type="button"
-          @click.stop="$emit('toggle-expanded')"
           class="p-1.5 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded transition-colors"
           title="تنظیمات"
+          @click.stop="$emit('toggle-expanded')"
         >
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
             <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
@@ -60,9 +60,9 @@
 
         <button
           type="button"
-          @click.stop="$emit('remove-item')"
           class="p-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 rounded transition-colors"
           title="حذف"
+          @click.stop="$emit('remove-item')"
         >
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
@@ -73,8 +73,8 @@
       <MenuItemSettings
         v-if="item.expanded"
         :item="item"
-        @update-item="$emit('update-item', $event)"
         class="mt-4 pt-4 border-t border-gray-200"
+        @update-item="$emit('update-item', $event)"
       />
     </div>
 
@@ -85,7 +85,7 @@
       @click.stop
     >
       <button type="button" @click="handleMakeRoot">سر دسته شود</button>
-      <button type="button" @click="handleMakeChild" :disabled="index === 0">زیر منو شود</button>
+      <button type="button" :disabled="index === 0" @click="handleMakeChild">زیر منو شود</button>
     </div>
   </div>
 </template>

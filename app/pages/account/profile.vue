@@ -144,8 +144,8 @@
                 <!-- دکمه ویرایش اطلاعات -->
                 <div v-if="!isEditing" class="flex items-end">
                   <button
-                    @click="startEditing"
                     class="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium"
+                    @click="startEditing"
                   >
                     ویرایش اطلاعات
                 </button>
@@ -173,8 +173,8 @@
                 <div class="flex gap-2 justify-end">
                   <button
                     type="button"
-                    @click="cancelEditing"
                     class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors text-sm font-medium"
+                    @click="cancelEditing"
                   >
                     انصراف
                   </button>
@@ -221,12 +221,12 @@
                     ref="nationalCardInput"
                     type="file" 
                     accept="image/*"
-                    @change="handleFileUpload($event, 'national_card')"
                     class="hidden"
+                    @change="handleFileUpload($event, 'national_card')"
                   />
                   <button
-                    @click="$refs.nationalCardInput.click()"
                     class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm"
+                    @click="$refs.nationalCardInput.click()"
                   >
                     {{ uploadedDocs.national_card ? 'تغییر فایل' : 'انتخاب فایل' }}
                   </button>
@@ -255,12 +255,12 @@
                     ref="selfieInput"
                     type="file" 
                     accept="image/*"
-                    @change="handleFileUpload($event, 'selfie_with_id')"
                     class="hidden"
+                    @change="handleFileUpload($event, 'selfie_with_id')"
                   />
                   <button
-                    @click="$refs.selfieInput.click()"
                     class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm"
+                    @click="$refs.selfieInput.click()"
                   >
                     {{ uploadedDocs.selfie_with_id ? 'تغییر فایل' : 'انتخاب فایل' }}
                   </button>
@@ -276,9 +276,9 @@
               <!-- دکمه ارسال مدارک برای تایید -->
               <div v-if="canSubmitDocuments" class="pt-4">
                 <button
-                  @click="submitDocumentsForVerification"
                   :disabled="submittingDocs"
                   class="w-full px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 transition-colors font-medium"
+                  @click="submitDocumentsForVerification"
                 >
                   {{ submittingDocs ? 'در حال ارسال...' : 'ارسال مدارک برای تایید ادمین' }}
                 </button>
@@ -299,8 +299,8 @@
                 <span v-if="hasPassword" class="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded">✓ تنظیم شده</span>
                 <span v-else class="bg-yellow-100 text-yellow-700 text-xs px-2 py-0.5 rounded">تنظیم نشده</span>
                 <button
-                  @click="showPasswordForm = !showPasswordForm"
                   class="text-blue-600 hover:text-blue-700 transition-colors text-xs font-medium"
+                  @click="showPasswordForm = !showPasswordForm"
                 >
                   {{ hasPassword ? 'تغییر' : 'تنظیم' }}
                 </button>
@@ -345,15 +345,15 @@
                   
               <div class="flex gap-2">
                     <button 
-                      @click="handleSetPassword"
                       :disabled="passwordLoading || !isPasswordFormValid"
-                  class="px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400 transition-colors text-xs font-medium"
+                      class="px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400 transition-colors text-xs font-medium"
+                  @click="handleSetPassword"
                     >
                   {{ passwordLoading ? 'در حال ذخیره...' : 'ذخیره' }}
                     </button>
                     <button 
-                      @click="cancelPasswordForm"
-                  class="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors text-xs font-medium"
+                      class="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors text-xs font-medium"
+                  @click="cancelPasswordForm"
                     >
                       انصراف
                 </button>
@@ -366,8 +366,8 @@
             <div class="flex items-center justify-between mb-3">
               <h2 class="text-lg font-bold text-red-600 text-right">اطلاعات حقوقی</h2>
               <button
-                @click="showLegalInfoForm = !showLegalInfoForm"
                 class="text-blue-600 hover:text-blue-700 font-medium text-xs transition-colors"
+                @click="showLegalInfoForm = !showLegalInfoForm"
               >
                 {{ showLegalInfoForm ? 'بستن' : 'ثبت' }}
               </button>
@@ -441,8 +441,8 @@
               </div>
 
               <button
-                @click="saveLegalInfo"
                 class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-xs font-medium"
+                @click="saveLegalInfo"
               >
                 ذخیره
             </button>

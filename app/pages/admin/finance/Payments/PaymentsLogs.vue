@@ -7,8 +7,8 @@
       </div>
       <div class="flex items-center space-x-2 space-x-reverse">
         <button 
-          @click="refreshLogs"
           class="inline-flex items-center px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+          @click="refreshLogs"
         >
           <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -16,8 +16,8 @@
           بروزرسانی
         </button>
         <button 
-          @click="exportLogs"
           class="inline-flex items-center px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          @click="exportLogs"
         >
           <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -59,16 +59,16 @@
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">از تاریخ</label>
           <input 
-            type="date" 
-            v-model="logFilters.dateFrom"
+            v-model="logFilters.dateFrom" 
+            type="date"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">تا تاریخ</label>
           <input 
-            type="date" 
-            v-model="logFilters.dateTo"
+            v-model="logFilters.dateTo" 
+            type="date"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
@@ -156,8 +156,8 @@
           </div>
           
           <button 
-            @click="viewLogDetails(log)"
             class="text-gray-400 hover:text-gray-600"
+            @click="viewLogDetails(log)"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>

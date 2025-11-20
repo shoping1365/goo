@@ -15,7 +15,7 @@
           <option value="90">90 روز گذشته</option>
           <option value="365">یک سال گذشته</option>
         </select>
-        <button @click="exportChart" class="text-blue-600 hover:text-blue-800">
+        <button class="text-blue-600 hover:text-blue-800" @click="exportChart">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
@@ -110,13 +110,13 @@
     <!-- Chart Controls -->
     <div class="mt-6 flex items-center justify-between">
       <div class="flex items-center space-x-4 space-x-reverse">
-        <button @click="previousPeriod" class="text-gray-600 hover:text-gray-800">
+        <button class="text-gray-600 hover:text-gray-800" @click="previousPeriod">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
         <span class="text-sm text-gray-600">{{ currentPeriodLabel }}</span>
-        <button @click="nextPeriod" class="text-gray-600 hover:text-gray-800">
+        <button class="text-gray-600 hover:text-gray-800" @click="nextPeriod">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
@@ -124,10 +124,10 @@
       </div>
       
       <div class="flex items-center space-x-2 space-x-reverse">
-        <button @click="refreshChart" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+        <button class="text-blue-600 hover:text-blue-800 text-sm font-medium" @click="refreshChart">
           به‌روزرسانی
         </button>
-        <button @click="fullScreen" class="text-green-600 hover:text-green-800 text-sm font-medium">
+        <button class="text-green-600 hover:text-green-800 text-sm font-medium" @click="fullScreen">
           تمام‌صفحه
         </button>
       </div>

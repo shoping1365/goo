@@ -2,45 +2,45 @@
   <div class="space-y-6" dir="rtl">
     <div v-if="complements.length" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       <NuxtLink
-        v-for="product in complements"
-        :key="product.id"
-        :to="`/product/sku-${product.sku || product.id}${product.slug ? '/' + encodeURIComponent(product.slug) : ''}`"
+        v-for="compProduct in complements"
+        :key="compProduct.id"
+        :to="`/product/sku-${compProduct.sku || compProduct.id}${compProduct.slug ? '/' + encodeURIComponent(compProduct.slug) : ''}`"
         class="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow group"
       >
         <div class="aspect-square bg-gray-100 overflow-hidden">
           <img
-            :src="imageUrl(product)"
-            :alt="product.name"
+            :src="imageUrl(compProduct)"
+            :alt="compProduct.name"
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
         <div class="p-6">
-          <h3 class="font-medium text-gray-900 text-sm mb-2 line-clamp-2">{{ product.name }}</h3>
+          <h3 class="font-medium text-gray-900 text-sm mb-2 line-clamp-2">{{ compProduct.name }}</h3>
           <div class="flex items-center justify-between">
             <div class="text-green-600 font-bold text-sm">
-              {{ formatPrice(product.price) }} تومان
+              {{ formatPrice(compProduct.price) }} تومان
             </div>
           </div>
           <div class="mt-3" @click.stop>
             <button
-              v-if="!isInCart(product.id) && isAvailable(product)"
-              @click="add(product.id)"
+              v-if="!isInCart(compProduct.id) && isAvailable(compProduct)"
               class="w-full bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-md py-2"
+              @click="add(compProduct.id)"
             >
               افزودن به سبد خرید
             </button>
             <button
-              v-else-if="!isInCart(product.id) && !isAvailable(product)"
+              v-else-if="!isInCart(compProduct.id) && !isAvailable(compProduct)"
               disabled
               class="w-full bg-red-100 text-red-700 text-sm font-semibold rounded-md py-2 cursor-not-allowed"
             >
               ناموجود
             </button>
             <div v-else class="flex items-center gap-2">
-              <button @click="decrement(product.id)" class="w-8 h-8 rounded-md bg-gray-100 hover:bg-gray-200 flex items-center justify-center">−</button>
-              <span class="min-w-[2rem] text-center">{{ getItemQuantity(product.id) }}</span>
-              <button @click="increment(product.id)" class="w-8 h-8 rounded-md bg-gray-100 hover:bg-gray-200 flex items-center justify-center">+</button>
-              <button @click="remove(product.id)" class="ml-auto text-red-600 text-xs">حذف</button>
+              <button class="w-8 h-8 rounded-md bg-gray-100 hover:bg-gray-200 flex items-center justify-center" @click="decrement(compProduct.id)">−</button>
+              <span class="min-w-[2rem] text-center">{{ getItemQuantity(compProduct.id) }}</span>
+              <button class="w-8 h-8 rounded-md bg-gray-100 hover:bg-gray-200 flex items-center justify-center" @click="increment(compProduct.id)">+</button>
+              <button class="ml-auto text-red-600 text-xs" @click="remove(compProduct.id)">حذف</button>
             </div>
           </div>
         </div>
@@ -103,9 +103,9 @@ function toThumbnail(url: string): string {
   return baseName + '_thumbnail' + originalExt
 }
 
-function imageUrl(p: any): string {
-  const base = (p?.images && p.images[0]?.image_url) || p?.image_url || p?.image || p?.main_image || ''
-  return toThumbnail(base)
+function imageUrl(p: Record<string, unknown>): string {
+  const base = (p?.images && Array.isArray(p.images) && (p.images[0] as Record<string, unknown>)?.image_url) || p?.image_url || p?.image || p?.main_image || ''
+  return toThumbnail(base as string)
 }
 
 const formatPrice = (price: number): string => {
@@ -113,7 +113,7 @@ const formatPrice = (price: number): string => {
 }
 
 // Cart interactions
-const { addToCart, updateCartItem, removeFromCart, isInCart, getItemQuantity, fetchCart } = useCart()
+const { addToCart, updateCartItem, removeFromCart, isInCart, getItemQuantity } = useCart()
 
 async function add(productId:number){
   // اطمینان از ایجاد session با GET cart (ست‌شدن کوکی توسط بک‌اند)
@@ -137,11 +137,11 @@ async function remove(productId:number){
 
 function cartItem(productId:number){
   const { cartItems } = useCart()
-  return cartItems.value.find((i:any)=> i.product_id === productId)
+  return cartItems.value.find((i: Record<string, unknown>)=> i.product_id === productId)
 }
 
 // موجود بودن برای خرید در کارت مکمل
-function isAvailable(p:any){
+function isAvailable(p: Record<string, unknown>){
   const price = Number(p?.price || 0)
   const track = p?.track_inventory === true
   const stock = Number(p?.stock_quantity ?? 0)

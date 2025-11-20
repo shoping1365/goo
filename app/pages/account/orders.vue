@@ -17,12 +17,12 @@
               <button 
                 v-for="(filter, index) in orderFilters" 
                 :key="filter.key"
-                @click="activeFilter = filter.key"
                 class="pb-4 px-2 text-gray-500 hover:text-gray-700 transition-colors relative"
                 :class="[
                   { 'text-red-600': activeFilter === filter.key },
                   index < orderFilters.length - 1 ? 'ml-8' : ''
                 ]"
+                @click="activeFilter = filter.key"
               >
                 {{ filter.label }}
                 <span v-if="filter.count > 0" class="mr-2 text-sm font-medium">{{ filter.count }}</span>

@@ -1,5 +1,5 @@
-import { ref, computed } from 'vue'
 import { useApiClient } from '@/utils/api'
+import { computed, ref } from 'vue'
 
 export interface APIPermission {
   id: string
@@ -7,6 +7,10 @@ export interface APIPermission {
   description?: string
   category?: string
   created_at?: string
+}
+
+interface ApiError {
+  error?: string
 }
 
 export const usePermissionsAPI = () => {
@@ -24,8 +28,9 @@ export const usePermissionsAPI = () => {
     try {
       const response = await api.get<APIPermission[]>('/api/admin/permissions')
       permissions.value = response
-    } catch (err: any) {
-      error.value = err.error || 'خطا در دریافت دسترسی‌ها'
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e.error || 'خطا در دریافت دسترسی‌ها'
     } finally {
       loading.value = false
     }
@@ -42,8 +47,9 @@ export const usePermissionsAPI = () => {
       const response = await api.post<APIPermission>('/api/admin/permissions', permData)
       permissions.value.push(response)
       return response
-    } catch (err: any) {
-      error.value = err.error
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e.error || ''
       return null
     } finally {
       loading.value = false
@@ -62,8 +68,9 @@ export const usePermissionsAPI = () => {
         permissions.value[index] = response
       }
       return response
-    } catch (err: any) {
-      error.value = err.error
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e.error || ''
       return null
     }
   }
@@ -74,8 +81,9 @@ export const usePermissionsAPI = () => {
       await api.delete(`/api/admin/permissions/${id}`)
       permissions.value = permissions.value.filter(p => p.id !== id)
       return true
-    } catch (err: any) {
-      error.value = err.error
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e.error || ''
       return false
     }
   }

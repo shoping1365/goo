@@ -42,22 +42,32 @@ declare const $fetch: <T = unknown>(url: string, options?: { credentials?: strin
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import type { User } from '~/types/user';
 
-const props = defineProps<{ user: any }>()
+defineProps<{ user: User }>()
+defineEmits(['view-all-transactions'])
 
 const balance = ref<number>(0)
-const transactions = ref<any[]>([])
+interface Transaction {
+  id: number
+  type: string
+  date: string
+  amount: number
+  description: string
+  status: string
+}
+const transactions = ref<Transaction[]>([])
 
 function toDateString(d?: string | Date | null) {
   if (!d) return '-'
-  try { return new Date(d as any).toLocaleDateString('fa-IR') } catch { return '-' }
+  try { return new Date(d as string | number | Date).toLocaleDateString('fa-IR') } catch { return '-' }
 }
 
 async function loadWallet(userId?: number | string) {
   if (!userId) return
-  const summary: any = await $fetch(`/api/users/${userId}/wallet/summary`, { credentials: 'include' })
+  const summary = await $fetch<{ balance?: number }>(`/api/users/${userId}/wallet/summary`, { credentials: 'include' })
   balance.value = Number(summary?.balance || 0)
-  const txs: any[] = await $fetch(`/api/users/${userId}/wallet/transactions?limit=10`, { credentials: 'include' })
+  const txs = await $fetch<{ id: number; type: string; created_at?: string; createdAt?: string; amount: number; gateway?: string; method?: string; status: string }[]>(`/api/users/${userId}/wallet/transactions?limit=10`, { credentials: 'include' })
   transactions.value = (txs || []).map(t => ({
     id: t.id,
     type: t.type === 'credit' ? 'شارژ کیف پول' : 'برداشت/مصرف',

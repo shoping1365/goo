@@ -139,7 +139,6 @@
 import { computed, ref } from 'vue';
 import ViewAllModal from '~/components/admin/modals/ViewAllModal.vue';
 
-const props = defineProps<{ user: any }>();
 const showAllSessions = ref(false);
 const showAllLogins = ref(false);
 const showAllAttempts = ref(false);

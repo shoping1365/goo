@@ -151,20 +151,20 @@
               <!-- Actions -->
               <div class="space-y-2">
                 <button 
-                  @click="applyFilters"
                   class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="applyFilters"
                 >
                   اعمال فیلتر
                 </button>
                 <button 
-                  @click="clearFilters"
                   class="w-full bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="clearFilters"
                 >
                   پاک کردن فیلترها
                 </button>
                 <button 
-                  @click="exportLogs"
                   class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="exportLogs"
                 >
                   خروجی CSV
                 </button>
@@ -180,17 +180,17 @@
               <h2 class="text-xl font-semibold text-gray-900">لاگ‌ها</h2>
               <div class="flex items-center space-x-2 space-x-reverse">
                 <button 
-                  @click="refreshLogs"
                   class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="refreshLogs"
                 >
                   بارگذاری مجدد
                 </button>
                 <button 
-                  @click="autoRefresh = !autoRefresh"
                   :class="[
                     'font-medium py-2 px-4 rounded-lg transition-colors',
                     autoRefresh ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-gray-500 hover:bg-gray-600 text-white'
                   ]"
+                  @click="autoRefresh = !autoRefresh"
                 >
                   {{ autoRefresh ? 'توقف' : 'اتوماتیک' }}
                 </button>
@@ -203,7 +203,8 @@
                 <div class="flex items-start justify-between">
                   <div class="flex items-start space-x-3 space-x-reverse">
                     <!-- Log Level Badge -->
-                    <span :class="[
+                    <span
+:class="[
                       'px-2 py-1 rounded text-xs font-medium',
                       log.level === 'error' ? 'bg-red-100 text-red-800' :
                       log.level === 'warning' ? 'bg-yellow-100 text-yellow-800' :
@@ -228,14 +229,14 @@
                   <!-- Actions -->
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <button 
-                      @click="viewLogDetails(log)"
                       class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      @click="viewLogDetails(log)"
                     >
                       جزئیات
                     </button>
                     <button 
-                      @click="copyLog(log)"
                       class="text-gray-600 hover:text-gray-800 text-sm font-medium"
+                      @click="copyLog(log)"
                     >
                       کپی
                     </button>
@@ -269,7 +270,7 @@
           <div class="p-6 border-b border-gray-200">
             <div class="flex items-center justify-between">
               <h3 class="text-lg font-semibold text-gray-900">جزئیات لاگ</h3>
-              <button @click="logDetailsModal.show = false" class="text-gray-400 hover:text-gray-600">
+              <button class="text-gray-400 hover:text-gray-600" @click="logDetailsModal.show = false">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -284,7 +285,8 @@
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">سطح</label>
-                <span :class="[
+                <span
+:class="[
                   'px-2 py-1 rounded text-xs font-medium',
                   logDetailsModal.log?.level === 'error' ? 'bg-red-100 text-red-800' :
                   logDetailsModal.log?.level === 'warning' ? 'bg-yellow-100 text-yellow-800' :
@@ -380,7 +382,7 @@ const filteredLogs = computed(() => {
   // Filter by date range
   if (filters.dateRange !== 'custom') {
     const now = new Date()
-    let startDate = new Date()
+    const startDate = new Date()
     
     switch (filters.dateRange) {
       case '1h':

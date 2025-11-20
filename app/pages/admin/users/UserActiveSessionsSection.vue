@@ -21,8 +21,8 @@
       </div>
       <p class="text-red-600 text-sm">{{ error }}</p>
       <button
-        @click="fetchActiveSessions"
         class="mt-2 px-3 py-1 bg-red-100 text-red-600 rounded text-sm hover:bg-red-200"
+        @click="fetchActiveSessions"
       >
         تلاش مجدد
       </button>
@@ -82,16 +82,47 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import ViewAllModal from '~/components/admin/modals/ViewAllModal.vue';
+import type { User } from '~/types/user';
 
-const props = defineProps<{ user: any }>();
+const props = defineProps<{ user: User }>();
 const showAllSessions = ref(false);
 
 // Real data for active sessions
-const activeSessions = ref([]);
+const activeSessions = ref<SessionData[]>([]); // Keeping any[] for now as the mapped object structure is not fully defined here
 const loading = ref(false);
 const error = ref('');
+
+interface SessionData {
+  id: number;
+  deviceType: string;
+  browser: string;
+  ipAddress: string;
+  lastActivity: string;
+  token: string;
+  authMethod: string;
+  isVerified: boolean;
+  expiresAt: string;
+}
+
+interface ActiveSessionResponse {
+  success: boolean;
+  data: {
+    activeSessions: {
+      id: number;
+      deviceType: string;
+      browser: string;
+      ipAddress: string;
+      lastUsedAt?: string;
+      createdAt: string;
+      token: string;
+      authMethod: string;
+      isVerified: boolean;
+      expiresAt: string;
+    }[];
+  };
+}
 
 const displayedSessions = computed(() => {
   return showAllSessions.value ? activeSessions.value : activeSessions.value.slice(0, 5);
@@ -104,15 +135,15 @@ const fetchActiveSessions = async () => {
   error.value = '';
 
   try {
-    const response = await $fetch(`/api/admin/users/${props.user.id}/active-sessions`, {
+    const response = await $fetch<ActiveSessionResponse>(`/api/admin/users/${props.user.id}/active-sessions`, {
       query: {
         page: 1,
         limit: 100
       }
-    }) as any;
+    });
 
     if (response.success) {
-      activeSessions.value = response.data.activeSessions.map((session: any) => ({
+      activeSessions.value = response.data.activeSessions.map((session) => ({
         id: session.id,
         deviceType: session.deviceType,
         browser: session.browser,
@@ -126,9 +157,10 @@ const fetchActiveSessions = async () => {
     } else {
       error.value = 'خطا در دریافت داده‌ها';
     }
-  } catch (err: any) {
-    console.error('خطا در دریافت سشن‌های فعال:', err);
-    error.value = err.data?.message || 'خطا در دریافت سشن‌های فعال';
+  } catch (err: unknown) {
+    const e = err as { data?: { message?: string } };
+    // console.error('خطا در دریافت سشن‌های فعال:', err);
+    error.value = e.data?.message || 'خطا در دریافت سشن‌های فعال';
   } finally {
     loading.value = false;
   }

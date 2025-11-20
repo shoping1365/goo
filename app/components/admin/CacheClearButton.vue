@@ -1,10 +1,10 @@
 <template>
   <div class="cache-clear-section">
     <button
-      @click="clearCache"
       :disabled="loading"
       class="cache-clear-btn"
       :class="{ 'loading': loading, 'success': success }"
+      @click="clearCache"
     >
       <span v-if="!loading && !success" class="icon">🗑️</span>
       <span v-if="loading" class="spinner"></span>

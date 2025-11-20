@@ -7,7 +7,7 @@ export interface ApiError {
   statusCode: number
   message: string
   userMessage: string
-  details?: Record<string, any>
+  details?: Record<string, unknown>
 }
 
 /**
@@ -53,14 +53,15 @@ const errorMessageMap: Record<string, string> = {
  * Get safe error message
  * Return user-friendly error message without exposing sensitive info
  */
-export const getSafeErrorMessage = (error: any): string => {
+export const getSafeErrorMessage = (error: unknown): string => {
+  const err = error as Record<string, unknown>
   // If error has userMessage, use it
-  if (error?.data?.message) {
-    return error.data.message
+  if ((err?.data as { message?: string })?.message) {
+    return (err.data as { message: string }).message
   }
 
   // Try to find matching error message
-  const errorMessage = error?.message || error?.toString() || 'خطای نامشخصی رخ داد'
+  const errorMessage = err?.message || (error && typeof error.toString === 'function' ? error.toString() : '') || 'خطای نامشخصی رخ داد'
 
   for (const [key, value] of Object.entries(errorMessageMap)) {
     if (errorMessage.includes(key)) {
@@ -75,16 +76,17 @@ export const getSafeErrorMessage = (error: any): string => {
 /**
  * Format API error response
  */
-export const formatApiError = (error: any): ApiError => {
-  const statusCode = error?.status || error?.statusCode || 500
-  const message = error?.message || 'Unknown error'
+export const formatApiError = (error: unknown): ApiError => {
+  const err = error as Record<string, unknown>
+  const statusCode = (err?.status as number) || (err?.statusCode as number) || 500
+  const message = (err?.message as string) || 'Unknown error'
   const userMessage = getSafeErrorMessage(error)
 
   return {
     statusCode,
     message,
     userMessage,
-    details: error?.data,
+    details: err?.data as Record<string, unknown>,
   }
 }
 
@@ -92,15 +94,16 @@ export const formatApiError = (error: any): ApiError => {
  * Sanitize error object
  * Remove sensitive information from error
  */
-export const sanitizeError = (error: any): Record<string, any> => {
-  const sanitized: Record<string, any> = {}
+export const sanitizeError = (error: unknown): Record<string, unknown> => {
+  const err = error as Record<string, unknown>
+  const sanitized: Record<string, unknown> = {}
 
   // Only include safe error properties
   const safeProperties = ['statusCode', 'status', 'message', 'data']
 
   for (const prop of safeProperties) {
-    if (error?.[prop] !== undefined) {
-      sanitized[prop] = error[prop]
+    if (err?.[prop] !== undefined) {
+      sanitized[prop] = err[prop]
     }
   }
 
@@ -111,7 +114,8 @@ export const sanitizeError = (error: any): Record<string, any> => {
  * Log error safely
  * Log sensitive information to backend without exposing to user
  */
-export const logErrorSafely = (error: any, context?: Record<string, any>) => {
+export const logErrorSafely = (error: unknown, context?: Record<string, unknown>) => {
+  const err = error as Record<string, unknown>
   if (process.client) {
     // In browser, send error to backend for logging
     if (typeof fetch !== 'undefined') {
@@ -122,12 +126,12 @@ export const logErrorSafely = (error: any, context?: Record<string, any>) => {
         },
         body: JSON.stringify({
           type: 'error',
-          message: error?.message,
-          stack: error?.stack,
+          message: typeof err?.message === 'string' ? err.message : 'Unknown error',
+          stack: typeof err?.stack === 'string' ? err.stack : undefined,
           context: context || {},
           timestamp: new Date().toISOString(),
         }),
-      }).catch(err => console.error('Failed to log error:', err))
+      }).catch(e => console.error('Failed to log error:', e))
     }
   }
 }
@@ -150,22 +154,31 @@ export const createApiError = (
 /**
  * Extract status code from error
  */
-export const getErrorStatusCode = (error: any): number => {
-  return error?.status || error?.statusCode || error?.response?.status || 500
+export const getErrorStatusCode = (error: unknown): number => {
+  const err = error as Record<string, unknown>
+  if (typeof err?.status === 'number') return err.status
+  if (typeof err?.statusCode === 'number') return err.statusCode
+  
+  const response = err?.response as Record<string, unknown> | undefined
+  if (typeof response?.status === 'number') return response.status
+  
+  return 500
 }
 
 /**
  * Check if error is a validation error
  */
-export const isValidationError = (error: any): boolean => {
+export const isValidationError = (error: unknown): boolean => {
+  const err = error as Record<string, unknown>
   const statusCode = getErrorStatusCode(error)
-  return statusCode === 400 || error?.data?.type === 'validation'
+  const data = err?.data as Record<string, unknown> | undefined
+  return statusCode === 400 || data?.type === 'validation'
 }
 
 /**
  * Check if error is an authentication error
  */
-export const isAuthError = (error: any): boolean => {
+export const isAuthError = (error: unknown): boolean => {
   const statusCode = getErrorStatusCode(error)
   return statusCode === 401 || statusCode === 403
 }
@@ -173,7 +186,7 @@ export const isAuthError = (error: any): boolean => {
 /**
  * Check if error is a server error
  */
-export const isServerError = (error: any): boolean => {
+export const isServerError = (error: unknown): boolean => {
   const statusCode = getErrorStatusCode(error)
   return statusCode >= 500
 }
@@ -181,6 +194,8 @@ export const isServerError = (error: any): boolean => {
 /**
  * Check if error is a network error
  */
-export const isNetworkError = (error: any): boolean => {
-  return error?.name === 'NetworkError' || error?.message?.includes('Network')
+export const isNetworkError = (error: unknown): boolean => {
+  const err = error as Record<string, unknown>
+  const message = typeof err?.message === 'string' ? err.message : ''
+  return err?.name === 'NetworkError' || message.includes('Network')
 }

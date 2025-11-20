@@ -1,28 +1,5 @@
 import { computed, readonly, ref } from 'vue'
 
-// تعریف interface برای Schema Template
-interface SchemaTemplate {
-  id: string
-  name: string
-  type: string
-  description: string
-  file: string
-  isActive: boolean
-  template: any
-  meta: {
-    title: string
-    description: string
-    keywords?: string
-  }
-  openGraph: {
-    title: string
-    description: string
-    image?: string
-    type: string
-    site_name: string
-  }
-}
-
 // تعریف interface برای Schema
 interface Schema {
   id: string
@@ -30,35 +7,9 @@ interface Schema {
   type: string
   description: string
   isActive: boolean
-  template: any
-  meta: any
-  openGraph: any
-}
-
-// تعریف interface برای درخواست ایجاد Schema
-interface CreateSchemaRequest {
-  name: string
-  type: string
-  description?: string
-  template?: any
-  meta?: any
-  openGraph?: any
-}
-
-// تعریف interface برای تولید Schema از تمپلیت
-interface GenerateSchemaRequest {
-  title?: string
-  slug?: string
-  excerpt?: string
-  content?: string
-  author?: string
-  meta_title?: string
-  meta_description?: string
-  meta_keywords?: string
-  og_title?: string
-  og_description?: string
-  og_image?: string
-  extra_fields?: any
+  template: Record<string, unknown>
+  meta: Record<string, unknown>
+  openGraph: Record<string, unknown>
 }
 
 // تعریف interface برای index data
@@ -78,9 +29,9 @@ interface TemplateData {
   type: string
   description: string
   isActive: boolean
-  template: any
-  meta: any
-  openGraph: any
+  template: Record<string, unknown>
+  meta: Record<string, unknown>
+  openGraph: Record<string, unknown>
 }
 
 export const useSchema = () => {
@@ -120,7 +71,7 @@ export const useSchema = () => {
       }
 
       schemas.value = templates
-    } catch (err: any) {
+    } catch (err) {
       error.value = 'خطا در دریافت تمپلیت‌ها'
       console.error('خطا در دریافت تمپلیت‌ها:', err)
     } finally {
@@ -148,14 +99,14 @@ export const useSchema = () => {
         meta: templateData.meta,
         openGraph: templateData.openGraph
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error('خطا در دریافت تمپلیت:', err)
       return null
     }
   }
 
   // تولید اسکیما از تمپلیت
-  const generateSchemaFromTemplate = async (templateId: string, data: any): Promise<any> => {
+  const generateSchemaFromTemplate = async (templateId: string, data: Record<string, unknown>): Promise<Record<string, unknown> | null> => {
     try {
       const template = await fetchTemplateById(templateId)
       if (!template) return null
@@ -165,21 +116,21 @@ export const useSchema = () => {
       replaceTemplateVariables(generatedSchema, data)
 
       return generatedSchema
-    } catch (err: any) {
+    } catch (err) {
       console.error('خطا در تولید اسکیما:', err)
       return null
     }
   }
 
   // جایگزینی متغیرها در تمپلیت
-  const replaceTemplateVariables = (obj: any, data: any) => {
+  const replaceTemplateVariables = (obj: Record<string, unknown>, data: Record<string, unknown>) => {
     for (const key in obj) {
       if (typeof obj[key] === 'string') {
-        obj[key] = obj[key].replace(/\{\{(\w+)\}\}/g, (match: string, variable: string) => {
-          return data[variable] || match
+        obj[key] = (obj[key] as string).replace(/\{\{(\w+)\}\}/g, (match: string, variable: string) => {
+          return (data[variable] as string) || match
         })
       } else if (typeof obj[key] === 'object' && obj[key] !== null) {
-        replaceTemplateVariables(obj[key], data)
+        replaceTemplateVariables(obj[key] as Record<string, unknown>, data)
       }
     }
   }
@@ -190,7 +141,7 @@ export const useSchema = () => {
       const indexData = await $fetch<IndexData>('/templates/schema/index.json')
       const types = indexData.templates.map((t) => t.type)
       return [...new Set(types)] as string[]
-    } catch (err: any) {
+    } catch (err) {
       console.error('خطا در دریافت انواع اسکیما:', err)
       return []
     }

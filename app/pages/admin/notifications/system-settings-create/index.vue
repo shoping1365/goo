@@ -3,7 +3,7 @@
     <div class="bg-white rounded-lg shadow p-6 mb-8 flex items-center justify-between">
       <div class="flex items-center gap-6 w-full justify-between">
         <h1 class="text-2xl font-bold">ثبت درگاه پیامک</h1>
-        <button @click="$router.back()" class="inline-flex items-center justify-center gap-2 w-40 h-12 text-base px-0 py-0 rounded-lg bg-gradient-to-r from-purple-400 to-purple-600 text-white font-bold shadow hover:from-purple-500 hover:to-purple-700 transition">
+        <button class="inline-flex items-center justify-center gap-2 w-40 h-12 text-base px-0 py-0 rounded-lg bg-gradient-to-r from-purple-400 to-purple-600 text-white font-bold shadow hover:from-purple-500 hover:to-purple-700 transition" @click="$router.back()">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
           بازگشت
         </button>
@@ -50,10 +50,10 @@
           <div class="bg-white border-2 border-purple-300 rounded-xl p-6 flex flex-col gap-2">
             <label :for="field.name" class="block mb-2 font-semibold">{{ field.label }}</label>
             <input
-              :type="field.name === 'password' ? 'password' : 'text'"
-              class="form-input w-full rounded-lg border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-200"
               :id="field.name"
               v-model="form[field.name]"
+              :type="field.name === 'password' ? 'password' : 'text'"
+              class="form-input w-full rounded-lg border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-200"
               :placeholder="field.placeholder || ''"
             />
           </div>
@@ -63,11 +63,11 @@
           <label class="block mb-2 font-semibold">ارسال بر اساس پترن</label>
           <div class="flex gap-6">
             <label class="inline-flex items-center gap-2 cursor-pointer">
-              <input type="radio" value="yes" v-model="form.pattern_based" class="form-radio text-purple-500" />
+              <input v-model="form.pattern_based" type="radio" value="yes" class="form-radio text-purple-500" />
               <span>بله</span>
             </label>
             <label class="inline-flex items-center gap-2 cursor-pointer">
-              <input type="radio" value="no" v-model="form.pattern_based" class="form-radio text-purple-500" />
+              <input v-model="form.pattern_based" type="radio" value="no" class="form-radio text-purple-500" />
               <span>خیر</span>
             </label>
           </div>
@@ -86,13 +86,13 @@
       <!-- دکمه تست اتصال و ثبت درگاه (در انتهای فرم) -->
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mt-8">
         <div class="flex items-center gap-6 order-2 md:order-1">
-          <button @click="testConnection" :disabled="!isFormValid" class="inline-flex items-center justify-center gap-2 w-40 h-12 text-base px-0 py-0 rounded-lg bg-gradient-to-r from-blue-400 to-blue-600 text-white font-bold shadow hover:from-blue-500 hover:to-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+          <button :disabled="!isFormValid" class="inline-flex items-center justify-center gap-2 w-40 h-12 text-base px-0 py-0 rounded-lg bg-gradient-to-r from-blue-400 to-blue-600 text-white font-bold shadow hover:from-blue-500 hover:to-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed" @click="testConnection">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11V7m0 8h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             تست اتصال
           </button>
         </div>
         <div class="flex justify-end order-1 md:order-2 w-full md:w-auto">
-          <button @click="submitForm" :disabled="!selectedGateway || !isFormValid" class="inline-flex items-center justify-center gap-2 w-40 h-12 text-base px-0 py-0 rounded-lg bg-gradient-to-r from-purple-400 to-purple-600 text-white font-bold shadow hover:from-purple-500 hover:to-purple-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+          <button :disabled="!selectedGateway || !isFormValid" class="inline-flex items-center justify-center gap-2 w-40 h-12 text-base px-0 py-0 rounded-lg bg-gradient-to-r from-purple-400 to-purple-600 text-white font-bold shadow hover:from-purple-500 hover:to-purple-700 transition disabled:opacity-50 disabled:cursor-not-allowed" @click="submitForm">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
             ثبت درگاه
           </button>

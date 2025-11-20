@@ -3,7 +3,7 @@
     <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto border-2 border-blue-200">
       <!-- هدر مودال -->
       <div class="flex items-center justify-between p-6 border-b border-blue-200 text-right">
-        <button @click="closeModal" class="text-gray-400 hover:text-gray-600">
+        <button class="text-gray-400 hover:text-gray-600" @click="closeModal">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
           </svg>
@@ -14,7 +14,7 @@
       </div>
 
       <!-- فرم ویرایش آدرس -->
-      <form @submit.prevent="handleSubmit" class="p-6 space-y-4 text-right">
+      <form class="p-6 space-y-4 text-right" @submit.prevent="handleSubmit">
         <!-- ردیف اول: نام دریافت‌کننده -->
         <div>
           <label for="recipient_name" class="block text-sm font-medium text-gray-700 mb-2">
@@ -139,8 +139,8 @@
             <div class="flex items-center space-x-3 space-x-reverse">
               <button
                 type="button"
-                @click="closeModal"
                 class="px-3 py-1 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-teal-500"
+                @click="closeModal"
               >
                 انصراف
               </button>

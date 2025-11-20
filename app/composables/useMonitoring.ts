@@ -3,7 +3,7 @@
  * Access monitoring and logging data
  */
 
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useApiClient } from '~/utils/api'
 import { getSafeErrorMessage } from '~/utils/errorHandler'
 
@@ -32,14 +32,45 @@ export interface ActivityLog {
   status: 'success' | 'failure'
 }
 
+export interface ErrorStats {
+  total: number
+  bySeverity: Record<string, number>
+  resolved: number
+  [key: string]: unknown
+}
+
+export interface PerformanceSummary {
+  avgDuration: number
+  errorRate: number
+  [key: string]: unknown
+}
+
+export interface PerformanceHealth {
+  status: 'healthy' | 'warning' | 'critical'
+  issues: string[]
+  [key: string]: unknown
+}
+
+interface DashboardResponse {
+  errors: {
+    recent: ErrorLog[]
+    stats: ErrorStats
+  }
+  performance: {
+    summary: PerformanceSummary
+    health: PerformanceHealth
+    endpoints: PerformanceStat[]
+  }
+}
+
 export const useMonitoring = () => {
   const { api } = useApiClient()
 
   // State
   const errors = ref<ErrorLog[]>([])
-  const errorStats = ref<any>(null)
-  const performance = ref<any>(null)
-  const performanceHealth = ref<any>(null)
+  const errorStats = ref<ErrorStats | null>(null)
+  const performance = ref<PerformanceSummary | null>(null)
+  const performanceHealth = ref<PerformanceHealth | null>(null)
   const endpoints = ref<PerformanceStat[]>([])
   const activities = ref<ActivityLog[]>([])
   const loading = ref(false)
@@ -71,7 +102,7 @@ export const useMonitoring = () => {
     error.value = null
 
     try {
-      const response = await api.get<any>('/api/admin/monitoring/errors/stats')
+      const response = await api.get<ErrorStats>('/api/admin/monitoring/errors/stats')
       errorStats.value = response
     } catch (err) {
       error.value = getSafeErrorMessage(err)
@@ -89,7 +120,7 @@ export const useMonitoring = () => {
     error.value = null
 
     try {
-      const response = await api.get<any>('/api/admin/monitoring/performance')
+      const response = await api.get<PerformanceSummary>('/api/admin/monitoring/performance')
       performance.value = response
     } catch (err) {
       error.value = getSafeErrorMessage(err)
@@ -107,7 +138,7 @@ export const useMonitoring = () => {
     error.value = null
 
     try {
-      const response = await api.get<any>('/api/admin/monitoring/performance/health')
+      const response = await api.get<PerformanceHealth>('/api/admin/monitoring/performance/health')
       performanceHealth.value = response
     } catch (err) {
       error.value = getSafeErrorMessage(err)
@@ -163,7 +194,7 @@ export const useMonitoring = () => {
     error.value = null
 
     try {
-      const response = await api.get<any>('/api/admin/monitoring/dashboard')
+      const response = await api.get<DashboardResponse>('/api/admin/monitoring/dashboard')
       errors.value = response.errors.recent
       errorStats.value = response.errors.stats
       performance.value = response.performance.summary

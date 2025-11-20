@@ -31,7 +31,8 @@
               </div>
             </td>
             <td class="py-4 px-4">
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" 
+              <span
+class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" 
                     :class="getTypeClass(bot.type)">
                 {{ bot.type }}
               </span>
@@ -64,16 +65,16 @@
             <td class="py-4 px-4 text-gray-600 text-sm">{{ bot.lastUpdate }}</td>
             <td class="py-4 px-4">
               <div class="flex items-center space-x-2 space-x-reverse">
-                <button @click="$emit('edit', bot)" class="text-gray-500 hover:text-blue-600" title="ویرایش">
+                <button class="text-gray-500 hover:text-blue-600" title="ویرایش" @click="$emit('edit', bot)">
                   <span class="text-lg">✏️</span>
                 </button>
-                <button @click="$emit('test', bot)" class="text-gray-500 hover:text-green-600" title="تست">
+                <button class="text-gray-500 hover:text-green-600" title="تست" @click="$emit('test', bot)">
                   <span class="text-lg">🧪</span>
                 </button>
-                <button @click="$emit('analytics', bot)" class="text-gray-500 hover:text-purple-600" title="آمار">
+                <button class="text-gray-500 hover:text-purple-600" title="آمار" @click="$emit('analytics', bot)">
                   <span class="text-lg">📊</span>
                 </button>
-                <button @click="$emit('delete', bot.id)" class="text-gray-500 hover:text-red-600" title="حذف">
+                <button class="text-gray-500 hover:text-red-600" title="حذف" @click="$emit('delete', bot.id)">
                   <span class="text-lg">🗑️</span>
                 </button>
               </div>
@@ -94,7 +95,7 @@
 
 <script setup>
 // Props
-const props = defineProps({
+defineProps({
   chatbots: {
     type: Array,
     required: true
@@ -102,7 +103,7 @@ const props = defineProps({
 })
 
 // Emits
-const emit = defineEmits(['edit', 'test', 'analytics', 'delete'])
+defineEmits(['edit', 'test', 'analytics', 'delete'])
 
 // توابع
 function getTypeClass(type) {

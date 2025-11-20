@@ -5,7 +5,7 @@ import type { RouteLocationNormalized } from 'vue-router'
 // تعریف navigateTo برای Nuxt 3
 declare const navigateTo: (to: string) => Promise<void>
 
-export default defineNuxtRouteMiddleware((to: RouteLocationNormalized, from: RouteLocationNormalized) => {
+export default defineNuxtRouteMiddleware((to: RouteLocationNormalized, _from: RouteLocationNormalized) => {
   const authStore = useAuthStore()
 
   // بارگذاری داده‌های ذخیره‌شده

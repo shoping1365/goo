@@ -37,8 +37,10 @@ declare const $fetch: <T = unknown>(url: string, options?: { credentials?: strin
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import type { User } from '~/types/user';
 
-const props = defineProps<{ user: any }>()
+const props = defineProps<{ user: User }>()
+defineEmits(['view-all-bank-info']);
 
 type BankRow = {
   id: number
@@ -49,16 +51,24 @@ type BankRow = {
   isVerified?: boolean
 }
 
+interface RawBankInfo {
+  id: number;
+  bank_name?: string;
+  bankName?: string;
+  card_number_last4?: string;
+  [key: string]: unknown;
+}
+
 const bankAccounts = ref<BankRow[]>([])
 
 async function loadBankAccounts(userId?: number | string) {
   if (!userId) return
-  const res = await $fetch(`/api/users/${userId}/bank-accounts`, { credentials: 'include' }) as any[]
+  const res = await $fetch<RawBankInfo[]>(`/api/users/${userId}/bank-accounts`, { credentials: 'include' })
   bankAccounts.value = (res || []).map(a => ({
     id: a.id,
-    bankName: a.bank_name || a.bankName,
+    bankName: (a.bank_name as string) || (a.bankName as string),
     cardNumber: a.card_number_last4 ? `****-****-****-${a.card_number_last4}` : '',
-    shebaNumber: a.iban || a.IBAN,
+    shebaNumber: (a.iban as string) || (a.IBAN as string),
     accountHolder: props.user?.name || props.user?.username,
     isVerified: !!a.verified_at
   }))

@@ -35,7 +35,8 @@
                       <span class="text-xs text-gray-500">{{ formatDateFa(o.created_at) }}</span>
                     </div>
                     <div class="mt-2 flex items-center gap-2 flex-wrap">
-                      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs border"
+                      <span
+class="inline-flex items-center px-2 py-0.5 rounded-full text-xs border"
                             :class="statusClass(o.status)">
                         {{ statusLabel(o.status) }}
                       </span>

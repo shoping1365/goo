@@ -13,25 +13,37 @@
           <div class="text-xs text-gray-400 mt-1">کد: {{ item.sku }}</div>
         </div>
         <div class="flex items-center gap-2">
-          <button @click="decrease(item)" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-lg font-bold">-</button>
+          <button class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-lg font-bold" @click="decrease(item)">-</button>
           <span class="w-8 text-center">{{ item.qty }}</span>
-          <button @click="increase(item)" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-lg font-bold">+</button>
+          <button class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-lg font-bold" @click="increase(item)">+</button>
         </div>
         <div class="w-24 text-center font-bold text-base text-blue-600">{{ formatPrice(item.price * item.qty) }}</div>
-        <button @click="remove(item)" class="ml-2 text-red-500 hover:text-red-700"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        <button class="ml-2 text-red-500 hover:text-red-700" @click="remove(item)"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-const items = ref([
+<script setup lang="ts">
+import { ref } from 'vue';
+
+interface CartItem {
+  id: number;
+  name: string;
+  variant: string;
+  sku: string;
+  image: string;
+  price: number;
+  qty: number;
+}
+
+const items = ref<CartItem[]>([
   { id: 1, name: 'گوشی موبایل سامسونگ', variant: '128GB - مشکی', sku: 'SM-A123', image: '/public/statics/images/sample1.jpg', price: 18500000, qty: 1 },
   { id: 2, name: 'هدفون بی‌سیم سونی', variant: 'WH-1000XM4', sku: 'SONY-1000XM4', image: '/public/statics/images/sample2.jpg', price: 9500000, qty: 2 },
 ])
-function increase(item) { item.qty++ }
-function decrease(item) { if (item.qty > 1) item.qty-- }
-function remove(item) { items.value = items.value.filter(i => i.id !== item.id) }
-function formatPrice(val) { return val.toLocaleString('fa-IR') + ' تومان' }
+
+function increase(item: CartItem) { item.qty++ }
+function decrease(item: CartItem) { if (item.qty > 1) item.qty-- }
+function remove(item: CartItem) { items.value = items.value.filter(i => i.id !== item.id) }
+function formatPrice(val: number) { return val.toLocaleString('fa-IR') + ' تومان' }
 </script> 

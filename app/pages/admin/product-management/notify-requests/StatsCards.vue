@@ -57,7 +57,7 @@
 import TemplateCard from '@/components/common/TemplateCard.vue';
 import { useNotifyRequests } from '~/composables/useNotifyRequests';
 
-const { totalRequests, pendingRequests, completedRequests, todayRequests, successRate } = useNotifyRequests()
+const { totalRequests, pendingRequests, completedRequests, todayRequests } = useNotifyRequests()
 </script>
 
 <style scoped>

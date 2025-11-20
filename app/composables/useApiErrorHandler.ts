@@ -1,10 +1,17 @@
 import { useAuth } from '~/composables/useAuth'
 
+interface ApiError {
+  statusCode?: number
+  status?: number
+  statusMessage?: string
+  [key: string]: unknown
+}
+
 export const useApiErrorHandler = () => {
      const { refreshToken, logout } = useAuth()
 
      // بررسی و مدیریت انقضای توکن
-     const handleTokenExpiry = (error: any): boolean => {
+     const handleTokenExpiry = (error: ApiError): boolean => {
           // بررسی خطاهای مربوط به احراز هویت
           if (error?.statusCode === 401 || error?.status === 401) {
                // تلاش برای تازه‌سازی توکن
@@ -20,7 +27,7 @@ export const useApiErrorHandler = () => {
      }
 
      // مدیریت خطاهای API
-     const handleApiError = (error: any) => {
+     const handleApiError = (error: ApiError) => {
           console.error('خطای API:', error)
 
           // بررسی خطای احراز هویت
@@ -34,7 +41,7 @@ export const useApiErrorHandler = () => {
                // می‌توانید notification یا toast نمایش دهید
           } else if (error?.statusCode === 404) {
                console.error('منبع یافت نشد')
-          } else if (error?.statusCode >= 400 && error?.statusCode < 500) {
+          } else if (error?.statusCode && error.statusCode >= 400 && error.statusCode < 500) {
                console.error('خطای درخواست:', error.statusMessage)
           }
 
@@ -45,8 +52,8 @@ export const useApiErrorHandler = () => {
      const safeApiCall = async <T>(apiCall: () => Promise<T>): Promise<T | null> => {
           try {
                return await apiCall()
-          } catch (error: any) {
-               if (handleApiError(error)) {
+          } catch (error) {
+               if (handleApiError(error as ApiError)) {
                     return null // خطای احراز هویت مدیریت شد
                }
                throw error // سایر خطاها را دوباره پرتاب کن

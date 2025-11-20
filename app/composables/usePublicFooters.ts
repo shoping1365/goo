@@ -1,5 +1,5 @@
-import { ref, readonly } from 'vue'
-import type { Footer, FooterLayer } from '~/types/footer'
+import { readonly, ref } from 'vue'
+import type { Footer } from '~/types/footer'
 
 interface ApiResponse<T> {
      success: boolean

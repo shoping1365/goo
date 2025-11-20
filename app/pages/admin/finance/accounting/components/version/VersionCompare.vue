@@ -8,8 +8,8 @@
       </div>
       <div class="flex items-center space-x-3 space-x-reverse">
         <button
-          @click="exportComparison"
           class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          @click="exportComparison"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -60,8 +60,8 @@
 
       <div class="mt-4 flex items-center justify-center">
         <button
-          @click="swapVersions"
           class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          @click="swapVersions"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
@@ -159,11 +159,11 @@
         <button
           v-for="filter in diffFilters"
           :key="filter.type"
-          @click="toggleDiffFilter(filter.type)"
           class="px-3 py-1 text-sm font-medium rounded-full transition-colors"
           :class="activeDiffFilters.includes(filter.type)
             ? 'bg-blue-100 text-blue-700 border border-blue-200'
             : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'"
+          @click="toggleDiffFilter(filter.type)"
         >
           {{ filter.label }}
           <span class="text-xs text-gray-500 mr-1">({{ filter.count }})</span>

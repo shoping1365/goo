@@ -1,7 +1,7 @@
 <template>
   <div v-if="member" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md relative">
-      <button @click="$emit('close')" class="absolute left-4 top-6 text-gray-400 hover:text-gray-600 text-2xl">×</button>
+      <button class="absolute left-4 top-6 text-gray-400 hover:text-gray-600 text-2xl" @click="$emit('close')">×</button>
       <div class="flex flex-col items-center mb-6">
         <img :src="member.avatar" :alt="member.name" class="w-20 h-20 rounded-full mb-2">
         <h3 class="text-xl font-bold text-gray-900">{{ member.name }}</h3>
@@ -33,8 +33,8 @@
         </div>
       </div>
       <div class="flex justify-end space-x-3 space-x-reverse">
-        <button @click="$emit('edit', member)" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">ویرایش</button>
-        <button @click="$emit('close')" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors">بستن</button>
+        <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors" @click="$emit('edit', member)">ویرایش</button>
+        <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors" @click="$emit('close')">بستن</button>
       </div>
     </div>
   </div>

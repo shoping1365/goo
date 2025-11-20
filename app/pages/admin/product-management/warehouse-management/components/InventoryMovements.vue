@@ -12,7 +12,7 @@
         </select>
         <input v-model.number="filters.product" placeholder="ID محصول" class="rounded px-2 py-1 bg-white shadow w-28"/>
         <input v-model.number="filters.warehouse" placeholder="ID انبار" class="rounded px-2 py-1 bg-white shadow w-28"/>
-        <button @click="load" class="rounded px-3 py-1 bg-gray-100 hover:bg-gray-200">اعمال فیلتر</button>
+        <button class="rounded px-3 py-1 bg-gray-100 hover:bg-gray-200" @click="load">اعمال فیلتر</button>
       </div>
     </div>
     <div class="overflow-x-auto">
@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const items = ref([])
 const filters = ref({ type: '', product: undefined, warehouse: undefined })
@@ -56,7 +56,7 @@ async function load() {
     if (filters.value.product) q.append('product_id', String(filters.value.product))
     if (filters.value.warehouse) q.append('warehouse_id', String(filters.value.warehouse))
     items.value = await $fetch(`/api/admin/inventory-movements?${q.toString()}`)
-  } catch (e) {
+  } catch {
     items.value = []
   }
 }

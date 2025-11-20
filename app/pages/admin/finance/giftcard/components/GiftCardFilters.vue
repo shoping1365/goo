@@ -9,14 +9,14 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button 
-            @click="resetAllFilters"
             class="px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            @click="resetAllFilters"
           >
             پاک کردن همه فیلترها
           </button>
           <button 
-            @click="applyFilters"
             class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            @click="applyFilters"
           >
             اعمال فیلترها
           </button>
@@ -210,8 +210,8 @@
               <button 
                 v-for="range in amountRanges" 
                 :key="range.id"
-                @click="setAmountRange(range)"
                 class="px-3 py-2 text-xs border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                @click="setAmountRange(range)"
               >
                 {{ range.label }}
               </button>
@@ -333,8 +333,8 @@
               <button 
                 v-for="period in createdDatePeriods" 
                 :key="period.id"
-                @click="setCreatedDatePeriod(period)"
                 class="w-full text-right px-2 py-1 text-xs border border-gray-300 rounded hover:bg-gray-50"
+                @click="setCreatedDatePeriod(period)"
               >
                 {{ period.label }}
               </button>
@@ -372,8 +372,8 @@
               <button 
                 v-for="period in expiryDatePeriods" 
                 :key="period.id"
-                @click="setExpiryDatePeriod(period)"
                 class="w-full text-right px-2 py-1 text-xs border border-gray-300 rounded hover:bg-gray-50"
+                @click="setExpiryDatePeriod(period)"
               >
                 {{ period.label }}
               </button>
@@ -411,8 +411,8 @@
               <button 
                 v-for="period in deliveryDatePeriods" 
                 :key="period.id"
-                @click="setDeliveryDatePeriod(period)"
                 class="w-full text-right px-2 py-1 text-xs border border-gray-300 rounded hover:bg-gray-50"
+                @click="setDeliveryDatePeriod(period)"
               >
                 {{ period.label }}
               </button>
@@ -450,8 +450,8 @@
               <button 
                 v-for="period in lastUsedDatePeriods" 
                 :key="period.id"
-                @click="setLastUsedDatePeriod(period)"
                 class="w-full text-right px-2 py-1 text-xs border border-gray-300 rounded hover:bg-gray-50"
+                @click="setLastUsedDatePeriod(period)"
               >
                 {{ period.label }}
               </button>

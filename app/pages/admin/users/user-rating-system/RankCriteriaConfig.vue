@@ -2,7 +2,7 @@
   <div class="w-full max-w-md">
     <div class="flex flex-row items-center justify-between mb-4">
       <h3 class="font-bold">مدیریت معیارهای امتیازدهی</h3>
-      <button @click="addCritDialog = true" class="px-2 py-1 text-xs rounded bg-blue-600 text-white">افزودن معیار</button>
+      <button class="px-2 py-1 text-xs rounded bg-blue-600 text-white" @click="addCritDialog = true">افزودن معیار</button>
     </div>
     <table class="min-w-full text-sm text-right border border-gray-200 rounded-lg overflow-hidden">
       <thead class="bg-gray-50">
@@ -18,7 +18,7 @@
           <td class="px-2 py-2 border-b">{{ crit.label }}</td>
           <td class="px-2 py-2 border-b">{{ crit.point }}</td>
           <td class="px-2 py-2 border-b">
-            <input type="checkbox" v-model="crit.active" @change="$emit('editCriterion',{idx, ...crit})"/>
+            <input v-model="crit.active" type="checkbox" @change="$emit('editCriterion',{idx, ...crit})"/>
           </td>
           <td class="px-2 py-2 border-b">
             <button class="text-blue-600 text-xs mr-2" @click="startEdit(idx)">ویرایش</button>
@@ -34,8 +34,8 @@
       <label>امتیاز:</label>
       <input v-model.number="critForm.point" type="number" class="input" />
       <div class="mt-2 flex gap-2">
-        <button @click="saveCriterion" class="bg-blue-500 text-white px-2 rounded">ذخیره</button>
-        <button @click="resetForm" class="bg-gray-200 px-2 rounded">انصراف</button>
+        <button class="bg-blue-500 text-white px-2 rounded" @click="saveCriterion">ذخیره</button>
+        <button class="bg-gray-200 px-2 rounded" @click="resetForm">انصراف</button>
       </div>
     </div>
   </div>

@@ -16,8 +16,8 @@
             </div>
           </div>
           <button 
-            @click="$emit('close')" 
-            class="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center hover:bg-opacity-30 transition-all duration-200"
+            class="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center hover:bg-opacity-30 transition-all duration-200" 
+            @click="$emit('close')"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -28,7 +28,7 @@
 
       <!-- Form Content -->
       <div class="p-6">
-        <form @submit.prevent="savePattern" class="space-y-6">
+        <form class="space-y-6" @submit.prevent="savePattern">
           <!-- Basic Information Section -->
           <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
             <div class="flex items-center space-x-2 space-x-reverse mb-3">
@@ -44,8 +44,8 @@
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">شناسه پترن</label>
                 <input 
-                  type="number" 
                   v-model="form.fixedId" 
+                  type="number" 
                   :disabled="!!props.editingPattern"
                   class="block w-full px-3 py-2 rounded-lg border border-gray-200 shadow-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-200 focus:ring-opacity-50 transition-all duration-200"
                   placeholder="شناسه خودکار"
@@ -55,8 +55,8 @@
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">نام پترن</label>
               <input 
-                type="text" 
                 v-model="form.name" 
+                type="text" 
                 required 
                   class="block w-full px-3 py-2 rounded-lg border border-gray-200 shadow-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-200 focus:ring-opacity-50 transition-all duration-200"
                   placeholder="مثال: تایید سفارش"
@@ -96,13 +96,13 @@
             </div>
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-2">هدف/آیتم</label>
-              <select v-model="form.feature" @change="applyDefaults" class="block w-full px-3 py-2 rounded-lg border border-gray-200 shadow-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-200">
-                <optgroup label="مشتری" v-if="form.scope === 'customer'">
+              <select v-model="form.feature" class="block w-full px-3 py-2 rounded-lg border border-gray-200 shadow-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-200" @change="applyDefaults">
+                <optgroup v-if="form.scope === 'customer'" label="مشتری">
                   <option value="auth_otp">کد تأیید ورود</option>
                   <option value="order_confirmation">تایید سفارش</option>
                   <option value="order_shipped">ارسال سفارش</option>
                 </optgroup>
-                <optgroup label="مدیر" v-if="form.scope === 'manager'">
+                <optgroup v-if="form.scope === 'manager'" label="مدیر">
                   <option value="admin_failover">اعلان خطای سیستم</option>
                   <option value="low_stock">کمبود موجودی</option>
                   <option value="admin_order">اعلان سفارشات به مدیر</option>
@@ -110,7 +110,7 @@
                   <option value="gateway_test">تست ارسال درگاه</option>
                 </optgroup>
               </select>
-              <p class="text-xs text-gray-500 mt-1" v-if="helperText">{{ helperText }}</p>
+              <p v-if="helperText" class="text-xs text-gray-500 mt-1">{{ helperText }}</p>
             </div>
           </div>
           
@@ -141,8 +141,8 @@
           <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">کد الگو</label>
             <input 
-              type="text" 
               v-model="form.patternCode" 
+              type="text" 
               required 
                   class="block w-full px-3 py-2 rounded-lg border border-gray-200 shadow-sm focus:border-green-400 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50 transition-all duration-200"
               placeholder="مثال: order_confirmation"
@@ -216,8 +216,8 @@
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">حداکثر طول</label>
               <input 
-                type="number" 
                 v-model="form.maxLength" 
+                type="number" 
                   class="block w-full px-3 py-2 rounded-lg border border-gray-200 shadow-sm focus:border-purple-400 focus:ring-2 focus:ring-purple-200 focus:ring-opacity-50 transition-all duration-200"
                 placeholder="160"
               >
@@ -237,9 +237,9 @@
           <!-- Action Buttons -->
           <div class="flex items-center justify-end space-x-4 space-x-reverse pt-4 border-t border-gray-200">
             <button 
-              @click="$emit('close')" 
-              type="button"
+              type="button" 
               class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all duration-200 font-medium"
+              @click="$emit('close')"
             >
               انصراف
             </button>

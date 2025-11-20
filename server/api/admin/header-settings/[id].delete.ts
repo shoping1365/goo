@@ -12,7 +12,7 @@ export default defineEventHandler(async (event): Promise<DeleteResponse> => {
     const id = getRouterParam(event, 'id')
     const config = useRuntimeConfig()
 
-    console.log('درخواست حذف هدر:', id)
+    // console.log('درخواست حذف هدر:', id)
 
     // دریافت cookies از درخواست
     const cookies = parseCookies(event)
@@ -35,7 +35,7 @@ export default defineEventHandler(async (event): Promise<DeleteResponse> => {
 
     const responseData = await response.json()
 
-    console.log('پاسخ حذف هدر:', responseData)
+    // console.log('پاسخ حذف هدر:', responseData)
 
     return {
       success: true,
@@ -43,7 +43,7 @@ export default defineEventHandler(async (event): Promise<DeleteResponse> => {
     }
 
   } catch (error: unknown) {
-    console.error('خطا در حذف هدر:', error)
+    // console.error('خطا در حذف هدر:', error)
 
     // اگر خطا از سرور Go آمده باشد
     const errorWithData = error as { data?: { message?: string; error?: string }; statusCode?: number }

@@ -17,7 +17,8 @@
       <div v-for="message in displayedMessages" :key="message.id" class="border rounded-lg p-6 hover:bg-gray-50">
         <div class="flex justify-between items-start mb-2">
           <div class="flex items-center gap-2">
-            <span class="px-2 py-1 rounded text-xs font-bold" :class="{
+            <span
+class="px-2 py-1 rounded text-xs font-bold" :class="{
               'bg-green-100 text-green-700': message.type === 'success',
               'bg-red-100 text-red-700': message.type === 'error',
               'bg-blue-100 text-blue-700': message.type === 'info'
@@ -36,7 +37,8 @@
         <div v-for="message in messages" :key="message.id" class="border rounded-lg p-6 hover:bg-gray-50">
           <div class="flex justify-between items-start mb-2">
             <div class="flex items-center gap-2">
-              <span class="px-2 py-1 rounded text-xs font-bold" :class="{
+              <span
+class="px-2 py-1 rounded text-xs font-bold" :class="{
                 'bg-green-100 text-green-700': message.type === 'success',
                 'bg-red-100 text-red-700': message.type === 'error',
                 'bg-blue-100 text-blue-700': message.type === 'info'
@@ -52,28 +54,44 @@
   </div>
 </template>
 
-<script lang="ts">
-declare const $fetch: <T = unknown>(url: string, options?: { credentials?: string }) => Promise<T>
-</script>
-
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import ViewAllModal from '~/components/admin/modals/ViewAllModal.vue';
+import type { User } from '~/types/user';
 
-const props = defineProps<{ user: any }>()
+interface Message {
+  id: number | string;
+  type: string;
+  content: string;
+  date: string;
+  sender: string;
+}
+
+interface NotificationApiResponse {
+  id?: number | string;
+  status?: string;
+  title?: string;
+  body?: string;
+  sent_at?: string;
+  created_at?: string;
+  source?: string;
+  [key: string]: unknown;
+}
+
+const props = defineProps<{ user: User }>()
 const showAll = ref(false)
-const messages = ref<any[]>([])
+const messages = ref<Message[]>([])
 
 function toFaDate(d?: string | Date | null) {
   if (!d) return '-'
-  try { return new Date(d as any).toLocaleDateString('fa-IR') } catch { return '-' }
+  try { return new Date(d as string).toLocaleDateString('fa-IR') } catch { return '-' }
 }
 
 async function loadMessages(userId?: number | string) {
   if (!userId) return
-  const res: any[] = await $fetch(`/api/users/${userId}/notifications?limit=8`, { credentials: 'include' })
+  const res = await $fetch<NotificationApiResponse[]>(`/api/users/${userId}/notifications?limit=8`, { credentials: 'include' })
   messages.value = (res || []).map(m => ({
-    id: m.id,
+    id: m.id || Math.random(), // Ensure ID exists
     type: m.status === 'failed' ? 'error' : (m.status === 'sent' ? 'success' : 'info'),
     content: m.title || m.body || '-',
     date: toFaDate(m.sent_at || m.created_at),
@@ -88,4 +106,4 @@ function sendNewMessage() {
 const displayedMessages = computed(() => showAll.value ? messages.value : messages.value.slice(0, 5))
 
 watch(() => props.user?.id, (id) => loadMessages(id), { immediate: true })
-</script> 
+</script>

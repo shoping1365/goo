@@ -3,58 +3,58 @@
     <div class="bg-white rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
       <div class="flex justify-between items-center mb-6">
         <h3 class="text-lg font-bold text-gray-900">ایجاد گیفت کارت جدید</h3>
-        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">
+        <button class="text-gray-400 hover:text-gray-600" @click="$emit('close')">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
 
-      <form @submit.prevent="handleSubmit" class="space-y-6">
+      <form class="space-y-6" @submit.prevent="handleSubmit">
         <!-- تب‌های ایجاد -->
         <div class="border-b border-gray-200">
           <nav class="-mb-px flex space-x-8 space-x-reverse">
             <button
               type="button"
-              @click="activeTab = 'basic'"
               :class="{
                 'border-blue-500 text-blue-600': activeTab === 'basic',
                 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'basic'
               }"
               class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm"
+              @click="activeTab = 'basic'"
             >
               اطلاعات پایه
             </button>
             <button
               type="button"
-              @click="activeTab = 'design'"
               :class="{
                 'border-blue-500 text-blue-600': activeTab === 'design',
                 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'design'
               }"
               class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm"
+              @click="activeTab = 'design'"
             >
               طراحی و ظاهر
             </button>
             <button
               type="button"
-              @click="activeTab = 'recipient'"
               :class="{
                 'border-blue-500 text-blue-600': activeTab === 'recipient',
                 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'recipient'
               }"
               class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm"
+              @click="activeTab = 'recipient'"
             >
               گیرنده و ارسال
             </button>
             <button
               type="button"
-              @click="activeTab = 'advanced'"
               :class="{
                 'border-blue-500 text-blue-600': activeTab === 'advanced',
                 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'advanced'
               }"
               class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm"
+              @click="activeTab = 'advanced'"
             >
               تنظیمات پیشرفته
             </button>
@@ -169,9 +169,9 @@
           <!-- تولید خودکار کد -->
           <div class="flex items-center space-x-4 space-x-reverse">
             <input 
-              type="checkbox" 
-              v-model="formData.autoGenerateCode" 
               id="autoGenerateCode" 
+              v-model="formData.autoGenerateCode" 
+              type="checkbox" 
               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
             <label for="autoGenerateCode" class="block text-sm text-gray-900">تولید خودکار کد منحصر به فرد</label>
@@ -407,9 +407,9 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
               <div v-for="category in availableCategories" :key="category.id" class="flex items-center">
                 <input 
+                  :id="'category-' + category.id" 
+                  v-model="formData.allowedCategories"
                   type="checkbox" 
-                  :id="'category-' + category.id"
-                  v-model="formData.allowedCategories" 
                   :value="category.id"
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
@@ -426,27 +426,27 @@
             <div class="space-y-2">
               <div class="flex items-center">
                 <input 
-                  type="checkbox" 
-                  v-model="formData.requireVerification" 
                   id="requireVerification" 
+                  v-model="formData.requireVerification" 
+                  type="checkbox" 
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label for="requireVerification" class="mr-2 block text-sm text-gray-900">نیاز به تأیید هویت</label>
               </div>
               <div class="flex items-center">
                 <input 
-                  type="checkbox" 
-                  v-model="formData.allowPartialUsage" 
                   id="allowPartialUsage" 
+                  v-model="formData.allowPartialUsage" 
+                  type="checkbox" 
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label for="allowPartialUsage" class="mr-2 block text-sm text-gray-900">اجازه استفاده جزئی</label>
               </div>
               <div class="flex items-center">
                 <input 
-                  type="checkbox" 
-                  v-model="formData.autoRenew" 
                   id="autoRenew" 
+                  v-model="formData.autoRenew" 
+                  type="checkbox" 
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label for="autoRenew" class="mr-2 block text-sm text-gray-900">تمدید خودکار</label>
@@ -459,30 +459,30 @@
         <div class="flex justify-end space-x-3 space-x-reverse pt-6 border-t border-gray-200">
           <button 
             type="button" 
-            @click="$emit('close')"
             class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            @click="$emit('close')"
           >
             انصراف
           </button>
           <button 
-            type="button" 
-            @click="previousTab"
-            v-if="activeTab !== 'basic'"
+            v-if="activeTab !== 'basic'" 
+            type="button"
             class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            @click="previousTab"
           >
             قبلی
           </button>
           <button 
-            type="button" 
-            @click="nextTab"
-            v-if="activeTab !== 'advanced'"
+            v-if="activeTab !== 'advanced'" 
+            type="button"
             class="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            @click="nextTab"
           >
             بعدی
           </button>
           <button 
-            type="submit" 
-            v-if="activeTab === 'advanced'"
+            v-if="activeTab === 'advanced'" 
+            type="submit"
             :disabled="isSubmitting"
             class="px-6 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50"
           >

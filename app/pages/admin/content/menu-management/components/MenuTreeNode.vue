@@ -1,5 +1,6 @@
 <template>
-  <div class="menu-tree-node flex items-center gap-1 my-1 rounded hover:bg-gray-50 group"
+  <div
+class="menu-tree-node flex items-center gap-1 my-1 rounded hover:bg-gray-50 group"
        :style="{marginRight: depth * 18 + 'px'}"
        :draggable="true"
        @dragstart="handleDragStart"
@@ -9,11 +10,11 @@
     <span class="cursor-grab text-gray-400 hover:text-blue-500 px-1"><i class="fas fa-grip-vertical"></i></span>
     <span class="font-semibold text-gray-700 truncate max-w-[120px]">{{ item.title }}</span>
     <span v-if="item.badge" class="bg-red-100 text-red-700 rounded px-1 text-[10px] ml-1">{{ item.badge }}</span>
-    <button @click="$emit('edit', item)" class="text-blue-500 hover:text-blue-700 px-1"><i class="fas fa-edit"></i></button>
+    <button class="text-blue-500 hover:text-blue-700 px-1" @click="$emit('edit', item)"><i class="fas fa-edit"></i></button>
     <button 
       v-if="canDeleteMenuItem"
-      @click="$emit('delete', item)" 
-      class="text-red-500 hover:text-red-700 px-1"
+      class="text-red-500 hover:text-red-700 px-1" 
+      @click="$emit('delete', item)"
     >
       <i class="fas fa-trash"></i>
     </button>
@@ -82,7 +83,7 @@ function handleDragOver(e) {
 }
 function getPath() {
   // مسیر این آیتم در آرایه والد
-  let path = [props.index]
+  const path = [props.index]
   // در Vue 3، $parent در دسترس نیست، بنابراین از props استفاده می‌کنیم
   // این یک راه‌حل ساده است که ممکن است نیاز به بهبود داشته باشد
   return path

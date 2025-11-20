@@ -10,7 +10,7 @@ export default {
   methods: {
     async loadData() {
       try {
-        const response = await this.$api.get('/another-endpoint');
+        await this.$api.get('/another-endpoint');
         // پردازش داده‌ها
       } catch (error) {
         const msg = error.response?.data?.message || 'یک خطا رخ داده است.';

@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
           })
 
           return response
-     } catch (error) {
+     } catch {
           throw createError({
                statusCode: 500,
                statusMessage: 'خطا در دریافت تنظیمات ستون‌ها'

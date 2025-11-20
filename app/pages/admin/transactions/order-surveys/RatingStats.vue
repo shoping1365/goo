@@ -244,7 +244,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, watch } from 'vue'
 
 interface RatingStats {
   averageRating: number
@@ -408,7 +408,7 @@ const getCategoryColor = (category: string) => {
 // Watch for period changes
 watch(selectedPeriod, () => {
   // Update stats based on selected period
-  console.log('Period changed to:', selectedPeriod.value)
+  // console.log('Period changed to:', selectedPeriod.value)
 })
 </script>
 

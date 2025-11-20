@@ -85,18 +85,20 @@
   </div>
 </template>
 <script setup lang="ts">
+import TemplateCard from '@/components/common/TemplateCard.vue';
 import { computed } from 'vue';
-import TemplateCard from '@/components/common/TemplateCard.vue'
 
 // Props
+import type { User } from '~/types/user';
+
 const props = defineProps<{
-  users: any[];
-  filters: any;
+  users: User[];
+  filters: Record<string, unknown>;
 }>();
 
 // Emits
 const emit = defineEmits<{
-  'update:filters': [filters: any];
+  'update:filters': [filters: Record<string, unknown>];
   'export-excel': [];
 }>();
 

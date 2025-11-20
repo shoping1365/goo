@@ -14,14 +14,14 @@
          </div>
          
          <div class="flex space-x-3 space-x-reverse">
-           <button @click="exportData" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 space-x-reverse">
+           <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 space-x-reverse" @click="exportData">
              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
              </svg>
              <span>خروجی اکسل</span>
            </button>
            
-           <button @click="bulkAction" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+           <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="bulkAction">
              عملیات گروهی
            </button>
          </div>
@@ -81,10 +81,10 @@
            </div>
            
            <div class="flex space-x-2 space-x-reverse">
-             <button @click="clearFilters" class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
+             <button class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors" @click="clearFilters">
                پاک کردن فیلترها
              </button>
-             <button @click="applyFilters" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+             <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors" @click="applyFilters">
                اعمال فیلترها
              </button>
            </div>
@@ -97,7 +97,7 @@
            <thead class="bg-gray-50">
              <tr>
                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                 <input type="checkbox" v-model="selectAll" @change="toggleSelectAll" class="rounded border-gray-300">
+                 <input v-model="selectAll" type="checkbox" class="rounded border-gray-300" @change="toggleSelectAll">
                </th>
                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">مشتری</th>
                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">سفارش</th>
@@ -111,7 +111,7 @@
            <tbody class="bg-white divide-y divide-gray-200">
              <tr v-for="review in paginatedReviews" :key="review.id" class="hover:bg-gray-50">
                <td class="px-6 py-4 whitespace-nowrap">
-                 <input type="checkbox" v-model="selectedReviews" :value="review.id" class="rounded border-gray-300">
+                 <input v-model="selectedReviews" type="checkbox" :value="review.id" class="rounded border-gray-300">
                </td>
                
                <td class="px-6 py-4 whitespace-nowrap">
@@ -146,7 +146,7 @@
                  <div class="text-sm text-gray-900 max-w-xs truncate">
                    {{ review.comments.overallExperience || 'بدون نظر' }}
                  </div>
-                 <button @click="viewFullReview(review)" class="text-sm text-blue-600 hover:text-blue-800">
+                 <button class="text-sm text-blue-600 hover:text-blue-800" @click="viewFullReview(review)">
                    مشاهده کامل
                  </button>
                </td>
@@ -163,16 +163,16 @@
                
                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                  <div class="flex space-x-2 space-x-reverse">
-                   <button @click="approveReview(review.id)" class="text-green-600 hover:text-green-900">
+                   <button class="text-green-600 hover:text-green-900" @click="approveReview(review.id)">
                      تأیید
                    </button>
-                   <button @click="rejectReview(review.id)" class="text-red-600 hover:text-red-900">
+                   <button class="text-red-600 hover:text-red-900" @click="rejectReview(review.id)">
                      رد
                    </button>
-                   <button @click="flagReview(review.id)" class="text-yellow-600 hover:text-yellow-900">
+                   <button class="text-yellow-600 hover:text-yellow-900" @click="flagReview(review.id)">
                      علامت‌گذاری
                    </button>
-                   <button @click="deleteReview(review.id)" class="text-gray-600 hover:text-gray-900">
+                   <button class="text-gray-600 hover:text-gray-900" @click="deleteReview(review.id)">
                      حذف
                    </button>
                  </div>
@@ -197,9 +197,9 @@
          
          <div class="flex space-x-2 space-x-reverse">
            <button 
-             @click="previousPage" 
-             :disabled="currentPage === 1"
+             :disabled="currentPage === 1" 
              class="px-3 py-1 border border-gray-300 rounded text-sm disabled:opacity-50"
+             @click="previousPage"
            >
              قبلی
            </button>
@@ -209,9 +209,9 @@
            </span>
            
            <button 
-             @click="nextPage" 
-             :disabled="currentPage === totalPages"
+             :disabled="currentPage === totalPages" 
              class="px-3 py-1 border border-gray-300 rounded text-sm disabled:opacity-50"
+             @click="nextPage"
            >
              بعدی
            </button>
@@ -224,7 +224,7 @@
            <div class="mt-3">
              <div class="flex items-center justify-between mb-4">
                <h3 class="text-lg font-medium text-gray-900">جزئیات نظر</h3>
-               <button @click="closeReviewModal" class="text-gray-400 hover:text-gray-600">
+               <button class="text-gray-400 hover:text-gray-600" @click="closeReviewModal">
                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                  </svg>
@@ -300,10 +300,10 @@
              </div>
              
              <div class="flex justify-end space-x-3 space-x-reverse mt-6">
-               <button @click="closeReviewModal" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">
+               <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400" @click="closeReviewModal">
                  بستن
                </button>
-               <button @click="approveReview(selectedReview?.id)" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+               <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700" @click="approveReview(selectedReview?.id)">
                  تأیید
                </button>
              </div>
@@ -524,7 +524,7 @@
    
    const exportData = () => {
      // Implement export functionality
-     console.log('Exporting data...')
+     // console.log('Exporting data...')
    }
    
    const bulkAction = () => {
@@ -533,7 +533,7 @@
        return
      }
      // Implement bulk actions
-     console.log('Bulk action on:', selectedReviews.value)
+     // console.log('Bulk action on:', selectedReviews.value)
    }
    
    const clearFilters = () => {

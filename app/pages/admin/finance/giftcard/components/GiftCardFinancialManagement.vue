@@ -376,7 +376,8 @@
               <span>{{ financialStats.revenueTrend }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full transition-all duration-300"
+              <div
+class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full transition-all duration-300"
                    :style="{ width: financialStats.revenueTrend + '%' }"></div>
             </div>
           </div>
@@ -427,7 +428,8 @@
               <span>{{ financialStats.conversionRate }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300"
+              <div
+class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300"
                    :style="{ width: financialStats.conversionRate + '%' }"></div>
             </div>
           </div>
@@ -476,9 +478,11 @@
           <h4 class="text-sm font-medium text-gray-900 mb-3">روند مالی (6 ماه گذشته)</h4>
           <div class="flex items-end space-x-2 space-x-reverse h-32 overflow-x-auto">
             <div v-for="(month, index) in financialTrend" :key="index" class="flex-shrink-0 flex flex-col items-center min-w-16">
-              <div class="w-full bg-gray-200 rounded-t relative"
+              <div
+class="w-full bg-gray-200 rounded-t relative"
                    :style="{ height: getChartHeight(month.revenue) + 'px' }">
-                <div class="w-full bg-gradient-to-t from-green-500 to-blue-500 rounded-t transition-all duration-300 absolute bottom-0"
+                <div
+class="w-full bg-gradient-to-t from-green-500 to-blue-500 rounded-t transition-all duration-300 absolute bottom-0"
                      :style="{ height: getChartHeight(month.revenue) + 'px' }"></div>
               </div>
               <span class="text-xs text-gray-500 mt-1 text-center">{{ month.label }}</span>

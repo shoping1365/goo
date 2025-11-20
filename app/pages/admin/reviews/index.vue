@@ -14,7 +14,7 @@
           <option value="">همه امتیازها</option>
           <option v-for="r in [5,4,3,2,1]" :key="r" :value="r">{{ r }} ستاره</option>
         </select>
-        <button @click="fetchReviews" class="px-4 py-2 bg-blue-600 text-white rounded-md">اعمال فیلتر</button>
+        <button class="px-4 py-2 bg-blue-600 text-white rounded-md" @click="fetchReviews">اعمال فیلتر</button>
       </div>
     </div>
 
@@ -58,10 +58,10 @@
             <td class="px-4 py-3 text-sm text-gray-600">{{ formatDate(item.created_at) }}</td>
             <td class="px-4 py-3">
               <div class="flex flex-wrap gap-2">
-                <button v-if="item.status==='pending'" @click="approve(item)" class="px-3 py-1 text-sm bg-green-600 text-white rounded">تایید</button>
-                <button v-if="item.status!=='rejected'" @click="reject(item)" class="px-3 py-1 text-sm bg-red-600 text-white rounded">رد</button>
-                <button @click="reply(item)" class="px-3 py-1 text-sm bg-blue-600 text-white rounded">پاسخ</button>
-                <button @click="remove(item)" class="px-3 py-1 text-sm bg-gray-600 text-white rounded">حذف</button>
+                <button v-if="item.status==='pending'" class="px-3 py-1 text-sm bg-green-600 text-white rounded" @click="approve(item)">تایید</button>
+                <button v-if="item.status!=='rejected'" class="px-3 py-1 text-sm bg-red-600 text-white rounded" @click="reject(item)">رد</button>
+                <button class="px-3 py-1 text-sm bg-blue-600 text-white rounded" @click="reply(item)">پاسخ</button>
+                <button class="px-3 py-1 text-sm bg-gray-600 text-white rounded" @click="remove(item)">حذف</button>
               </div>
             </td>
           </tr>
@@ -82,6 +82,7 @@ import { onMounted, ref } from 'vue';
 
 definePageMeta({ layout: 'admin-main' })
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const items = ref<any[]>([])
 const filters = ref<{ status: string | number | ''; rating: string | number | ''; search: string }>({ status: '', rating: '', search: '' })
 
@@ -90,20 +91,24 @@ const fetchReviews = async () => {
   if (filters.value.status) params.append('status', String(filters.value.status))
   if (filters.value.rating) params.append('rating', String(filters.value.rating))
   if (filters.value.search) params.append('search', String(filters.value.search))
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const res = await $fetch('/api/admin/reviews?' + params.toString()) as any
   items.value = res?.reviews || []
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const approve = async (row: any) => {
   await $fetch(`/api/admin/reviews/${row.id}/approve`, { method: 'POST' })
   fetchReviews()
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const reject = async (row: any) => {
   await $fetch(`/api/admin/reviews/${row.id}/reject`, { method: 'POST', body: { reason: '' } })
   fetchReviews()
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const reply = async (row: any) => {
   const content = prompt('پاسخ مدیر:', row.admin_reply || '')
   if (content == null) return
@@ -111,6 +116,7 @@ const reply = async (row: any) => {
   fetchReviews()
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const remove = async (row: any) => {
   if (!confirm('حذف این نظر؟')) return
   await $fetch(`/api/admin/reviews/${row.id}`, { method: 'DELETE' })

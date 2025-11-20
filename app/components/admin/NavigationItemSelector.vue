@@ -20,8 +20,8 @@
           <input 
             type="checkbox" 
             :checked="selectedItems.includes(item.id)"
-            @change="toggleItem(item.id)"
             class="checkbox-input"
+            @change="toggleItem(item.id)"
           />
         </div>
       </div>

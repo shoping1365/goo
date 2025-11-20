@@ -100,7 +100,7 @@
               </div>
               <span class="text-sm font-medium text-gray-900">{{ file.name }}</span>
             </div>
-            <button @click="removeFile(file.id)" class="text-red-600 hover:text-red-800">
+            <button class="text-red-600 hover:text-red-800" @click="removeFile(file.id)">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
               </svg>
@@ -182,15 +182,15 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">فرمت‌های مجاز</label>
           <div class="space-y-2">
             <label class="flex items-center">
-              <input type="checkbox" v-model="settings.allowedFormats.images" class="rounded border-gray-300">
+              <input v-model="settings.allowedFormats.images" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">تصاویر (JPG, PNG, GIF)</span>
             </label>
             <label class="flex items-center">
-              <input type="checkbox" v-model="settings.allowedFormats.videos" class="rounded border-gray-300">
+              <input v-model="settings.allowedFormats.videos" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">ویدیوها (MP4, MOV)</span>
             </label>
             <label class="flex items-center">
-              <input type="checkbox" v-model="settings.allowedFormats.documents" class="rounded border-gray-300">
+              <input v-model="settings.allowedFormats.documents" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">اسناد (PDF, DOC)</span>
             </label>
           </div>
@@ -200,11 +200,11 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">فشرده‌سازی خودکار</label>
           <div class="space-y-2">
             <label class="flex items-center">
-              <input type="checkbox" v-model="settings.autoCompress" class="rounded border-gray-300">
+              <input v-model="settings.autoCompress" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">فشرده‌سازی خودکار فایل‌های بزرگ</span>
             </label>
             <label class="flex items-center">
-              <input type="checkbox" v-model="settings.keepOriginal" class="rounded border-gray-300">
+              <input v-model="settings.keepOriginal" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">نگهداری نسخه اصلی</span>
             </label>
           </div>
@@ -215,7 +215,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 
 interface UploadingFile {
   id: string
@@ -398,7 +398,7 @@ const uploadFile = async (file: File) => {
       uploadingFiles.value.splice(index, 1)
     }
     
-  } catch (error) {
+  } catch {
     uploadingFile.status = 'error'
     uploadingFile.error = 'خطا در آپلود فایل'
   }

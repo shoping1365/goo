@@ -16,7 +16,7 @@ export default defineEventHandler(async (event): Promise<HeaderResponse> => {
     const body = await readBody(event)
     const config = useRuntimeConfig()
 
-    console.log('درخواست ایجاد هدر جدید:', JSON.stringify(body, null, 2))
+    // console.log('درخواست ایجاد هدر جدید:', JSON.stringify(body, null, 2))
 
     // دریافت cookies از درخواست
     const cookies = parseCookies(event)
@@ -40,7 +40,7 @@ export default defineEventHandler(async (event): Promise<HeaderResponse> => {
 
     const responseData = await response.json()
 
-    console.log('پاسخ ایجاد هدر:', responseData)
+    // console.log('پاسخ ایجاد هدر:', responseData)
 
     return {
       success: true,
@@ -48,7 +48,7 @@ export default defineEventHandler(async (event): Promise<HeaderResponse> => {
     }
 
   } catch (error: unknown) {
-    console.error('خطا در ایجاد هدر:', error)
+    // console.error('خطا در ایجاد هدر:', error)
 
     // اگر خطا از سرور Go آمده باشد
     const errorWithData = error as { data?: { message?: string; error?: string }; statusCode?: number }

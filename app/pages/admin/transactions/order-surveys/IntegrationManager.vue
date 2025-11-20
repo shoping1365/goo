@@ -109,10 +109,10 @@
             </div>
           </div>
           <div class="flex space-x-2 space-x-reverse mt-3">
-            <button @click="configureService(service)" class="flex-1 px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+            <button class="flex-1 px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700" @click="configureService(service)">
               تنظیم
             </button>
-            <button @click="testService(service)" class="flex-1 px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700">
+            <button class="flex-1 px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700" @click="testService(service)">
               تست
             </button>
           </div>
@@ -146,10 +146,10 @@
             </div>
           </div>
           <div class="flex space-x-2 space-x-reverse mt-3">
-            <button @click="configureService(service)" class="flex-1 px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+            <button class="flex-1 px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700" @click="configureService(service)">
               تنظیم
             </button>
-            <button @click="testService(service)" class="flex-1 px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700">
+            <button class="flex-1 px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700" @click="testService(service)">
               تست
             </button>
           </div>
@@ -183,10 +183,10 @@
             </div>
           </div>
           <div class="flex space-x-2 space-x-reverse mt-3">
-            <button @click="configureService(service)" class="flex-1 px-3 py-1 bg-purple-600 text-white text-sm rounded hover:bg-purple-700">
+            <button class="flex-1 px-3 py-1 bg-purple-600 text-white text-sm rounded hover:bg-purple-700" @click="configureService(service)">
               تنظیم
             </button>
-            <button @click="syncData(service)" class="flex-1 px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700">
+            <button class="flex-1 px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700" @click="syncData(service)">
               همگام‌سازی
             </button>
           </div>
@@ -220,10 +220,10 @@
             </div>
           </div>
           <div class="flex space-x-2 space-x-reverse mt-3">
-            <button @click="configureService(service)" class="flex-1 px-3 py-1 bg-orange-600 text-white text-sm rounded hover:bg-orange-700">
+            <button class="flex-1 px-3 py-1 bg-orange-600 text-white text-sm rounded hover:bg-orange-700" @click="configureService(service)">
               تنظیم
             </button>
-            <button @click="testService(service)" class="flex-1 px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700">
+            <button class="flex-1 px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700" @click="testService(service)">
               تست
             </button>
           </div>
@@ -245,7 +245,7 @@
               </div>
               <div class="flex items-center space-x-2 space-x-reverse">
                 <span class="text-xs font-mono text-gray-600">{{ key.key.slice(0, 8) }}...</span>
-                <button @click="regenerateKey(key.id)" class="text-blue-600 hover:text-blue-800 text-xs">
+                <button class="text-blue-600 hover:text-blue-800 text-xs" @click="regenerateKey(key.id)">
                   تجدید
                 </button>
               </div>
@@ -265,10 +265,10 @@
               </div>
               <div class="text-xs text-gray-600 mb-2">{{ webhook.url }}</div>
               <div class="flex space-x-2 space-x-reverse">
-                <button @click="testWebhook(webhook.id)" class="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">
+                <button class="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700" @click="testWebhook(webhook.id)">
                   تست
                 </button>
-                <button @click="editWebhook(webhook.id)" class="px-2 py-1 bg-gray-600 text-white text-xs rounded hover:bg-gray-700">
+                <button class="px-2 py-1 bg-gray-600 text-white text-xs rounded hover:bg-gray-700" @click="editWebhook(webhook.id)">
                   ویرایش
                 </button>
               </div>
@@ -311,15 +311,15 @@
 
     <!-- Action Buttons -->
     <div class="flex justify-between">
-      <button @click="refreshIntegrations" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+      <button class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="refreshIntegrations">
         بروزرسانی اتصالات
       </button>
       
       <div class="flex space-x-3 space-x-reverse">
-        <button @click="exportIntegrations" class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+        <button class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors" @click="exportIntegrations">
           خروجی تنظیمات
         </button>
-        <button @click="saveSettings" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+        <button class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors" @click="saveSettings">
           ذخیره تنظیمات
         </button>
       </div>
@@ -617,42 +617,42 @@ const formatTime = (timestamp: Date) => {
   }).format(timestamp)
 }
 
-const configureService = (service: IntegrationService) => {
-  console.log('Configuring service:', service.name)
+const configureService = (_service: IntegrationService) => {
+  // console.log('Configuring service:', service.name)
 }
 
-const testService = (service: IntegrationService) => {
-  console.log('Testing service:', service.name)
+const testService = (_service: IntegrationService) => {
+  // console.log('Testing service:', service.name)
 }
 
-const syncData = (service: IntegrationService) => {
-  console.log('Syncing data with:', service.name)
+const syncData = (_service: IntegrationService) => {
+  // console.log('Syncing data with:', service.name)
 }
 
-const regenerateKey = (keyId: number) => {
+const regenerateKey = (_keyId: number) => {
   if (confirm('آیا از تجدید کلید API اطمینان دارید؟')) {
-    console.log('Regenerating API key:', keyId)
+    // console.log('Regenerating API key:', keyId)
   }
 }
 
-const testWebhook = (webhookId: number) => {
-  console.log('Testing webhook:', webhookId)
+const testWebhook = (_webhookId: number) => {
+  // console.log('Testing webhook:', webhookId)
 }
 
-const editWebhook = (webhookId: number) => {
-  console.log('Editing webhook:', webhookId)
+const editWebhook = (_webhookId: number) => {
+  // console.log('Editing webhook:', webhookId)
 }
 
 const refreshIntegrations = () => {
-  console.log('Refreshing integrations...')
+  // console.log('Refreshing integrations...')
 }
 
 const exportIntegrations = () => {
-  console.log('Exporting integration settings...')
+  // console.log('Exporting integration settings...')
 }
 
 const saveSettings = () => {
-  console.log('Saving integration settings...')
+  // console.log('Saving integration settings...')
 }
 
 // Expose methods for parent component

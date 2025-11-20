@@ -23,9 +23,9 @@
             </div>
           </div>
           <button 
-            @click="exportToExcel"
             class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
             :disabled="isExporting"
+            @click="exportToExcel"
           >
             {{ isExporting ? 'در حال آماده‌سازی...' : 'دانلود Excel' }}
           </button>
@@ -47,9 +47,9 @@
             </div>
           </div>
           <button 
-            @click="exportToPDF"
             class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
             :disabled="isExporting"
+            @click="exportToPDF"
           >
             {{ isExporting ? 'در حال آماده‌سازی...' : 'دانلود PDF' }}
           </button>
@@ -71,9 +71,9 @@
             </div>
           </div>
           <button 
-            @click="exportAnalytics"
             class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
             :disabled="isExporting"
+            @click="exportAnalytics"
           >
             {{ isExporting ? 'در حال آماده‌سازی...' : 'دانلود گزارش' }}
           </button>

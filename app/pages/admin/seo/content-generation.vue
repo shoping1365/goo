@@ -199,7 +199,7 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
-declare const useAuth: () => { user: any; hasPermission: (perm: string) => boolean }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const $fetch: <T = any>(url: string, options?: { method?: string; body?: any; params?: any }) => Promise<T>
 </script>
 
@@ -212,7 +212,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // Lifecycle
 onMounted(() => {
@@ -225,9 +225,11 @@ const contents = ref([])
 // دریافت محتوا از API
 const fetchContents = async () => {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = await $fetch('/api/posts?all=1') as { data?: any[] } | any[]
     const data = Array.isArray(response) ? response : (response?.data || [])
     if (Array.isArray(data) && data.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       contents.value = data.map((post: any) => ({
         id: post.id,
         title: post.title,
@@ -245,7 +247,7 @@ const fetchContents = async () => {
 }
 
 // محاسبه امتیاز SEO
-const calculateSeoScore = (post: any) => {
+const calculateSeoScore = (post: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
   let score = 0
   
   // امتیاز برای عنوان

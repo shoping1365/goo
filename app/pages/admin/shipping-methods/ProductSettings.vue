@@ -4,7 +4,7 @@
       <div class="card-header">
         <h3>تنظیمات محصول</h3>
         <div class="toggle-switch">
-          <input type="checkbox" v-model="enabled" id="productToggle" />
+          <input id="productToggle" v-model="enabled" type="checkbox" />
           <label for="productToggle"></label>
         </div>
       </div>
@@ -160,7 +160,7 @@
                         <option value="policy">سیاست شرکت</option>
                       </select>
                     </div>
-                    <button @click="removeProhibitedCategory(index)" class="remove-btn">حذف</button>
+                    <button class="remove-btn" @click="removeProhibitedCategory(index)">حذف</button>
                   </div>
                   <div class="form-group">
                     <label>توضیحات</label>
@@ -172,7 +172,7 @@
                     ></textarea>
                   </div>
                 </div>
-                <button @click="addProhibitedCategory" class="add-category-btn">+ افزودن دسته‌بندی</button>
+                <button class="add-category-btn" @click="addProhibitedCategory">+ افزودن دسته‌بندی</button>
               </div>
             </div>
 
@@ -198,10 +198,10 @@
                         <option value="low">کم</option>
                       </select>
                     </div>
-                    <button @click="removeProhibitedKeyword(index)" class="remove-btn">حذف</button>
+                    <button class="remove-btn" @click="removeProhibitedKeyword(index)">حذف</button>
                   </div>
                 </div>
-                <button @click="addProhibitedKeyword" class="add-keyword-btn">+ افزودن کلمه کلیدی</button>
+                <button class="add-keyword-btn" @click="addProhibitedKeyword">+ افزودن کلمه کلیدی</button>
               </div>
             </div>
           </div>
@@ -234,7 +234,7 @@
                         <option value="temperature">حساس به دما</option>
                       </select>
                     </div>
-                    <button @click="removeSensitiveCategory(index)" class="remove-btn">حذف</button>
+                    <button class="remove-btn" @click="removeSensitiveCategory(index)">حذف</button>
                   </div>
                   <div class="form-row">
                     <div class="form-group">
@@ -269,7 +269,7 @@
                     ></textarea>
                   </div>
                 </div>
-                <button @click="addSensitiveCategory" class="add-sensitive-category-btn">+ افزودن دسته‌بندی حساس</button>
+                <button class="add-sensitive-category-btn" @click="addSensitiveCategory">+ افزودن دسته‌بندی حساس</button>
               </div>
             </div>
           </div>
@@ -283,8 +283,8 @@
               <div class="packaging-types">
                 <label v-for="type in packagingRequirements.requiredTypes" :key="type.value" class="packaging-checkbox">
                   <input
-                      type="checkbox"
                       v-model="packagingRequirements.selectedTypes"
+                      type="checkbox"
                       :value="type.value"
                   />
                   {{ type.label }}
@@ -315,10 +315,10 @@
                         <option value="policy">سیاست شرکت</option>
                       </select>
                     </div>
-                    <button @click="removeProhibitedMaterial(index)" class="remove-btn">حذف</button>
+                    <button class="remove-btn" @click="removeProhibitedMaterial(index)">حذف</button>
                   </div>
                 </div>
-                <button @click="addProhibitedMaterial" class="add-material-btn">+ افزودن ماده ممنوعه</button>
+                <button class="add-material-btn" @click="addProhibitedMaterial">+ افزودن ماده ممنوعه</button>
               </div>
             </div>
 
@@ -344,7 +344,7 @@
                         <option value="optional">اختیاری</option>
                       </select>
                     </div>
-                    <button @click="removePackagingStandard(index)" class="remove-btn">حذف</button>
+                    <button class="remove-btn" @click="removePackagingStandard(index)">حذف</button>
                   </div>
                   <div class="form-group">
                     <label>توضیحات</label>
@@ -356,7 +356,7 @@
                     ></textarea>
                   </div>
                 </div>
-                <button @click="addPackagingStandard" class="add-standard-btn">+ افزودن استاندارد</button>
+                <button class="add-standard-btn" @click="addPackagingStandard">+ افزودن استاندارد</button>
               </div>
             </div>
 

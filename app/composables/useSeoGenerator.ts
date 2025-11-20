@@ -62,7 +62,7 @@ export interface SeoPreview {
 }
 
 // تعریف interface برای response های API
-interface ApiResponse<T = any> {
+interface ApiResponse<T = unknown> {
   data?: T
   success?: boolean
   message?: string
@@ -75,7 +75,7 @@ export const useSeoGenerator = () => {
       const res = await $fetch<ApiResponse<SeoTags>>(`/api/seo-generator/post/${postId}`)
       return res.data || null
     } catch (error) {
-      console.error('خطا در تولید تگ‌های SEO:', error)
+      console.warn('خطا در تولید تگ‌های SEO:', error)
       return null
     }
   }
@@ -89,7 +89,7 @@ export const useSeoGenerator = () => {
       })
       return res.data || null
     } catch (error) {
-      console.error('خطا در تولید تگ‌های SEO:', error)
+      console.warn('خطا در تولید تگ‌های SEO:', error)
       return null
     }
   }
@@ -109,7 +109,7 @@ export const useSeoGenerator = () => {
       })
       return res.data || null
     } catch (error) {
-      console.error('خطا در پیش‌نمایش تگ‌های SEO:', error)
+      console.warn('خطا در پیش‌نمایش تگ‌های SEO:', error)
       return null
     }
   }
@@ -231,7 +231,7 @@ export const useSeoGenerator = () => {
     // تعیین نوع اسکیما بر اساس محتوا
     const schemaType = determineSchemaType(seoData)
     
-    const schema: any = {
+    const schema: Record<string, unknown> = {
       '@context': 'https://schema.org',
       '@type': schemaType
     }
@@ -331,7 +331,7 @@ export const useSeoGenerator = () => {
   }
 
   // اضافه کردن فیلدهای خاص بر اساس نوع اسکیما
-  const addSchemaSpecificFields = (schema: any, seoData: SeoData, schemaType: string) => {
+  const addSchemaSpecificFields = (schema: Record<string, unknown>, seoData: SeoData, schemaType: string) => {
     switch (schemaType) {
       case 'NewsArticle':
         // فیلدهای خاص مقالات خبری

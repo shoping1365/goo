@@ -8,7 +8,7 @@
           <p class="text-gray-600 mt-1">مدیریت تخفیف‌های هوشمند و خودکار بر اساس رفتار کاربران</p>
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
-          <button @click="showRuleForm = true" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="showRuleForm = true">
             <span class="i-heroicons-plus ml-2"></span>
             قانون جدید
           </button>
@@ -69,8 +69,9 @@
     <!-- تب‌های مدیریت -->
     <div class="border-b border-gray-200">
       <div class="flex border-b border-gray-200 overflow-x-auto">
-        <button v-for="tab in tabs" :key="tab.value" @click="activeTab = tab.value"
-          :class="['px-6 py-3 -mb-px font-medium text-sm focus:outline-none whitespace-nowrap', activeTab === tab.value ? 'border-b-2 border-blue-600 text-blue-700' : 'text-gray-500 hover:text-blue-600']">
+        <button
+v-for="tab in tabs" :key="tab.value" :class="['px-6 py-3 -mb-px font-medium text-sm focus:outline-none whitespace-nowrap', activeTab === tab.value ? 'border-b-2 border-blue-600 text-blue-700' : 'text-gray-500 hover:text-blue-600']"
+          @click="activeTab = tab.value">
           {{ tab.label }}
         </button>
       </div>
@@ -82,13 +83,13 @@
       <div v-if="activeTab === 'rules'" class="space-y-6">
         <div class="flex justify-between items-center">
           <div class="flex items-center space-x-4 space-x-reverse">
-            <select v-model="filterPriority" @change="filterRules" class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
+            <select v-model="filterPriority" class="px-3 py-2 border border-gray-300 rounded-lg text-sm" @change="filterRules">
               <option value="">همه اولویت‌ها</option>
               <option value="high">بالا</option>
               <option value="medium">متوسط</option>
               <option value="low">پایین</option>
             </select>
-            <select v-model="filterStatus" @change="filterRules" class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
+            <select v-model="filterStatus" class="px-3 py-2 border border-gray-300 rounded-lg text-sm" @change="filterRules">
               <option value="">همه وضعیت‌ها</option>
               <option value="active">فعال</option>
               <option value="inactive">غیرفعال</option>
@@ -96,11 +97,11 @@
             </select>
           </div>
           <div class="flex items-center space-x-2 space-x-reverse">
-            <button @click="bulkAction('activate')" class="px-3 py-1 bg-green-100 text-green-700 rounded text-sm hover:bg-green-200">
+            <button class="px-3 py-1 bg-green-100 text-green-700 rounded text-sm hover:bg-green-200" @click="bulkAction('activate')">
               <span class="i-heroicons-play ml-1"></span>
               فعال‌سازی
             </button>
-            <button @click="bulkAction('deactivate')" class="px-3 py-1 bg-red-100 text-red-700 rounded text-sm hover:bg-red-200">
+            <button class="px-3 py-1 bg-red-100 text-red-700 rounded text-sm hover:bg-red-200" @click="bulkAction('deactivate')">
               <span class="i-heroicons-pause ml-1"></span>
               غیرفعال‌سازی
             </button>
@@ -123,10 +124,10 @@
                 <span :class="['px-2 py-1 rounded-full text-xs', getStatusClass(rule.status)]">
                   {{ getStatusText(rule.status) }}
                 </span>
-                <button @click="editRule(rule)" class="text-blue-600 hover:text-blue-900">
+                <button class="text-blue-600 hover:text-blue-900" @click="editRule(rule)">
                   <span class="i-heroicons-pencil-square"></span>
                 </button>
-                <button @click="deleteRule(rule)" class="text-red-600 hover:text-red-900">
+                <button class="text-red-600 hover:text-red-900" @click="deleteRule(rule)">
                   <span class="i-heroicons-trash"></span>
                 </button>
               </div>

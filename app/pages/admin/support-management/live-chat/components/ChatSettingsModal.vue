@@ -11,8 +11,8 @@
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-2xl font-bold text-gray-900">تنظیمات چت</h3>
             <button 
-              @click="$emit('close')"
               class="text-gray-400 hover:text-gray-600 transition-colors"
+              @click="$emit('close')"
             >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -26,13 +26,13 @@
               <button
                 v-for="tab in tabs"
                 :key="tab.id"
-                @click="activeTab = tab.id"
                 :class="[
                   activeTab === tab.id
                     ? 'border-blue-500 text-blue-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
                   'whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors'
                 ]"
+                @click="activeTab = tab.id"
               >
                 {{ tab.title }}
               </button>
@@ -50,11 +50,11 @@
                     <p class="text-sm text-gray-500">نمایش وضعیت آنلاین شما به کاربران</p>
                   </div>
                   <button 
-                    @click="settings.onlineStatus = !settings.onlineStatus"
                     :class="[
                       settings.onlineStatus ? 'bg-blue-600' : 'bg-gray-200',
                       'relative inline-flex h-6 w-11 items-center rounded-full transition-colors'
                     ]"
+                    @click="settings.onlineStatus = !settings.onlineStatus"
                   >
                     <span 
                       :class="[
@@ -71,11 +71,11 @@
                     <p class="text-sm text-gray-500">پخش صدای اعلان برای پیام‌های جدید</p>
                   </div>
                   <button 
-                    @click="settings.soundNotifications = !settings.soundNotifications"
                     :class="[
                       settings.soundNotifications ? 'bg-blue-600' : 'bg-gray-200',
                       'relative inline-flex h-6 w-11 items-center rounded-full transition-colors'
                     ]"
+                    @click="settings.soundNotifications = !settings.soundNotifications"
                   >
                     <span 
                       :class="[
@@ -92,11 +92,11 @@
                     <p class="text-sm text-gray-500">لرزش دستگاه برای پیام‌های جدید</p>
                   </div>
                   <button 
-                    @click="settings.vibration = !settings.vibration"
                     :class="[
                       settings.vibration ? 'bg-blue-600' : 'bg-gray-200',
                       'relative inline-flex h-6 w-11 items-center rounded-full transition-colors'
                     ]"
+                    @click="settings.vibration = !settings.vibration"
                   >
                     <span 
                       :class="[
@@ -130,11 +130,11 @@
                     <p class="text-sm text-gray-500">ارسال اعلان‌ها به ایمیل شما</p>
                   </div>
                   <button 
-                    @click="settings.emailNotifications = !settings.emailNotifications"
                     :class="[
                       settings.emailNotifications ? 'bg-blue-600' : 'bg-gray-200',
                       'relative inline-flex h-6 w-11 items-center rounded-full transition-colors'
                     ]"
+                    @click="settings.emailNotifications = !settings.emailNotifications"
                   >
                     <span 
                       :class="[
@@ -151,11 +151,11 @@
                     <p class="text-sm text-gray-500">اعلان‌های Push برای پیام‌های جدید</p>
                   </div>
                   <button 
-                    @click="settings.pushNotifications = !settings.pushNotifications"
                     :class="[
                       settings.pushNotifications ? 'bg-blue-600' : 'bg-gray-200',
                       'relative inline-flex h-6 w-11 items-center rounded-full transition-colors'
                     ]"
+                    @click="settings.pushNotifications = !settings.pushNotifications"
                   >
                     <span 
                       :class="[
@@ -200,31 +200,31 @@
                   <label class="text-sm font-medium text-gray-700">تم</label>
                   <div class="mt-2 grid grid-cols-3 gap-3">
                     <button 
-                      @click="settings.theme = 'light'"
                       :class="[
                         settings.theme === 'light' ? 'ring-2 ring-blue-500' : '',
                         'relative p-6 bg-white border border-gray-300 rounded-lg hover:bg-gray-50'
                       ]"
+                      @click="settings.theme = 'light'"
                     >
                       <div class="w-full h-8 bg-gray-100 rounded"></div>
                       <div class="mt-2 text-sm font-medium text-gray-900">روشن</div>
                     </button>
                     <button 
-                      @click="settings.theme = 'dark'"
                       :class="[
                         settings.theme === 'dark' ? 'ring-2 ring-blue-500' : '',
                         'relative p-6 bg-gray-800 border border-gray-600 rounded-lg hover:bg-gray-700'
                       ]"
+                      @click="settings.theme = 'dark'"
                     >
                       <div class="w-full h-8 bg-gray-600 rounded"></div>
                       <div class="mt-2 text-sm font-medium text-white">تاریک</div>
                     </button>
                     <button 
-                      @click="settings.theme = 'auto'"
                       :class="[
                         settings.theme === 'auto' ? 'ring-2 ring-blue-500' : '',
                         'relative p-6 bg-gradient-to-r from-gray-100 to-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50'
                       ]"
+                      @click="settings.theme = 'auto'"
                     >
                       <div class="w-full h-8 bg-gradient-to-r from-gray-200 to-gray-600 rounded"></div>
                       <div class="mt-2 text-sm font-medium text-gray-900">خودکار</div>
@@ -247,12 +247,12 @@
                     <button 
                       v-for="color in themeColors"
                       :key="color.name"
-                      @click="settings.primaryColor = color.value"
                       :class="[
                         settings.primaryColor === color.value ? 'ring-2 ring-offset-2 ring-blue-500' : '',
                         'w-8 h-8 rounded-full border-2 border-white shadow-sm'
                       ]"
                       :style="{ backgroundColor: color.value }"
+                      @click="settings.primaryColor = color.value"
                     ></button>
                   </div>
                 </div>
@@ -271,11 +271,11 @@
                     <p class="text-sm text-gray-500">نمایش زمان آخرین بازدید شما به کاربران</p>
                   </div>
                   <button 
-                    @click="settings.showLastSeen = !settings.showLastSeen"
                     :class="[
                       settings.showLastSeen ? 'bg-blue-600' : 'bg-gray-200',
                       'relative inline-flex h-6 w-11 items-center rounded-full transition-colors'
                     ]"
+                    @click="settings.showLastSeen = !settings.showLastSeen"
                   >
                     <span 
                       :class="[
@@ -292,11 +292,11 @@
                     <p class="text-sm text-gray-500">نمایش وضعیت تایپ کردن شما</p>
                   </div>
                   <button 
-                    @click="settings.showTypingStatus = !settings.showTypingStatus"
                     :class="[
                       settings.showTypingStatus ? 'bg-blue-600' : 'bg-gray-200',
                       'relative inline-flex h-6 w-11 items-center rounded-full transition-colors'
                     ]"
+                    @click="settings.showTypingStatus = !settings.showTypingStatus"
                   >
                     <span 
                       :class="[
@@ -313,11 +313,11 @@
                     <p class="text-sm text-gray-500">ذخیره تاریخچه چت‌ها</p>
                   </div>
                   <button 
-                    @click="settings.saveChatHistory = !settings.saveChatHistory"
                     :class="[
                       settings.saveChatHistory ? 'bg-blue-600' : 'bg-gray-200',
                       'relative inline-flex h-6 w-11 items-center rounded-full transition-colors'
                     ]"
+                    @click="settings.saveChatHistory = !settings.saveChatHistory"
                   >
                     <span 
                       :class="[
@@ -335,14 +335,14 @@
         <!-- Footer -->
         <div class="bg-gray-50 px-6 py-4 flex justify-end space-x-3 space-x-reverse">
           <button 
-            @click="$emit('close')"
             class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            @click="$emit('close')"
           >
             انصراف
           </button>
           <button 
-            @click="saveSettings"
             class="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            @click="saveSettings"
           >
             ذخیره تنظیمات
           </button>
@@ -353,9 +353,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const props = defineProps<{
+defineProps<{
   isOpen: boolean
 }>()
 
@@ -408,7 +408,7 @@ const tabs = ref([
 const saveSettings = () => {
   // Save settings to localStorage or API
   localStorage.setItem('chatSettings', JSON.stringify(settings.value))
-  console.log('Settings saved:', settings.value)
+  // console.log('Settings saved:', settings.value)
   emit('close')
 }
 </script>

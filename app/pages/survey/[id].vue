@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import SurveyForm from '~/components/survey/SurveyForm.vue'
 
@@ -117,14 +117,14 @@ const fetchSurveyData = async () => {
     if (data) {
       surveyData.value = data
     }
-  } catch (error) {
+  } catch {
     // Error fetching survey data
   } finally {
     loading.value = false
   }
 }
 
-const handleSurveySubmit = async (data: any) => {
+const handleSurveySubmit = async (_data: Record<string, unknown>) => {
   try {
     // Simulate API call to save survey response
     await new Promise(resolve => setTimeout(resolve, 1000))
@@ -136,7 +136,7 @@ const handleSurveySubmit = async (data: any) => {
     setTimeout(() => {
       // window.location.href = '/thank-you'
     }, 3000)
-  } catch (error) {
+  } catch {
     // Error submitting survey
   }
 }

@@ -8,7 +8,7 @@
       <div class="flex flex-col items-end space-y-2">
         <div class="flex gap-2 flex-row-reverse">
           <button class="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 shadow-md transition-all duration-200 font-semibold">پیش نمایش</button>
-          <button @click="saveBrand" class="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-md transition-all duration-200 font-semibold">ذخیره</button>
+          <button class="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-md transition-all duration-200 font-semibold" @click="saveBrand">ذخیره</button>
           <button class="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 shadow-md transition-all duration-200 font-semibold">حذف</button>
         </div>
       </div>
@@ -18,12 +18,12 @@
     <div class="bg-white rounded-lg shadow p-6 flex items-center justify-between border-b border-gray-200 mt-4 mb-6">
       <!-- Tabs -->
       <nav class="-mb-px flex" aria-label="Tabs">
-        <a href="#" @click.prevent="selectTab('info')" :class="[activeTab === 'info' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-6']">اطلاعات برند</a>
-        <a href="#" @click.prevent="selectTab('display')" :class="[activeTab === 'display' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-6']">تنظیمات نمایش برند در دسته بندی</a>
-        <a href="#" @click.prevent="selectTab('seo')" :class="[activeTab === 'seo' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-6']">سئو</a>
-        <a href="#" @click.prevent="selectTab('products')" :class="[activeTab === 'products' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-6']">محصولات</a>
-        <a href="#" @click.prevent="selectTab('images')" :class="[activeTab === 'images' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-16']">تصاویر مرتبط</a>
-        <a href="#" @click.prevent="selectTab('video')" :class="[activeTab === 'video' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']">ویدیو</a>
+        <a href="#" :class="[activeTab === 'info' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-6']" @click.prevent="selectTab('info')">اطلاعات برند</a>
+        <a href="#" :class="[activeTab === 'display' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-6']" @click.prevent="selectTab('display')">تنظیمات نمایش برند در دسته بندی</a>
+        <a href="#" :class="[activeTab === 'seo' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-6']" @click.prevent="selectTab('seo')">سئو</a>
+        <a href="#" :class="[activeTab === 'products' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-6']" @click.prevent="selectTab('products')">محصولات</a>
+        <a href="#" :class="[activeTab === 'images' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-16']" @click.prevent="selectTab('images')">تصاویر مرتبط</a>
+        <a href="#" :class="[activeTab === 'video' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']" @click.prevent="selectTab('video')">ویدیو</a>
       </nav>
       <!-- Back link -->
       <NuxtLink to="/admin/product-management/brands" class="flex items-center text-blue-600 hover:text-blue-800 text-sm">
@@ -42,7 +42,7 @@
           <!-- Name Field -->
           <div class="mb-6">
             <label for="brand-name" class="block text-sm font-medium text-gray-700 mb-1 text-right">نام</label>
-            <input v-model="name" type="text" id="brand-name" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-gray-50 p-2 text-right" dir="rtl">
+            <input id="brand-name" v-model="name" type="text" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-gray-50 p-2 text-right" dir="rtl">
           </div>
           <!-- Description Field -->
           <div>
@@ -57,7 +57,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label for="official-name" class="block text-sm font-medium text-gray-700 mb-1 text-right">نام رسمی</label>
-              <input @blur="onEnglishBlur" v-model="officialName" type="text" id="official-name" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 focus:outline-blue-500 bg-gray-50 p-2 text-right" dir="rtl">
+              <input id="official-name" v-model="officialName" type="text" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 focus:outline-blue-500 bg-gray-50 p-2 text-right" dir="rtl" @blur="onEnglishBlur">
             </div>
             <div>
               <label for="brand-image" class="block text-sm font-medium text-gray-700 mb-1 text-right">تصویر</label>
@@ -72,7 +72,7 @@
                   </div>
                   <span class="text-gray-600 mr-2" v-text="selectedFileName"></span>
                 </div>
-                <input type="file" id="brand-image-upload" @change="handleFileChange" class="hidden"/>
+                <input id="brand-image-upload" type="file" class="hidden" @change="handleFileChange"/>
               </div>
             </div>
           </div>
@@ -106,7 +106,7 @@
               <!-- Display Order -->
               <div class="flex items-center justify-start">
                 <label for="display-order" class="block text-sm font-medium text-gray-700 ml-2">ترتیب نمایش</label>
-                <input type="number" id="display-order" v-model="displayOrder" placeholder="0" class="w-24 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-gray-50 p-2 text-sm focus:outline-none">
+                <input id="display-order" v-model="displayOrder" type="number" placeholder="0" class="w-24 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-gray-50 p-2 text-sm focus:outline-none">
               </div>
             </div>
 
@@ -190,7 +190,6 @@ const handleFileChange = (event: Event) => {
 const isPublished = ref(true);
 const showOnHomepage = ref(false);
 const showInMainMenu = ref(false);
-const showBrandLogo = ref(false);
 const displayOrder = ref(0);
 
 // SEO slug handling like categories
@@ -216,7 +215,6 @@ function updateSlug(val){
 }
 
 // SEO meta extras (for future)
-const seoPageName = ref('');
 const seoMetaTitle = ref('');
 const seoMetaKeywords = ref('');
 const seoMetaDescription = ref('');

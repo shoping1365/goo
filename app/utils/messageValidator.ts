@@ -204,7 +204,7 @@ export function validateFileName(fileName: string): ValidationResult {
 }
 
 // تولید گزارش امنیتی
-export function generateSecurityReport(validationResult: ValidationResult, userInfo: any) {
+export function generateSecurityReport(validationResult: ValidationResult, userInfo: Record<string, unknown>) {
   return {
     timestamp: new Date().toISOString(),
     userId: userInfo?.id || 'anonymous',
@@ -216,6 +216,6 @@ export function generateSecurityReport(validationResult: ValidationResult, userI
 }
 
 // لاگ امنیتی
-export function logSecurityEvent(report: any) {
+export function logSecurityEvent(_report: unknown) {
   // Security event logged
 }

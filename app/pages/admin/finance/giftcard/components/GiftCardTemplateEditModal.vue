@@ -8,8 +8,8 @@
           <p class="text-sm text-gray-600 mt-1">{{ template?.name }}</p>
         </div>
         <button 
-          @click="$emit('close')"
           class="text-gray-400 hover:text-gray-600"
+          @click="$emit('close')"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -55,32 +55,32 @@
         <div class="border-b border-gray-200">
           <nav class="-mb-px flex space-x-8 space-x-reverse">
             <button
-              @click="activeTab = 'editor'"
               :class="{
                 'border-blue-500 text-blue-600': activeTab === 'editor',
                 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'editor'
               }"
               class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm"
+              @click="activeTab = 'editor'"
             >
               ویرایشگر
             </button>
             <button
-              @click="activeTab = 'preview'"
               :class="{
                 'border-blue-500 text-blue-600': activeTab === 'preview',
                 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'preview'
               }"
               class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm"
+              @click="activeTab = 'preview'"
             >
               پیش‌نمایش
             </button>
             <button
-              @click="activeTab = 'variables'"
               :class="{
                 'border-blue-500 text-blue-600': activeTab === 'variables',
                 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'variables'
               }"
               class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm"
+              @click="activeTab = 'variables'"
             >
               متغیرها
             </button>
@@ -108,27 +108,27 @@
                   <div class="bg-gray-50 px-3 py-2 border-b border-gray-300">
                     <div class="flex items-center space-x-4 space-x-reverse">
                       <button 
-                        @click="insertVariable('bold')"
                         class="text-gray-600 hover:text-gray-800"
                         title="بولد"
+                        @click="insertVariable('bold')"
                       >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12h8a4 4 0 100-8H6v8zm0 0h8a4 4 0 110 8H6v-8z"></path>
                         </svg>
                       </button>
                       <button 
-                        @click="insertVariable('italic')"
                         class="text-gray-600 hover:text-gray-800"
                         title="ایتالیک"
+                        @click="insertVariable('italic')"
                       >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
                         </svg>
                       </button>
                       <button 
-                        @click="insertVariable('link')"
                         class="text-gray-600 hover:text-gray-800"
                         title="لینک"
+                        @click="insertVariable('link')"
                       >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
@@ -136,26 +136,26 @@
                       </button>
                       <div class="border-r border-gray-300 h-4"></div>
                       <button 
-                        @click="insertVariable('name')"
                         class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200"
+                        @click="insertVariable('name')"
                       >
                         نام
                       </button>
                       <button 
-                        @click="insertVariable('amount')"
                         class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200"
+                        @click="insertVariable('amount')"
                       >
                         مبلغ
                       </button>
                       <button 
-                        @click="insertVariable('code')"
                         class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200"
+                        @click="insertVariable('code')"
                       >
                         کد کارت
                       </button>
                       <button 
-                        @click="insertVariable('expiry')"
                         class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200"
+                        @click="insertVariable('expiry')"
                       >
                         تاریخ انقضا
                       </button>
@@ -180,26 +180,26 @@
                       <span class="text-xs text-gray-600">{{ editedTemplate.content?.length || 0 }} کاراکتر</span>
                       <div class="border-r border-gray-300 h-4"></div>
                       <button 
-                        @click="insertVariable('name')"
                         class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200"
+                        @click="insertVariable('name')"
                       >
                         نام
                       </button>
                       <button 
-                        @click="insertVariable('amount')"
                         class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200"
+                        @click="insertVariable('amount')"
                       >
                         مبلغ
                       </button>
                       <button 
-                        @click="insertVariable('code')"
                         class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200"
+                        @click="insertVariable('code')"
                       >
                         کد کارت
                       </button>
                       <button 
-                        @click="insertVariable('expiry')"
                         class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200"
+                        @click="insertVariable('expiry')"
                       >
                         تاریخ انقضا
                       </button>
@@ -252,7 +252,7 @@
                     const sanitizedPreviewContent = computed(() => DOMPurify.sanitize(previewContent.value))
                     <div v-html="sanitizedPreviewContent"></div>
                   -->
-                  <div v-html="previewContent" class="text-sm text-gray-900 leading-relaxed"></div>
+                  <div class="text-sm text-gray-900 leading-relaxed" v-html="previewContent"></div>
                 </div>
               </div>
 
@@ -285,8 +285,8 @@
                       <p class="text-xs text-gray-600">{{ variable.description }}</p>
                     </div>
                     <button 
-                      @click="insertVariable(variable.key)"
                       class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200"
+                      @click="insertVariable(variable.key)"
                     >
                       درج
                     </button>
@@ -304,15 +304,15 @@
       <!-- Footer -->
       <div class="flex justify-end space-x-3 space-x-reverse mt-6 pt-4 border-t border-gray-200">
         <button 
-          @click="$emit('close')"
           class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          @click="$emit('close')"
         >
           انصراف
         </button>
         <button 
-          @click="saveTemplate"
           :disabled="isSaving"
           class="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          @click="saveTemplate"
         >
           <span v-if="isSaving">در حال ذخیره...</span>
           <span v-else>ذخیره قالب</span>

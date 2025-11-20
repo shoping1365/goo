@@ -14,14 +14,14 @@
       </div>
       
       <div class="flex space-x-3 space-x-reverse">
-        <button @click="generateReport" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2 space-x-reverse">
+        <button class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2 space-x-reverse" @click="generateReport">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
           </svg>
           <span>تولید گزارش</span>
         </button>
         
-        <button @click="exportReport" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+        <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors" @click="exportReport">
           خروجی PDF
         </button>
       </div>
@@ -125,8 +125,8 @@
           <div>
             <h4 class="text-lg font-semibold text-gray-800 mb-4">امتیازات جزئی</h4>
             <div class="space-y-3">
-              <div v-for="(rating, category) in currentReport.detailedRatings" :key="category" class="flex items-center justify-between">
-                <span class="text-sm text-gray-700">{{ getCategoryName(category) }}</span>
+              <div v-for="(rating, catKey) in currentReport.detailedRatings" :key="catKey" class="flex items-center justify-between">
+                <span class="text-sm text-gray-700">{{ getCategoryName(catKey) }}</span>
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <div class="flex space-x-1 space-x-reverse">
                     <span v-for="i in 5" :key="i" class="text-yellow-400 text-sm">
@@ -190,29 +190,29 @@
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="category in currentReport.categoryAnalysis" :key="category.name" class="hover:bg-gray-50">
+              <tr v-for="cat in currentReport.categoryAnalysis" :key="cat.name" class="hover:bg-gray-50">
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  {{ category.name }}
+                  {{ cat.name }}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {{ category.surveyCount }}
+                  {{ cat.surveyCount }}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center">
                     <div class="flex space-x-1 space-x-reverse">
                       <span v-for="i in 5" :key="i" class="text-yellow-400 text-sm">
-                        {{ i <= category.averageRating ? '★' : '☆' }}
+                        {{ i <= cat.averageRating ? '★' : '☆' }}
                       </span>
                     </div>
-                    <span class="text-sm text-gray-900 mr-2">({{ category.averageRating.toFixed(1) }})</span>
+                    <span class="text-sm text-gray-900 mr-2">({{ cat.averageRating.toFixed(1) }})</span>
                   </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {{ category.responseRate }}%
+                  {{ cat.responseRate }}%
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <span :class="getSatisfactionClass(category.satisfaction)" class="px-2 py-1 text-xs font-medium rounded-full">
-                    {{ category.satisfaction }}%
+                  <span :class="getSatisfactionClass(cat.satisfaction)" class="px-2 py-1 text-xs font-medium rounded-full">
+                    {{ cat.satisfaction }}%
                   </span>
                 </td>
               </tr>
@@ -280,7 +280,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 
 interface ReportData {
   totalSurveys: number
@@ -483,7 +483,7 @@ const exportReport = () => {
   }
   
   // Implement export functionality
-  console.log('Exporting report in', exportFormat.value, 'format')
+  // console.log('Exporting report in', exportFormat.value, 'format')
 }
 </script>
 

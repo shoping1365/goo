@@ -32,9 +32,11 @@
               <div class="flex-1">
                 <div class="flex items-center gap-3 mb-3">
                   <h3 class="text-xl font-bold text-gray-900 font-iranyekan">{{ footer.title }}</h3>
-                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium font-iranyekan"
+                  <span
+class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium font-iranyekan"
                         :class="footer.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
-                    <span class="w-2 h-2 rounded-full mr-2"
+                    <span
+class="w-2 h-2 rounded-full mr-2"
                           :class="footer.is_active ? 'bg-green-500' : 'bg-red-500'"></span>
                     {{ footer.is_active ? 'فعال' : 'غیرفعال' }}
                   </span>
@@ -77,8 +79,8 @@
                 </NuxtLink>
                 
                 <button
-                  @click="openDeleteConfirm(footer.id)"
                   class="bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-600 transition-all duration-200 shadow-sm hover:shadow-md font-iranyekan flex items-center justify-center min-w-[80px]"
+                  @click="openDeleteConfirm(footer.id)"
                 >
                   <span class="ml-1">🗑️</span>
                   حذف
@@ -91,7 +93,8 @@
     </div>
 
     <!-- Toast Notification -->
-    <div v-if="showToast" 
+    <div
+v-if="showToast" 
          class="fixed top-6 right-4 z-50 transition-all duration-300"
          :class="toastType === 'success' ? 'bg-green-500' : 'bg-red-500'">
       <div class="text-white px-6 py-3 rounded-lg shadow-lg font-iranyekan">

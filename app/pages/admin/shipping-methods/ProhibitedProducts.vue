@@ -4,7 +4,7 @@
       <div class="card-header">
         <h3>محصولات ممنوعه</h3>
         <div class="toggle-switch">
-          <input type="checkbox" v-model="enabled" id="prohibitedToggle" />
+          <input id="prohibitedToggle" v-model="enabled" type="checkbox" />
           <label for="prohibitedToggle"></label>
         </div>
       </div>
@@ -33,7 +33,7 @@
                     <option value="policy">سیاست شرکت</option>
                   </select>
                 </div>
-                <button @click="removeCategory(index)" class="remove-btn">حذف</button>
+                <button class="remove-btn" @click="removeCategory(index)">حذف</button>
               </div>
               <div class="form-group">
                 <label>توضیحات</label>
@@ -45,7 +45,7 @@
                 ></textarea>
               </div>
             </div>
-            <button @click="addCategory" class="add-btn">+ افزودن دسته‌بندی</button>
+            <button class="add-btn" @click="addCategory">+ افزودن دسته‌بندی</button>
           </div>
         </div>
 
@@ -71,10 +71,10 @@
                     <option value="low">کم</option>
                   </select>
                 </div>
-                <button @click="removeKeyword(index)" class="remove-btn">حذف</button>
+                <button class="remove-btn" @click="removeKeyword(index)">حذف</button>
               </div>
             </div>
-            <button @click="addKeyword" class="add-btn">+ افزودن کلمه کلیدی</button>
+            <button class="add-btn" @click="addKeyword">+ افزودن کلمه کلیدی</button>
           </div>
         </div>
 
@@ -85,15 +85,15 @@
               <label>نحوه بررسی</label>
               <div class="check-methods">
                 <label class="radio-label">
-                  <input type="radio" v-model="prohibited.checkMethod" value="automatic" />
+                  <input v-model="prohibited.checkMethod" type="radio" value="automatic" />
                   بررسی خودکار
                 </label>
                 <label class="radio-label">
-                  <input type="radio" v-model="prohibited.checkMethod" value="manual" />
+                  <input v-model="prohibited.checkMethod" type="radio" value="manual" />
                   بررسی دستی
                 </label>
                 <label class="radio-label">
-                  <input type="radio" v-model="prohibited.checkMethod" value="both" />
+                  <input v-model="prohibited.checkMethod" type="radio" value="both" />
                   هر دو روش
                 </label>
               </div>

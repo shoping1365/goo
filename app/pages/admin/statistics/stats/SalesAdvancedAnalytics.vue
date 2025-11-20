@@ -34,5 +34,5 @@
   </div>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ analytics: any }>()
+defineProps<{ analytics: unknown }>()
 </script> 

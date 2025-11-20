@@ -2,6 +2,7 @@ import { useRuntimeConfig } from 'nuxt/app'
 import { computed, ref } from 'vue'
 
 // تعریف useFetch برای Nuxt 3
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const useFetch: any
 
 interface User {
@@ -61,6 +62,27 @@ interface Settings {
   userCanEdit: boolean
   showUserHistory: boolean
   userDashboardEnabled: boolean
+}
+
+interface StockRequest {
+  id: number
+  date: string
+  time: string
+  price: number
+  phone: string
+  product: string
+  status: string
+  notificationDate?: string
+  notificationTime?: string
+}
+
+interface ApiNotification {
+  id: number
+  created_at: string
+  phone?: string
+  product?: { name: string }
+  product_id: number
+  status: string
 }
 
 export const useNotifyRequests = () => {
@@ -242,8 +264,8 @@ export const useNotifyRequests = () => {
   ])
 
   // لیست آیتم‌های اطلاع‌رسانی شده
-  const stockCompletedRequests = ref<any[]>([])
-  const discountCompletedRequests = ref<any[]>([])
+  const stockCompletedRequests = ref<StockRequest[]>([])
+  const discountCompletedRequests = ref<StockRequest[]>([])
   const selectedStockCompletedItems = ref<number[]>([])
   const selectedDiscountCompletedItems = ref<number[]>([])
 
@@ -274,7 +296,7 @@ export const useNotifyRequests = () => {
   // Methods
   const exportToExcel = () => {
     // TODO: پیاده‌سازی خروجی اکسل سمت کلاینت یا دریافت از API
-    console.log('Exporting to Excel...')
+    console.warn('Exporting to Excel...')
   }
 
   const refreshData = async () => {
@@ -286,7 +308,7 @@ export const useNotifyRequests = () => {
       useFetch(`${base}/api/admin/notifications/discount`, { key: 'notify-discount', defaultCache: true, watch: false, server: false, retry: 1, cache: 'force-cache' })
     ])
     if (Array.isArray(stock.value)) {
-      stockRequests.value = stock.value.map((n: any) => ({
+      stockRequests.value = stock.value.map((n: ApiNotification) => ({
         id: n.id,
         date: new Date(n.created_at).toLocaleDateString('fa-IR'),
         time: new Date(n.created_at).toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' }),
@@ -297,7 +319,7 @@ export const useNotifyRequests = () => {
       }))
     }
     if (Array.isArray(discount.value)) {
-      discountRequests.value = discount.value.map((n: any) => ({
+      discountRequests.value = discount.value.map((n: ApiNotification) => ({
         id: n.id,
         date: new Date(n.created_at).toLocaleDateString('fa-IR'),
         time: new Date(n.created_at).toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' }),
@@ -334,24 +356,24 @@ export const useNotifyRequests = () => {
   }
 
   const sendBulkNotification = () => {
-    console.log('Sending bulk notifications for:', selectedRequests.value)
+    console.warn('Sending bulk notifications for:', selectedRequests.value)
   }
 
   const sendNotification = (request: NotificationRequest) => {
-    console.log('Sending notification for request:', request.id)
+    console.warn('Sending notification for request:', request.id)
   }
 
   const viewDetails = (request: NotificationRequest) => {
-    console.log('Viewing details for request:', request.id)
+    console.warn('Viewing details for request:', request.id)
   }
 
   const saveSettings = () => {
-    console.log('Saving settings:', settings.value)
+    console.warn('Saving settings:', settings.value)
   }
 
   const saveAdvancedSettings = () => {
     showSettings.value = false
-    console.log('Saving advanced settings:', settings.value)
+    console.warn('Saving advanced settings:', settings.value)
   }
 
   const getTypeClass = (type: RequestType) => {
@@ -410,7 +432,7 @@ export const useNotifyRequests = () => {
 
   // Stock tab methods
   const applyFilters = () => {
-    console.log('جستجو:', stockSearchQuery.value)
+    console.warn('جستجو:', stockSearchQuery.value)
   }
 
   const toggleAllStock = () => {
@@ -422,11 +444,11 @@ export const useNotifyRequests = () => {
   }
 
   const bulkDeleteStock = () => {
-    console.log('حذف موارد انتخاب شده:', selectedStockItems.value)
+    console.warn('حذف موارد انتخاب شده:', selectedStockItems.value)
   }
 
   const bulkNotifyStock = () => {
-    console.log('ارسال اطلاع‌رسانی برای موارد انتخاب شده:', selectedStockItems.value)
+    console.warn('ارسال اطلاع‌رسانی برای موارد انتخاب شده:', selectedStockItems.value)
   }
 
   const sendStockNotification = async (itemId: number) => {
@@ -497,7 +519,7 @@ export const useNotifyRequests = () => {
 
   // Discount tab methods
   const applyDiscountFilters = () => {
-    console.log('جستجو تخفیف:', discountSearchQuery.value)
+    console.warn('جستجو تخفیف:', discountSearchQuery.value)
   }
 
   const toggleAllDiscount = () => {
@@ -509,11 +531,11 @@ export const useNotifyRequests = () => {
   }
 
   const bulkDeleteDiscount = () => {
-    console.log('حذف موارد انتخاب شده تخفیف:', selectedDiscountItems.value)
+    console.warn('حذف موارد انتخاب شده تخفیف:', selectedDiscountItems.value)
   }
 
   const bulkNotifyDiscount = () => {
-    console.log('ارسال اطلاع‌رسانی برای موارد انتخاب شده تخفیف:', selectedDiscountItems.value)
+    console.warn('ارسال اطلاع‌رسانی برای موارد انتخاب شده تخفیف:', selectedDiscountItems.value)
   }
 
   const sendDiscountNotification = async (itemId: number) => {
@@ -620,12 +642,12 @@ export const useNotifyRequests = () => {
   }
 
   const bulkResendStockNotification = () => {
-    console.log('ارسال مجدد اطلاع‌رسانی برای موارد انتخاب شده موجودی:', selectedStockCompletedItems.value)
+    console.warn('ارسال مجدد اطلاع‌رسانی برای موارد انتخاب شده موجودی:', selectedStockCompletedItems.value)
     selectedStockCompletedItems.value = []
   }
 
   const bulkResendDiscountNotification = () => {
-    console.log('ارسال مجدد اطلاع‌رسانی برای موارد انتخاب شده تخفیف:', selectedDiscountCompletedItems.value)
+    console.warn('ارسال مجدد اطلاع‌رسانی برای موارد انتخاب شده تخفیف:', selectedDiscountCompletedItems.value)
     selectedDiscountCompletedItems.value = []
   }
 
@@ -702,4 +724,4 @@ export const useNotifyRequests = () => {
     bulkResendStockNotification,
     bulkResendDiscountNotification
   }
-} 
+}

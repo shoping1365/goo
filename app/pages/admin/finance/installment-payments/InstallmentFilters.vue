@@ -3,10 +3,10 @@
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-lg font-semibold text-gray-900">فیلترها</h3>
       <div class="flex items-center space-x-2 space-x-reverse">
-        <button @click="clearFilters" class="text-sm text-gray-600 hover:text-gray-800">
+        <button class="text-sm text-gray-600 hover:text-gray-800" @click="clearFilters">
           پاک کردن فیلترها
         </button>
-        <button @click="applyFilters" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">
+        <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm" @click="applyFilters">
           اعمال فیلترها
         </button>
       </div>
@@ -67,7 +67,7 @@
     <div class="mt-6 pt-6 border-t border-gray-200">
       <div class="flex items-center justify-between mb-4">
         <h4 class="text-md font-medium text-gray-900">فیلترهای پیشرفته</h4>
-        <button @click="showAdvancedFilters = !showAdvancedFilters" class="text-blue-600 hover:text-blue-800 text-sm">
+        <button class="text-blue-600 hover:text-blue-800 text-sm" @click="showAdvancedFilters = !showAdvancedFilters">
           {{ showAdvancedFilters ? 'مخفی کردن' : 'نمایش' }}
         </button>
       </div>
@@ -172,7 +172,7 @@
           </div>
         </div>
         <div class="flex items-end">
-          <button @click="applyFilters" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 text-sm">
+          <button class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 text-sm" @click="applyFilters">
             جستجو
           </button>
         </div>
@@ -185,7 +185,7 @@
         <span class="text-sm text-gray-600">فیلترهای فعال:</span>
         <div v-for="(filter, key) in activeFilters" :key="key" class="inline-flex items-center bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
           <span>{{ filter.label }}: {{ filter.value }}</span>
-          <button @click="removeFilter(key)" class="mr-1 text-blue-600 hover:text-blue-800">
+          <button class="mr-1 text-blue-600 hover:text-blue-800" @click="removeFilter(key)">
             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>

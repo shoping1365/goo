@@ -8,8 +8,8 @@
       </div>
       <div class="flex items-center space-x-3 space-x-reverse">
         <button
-          @click="suggestQuestion"
           class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          @click="suggestQuestion"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -43,11 +43,11 @@
         <button
           v-for="category in categories"
           :key="category.id"
-          @click="selectCategory(category.id)"
           class="px-4 py-2 text-sm font-medium rounded-full transition-colors"
           :class="selectedCategory === category.id 
             ? 'bg-blue-100 text-blue-700 border border-blue-200' 
             : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'"
+          @click="selectCategory(category.id)"
         >
           {{ category.name }}
           <span class="text-xs text-gray-500 mr-1">({{ category.count }})</span>
@@ -63,8 +63,8 @@
         class="bg-white rounded-lg border border-gray-200 overflow-hidden"
       >
         <button
-          @click="toggleFAQ(faq.id)"
           class="w-full px-6 py-4 text-right flex items-center justify-between hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          @click="toggleFAQ(faq.id)"
         >
           <div class="flex items-center space-x-3 space-x-reverse">
             <span
@@ -133,8 +133,8 @@
                   <span class="text-sm text-gray-600">آیا این پاسخ مفید بود؟</span>
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <button
-                      @click="rateFAQ(faq.id, 'helpful')"
                       class="inline-flex items-center px-3 py-1 text-xs font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                      @click="rateFAQ(faq.id, 'helpful')"
                     >
                       <svg class="w-3 h-3 ml-1" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M14 9V5a3 3 0 00-6 0v4H4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2v-8a2 2 0 00-2-2h-2z"/>
@@ -142,8 +142,8 @@
                       مفید ({{ faq.helpfulVotes }})
                     </button>
                     <button
-                      @click="rateFAQ(faq.id, 'not_helpful')"
                       class="inline-flex items-center px-3 py-1 text-xs font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                      @click="rateFAQ(faq.id, 'not_helpful')"
                     >
                       <svg class="w-3 h-3 ml-1" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M10 15v4a3 3 0 006 0v-4h2a2 2 0 002-2V9a2 2 0 00-2-2h-2V3a3 3 0 00-6 0v4H8a2 2 0 00-2 2v4a2 2 0 002 2h2z"/>
@@ -153,8 +153,8 @@
                   </div>
                 </div>
                 <button
-                  @click="reportFAQ(faq.id)"
                   class="text-xs text-gray-500 hover:text-gray-700"
+                  @click="reportFAQ(faq.id)"
                 >
                   گزارش مشکل
                 </button>

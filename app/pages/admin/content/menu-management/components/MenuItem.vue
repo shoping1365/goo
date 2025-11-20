@@ -68,10 +68,10 @@
         <div class="flex items-center space-x-2 space-x-reverse flex-shrink-0">
           <!-- Status Badge (Clickable to open settings) -->
           <button 
-            @click="$emit('toggle-expanded')"
             :class="item.enabled ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-red-100 text-red-800 hover:bg-red-200'"
             class="px-2 py-1 text-xs rounded-full font-medium transition-colors cursor-pointer"
             :title="item.enabled ? 'فعال - کلیک برای تنظیمات' : 'غیرفعال - کلیک برای تنظیمات'"
+            @click="$emit('toggle-expanded')"
           >
             {{ item.enabled ? 'فعال' : 'غیرفعال' }}
           </button>
@@ -83,9 +83,9 @@
 
           <!-- Expand/Collapse Button -->
           <button
-            @click="$emit('toggle-expanded')"
             class="p-1 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded transition-colors"
             :title="item.expanded ? 'بستن تنظیمات' : 'باز کردن تنظیمات'"
+            @click="$emit('toggle-expanded')"
           >
             <svg 
               class="w-4 h-4 transition-transform duration-200" 
@@ -99,9 +99,9 @@
 
           <!-- Remove Button -->
           <button
-            @click="$emit('remove-item')"
             class="p-1 text-red-500 hover:text-red-700 hover:bg-red-50 rounded transition-colors"
             title="حذف آیتم"
+            @click="$emit('remove-item')"
           >
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>

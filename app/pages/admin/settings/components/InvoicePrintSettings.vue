@@ -35,7 +35,7 @@
               نام شرکت در فاکتور
             </label>
             <input 
-              v-model="invoiceSettings.companyName" 
+              v-model="localInvoiceSettings.companyName" 
               type="text" 
               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-200 group-hover:border-gray-300"
               placeholder="نام شرکت شما"
@@ -48,7 +48,7 @@
               شماره اقتصادی
             </label>
             <input 
-              v-model="invoiceSettings.taxNumber" 
+              v-model="localInvoiceSettings.taxNumber" 
               type="text" 
               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-200 group-hover:border-gray-300"
               placeholder="شماره اقتصادی شرکت"
@@ -61,7 +61,7 @@
               آدرس شرکت
             </label>
             <textarea 
-              v-model="invoiceSettings.companyAddress" 
+              v-model="localInvoiceSettings.companyAddress" 
               rows="3"
               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-200 group-hover:border-gray-300"
               placeholder="آدرس کامل شرکت"
@@ -74,7 +74,7 @@
               شماره تلفن شرکت
             </label>
             <input 
-              v-model="invoiceSettings.companyPhone" 
+              v-model="localInvoiceSettings.companyPhone" 
               type="text" 
               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-200 group-hover:border-gray-300"
               placeholder="شماره تلفن شرکت"
@@ -100,7 +100,7 @@
               <i class="i-heroicons-document text-blue-500 mr-2"></i>
               اندازه کاغذ پیش‌فرض
             </label>
-            <select v-model="printSettings.defaultPaperSize" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 group-hover:border-gray-300 appearance-none bg-white">
+            <select v-model="localPrintSettings.defaultPaperSize" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 group-hover:border-gray-300 appearance-none bg-white">
               <option value="a4">A4 (210 × 297 mm)</option>
               <option value="a5">A5 (148 × 210 mm)</option>
               <option value="letter">Letter (216 × 279 mm)</option>
@@ -113,7 +113,7 @@
               <i class="i-heroicons-view-columns text-blue-500 mr-2"></i>
               جهت چاپ
             </label>
-            <select v-model="printSettings.orientation" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 group-hover:border-gray-300 appearance-none bg-white">
+            <select v-model="localPrintSettings.orientation" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 group-hover:border-gray-300 appearance-none bg-white">
               <option value="portrait">عمودی (Portrait)</option>
               <option value="landscape">افقی (Landscape)</option>
             </select>
@@ -124,7 +124,7 @@
               <i class="i-heroicons-font-family text-blue-500 mr-2"></i>
               فونت پیش‌فرض
             </label>
-            <select v-model="printSettings.defaultFont" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 group-hover:border-gray-300 appearance-none bg-white">
+            <select v-model="localPrintSettings.defaultFont" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 group-hover:border-gray-300 appearance-none bg-white">
               <option value="iransans">ایران سنس</option>
               <option value="tahoma">تahoma</option>
               <option value="arial">Arial</option>
@@ -137,7 +137,7 @@
               <i class="i-heroicons-arrows-pointing-out text-blue-500 mr-2"></i>
               اندازه فونت
             </label>
-            <select v-model="printSettings.fontSize" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 group-hover:border-gray-300 appearance-none bg-white">
+            <select v-model="localPrintSettings.fontSize" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 group-hover:border-gray-300 appearance-none bg-white">
               <option value="10">10pt</option>
               <option value="11">11pt</option>
               <option value="12">12pt</option>
@@ -150,7 +150,7 @@
         <div class="space-y-4">
           <div class="flex items-center">
             <input 
-              v-model="printSettings.showLogo" 
+              v-model="localPrintSettings.showLogo" 
               type="checkbox" 
               class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
             >
@@ -159,7 +159,7 @@
           
           <div class="flex items-center">
             <input 
-              v-model="printSettings.showQRCode" 
+              v-model="localPrintSettings.showQRCode" 
               type="checkbox" 
               class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
             >
@@ -168,7 +168,7 @@
           
           <div class="flex items-center">
             <input 
-              v-model="printSettings.showBarcode" 
+              v-model="localPrintSettings.showBarcode" 
               type="checkbox" 
               class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
             >
@@ -195,7 +195,7 @@
               رنگ اصلی قالب
             </label>
             <input 
-              v-model="templateSettings.primaryColor" 
+              v-model="localTemplateSettings.primaryColor" 
               type="color" 
               class="w-full h-12 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-200 group-hover:border-gray-300"
             >
@@ -207,7 +207,7 @@
               رنگ ثانویه قالب
             </label>
             <input 
-              v-model="templateSettings.secondaryColor" 
+              v-model="localTemplateSettings.secondaryColor" 
               type="color" 
               class="w-full h-12 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-200 group-hover:border-gray-300"
             >
@@ -217,7 +217,7 @@
         <div class="space-y-4">
           <div class="flex items-center">
             <input 
-              v-model="templateSettings.showHeader" 
+              v-model="localTemplateSettings.showHeader" 
               type="checkbox" 
               class="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
             >
@@ -226,7 +226,7 @@
           
           <div class="flex items-center">
             <input 
-              v-model="templateSettings.showFooter" 
+              v-model="localTemplateSettings.showFooter" 
               type="checkbox" 
               class="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
             >
@@ -235,7 +235,7 @@
           
           <div class="flex items-center">
             <input 
-              v-model="templateSettings.showPageNumbers" 
+              v-model="localTemplateSettings.showPageNumbers" 
               type="checkbox" 
               class="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
             >
@@ -250,17 +250,17 @@
       <div class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3 sm:space-x-reverse">
         <button 
           type="button" 
-          @click="resetInvoicePrintSettings"
           class="px-8 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 font-semibold flex items-center justify-center"
+          @click="resetInvoicePrintSettings"
         >
           <i class="i-heroicons-arrow-path mr-2"></i>
           بازنشانی تنظیمات
         </button>
         <button 
           type="button" 
-          @click="saveInvoicePrintSettings"
           :disabled="savingInvoicePrint"
           class="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-xl hover:from-purple-600 hover:to-pink-700 disabled:opacity-50 transition-all duration-200 shadow-lg hover:shadow-xl font-semibold flex items-center justify-center"
+          @click="saveInvoicePrintSettings"
         >
           <i v-if="savingInvoicePrint" class="i-heroicons-arrow-path animate-spin mr-2"></i>
           <i v-else class="i-heroicons-check mr-2"></i>
@@ -272,6 +272,8 @@
 </template>
 
 <script setup>
+import { ref, watch } from 'vue'
+
 const props = defineProps({
   invoiceSettings: {
     type: Object,
@@ -291,7 +293,35 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['save', 'reset'])
+const emit = defineEmits(['save', 'reset', 'update:templateSettings', 'update:invoiceSettings', 'update:printSettings'])
+
+const localTemplateSettings = ref({ ...props.templateSettings })
+const localInvoiceSettings = ref({ ...props.invoiceSettings })
+const localPrintSettings = ref({ ...props.printSettings })
+
+watch(() => props.templateSettings, (newVal) => {
+  localTemplateSettings.value = { ...newVal }
+}, { deep: true })
+
+watch(() => props.invoiceSettings, (newVal) => {
+  localInvoiceSettings.value = { ...newVal }
+}, { deep: true })
+
+watch(() => props.printSettings, (newVal) => {
+  localPrintSettings.value = { ...newVal }
+}, { deep: true })
+
+watch(localTemplateSettings, (newVal) => {
+  emit('update:templateSettings', newVal)
+}, { deep: true })
+
+watch(localInvoiceSettings, (newVal) => {
+  emit('update:invoiceSettings', newVal)
+}, { deep: true })
+
+watch(localPrintSettings, (newVal) => {
+  emit('update:printSettings', newVal)
+}, { deep: true })
 
 const saveInvoicePrintSettings = () => {
   emit('save')

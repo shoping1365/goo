@@ -32,11 +32,12 @@
 
           <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
             <div class="md:col-span-8">
-              <input type="text"
+              <input
+v-model="q"
+                type="text"
                 class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900 transition-all duration-200"
                 dir="rtl"
                 placeholder="نام محصول، کد محصول یا دسته‌بندی را جستجو کنید..."
-                v-model="q"
                 @input="searchProducts" />
             </div>
             <div class="md:col-span-2">
@@ -138,7 +139,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import ImagePreviewModal from '~/components/media/ImagePreviewModal.vue'
 import { useProductCreateStore } from '~/stores/productCreate'
 
@@ -204,8 +205,8 @@ async function addRelated(productId:number){
       body:{ complement_product_id: productId } 
     })
     await refreshSelected()
-  } catch(e){ 
-    console.error('Error adding related product:', e)
+  } catch { 
+    // Error adding related product
   }
 }
 
@@ -217,8 +218,8 @@ async function removeRelated(productId:number){
   try {
     await $fetch(`/api/product-complements/${store.editingProductId}/${productId}`, { method:'DELETE' })
     await refreshSelected()
-  } catch(e){ 
-    console.error('Error removing related product:', e)
+  } catch { 
+    // Error removing related product
   }
 }
 
@@ -228,25 +229,31 @@ async function refreshSelected(){
     return
   }
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const res = await $fetch(`/api/product-complements/${store.editingProductId}`) as any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data = (res as any)?.data ?? res
     const arr = Array.isArray(data) ? data : []
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     selected.value = arr.map((it: any) => {
       const base = it.image_url || it.image || it.main_image || it.thumbnail
       const thumb = toThumbnail(base)
       return { ...it, thumbnail: thumb || base }
     })
-  } catch(e){ selected.value = [] }
+  } catch { selected.value = [] }
 }
 
 // Preview modal state
 const showPreview = ref(false)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const previewImage = ref<any>(null)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getOriginalUrl(obj:any){
   if(!obj) return null
   if(obj.images && obj.images[0]?.image_url) return obj.images[0].image_url
   return obj.image_url || obj.image || obj.main_image || obj.thumbnail || null
 }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function openPreview(obj:any){
   const url = getOriginalUrl(obj)
   if(!url) return

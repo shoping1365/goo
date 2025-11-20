@@ -11,25 +11,25 @@
       <div class="settings-list">
         <div class="setting-item">
           <label>
-            <input type="checkbox" v-model="settings.useOrderHistory">
+            <input v-model="settings.useOrderHistory" type="checkbox">
             استفاده از تاریخچه سفارشات
           </label>
         </div>
         <div class="setting-item">
           <label>
-            <input type="checkbox" v-model="settings.useLocation">
+            <input v-model="settings.useLocation" type="checkbox">
             استفاده از موقعیت جغرافیایی
           </label>
         </div>
         <div class="setting-item">
           <label>
-            <input type="checkbox" v-model="settings.usePreferredMethod">
+            <input v-model="settings.usePreferredMethod" type="checkbox">
             نمایش روش ترجیحی مشتری
           </label>
         </div>
         <div class="setting-item">
           <label>
-            <input type="checkbox" v-model="settings.useSeasonalOffers">
+            <input v-model="settings.useSeasonalOffers" type="checkbox">
             پیشنهاد ویژه بر اساس فصل و مناسبت
           </label>
         </div>
@@ -59,7 +59,7 @@
 
     <!-- Save Button -->
     <div class="actions">
-      <button @click="saveSettings" class="btn btn-success">
+      <button class="btn btn-success" @click="saveSettings">
         <i class="fas fa-save"></i>
         ذخیره تنظیمات
       </button>

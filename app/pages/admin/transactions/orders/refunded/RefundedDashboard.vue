@@ -214,13 +214,13 @@
             <button
               v-for="period in chartPeriods"
               :key="period.id"
-              @click="selectedPeriod = period.id"
               :class="[
                 'px-3 py-1 text-xs font-medium rounded-md transition-colors',
                 selectedPeriod === period.id
                   ? 'bg-indigo-500 text-white'
                   : 'bg-white text-gray-600 hover:bg-gray-50'
               ]"
+              @click="selectedPeriod = period.id"
             >
               {{ period.name }}
             </button>
@@ -257,8 +257,8 @@
                       <h3 class="text-lg font-semibold text-gray-900">سفارشات مسترد شده اخیر</h3>
                       <div class="relative">
                         <input
-                          type="text"
                           v-model="searchTerm"
+                          type="text"
                           placeholder="جستجو در سفارشات..."
                           class="w-48 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         />
@@ -311,7 +311,7 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex items-center space-x-2">
-                  <button @click="viewOrderDetails(order)" class="text-blue-600 hover:text-blue-900">
+                  <button class="text-blue-600 hover:text-blue-900" @click="viewOrderDetails(order)">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
@@ -596,8 +596,7 @@ const getReasonClass = (reason) => {
               selectedOrder.value = null
             }
 
-            const editOrder = (order) => {
-              console.log('ویرایش سفارش:', order)
+            const editOrder = (_order) => {
               // اینجا می‌توانید کاربر را به صفحه ویرایش هدایت کنید
             }
             </script> 

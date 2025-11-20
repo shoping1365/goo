@@ -4,7 +4,6 @@
       <button
         v-for="index in totalSlides"
         :key="index"
-        @click="$emit('change', index - 1)"
         class="indicator-dot"
         :class="{
           'active': index - 1 === currentIndex,
@@ -13,6 +12,7 @@
         }"
         :style="{ backgroundColor: index - 1 === currentIndex ? indicatorColor : undefined }"
         :aria-label="`Go to slide ${index}`"
+        @click="$emit('change', index - 1)"
       ></button>
     </div>
   </div>

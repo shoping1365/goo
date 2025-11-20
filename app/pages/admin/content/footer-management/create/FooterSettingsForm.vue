@@ -5,7 +5,7 @@
         <h3>تنظیمات فوتر</h3>
         <div class="header-toggle">
           <label class="toggle-label">
-            <input type="checkbox" v-model="footerData.isActive" />
+            <input v-model="footerData.isActive" type="checkbox" />
             <span class="toggle-text">فعال بودن فوتر</span>
           </label>
         </div>
@@ -36,17 +36,17 @@
             
             <div class="radio-options">
               <label class="radio-option">
-                <input type="radio" v-model="footerData.pageSelection" value="all" />
+                <input v-model="footerData.pageSelection" type="radio" value="all" />
                 <span>کل سایت</span>
               </label>
               
               <label class="radio-option">
-                <input type="radio" v-model="footerData.pageSelection" value="specific" />
+                <input v-model="footerData.pageSelection" type="radio" value="specific" />
                 <span>صفحات خاص</span>
               </label>
               
               <label class="radio-option">
-                <input type="radio" v-model="footerData.pageSelection" value="exclude" />
+                <input v-model="footerData.pageSelection" type="radio" value="exclude" />
                 <span>مستثنی کردن صفحات</span>
               </label>
             </div>

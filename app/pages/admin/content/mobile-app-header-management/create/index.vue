@@ -90,7 +90,7 @@
 
     <div class="form-container">
       <div class="form-layout">
-        <form @submit.prevent="createMobileAppHeader" class="mobile-app-header-form">
+        <form class="mobile-app-header-form" @submit.prevent="createMobileAppHeader">
           <!-- اطلاعات اصلی -->
           <div class="form-section">
             <h3>اطلاعات اصلی</h3>
@@ -135,18 +135,18 @@
                   <div v-if="formData.top_image_url" class="image-preview">
                     <span class="image-label">عکس بالای هدر:</span>
                     <img :src="formData.top_image_url" :alt="formData.top_image_alt || 'عکس بالای هدر'" class="preview-image" />
-                    <button type="button" @click="removeTopImage" class="remove-image-btn">حذف</button>
+                    <button type="button" class="remove-image-btn" @click="removeTopImage">حذف</button>
                   </div>
                   <div v-if="formData.bottom_image_url" class="image-preview">
                     <span class="image-label">عکس پایین هدر:</span>
                     <img :src="formData.bottom_image_url" :alt="formData.bottom_image_alt || 'عکس پایین هدر'" class="preview-image" />
-                    <button type="button" @click="removeBottomImage" class="remove-image-btn">حذف</button>
+                    <button type="button" class="remove-image-btn" @click="removeBottomImage">حذف</button>
                   </div>
                 </div>
                 
                 <!-- دکمه آپلود کوچک -->
                 <div v-if="!showPositionOptions" class="small-upload-section">
-                  <button type="button" @click="showMediaModal = true" class="small-upload-btn">
+                  <button type="button" class="small-upload-btn" @click="showMediaModal = true">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
@@ -169,20 +169,20 @@
                   <div class="position-options">
                     <h4>عکس را در کجا قرار دهید؟</h4>
                     <div class="position-buttons">
-                      <button type="button" @click="setImagePosition('top')" class="position-btn">
+                      <button type="button" class="position-btn" @click="setImagePosition('top')">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
                         </svg>
                         بالای هدر
                       </button>
-                      <button type="button" @click="setImagePosition('bottom')" class="position-btn">
+                      <button type="button" class="position-btn" @click="setImagePosition('bottom')">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                         </svg>
                         پایین هدر
                       </button>
                     </div>
-                    <button type="button" @click="cancelImageUpload" class="cancel-btn">لغو</button>
+                    <button type="button" class="cancel-btn" @click="cancelImageUpload">لغو</button>
                     
                     <!-- Debug: نمایش وضعیت -->
                     <div style="background: green; padding: 4px; font-size: 10px; color: white; margin-top: 8px;">
@@ -288,7 +288,7 @@
             
             <div class="form-group">
               <label class="checkbox-label">
-                <input type="checkbox" v-model="formData.is_active">
+                <input v-model="formData.is_active" type="checkbox">
                 <span>فعال</span>
               </label>
             </div>

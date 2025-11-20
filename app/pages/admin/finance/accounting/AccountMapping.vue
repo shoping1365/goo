@@ -6,9 +6,10 @@
     </div>
     <!-- تب‌ها -->
     <div class="flex flex-wrap gap-2 border-b mb-6">
-      <button v-for="tab in tabs" :key="tab.value"
-        @click="activeTab = tab.value"
+      <button
+v-for="tab in tabs" :key="tab.value"
         :class="[ 'px-4 py-2 rounded-t', activeTab === tab.value ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200']"
+        @click="activeTab = tab.value"
       >
         {{ tab.label }}
       </button>

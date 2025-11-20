@@ -15,7 +15,7 @@
             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
               <div class="flex items-center space-x-1 space-x-reverse">
                 <span>کد کارت</span>
-                <button @click="sortBy('code')" class="text-gray-400 hover:text-gray-600">
+                <button class="text-gray-400 hover:text-gray-600" @click="sortBy('code')">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
                   </svg>
@@ -28,7 +28,7 @@
             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
               <div class="flex items-center space-x-1 space-x-reverse">
                 <span>مبلغ</span>
-                <button @click="sortBy('amount')" class="text-gray-400 hover:text-gray-600">
+                <button class="text-gray-400 hover:text-gray-600" @click="sortBy('amount')">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
                   </svg>
@@ -44,7 +44,7 @@
             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
               <div class="flex items-center space-x-1 space-x-reverse">
                 <span>تاریخ انقضا</span>
-                <button @click="sortBy('expiryDate')" class="text-gray-400 hover:text-gray-600">
+                <button class="text-gray-400 hover:text-gray-600" @click="sortBy('expiryDate')">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
                   </svg>
@@ -133,9 +133,9 @@
               <div class="flex items-center space-x-2 space-x-reverse">
                 <!-- مشاهده جزئیات -->
                 <button 
-                  @click="$emit('view-details', giftCard)"
                   class="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
                   title="مشاهده جزئیات"
+                  @click="$emit('view-details', giftCard)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -145,9 +145,9 @@
 
                 <!-- ویرایش -->
                 <button 
-                  @click="$emit('edit-card', giftCard)"
                   class="text-green-600 hover:text-green-900 p-1 rounded hover:bg-green-50"
                   title="ویرایش"
+                  @click="$emit('edit-card', giftCard)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -156,9 +156,9 @@
 
                 <!-- کپی کد -->
                 <button 
-                  @click="copyCode(giftCard.code)"
                   class="text-purple-600 hover:text-purple-900 p-1 rounded hover:bg-purple-50"
                   title="کپی کد"
+                  @click="copyCode(giftCard.code)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -168,9 +168,9 @@
                 <!-- ارسال مجدد -->
                 <button 
                   v-if="giftCard.deliveryMethod !== 'manual'"
-                  @click="resendGiftCard(giftCard)"
                   class="text-orange-600 hover:text-orange-900 p-1 rounded hover:bg-orange-50"
                   title="ارسال مجدد"
+                  @click="resendGiftCard(giftCard)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -180,9 +180,9 @@
                 <!-- فعال/غیرفعال -->
                 <button 
                   v-if="giftCard.status === 'active'"
-                  @click="deactivateGiftCard(giftCard)"
                   class="text-yellow-600 hover:text-yellow-900 p-1 rounded hover:bg-yellow-50"
                   title="غیرفعال کردن"
+                  @click="deactivateGiftCard(giftCard)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728" />
@@ -190,9 +190,9 @@
                 </button>
                 <button 
                   v-else
-                  @click="activateGiftCard(giftCard)"
                   class="text-green-600 hover:text-green-900 p-1 rounded hover:bg-green-50"
                   title="فعال کردن"
+                  @click="activateGiftCard(giftCard)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -202,9 +202,9 @@
                 <!-- حذف -->
                 <button 
                   v-if="canDeleteGiftCard"
-                  @click="confirmDelete(giftCard)"
                   class="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50"
                   title="حذف"
+                  @click="confirmDelete(giftCard)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -221,16 +221,16 @@
     <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
       <div class="flex-1 flex justify-between sm:hidden">
         <button 
-          @click="previousPage"
           :disabled="currentPage === 1"
           class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+          @click="previousPage"
         >
           قبلی
         </button>
         <button 
-          @click="nextPage"
           :disabled="currentPage >= totalPages"
           class="mr-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+          @click="nextPage"
         >
           بعدی
         </button>
@@ -250,9 +250,9 @@
         <div>
           <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
             <button 
-              @click="previousPage"
               :disabled="currentPage === 1"
               class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+              @click="previousPage"
             >
               <span class="sr-only">قبلی</span>
               <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
@@ -262,20 +262,20 @@
             <button 
               v-for="page in visiblePages" 
               :key="page"
-              @click="goToPage(page)"
               :class="[
                 page === currentPage 
                   ? 'z-10 bg-blue-50 border-blue-500 text-blue-600' 
                   : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50',
                 'relative inline-flex items-center px-4 py-2 border text-sm font-medium'
               ]"
+              @click="goToPage(page)"
             >
               {{ page }}
             </button>
             <button 
-              @click="nextPage"
               :disabled="currentPage >= totalPages"
               class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+              @click="nextPage"
             >
               <span class="sr-only">بعدی</span>
               <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
@@ -402,7 +402,7 @@ const visiblePages = computed(() => {
   const pages = []
   const maxVisible = 5
   let start = Math.max(1, currentPage.value - Math.floor(maxVisible / 2))
-  let end = Math.min(totalPages.value, start + maxVisible - 1)
+  const end = Math.min(totalPages.value, start + maxVisible - 1)
   
   if (end - start + 1 < maxVisible) {
     start = Math.max(1, end - maxVisible + 1)

@@ -41,7 +41,7 @@
             </div>
           </div>
           <div class="flex justify-end space-x-3 space-x-reverse mt-6">
-            <button type="button" @click="$emit('cancel')" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors">انصراف</button>
+            <button type="button" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors" @click="$emit('cancel')">انصراف</button>
             <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
               {{ referral ? 'ویرایش' : 'افزودن' }}
             </button>

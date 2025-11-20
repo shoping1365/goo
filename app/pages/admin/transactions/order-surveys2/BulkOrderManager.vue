@@ -6,33 +6,33 @@
         <h3 class="text-lg font-semibold text-gray-800">مدیریت دسته‌ای سفارشات</h3>
         <p class="text-gray-600 text-sm">انتخاب چند سفارش و انجام عملیات گروهی</p>
       </div>
-      <button @click="refreshOrders" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">بروزرسانی لیست</button>
+      <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700" @click="refreshOrders">بروزرسانی لیست</button>
     </div>
     <!-- Bulk Actions -->
     <div class="flex flex-wrap gap-2 items-center mb-2">
       <button 
-        @click="selectAll"
         class="px-3 py-1 bg-gray-200 rounded text-sm hover:bg-gray-300"
+        @click="selectAll"
       >انتخاب همه</button>
       <button 
-        @click="clearSelection"
         class="px-3 py-1 bg-gray-200 rounded text-sm hover:bg-gray-300"
+        @click="clearSelection"
       >لغو انتخاب</button>
       <span class="text-sm text-gray-700">تعداد انتخاب شده: <b>{{ selected.length }}</b></span>
       <button 
-        @click="bulkSendSMS"
         :disabled="!selected.length"
         class="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700 disabled:bg-gray-300 disabled:text-gray-500"
+        @click="bulkSendSMS"
       >ارسال پیامک گروهی</button>
       <button 
-        @click="bulkDelete"
         :disabled="!selected.length"
         class="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700 disabled:bg-gray-300 disabled:text-gray-500"
+        @click="bulkDelete"
       >حذف گروهی</button>
       <button 
-        @click="showTagModal = true"
         :disabled="!selected.length"
         class="px-3 py-1 bg-purple-600 text-white rounded text-sm hover:bg-purple-700 disabled:bg-gray-300 disabled:text-gray-500"
+        @click="showTagModal = true"
       >برچسب‌گذاری</button>
     </div>
     <!-- Orders Table -->
@@ -49,7 +49,7 @@
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
           <tr v-for="order in orders" :key="order.id" class="hover:bg-gray-50">
-            <td class="px-4 py-3"><input type="checkbox" :value="order.id" v-model="selected"></td>
+            <td class="px-4 py-3"><input v-model="selected" type="checkbox" :value="order.id"></td>
             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">#{{ order.orderNumber }}</td>
             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{{ order.customerName }}</td>
             <td class="px-4 py-3 whitespace-nowrap text-xs">
@@ -71,8 +71,8 @@
         </div>
         <input v-model="newTag" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg mb-4" placeholder="برچسب جدید">
         <div class="flex items-center gap-2">
-          <button @click="addTagToSelection" class="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm hover:bg-purple-700">افزودن برچسب</button>
-          <button @click="showTagModal = false" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-400">انصراف</button>
+          <button class="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm hover:bg-purple-700" @click="addTagToSelection">افزودن برچسب</button>
+          <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-400" @click="showTagModal = false">انصراف</button>
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@
  * Handle token expiry, refresh, and validation
  */
 
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useAuthStore } from '~/stores/auth'
 import { useApiClient } from '~/utils/api'
 
@@ -105,21 +105,27 @@ export const useTokenSecurity = () => {
       }
 
       const api = useApiClient()
-      const response = await api.api.post<any>('/auth/refresh', {
+      // تعریف interface برای پاسخ refresh
+      interface RefreshResponse {
+        access_token: string
+        refresh_token?: string
+      }
+
+      const response = await api.api.post<RefreshResponse>('/auth/refresh', {
         refresh_token: refreshToken,
       })
 
-      if ((response as any)?.access_token) {
-        authStore.setAccessToken((response as any).access_token)
+      if (response?.access_token) {
+        authStore.setAccessToken(response.access_token)
 
-        if ((response as any)?.refresh_token) {
-          authStore.refreshToken = (response as any).refresh_token as any
+        if (response?.refresh_token) {
+          authStore.refreshToken = response.refresh_token
         }
 
         setupTokenRefresh()
       }
     } catch (error) {
-      console.error('Token refresh failed:', error)
+      console.warn('Token refresh failed:', error)
       authStore.clearAuth()
     }
   }

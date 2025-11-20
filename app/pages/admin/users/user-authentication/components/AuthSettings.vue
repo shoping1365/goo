@@ -5,7 +5,7 @@
       <p class="text-gray-600">تنظیم پارامترهای سیستم احراز هویت</p>
     </div>
 
-    <form @submit.prevent="saveSettings" class="space-y-8">
+    <form class="space-y-8" @submit.prevent="saveSettings">
       <!-- OTP Settings -->
       <div class="bg-gray-50 px-4 py-4 rounded-lg">
         <h3 class="text-lg font-medium text-gray-900 mb-4">تنظیمات OTP</h3>
@@ -135,16 +135,16 @@
               />
               <button
                 type="button"
-                @click="showJwtSecret = !showJwtSecret"
                 class="px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+                @click="showJwtSecret = !showJwtSecret"
               >
                 <span v-if="showJwtSecret">مخفی</span>
                 <span v-else>نمایش</span>
               </button>
               <button
                 type="button"
-                @click="generateNewJwtSecret"
                 class="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                @click="generateNewJwtSecret"
               >
                 تولید جدید
               </button>
@@ -374,7 +374,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { reactive, ref } from 'vue'
 
 // Reactive data
 const savingAuth = ref(false)
@@ -436,15 +436,13 @@ const loadAuthSettings = async () => {
   }
 }
 
-const saveAuthSettings = async () => {
-  savingAuth.value = true
+const saveSettings = async () => {
   try {
+    savingAuth.value = true
     await $fetch('/api/admin/settings/auth', {
-      method: 'PUT',
+      method: 'POST',
       body: authSettings
     })
-    
-    // Show success message
     alert('تنظیمات با موفقیت ذخیره شد')
   } catch (error) {
     console.error('خطا در ذخیره تنظیمات:', error)

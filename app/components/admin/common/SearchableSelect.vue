@@ -1,26 +1,26 @@
 <template>
-  <div class="relative" ref="container">
+  <div ref="container" class="relative">
     <!-- Input field -->
     <input
       ref="inputRef"
       v-model="searchTerm"
       :placeholder="placeholder"
+      class="block w-full pl-3 pr-8 py-1.5 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs shadow-sm"
+      dir="rtl"
+      autocomplete="off"
       @focus="onFocus"
       @input="onInput"
       @keydown="onKeyDown"
       @click="onInputClick"
-      class="block w-full pl-3 pr-8 py-1.5 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs shadow-sm"
-      dir="rtl"
-      autocomplete="off"
     />
     
     <!-- Dropdown arrow -->
     <div class="absolute inset-y-0 left-0 flex items-center pl-2">
       <button
         type="button"
-        @click="toggleDropdown"
         class="text-gray-400 hover:text-gray-600 focus:outline-none"
         tabindex="-1"
+        @click="toggleDropdown"
       >
         <svg
           class="w-4 h-4 transition-transform duration-200"
@@ -38,9 +38,9 @@
     <div v-if="selectedValue || searchTerm" class="absolute inset-y-0 left-6 flex items-center pl-2">
       <button
         type="button"
-        @click="clearSelection"
         class="text-gray-400 hover:text-gray-600 focus:outline-none"
         tabindex="-1"
+        @click="clearSelection"
       >
         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -63,8 +63,6 @@
         <li
           v-for="(option, index) in filteredOptions"
           :key="option.value"
-          @click="selectOption(option)"
-          @mouseenter="highlightedIndex = index"
           :class="[
             'px-3 py-2 text-xs cursor-pointer transition-colors',
             {
@@ -73,6 +71,8 @@
             }
           ]"
           class="text-right"
+          @click="selectOption(option)"
+          @mouseenter="highlightedIndex = index"
         >
           {{ option.label }}
         </li>

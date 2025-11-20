@@ -1,4 +1,4 @@
-import { defineNuxtPlugin } from 'nuxt/app'
+import { defineNuxtPlugin } from 'nuxt/app';
 
 export default defineNuxtPlugin(() => {
   // در server-side، heartbeat را غیرفعال کن
@@ -47,7 +47,7 @@ export default defineNuxtPlugin(() => {
       // موفقیت: به بازه ثابت برگرد
       backoffMs = 5_000;
       try { window.dispatchEvent(new CustomEvent('users:heartbeat-ok', { detail: { ts: Date.now() } })); } catch { }
-    } catch (err) {
+    } catch {
       // قطع بک‌اند یا خطای شبکه: به شکل backoff عمل کنیم تا از فشار جلوگیری شود
       backoffMs = Math.min(backoffMs * 2, maxBackoffMs);
       if (timer) clearInterval(timer);

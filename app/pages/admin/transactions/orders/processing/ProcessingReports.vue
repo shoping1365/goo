@@ -94,7 +94,7 @@
             </div>
             <h3 class="text-sm font-semibold text-gray-900">فیلترهای پیشرفته گزارشات</h3>
           </div>
-          <button @click="showReportFilters = !showReportFilters" class="text-sm text-indigo-600 hover:text-indigo-800 transition-colors font-medium hover:bg-indigo-50 px-3 py-1 rounded-lg">
+          <button class="text-sm text-indigo-600 hover:text-indigo-800 transition-colors font-medium hover:bg-indigo-50 px-3 py-1 rounded-lg" @click="showReportFilters = !showReportFilters">
             {{ showReportFilters ? 'مخفی کردن' : 'نمایش' }}
           </button>
         </div>
@@ -156,22 +156,22 @@
         <!-- دکمه‌های عملیات -->
         <div class="mt-6 flex justify-between items-center">
           <div class="flex space-x-2 space-x-reverse">
-            <button @click="clearReportFilters" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+            <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors" @click="clearReportFilters">
               پاک کردن فیلترها
             </button>
-            <button @click="resetReportFilters" class="px-4 py-2 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors">
+            <button class="px-4 py-2 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors" @click="resetReportFilters">
               بازنشانی فیلترها
             </button>
           </div>
           
           <div class="flex space-x-2 space-x-reverse">
-            <button @click="exportFilteredReports" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors flex items-center">
+            <button class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors flex items-center" @click="exportFilteredReports">
               <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
               </svg>
               خروجی Excel
             </button>
-            <button @click="exportFilteredReportsPDF" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors flex items-center">
+            <button class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors flex items-center" @click="exportFilteredReportsPDF">
               <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
               </svg>
@@ -189,8 +189,8 @@
           <h3 class="text-lg font-semibold text-gray-900">گزارشات تفصیلی در حال انجام</h3>
           <div class="relative">
             <input
-              type="text"
               v-model="reportSearchTerm"
+              type="text"
               placeholder="جستجو در گزارشات..."
               class="w-48 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
@@ -213,7 +213,7 @@
         <!-- Error State -->
         <div v-else-if="error" class="text-center py-8">
           <div class="text-red-600 mb-4">{{ error }}</div>
-          <button @click="fetchReportData" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+          <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" @click="fetchReportData">
             تلاش مجدد
           </button>
         </div>
@@ -262,8 +262,8 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex items-center space-x-2">
-                  <button @click="viewReportDetails(report)" class="text-blue-600 hover:text-blue-900">جزئیات</button>
-                  <button @click="exportReport(report)" class="text-green-600 hover:text-green-900">خروجی</button>
+                  <button class="text-blue-600 hover:text-blue-900" @click="viewReportDetails(report)">جزئیات</button>
+                  <button class="text-green-600 hover:text-green-900" @click="exportReport(report)">خروجی</button>
                 </div>
               </td>
             </tr>
@@ -431,12 +431,10 @@ const resetReportFilters = () => {
 }
 
 const exportFilteredReports = () => {
-  console.log('خروجی Excel گزارشات فیلتر شده:', reportFilters.value)
   // اینجا می‌توانید منطق خروجی Excel را پیاده‌سازی کنید
 }
 
 const exportFilteredReportsPDF = () => {
-  console.log('خروجی PDF گزارشات فیلتر شده:', reportFilters.value)
   // اینجا می‌توانید منطق خروجی PDF را پیاده‌سازی کنید
 }
 
@@ -456,12 +454,12 @@ const handleReportItemsPerPageChange = (newItemsPerPage) => {
 }
 
 // متدهای عملیات گزارشات
-const viewReportDetails = (report) => {
-  console.log('مشاهده جزئیات گزارش:', report)
+const viewReportDetails = (_report) => {
+  // View report details logic
 }
 
-const exportReport = (report) => {
-  console.log('خروجی گزارش:', report)
+const exportReport = (_report) => {
+  // Export report logic
 }
 
 // متدهای کمکی

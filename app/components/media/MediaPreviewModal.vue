@@ -3,7 +3,7 @@
     <div class="relative bg-blue-50 rounded-lg overflow-hidden w-full max-w-[65vw] flex flex-col md:flex-row-reverse ring-4 ring-purple-300" @click.stop>
       <!-- Image preview with actions below -->
       <div class="flex-1 flex flex-col items-center justify-start bg-gray-100 p-6">
-        <div v-if="file && (file.url || file.preview)" class="relative" ref="containerEl" @mousemove="onMouseMove" @mouseleave="onMouseLeave">
+        <div v-if="file && (file.url || file.preview)" ref="containerEl" class="relative" @mousemove="onMouseMove" @mouseleave="onMouseLeave">
           <template v-if="file.type === 'video'">
             <div class="w-full h-[540px] bg-gray-200 rounded-xl flex items-center justify-center overflow-hidden">
               <video
@@ -30,12 +30,12 @@
 
         <!-- Global action + compression buttons (single row) -->
         <div class="mt-4 flex items-center justify-center gap-2 flex-wrap md:flex-nowrap">
-          <button @click="emitSave" :class="['px-4 py-2 rounded text-sm font-semibold transition', dirty ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-green-400 text-white']">ذخیره</button>
-          <button v-if="canDeleteMedia" @click="emitDelete" class="px-4 py-2 rounded bg-red-100 hover:bg-red-200 text-red-600 text-sm font-semibold">حذف</button>
-          <button @click="copyLink" class="px-4 py-2 rounded bg-blue-100 hover:bg-blue-200 text-blue-700 text-sm font-semibold">کپی لینک</button>
-          <button @click="downloadFile" class="px-4 py-2 rounded bg-purple-100 hover:bg-purple-200 text-purple-700 text-sm font-semibold">دانلود</button>
+          <button :class="['px-4 py-2 rounded text-sm font-semibold transition', dirty ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-green-400 text-white']" @click="emitSave">ذخیره</button>
+          <button v-if="canDeleteMedia" class="px-4 py-2 rounded bg-red-100 hover:bg-red-200 text-red-600 text-sm font-semibold" @click="emitDelete">حذف</button>
+          <button class="px-4 py-2 rounded bg-blue-100 hover:bg-blue-200 text-blue-700 text-sm font-semibold" @click="copyLink">کپی لینک</button>
+          <button class="px-4 py-2 rounded bg-purple-100 hover:bg-purple-200 text-purple-700 text-sm font-semibold" @click="downloadFile">دانلود</button>
           <!-- magnify button -->
-          <button @click="magnifierEnabled = !magnifierEnabled" :class="['px-3 py-2 rounded text-sm font-semibold', magnifierEnabled ? 'bg-gray-300 text-gray-800' : 'bg-gray-100 hover:bg-gray-200 text-gray-700']" title="ابزار ذره بین">
+          <button :class="['px-3 py-2 rounded text-sm font-semibold', magnifierEnabled ? 'bg-gray-300 text-gray-800' : 'bg-gray-100 hover:bg-gray-200 text-gray-700']" title="ابزار ذره بین" @click="magnifierEnabled = !magnifierEnabled">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5a6 6 0 016 6c0 1.227-.368 2.366-1 3.318l4.707 4.707a1 1 0 11-1.414 1.414l-4.707-4.707A5.978 5.978 0 0111 17a6 6 0 110-12z" />
             </svg>
@@ -47,24 +47,24 @@
           <!-- Compression controls (shown only for images) -->
           <template v-if="file.type === 'image'">
             <!-- toggle compress controls -->
-            <button @click="showCompressControls = !showCompressControls" class="px-2 py-1 bg-sky-100 hover:bg-sky-200 text-sky-700 rounded text-sm border ml-10" title="ابزار فشرده‌سازی">⚙</button>
+            <button class="px-2 py-1 bg-sky-100 hover:bg-sky-200 text-sky-700 rounded text-sm border ml-10" title="ابزار فشرده‌سازی" @click="showCompressControls = !showCompressControls">⚙</button>
             <template v-if="showCompressControls">
               <!-- زمانی که فایل هنوز فشرده نشده -->
               <template v-if="!isCompressed">
-                <button @click="decQuality" class="px-3 py-2 bg-rose-100 hover:bg-rose-200 text-rose-700 rounded text-sm border">-</button>
+                <button class="px-3 py-2 bg-rose-100 hover:bg-rose-200 text-rose-700 rounded text-sm border" @click="decQuality">-</button>
                 <span class="px-1 text-sm font-medium select-none">{{ quality }}%</span>
-                <button @click="incQuality" class="px-3 py-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded text-sm border">+</button>
+                <button class="px-3 py-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded text-sm border" @click="incQuality">+</button>
                 <select v-model="selectedFormat" class="px-2 py-1 border rounded text-sm bg-white">
                   <option value="auto">خودکار</option>
                   <option value="webp">WebP</option>
                   <option value="jpeg">JPEG</option>
                   <option value="png">PNG</option>
                 </select>
-                <button @click="emitCompress" class="px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-white rounded text-sm font-semibold">فشرده سازی</button>
-                <button @click="emitSmartCompress" class="px-4 py-2 bg-indigo-400 hover:bg-indigo-500 text-white rounded text-sm font-semibold">فشرده‌سازی هوشمند</button>
+                <button class="px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-white rounded text-sm font-semibold" @click="emitCompress">فشرده سازی</button>
+                <button class="px-4 py-2 bg-indigo-400 hover:bg-indigo-500 text-white rounded text-sm font-semibold" @click="emitSmartCompress">فشرده‌سازی هوشمند</button>
               </template>
               <!-- زمانی که قبلاً فشرده شده، فقط دکمه بازگردانی -->
-              <button v-if="isCompressed" @click="emitRevert" class="px-4 py-2 bg-red-400 hover:bg-red-500 text-white rounded text-sm font-semibold">بازگردانی</button>
+              <button v-if="isCompressed" class="px-4 py-2 bg-red-400 hover:bg-red-500 text-white rounded text-sm font-semibold" @click="emitRevert">بازگردانی</button>
             </template>
           </template>
         </div>
@@ -123,7 +123,7 @@
       </div>
 
       <!-- Close button -->
-      <button @click="emitClose" class="absolute left-4 top-6 bg-white bg-opacity-80 rounded-full p-1 shadow hover:bg-opacity-100 transition-all">
+      <button class="absolute left-4 top-6 bg-white bg-opacity-80 rounded-full p-1 shadow hover:bg-opacity-100 transition-all" @click="emitClose">
         <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
@@ -322,8 +322,8 @@ function onMouseMove(e: MouseEvent) {
     if (!container || !img) return
     const rect = container.getBoundingClientRect()
     const imgRect = img.getBoundingClientRect()
-    let x = lastClientX - rect.left
-    let y = lastClientY - rect.top
+    const x = lastClientX - rect.left
+    const y = lastClientY - rect.top
     const size = effectiveLensSize.value
     // allow lens to move outside image; only background coords are clamped separately
     const offsetX = imgRect.left - rect.left

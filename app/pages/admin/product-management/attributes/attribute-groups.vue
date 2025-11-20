@@ -10,8 +10,8 @@
           </div>
           <div class="flex space-x-2 space-x-reverse">
             <button 
-              @click="createNewGroup"
               class="inline-flex items-center px-3 py-1.5 border border-green-300 text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700 shadow-sm"
+              @click="createNewGroup"
             >
               گروه جدید
             </button>
@@ -118,8 +118,8 @@
               <div v-if="selectedGroups && selectedGroups.length > 0" class="flex items-center space-x-2 space-x-reverse bg-red-50 rounded-md px-2 py-1.5 border border-red-200">
                 <span class="text-xs text-red-700 font-medium">{{ selectedGroups.length }} مورد انتخاب شده</span>
                 <button 
-                  @click="bulkDelete"
                   class="inline-flex items-center px-2 py-1 border border-red-300 text-xs font-medium rounded-sm text-red-700 bg-red-100 hover:bg-red-200 transition-colors"
+                  @click="bulkDelete"
                 >
                   🗑️ حذف انتخاب شده‌ها
                 </button>
@@ -143,8 +143,8 @@
               
               <!-- Search Button -->
               <button 
-                @click="performSearch"
                 class="inline-flex items-center px-3 py-1.5 border border-blue-300 text-xs font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 shadow-sm transition-colors"
+                @click="performSearch"
               >
                 جستجو
               </button>
@@ -162,8 +162,8 @@
                     <input 
                       type="checkbox" 
                       :checked="isAllSelected"
-                      @change="toggleSelectAll"
                       class="h-3 w-3 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      @change="toggleSelectAll"
                     />
                   </th>
                   <th scope="col" class="px-4 py-2 text-center text-xs font-medium text-gray-600 uppercase tracking-wider">
@@ -185,9 +185,9 @@
                   <!-- Checkbox -->
                   <td class="px-4 py-3 whitespace-nowrap text-center">
                     <input 
-                      type="checkbox" 
+                      v-model="selectedGroups" 
+                      type="checkbox"
                       :value="group.id"
-                      v-model="selectedGroups"
                       class="h-3 w-3 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                     />
                   </td>
@@ -213,19 +213,19 @@
                   <td class="px-4 py-3 whitespace-nowrap text-center">
                     <div class="flex items-center justify-center space-x-1.5 space-x-reverse">
                       <button 
+                        class="inline-flex items-center px-2 py-1 border border-blue-300 text-xs font-medium rounded-sm text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors"
                         @click="() => { 
                           console.log('🖱️ Edit button clicked for group:', group.name, 'ID:', group.id); 
                           console.log('📍 Current route:', $route.path);
                           navigateToEdit(group.id); 
                         }"
-                        class="inline-flex items-center px-2 py-1 border border-blue-300 text-xs font-medium rounded-sm text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors"
                       >
                         ✏️ ویرایش گروه
                       </button>
                       <button 
                         v-if="canDeleteAttributeGroup"
-                        @click="confirmDelete(group)"
                         class="inline-flex items-center px-2 py-1 border border-red-300 text-xs font-medium rounded-sm text-red-700 bg-red-50 hover:bg-red-100 transition-colors"
+                        @click="confirmDelete(group)"
                       >
                         🗑️ حذف
                       </button>
@@ -271,9 +271,9 @@
               <div class="flex items-center space-x-1">
                 <!-- Previous Button -->
                 <button 
-                  @click="prevPage"
                   :disabled="currentPage === 1"
                   class="inline-flex items-center px-2 py-1 border border-gray-300 text-xs font-medium rounded-md text-gray-500 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  @click="prevPage"
                 >
                   <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -286,13 +286,13 @@
                   <template v-for="page in totalPages" :key="page">
                     <button 
                       v-if="page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)"
-                      @click="goToPage(page)"
                       :class="[
                         'inline-flex items-center px-2 py-1 border text-xs font-medium rounded-md',
                         page === currentPage 
                           ? 'border-blue-500 bg-blue-50 text-blue-600' 
                           : 'border-gray-300 bg-white text-gray-500 hover:bg-gray-50'
                       ]"
+                      @click="goToPage(page)"
                     >
                       {{ page }}
                     </button>
@@ -309,9 +309,9 @@
 
                 <!-- Next Button -->
                 <button 
-                  @click="nextPage"
                   :disabled="currentPage === totalPages"
                   class="inline-flex items-center px-2 py-1 border border-gray-300 text-xs font-medium rounded-md text-gray-500 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  @click="nextPage"
                 >
                   بعدی
                   <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -332,8 +332,8 @@
             <h3 class="text-sm font-medium text-gray-900 mb-1">هیچ گروهی یافت نشد</h3>
             <p class="text-xs text-gray-500 mb-4">برای شروع، یک گروه جدید اضافه کنید.</p>
             <button 
-              @click="createNewGroup"
               class="inline-flex items-center px-3 py-1.5 border border-green-300 text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700 shadow-sm transition-colors"
+              @click="createNewGroup"
             >
               گروه جدید
             </button>

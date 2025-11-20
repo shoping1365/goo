@@ -1,6 +1,6 @@
 <script setup>
-import { useConfirmDialog } from '~/composables/useConfirmDialog'
 import RichTextEditor from '~/components/common/RichTextEditor.vue'
+import { useConfirmDialog } from '~/composables/useConfirmDialog'
 
 const tinyApiKey = 'qwa4j6x5mh2e3241igpyi345b4uhe2d5qeq6f8hy9qfkw2ro'
 
@@ -251,8 +251,8 @@ function getStatusLabel(status) {
 
           <div class="lg:col-span-2 flex gap-3 pt-4">
             <button
-                @click="addFaq"
                 class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg px-6 py-3 font-medium hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl"
+                @click="addFaq"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -260,8 +260,8 @@ function getStatusLabel(status) {
               {{ editingIndex >= 0 ? 'به‌روزرسانی سوال' : 'افزودن سوال' }}
             </button>
             <button
-                @click="clearFaqForm"
                 class="bg-gray-500 text-white rounded-lg px-6 py-3 font-medium hover:bg-gray-600 transition-colors"
+                @click="clearFaqForm"
             >
               {{ editingIndex >= 0 ? 'لغو ویرایش' : 'پاک کردن فرم' }}
             </button>
@@ -287,7 +287,8 @@ function getStatusLabel(status) {
         </div>
 
         <div v-else class="grid gapx-4 py-4">
-          <div v-for="(faq, index) in faqs" :key="index" 
+          <div
+v-for="(faq, index) in faqs" :key="index" 
                class="bg-white border border-gray-200 rounded-lg px-4 py-4 hover:shadow-lg transition-shadow duration-200"
                :class="{ 'ring-2 ring-indigo-500': editingIndex === index }">
             <div class="flex justify-between items-start gapx-4 py-4">
@@ -319,22 +320,23 @@ function getStatusLabel(status) {
                   const sanitizedAnswer = computed(() => DOMPurify.sanitize(faq.answer))
                   <div v-html="sanitizedAnswer"></div>
                 -->
+                <!-- eslint-disable-next-line vue/no-v-html -->
                 <div class="text-gray-600 prose prose-sm max-w-none" v-html="faq.answer"></div>
               </div>
               <div class="flex gap-2 shrink-0">
                 <button
-                    @click="editFaq(index)"
                     class="bg-blue-100 text-blue-600 hover:bg-blue-200 p-2 rounded-lg transition-colors"
                     title="ویرایش"
+                    @click="editFaq(index)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                   </svg>
                 </button>
                 <button
-                    @click="deleteFaq(index)"
                     class="bg-red-100 text-red-600 hover:bg-red-200 p-2 rounded-lg transition-colors"
                     title="حذف"
+                    @click="deleteFaq(index)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

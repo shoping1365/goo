@@ -19,7 +19,7 @@
               <p class="text-sm text-gray-500">شماره سفارش: {{ order?.orderNumber || 'نامشخص' }}</p>
             </div>
           </div>
-          <button @click="closeModal" class="text-gray-400 hover:text-gray-600 transition-colors">
+          <button class="text-gray-400 hover:text-gray-600 transition-colors" @click="closeModal">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -321,10 +321,10 @@
 
         <!-- Footer -->
         <div class="flex items-center justify-end space-x-3 px-4 py-4 border-t border-gray-200">
-          <button @click="closeModal" class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
+          <button class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors" @click="closeModal">
             بستن
           </button>
-          <button @click="printOrder" class="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors flex items-center">
+          <button class="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors flex items-center" @click="printOrder">
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
             </svg>
@@ -415,16 +415,16 @@ const fetchOrderItems = async () => {
   orderItemsLoading.value = true
   
   try {
-    console.log('🔍 در حال دریافت آیتم‌های سفارش برای ID:', orderId);
+    // console.log('🔍 در حال دریافت آیتم‌های سفارش برای ID:', orderId);
     const response: ApiResponse<OrderItemsResponse> = await $fetch(`/api/admin/orders/${orderId}/items`)
     
-    console.log('📦 پاسخ API آیتم‌ها:', response);
+    // console.log('📦 پاسخ API آیتم‌ها:', response);
     
     if (response && response.success && response.data && response.data.items) {
       orderItems.value = response.data.items
-      console.log('✅ آیتم‌ها تنظیم شدند:', orderItems.value);
+      // console.log('✅ آیتم‌ها تنظیم شدند:', orderItems.value);
     } else {
-      console.log('❌ پاسخ نامعتبر یا خالی');
+      // console.log('❌ پاسخ نامعتبر یا خالی');
       orderItems.value = []
     }
   } catch (error) {
@@ -673,7 +673,7 @@ const formatPrice = (price: number | string | undefined) => {
   return new Intl.NumberFormat('fa-IR').format(numPrice)
 }
 
-const formatDate = (date: string | Date | undefined) => {
+const _formatDate = (date: string | Date | undefined) => {
   if (!date) return 'نامشخص'
   
   try {

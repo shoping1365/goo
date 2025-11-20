@@ -21,11 +21,11 @@
          <div v-if="selectedPeriod === 'custom'" class="custom-date-range">
            <div class="form-group">
              <label>از تاریخ:</label>
-             <input type="date" v-model="customStartDate" @change="updateStatistics">
+             <input v-model="customStartDate" type="date" @change="updateStatistics">
            </div>
            <div class="form-group">
              <label>تا تاریخ:</label>
-             <input type="date" v-model="customEndDate" @change="updateStatistics">
+             <input v-model="customEndDate" type="date" @change="updateStatistics">
            </div>
          </div>
        </div>
@@ -139,7 +139,8 @@
                  <td>
                    <div class="satisfaction-rating">
                      <div class="stars">
-                       <i v-for="star in 5" :key="star" 
+                       <i
+v-for="star in 5" :key="star" 
                           :class="star <= method.satisfactionRating ? 'fas fa-star filled' : 'far fa-star'"></i>
                      </div>
                      <span>{{ method.satisfactionRating }}/5</span>
@@ -155,15 +156,15 @@
        <div class="export-section">
          <h4>خروجی گزارش</h4>
          <div class="export-buttons">
-           <button @click="exportToExcel" class="btn btn-secondary">
+           <button class="btn btn-secondary" @click="exportToExcel">
              <i class="fas fa-file-excel"></i>
              خروجی اکسل
            </button>
-           <button @click="exportToPDF" class="btn btn-secondary">
+           <button class="btn btn-secondary" @click="exportToPDF">
              <i class="fas fa-file-pdf"></i>
              خروجی PDF
            </button>
-           <button @click="printReport" class="btn btn-secondary">
+           <button class="btn btn-secondary" @click="printReport">
              <i class="fas fa-print"></i>
              چاپ گزارش
            </button>
@@ -173,19 +174,19 @@
    </template>
    
    <script setup lang="ts">
-   import { ref, reactive, onMounted, nextTick } from 'vue'
-   import Chart from 'chart.js/auto'
+   import Chart from 'chart.js/auto';
+import { nextTick, onMounted, reactive, ref } from 'vue';
    
    // Props
    interface Props {
-     shippingMethods?: any[]
+     shippingMethods?: unknown[]
    }
    
-   const props = defineProps<Props>()
+   defineProps<Props>()
    
    // Emits
    const emit = defineEmits<{
-     exportData: [data: any, format: string]
+     exportData: [data: unknown, format: string]
    }>()
    
    // Reactive data

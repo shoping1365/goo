@@ -14,12 +14,12 @@
 
       <div class="form-row">
         <label>عرض (%):</label>
-        <input type="number" v-model.number="local.width" min="5" max="100" />
+        <input v-model.number="local.width" type="number" min="5" max="100" />
       </div>
 
       <div class="drawer-actions">
-        <button @click="apply" class="btn-primary">ذخیره</button>
-        <button @click="$emit('close')" class="btn-secondary">انصراف</button>
+        <button class="btn-primary" @click="apply">ذخیره</button>
+        <button class="btn-secondary" @click="$emit('close')">انصراف</button>
       </div>
     </div>
   </div>

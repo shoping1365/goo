@@ -1,7 +1,7 @@
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
 import { usePermissions } from '@/composables/usePermissions'
+import { useAuthStore } from '@/stores/auth'
+import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 interface LoginResponse {
   token: string
@@ -32,14 +32,14 @@ export const useAuth = () => {
     error.value = ''
 
     try {
-      console.log('🔐 Login attempt with:', email)
+      // console.log('🔐 Login attempt with:', email)
 
       const response = await $fetch<LoginResponse>('/api/auth/login-password', {
         method: 'POST',
         body: { email, password },
       })
 
-      console.log('🔐 Login response:', response)
+      // console.log('🔐 Login response:', response)
 
       authStore.setTokens(response.token, response.token) // استفاده از token برای refresh_token هم
       authStore.setUser(response.user)

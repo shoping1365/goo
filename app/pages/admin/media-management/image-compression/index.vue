@@ -42,15 +42,15 @@
             <div class="space-y-3">
               <h3 class="font-semibold text-gray-900 mb-2">تنظیمات</h3>
               <label class="flex items-center gap-2">
-                <input type="checkbox" v-model="imageSeo.enabled" class="w-4 h-4" />
+                <input v-model="imageSeo.enabled" type="checkbox" class="w-4 h-4" />
                 <span class="text-sm">فعال‌سازی تولید خودکار ALT/CAPTION</span>
               </label>
               <label class="flex items-center gap-2">
-                <input type="checkbox" v-model="imageSeo.generateTitle" class="w-4 h-4" />
+                <input v-model="imageSeo.generateTitle" type="checkbox" class="w-4 h-4" />
                 <span class="text-sm">تولید Title (اختیاری)</span>
               </label>
               <label class="flex items-center gap-2">
-                <input type="checkbox" v-model="imageSeo.overwriteExisting" class="w-4 h-4" />
+                <input v-model="imageSeo.overwriteExisting" type="checkbox" class="w-4 h-4" />
                 <span class="text-sm">بازنویسی مقادیر موجود (پیشنهادی: خاموش)</span>
               </label>
             </div>
@@ -76,16 +76,16 @@
               <h3 class="font-semibold text-gray-900 mb-2">زمان‌بندی</h3>
               <div class="flex items-center gap-2">
                 <label class="text-sm w-36">تاخیر پس از آپلود (ثانیه)</label>
-                <input type="number" v-model.number="imageSeo.delaySeconds" min="5" class="px-3 py-1 border rounded w-full" />
+                <input v-model.number="imageSeo.delaySeconds" type="number" min="5" class="px-3 py-1 border rounded w-full" />
               </div>
               <div class="flex items-center gap-2">
                 <label class="text-sm w-36">Batch Size</label>
-                <input type="number" v-model.number="imageSeo.batchSize" min="1" class="px-3 py-1 border rounded w-full" />
+                <input v-model.number="imageSeo.batchSize" type="number" min="1" class="px-3 py-1 border rounded w-full" />
               </div>
             </div>
           </div>
           <div class="flex items-center gap-3">
-            <button @click="saveImageSeoSettings" class="bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-1.5 rounded-lg shadow">ذخیره تنظیمات</button>
+            <button class="bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-1.5 rounded-lg shadow" @click="saveImageSeoSettings">ذخیره تنظیمات</button>
             <span v-if="imageSeoSaved" class="text-xs text-green-700">ذخیره شد</span>
           </div>
 
@@ -95,13 +95,13 @@
             <div class="border rounded-lg p-6">
               <div class="flex items-center justify-between mb-3">
                 <h4 class="font-semibold">اسکن تصاویر بدون ALT/Title</h4>
-                <button @click="scanMissingMeta" class="bg-purple-100 text-purple-700 px-3 py-1 rounded-lg hover:bg-purple-200 text-sm">اسکن</button>
+                <button class="bg-purple-100 text-purple-700 px-3 py-1 rounded-lg hover:bg-purple-200 text-sm" @click="scanMissingMeta">اسکن</button>
               </div>
               <p class="text-sm text-gray-600 mb-2">یافت‌شده: {{ missingList.length }}</p>
               <div class="max-h-56 overflow-auto text-sm space-y-1">
                 <div v-for="m in missingList" :key="m.id" class="flex items-center justify-between border-b py-1">
                   <span class="truncate mr-2">#{{ m.id }} · {{ m.name }}</span>
-                  <button @click="retryForMedia(m.id)" class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded hover:bg-blue-200 text-xs">ایجاد Job</button>
+                  <button class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded hover:bg-blue-200 text-xs" @click="retryForMedia(m.id)">ایجاد Job</button>
                 </div>
               </div>
             </div>
@@ -118,7 +118,7 @@
                     <option value="completed">completed</option>
                     <option value="error">error</option>
                   </select>
-                  <button @click="loadJobs" class="bg-gray-100 text-gray-800 px-3 py-1 rounded text-sm">رفرش</button>
+                  <button class="bg-gray-100 text-gray-800 px-3 py-1 rounded text-sm" @click="loadJobs">رفرش</button>
                 </div>
               </div>
               <div class="overflow-auto">
@@ -142,7 +142,7 @@
                       <td class="px-3 py-2">{{ formatDateTime(j.scheduled_at) }}</td>
                       <td class="px-3 py-2">{{ formatDateTime(j.finished_at) }}</td>
                       <td class="px-3 py-2 flex items-center gap-2">
-                        <button v-if="j.status==='error' || j.status==='completed'" @click="retryJob(j.id)" class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded hover:bg-blue-200">Retry</button>
+                        <button v-if="j.status==='error' || j.status==='completed'" class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded hover:bg-blue-200" @click="retryJob(j.id)">Retry</button>
                         <span v-if="j.error_message" class="text-xs text-red-600 truncate max-w-[240px]">{{ j.error_message }}</span>
                       </td>
                     </tr>
@@ -168,7 +168,7 @@
             <!-- Toggle -->
             <span class="text-sm text-gray-700">فشرده‌سازی خودکار</span>
             <label class="inline-flex items-center cursor-pointer select-none">
-              <input type="checkbox" v-model="compressionSettings.enabled" class="sr-only peer">
+              <input v-model="compressionSettings.enabled" type="checkbox" class="sr-only peer">
               <div class="w-11 h-6 bg-gray-200 rounded-full relative transition peer-checked:bg-green-500">
                 <span class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></span>
               </div>
@@ -177,8 +177,8 @@
             <!-- Save button (shown only on unsaved changes) -->
             <button
                 v-if="unsavedChanges"
-                @click="saveCompressionSettings"
                 class="bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-1.5 rounded-lg shadow ml-8"
+                @click="saveCompressionSettings"
             >
               ذخیره تغییرات
             </button>
@@ -420,7 +420,7 @@
                       class="w-full h-full object-cover"
                   >
                   <!-- Eye icon ... -->
-                  <button @click.stop="openImagePreview(image)" class="absolute bottom-2 left-2 bg-white bg-opacity-70 hover:bg-opacity-100 rounded-full p-1 shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <button class="absolute bottom-2 left-2 bg-white bg-opacity-70 hover:bg-opacity-100 rounded-full p-1 shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200" @click.stop="openImagePreview(image)">
                     <svg class="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -431,8 +431,8 @@
                 <!-- Image Info (کلیک روی این بخش فقط انتخاب را تغییر دهد) -->
                 <div
                     class="p-3 bg-white relative"
-                    @click.stop="handleImageSelect(image.id, $event)"
                     style="cursor:pointer"
+                    @click.stop="handleImageSelect(image.id, $event)"
                 >
                   <p class="text-sm font-medium text-gray-900 truncate" :title="image.name">
                     {{ image.name }}
@@ -489,19 +489,19 @@
             <option value="processing">در حال پردازش</option>
           </select>
           <!-- Clear table button -->
-          <button v-if="compressionResults.length > 0" @click="clearCompressionResults" class="bg-red-100 text-red-700 px-4 py-2 rounded-lg shadow hover:bg-red-200 transition-all font-bold text-sm">
+          <button v-if="compressionResults.length > 0" class="bg-red-100 text-red-700 px-4 py-2 rounded-lg shadow hover:bg-red-200 transition-all font-bold text-sm" @click="clearCompressionResults">
             پاکسازی جدول
           </button>
           <!-- Batch actions (shown when results exist) -->
           <template v-if="compressionResults.length > 0">
-            <button v-if="selectedResults.length >= 3" @click="batchRestore" class="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg shadow hover:bg-yellow-200 transition-all font-bold border border-yellow-200 flex items-center gap-2">
+            <button v-if="selectedResults.length >= 3" class="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg shadow hover:bg-yellow-200 transition-all font-bold border border-yellow-200 flex items-center gap-2" @click="batchRestore">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
               بازگردانی انتخاب‌شده‌ها
             </button>
-            <button v-if="selectedResults.length > 0" @click="clearResultsSelection" class="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg shadow hover:bg-blue-200 transition-all font-bold border border-blue-200 flex items-center gap-2">
+            <button v-if="selectedResults.length > 0" class="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg shadow hover:bg-blue-200 transition-all font-bold border border-blue-200 flex items-center gap-2" @click="clearResultsSelection">
               لغو انتخاب
             </button>
-            <button v-if="selectedResults.length >= 3" @click="deleteSelectedResults" class="bg-red-100 text-red-800 px-4 py-2 rounded-lg shadow hover:bg-red-200 transition-all font-bold border border-red-200 flex items-center gap-2">
+            <button v-if="selectedResults.length >= 3" class="bg-red-100 text-red-800 px-4 py-2 rounded-lg shadow hover:bg-red-200 transition-all font-bold border border-red-200 flex items-center gap-2" @click="deleteSelectedResults">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
               حذف انتخاب‌شده‌ها
             </button>
@@ -521,7 +521,7 @@
             <table class="w-full">
               <thead class="bg-gray-50 border-b border-gray-200">
               <tr class="text-right">
-                <th class="px-6 py-3"><input type="checkbox" v-model="selectAllResults" @change="toggleSelectAllResults" /></th>
+                <th class="px-6 py-3"><input v-model="selectAllResults" type="checkbox" @change="toggleSelectAllResults" /></th>
                 <th class="px-6 py-3 w-32 min-w-[8rem] text-xs font-medium text-gray-500 uppercase tracking-wider text-right">تصویر</th>
                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-right">حجم اصلی</th>
                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-right">حجم جدید</th>
@@ -536,7 +536,7 @@
                 <td colspan="7" class="text-center py-8 text-gray-400">هنوز تصویری فشرده نشده است</td>
               </tr>
               <tr v-for="result in filteredResults" :key="result.id" class="hover:bg-gray-50">
-                <td class="px-6 py-4"><input type="checkbox" v-model="selectedResults" :value="result.id" /></td>
+                <td class="px-6 py-4"><input v-model="selectedResults" type="checkbox" :value="result.id" /></td>
                 <td class="px-6 py-4 w-32 min-w-[8rem]">
                   <div class="flex items-center">
                     <div class="flex-shrink-0 h-16 w-16">
@@ -565,7 +565,8 @@
                 <td class="px-6 py-4 text-sm text-gray-900">{{ formatFileSize(result.originalSize) }}</td>
                 <td class="px-6 py-4 text-sm text-gray-900">{{ formatFileSize(result.compressedSize) }}</td>
                 <td class="px-6 py-4 text-sm">
-                  <span :class="[
+                  <span
+:class="[
                     'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
                     result.reduction > 50 ? 'bg-green-100 text-green-800' :
                     result.reduction > 25 ? 'bg-yellow-100 text-yellow-800' :
@@ -575,7 +576,8 @@
                   </span>
                 </td>
                 <td class="px-6 py-4 text-sm">
-                  <span :class="[
+                  <span
+:class="[
                     'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
                     result.status === 'success' ? 'bg-green-100 text-green-800' :
                     result.status === 'error' ? 'bg-red-100 text-red-800' :
@@ -587,9 +589,9 @@
                 <td class="px-6 py-4 text-sm font-medium">
                   <div class="flex flex-wrap items-center gap-2">
                     <button
-                        @click="downloadCompressed(result)"
                         class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg hover:bg-blue-200 transition-colors flex items-center gap-1"
                         title="دانلود"
+                        @click="downloadCompressed(result)"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -597,10 +599,10 @@
                       دانلود
                     </button>
                     <button
-                        @click="replaceOriginal(result)"
                         v-if="compressionSettings.createBackup"
                         class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-lg hover:bg-yellow-200 transition-colors flex items-center gap-1"
                         title="بازگردانی"
+                        @click="replaceOriginal(result)"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -608,9 +610,9 @@
                       بازگردانی
                     </button>
                     <button
-                        @click="compareImages(result)"
                         class="bg-purple-100 text-purple-800 px-3 py-1 rounded-lg hover:bg-purple-200 transition-colors flex items-center gap-1"
                         title="مقایسه"
+                        @click="compareImages(result)"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -620,9 +622,9 @@
                     </button>
                     <button
                         v-if="canDeleteCompressionResult"
-                        @click="removeResult(result)"
                         class="bg-red-100 text-red-800 px-3 py-1 rounded-lg hover:bg-red-200 transition-colors flex items-center gap-1"
                         title="حذف"
+                        @click="removeResult(result)"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -670,7 +672,7 @@
           <div class="flex-1 flex flex-col items-center min-h-[240px] md:min-h-[320px]">
             <div class="relative group w-full h-72 flex items-center justify-center">
               <img v-if="previewImageFile" :src="previewImageUrl || ''" class="w-full h-full object-contain rounded-lg shadow border border-gray-200 bg-gray-50" />
-              <button v-if="previewImageFile" @click.stop="openPreviewUrl(previewImageUrl || '', 'عکس قبل')" class="absolute bottom-2 left-2 bg-white bg-opacity-70 hover:bg-opacity-100 rounded-full p-1 shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+              <button v-if="previewImageFile" class="absolute bottom-2 left-2 bg-white bg-opacity-70 hover:bg-opacity-100 rounded-full p-1 shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10" @click.stop="openPreviewUrl(previewImageUrl || '', 'عکس قبل')">
                 <svg class="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -688,7 +690,7 @@
           <div class="flex-1 flex flex-col items-center min-h-[240px] md:min-h-[320px]">
             <div class="relative group w-full h-72 flex items-center justify-center">
               <img v-if="previewUrl" :src="previewUrl" class="w-full h-full object-contain rounded-lg shadow border border-green-200 bg-green-50" />
-              <button v-if="previewUrl" @click.stop="openPreviewUrl(previewUrl, 'عکس بعد')" class="absolute bottom-2 left-2 bg-white bg-opacity-70 hover:bg-opacity-100 rounded-full p-1 shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+              <button v-if="previewUrl" class="absolute bottom-2 left-2 bg-white bg-opacity-70 hover:bg-opacity-100 rounded-full p-1 shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10" @click.stop="openPreviewUrl(previewUrl, 'عکس بعد')">
                 <svg class="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -708,7 +710,7 @@
         <div class="flex flex-wrap flex-row gap-6 items-center justify-center my-8 bg-gradient-to-l from-purple-50 via-blue-50 to-pink-50 rounded-xl p-6">
           <!-- دکمه انتخاب تصویر -->
           <input ref="fileInput" type="file" accept="image/*" class="hidden" @change="onPreviewFileChange" />
-          <button @click="fileInput && fileInput.click()" class="flex items-center gap-2 font-bold px-4 py-2 rounded-lg shadow transition-colors bg-gradient-to-l from-pink-100 via-purple-100 to-blue-100 text-blue-800 hover:from-pink-200 hover:to-blue-200">
+          <button class="flex items-center gap-2 font-bold px-4 py-2 rounded-lg shadow transition-colors bg-gradient-to-l from-pink-100 via-purple-100 to-blue-100 text-blue-800 hover:from-pink-200 hover:to-blue-200" @click="fileInput && fileInput.click()">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
             انتخاب تصویر
           </button>
@@ -724,7 +726,7 @@
           <!-- کیفیت خروجی عددی -->
           <div v-if="!smartCompression" class="flex items-center gap-2 bg-gradient-to-l from-pink-100 via-blue-50 to-purple-50 rounded-lg px-3 py-1">
             <label class="text-sm font-medium text-gray-700">کیفیت خروجی</label>
-            <input type="number" v-model="previewCompressionPercent" min="10" max="100" class="w-16 px-2 py-1 rounded border border-gray-300 text-center text-xs focus:ring-2 focus:ring-blue-400 bg-white" />
+            <input v-model="previewCompressionPercent" type="number" min="10" max="100" class="w-16 px-2 py-1 rounded border border-gray-300 text-center text-xs focus:ring-2 focus:ring-blue-400 bg-white" />
             <span class="text-xs text-gray-500">%</span>
           </div>
           <!-- سوییچ هوشمند -->
@@ -739,7 +741,7 @@
             </label>
           </div>
           <!-- دکمه پیش‌نمایش -->
-          <button @click="onPreviewButtonClick" :disabled="isPreviewLoading" class="flex items-center gap-2 font-bold px-6 py-2 rounded-lg shadow transition-colors bg-gradient-to-l from-blue-400 to-purple-400 text-white hover:from-blue-500 hover:to-purple-500 disabled:bg-gray-400 disabled:cursor-not-allowed">
+          <button :disabled="isPreviewLoading" class="flex items-center gap-2 font-bold px-6 py-2 rounded-lg shadow transition-colors bg-gradient-to-l from-blue-400 to-purple-400 text-white hover:from-blue-500 hover:to-purple-500 disabled:bg-gray-400 disabled:cursor-not-allowed" @click="onPreviewButtonClick">
             <span v-if="isPreviewLoading">در حال تولید پیش‌نمایش...</span>
             <span v-else>پیش‌نمایش</span>
           </button>
@@ -776,7 +778,7 @@
   <ImagePreviewModal
       :model-value="previewModalVisible"
       :image="previewFile"
-      @update:modelValue="previewModalVisible = $event"
+      @update:model-value="previewModalVisible = $event"
       @close="previewModalVisible = false"
   />
 
@@ -784,7 +786,7 @@
   <div class="bg-white rounded-2xl shadow-lg border border-yellow-200 mb-6 mx-4">
     <div class="flex items-center justify-between px-3 py-4 border-b border-blue-300 relative cursor-pointer" @click="toggleSection('backup')">
       <span class="text-base font-bold bg-yellow-100 text-yellow-800 px-4 py-1 rounded-lg ml-auto">بازگردانی بک‌آپ</span>
-      <button @click.stop="loadBackupPeriods" :disabled="backupState.loading" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg hover:bg-blue-200 transition-all ml-8">
+      <button :disabled="backupState.loading" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg hover:bg-blue-200 transition-all ml-8" @click.stop="loadBackupPeriods">
         <span v-if="backupState.loading">در حال دریافت...</span>
         <span v-else>دریافت تاریخ‌ها</span>
       </button>
@@ -797,7 +799,7 @@
           <option disabled value="">انتخاب تاریخ</option>
           <option v-for="p in backupState.periods" :key="p" :value="p">{{ p }}</option>
         </select>
-        <button @click="restoreBackup" :disabled="backupState.restoring || !backupState.selected" class="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg hover:bg-yellow-200 transition-all disabled:opacity-50">
+        <button :disabled="backupState.restoring || !backupState.selected" class="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg hover:bg-yellow-200 transition-all disabled:opacity-50" @click="restoreBackup">
           <span v-if="backupState.restoring">در حال بازگردانی...</span>
           <span v-else>بازگردانی</span>
         </button>
@@ -828,16 +830,16 @@
             <span class="font-bold text-right w-full mb-3 text-blue-700 group-hover:text-pink-600 transition">{{ entry.label }}</span>
             <div class="flex items-center gap-2 mb-3">
               <input
-                  type="number"
                   v-model.number="sizes[entry.key].width"
+                  type="number"
                   class="w-20 px-2 py-1 border-2 border-blue-200 rounded-lg text-center text-base font-semibold focus:ring-2 focus:ring-pink-300 focus:border-pink-400 transition group-hover:border-pink-300 group-hover:bg-pink-50"
                   :min="entry.key === 'original' ? 0 : 1"
                   :placeholder="'عرض'"
               />
               <span class="text-lg text-purple-400 font-bold">×</span>
               <input
-                  type="number"
                   v-model.number="sizes[entry.key].height"
+                  type="number"
                   class="w-20 px-2 py-1 border-2 border-blue-200 rounded-lg text-center text-base font-semibold focus:ring-2 focus:ring-pink-300 focus:border-pink-400 transition group-hover:border-pink-300 group-hover:bg-pink-50"
                   :min="entry.key === 'original' ? 0 : 1"
                   :placeholder="'ارتفاع'"
@@ -868,7 +870,7 @@
   <div v-if="showCompareModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" @click="closeCompareModal">
     <div class="relative bg-white rounded-lg overflow-hidden shadow-lg w-[95vw] max-w-none max-h-[95vh] overflow-auto" @click.stop>
       <!-- Close btn -->
-      <button @click="closeCompareModal" class="absolute left-4 top-6 bg-white bg-opacity-80 rounded-full p-1 shadow hover:bg-opacity-100 transition-all">
+      <button class="absolute left-4 top-6 bg-white bg-opacity-80 rounded-full p-1 shadow hover:bg-opacity-100 transition-all" @click="closeCompareModal">
         <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
@@ -878,13 +880,13 @@
         <div class="flex-1 p-6 flex flex-col items-center justify-start border-b sm:border-b-0 sm:border-r">
           <span class="font-bold text-gray-700 mb-2">عکس اصلی</span>
           <img :src="compareModalData?.originalUrl" :alt="compareModalData?.name" class="w-full max-h-[80vh] object-contain" />
-          <span class="text-sm text-gray-600 mt-2" v-if="compareModalData">{{ formatFileSize(compareModalData.originalSize) }} - {{ compareModalData.originalFormat }}</span>
+          <span v-if="compareModalData" class="text-sm text-gray-600 mt-2">{{ formatFileSize(compareModalData.originalSize) }} - {{ compareModalData.originalFormat }}</span>
         </div>
         <!-- Compressed -->
         <div class="flex-1 p-6 flex flex-col items-center justify-start">
           <span class="font-bold text-gray-700 mb-2">عکس فشرده‌شده</span>
           <img :src="compareModalData?.compressedUrl" :alt="compareModalData?.name" class="w-full max-h-[80vh] object-contain" />
-          <span class="text-sm text-gray-600 mt-2" v-if="compareModalData">{{ formatFileSize(compareModalData.compressedSize) }} - {{ compareModalData.compressedFormat }}</span>
+          <span v-if="compareModalData" class="text-sm text-gray-600 mt-2">{{ formatFileSize(compareModalData.compressedSize) }} - {{ compareModalData.compressedFormat }}</span>
         </div>
       </div>
     </div>

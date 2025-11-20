@@ -1,6 +1,6 @@
 import { createError, defineEventHandler } from 'h3';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (_) => {
      // بررسی احراز هویت و مجوزها
      try {
           // در اینجا باید دستور توقف worker به Go backend ارسال شود

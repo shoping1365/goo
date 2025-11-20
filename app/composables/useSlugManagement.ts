@@ -1,3 +1,12 @@
+interface SlugCheckResponse {
+  exists: boolean
+  slug: string
+}
+
+interface SlugGenerateResponse {
+  slug: string
+}
+
 // Composable برای مدیریت URL (Slug)
 export const useSlugManagement = () => {
   // تابع تبدیل عنوان به slug
@@ -20,10 +29,10 @@ export const useSlugManagement = () => {
     }
     
     try {
-      const response = await $fetch(`/api/products/check-slug?slug=${encodeURIComponent(slug)}`)
-      return response as any
+      const response = await $fetch<SlugCheckResponse>(`/api/products/check-slug?slug=${encodeURIComponent(slug)}`)
+      return response
     } catch (error) {
-      console.error('خطا در بررسی URL:', error)
+      console.warn('خطا در بررسی URL:', error)
       throw new Error('خطا در بررسی URL')
     }
   }
@@ -31,10 +40,10 @@ export const useSlugManagement = () => {
   // تابع تولید slug یکتا
   const generateUniqueSlug = async (baseSlug: string): Promise<string> => {
     try {
-      const response = await $fetch(`/api/products/generate-slug?base_slug=${encodeURIComponent(baseSlug)}`)
-      return (response as any).slug
+      const response = await $fetch<SlugGenerateResponse>(`/api/products/generate-slug?base_slug=${encodeURIComponent(baseSlug)}`)
+      return response.slug
     } catch (error) {
-      console.error('خطا در تولید URL یکتا:', error)
+      console.warn('خطا در تولید URL یکتا:', error)
       throw new Error('خطا در تولید URL یکتا')
     }
   }

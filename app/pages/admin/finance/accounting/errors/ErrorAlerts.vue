@@ -8,8 +8,8 @@
       </div>
       <div class="flex items-center space-x-3 space-x-reverse">
         <button
-          @click="testAlerts"
           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          @click="testAlerts"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -17,8 +17,8 @@
           تست هشدارها
         </button>
         <button
-          @click="saveAlertSettings"
           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          @click="saveAlertSettings"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -443,27 +443,27 @@
               <td class="py-3 px-4">
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <button
-                    @click="acknowledgeAlert(alert)"
                     class="p-1 text-green-600 hover:text-green-800"
                     title="تأیید"
+                    @click="acknowledgeAlert(alert)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                     </svg>
                   </button>
                   <button
-                    @click="dismissAlert(alert)"
                     class="p-1 text-yellow-600 hover:text-yellow-800"
                     title="رد"
+                    @click="dismissAlert(alert)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
                   <button
-                    @click="viewAlertDetails(alert)"
                     class="p-1 text-blue-600 hover:text-blue-800"
                     title="جزئیات"
+                    @click="viewAlertDetails(alert)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />

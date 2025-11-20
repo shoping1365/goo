@@ -10,14 +10,14 @@
       
       <div class="header-actions">
         <button
-          @click="goBack"
           class="btn btn-secondary"
+          @click="goBack"
         >
           انصراف
         </button>
         <button
-          @click="saveFooter"
           class="btn btn-primary"
+          @click="saveFooter"
         >
           {{ isEditing ? 'به‌روزرسانی فوتر' : 'ذخیره فوتر' }}
         </button>

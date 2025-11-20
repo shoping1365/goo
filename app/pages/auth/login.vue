@@ -28,8 +28,8 @@
               <div class="space-y-2">
                 <div class="flex justify-end items-center mb-16">
                   <button
-                    @click="goBack"
                     class="inline-flex items-center space-x-2 rtl:space-x-reverse text-pink-400 hover:text-pink-500 transition-colors duration-200 bg-pink-50 hover:bg-pink-100 px-4 py-2 rounded-lg"
+                    @click="goBack"
                   >
                     <span class="text-sm">بازگشت</span>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,13 +62,13 @@
               </div>
 
               <button
-                @click="sendOTP"
                 :disabled="loading || !isPhoneValid"
                 :class="[
                   isPhoneValid ? 'bg-green-400 hover:bg-green-500' : 'bg-blue-400 hover:bg-blue-500',
                   'w-full text-white py-4 rounded-2xl transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] mt-12',
                   loading ? 'bg-gray-400 transform-none' : ''
                 ]"
+                @click="sendOTP"
               >
                 <div class="flex items-center justify-center space-x-2 rtl:space-x-reverse">
                   <svg v-if="loading" class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
@@ -132,9 +132,9 @@
                 </span>
                 <span v-else>
                   <button 
-                    @click="sendOTP" 
-                    :disabled="loading || !isPhoneValid"
+                    :disabled="loading || !isPhoneValid" 
                     class="text-blue-600 hover:text-blue-700 font-medium"
+                    @click="sendOTP"
                   >
                     {{ resendStatusText }}
                   </button>
@@ -144,12 +144,12 @@
               <!-- دکمه ورود با پسورد برای کاربر dev -->
               <button
                 v-if="showPasswordField"
-                @click="loginWithPasswordHandler"
                 :disabled="loading || !isPasswordValid"
                 :class="[
                   isPasswordValid ? 'bg-green-400 hover:bg-green-500' : 'bg-blue-400 hover:bg-blue-500',
                   'w-full text-white py-4 rounded-2xl transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:transform-none'
                 ]"
+                @click="loginWithPasswordHandler"
               >
                 <div class="flex items-center justify-center space-x-2 rtl:space-x-reverse">
                   <svg v-if="loading" class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
@@ -164,12 +164,12 @@
               <!-- دکمه تایید کد OTP برای کاربران عادی -->
               <button
                 v-else
-                @click="verifyOTPHandler"
                 :disabled="otpLoading || !isOtpValid"
                 :class="[
                   isOtpValid ? 'bg-green-400 hover:bg-green-500' : 'bg-blue-400 hover:bg-blue-500',
                   'w-full text-white py-4 rounded-2xl transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:transform-none'
                 ]"
+                @click="verifyOTPHandler"
               >
                 <div class="flex items-center justify-center space-x-2 rtl:space-x-reverse">
                   <svg v-if="otpLoading" class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
@@ -201,9 +201,10 @@ declare const navigateTo: (to: string) => Promise<void>
 </script>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
-import { validationUtils } from '~/utils/validation';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useOTP } from '~/composables/useOTP';
+import type { User } from '~/types/user';
+import { validationUtils } from '~/utils/validation';
 
 // استفاده از layout ساده برای صفحه احراز هویت (بدون Header/Footer)
 definePageMeta({
@@ -324,10 +325,11 @@ const sendOTP = async () => {
       resendAttempts.value--;
       error.value = otpError.value || 'خطا در ارسال کد تایید';
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const e = err as { data?: { message?: string }, message?: string };
     otpSent.value = false;
     resendAttempts.value--;
-    error.value = err?.data?.message || err?.message || 'خطای نامشخصی رخ داده است';
+    error.value = e?.data?.message || e?.message || 'خطای نامشخصی رخ داده است';
   } finally {
     loading.value = false;
   }
@@ -343,7 +345,7 @@ const loginWithPasswordHandler = async () => {
   error.value = '';
 
   try {
-    const response: any = await $fetch('/api/auth/login-password', {
+    const response = await $fetch<{ success: boolean; message?: string; user?: User }>('/api/auth/login-password', {
       method: 'POST',
       body: { 
         identifier: emailOrPhone.value,
@@ -370,8 +372,9 @@ const loginWithPasswordHandler = async () => {
     } else {
       error.value = response?.message || 'خطا در ورود';
     }
-  } catch (err: any) {
-    error.value = err?.data?.error || err?.data?.message || err?.message || 'نام کاربری یا رمز عبور اشتباه است';
+  } catch (err: unknown) {
+    const e = err as { data?: { error?: string; message?: string }, message?: string };
+    error.value = e?.data?.error || e?.data?.message || e?.message || 'نام کاربری یا رمز عبور اشتباه است';
   } finally {
     loading.value = false;
   }
@@ -387,7 +390,7 @@ const verifyOTPHandler = async () => {
   error.value = '';
 
   try {
-    const response: any = await $fetch('/api/auth/verify-otp', {
+    const response = await $fetch<{ success: boolean; message?: string; user?: User }>('/api/auth/verify-otp', {
       method: 'POST',
       body: { 
         mobile: emailOrPhone.value, 
@@ -422,8 +425,9 @@ const verifyOTPHandler = async () => {
     } else {
       error.value = response?.message || 'کد تایید اشتباه است';
     }
-  } catch (err: any) {
-    error.value = err?.data?.message || err?.message || 'خطای نامشخصی رخ داده است';
+  } catch (err: unknown) {
+    const e = err as { data?: { message?: string }, message?: string };
+    error.value = e?.data?.message || e?.message || 'خطای نامشخصی رخ داده است';
   }
 }
 

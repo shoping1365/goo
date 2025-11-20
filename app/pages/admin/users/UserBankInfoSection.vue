@@ -32,8 +32,8 @@
       </div>
       <p class="text-red-600 text-sm">{{ error }}</p>
       <button
-        @click="fetchBankingInfo"
         class="mt-2 px-3 py-1 bg-red-100 text-red-600 rounded text-sm hover:bg-red-200"
+        @click="fetchBankingInfo"
       >
         تلاش مجدد
       </button>
@@ -61,9 +61,9 @@
           <div class="flex items-center gap-2">
             <button
               v-if="!info.isVerified"
-              @click="verifyBankingInfo(info.id)"
               class="bg-green-100 hover:bg-green-200 text-green-700 px-3 py-1 rounded text-xs font-bold transition flex items-center gap-1"
               title="تایید اطلاعات بانکی"
+              @click="verifyBankingInfo(info.id)"
             >
               <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
@@ -72,9 +72,9 @@
             </button>
             <button
               v-else
-              @click="unverifyBankingInfo(info.id)"
               class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1 rounded text-xs font-bold transition flex items-center gap-1"
               title="لغو تایید اطلاعات بانکی"
+              @click="unverifyBankingInfo(info.id)"
             >
               <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -136,9 +136,9 @@
             <div class="flex items-center gap-2">
               <button
                 v-if="!info.isVerified"
-                @click="verifyBankingInfo(info.id)"
                 class="bg-green-100 hover:bg-green-200 text-green-700 px-3 py-1 rounded text-xs font-bold transition flex items-center gap-1"
                 title="تایید اطلاعات بانکی"
+                @click="verifyBankingInfo(info.id)"
               >
                 <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
@@ -147,9 +147,9 @@
               </button>
               <button
                 v-else
-                @click="unverifyBankingInfo(info.id)"
                 class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1 rounded text-xs font-bold transition flex items-center gap-1"
                 title="لغو تایید اطلاعات بانکی"
+                @click="unverifyBankingInfo(info.id)"
               >
                 <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -203,16 +203,54 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import ViewAllModal from '~/components/admin/modals/ViewAllModal.vue';
+import type { User } from '~/types/user';
 
-const props = defineProps<{ user: any }>();
+const props = defineProps<{ user: User }>();
 const showAll = ref(false);
 
 // Real data for banking info
-const bankingInfos = ref([]);
+const bankingInfos = ref<BankingInfo[]>([]); // Keeping any[] for now as mapped structure is local
 const loading = ref(false);
 const error = ref('');
+
+interface BankingInfoItem {
+  id: number;
+  bank_name: string;
+  card_number: string;
+  account_number: string;
+  sheba_number: string;
+  account_holder_name: string;
+  account_type: string;
+  is_default: boolean;
+  is_verified: boolean;
+  [key: string]: unknown;
+}
+
+interface BankingInfo {
+  id: number;
+  bankName: string;
+  cardNumber: string;
+  accountNumber: string;
+  shebaNumber: string;
+  accountHolderName: string;
+  accountType: string;
+  isDefault: boolean;
+  isVerified: boolean;
+}
+
+interface BankingInfoResponse {
+  success: boolean;
+  data: {
+    bankingInfos: BankingInfoItem[];
+  };
+}
+
+interface VerifyResponse {
+  success: boolean;
+  [key: string]: unknown;
+}
 
 const displayedBankingInfos = computed(() => {
   return showAll.value ? bankingInfos.value : bankingInfos.value.slice(0, 2);
@@ -225,10 +263,10 @@ const fetchBankingInfo = async () => {
   error.value = '';
 
   try {
-    const response = await $fetch(`/api/admin/users/${props.user.id}/banking-info`) as any;
+    const response = await $fetch<BankingInfoResponse>(`/api/admin/users/${props.user.id}/banking-info`);
 
     if (response.success) {
-      bankingInfos.value = response.data.bankingInfos.map((item: any) => ({
+      bankingInfos.value = response.data.bankingInfos.map((item) => ({
         id: item.id,
         bankName: item.bank_name,
         cardNumber: item.card_number,
@@ -242,9 +280,9 @@ const fetchBankingInfo = async () => {
     } else {
       error.value = 'خطا در دریافت داده‌ها';
     }
-  } catch (err: any) {
-    console.error('خطا در دریافت اطلاعات بانکی:', err);
-    error.value = err.data?.message || 'خطا در دریافت اطلاعات بانکی';
+  } catch (err: unknown) {
+    const e = err as { data?: { message?: string } };
+    error.value = e.data?.message || 'خطا در دریافت اطلاعات بانکی';
   } finally {
     loading.value = false;
   }
@@ -265,18 +303,18 @@ const verifyBankingInfo = async (bankingInfoId: number) => {
   if (note === null) return; // کاربر کنسل کرد
 
   try {
-    const response = await $fetch(`/api/admin/banking-info/${bankingInfoId}/verify`, {
+    const response = await $fetch<VerifyResponse>(`/api/admin/banking-info/${bankingInfoId}/verify`, {
       method: 'POST',
       body: { note: note || '' }
-    }) as any;
+    });
 
     if (response.success) {
       alert('اطلاعات بانکی با موفقیت تایید شد');
       await fetchBankingInfo(); // رفرش لیست
     }
-  } catch (err: any) {
-    console.error('خطا در تایید اطلاعات بانکی:', err);
-    alert(err.data?.message || 'خطا در تایید اطلاعات بانکی');
+  } catch (err: unknown) {
+    const e = err as { data?: { message?: string } };
+    alert(e.data?.message || 'خطا در تایید اطلاعات بانکی');
   }
 };
 
@@ -288,22 +326,22 @@ const unverifyBankingInfo = async (bankingInfoId: number) => {
   if (note === null) return; // کاربر کنسل کرد
 
   try {
-    const response = await $fetch(`/api/admin/banking-info/${bankingInfoId}/unverify`, {
+    const response = await $fetch<VerifyResponse>(`/api/admin/banking-info/${bankingInfoId}/unverify`, {
       method: 'POST',
       body: { note: note || '' }
-    }) as any;
+    });
 
     if (response.success) {
       alert('تایید اطلاعات بانکی با موفقیت لغو شد');
       await fetchBankingInfo(); // رفرش لیست
     }
-  } catch (err: any) {
-    console.error('خطا در لغو تایید اطلاعات بانکی:', err);
-    alert(err.data?.message || 'خطا در لغو تایید اطلاعات بانکی');
+  } catch (err: unknown) {
+    const e = err as { data?: { message?: string } };
+    alert(e.data?.message || 'خطا در لغو تایید اطلاعات بانکی');
   }
 };
 
 onMounted(() => {
   fetchBankingInfo();
 });
-</script> 
+</script>

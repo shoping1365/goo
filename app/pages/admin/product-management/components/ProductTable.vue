@@ -8,12 +8,12 @@
         <div class="flex items-center gap-2">
           <button
             v-if="hasPermission('products_delete')"
-            @click="openBulkDeleteConfirm"
             class="px-3 py-1.5 text-xs rounded-md bg-red-600 text-white hover:bg-red-700"
+            @click="openBulkDeleteConfirm"
           >
             حذف انتخابشدهها
           </button>
-          <button @click="clearSelection" class="px-3 py-1.5 text-xs rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200">لغو انتخاب</button>
+          <button class="px-3 py-1.5 text-xs rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200" @click="clearSelection">لغو انتخاب</button>
         </div>
       </div>
       <div class="overflow-x-auto">
@@ -25,8 +25,8 @@
               <input 
                 type="checkbox" 
                 :checked="selectAll"
-                @change="toggleSelectAll"
-                class="h-3 w-3 text-blue-600 focus:ring-blue-900 border-gray-300 rounded" 
+                class="h-3 w-3 text-blue-600 focus:ring-blue-900 border-gray-300 rounded"
+                @change="toggleSelectAll" 
               />
             </th>
             <th scope="col" class="w-16 px-3 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">ردیف</th>
@@ -52,13 +52,13 @@
           </tr>
 
           <!-- محصولات واقعی از API -->
-          <tr v-else-if="products.length > 0" v-for="(product, index) in products" :key="product.id" class="hover:bg-gray-50 transition-colors">
+          <tr v-for="(product, index) in products" v-else-if="products.length > 0" :key="product.id" class="hover:bg-gray-50 transition-colors">
             <!-- انتخاب -->
             <td class="w-12 px-3 py-4 whitespace-nowrap text-right">
               <input 
+                v-model="selectedProducts" 
                 type="checkbox" 
-                :value="product.id" 
-                v-model="selectedProducts"
+                :value="product.id"
                 class="h-3 w-3 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" 
               />
             </td>
@@ -85,8 +85,8 @@
                   class="w-12 h-12 object-cover rounded-md opacity-60 border border-gray-200"
                 />
                 <ImagePreviewModal
-                  v-model="modalProductId"
                   v-if="modalProductId === product.id"
+                  v-model="modalProductId"
                   :image="{ url: getProductOriginalImage(product), name: product.name }"
                 />
               </div>
@@ -164,8 +164,8 @@
                 </NuxtLink>
                 <button 
                   v-if="hasPermission('products_delete')"
-                  @click="openDeleteConfirm(product.id)"
                   class="inline-flex items-center px-3 py-1.5 border border-red-300 text-xs font-medium rounded text-red-700 bg-red-50 hover:bg-red-100 transition-colors"
+                  @click="openDeleteConfirm(product.id)"
                 >
                   حذف
                 </button>
@@ -217,8 +217,8 @@
         </h3>
         <p class="text-sm leading-6 text-gray-600 mb-6">آیا از حذف این محصول اطمینان دارید؟ این عملیات غیرقابل بازگشت است.</p>
         <div class="flex justify-end gap-2">
-          <button @click="closeDeleteConfirm" class="px-4 py-2 text-sm rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200">انصراف</button>
-          <button @click="confirmDelete" :disabled="deleting" class="px-4 py-2 text-sm rounded-md bg-red-600 text-white hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed">
+          <button class="px-4 py-2 text-sm rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200" @click="closeDeleteConfirm">انصراف</button>
+          <button :disabled="deleting" class="px-4 py-2 text-sm rounded-md bg-red-600 text-white hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed" @click="confirmDelete">
             <span v-if="deleting" class="i-heroicons-arrow-path animate-spin mr-1"></span>
             حذف
           </button>
@@ -235,8 +235,8 @@
         </h3>
         <p class="text-sm leading-6 text-gray-600 mb-6">آیا از حذف {{ selectedProducts.length }} محصول انتخابشده اطمینان دارید؟ این عملیات غیرقابل بازگشت است.</p>
         <div class="flex justify-end gap-2">
-          <button @click="closeBulkDeleteConfirm" class="px-4 py-2 text-sm rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200">انصراف</button>
-          <button @click="confirmBulkDelete" :disabled="deletingBulk" class="px-4 py-2 text-sm rounded-md bg-red-600 text-white hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed">
+          <button class="px-4 py-2 text-sm rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200" @click="closeBulkDeleteConfirm">انصراف</button>
+          <button :disabled="deletingBulk" class="px-4 py-2 text-sm rounded-md bg-red-600 text-white hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed" @click="confirmBulkDelete">
             <span v-if="deletingBulk" class="i-heroicons-arrow-path animate-spin mr-1"></span>
             حذف
           </button>
@@ -412,7 +412,7 @@ const fetchProducts = async () => {
 // Enhanced filtering logic - حالا در سمت سرور انجام می‌شود
 // اما برای محاسبه آمار محلی نگه می‌داریم
 const filteredAll = computed(() => {
-  let filtered = products.value
+  const filtered = products.value
 
   // این فیلترها فقط برای نمایش محلی استفاده می‌شوند
   // فیلتر اصلی در سمت سرور انجام می‌شود

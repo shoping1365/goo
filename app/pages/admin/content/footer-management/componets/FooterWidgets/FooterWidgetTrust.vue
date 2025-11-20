@@ -33,7 +33,7 @@
               const sanitizedHtmlCode = computed(() => DOMPurify.sanitize(badge.htmlCode))
               <div v-html="sanitizedHtmlCode"></div>
             -->
-            <div v-if="badge.htmlCode" v-html="badge.htmlCode" class="trust-badge-html"></div>
+            <div v-if="badge.htmlCode" class="trust-badge-html" v-html="badge.htmlCode"></div>
             
             <!-- اگر کد نداشت، نمایش پیش‌فرض -->
             <template v-else>

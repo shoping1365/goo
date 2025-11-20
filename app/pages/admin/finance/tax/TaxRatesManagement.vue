@@ -9,8 +9,8 @@
       
       <!-- دکمه افزودن نرخ جدید -->
       <button 
-        @click="showAddRateModal = true"
         class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
+        @click="showAddRateModal = true"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -124,19 +124,19 @@
             <td class="py-3 px-4">
               <div class="flex items-center gap-2">
                 <button 
-                  @click="editRate(rate)"
                   class="p-1 text-blue-600 hover:text-blue-800 transition-colors"
+                  @click="editRate(rate)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                   </svg>
                 </button>
                 <button 
-                  @click="toggleRateStatus(rate)"
                   :class="[
                     'p-1 transition-colors',
                     rate.status === 'active' ? 'text-red-600 hover:text-red-800' : 'text-green-600 hover:text-green-800'
                   ]"
+                  @click="toggleRateStatus(rate)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="rate.status === 'active' ? 'M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728' : 'M5 13l4 4L19 7'"></path>
@@ -144,8 +144,8 @@
                 </button>
                 <button 
                   v-if="canDeleteTaxRate"
-                  @click="deleteRate(rate)"
                   class="p-1 text-red-600 hover:text-red-800 transition-colors"
+                  @click="deleteRate(rate)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -187,14 +187,14 @@
           <h3 class="text-lg font-semibold text-gray-900">
             {{ editingRate ? 'ویرایش نرخ مالیاتی' : 'افزودن نرخ جدید' }}
           </h3>
-          <button @click="closeModal" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="closeModal">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
         </div>
 
-        <form @submit.prevent="saveRate" class="space-y-4">
+        <form class="space-y-4" @submit.prevent="saveRate">
           <!-- نوع مالیات -->
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">نوع مالیات</label>
@@ -282,8 +282,8 @@
             </button>
             <button 
               type="button"
-              @click="closeModal"
               class="flex-1 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition-colors duration-200"
+              @click="closeModal"
             >
               انصراف
             </button>

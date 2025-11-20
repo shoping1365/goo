@@ -5,10 +5,10 @@
 
       <!-- مدیریت سیستم -->
       <div class="mb-8 flex flex-wrap gap-6">
-        <button @click="clearCache" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded shadow">پاک کردن کامل کش</button>
-        <button @click="resetDatabase" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow">ریست دیتابیس</button>
-        <button @click="restartServer" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow">ریست سرور اصلی</button>
-        <button @click="clearAllLogs" class="bg-gray-700 hover:bg-gray-900 text-white px-4 py-2 rounded shadow">پاک کردن تمام لاگ‌ها</button>
+        <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded shadow" @click="clearCache">پاک کردن کامل کش</button>
+        <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow" @click="resetDatabase">ریست دیتابیس</button>
+        <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow" @click="restartServer">ریست سرور اصلی</button>
+        <button class="bg-gray-700 hover:bg-gray-900 text-white px-4 py-2 rounded shadow" @click="clearAllLogs">پاک کردن تمام لاگ‌ها</button>
       </div>
 
         <!-- API Connections -->
@@ -18,7 +18,8 @@
             <span>در حال بارگذاری...</span>
           </div>
           <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div v-for="api in apiConnections" :key="api.id"
+            <div
+v-for="api in apiConnections" :key="api.id"
                  class="border rounded-lg p-6"
                  :class="{
                    'border-green-500 bg-green-50': api.status === 'success',
@@ -31,7 +32,8 @@
                   <p class="text-sm text-gray-600">{{ api.url }}</p>
                 </div>
                 <div class="flex items-center">
-                  <span class="text-sm"
+                  <span
+class="text-sm"
                         :class="{
                           'text-green-600': api.status === 'success',
                           'text-red-600': api.status === 'error',
@@ -39,7 +41,7 @@
                         }">
                     {{ api.status === 'success' ? 'متصل' : api.status === 'error' ? 'خطا' : 'هشدار' }}
                   </span>
-                  <button @click="testConnection(api)" class="mr-2 text-blue-600 hover:text-blue-800" title="تست اتصال">
+                  <button class="mr-2 text-blue-600 hover:text-blue-800" title="تست اتصال" @click="testConnection(api)">
                     🔄
                   </button>
                 </div>
@@ -58,7 +60,8 @@
             <span>در حال بارگذاری...</span>
           </div>
           <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div v-for="db in databaseStatus" :key="db.id"
+            <div
+v-for="db in databaseStatus" :key="db.id"
                  class="border rounded-lg p-6"
                  :class="{
                    'border-green-500 bg-green-50': db.status === 'success',
@@ -70,14 +73,15 @@
                   <p class="text-sm text-gray-600">{{ db.type }}</p>
                 </div>
                 <div class="flex items-center">
-                  <span class="text-sm"
+                  <span
+class="text-sm"
                         :class="{
                           'text-green-600': db.status === 'success',
                           'text-red-600': db.status === 'error'
                         }">
                     {{ db.status === 'success' ? 'فعال' : 'خطا' }}
                   </span>
-                  <button @click="testDatabase(db)" class="mr-2 text-blue-600 hover:text-blue-800" title="تست اتصال">
+                  <button class="mr-2 text-blue-600 hover:text-blue-800" title="تست اتصال" @click="testDatabase(db)">
                     🔄
                   </button>
                 </div>
@@ -97,7 +101,8 @@
             <span>در حال بارگذاری...</span>
           </div>
           <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div v-for="server in serverStatus" :key="server.id"
+            <div
+v-for="server in serverStatus" :key="server.id"
                  class="border rounded-lg p-6"
                  :class="{
                    'border-green-500 bg-green-50': server.status === 'success',
@@ -109,14 +114,15 @@
                   <p class="text-sm text-gray-600">{{ server.ip }}</p>
                 </div>
                 <div class="flex items-center">
-                  <span class="text-sm"
+                  <span
+class="text-sm"
                         :class="{
                           'text-green-600': server.status === 'success',
                           'text-red-600': server.status === 'error'
                         }">
                     {{ server.status === 'success' ? 'فعال' : 'خطا' }}
                   </span>
-                  <button @click="testServer(server)" class="mr-2 text-blue-600 hover:text-blue-800" title="تست اتصال">
+                  <button class="mr-2 text-blue-600 hover:text-blue-800" title="تست اتصال" @click="testServer(server)">
                     🔄
                   </button>
                 </div>
@@ -136,8 +142,8 @@
           <div class="border rounded-lg overflow-hidden">
             <div class="bg-gray-50 px-4 py-2 border-b flex justify-between items-center">
               <div class="flex space-x-4 space-x-reverse">
-                <button @click="refreshLogs" class="text-blue-600 hover:text-blue-800" title="بروزرسانی لاگ‌ها">🔄</button>
-                <button @click="clearLogs" class="text-red-600 hover:text-red-800" title="پاک کردن لاگ‌ها">🗑️</button>
+                <button class="text-blue-600 hover:text-blue-800" title="بروزرسانی لاگ‌ها" @click="refreshLogs">🔄</button>
+                <button class="text-red-600 hover:text-red-800" title="پاک کردن لاگ‌ها" @click="clearLogs">🗑️</button>
               </div>
               <div class="flex items-center space-x-4 space-x-reverse">
                 <select v-model="logLevel" class="border rounded px-2 py-1 text-sm">
@@ -146,7 +152,7 @@
                   <option value="warning">هشدار</option>
                   <option value="info">اطلاعات</option>
                 </select>
-                <input type="text" v-model="logSearch" placeholder="جستجو در لاگ‌ها..." class="border rounded px-2 py-1 text-sm w-64">
+                <input v-model="logSearch" type="text" placeholder="جستجو در لاگ‌ها..." class="border rounded px-2 py-1 text-sm w-64">
               </div>
             </div>
             <div v-if="loading.logs" class="text-center py-4">
@@ -163,7 +169,8 @@
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                  <tr v-for="log in filteredLogs" :key="log.id"
+                  <tr
+v-for="log in filteredLogs" :key="log.id"
                       :class="{
                         'bg-red-50': log.level === 'error',
                         'bg-yellow-50': log.level === 'warning',
@@ -171,7 +178,8 @@
                       }">
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatDate(log.timestamp) }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                      <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
+                      <span
+class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
                             :class="{
                               'bg-red-100 text-red-800': log.level === 'error',
                               'bg-yellow-100 text-yellow-800': log.level === 'warning',
@@ -182,7 +190,7 @@
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500">{{ log.message }}</td>
                     <td class="px-6 py-4 text-sm text-gray-500">
-                      <button @click="showLogDetails(log)" class="text-blue-600 hover:text-blue-800">
+                      <button class="text-blue-600 hover:text-blue-800" @click="showLogDetails(log)">
                         مشاهده جزئیات
                       </button>
                     </td>

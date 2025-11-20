@@ -25,25 +25,25 @@
                 <div :class="['w-5 h-5 bg-white rounded-full transition', isBotShieldOn ? 'translate-x-5' : 'translate-x-0']"></div>
               </div>
             </label>
-            <button @click="refreshData" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" @click="refreshData">
               <svg class="w-5 h-5 inline ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
               </svg>
               بروزرسانی
             </button>
-            <button @click="showAddBotModal = true" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+            <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors" @click="showAddBotModal = true">
               <svg class="w-5 h-5 inline ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
               </svg>
               افزودن ربات
             </button>
-            <button @click="blockAllBots" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">
+            <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors" @click="blockAllBots">
               <svg class="w-5 h-5 inline ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728"></path>
               </svg>
               مسدود کردن همه
             </button>
-            <button @click="whitelistAllBots" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+            <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors" @click="whitelistAllBots">
               <svg class="w-5 h-5 inline ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
@@ -147,14 +147,14 @@
               <label class="block text-sm font-medium text-gray-700 mb-2">متدهای عبوری (CSV)</label>
               <div class="flex gap-2">
                 <input v-model="skipMethodsCsv" type="text" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="مثلاً: OPTIONS,HEAD"/>
-                <button @click="saveSkipMethods" class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">ذخیره</button>
+                <button class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700" @click="saveSkipMethods">ذخیره</button>
               </div>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">مسیرهای استثناء (CSV از prefix)</label>
               <div class="flex gap-2">
                 <input v-model="excludePathsCsv" type="text" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="مثلاً: /_nuxt,/.nuxt,/assets,/public"/>
-                <button @click="saveExcludePaths" class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">ذخیره</button>
+                <button class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700" @click="saveExcludePaths">ذخیره</button>
               </div>
             </div>
           </div>
@@ -290,21 +290,21 @@
                   <div class="flex space-x-2 space-x-reverse">
                     <button
                       v-if="bot.status === 'blocked'"
-                      @click="allowBot(bot.id)"
                       class="text-green-600 hover:text-green-900"
+                      @click="allowBot(bot.id)"
                     >
                       آزادسازی
                     </button>
                     <button
                       v-else
-                      @click="blockBot(bot.id)"
                       class="text-red-600 hover:text-red-900"
+                      @click="blockBot(bot.id)"
                     >
                       مسدود کردن
                     </button>
                     <button
-                      @click="showWhitelistModal = true"
                       class="text-blue-600 hover:text-blue-900"
+                      @click="showWhitelistModal = true"
                     >
                       وایت‌لیست
                     </button>
@@ -357,8 +357,8 @@
             <div class="flex justify-end space-x-3 space-x-reverse">
               <button
                 type="button"
-                @click="showAddBotModal = false"
                 class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300"
+                @click="showAddBotModal = false"
               >
                 انصراف
               </button>
@@ -414,8 +414,8 @@
             <div class="flex justify-end space-x-3 space-x-reverse">
               <button
                 type="button"
-                @click="showWhitelistModal = false"
                 class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300"
+                @click="showWhitelistModal = false"
               >
                 انصراف
               </button>
@@ -446,14 +446,14 @@
           </p>
           <div class="flex justify-end space-x-3 space-x-reverse">
             <button
-              @click="showBlockAllModal = false"
               class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300"
+              @click="showBlockAllModal = false"
             >
               انصراف
             </button>
             <button
-              @click="confirmBlockAll"
               class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+              @click="confirmBlockAll"
             >
               مسدود کردن همه
             </button>

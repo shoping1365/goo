@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-wrap gap-6 items-center bg-white p-6 rounded-xl shadow mb-4">
-    <input type="date" v-model="from" class="border rounded px-2 py-1" />
+    <input v-model="from" type="date" class="border rounded px-2 py-1" />
     <span>-</span>
-    <input type="date" v-model="to" class="border rounded px-2 py-1" />
+    <input v-model="to" type="date" class="border rounded px-2 py-1" />
     <select v-model="paymentMethod" class="border rounded px-2 py-1">
       <option value="">روش پرداخت</option>
       <option value="online">آنلاین</option>
@@ -22,7 +22,7 @@
       <option value="vip">VIP</option>
     </select>
     <input v-model="productName" placeholder="نام محصول..." class="border rounded px-2 py-1" />
-    <button @click="emitFilter" class="px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition">اعمال فیلتر</button>
+    <button class="px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition" @click="emitFilter">اعمال فیلتر</button>
   </div>
 </template>
 <script setup lang="ts">

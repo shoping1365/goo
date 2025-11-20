@@ -115,7 +115,7 @@
             <div class="flex items-center justify-between mb-2">
               <h4 class="font-medium text-gray-900">{{ rule.name }}</h4>
               <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" v-model="rule.enabled" class="sr-only peer">
+                <input v-model="rule.enabled" type="checkbox" class="sr-only peer">
                 <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
               </label>
             </div>
@@ -149,7 +149,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">حذف رکوردهای تکراری</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="dataCleaning.removeDuplicates" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="dataCleaning.removeDuplicates" type="checkbox" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">فعال‌سازی حذف خودکار</span>
               </label>
             </div>
@@ -159,9 +159,9 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">حذف رکوردهای قدیمی</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="dataCleaning.removeOldRecords" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="dataCleaning.removeOldRecords" type="checkbox" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">حذف رکوردهای قدیمی‌تر از</span>
-                <input type="number" v-model="dataCleaning.oldRecordDays" min="30" max="365" class="w-20 px-2 py-1 border border-gray-300 rounded text-sm">
+                <input v-model="dataCleaning.oldRecordDays" type="number" min="30" max="365" class="w-20 px-2 py-1 border border-gray-300 rounded text-sm">
                 <span class="text-sm text-gray-700 mr-2">روز</span>
               </label>
             </div>
@@ -171,7 +171,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">فشرده‌سازی داده</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="dataCleaning.compression" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="dataCleaning.compression" type="checkbox" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">فشرده‌سازی خودکار</span>
               </label>
             </div>

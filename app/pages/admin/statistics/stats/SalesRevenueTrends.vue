@@ -36,5 +36,5 @@
   </div>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ trends: any[] }>()
+defineProps<{ trends: unknown[] }>()
 </script> 

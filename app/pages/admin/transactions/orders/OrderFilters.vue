@@ -3,7 +3,7 @@
     <!-- Advanced Filters -->
               <div class="flex items-center justify-between mb-6">
         <div class="flex items-center">
-          <button @click="showAdvanced = !showAdvanced" class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center ml-3 text-white hover:bg-blue-600 transition-colors">
+          <button class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center ml-3 text-white hover:bg-blue-600 transition-colors" @click="showAdvanced = !showAdvanced">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"></path>
             </svg>
@@ -160,7 +160,7 @@
           class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 border border-blue-300 shadow-sm"
         >
           {{ getFilterLabel(key, value) }}
-          <button @click="removeFilter(key)" class="mr-1 text-blue-600 hover:text-blue-800 transition-colors">
+          <button class="mr-1 text-blue-600 hover:text-blue-800 transition-colors" @click="removeFilter(key)">
             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -172,7 +172,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const props = defineProps({
   initialFilters: {
@@ -217,7 +217,7 @@ const applyFilters = () => {
   emit('filter-change', { ...filters.value })
 }
 
-const clearFilters = () => {
+const _clearFilters = () => {
   filters.value = {
     search: '',
     status: '',

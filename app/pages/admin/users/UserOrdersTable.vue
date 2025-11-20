@@ -21,8 +21,8 @@
       </div>
       <p class="text-red-600 text-sm">{{ error }}</p>
       <button
-        @click="fetchOrders"
         class="mt-2 px-3 py-1 bg-red-100 text-red-600 rounded text-sm hover:bg-red-200"
+        @click="fetchOrders"
       >
         تلاش مجدد
       </button>
@@ -52,8 +52,8 @@
         <tr v-for="order in displayedOrders" :key="order.id" class="border-b border-blue-200 hover:bg-gray-50">
           <td class="p-2 text-right">
             <button 
-              @click="openOrderModal(order)" 
-              class="text-blue-600 hover:text-blue-800 underline cursor-pointer"
+              class="text-blue-600 hover:text-blue-800 underline cursor-pointer" 
+              @click="openOrderModal(order)"
             >
               {{ order.orderNumber }}
             </button>
@@ -172,17 +172,19 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import ViewAllModal from '~/components/admin/modals/ViewAllModal.vue';
+import type { Order, OrderItem, OrderItemsResponse, OrderResponse } from '~/types/order';
+import type { User } from '~/types/user';
 
-const props = defineProps<{ user: any }>();
+const props = defineProps<{ user: User }>();
 const showAll = ref(false);
 const orderModalOpen = ref(false);
-const selectedOrder = ref(null);
-const orderItems = ref([]);
+const selectedOrder = ref<Order | null>(null);
+const orderItems = ref<OrderItem[]>([]);
 
 // Real data for orders
-const orders = ref([]);
+const orders = ref<Order[]>([]);
 
 const loading = ref(false);
 const error = ref('');
@@ -198,47 +200,43 @@ const fetchOrders = async () => {
   error.value = '';
 
   try {
-    const response = await $fetch(`/api/admin/users/${props.user.id}/orders`, {
+    const response = await $fetch<OrderResponse>(`/api/admin/users/${props.user.id}/orders`, {
       query: {
         page: 1,
         limit: 100
       }
     });
 
-    if ((response as any).success) {
-      console.log('API Response:', response);
-      console.log('Orders data:', (response as any).data.orders);
-      
-      orders.value = (response as any).data.orders.map((order: any) => {
-        const mappedOrder = {
-          id: order.id,
-          orderNumber: order.orderNumber,
-          date: formatDateTime(order.createdAt),
-          status: order.status,
-          paymentStatus: order.paymentStatus,
-          paymentMethod: order.paymentMethod,
-          finalAmount: order.finalAmount,
-          totalAmount: order.totalAmount,
+    if (response.success) {
+      orders.value = response.data.orders.map((order) => {
+        const mappedOrder: Order = {
+          id: order.id as number,
+          orderNumber: order.orderNumber as string,
+          date: formatDateTime(order.createdAt as string),
+          status: order.status as string,
+          paymentStatus: order.paymentStatus as string,
+          paymentMethod: order.paymentMethod as string,
+          finalAmount: order.finalAmount as number,
+          totalAmount: order.totalAmount as number,
           // اطلاعات کاربر
-          userName: order.userName,
-          userMobile: order.userMobile,
-          userEmail: order.userEmail,
-          userNationalCode: order.userNationalCode,
-          userLastLoginIP: order.userLastLoginIP,
+          userName: order.userName as string,
+          userMobile: order.userMobile as string,
+          userEmail: order.userEmail as string,
+          userNationalCode: order.userNationalCode as string,
+          userLastLoginIP: order.userLastLoginIP as string,
           // آدرس‌ها
-          shippingAddress: order.shippingAddress,
-          billingAddress: order.billingAddress
+          shippingAddress: order.shippingAddress as string,
+          billingAddress: order.billingAddress as string
         };
         
-        console.log('Mapped order:', mappedOrder);
         return mappedOrder;
       });
     } else {
       error.value = 'خطا در دریافت داده‌ها';
     }
-  } catch (err: any) {
-    console.error('خطا در دریافت سفارشات:', err);
-    error.value = err.data?.message || 'خطا در دریافت سفارشات';
+  } catch (err: unknown) {
+    const e = err as { data?: { message?: string } };
+    error.value = e.data?.message || 'خطا در دریافت سفارشات';
   } finally {
     loading.value = false;
   }
@@ -314,26 +312,20 @@ const getPaymentStatusClass = (status: string) => {
   return classMap[status] || 'text-gray-600';
 };
 
-const openOrderModal = async (order: any) => {
-  console.log('Opening order modal for order:', order);
+const openOrderModal = async (order: Order) => {
   selectedOrder.value = order;
   orderModalOpen.value = true;
   
   // Fetch order items
   try {
-    console.log('Fetching order items for order ID:', order.id);
-    const response = await $fetch(`/api/admin/orders/${order.id}/items`) as any;
-    console.log('Order items response:', response);
+    const response = await $fetch<OrderItemsResponse>(`/api/admin/orders/${order.id}/items`);
     
     if (response.success) {
       orderItems.value = response.data.items;
-      console.log('Order items set:', orderItems.value);
     } else {
-      console.error('API response not successful:', response);
       orderItems.value = [];
     }
-  } catch (error) {
-    console.error('خطا در دریافت محصولات سفارش:', error);
+  } catch {
     orderItems.value = [];
   }
 };

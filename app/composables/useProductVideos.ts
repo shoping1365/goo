@@ -1,4 +1,4 @@
-import { ref, computed, readonly } from 'vue'
+import { computed, readonly, ref } from 'vue'
 import { useProductCreateStore } from '~/stores/productCreate'
 
 export interface ProductVideo {
@@ -26,7 +26,7 @@ export const useProductVideos = () => {
 
   // دریافت شناسه محصول فعلی
   const currentProductId = computed<number | null>(() => {
-    const raw = pStore.editingProductId as any
+    const raw = pStore.editingProductId as unknown
     if (raw === null || raw === undefined) return null
     const asNumber = Number(raw)
     return Number.isFinite(asNumber) ? asNumber : null
@@ -68,9 +68,10 @@ export const useProductVideos = () => {
         }
         return p
       }
-      videos.value = (list || []).map(v => ({ ...v, video_url: normalize((v as any).video_url), thumbnail_url: normalize((v as any).thumbnail_url) }))
-    } catch (err: any) {
-      error.value = err?.message || 'خطا در دریافت ویدیوها'
+      videos.value = (list || []).map(v => ({ ...v, video_url: normalize(v.video_url), thumbnail_url: normalize(v.thumbnail_url) }))
+    } catch (err) {
+      const e = err as Error
+      error.value = e?.message || 'خطا در دریافت ویدیوها'
     } finally {
       isLoading.value = false
     }
@@ -96,16 +97,17 @@ export const useProductVideos = () => {
       }).then(res => res.json())
 
       // Accept both wrapped and raw responses
-      const created: any = (resp && resp.success !== undefined) ? resp.data : resp
+      const created = (resp && resp.success !== undefined) ? resp.data : resp
       if (created && (created.id || created.video_url)) {
         videos.value.push(created as ProductVideo)
         return true
       }
       error.value = 'خطا در افزودن ویدیو'
       return false
-    } catch (err: any) {
-      console.error('خطا در افزودن ویدیو:', err)
-      error.value = err.message || 'خطا در افزودن ویدیو'
+    } catch (err) {
+      const e = err as Error
+      console.error('خطا در افزودن ویدیو:', e)
+      error.value = e.message || 'خطا در افزودن ویدیو'
       return false
     } finally {
       isLoading.value = false
@@ -137,9 +139,10 @@ export const useProductVideos = () => {
       }
       error.value = 'خطا در ویرایش ویدیو'
       return false
-    } catch (err: any) {
-      console.error('خطا در ویرایش ویدیو:', err)
-      error.value = err.message || 'خطا در ویرایش ویدیو'
+    } catch (err) {
+      const e = err as Error
+      console.error('خطا در ویرایش ویدیو:', e)
+      error.value = e.message || 'خطا در ویرایش ویدیو'
       return false
     } finally {
       isLoading.value = false
@@ -169,9 +172,10 @@ export const useProductVideos = () => {
       }
       error.value = 'خطا در حذف ویدیو'
       return false
-    } catch (err: any) {
-      console.error('خطا در حذف ویدیو:', err)
-      error.value = err.message || 'خطا در حذف ویدیو'
+    } catch (err) {
+      const e = err as Error
+      console.error('خطا در حذف ویدیو:', e)
+      error.value = e.message || 'خطا در حذف ویدیو'
       return false
     } finally {
       isLoading.value = false

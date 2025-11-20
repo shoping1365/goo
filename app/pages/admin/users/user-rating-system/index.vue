@@ -6,8 +6,8 @@
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-4 space-x-reverse">
             <button 
-              @click="toggleSidebar"
               class="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+              @click="toggleSidebar"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -19,10 +19,10 @@
             </div>
           </div>
           <div class="flex space-x-3 space-x-reverse">
-            <button @click="activeTab = 'settings'" class="bg-blue-600 text-white px-3 py-2 rounded-md hover:bg-blue-700 transition-colors text-sm">
+            <button class="bg-blue-600 text-white px-3 py-2 rounded-md hover:bg-blue-700 transition-colors text-sm" @click="activeTab = 'settings'">
               تنظیمات سیستم
             </button>
-            <button @click="exportData" class="bg-green-600 text-white px-3 py-2 rounded-md hover:bg-green-700 transition-colors text-sm">
+            <button class="bg-green-600 text-white px-3 py-2 rounded-md hover:bg-green-700 transition-colors text-sm" @click="exportData">
               خروجی اکسل
             </button>
           </div>
@@ -34,8 +34,8 @@
       <!-- Mobile overlay -->
       <div 
         v-if="isSidebarOpen" 
-        @click="toggleSidebar"
         class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+        @click="toggleSidebar"
       ></div>
       
       <!-- Sidebar -->
@@ -46,8 +46,8 @@
         <div class="flex items-center justify-between p-4 border-b border-gray-200">
           <h2 class="text-lg font-semibold text-gray-900">منوها</h2>
           <button 
-            @click="toggleSidebar"
             class="lg:hidden p-1 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+            @click="toggleSidebar"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -60,44 +60,44 @@
           <div class="space-y-1">
             <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">منوهای اصلی</h3>
             <button 
-              @click="activeTab = 'dashboard'"
               :class="activeTab === 'dashboard' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'text-gray-700 hover:bg-gray-50 border-transparent'"
               class="w-full text-right px-3 py-2 rounded-md border text-sm font-medium transition-colors"
+              @click="activeTab = 'dashboard'"
             >
               داشبورد
             </button>
             <button 
-              @click="activeTab = 'users'"
               :class="activeTab === 'users' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'text-gray-700 hover:bg-gray-50 border-transparent'"
               class="w-full text-right px-3 py-2 rounded-md border text-sm font-medium transition-colors"
+              @click="activeTab = 'users'"
             >
               مدیریت کاربران
             </button>
             <button 
-              @click="activeTab = 'scoring'"
               :class="activeTab === 'scoring' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'text-gray-700 hover:bg-gray-50 border-transparent'"
               class="w-full text-right px-3 py-2 rounded-md border text-sm font-medium transition-colors"
+              @click="activeTab = 'scoring'"
             >
               سیستم امتیازدهی
             </button>
             <button 
-              @click="activeTab = 'manual'"
               :class="activeTab === 'manual' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'text-gray-700 hover:bg-gray-50 border-transparent'"
               class="w-full text-right px-3 py-2 rounded-md border text-sm font-medium transition-colors"
+              @click="activeTab = 'manual'"
             >
               امتیازدهی دستی
             </button>
             <button 
-              @click="activeTab = 'alerts'"
               :class="activeTab === 'alerts' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'text-gray-700 hover:bg-gray-50 border-transparent'"
               class="w-full text-right px-3 py-2 rounded-md border text-sm font-medium transition-colors"
+              @click="activeTab = 'alerts'"
             >
               سیستم هشدار
             </button>
             <button 
-              @click="activeTab = 'benefits'"
               :class="activeTab === 'benefits' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'text-gray-700 hover:bg-gray-50 border-transparent'"
               class="w-full text-right px-3 py-2 rounded-md border text-sm font-medium transition-colors"
+              @click="activeTab = 'benefits'"
             >
               مزایای کاربران برتر
             </button>
@@ -107,37 +107,37 @@
           <div class="space-y-1 pt-4 border-t border-gray-200">
             <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">منوهای پیشرفته</h3>
             <button 
-              @click="activeTab = 'reviews'"
               :class="activeTab === 'reviews' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'text-gray-700 hover:bg-gray-50 border-transparent'"
               class="w-full text-right px-3 py-2 rounded-md border text-sm font-medium transition-colors"
+              @click="activeTab = 'reviews'"
             >
               کیفیت نظرات
             </button>
             <button 
-              @click="activeTab = 'referrals'"
               :class="activeTab === 'referrals' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'text-gray-700 hover:bg-gray-50 border-transparent'"
               class="w-full text-right px-3 py-2 rounded-md border text-sm font-medium transition-colors"
+              @click="activeTab = 'referrals'"
             >
               سیستم ارجاع
             </button>
             <button 
-              @click="activeTab = 'purchases'"
               :class="activeTab === 'purchases' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'text-gray-700 hover:bg-gray-50 border-transparent'"
               class="w-full text-right px-3 py-2 rounded-md border text-sm font-medium transition-colors"
+              @click="activeTab = 'purchases'"
             >
               تداوم خرید
             </button>
             <button 
-              @click="activeTab = 'returns'"
               :class="activeTab === 'returns' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'text-gray-700 hover:bg-gray-50 border-transparent'"
               class="w-full text-right px-3 py-2 rounded-md border text-sm font-medium transition-colors"
+              @click="activeTab = 'returns'"
             >
               نرخ بازگشت
             </button>
             <button 
-              @click="activeTab = 'account-age'"
               :class="activeTab === 'account-age' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'text-gray-700 hover:bg-gray-50 border-transparent'"
               class="w-full text-right px-3 py-2 rounded-md border text-sm font-medium transition-colors"
+              @click="activeTab = 'account-age'"
             >
               قدمت حساب
             </button>
@@ -147,16 +147,16 @@
           <div class="space-y-1 pt-4 border-t border-gray-200">
             <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">سیستم</h3>
             <button 
-              @click="activeTab = 'scenarios'"
               :class="activeTab === 'scenarios' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'text-gray-700 hover:bg-gray-50 border-transparent'"
               class="w-full text-right px-3 py-2 rounded-md border text-sm font-medium transition-colors"
+              @click="activeTab = 'scenarios'"
             >
               سناریوها
             </button>
             <button 
-              @click="activeTab = 'setup-test'"
               :class="activeTab === 'setup-test' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'text-gray-700 hover:bg-gray-50 border-transparent'"
               class="w-full text-right px-3 py-2 rounded-md border text-sm font-medium transition-colors"
+              @click="activeTab = 'setup-test'"
             >
               راه‌اندازی و تست
             </button>
@@ -507,201 +507,164 @@ const systemSettings = ref({
 })
 
 // Event handlers
-const handleViewUserDetails = (user: any) => {
-  console.log('مشاهده جزئیات کاربر:', user)
+const handleViewUserDetails = (user: Record<string, unknown>) => {
   // Navigate to user details page
   navigateTo(`/admin/users/${user.id}`)
 }
 
-const handleEditUser = (user: any) => {
-  console.log('ویرایش کاربر:', user)
+const handleEditUser = (user: Record<string, unknown>) => {
   // Open edit user modal
 }
 
-const handleToggleUserStatus = (user: any) => {
-  console.log('تغییر وضعیت کاربر:', user)
+const handleToggleUserStatus = (user: Record<string, unknown>) => {
   user.status = user.status === 'blocked' ? 'active' : 'blocked'
   // API call to update user status
 }
 
-const handleSaveScoringSettings = (settings: any) => {
-  console.log('ذخیره تنظیمات امتیازدهی:', settings)
+const handleSaveScoringSettings = (settings: Record<string, unknown>) => {
   scoringSettings.value = settings
   // API call to save settings
 }
 
-const handleSubmitManualScore = (data: any) => {
-  console.log('اعمال امتیاز دستی:', data)
+const handleSubmitManualScore = (data: Record<string, unknown>) => {
   // API call to apply manual score
 }
 
-const handleExportHistory = (data: any) => {
-  console.log('خروجی تاریخچه:', data)
+const handleExportHistory = (data: Record<string, unknown>) => {
   // Export history to Excel
 }
 
-const handleSendAlert = (data: any) => {
-  console.log('ارسال هشدار:', data)
+const handleSendAlert = (data: Record<string, unknown>) => {
   // API call to send alert
 }
 
-const handleSendBulkAlerts = (data: any) => {
-  console.log('ارسال هشدار گروهی:', data)
+const handleSendBulkAlerts = (data: Record<string, unknown>) => {
   // API call to send bulk alerts
 }
 
-const handleExportAlertHistory = (data: any) => {
-  console.log('خروجی تاریخچه هشدارها:', data)
+const handleExportAlertHistory = (data: Record<string, unknown>) => {
   // Export alert history to Excel
 }
 
-const handleSaveBenefits = (data: any) => {
-  console.log('ذخیره مزایا:', data)
+const handleSaveBenefits = (data: Record<string, unknown>) => {
   // API call to save benefits
 }
 
-const handleExportBenefitsData = (data: any) => {
-  console.log('خروجی داده‌های مزایا:', data)
+const handleExportBenefitsData = (data: Record<string, unknown>) => {
   // Export benefits data to Excel
 }
 
-const handleSaveSystemSettings = (settings: any) => {
-  console.log('ذخیره تنظیمات سیستم:', settings)
+const handleSaveSystemSettings = (settings: Record<string, unknown>) => {
   systemSettings.value = settings
   // API call to save system settings
 }
 
-const handleExportData = (type: string, data: any) => {
-  console.log('خروجی داده:', type, data)
+const handleExportData = (type: string, data: Record<string, unknown>) => {
   // Export data to Excel based on type
 }
 
 const exportData = () => {
-  console.log('خروجی کلی داده‌ها')
   // Export all data to Excel
 }
 
 // Review Quality System handlers
-const handleSaveReviewSettings = (settings: any) => {
-  console.log('ذخیره تنظیمات کیفیت نظرات:', settings)
+const handleSaveReviewSettings = (settings: Record<string, unknown>) => {
   // API call to save review settings
 }
 
-const handleAnalyzeReviews = (reviews: any[]) => {
-  console.log('تحلیل نظرات:', reviews)
+const handleAnalyzeReviews = (reviews: Record<string, unknown>[]) => {
   // API call to analyze reviews
 }
 
-const handleExportReviewReport = (data: any) => {
-  console.log('خروجی گزارش کیفیت نظرات:', data)
+const handleExportReviewReport = (data: Record<string, unknown>) => {
   // Export review quality report
 }
 
 // Referral System handlers
-const handleSaveReferralSettings = (settings: any) => {
-  console.log('ذخیره تنظیمات سیستم ارجاع:', settings)
+const handleSaveReferralSettings = (_settings: Record<string, unknown>) => {
   // API call to save referral settings
 }
 
-const handleGenerateReferralCodes = (users: any[]) => {
-  console.log('تولید کدهای ارجاع:', users)
+const handleGenerateReferralCodes = (_users: Record<string, unknown>[]) => {
   // Generate referral codes for users
 }
 
-const handleExportReferralReport = (data: any) => {
-  console.log('خروجی گزارش ارجاع:', data)
+const handleExportReferralReport = (_data: Record<string, unknown>) => {
   // Export referral report
 }
 
 // Purchase Continuity System handlers
-const handleSaveContinuitySettings = (settings: any) => {
-  console.log('ذخیره تنظیمات تداوم خرید:', settings)
+const handleSaveContinuitySettings = (_settings: Record<string, unknown>) => {
   // API call to save continuity settings
 }
 
-const handleAnalyzePurchasePatterns = (users: any[]) => {
-  console.log('تحلیل الگوهای خرید:', users)
+const handleAnalyzePurchasePatterns = (_users: Record<string, unknown>[]) => {
   // Analyze purchase patterns
 }
 
-const handleExportContinuityReport = (data: any) => {
-  console.log('خروجی گزارش تداوم خرید:', data)
+const handleExportContinuityReport = (_data: Record<string, unknown>) => {
   // Export continuity report
 }
 
 // Return Rate System handlers
-const handleSaveReturnSettings = (settings: any) => {
-  console.log('ذخیره تنظیمات نرخ بازگشت:', settings)
+const handleSaveReturnSettings = (_settings: Record<string, unknown>) => {
   // API call to save return settings
 }
 
-const handleAnalyzeReturnPatterns = (users: any[]) => {
-  console.log('تحلیل الگوهای بازگشت:', users)
+const handleAnalyzeReturnPatterns = (_users: Record<string, unknown>[]) => {
   // Analyze return patterns
 }
 
-const handleExportReturnReport = (data: any) => {
-  console.log('خروجی گزارش نرخ بازگشت:', data)
+const handleExportReturnReport = (_data: Record<string, unknown>) => {
   // Export return report
 }
 
 // Account Age System handlers
-const handleSaveAgeSettings = (settings: any) => {
-  console.log('ذخیره تنظیمات قدمت حساب:', settings)
+const handleSaveAgeSettings = (_settings: Record<string, unknown>) => {
   // API call to save age settings
 }
 
-const handleAnalyzeAccountAges = (users: any[]) => {
-  console.log('تحلیل قدمت حساب‌ها:', users)
+const handleAnalyzeAccountAges = (_users: Record<string, unknown>[]) => {
   // Analyze account ages
 }
 
-const handleExportAgeReport = (data: any) => {
-  console.log('خروجی گزارش قدمت حساب:', data)
+const handleExportAgeReport = (_data: Record<string, unknown>) => {
   // Export age report
 }
 
 // Scenario Management System handlers
-const handleSaveScenario = (scenario: any) => {
-  console.log('ذخیره سناریو:', scenario)
+const handleSaveScenario = (_scenario: Record<string, unknown>) => {
   // API call to save scenario
 }
 
-const handleUpdateScenario = (scenario: any) => {
-  console.log('به‌روزرسانی سناریو:', scenario)
+const handleUpdateScenario = (_scenario: Record<string, unknown>) => {
   // API call to update scenario
 }
 
-const handleDeleteScenario = (scenario: any) => {
-  console.log('حذف سناریو:', scenario)
+const handleDeleteScenario = (_scenario: Record<string, unknown>) => {
   // API call to delete scenario
 }
 
-const handleExportScenarios = (data: any) => {
-  console.log('خروجی سناریوها:', data)
+const handleExportScenarios = (_data: Record<string, unknown>) => {
   // Export scenarios
 }
 
 // Setup and Testing System handlers
-const handleRunSetup = (steps: any[]) => {
-  console.log('اجرای راه‌اندازی:', steps)
+const handleRunSetup = (_steps: Record<string, unknown>[]) => {
   // Run setup steps
 }
 
-const handleRunTests = (tests: any[]) => {
-  console.log('اجرای تست‌ها:', tests)
+const handleRunTests = (_tests: Record<string, unknown>[]) => {
   // Run tests
 }
 
-const handleViewTestResults = (results: any) => {
-  console.log('مشاهده نتایج تست:', results)
+const handleViewTestResults = (_results: Record<string, unknown>) => {
   // View test results
 }
 
 // Lifecycle
 onMounted(() => {
   // Load initial data from API
-  console.log('سیستم رتبه‌بندی کاربران بارگذاری شد')
 })
 </script>
 

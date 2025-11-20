@@ -1,6 +1,6 @@
 <script setup>
-import { useConfirmDialog } from '~/composables/useConfirmDialog'
 import RichTextEditor from '~/components/common/RichTextEditor.vue'
+import { useConfirmDialog } from '~/composables/useConfirmDialog'
 
 const tinyApiKey = 'qwa4j6x5mh2e3241igpyi345b4uhe2d5qeq6f8hy9qfkw2ro'
 
@@ -34,6 +34,7 @@ const newFaq = ref({
 
 const editingIndex = ref(-1)
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const faqStats = computed(() => ({
   total: faqs.value.length,
   published: faqs.value.filter(f => f.status === 'published').length,
@@ -227,8 +228,8 @@ function getStatusLabel(status) {
 
           <div class="md:col-span-2 flex gap-2 mt-2">
             <button
-                @click="addFaq"
                 class="bg-purple-600 text-white rounded px-4 py-2 text-xs hover:bg-purple-700 transition flex items-center gap-2"
+                @click="addFaq"
             >
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
@@ -236,8 +237,8 @@ function getStatusLabel(status) {
               افزودن سوال
             </button>
             <button
-                @click="clearFaqForm"
                 class="bg-gray-500 text-white rounded px-4 py-2 text-xs hover:bg-gray-600 transition"
+                @click="clearFaqForm"
             >
               پاک کردن فرم
             </button>
@@ -274,16 +275,16 @@ function getStatusLabel(status) {
               <td class="px-3 py-3 text-center">
                 <div class="flex justify-center gap-1">
                   <button
-                      @click="editFaq(index)"
                       class="text-blue-600 hover:text-blue-800 p-1"
                       title="ویرایش"
+                      @click="editFaq(index)"
                   >
                     ویرایش
                   </button>
                   <button
-                      @click="deleteFaq(index)"
                       class="text-red-600 hover:text-red-800 p-1"
                       title="حذف"
+                      @click="deleteFaq(index)"
                   >
                     حذف
                   </button>
@@ -299,15 +300,15 @@ function getStatusLabel(status) {
         <h5 class="text-sm font-semibold text-gray-700 mb-3">تنظیمات نمایش سوالات متداول</h5>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div class="flex items-center gap-2">
-            <input type="checkbox" id="show-faq-tab" class="form-checkbox" />
+            <input id="show-faq-tab" type="checkbox" class="form-checkbox" />
             <label for="show-faq-tab" class="text-xs text-gray-700">نمایش تب سوالات متداول</label>
           </div>
           <div class="flex items-center gap-2">
-            <input type="checkbox" id="show-faq-search" class="form-checkbox" />
+            <input id="show-faq-search" type="checkbox" class="form-checkbox" />
             <label for="show-faq-search" class="text-xs text-gray-700">نمایش جستجو در سوالات</label>
           </div>
           <div class="flex items-center gap-2">
-            <input type="checkbox" id="show-category-filter" class="form-checkbox" />
+            <input id="show-category-filter" type="checkbox" class="form-checkbox" />
             <label for="show-category-filter" class="text-xs text-gray-700">نمایش فیلتر دسته‌بندی</label>
           </div>
         </div>

@@ -3,8 +3,8 @@
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xl font-semibold text-gray-900">مدیریت اعلان‌ها</h2>
       <button 
-        @click="showNotificationForm = true; editingNotification = null"
         class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+        @click="showNotificationForm = true; editingNotification = null"
       >
         افزودن اعلان جدید
       </button>
@@ -43,15 +43,15 @@
         </div>
         <div class="flex justify-end space-x-2 space-x-reverse mt-4">
           <button 
-            @click="editingNotification = notification; showNotificationForm = true"
             class="text-blue-600 hover:text-blue-800 text-sm"
+            @click="editingNotification = notification; showNotificationForm = true"
           >
             ویرایش
           </button>
           <button 
-            @click="toggleNotificationStatus(notification)"
             :class="notification.active ? 'text-red-600 hover:text-red-800' : 'text-green-600 hover:text-green-800'"
             class="text-sm"
+            @click="toggleNotificationStatus(notification)"
           >
             {{ notification.active ? 'غیرفعال' : 'فعال' }}
           </button>
@@ -104,8 +104,8 @@
             <div class="flex justify-end space-x-3 space-x-reverse mt-6">
               <button 
                 type="button"
-                @click="showNotificationForm = false"
                 class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors"
+                @click="showNotificationForm = false"
               >
                 انصراف
               </button>

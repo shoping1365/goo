@@ -269,7 +269,7 @@
           <div class="flex items-center justify-between mb-3">
             <h4 class="text-sm font-medium text-gray-900">{{ schedule.name }}</h4>
             <label class="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" v-model="schedule.enabled" class="sr-only peer">
+              <input v-model="schedule.enabled" type="checkbox" class="sr-only peer">
               <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-blue-600"></div>
             </label>
           </div>

@@ -2,8 +2,9 @@
   <div class="space-y-6 max-w-screen-xl mx-auto px-2 pb-24">
     <!-- Top banner -->
     <div v-if="cat" class="bg-white rounded-lg shadow px-4 py-4 flex flex-col items-center text-center">
-      <img v-if="catImage(cat)" :src="catImage(cat)" @error="onImgError($event)" :alt="cat.name" class="w-full max-w-sm h-auto mb-4 rounded-lg object-cover" />
+      <img v-if="catImage(cat)" :src="catImage(cat)" :alt="cat.name" class="w-full max-w-sm h-auto mb-4 rounded-lg object-cover" @error="onImgError($event)" />
       <h1 class="text-2xl font-bold text-gray-800">{{ cat.name }}</h1>
+      <!-- eslint-disable-next-line vue/no-v-html -->
       <div v-if="cat.description" class="mt-4 text-gray-700 leading-relaxed" v-html="cat.description"></div>
     </div>
     
@@ -22,7 +23,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-white shadow rounded-lg px-4 py-4 text-sm">
           <p class="mb-2 sm:mb-0">در حال نمایش {{ filteredProducts.length }} نتیجه</p>
           <div class="flex gap-3 overflow-auto">
-            <button v-for="o in sortOptions" :key="o.value" @click="setSort(o.value)" :class="[ 'px-3 py-1 rounded-full whitespace-nowrap', sortBy===o.value ? 'bg-teal-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']">{{ o.label }}</button>
+            <button v-for="o in sortOptions" :key="o.value" :class="[ 'px-3 py-1 rounded-full whitespace-nowrap', sortBy===o.value ? 'bg-teal-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']" @click="setSort(o.value)">{{ o.label }}</button>
           </div>
         </div>
 
@@ -30,11 +31,11 @@
         <div v-if="loading" class="text-center py-20 bg-white rounded-lg shadow">در حال بارگذاری...</div>
         <div v-else>
           <div v-if="filteredSortedProducts.length" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gapx-4 py-4">
-            <NuxtLink v-for="p in filteredSortedProducts" :key="p.id" :to="buildProductLink(p)" class="group block bg-white rounded-lg shadow hover:shadow-lg transition-all duration-200" @click="console.log('Product clicked:', p, 'Link:', buildProductLink(p))">
+            <NuxtLink v-for="p in filteredSortedProducts" :key="p.id" :to="buildProductLink(p)" class="group block bg-white rounded-lg shadow hover:shadow-lg transition-all duration-200">
               <div class="relative w-full h-[230px] bg-gray-50 flex items-center justify-center rounded-t-lg overflow-hidden">
                 <!-- discount badge -->
                 <span v-if="discountPercent(p)" class="absolute top-2 right-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded">{{ discountPercent(p) }}٪</span>
-                <img :src="productThumbnail(p)" @error="onImgError($event)" :alt="p.name" class="object-cover w-full h-full transition-transform duration-200 group-hover:scale-105" />
+                <img :src="productThumbnail(p)" :alt="p.name" class="object-cover w-full h-full transition-transform duration-200 group-hover:scale-105" @error="onImgError($event)" />
               </div>
               <div class="p-3 text-right space-y-1">
                 <h3 class="text-sm font-semibold text-gray-800 line-clamp-2 min-h-[3rem]">{{ p.name }}</h3>
@@ -48,7 +49,7 @@
                   <p class="text-red-500 text-sm font-semibold">ناموجود</p>
                 </template>
                 <template v-else>
-                  <p class="text-emerald-600 font-bold flex items-center gap-1" v-if="displayPrice(p)">
+                  <p v-if="displayPrice(p)" class="text-emerald-600 font-bold flex items-center gap-1">
                     {{ displayPrice(p) }} <span class="text-xs">تومان</span>
                   </p>
                   <p v-if="p.sale_price && p.sale_price>0" class="text-gray-400 text-xs line-through">{{ p.price.toLocaleString('fa-IR') }} تومان</p>
@@ -67,16 +68,16 @@
           <h3 class="font-bold mb-2 text-center">فیلتر براساس قیمت:</h3>
           <div class="flex flex-col gap-2">
             <label>حداقل: {{ priceMin.toLocaleString('fa-IR') }} تومان</label>
-            <input type="range" min="0" :max="priceMaxGlobal" v-model.number="priceMin" />
+            <input v-model.number="priceMin" type="range" min="0" :max="priceMaxGlobal" />
             <label>حداکثر: {{ priceMax.toLocaleString('fa-IR') }} تومان</label>
-            <input type="range" min="0" :max="priceMaxGlobal" v-model.number="priceMax" />
+            <input v-model.number="priceMax" type="range" min="0" :max="priceMaxGlobal" />
             <button class="bg-teal-600 text-white w-full py-1 rounded" @click="applyPriceFilter">فیلتر</button>
           </div>
         </div>
         <!-- Last visited -->
         <div class="bg-white px-4 py-4 rounded-lg shadow text-sm">
           <h3 class="font-bold mb-3 text-center">آخرین بازدید های شما</h3>
-          <ul class="space-y-2" v-if="lastVisited.length">
+          <ul v-if="lastVisited.length" class="space-y-2">
             <li v-for="p in lastVisited" :key="p.id" class="flex items-center gap-2">
               <img :src="productThumbnail(p)" class="w-10 h-10 object-cover rounded" />
             <NuxtLink :to="buildProductLink(p)" class="flex-1 text-xs truncate hover:text-teal-600">{{ p.name }}</NuxtLink>
@@ -104,9 +105,12 @@ const route = useRoute();
 const { buildProductLink } = useProductLink()
 const slug = route.params.slug
 
-const cat = ref(null)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const cat = ref<any>(null)
 const pending = ref(false)
-const error = ref(null)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const error = ref<any>(null)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const products = ref<any[]>([])
 const loading = ref(false)
 
@@ -117,10 +121,12 @@ const fetchCat = async () => {
     
     // ابتدا لیست تمام دسته‌بندی‌ها را دریافت کن
     const categories = await $fetch(`/api/product-categories?all=1`)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const list = Array.isArray(categories) ? categories : ((categories as any)?.data || [])
     
     // جستجو برای دسته‌بندی با slug
-    const result = list.find((c) => c.slug === slug)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = list.find((c: any) => c.slug === slug)
     
     if (!result) {
       throw new Error('Category not found')
@@ -128,7 +134,7 @@ const fetchCat = async () => {
     
     // بررسی کنید که آیا این دسته‌بندی فرعی است یا نه
     if (result && result.parent_id && result.parent_id !== 0) {
-      console.log('⚠️ This is a subcategory, redirecting to correct URL')
+      // console.log('⚠️ This is a subcategory, redirecting to correct URL')
       // اگر دسته‌بندی فرعی است، به URL صحیح redirect کن
       navigateTo(`/product-category/${result.parent_slug}/${result.slug}`)
       return
@@ -136,7 +142,7 @@ const fetchCat = async () => {
     
     cat.value = result
     error.value = null
-    console.log('Category loaded with ID:', result?.id, 'Name:', result?.name)
+    // console.log('Category loaded with ID:', result?.id, 'Name:', result?.name)
   } catch (e) {
     console.error('Error fetching category:', e)
     cat.value = null
@@ -169,7 +175,7 @@ watchEffect(() => {
 // لود محصولات دسته‌بندی
 watch(() => cat.value, async (newCat) => {
   if (newCat && newCat.id) {
-    console.log('🎯 Category loaded, fetching products for ID:', newCat.id)
+    // console.log('🎯 Category loaded, fetching products for ID:', newCat.id)
     
     try {
       loading.value = true
@@ -177,12 +183,13 @@ watch(() => cat.value, async (newCat) => {
       const allProducts = Array.isArray(response) ? response : []
       
       // فیلتر محصولات بر اساس دسته‌بندی
-      products.value = allProducts.filter(p => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      products.value = allProducts.filter((p: any) => {
         const pid = p.category_id != null ? String(p.category_id) : (p.category ? String(p.category.id) : '')
         return pid === String(newCat.id)
       })
       
-      console.log('✅ Products loaded:', products.value.length)
+      // console.log('✅ Products loaded:', products.value.length)
     } catch (error) {
       console.error('❌ Error fetching products:', error)
       products.value = []
@@ -195,7 +202,8 @@ watch(() => cat.value, async (newCat) => {
 // Price filter state
 const priceMin = ref(0)
 const priceMaxGlobal = computed(() => {
-  const vals = products.value.map(p => p.sale_price && p.sale_price>0 ? p.sale_price : p.price).filter((v:number)=>v && v>0)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const vals = products.value.map((p: any) => p.sale_price && p.sale_price>0 ? p.sale_price : p.price).filter((v:number)=>v && v>0)
   return vals.length ? Math.max(...vals) : 0
 })
 const priceMax = ref(0)
@@ -216,7 +224,8 @@ const setSort = (v:string)=>{ sortBy.value = v }
 
 // Computed lists
 const filteredProducts = computed(()=>{
-  return products.value.filter(p=>{
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return products.value.filter((p: any)=>{
     const price = p.sale_price && p.sale_price>0 ? p.sale_price : p.price
     if(priceMax.value && price>priceMax.value) return false
     if(price < priceMin.value) return false
@@ -226,13 +235,17 @@ const filteredProducts = computed(()=>{
 const filteredSortedProducts = computed(()=>{
   const list = [...filteredProducts.value]
   switch(sortBy.value){
-    case 'priceAsc': list.sort((a,b)=>( (a.sale_price&&a.sale_price>0?a.sale_price:a.price) - (b.sale_price&&b.sale_price>0?b.sale_price:b.price) )); break
-    case 'priceDesc': list.sort((a,b)=>( (b.sale_price&&b.sale_price>0?b.sale_price:b.price) - (a.sale_price&&a.sale_price>0?a.sale_price:a.price) )); break
-    case 'new': list.sort((a,b)=> new Date(b.created_at).getTime() - new Date(a.created_at).getTime()); break
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    case 'priceAsc': list.sort((a: any,b: any)=>( (a.sale_price&&a.sale_price>0?a.sale_price:a.price) - (b.sale_price&&b.sale_price>0?b.sale_price:b.price) )); break
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    case 'priceDesc': list.sort((a: any,b: any)=>( (b.sale_price&&b.sale_price>0?b.sale_price:b.price) - (a.sale_price&&a.sale_price>0?a.sale_price:a.price) )); break
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    case 'new': list.sort((a: any,b: any)=> new Date(b.created_at).getTime() - new Date(a.created_at).getTime()); break
   }
   return list
 })
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function discountPercent(p:any){
   if(p.sale_price && p.sale_price>0 && p.price && p.price>p.sale_price){
     return Math.round((1 - p.sale_price/p.price)*100)
@@ -241,6 +254,7 @@ function discountPercent(p:any){
 }
 
 // Last visited (simple localStorage demo)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const lastVisited = ref<any[]>([])
 onMounted(()=>{
   try {
@@ -253,6 +267,7 @@ onMounted(()=>{
 })
 // update localStorage on product page separately (not here)
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function productThumbnail(p:any){
   const toVariant = (url:string)=>{
     if(!url) return ''
@@ -269,15 +284,18 @@ function productThumbnail(p:any){
   return '/statics/images/default-image_100.png'
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function onImgError(e:any){
   e.target.src = '/statics/images/default-image_100.png'
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function displayPrice(p:any){
   const price = p.sale_price && p.sale_price>0 ? p.sale_price : p.price
   return price && price>0 ? price.toLocaleString('fa-IR') : ''
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function catImage(c:any){
   const url = c.image_url || c.banner_url || ''
   if(!url) return ''
@@ -288,4 +306,4 @@ function catImage(c:any){
 }
 
 definePageMeta({ layout: 'default' })
-</script> 
+</script>

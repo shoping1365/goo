@@ -82,8 +82,8 @@
 
       <!-- Add Review Button -->
       <button
-        @click="onAddReviewClick"
         class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+        @click="onAddReviewClick"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
@@ -142,13 +142,13 @@
           <!-- Review Actions -->
           <div class="flex items-center gap-2">
             <button
-              @click="toggleHelpful(review)"
               :class="[
                 'flex items-center gap-1 px-3 py-1 rounded-lg text-sm transition-colors',
                 review.user_found_helpful 
                   ? 'bg-green-100 text-green-700' 
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               ]"
+              @click="toggleHelpful(review)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path>
@@ -217,8 +217,8 @@
       <h3 class="text-lg font-medium text-gray-900 mb-2">هنوز نظری ثبت نشده</h3>
       <p class="text-gray-500 mb-4">اولین نفری باشید که نظرتان را درباره این محصول ثبت می‌کنید.</p>
       <button
-        @click="onAddReviewClick"
         class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+        @click="onAddReviewClick"
       >
         ثبت نظر
       </button>
@@ -231,8 +231,8 @@
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-xl font-bold text-gray-900">نظر شما درباره این محصول</h3>
             <button
-              @click="closeReviewForm"
               class="text-gray-400 hover:text-gray-600"
+              @click="closeReviewForm"
             >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -240,7 +240,7 @@
             </button>
           </div>
 
-          <form @submit.prevent="submitReview" class="space-y-6">
+          <form class="space-y-6" @submit.prevent="submitReview">
             <!-- Rating -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">امتیاز شما</label>
@@ -249,9 +249,9 @@
                   v-for="i in 5"
                   :key="i"
                   type="button"
-                  @click="newReview.rating = i"
                   class="text-3xl transition-colors"
                   :class="i <= newReview.rating ? 'text-yellow-400' : 'text-gray-300 hover:text-yellow-300'"
+                  @click="newReview.rating = i"
                 >
                   ★
                 </button>
@@ -319,7 +319,7 @@
 
             <!-- Anonymous option -->
             <div class="flex items-center gap-2">
-              <input v-model="newReview.anonymous" type="checkbox" id="anon" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+              <input id="anon" v-model="newReview.anonymous" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
               <label for="anon" class="text-sm text-gray-700">ثبت نظر به صورت ناشناس</label>
             </div>
 
@@ -334,8 +334,8 @@
               </button>
               <button
                 type="button"
-                @click="closeReviewForm"
                 class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                @click="closeReviewForm"
               >
                 انصراف
               </button>
@@ -354,8 +354,8 @@
         @click.stop
       />
       <button 
-        @click="closeImageModal"
         class="absolute topx-4 py-4 left-4 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-2 rounded-full"
+        @click="closeImageModal"
       >
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -497,7 +497,7 @@ const fetchReviews = async () => {
     lazy: true,
     key: `product-reviews-${props.product.id}-${selectedRating.value}`,
   })
-  reviews.value = (data.value as any)?.reviews || []
+  reviews.value = (data.value as Record<string, unknown>)?.reviews as { rating: number }[] || []
   loading.value = false
 }
 

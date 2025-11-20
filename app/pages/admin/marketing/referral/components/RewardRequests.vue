@@ -68,21 +68,21 @@
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
               <button 
                 v-if="request.status === 'pending'"
-                @click="approveRequest(request)"
                 class="text-green-600 hover:text-green-900 ml-4"
+                @click="approveRequest(request)"
               >
                 تایید
               </button>
               <button 
                 v-if="request.status === 'pending'"
-                @click="rejectRequest(request)"
                 class="text-red-600 hover:text-red-900"
+                @click="rejectRequest(request)"
               >
                 رد
               </button>
               <button 
-                @click="showRequestDetails(request)"
                 class="text-blue-600 hover:text-blue-900"
+                @click="showRequestDetails(request)"
               >
                 جزئیات
               </button>
@@ -132,8 +132,8 @@
           
           <div class="flex justify-end mt-6">
             <button 
-              @click="showDetails = false"
               class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors"
+              @click="showDetails = false"
             >
               بستن
             </button>

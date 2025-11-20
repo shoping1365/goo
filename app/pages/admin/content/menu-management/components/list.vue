@@ -88,8 +88,8 @@
                     ویرایش
                   </NuxtLink>
                   <button
-                    @click="deleteMenu(menu.id)"
                     class="text-red-600 hover:text-red-900 text-sm font-medium"
+                    @click="deleteMenu(menu.id)"
                   >
                     حذف
                   </button>

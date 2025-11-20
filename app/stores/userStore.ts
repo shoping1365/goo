@@ -31,7 +31,7 @@ export const useUserStore = defineStore('user', {
       try {
         const response = await $fetch<unknown>('/api/users')
         this.users = Array.isArray(response) ? response : (response as { data?: unknown[] })?.data || []
-      } catch (error) {
+      } catch {
         this.error = 'خطا در دریافت لیست کاربران'
       } finally {
         this.loading = false
@@ -39,11 +39,11 @@ export const useUserStore = defineStore('user', {
     },
 
     // ثبت کاربر جدید
-    async registerUser(userData: any) {
+    async registerUser(userData: Record<string, unknown>) {
       this.loading = true
       this.error = null
       try {
-        const response = await ($fetch as any)('/api/users', {
+        const response = await $fetch<User>('/api/users', {
           method: 'POST',
           body: userData
         })
@@ -59,11 +59,11 @@ export const useUserStore = defineStore('user', {
     },
 
     // به‌روزرسانی کاربر
-    async updateUser(id: number, userData: any) {
+    async updateUser(id: number, userData: Record<string, unknown>) {
       this.loading = true
       this.error = null
       try {
-        const response = await ($fetch as any)(`/api/users/${id}`, {
+        const response = await $fetch<User>(`/api/users/${id}`, {
           method: 'PUT',
           body: userData
         })
@@ -86,7 +86,7 @@ export const useUserStore = defineStore('user', {
       this.loading = true
       this.error = null
       try {
-        await ($fetch as any)(`/api/users/${id}`, {
+        await $fetch(`/api/users/${id}`, {
           method: 'DELETE'
         })
         // حذف کاربر از لیست
@@ -117,7 +117,7 @@ export const useUserStore = defineStore('user', {
         const headers = Object.keys(data[0] || {})
         const csvContent = [
           headers.join(','),
-          ...data.map(row => headers.map(header => `"${row[header]}"`).join(','))
+          ...data.map(row => headers.map((header: string) => `"${(row as Record<string, unknown>)[header]}"`).join(','))
         ].join('\n')
 
         // دانلود فایل
@@ -130,7 +130,7 @@ export const useUserStore = defineStore('user', {
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
-      } catch (error) {
+      } catch {
         this.error = 'خطا در اکسپورت فایل'
       }
     }

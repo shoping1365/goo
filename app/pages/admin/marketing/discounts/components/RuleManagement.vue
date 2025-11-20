@@ -8,7 +8,7 @@
           <p class="text-gray-600 mt-1">تعریف قوانین پیچیده، شرط‌های ترکیبی و منطق کسب‌وکار</p>
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
-          <button @click="showRuleForm = true" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="showRuleForm = true">
             <span class="i-heroicons-plus ml-2"></span>
             افزودن قانون جدید
           </button>
@@ -69,8 +69,9 @@
     <!-- تب‌های قوانین -->
     <div class="border-b border-gray-200">
       <div class="flex border-b border-gray-200 overflow-x-auto">
-        <button v-for="tab in tabs" :key="tab.value" @click="activeTab = tab.value"
-          :class="['px-6 py-3 -mb-px font-medium text-sm focus:outline-none whitespace-nowrap', activeTab === tab.value ? 'border-b-2 border-blue-600 text-blue-700' : 'text-gray-500 hover:text-blue-600']">
+        <button
+v-for="tab in tabs" :key="tab.value" :class="['px-6 py-3 -mb-px font-medium text-sm focus:outline-none whitespace-nowrap', activeTab === tab.value ? 'border-b-2 border-blue-600 text-blue-700' : 'text-gray-500 hover:text-blue-600']"
+          @click="activeTab = tab.value">
           {{ tab.label }}
         </button>
       </div>
@@ -97,13 +98,13 @@
             </select>
           </div>
           <div class="flex items-center space-x-2 space-x-reverse">
-            <button @click="bulkAction('activate')" class="px-3 py-1 bg-green-100 text-green-700 rounded text-sm hover:bg-green-200">
+            <button class="px-3 py-1 bg-green-100 text-green-700 rounded text-sm hover:bg-green-200" @click="bulkAction('activate')">
               فعال کردن
             </button>
-            <button @click="bulkAction('deactivate')" class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded text-sm hover:bg-yellow-200">
+            <button class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded text-sm hover:bg-yellow-200" @click="bulkAction('deactivate')">
               غیرفعال کردن
             </button>
-            <button @click="bulkAction('delete')" class="px-3 py-1 bg-red-100 text-red-700 rounded text-sm hover:bg-red-200">
+            <button class="px-3 py-1 bg-red-100 text-red-700 rounded text-sm hover:bg-red-200" @click="bulkAction('delete')">
               حذف
             </button>
           </div>
@@ -113,7 +114,7 @@
           <div v-for="rule in filteredRules" :key="rule.id" class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
             <div class="flex items-center justify-between">
               <div class="flex items-center space-x-4 space-x-reverse">
-                <input type="checkbox" v-model="selectedRules" :value="rule.id" class="rounded border-gray-300">
+                <input v-model="selectedRules" type="checkbox" :value="rule.id" class="rounded border-gray-300">
                 <div class="w-12 h-12 rounded-lg flex items-center justify-center" :style="{ backgroundColor: rule.color + '20', color: rule.color }">
                   <span class="i-heroicons-cog-6-tooth text-lg"></span>
                 </div>
@@ -126,13 +127,13 @@
                 <span :class="['px-2 py-1 rounded-full text-xs', getStatusClass(rule.status)]">
                   {{ getStatusText(rule.status) }}
                 </span>
-                <button @click="editRule(rule)" class="text-blue-600 hover:text-blue-900">
+                <button class="text-blue-600 hover:text-blue-900" @click="editRule(rule)">
                   <span class="i-heroicons-pencil-square"></span>
                 </button>
-                <button @click="duplicateRule(rule)" class="text-green-600 hover:text-green-900">
+                <button class="text-green-600 hover:text-green-900" @click="duplicateRule(rule)">
                   <span class="i-heroicons-document-duplicate"></span>
                 </button>
-                <button @click="deleteRule(rule)" class="text-red-600 hover:text-red-900">
+                <button class="text-red-600 hover:text-red-900" @click="deleteRule(rule)">
                   <span class="i-heroicons-trash"></span>
                 </button>
               </div>
@@ -225,7 +226,7 @@
             <div class="space-y-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">قانون</label>
-                <select v-model="selectedRuleForTest" @change="loadRuleDetails" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                <select v-model="selectedRuleForTest" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" @change="loadRuleDetails">
                   <option value="">انتخاب کنید</option>
                   <option v-for="rule in rules" :key="rule.id" :value="rule.id">{{ rule.name }}</option>
                 </select>
@@ -246,7 +247,7 @@
             <div class="space-y-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">نوع داده</label>
-                <select v-model="testDataType" @change="loadTestData" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                <select v-model="testDataType" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" @change="loadTestData">
                   <option value="user">کاربر</option>
                   <option value="order">سفارش</option>
                   <option value="coupon">کوپن</option>
@@ -261,7 +262,7 @@
                 </div>
               </div>
               
-              <button @click="runTest" :disabled="!selectedRuleForTest || !testData" class="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
+              <button :disabled="!selectedRuleForTest || !testData" class="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" @click="runTest">
                 اجرای تست
               </button>
             </div>
@@ -340,13 +341,13 @@
             <h3 class="text-lg font-semibold text-gray-900">
               {{ editingRule ? 'ویرایش قانون' : 'افزودن قانون جدید' }}
             </h3>
-            <button @click="closeForm" class="text-gray-400 hover:text-gray-600">
+            <button class="text-gray-400 hover:text-gray-600" @click="closeForm">
               <span class="i-heroicons-x-mark text-xl"></span>
             </button>
           </div>
         </div>
         
-        <form @submit.prevent="handleSubmit" class="p-6 space-y-6">
+        <form class="p-6 space-y-6" @submit.prevent="handleSubmit">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">نام قانون *</label>
@@ -388,11 +389,11 @@
                   <option value="contains">شامل</option>
                 </select>
                 <input v-model="condition.value" type="text" class="px-3 py-2 border border-gray-300 rounded-lg text-sm" placeholder="مقدار">
-                <button @click="removeCondition(index)" type="button" class="text-red-600 hover:text-red-900">
+                <button type="button" class="text-red-600 hover:text-red-900" @click="removeCondition(index)">
                   <span class="i-heroicons-trash"></span>
                 </button>
               </div>
-              <button @click="addCondition" type="button" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+              <button type="button" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors" @click="addCondition">
                 <span class="i-heroicons-plus ml-2"></span>
                 افزودن شرط
               </button>
@@ -419,10 +420,10 @@
         </form>
         
         <div class="p-6 border-t border-gray-200 flex justify-end space-x-3 space-x-reverse">
-          <button @click="closeForm" class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+          <button class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors" @click="closeForm">
             انصراف
           </button>
-          <button @click="handleSubmit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="handleSubmit">
             ذخیره
           </button>
         </div>

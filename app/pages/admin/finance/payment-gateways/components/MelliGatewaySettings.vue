@@ -32,7 +32,7 @@
     </div>
 
     <!-- Settings Form -->
-    <form v-else @submit.prevent="saveSettings" class="space-y-6">
+    <form v-else class="space-y-6" @submit.prevent="saveSettings">
       <!-- Terminal ID -->
       <div>
         <label for="terminal_id" class="block text-sm font-medium text-gray-700 mb-2">
@@ -101,11 +101,11 @@
         </div>
         <button
           type="button"
-          @click="form.is_test_mode = !form.is_test_mode"
           :class="[
             'relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
             form.is_test_mode ? 'bg-blue-600' : 'bg-gray-200'
           ]"
+          @click="form.is_test_mode = !form.is_test_mode"
         >
           <span
             :class="[
@@ -124,11 +124,11 @@
         </div>
         <button
           type="button"
-          @click="form.is_active = !form.is_active"
           :class="[
             'relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
             form.is_active ? 'bg-green-600' : 'bg-gray-200'
           ]"
+          @click="form.is_active = !form.is_active"
         >
           <span
             :class="[
@@ -144,9 +144,9 @@
         <div class="flex items-center space-x-3">
           <button
             type="button"
-            @click="testConnection"
             :disabled="testing"
             class="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            @click="testConnection"
           >
             <Icon v-if="testing" name="ph:spinner" class="w-4 h-4 animate-spin" />
             <Icon v-else name="ph:plug" class="w-4 h-4" />
@@ -157,8 +157,8 @@
         <div class="flex items-center space-x-3">
           <button
             type="button"
-            @click="resetForm"
             class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-50 border border-gray-200 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            @click="resetForm"
           >
             بازنشانی
           </button>
@@ -193,8 +193,8 @@
         <p class="text-gray-600 mb-6">{{ testResult.message }}</p>
         <div class="flex justify-end">
           <button
-            @click="showTestResult = false"
             class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-50 border border-gray-200 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            @click="showTestResult = false"
           >
             بستن
           </button>

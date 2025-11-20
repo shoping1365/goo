@@ -8,8 +8,8 @@
       </h3>
       <p class="text-sm leading-6 text-gray-600 mb-6">{{ singleDeleteMessage }}</p>
       <div class="flex justify-end gap-2">
-        <button @click="closeDeleteConfirm" class="px-4 py-2 text-sm rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200">انصراف</button>
-        <button @click="confirmDelete" :disabled="deleting" class="px-4 py-2 text-sm rounded-md bg-red-600 text-white hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed">
+        <button class="px-4 py-2 text-sm rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200" @click="closeDeleteConfirm">انصراف</button>
+        <button :disabled="deleting" class="px-4 py-2 text-sm rounded-md bg-red-600 text-white hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed" @click="confirmDelete">
           <span v-if="deleting" class="i-heroicons-arrow-path animate-spin mr-1"></span>
           حذف
         </button>
@@ -26,8 +26,8 @@
       </h3>
       <p class="text-sm leading-6 text-gray-600 mb-6">{{ bulkDeleteMessage }}</p>
       <div class="flex justify-end gap-2">
-        <button @click="closeBulkDeleteConfirm" class="px-4 py-2 text-sm rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200">انصراف</button>
-        <button @click="confirmBulkDelete" :disabled="deletingBulk" class="px-4 py-2 text-sm rounded-md bg-red-600 text-white hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed">
+        <button class="px-4 py-2 text-sm rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200" @click="closeBulkDeleteConfirm">انصراف</button>
+        <button :disabled="deletingBulk" class="px-4 py-2 text-sm rounded-md bg-red-600 text-white hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed" @click="confirmBulkDelete">
           <span v-if="deletingBulk" class="i-heroicons-arrow-path animate-spin mr-1"></span>
           حذف
         </button>

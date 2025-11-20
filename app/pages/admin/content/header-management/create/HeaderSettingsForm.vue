@@ -5,7 +5,7 @@
         <h3>تنظیمات هدر</h3>
         <div class="header-toggle">
           <label class="toggle-label">
-            <input type="checkbox" v-model="headerData.isActive" />
+            <input v-model="headerData.isActive" type="checkbox" />
             <span class="toggle-text">فعال بودن هدر</span>
           </label>
         </div>
@@ -36,17 +36,17 @@
             
             <div class="radio-options">
               <label class="radio-option">
-                <input type="radio" v-model="headerData.pageSelection" value="all" />
+                <input v-model="headerData.pageSelection" type="radio" value="all" />
                 <span>کل سایت</span>
               </label>
               
               <label class="radio-option">
-                <input type="radio" v-model="headerData.pageSelection" value="specific" />
+                <input v-model="headerData.pageSelection" type="radio" value="specific" />
                 <span>صفحات خاص</span>
               </label>
               
               <label class="radio-option">
-                <input type="radio" v-model="headerData.pageSelection" value="exclude" />
+                <input v-model="headerData.pageSelection" type="radio" value="exclude" />
                 <span>مستثنی کردن صفحات</span>
               </label>
             </div>

@@ -4,7 +4,7 @@
     <div class="layer-settings-section">
       <div class="settings-header">
         <h3>{{ newLayer.id ? 'ویرایش لایه' : 'افزودن لایه جدید' }}</h3>
-        <button class="close-sidebar-btn" @click="cancelLayer" title="بستن">
+        <button class="close-sidebar-btn" title="بستن" @click="cancelLayer">
           <span class="i-heroicons-x-mark"></span>
         </button>
       </div>

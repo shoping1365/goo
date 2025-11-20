@@ -5,13 +5,13 @@
       <button 
         v-for="type in chartTypes" 
         :key="type.value"
-        @click="changeChartType(type.value)"
         :class="[
           'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
           selectedType === type.value 
             ? 'bg-blue-500 text-white shadow-md' 
             : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
         ]"
+        @click="changeChartType(type.value)"
       >
         {{ type.label }}
       </button>

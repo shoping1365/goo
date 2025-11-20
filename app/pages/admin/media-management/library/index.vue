@@ -26,12 +26,12 @@
             
             <!-- Toggle Compression Tools Button -->
             <TemplateButton
-              @click="showCompressionTools = !showCompressionTools"
-              :bgGradient="showCompressionTools ? 'bg-amber-100' : 'bg-teal-100'"
-              :textColor="showCompressionTools ? 'text-amber-800' : 'text-teal-800'"
-              :hoverClass="showCompressionTools ? 'hover:bg-amber-200' : 'hover:bg-teal-200'"
+              :bg-gradient="showCompressionTools ? 'bg-amber-100' : 'bg-teal-100'"
+              :text-color="showCompressionTools ? 'text-amber-800' : 'text-teal-800'"
+              :hover-class="showCompressionTools ? 'hover:bg-amber-200' : 'hover:bg-teal-200'"
               size="medium"
               title="ابزار فشرده‌سازی"
+              @click="showCompressionTools = !showCompressionTools"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16M12 4v16" />
@@ -44,10 +44,10 @@
               to="/admin/media-management/upload"
             >
               <TemplateButton
-                bgGradient="bg-gradient-to-r from-green-400 to-emerald-600"
-                textColor="text-white"
-                hoverClass="hover:from-green-500 hover:to-emerald-700 hover:shadow-lg hover:scale-105"
-                focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                bg-gradient="bg-gradient-to-r from-green-400 to-emerald-600"
+                text-color="text-white"
+                hover-class="hover:from-green-500 hover:to-emerald-700 hover:shadow-lg hover:scale-105"
+                focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                 size="medium"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,9 +129,9 @@
               to="/admin/media-management/image-compression"
             >
               <TemplateButton
-                bgGradient="bg-purple-500"
-                textColor="text-white"
-                hoverClass="hover:bg-purple-600"
+                bg-gradient="bg-purple-500"
+                text-color="text-white"
+                hover-class="hover:bg-purple-600"
                 size="medium"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -146,9 +146,9 @@
               to="/admin/media-management/video-compression"
             >
               <TemplateButton
-                bgGradient="bg-orange-500"
-                textColor="text-white"
-                hoverClass="hover:bg-orange-600"
+                bg-gradient="bg-orange-500"
+                text-color="text-white"
+                hover-class="hover:bg-orange-600"
                 size="medium"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -168,9 +168,9 @@
           <div v-if="viewMode === 'grid'" class="flex items-center gap-2">
             <input
               type="checkbox"
-              @change="toggleSelectAll"
               :checked="selectedItems.length === filteredFiles.length && filteredFiles.length > 0"
               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+              @change="toggleSelectAll"
             >
             <span class="text-sm text-gray-600">انتخاب همه</span>
           </div>
@@ -207,24 +207,24 @@
           
           <div class="flex border border-gray-300 rounded-lg overflow-hidden">
             <TemplateButton
-              @click="viewMode = 'grid'"
-              :bgGradient="viewMode === 'grid' ? 'bg-blue-500' : 'bg-white'"
-              :textColor="viewMode === 'grid' ? 'text-white' : 'text-gray-700'"
-              :hoverClass="viewMode === 'grid' ? '' : 'hover:bg-gray-50'"
+              :bg-gradient="viewMode === 'grid' ? 'bg-blue-500' : 'bg-white'"
+              :text-color="viewMode === 'grid' ? 'text-white' : 'text-gray-700'"
+              :hover-class="viewMode === 'grid' ? '' : 'hover:bg-gray-50'"
               size="small"
-              :borderColor="'border-0'"
+              :border-color="'border-0'"
+              @click="viewMode = 'grid'"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
               </svg>
             </TemplateButton>
             <TemplateButton
-              @click="viewMode = 'list'"
-              :bgGradient="viewMode === 'list' ? 'bg-blue-500' : 'bg-white'"
-              :textColor="viewMode === 'list' ? 'text-white' : 'text-gray-700'"
-              :hoverClass="viewMode === 'list' ? '' : 'hover:bg-gray-50'"
+              :bg-gradient="viewMode === 'list' ? 'bg-blue-500' : 'bg-white'"
+              :text-color="viewMode === 'list' ? 'text-white' : 'text-gray-700'"
+              :hover-class="viewMode === 'list' ? '' : 'hover:bg-gray-50'"
               size="small"
-              :borderColor="'border-0'"
+              :border-color="'border-0'"
+              @click="viewMode = 'list'"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
@@ -239,30 +239,30 @@
           <div class="flex flex-wrap gap-2">
             <TemplateButton 
               v-if="canDeleteMedia"
-              @click="bulkDelete"
-              bgGradient="bg-red-500"
-              textColor="text-white"
-              hoverClass="hover:bg-red-600"
+              bg-gradient="bg-red-500"
+              text-color="text-white"
+              hover-class="hover:bg-red-600"
               size="small"
+              @click="bulkDelete"
             >
               حذف
             </TemplateButton>
             <TemplateButton 
               v-if="hasUncompressedSelected"
-              @click="bulkCompress"
-              bgGradient="bg-green-500"
-              textColor="text-white"
-              hoverClass="hover:bg-green-600"
+              bg-gradient="bg-green-500"
+              text-color="text-white"
+              hover-class="hover:bg-green-600"
               size="small"
+              @click="bulkCompress"
             >
               فشرده‌سازی
             </TemplateButton>
             <TemplateButton 
-              @click="selectedItems = []"
-              bgGradient="bg-gray-500"
-              textColor="text-white"
-              hoverClass="hover:bg-gray-600"
+              bg-gradient="bg-gray-500"
+              text-color="text-white"
+              hover-class="hover:bg-gray-600"
               size="small"
+              @click="selectedItems = []"
             >
               لغو انتخاب
             </TemplateButton>
@@ -284,9 +284,9 @@
               to="/admin/media-management/upload"
             >
               <TemplateButton
-                bgGradient="bg-blue-500"
-                textColor="text-white"
-                hoverClass="hover:bg-blue-600"
+                bg-gradient="bg-blue-500"
+                text-color="text-white"
+                hover-class="hover:bg-blue-600"
                 size="large"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -316,9 +316,9 @@
                 <th class="px-3 lg:px-6 py-3 text-right">
                   <input
                     type="checkbox"
-                    @change="toggleSelectAll"
                     :checked="selectedItems.length === filteredFiles.length && filteredFiles.length > 0"
                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                    @change="toggleSelectAll"
                   >
                 </th>
                 <th class="px-3 lg:px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-right">فایل</th>
@@ -334,8 +334,8 @@
                   <input
                     type="checkbox"
                     :checked="selectedItems.includes(file.id)"
-                    @change="toggleSelection(file.id)"
                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                    @change="toggleSelection(file.id)"
                   >
                 </td>
                 <td class="px-3 lg:px-6 py-4">
@@ -377,9 +377,9 @@
                 <td class="px-3 lg:px-6 py-4 text-sm font-medium">
                   <div class="flex items-center gap-1 lg:gap-2">
                     <button 
-                      @click="viewFile(file)"
                       class="text-blue-600 hover:text-blue-900 transition-colors p-1 lg:p-2"
                       title="مشاهده"
+                      @click="viewFile(file)"
                     >
                       <svg class="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -391,9 +391,9 @@
                     <template v-if="showCompressionTools && file.type === 'image'">
                       <button
                         v-if="!(file.compressed_size && file.size && file.compressed_size < file.size)"
-                        @click="quickCompress(file.id)"
                         class="text-emerald-600 hover:text-emerald-900 transition-colors p-1 lg:p-2"
                         title="فشرده سازی سریع"
+                        @click="quickCompress(file.id)"
                       >
                         <svg class="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -401,9 +401,9 @@
                       </button>
                       <button
                         v-else
-                        @click="handleRevert(file.id)"
                         class="text-rose-600 hover:text-rose-900 transition-colors p-1 lg:p-2"
                         title="بازگردانی"
+                        @click="handleRevert(file.id)"
                       >
                         <svg class="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -413,9 +413,9 @@
 
                     <button 
                       v-if="canDeleteMedia"
-                      @click="deleteFile(file)"
                       class="text-red-600 hover:text-red-900 transition-colors p-1 lg:p-2"
                       title="حذف"
+                      @click="deleteFile(file)"
                     >
                       <svg class="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -431,7 +431,7 @@
 
       <!-- بارگذاری بیشتر -->
       <div v-if="itemsToShow < filteredFiles.length" class="flex justify-center my-6">
-        <button @click="itemsToShow += 36" class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors">
+        <button class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors" @click="itemsToShow += 36">
           بارگذاری بیشتر
         </button>
       </div>
@@ -439,8 +439,8 @@
 
     <!-- File Viewer Modal -->
     <MediaPreviewModal
-      v-model:modelValue="previewModalVisible"
       v-if="selectedFile"
+      v-model:model-value="previewModalVisible"
       :file="selectedFile"
       @close="closeViewer"
       @save="handleSaveDetail"

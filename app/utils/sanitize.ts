@@ -90,7 +90,7 @@ export const escapeHtml = (input: string): string => {
  * Sanitize JSON input
  * Validate JSON structure
  */
-export const sanitizeJson = (input: string): Record<string, any> | null => {
+export const sanitizeJson = (input: string): Record<string, unknown> | null => {
   try {
     return JSON.parse(input)
   } catch {

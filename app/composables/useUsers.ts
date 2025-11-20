@@ -1,6 +1,11 @@
-import { ref, computed } from 'vue'
+import type { User } from '@/stores/auth'
 import { useApiClient } from '@/utils/api'
-import { User } from '@/stores/auth'
+import { computed, ref } from 'vue'
+
+interface ApiError {
+  error?: string
+  message?: string
+}
 
 export const useUsers = () => {
   const { api } = useApiClient()
@@ -23,8 +28,9 @@ export const useUsers = () => {
 
       users.value = response.data
       totalCount.value = response.total
-    } catch (err: any) {
-      error.value = err.error || 'خطا در دریافت کاربران'
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e.error || 'خطا در دریافت کاربران'
     } finally {
       loading.value = false
     }
@@ -34,8 +40,9 @@ export const useUsers = () => {
   const getUser = async (id: string): Promise<User | null> => {
     try {
       return await api.get<User>(`/api/admin/users/${id}`)
-    } catch (err: any) {
-      error.value = err.error
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e.error || 'خطا در دریافت کاربر'
       return null
     }
   }
@@ -50,8 +57,9 @@ export const useUsers = () => {
         `/api/admin/users/search?q=${encodeURIComponent(query)}`
       )
       users.value = response
-    } catch (err: any) {
-      error.value = err.error
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e.error || 'خطا در جستجو'
     } finally {
       loading.value = false
     }
@@ -66,8 +74,9 @@ export const useUsers = () => {
       const response = await api.post<User>('/api/admin/users', userData)
       users.value.push(response)
       return response
-    } catch (err: any) {
-      error.value = err.error
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e.error || 'خطا در ایجاد کاربر'
       return null
     } finally {
       loading.value = false
@@ -86,8 +95,9 @@ export const useUsers = () => {
         users.value[index] = response
       }
       return response
-    } catch (err: any) {
-      error.value = err.error
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e.error || 'خطا در ویرایش کاربر'
       return null
     } finally {
       loading.value = false
@@ -103,8 +113,9 @@ export const useUsers = () => {
       await api.delete(`/api/admin/users/${id}`)
       users.value = users.value.filter(u => u.id !== id)
       return true
-    } catch (err: any) {
-      error.value = err.error
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e.error || 'خطا در حذف کاربر'
       return false
     } finally {
       loading.value = false
@@ -122,8 +133,9 @@ export const useUsers = () => {
         users.value[index] = response
       }
       return true
-    } catch (err: any) {
-      error.value = err.error
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e.error || 'خطا در تغییر نقش'
       return false
     }
   }
@@ -135,8 +147,9 @@ export const useUsers = () => {
         permissions: string[]
       }>(`/api/admin/users/${id}/permissions`)
       return response.permissions
-    } catch (err: any) {
-      error.value = err.error
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e.error || 'خطا در دریافت دسترسی‌ها'
       return []
     }
   }

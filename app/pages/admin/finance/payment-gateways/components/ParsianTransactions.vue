@@ -12,9 +12,9 @@
       </div>
       <div class="flex items-center space-x-2 space-x-reverse">
         <button
-          @click="refreshTransactions"
           :disabled="loading"
           class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50"
+          @click="refreshTransactions"
         >
           <span v-if="loading" class="i-heroicons-arrow-path animate-spin mr-2"></span>
           {{ loading ? 'در حال بارگذاری...' : 'بروزرسانی' }}
@@ -29,8 +29,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">وضعیت</label>
           <select
             v-model="filters.status"
-            @change="fetchTransactions"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+            @change="fetchTransactions"
           >
             <option value="">همه وضعیت‌ها</option>
             <option value="pending">در انتظار</option>
@@ -44,8 +44,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">تعداد در صفحه</label>
           <select
             v-model="filters.limit"
-            @change="fetchTransactions"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+            @change="fetchTransactions"
           >
             <option value="10">10</option>
             <option value="20">20</option>
@@ -58,10 +58,10 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">جستجو</label>
           <input
             v-model="filters.search"
-            @input="debounceSearch"
             type="text"
             placeholder="جستجو در تراکنش‌ها..."
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+            @input="debounceSearch"
           />
         </div>
       </div>
@@ -125,15 +125,15 @@
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
               <div class="flex items-center space-x-2 space-x-reverse">
                 <button
-                  @click="viewTransaction(transaction)"
                   class="text-purple-600 hover:text-purple-900"
+                  @click="viewTransaction(transaction)"
                 >
                   مشاهده
                 </button>
                 <button
                   v-if="transaction.status === 'success'"
-                  @click="refundTransaction(transaction)"
                   class="text-red-600 hover:text-red-900"
+                  @click="refundTransaction(transaction)"
                 >
                   بازگشت وجه
                 </button>
@@ -151,9 +151,9 @@
       </div>
       <div class="flex items-center space-x-2 space-x-reverse">
         <button
-          @click="changePage(currentPage - 1)"
           :disabled="currentPage === 1"
           class="px-3 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50"
+          @click="changePage(currentPage - 1)"
         >
           قبلی
         </button>
@@ -163,9 +163,9 @@
         </span>
         
         <button
-          @click="changePage(currentPage + 1)"
           :disabled="currentPage === totalPages"
           class="px-3 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50"
+          @click="changePage(currentPage + 1)"
         >
           بعدی
         </button>
@@ -177,7 +177,7 @@
       <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold">جزئیات تراکنش</h3>
-          <button @click="selectedTransaction = null" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="selectedTransaction = null">
             <span class="i-heroicons-x-mark text-xl"></span>
           </button>
         </div>

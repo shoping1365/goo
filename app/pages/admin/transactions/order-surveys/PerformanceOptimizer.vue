@@ -91,7 +91,7 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">کش مرورگر</label>
           <div class="space-y-2">
             <label class="flex items-center">
-              <input type="checkbox" v-model="cachingSettings.browserCache.enabled" class="rounded border-gray-300">
+              <input v-model="cachingSettings.browserCache.enabled" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">فعال کردن کش مرورگر</span>
             </label>
             <div>
@@ -110,7 +110,7 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">کش سرور</label>
           <div class="space-y-2">
             <label class="flex items-center">
-              <input type="checkbox" v-model="cachingSettings.serverCache.enabled" class="rounded border-gray-300">
+              <input v-model="cachingSettings.serverCache.enabled" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">فعال کردن کش سرور</span>
             </label>
             <div>
@@ -130,7 +130,7 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">کش CDN</label>
           <div class="space-y-2">
             <label class="flex items-center">
-              <input type="checkbox" v-model="cachingSettings.cdnCache.enabled" class="rounded border-gray-300">
+              <input v-model="cachingSettings.cdnCache.enabled" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">فعال کردن کش CDN</span>
             </label>
             <div>
@@ -138,7 +138,7 @@
               <input v-model.number="cachingSettings.cdnCache.duration" type="number" min="1" max="8760" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500">
             </div>
             <label class="flex items-center">
-              <input type="checkbox" v-model="cachingSettings.cdnCache.autoPurge" class="rounded border-gray-300">
+              <input v-model="cachingSettings.cdnCache.autoPurge" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">پاک‌سازی خودکار</span>
             </label>
           </div>
@@ -148,15 +148,15 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">تنظیمات پیشرفته</label>
           <div class="space-y-2">
             <label class="flex items-center">
-              <input type="checkbox" v-model="cachingSettings.advanced.compression" class="rounded border-gray-300">
+              <input v-model="cachingSettings.advanced.compression" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">فشرده‌سازی کش</span>
             </label>
             <label class="flex items-center">
-              <input type="checkbox" v-model="cachingSettings.advanced.encryption" class="rounded border-gray-300">
+              <input v-model="cachingSettings.advanced.encryption" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">رمزگذاری کش</span>
             </label>
             <label class="flex items-center">
-              <input type="checkbox" v-model="cachingSettings.advanced.monitoring" class="rounded border-gray-300">
+              <input v-model="cachingSettings.advanced.monitoring" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">مانیتورینگ کش</span>
             </label>
           </div>
@@ -172,7 +172,7 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">فشرده‌سازی Gzip</label>
           <div class="space-y-2">
             <label class="flex items-center">
-              <input type="checkbox" v-model="compressionSettings.gzip.enabled" class="rounded border-gray-300">
+              <input v-model="compressionSettings.gzip.enabled" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">فعال کردن Gzip</span>
             </label>
             <select v-model="compressionSettings.gzip.level" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
@@ -191,7 +191,7 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">فشرده‌سازی Brotli</label>
           <div class="space-y-2">
             <label class="flex items-center">
-              <input type="checkbox" v-model="compressionSettings.brotli.enabled" class="rounded border-gray-300">
+              <input v-model="compressionSettings.brotli.enabled" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">فعال کردن Brotli</span>
             </label>
             <select v-model="compressionSettings.brotli.level" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
@@ -210,7 +210,7 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">فشرده‌سازی تصاویر</label>
           <div class="space-y-2">
             <label class="flex items-center">
-              <input type="checkbox" v-model="compressionSettings.imageCompression.enabled" class="rounded border-gray-300">
+              <input v-model="compressionSettings.imageCompression.enabled" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">فشرده‌سازی خودکار تصاویر</span>
             </label>
             <select v-model="compressionSettings.imageCompression.quality" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
@@ -220,7 +220,7 @@
               <option value="95">کیفیت عالی (۹۵%)</option>
             </select>
             <label class="flex items-center">
-              <input type="checkbox" v-model="compressionSettings.imageCompression.webp" class="rounded border-gray-300">
+              <input v-model="compressionSettings.imageCompression.webp" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">تبدیل به WebP</span>
             </label>
           </div>
@@ -230,15 +230,15 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">تنظیمات پیشرفته</label>
           <div class="space-y-2">
             <label class="flex items-center">
-              <input type="checkbox" v-model="compressionSettings.advanced.minifyCSS" class="rounded border-gray-300">
+              <input v-model="compressionSettings.advanced.minifyCSS" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">فشرده‌سازی CSS</span>
             </label>
             <label class="flex items-center">
-              <input type="checkbox" v-model="compressionSettings.advanced.minifyJS" class="rounded border-gray-300">
+              <input v-model="compressionSettings.advanced.minifyJS" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">فشرده‌سازی JavaScript</span>
             </label>
             <label class="flex items-center">
-              <input type="checkbox" v-model="compressionSettings.advanced.minifyHTML" class="rounded border-gray-300">
+              <input v-model="compressionSettings.advanced.minifyHTML" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">فشرده‌سازی HTML</span>
             </label>
           </div>
@@ -254,7 +254,7 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">فعال‌سازی توزیع بار</label>
           <div class="space-y-2">
             <label class="flex items-center">
-              <input type="checkbox" v-model="loadBalancingSettings.enabled" class="rounded border-gray-300">
+              <input v-model="loadBalancingSettings.enabled" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">فعال کردن توزیع بار</span>
             </label>
             <select v-model="loadBalancingSettings.algorithm" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
@@ -278,14 +278,14 @@
                 <span :class="getServerStatusClass(server.status)" class="px-2 py-1 text-xs rounded-full">
                   {{ getServerStatusText(server.status) }}
                 </span>
-                <button @click="removeServer(server.id)" class="text-red-500 hover:text-red-700">
+                <button class="text-red-500 hover:text-red-700" @click="removeServer(server.id)">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                   </svg>
                 </button>
               </div>
             </div>
-            <button @click="addServer" class="w-full px-3 py-2 border border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-gray-400 hover:text-gray-700">
+            <button class="w-full px-3 py-2 border border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-gray-400 hover:text-gray-700" @click="addServer">
               + افزودن سرور جدید
             </button>
           </div>
@@ -303,7 +303,7 @@
               <input v-model.number="loadBalancingSettings.healthCheck.timeout" type="number" min="1" max="60" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
             </div>
             <label class="flex items-center">
-              <input type="checkbox" v-model="loadBalancingSettings.healthCheck.autoRemove" class="rounded border-gray-300">
+              <input v-model="loadBalancingSettings.healthCheck.autoRemove" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">حذف خودکار سرورهای غیرفعال</span>
             </label>
           </div>
@@ -313,15 +313,15 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">تنظیمات پیشرفته</label>
           <div class="space-y-2">
             <label class="flex items-center">
-              <input type="checkbox" v-model="loadBalancingSettings.advanced.sessionSticky" class="rounded border-gray-300">
+              <input v-model="loadBalancingSettings.advanced.sessionSticky" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">چسبندگی نشست</span>
             </label>
             <label class="flex items-center">
-              <input type="checkbox" v-model="loadBalancingSettings.advanced.sslTermination" class="rounded border-gray-300">
+              <input v-model="loadBalancingSettings.advanced.sslTermination" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">پایان SSL</span>
             </label>
             <label class="flex items-center">
-              <input type="checkbox" v-model="loadBalancingSettings.advanced.rateLimiting" class="rounded border-gray-300">
+              <input v-model="loadBalancingSettings.advanced.rateLimiting" type="checkbox" class="rounded border-gray-300">
               <span class="text-sm text-gray-700 mr-2">محدودیت نرخ</span>
             </label>
           </div>
@@ -374,18 +374,18 @@
 
     <!-- Action Buttons -->
     <div class="flex justify-between">
-      <button @click="runPerformanceTest" class="px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors">
+      <button class="px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors" @click="runPerformanceTest">
         تست عملکرد
       </button>
       
       <div class="flex space-x-3 space-x-reverse">
-        <button @click="clearCache" class="px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
+        <button class="px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors" @click="clearCache">
           پاک کردن کش
         </button>
-        <button @click="optimizePerformance" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+        <button class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="optimizePerformance">
           بهینه‌سازی خودکار
         </button>
-        <button @click="saveSettings" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+        <button class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors" @click="saveSettings">
           ذخیره تنظیمات
         </button>
       </div>
@@ -669,21 +669,21 @@ const removeServer = (serverId: number) => {
 }
 
 const runPerformanceTest = () => {
-  console.log('Running performance test...')
+  // console.log('Running performance test...')
 }
 
 const clearCache = () => {
   if (confirm('آیا از پاک کردن تمام کش‌ها اطمینان دارید؟')) {
-    console.log('Clearing all caches...')
+    // console.log('Clearing all caches...')
   }
 }
 
 const optimizePerformance = () => {
-  console.log('Running automatic performance optimization...')
+  // console.log('Running automatic performance optimization...')
 }
 
 const saveSettings = () => {
-  console.log('Saving performance settings...')
+  // console.log('Saving performance settings...')
 }
 
 // Expose methods for parent component

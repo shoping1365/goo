@@ -28,13 +28,13 @@
           <button 
             v-for="rating in 5" 
             :key="rating"
-            @click="selectedRating = rating"
             :class="[
               'w-12 h-12 rounded-full transition-colors font-medium',
               selectedRating === rating 
                 ? 'bg-blue-500 text-white' 
                 : 'bg-gray-100 hover:bg-blue-100 text-gray-600 hover:text-blue-600'
             ]"
+            @click="selectedRating = rating"
           >
             {{ rating }}
           </button>
@@ -52,13 +52,13 @@
             <button 
               v-for="option in qualityOptions" 
               :key="option.value"
-              @click="qualityRating = option.value"
               :class="[
                 'px-3 py-2 rounded-lg text-sm transition-colors',
                 qualityRating === option.value 
                   ? 'bg-blue-500 text-white' 
                   : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
               ]"
+              @click="qualityRating = option.value"
             >
               {{ option.label }}
             </button>
@@ -71,13 +71,13 @@
             <button 
               v-for="option in deliveryOptions" 
               :key="option.value"
-              @click="deliveryRating = option.value"
               :class="[
                 'px-3 py-2 rounded-lg text-sm transition-colors',
                 deliveryRating === option.value 
                   ? 'bg-blue-500 text-white' 
                   : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
               ]"
+              @click="deliveryRating = option.value"
             >
               {{ option.label }}
             </button>
@@ -98,9 +98,9 @@
 
       <!-- Submit Button -->
       <button 
-        @click="submitSurvey"
         :disabled="!selectedRating || submitting"
         class="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2 space-x-reverse"
+        @click="submitSurvey"
       >
         <svg v-if="submitting" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

@@ -34,8 +34,8 @@
         <div class="relative max-w-4xl w-full mx-4">
           <!-- Close button -->
           <button 
-            @click="closeViewer" 
-            class="absolute -top-10 right-0 text-white hover:text-gray-300 transition-colors duration-200"
+            class="absolute -top-10 right-0 text-white hover:text-gray-300 transition-colors duration-200" 
+            @click="closeViewer"
           >
             <!-- Close Icon using Tailwind -->
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -63,16 +63,16 @@
               <!-- Zoom Controls -->
               <div v-if="!isVideo" class="absolute bottom-4 right-4 flex gap-2">
                 <button 
-                  @click="zoomIn"
                   class="p-2 bg-white bg-opacity-75 rounded-full hover:bg-opacity-100 transition-all duration-200"
+                  @click="zoomIn"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                   </svg>
                 </button>
                 <button 
-                  @click="zoomOut"
                   class="p-2 bg-white bg-opacity-75 rounded-full hover:bg-opacity-100 transition-all duration-200"
+                  @click="zoomOut"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />

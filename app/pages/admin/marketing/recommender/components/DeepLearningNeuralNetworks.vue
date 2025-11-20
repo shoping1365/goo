@@ -105,7 +105,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">Neural Collaborative Filtering</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="models.neuralCF.enabled" class="sr-only peer">
+            <input v-model="models.neuralCF.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
           </label>
         </div>
@@ -113,22 +113,22 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">تعداد لایه‌های پنهان</label>
-            <input type="number" v-model="models.neuralCF.hiddenLayers" min="1" max="10" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+            <input v-model="models.neuralCF.hiddenLayers" type="number" min="1" max="10" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">اندازه لایه‌ها</label>
-            <input type="number" v-model="models.neuralCF.layerSize" min="32" max="512" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+            <input v-model="models.neuralCF.layerSize" type="number" min="32" max="512" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">نرخ یادگیری</label>
-            <input type="number" v-model="models.neuralCF.learningRate" min="0.001" max="1" step="0.001" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+            <input v-model="models.neuralCF.learningRate" type="number" min="0.001" max="1" step="0.001" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Dropout Rate</label>
-            <input type="number" v-model="models.neuralCF.dropoutRate" min="0" max="0.9" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+            <input v-model="models.neuralCF.dropoutRate" type="number" min="0" max="0.9" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
           </div>
           
           <div class="flex justify-between text-sm text-gray-600">
@@ -150,7 +150,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">Autoencoders</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="models.autoencoders.enabled" class="sr-only peer">
+            <input v-model="models.autoencoders.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
           </label>
         </div>
@@ -168,7 +168,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">ابعاد فشرده</label>
-            <input type="number" v-model="models.autoencoders.compressionRatio" min="2" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <input v-model="models.autoencoders.compressionRatio" type="number" min="2" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
           </div>
           
           <div>
@@ -211,7 +211,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">Recurrent Neural Networks</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="models.rnn.enabled" class="sr-only peer">
+            <input v-model="models.rnn.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
           </label>
         </div>
@@ -229,17 +229,17 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">تعداد لایه‌های RNN</label>
-            <input type="number" v-model="models.rnn.layers" min="1" max="5" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+            <input v-model="models.rnn.layers" type="number" min="1" max="5" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">اندازه لایه</label>
-            <input type="number" v-model="models.rnn.hiddenSize" min="32" max="512" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+            <input v-model="models.rnn.hiddenSize" type="number" min="32" max="512" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Sequence Length</label>
-            <input type="number" v-model="models.rnn.sequenceLength" min="5" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+            <input v-model="models.rnn.sequenceLength" type="number" min="5" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
           </div>
           
           <div class="flex justify-between text-sm text-gray-600">
@@ -261,7 +261,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">Convolutional Neural Networks</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="models.cnn.enabled" class="sr-only peer">
+            <input v-model="models.cnn.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-600"></div>
           </label>
         </div>
@@ -279,12 +279,12 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">تعداد فیلترها</label>
-            <input type="number" v-model="models.cnn.filters" min="16" max="512" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+            <input v-model="models.cnn.filters" type="number" min="16" max="512" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">اندازه Kernel</label>
-            <input type="number" v-model="models.cnn.kernelSize" min="3" max="7" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+            <input v-model="models.cnn.kernelSize" type="number" min="3" max="7" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
           </div>
           
           <div>
@@ -316,7 +316,7 @@
           <h3 class="text-lg font-semibold text-gray-900 mr-3">Transformer Models</h3>
         </div>
         <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" v-model="models.transformer.enabled" class="sr-only peer">
+          <input v-model="models.transformer.enabled" type="checkbox" class="sr-only peer">
           <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
         </label>
       </div>
@@ -335,29 +335,29 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">تعداد لایه‌ها</label>
-            <input type="number" v-model="models.transformer.layers" min="2" max="24" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+            <input v-model="models.transformer.layers" type="number" min="2" max="24" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">اندازه Embedding</label>
-            <input type="number" v-model="models.transformer.embeddingSize" min="128" max="1024" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+            <input v-model="models.transformer.embeddingSize" type="number" min="128" max="1024" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">تعداد Head</label>
-            <input type="number" v-model="models.transformer.numHeads" min="4" max="16" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+            <input v-model="models.transformer.numHeads" type="number" min="4" max="16" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
           </div>
         </div>
         
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Maximum Sequence Length</label>
-            <input type="number" v-model="models.transformer.maxLength" min="64" max="512" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+            <input v-model="models.transformer.maxLength" type="number" min="64" max="512" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Dropout Rate</label>
-            <input type="number" v-model="models.transformer.dropoutRate" min="0" max="0.9" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+            <input v-model="models.transformer.dropoutRate" type="number" min="0" max="0.9" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
           </div>
           
           <div>

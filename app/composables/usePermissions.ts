@@ -1,5 +1,5 @@
-import { ref, computed, readonly } from 'vue'
 import { useAuthState } from '@/composables/useAuthState'
+import { computed, readonly, ref } from 'vue'
 
 /**
  * Composable برای مدیریت Permissions و Roles
@@ -16,7 +16,7 @@ export const usePermissions = () => {
    * بررسی دسترسی خاص
    */
   const hasPermission = computed(() => {
-    return (permissionName: string): boolean => {
+    return (_permissionName: string): boolean => {
       // حالت پیش‌فرض: همه permissions مجاز هستند
       return true
     }
@@ -44,7 +44,7 @@ export const usePermissions = () => {
    * بررسی نقش کاربر
    */
   const hasRole = computed(() => {
-    return (roleName: string): boolean => {
+    return (_roleName: string): boolean => {
       // حالت پیش‌فرض: همه نقش‌ها مجاز هستند
       return true
     }
@@ -85,7 +85,7 @@ export const usePermissions = () => {
       })
       
       permissions.value = response.permissions || []
-    } catch (error: any) {
+    } catch (error) {
       console.error('خطا در بارگذاری دسترسی‌ها:', error)
       permissionsError.value = 'خطا در بارگذاری دسترسی‌ها'
       permissions.value = []

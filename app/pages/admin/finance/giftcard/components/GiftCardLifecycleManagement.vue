@@ -13,7 +13,8 @@
         <div class="flex flex-wrap justify-center items-center space-x-4 space-x-reverse">
           <div v-for="(stage, index) in lifecycleStages" :key="stage.name" class="flex items-center">
             <div class="text-center">
-              <div class="w-16 h-16 rounded-full flex items-center justify-center text-white text-lg font-bold mb-2"
+              <div
+class="w-16 h-16 rounded-full flex items-center justify-center text-white text-lg font-bold mb-2"
                    :class="getStageColorClass(stage.status)">
                 {{ stage.icon }}
               </div>
@@ -27,11 +28,13 @@
       
       <!-- جزئیات مراحل -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div v-for="stage in lifecycleStages" :key="stage.name" 
+        <div
+v-for="stage in lifecycleStages" :key="stage.name" 
              class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <div class="flex items-center justify-between mb-4">
             <h4 class="text-lg font-semibold text-gray-900">{{ stage.name }}</h4>
-            <span class="text-xs rounded-full px-3 py-1"
+            <span
+class="text-xs rounded-full px-3 py-1"
                   :class="getStatusBadgeClass(stage.status)">
               {{ stage.status }}
             </span>
@@ -63,7 +66,8 @@
               <span>{{ stage.progress }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="h-2 rounded-full transition-all duration-300"
+              <div
+class="h-2 rounded-full transition-all duration-300"
                    :class="getStageProgressColor(stage.status)"
                    :style="{ width: stage.progress + '%' }"></div>
             </div>

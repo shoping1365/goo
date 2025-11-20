@@ -6,11 +6,11 @@
         <div class="relative">
           <input
             v-model="searchQuery"
-            @input="handleSearch"
-            @keyup.enter="performSearch"
             type="text"
             :placeholder="placeholder"
             class="w-full px-4 py-2 pr-12 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @input="handleSearch"
+            @keyup.enter="performSearch"
           />
           <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
             <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -24,8 +24,8 @@
       <div class="flex items-center space-x-2 space-x-reverse">
         <select
           v-model="searchType"
-          @change="handleSearchTypeChange"
           class="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          @change="handleSearchTypeChange"
         >
           <option value="all">همه</option>
           <option value="code">کد کارت</option>
@@ -37,8 +37,8 @@
 
         <select
           v-model="statusFilter"
-          @change="handleStatusFilterChange"
           class="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          @change="handleStatusFilterChange"
         >
           <option value="">همه وضعیت‌ها</option>
           <option value="active">فعال</option>
@@ -48,15 +48,15 @@
         </select>
 
         <button 
-          @click="performSearch"
           class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          @click="performSearch"
         >
           جستجو
         </button>
 
         <button 
-          @click="clearSearch"
           class="px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+          @click="clearSearch"
         >
           پاک کردن
         </button>
@@ -71,8 +71,8 @@
           <button
             v-for="suggestion in searchSuggestions"
             :key="suggestion.id"
-            @click="selectSuggestion(suggestion)"
             class="w-full text-right px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors duration-200"
+            @click="selectSuggestion(suggestion)"
           >
             <div class="flex items-center justify-between">
               <span>{{ suggestion.displayText }}</span>
@@ -89,8 +89,8 @@
         <div class="flex items-center justify-between mb-3">
           <h4 class="text-sm font-medium text-gray-900">نتایج جستجو ({{ quickResults.length }})</h4>
           <button 
-            @click="showAdvancedSearch"
             class="text-sm text-blue-600 hover:text-blue-800"
+            @click="showAdvancedSearch"
           >
             جستجوی پیشرفته
           </button>
@@ -116,9 +116,9 @@
               </div>
               <div class="flex items-center space-x-1 space-x-reverse">
                 <button 
-                  @click="viewCardDetails(result)"
                   class="text-blue-600 hover:text-blue-800 text-xs"
                   title="مشاهده جزئیات"
+                  @click="viewCardDetails(result)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -126,9 +126,9 @@
                   </svg>
                 </button>
                 <button 
-                  @click="editCard(result)"
                   class="text-green-600 hover:text-green-800 text-xs"
                   title="ویرایش"
+                  @click="editCard(result)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -149,8 +149,8 @@
         </svg>
         <p class="mt-2 text-sm text-gray-500">نتیجه‌ای برای "{{ searchQuery }}" یافت نشد</p>
         <button 
-          @click="showAdvancedSearch"
           class="mt-2 text-sm text-blue-600 hover:text-blue-800"
+          @click="showAdvancedSearch"
         >
           جستجوی پیشرفته را امتحان کنید
         </button>

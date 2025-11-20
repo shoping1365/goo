@@ -31,8 +31,8 @@
             <span :class="['status', description.status]">{{ description.statusText }}</span>
           </td>
           <td>
-            <button @click="editDescription(description)" class="btn-edit">ویرایش</button>
-            <button @click="deleteDescription(description.id)" class="btn-delete">حذف</button>
+            <button class="btn-edit" @click="editDescription(description)">ویرایش</button>
+            <button class="btn-delete" @click="deleteDescription(description.id)">حذف</button>
           </td>
         </tr>
         </tbody>
@@ -109,7 +109,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { reactive, ref } from 'vue'
 
 const selectedLanguage = ref('fa')
 
@@ -163,16 +163,16 @@ function getDescription(methodId, type) {
   return type === 'short' ? desc.shortDescription : desc.fullDescription
 }
 
-function editDescription(description) {
-  console.log('Editing description:', description)
+function editDescription(_description) {
+  // console.log('Editing description:', description)
 }
 
-function deleteDescription(id) {
-  console.log('Deleting description:', id)
+function deleteDescription(_id) {
+  // console.log('Deleting description:', id)
 }
 
 function addNewDescription() {
-  console.log('Adding new description:', newDescription)
+  // console.log('Adding new description:', newDescription)
   // Reset form
   Object.assign(newDescription, {
     shippingMethod: '',

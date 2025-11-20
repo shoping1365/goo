@@ -40,7 +40,7 @@
             <div class="flex flex-wrap justify-center gapx-4 py-4 mt-8">
               <!-- انتخاب از رسانه -->
              <div class="flex flex-col items-center gap-3">
-               <button @click.prevent="openMedia" class="bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl px-6 py-3 font-semibold shadow-lg hover:from-green-700 hover:to-emerald-700 transition-all duration-300 flex items-center gap-2">
+               <button class="bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl px-6 py-3 font-semibold shadow-lg hover:from-green-700 hover:to-emerald-700 transition-all duration-300 flex items-center gap-2" @click.prevent="openMedia">
                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                    
                  </svg>
@@ -125,8 +125,8 @@
                    <!-- تصویر ساده -->
                    <img 
                      v-if="img.thumbnail || img.url"
-                     :src="img.thumbnail || img.url" 
-                     :alt="img.alt || 'تصویر محصول'" 
+                     :src="(img.thumbnail || img.url) as string" 
+                     :alt="(img.alt as string) || 'تصویر محصول'" 
                      class="w-full h-full object-cover cursor-pointer hover:opacity-80 transition-opacity duration-300" 
                      @click.prevent="previewImage=img;previewShow=true"
                      @error="onImageError($event)"
@@ -143,17 +143,17 @@
                
                <!-- ترتیب -->
                <div class="col-span-1 flex justify-center">
-                 <input type="number" :value="idx+1" min="1" :max="store.images.length" @change="onOrderChange(idx, $event)" class="w-16 h-10 bg-white border border-emerald-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 p-2 text-center font-semibold" />
+                 <input type="number" :value="idx+1" min="1" :max="store.images.length" class="w-16 h-10 bg-white border border-emerald-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 p-2 text-center font-semibold" @change="onOrderChange(idx, $event)" />
                </div>
                
                <!-- عنوان -->
                <div class="col-span-4">
-                 <input type="text" v-model="img.title" placeholder="عنوان تصویر..." class="w-full bg-white border border-emerald-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 p-2.5" />
+                 <input v-model="img.title" type="text" placeholder="عنوان تصویر..." class="w-full bg-white border border-emerald-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 p-2.5" />
                </div>
                
                <!-- متن جایگزین -->
                <div class="col-span-3">
-                 <input type="text" v-model="img.alt" placeholder="توضیح تصویر برای SEO..." class="w-full bg-white border border-emerald-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 p-2.5" />
+                 <input v-model="img.alt" type="text" placeholder="توضیح تصویر برای SEO..." class="w-full bg-white border border-emerald-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 p-2.5" />
                </div>
                
                <!-- عملیات -->
@@ -327,10 +327,10 @@
  </template>
 
   <script setup lang="ts">
-  import { reactive, ref } from 'vue'
-import { useProductCreateStore } from '~/stores/productCreate'
+  import { ref } from 'vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
 import MediaPreviewModal from '~/components/media/MediaPreviewModal.vue'
+import { useProductCreateStore } from '~/stores/productCreate'
 
  // Props for edit mode
  const props = defineProps({

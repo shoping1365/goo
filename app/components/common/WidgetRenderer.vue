@@ -3,9 +3,9 @@
     <Suspense>
       <component
         :is="dynamicComponent"
-        :widget="widget"
         v-bind="widgetProps"
         :key="`${widget.id}-${widget.updated_at}`"
+        :widget="widget"
       />
       <template #fallback>
         <div class="widget-loading p-6">

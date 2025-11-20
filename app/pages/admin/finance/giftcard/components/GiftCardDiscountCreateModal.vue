@@ -5,8 +5,8 @@
       <div class="flex items-center justify-between mb-6">
         <h3 class="text-lg font-semibold text-gray-900">تعریف تخفیف جدید</h3>
         <button
-          @click="$emit('close')"
           class="text-gray-400 hover:text-gray-600"
+          @click="$emit('close')"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -15,7 +15,7 @@
       </div>
 
       <!-- فرم تعریف تخفیف -->
-      <form @submit.prevent="createDiscount" class="space-y-6">
+      <form class="space-y-6" @submit.prevent="createDiscount">
         <!-- نام تخفیف -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
@@ -38,8 +38,8 @@
           <select
             v-model="form.type"
             required
-            @change="onDiscountTypeChange"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            @change="onDiscountTypeChange"
           >
             <option value="">انتخاب کنید</option>
             <option value="percentage">درصدی</option>
@@ -216,8 +216,8 @@
             />
             <button
               type="button"
-              @click="generateCode"
               class="px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-l-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+              @click="generateCode"
             >
               تولید
             </button>
@@ -280,8 +280,8 @@
         <div class="flex justify-end space-x-3 space-x-reverse">
           <button
             type="button"
-            @click="$emit('close')"
             class="px-4 py-2 bg-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            @click="$emit('close')"
           >
             انصراف
           </button>

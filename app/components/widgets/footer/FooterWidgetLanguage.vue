@@ -1,7 +1,7 @@
 <template>
   <div class="footer-widget footer-widget--language">
     <label class="footer-widget__label" :for="selectId">{{ viewModel.label }}</label>
-    <select :id="selectId" class="footer-widget__select" v-model="selected" @change="handleChange">
+    <select :id="selectId" v-model="selected" class="footer-widget__select" @change="handleChange">
       <option v-for="language in viewModel.languages" :key="language.code" :value="language.code">
         {{ language.label }}
       </option>

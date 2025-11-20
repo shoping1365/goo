@@ -4,8 +4,8 @@
       <h3 class="text-lg font-semibold text-gray-800 mb-2">کتابخانه رسانه</h3>
       <div class="flex gap-2">
         <button 
-          @click="uploadFile" 
-          class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors" 
+          @click="uploadFile"
         >
           آپلود فایل
         </button>

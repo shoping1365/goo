@@ -4,7 +4,7 @@
       <div class="card-header">
         <h3>تنظیمات منطقه‌ای</h3>
         <div class="toggle-switch">
-          <input type="checkbox" v-model="enabled" id="regionalToggle" />
+          <input id="regionalToggle" v-model="enabled" type="checkbox" />
           <label for="regionalToggle"></label>
         </div>
       </div>
@@ -42,9 +42,9 @@
                 <span class="region-name">{{ region.name }}</span>
                 <span class="region-type">{{ getRegionTypeLabel(region.type) }}</span>
               </div>
-              <button @click="removeRegion(index)" class="remove-btn">حذف</button>
+              <button class="remove-btn" @click="removeRegion(index)">حذف</button>
             </div>
-            <button @click="addRegion" class="add-region-btn">
+            <button class="add-region-btn" @click="addRegion">
               <span>+</span> افزودن منطقه
             </button>
           </div>
@@ -58,9 +58,9 @@
                 <span class="region-name">{{ region.name }}</span>
                 <span class="region-type">{{ getRegionTypeLabel(region.type) }}</span>
               </div>
-              <button @click="removeExcludedRegion(index)" class="remove-btn">حذف</button>
+              <button class="remove-btn" @click="removeExcludedRegion(index)">حذف</button>
             </div>
-            <button @click="addExcludedRegion" class="add-region-btn">
+            <button class="add-region-btn" @click="addExcludedRegion">
               <span>+</span> افزودن منطقه مستثنی
             </button>
           </div>

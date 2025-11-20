@@ -10,8 +10,8 @@
       <!-- دکمه‌های عملیاتی -->
       <div class="flex gap-2">
         <button 
-          @click="showCreateInvoiceModal = true"
           class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-200"
+          @click="showCreateInvoiceModal = true"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -19,8 +19,8 @@
           فاکتور جدید
         </button>
         <button 
-          @click="bulkPrintInvoices"
           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
+          @click="bulkPrintInvoices"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
@@ -96,8 +96,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">وضعیت</label>
           <select 
             v-model="invoiceFilters.status"
-            @change="filterInvoices"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="filterInvoices"
           >
             <option value="">همه وضعیت‌ها</option>
             <option value="paid">پرداخت شده</option>
@@ -112,8 +112,8 @@
           <input 
             v-model="invoiceFilters.dateFrom"
             type="date"
-            @change="filterInvoices"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="filterInvoices"
           />
         </div>
         
@@ -122,8 +122,8 @@
           <input 
             v-model="invoiceFilters.dateTo"
             type="date"
-            @change="filterInvoices"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="filterInvoices"
           />
         </div>
         
@@ -133,8 +133,8 @@
             v-model="invoiceFilters.customer"
             type="text"
             placeholder="جستجو در مشتریان..."
-            @input="filterInvoices"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @input="filterInvoices"
           />
         </div>
         
@@ -144,8 +144,8 @@
             v-model="invoiceFilters.invoiceNumber"
             type="text"
             placeholder="شماره فاکتور..."
-            @input="filterInvoices"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @input="filterInvoices"
           />
         </div>
       </div>
@@ -159,9 +159,9 @@
             <th class="text-right py-3 px-4 font-medium text-gray-600">
               <input 
                 v-model="selectAll"
-                @change="toggleSelectAll"
                 type="checkbox"
                 class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                @change="toggleSelectAll"
               />
             </th>
             <th class="text-right py-3 px-4 font-medium text-gray-600">شماره فاکتور</th>
@@ -201,9 +201,9 @@
             <td class="py-3 px-4">
               <div class="flex items-center gap-2">
                 <button 
-                  @click="viewInvoice(invoice)"
                   class="p-1 text-blue-600 hover:text-blue-800"
                   title="مشاهده"
+                  @click="viewInvoice(invoice)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -211,18 +211,18 @@
                   </svg>
                 </button>
                 <button 
-                  @click="printInvoice(invoice)"
                   class="p-1 text-green-600 hover:text-green-800"
                   title="چاپ"
+                  @click="printInvoice(invoice)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
                   </svg>
                 </button>
                 <button 
-                  @click="editInvoice(invoice)"
                   class="p-1 text-yellow-600 hover:text-yellow-800"
                   title="ویرایش"
+                  @click="editInvoice(invoice)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -230,9 +230,9 @@
                 </button>
                 <button 
                   v-if="canDeleteTaxInvoice"
-                  @click="deleteInvoice(invoice)"
                   class="p-1 text-red-600 hover:text-red-800"
                   title="حذف"
+                  @click="deleteInvoice(invoice)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -252,9 +252,9 @@
       </div>
       <div class="flex items-center gap-2">
         <button 
-          @click="previousPage"
           :disabled="pagination.currentPage === 1"
           class="px-3 py-1 border border-gray-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          @click="previousPage"
         >
           قبلی
         </button>
@@ -262,9 +262,9 @@
           صفحه {{ pagination.currentPage }} از {{ pagination.totalPages }}
         </span>
         <button 
-          @click="nextPage"
           :disabled="pagination.currentPage === pagination.totalPages"
           class="px-3 py-1 border border-gray-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          @click="nextPage"
         >
           بعدی
         </button>
@@ -276,7 +276,7 @@
       <div class="bg-white rounded-xl p-6 w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-gray-900">ایجاد فاکتور جدید</h3>
-          <button @click="showCreateInvoiceModal = false" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="showCreateInvoiceModal = false">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -411,8 +411,8 @@
               <div class="flex items-center gap-2">
                 <span class="text-sm font-medium">{{ formatCurrency(item.total) }}</span>
                 <button 
-                  @click="removeInvoiceItem(index)"
                   class="p-1 text-red-600 hover:text-red-800"
+                  @click="removeInvoiceItem(index)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -422,8 +422,8 @@
             </div>
             
             <button 
-              @click="addInvoiceItem"
               class="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
+              @click="addInvoiceItem"
             >
               افزودن آیتم
             </button>
@@ -436,14 +436,14 @@
             <div class="text-lg font-medium text-gray-900">مجموع: {{ formatCurrency(newInvoice.total) }}</div>
             <div class="flex gap-3">
               <button 
-                @click="showCreateInvoiceModal = false"
                 class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                @click="showCreateInvoiceModal = false"
               >
                 انصراف
               </button>
               <button 
-                @click="createInvoice"
                 class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                @click="createInvoice"
               >
                 ایجاد فاکتور
               </button>

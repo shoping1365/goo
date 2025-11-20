@@ -83,7 +83,7 @@
               </div>
             </div>
             <div class="item-name">{{ item.name }}</div>
-            <div class="item-check" v-if="isItemSelected(item.id)">✓</div>
+            <div v-if="isItemSelected(item.id)" class="item-check">✓</div>
           </div>
         </div>
       </div>

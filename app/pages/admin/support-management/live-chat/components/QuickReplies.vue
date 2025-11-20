@@ -2,7 +2,7 @@
   <div class="quick-replies">
     <div class="quick-replies-header">
       <h4>پاسخ‌های سریع</h4>
-      <button @click="isExpanded = !isExpanded" class="expand-btn">
+      <button class="expand-btn" @click="isExpanded = !isExpanded">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4" :class="{ 'rotate-180': isExpanded }">
           <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
         </svg>
@@ -13,8 +13,8 @@
       <button 
         v-for="reply in quickReplies" 
         :key="reply.id"
-        @click="$emit('selectReply', reply.text)"
         class="quick-reply-btn"
+        @click="$emit('selectReply', reply.text)"
       >
         <span class="reply-icon">{{ reply.icon }}</span>
         <span class="reply-text">{{ reply.text }}</span>

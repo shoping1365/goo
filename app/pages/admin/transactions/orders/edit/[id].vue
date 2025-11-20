@@ -17,8 +17,8 @@
             <!-- دکمه‌های اسکرول -->
             <button 
               v-if="canScrollLeft"
-              @click="scrollTabs('left')"
               class="absolute left-0 top-0 z-10 h-full w-8 bg-gradient-to-r from-white to-transparent flex items-center justify-center text-gray-500 hover:text-gray-700"
+              @click="scrollTabs('left')"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -27,8 +27,8 @@
             
             <button 
               v-if="canScrollRight"
-              @click="scrollTabs('right')"
               class="absolute right-0 top-0 z-10 h-full w-8 bg-gradient-to-l from-white to-transparent flex items-center justify-center text-gray-500 hover:text-gray-700"
+              @click="scrollTabs('right')"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -45,13 +45,13 @@
               <button
                 v-for="tab in tabs"
                 :key="tab.id"
-                @click="activeTab = tab.id"
                 :class="[
                   activeTab === tab.id
                     ? 'border-blue-500 text-blue-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
                   'whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm transition-colors flex-shrink-0'
                 ]"
+                @click="activeTab = tab.id"
               >
                 <div class="flex items-center">
                   <component :is="tab.icon" class="w-4 h-4 ml-2" />
@@ -159,23 +159,23 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 // Import کامپوننت‌ها
-import OrderHeader from './components/OrderHeader.vue'
+import AdvancedLogistics from './components/AdvancedLogistics.vue'
 import CustomerInfo from './components/CustomerInfo.vue'
+import Invoice from './components/Invoice.vue'
+import OrderHeader from './components/OrderHeader.vue'
 import OrderItems from './components/OrderItems.vue'
 import OrderStatus from './components/OrderStatus.vue'
 import OrderSummary from './components/OrderSummary.vue'
+import PaymentGateways from './components/PaymentGateways.vue'
 import ShippingInfo from './components/ShippingInfo.vue'
-import Invoice from './components/Invoice.vue'
+import StatisticsReports from './components/StatisticsReports.vue'
+import SupportCommunication from './components/SupportCommunication.vue'
 import TaxAccounting from './components/TaxAccounting.vue'
 import WalletGiftCard from './components/WalletGiftCard.vue'
-import PaymentGateways from './components/PaymentGateways.vue'
-import AdvancedLogistics from './components/AdvancedLogistics.vue'
-import SupportCommunication from './components/SupportCommunication.vue'
-import StatisticsReports from './components/StatisticsReports.vue'
 
 definePageMeta({
   layout: 'admin-main'
@@ -269,73 +269,73 @@ const tabs = [
 ]
 
 // آیکون‌های تب‌ها
-const CustomerIcon = {
+const _CustomerIcon = {
   template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
   </svg>`
 }
 
-const ItemsIcon = {
+const _ItemsIcon = {
   template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
   </svg>`
 }
 
-const StatusIcon = {
+const _StatusIcon = {
   template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
   </svg>`
 }
 
-const ShippingIcon = {
+const _ShippingIcon = {
   template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
   </svg>`
 }
 
-const InvoiceIcon = {
+const _InvoiceIcon = {
   template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
   </svg>`
 }
 
-const TaxIcon = {
+const _TaxIcon = {
   template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
   </svg>`
 }
 
-const WalletIcon = {
+const _WalletIcon = {
   template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
   </svg>`
 }
 
-const GatewayIcon = {
+const _GatewayIcon = {
   template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
   </svg>`
 }
 
-const LogisticsIcon = {
+const _LogisticsIcon = {
   template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
   </svg>`
 }
 
-const SupportIcon = {
+const _SupportIcon = {
   template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
   </svg>`
 }
 
-const StatisticsIcon = {
+const _StatisticsIcon = {
   template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
   </svg>`
 }
 
-const SummaryIcon = {
+const _SummaryIcon = {
   template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
   </svg>`
@@ -834,12 +834,12 @@ const checkScrollButtons = () => {
 // دریافت اطلاعات سفارش از API
 const fetchOrderData = async () => {
   try {
-    console.log('دریافت اطلاعات سفارش:', orderId)
+    // console.log('دریافت اطلاعات سفارش:', orderId)
     
     // دریافت اطلاعات سفارش از API
     const response = await $fetch(`/api/admin/orders/${orderId}`)
     
-    console.log('پاسخ API:', response)
+    // console.log('پاسخ API:', response)
     
     if (response && response.success && response.data) {
       const orderInfo = response.data
@@ -864,12 +864,12 @@ const fetchOrderData = async () => {
         })
       }
       
-      console.log('وضعیت سفارش به‌روزرسانی شد:', orderInfo.status)
+      // console.log('وضعیت سفارش به‌روزرسانی شد:', orderInfo.status)
     } else {
-      console.log('پاسخ API نامعتبر یا سفارش یافت نشد')
+      // console.log('پاسخ API نامعتبر یا سفارش یافت نشد')
     }
-  } catch (error) {
-    console.error('خطا در دریافت اطلاعات سفارش:', error)
+  } catch {
+    // console.error('خطا در دریافت اطلاعات سفارش:', error)
     // در صورت خطا، از داده‌های پیش‌فرض استفاده می‌شود
   }
 }
@@ -877,8 +877,8 @@ const fetchOrderData = async () => {
 // ذخیره تغییرات سفارش
 const saveOrder = async () => {
   try {
-    console.log('شروع ذخیره تغییرات...')
-    console.log('وضعیت فعلی:', orderData.value.status.status)
+    // console.log('شروع ذخیره تغییرات...')
+    // console.log('وضعیت فعلی:', orderData.value.status.status)
     
     // به‌روزرسانی وضعیت سفارش
     if (orderData.value.status && orderData.value.status.status) {
@@ -887,30 +887,30 @@ const saveOrder = async () => {
         notes: orderData.value.status.internalNotes || ''
       }
       
-      console.log('ارسال درخواست به API:', updateData)
+      // console.log('ارسال درخواست به API:', updateData)
       
-      const response = await $fetch(`/api/admin/orders/${orderId}/status`, {
+      const _response = await $fetch(`/api/admin/orders/${orderId}/status`, {
         method: 'PUT',
         body: updateData
       })
       
-      console.log('پاسخ API:', response)
+      // console.log('پاسخ API:', response)
     }
     
-    console.log('ذخیره تغییرات سفارش:', orderData.value)
+    // console.log('ذخیره تغییرات سفارش:', orderData.value)
     
     // نمایش پیام موفقیت
     alert('تغییرات با موفقیت ذخیره شد')
-  } catch (error) {
-    console.error('خطا در ذخیره تغییرات:', error)
-    console.error('جزئیات خطا:', error.response?.data || error.message)
-    alert('خطا در ذخیره تغییرات: ' + (error.response?.data?.message || error.message))
+  } catch {
+    // console.error('خطا در ذخیره تغییرات:', error)
+    // console.error('جزئیات خطا:', error.response?.data || error.message)
+    alert('خطا در ذخیره تغییرات')
   }
 }
 
 // مدیریت به‌روزرسانی وضعیت از کامپوننت OrderStatus
 const handleStatusUpdate = (updateData) => {
-  console.log('وضعیت سفارش به‌روزرسانی شد:', updateData)
+  // console.log('وضعیت سفارش به‌روزرسانی شد:', updateData)
   
   // به‌روزرسانی داده‌های محلی
   orderData.value.status.status = updateData.status
@@ -923,7 +923,7 @@ const handleStatusUpdate = (updateData) => {
 // چاپ سفارش
 const printOrder = () => {
   // در اینجا منطق چاپ سفارش پیاده‌سازی می‌شود
-  console.log('چاپ سفارش:', orderData.value)
+  // console.log('چاپ سفارش:', orderData.value)
   window.print()
 }
 

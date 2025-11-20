@@ -126,7 +126,6 @@
 
           <div v-if="totalPages > 1" class="flex items-center justify-center space-x-2 space-x-reverse">
             <button
-              @click="currentPage = Math.max(1, currentPage - 1)"
               :disabled="currentPage === 1"
               :class="[
                 'px-3 py-2 rounded-lg text-sm transition-colors',
@@ -134,6 +133,7 @@
                   ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                   : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
               ]"
+              @click="currentPage = Math.max(1, currentPage - 1)"
             >
               قبلی
             </button>
@@ -142,13 +142,13 @@
               <template v-for="(page, index) in visiblePages" :key="`${page}-${index}`">
                 <button
                   v-if="page !== '...'"
-                  @click="currentPage = page"
                   :class="[
                     'px-3 py-2 rounded-lg text-sm transition-colors',
                     page === currentPage
                       ? 'bg-blue-500 text-white'
                       : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
                   ]"
+                  @click="currentPage = page"
                 >
                   {{ page }}
                 </button>
@@ -157,7 +157,6 @@
             </div>
 
             <button
-              @click="currentPage = Math.min(totalPages, currentPage + 1)"
               :disabled="currentPage === totalPages"
               :class="[
                 'px-3 py-2 rounded-lg text-sm transition-colors',
@@ -165,6 +164,7 @@
                   ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                   : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
               ]"
+              @click="currentPage = Math.min(totalPages, currentPage + 1)"
             >
               بعدی
             </button>
@@ -191,6 +191,7 @@ const route = useRoute()
 
 const searchQuery = ref('')
 const searchType = ref<SearchType>('all')
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const searchResults = ref<any[]>([])
 const isLoading = ref(false)
 const searchTime = ref(0)
@@ -233,8 +234,10 @@ const performSearch = async () => {
       params.type = searchType.value
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = await $fetch('/api/search', { query: params }) as any
     if (response?.success) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       searchResults.value = response.data.map((item: any) => ({
         ...item,
         image: resolveImage(item)
@@ -308,6 +311,7 @@ const formatPrice = (price: number) => {
   return new Intl.NumberFormat('fa-IR').format(price) + ' تومان'
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const resolveImage = (item: any) => {
   const candidates = [
     item.image,
@@ -348,6 +352,7 @@ useHead(() => ({
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

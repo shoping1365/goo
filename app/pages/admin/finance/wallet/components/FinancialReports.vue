@@ -121,9 +121,11 @@
         <h3 class="text-lg font-semibold text-gray-900 mb-4">روند درآمد (30 روز گذشته)</h3>
         <div class="h-64 flex items-end space-x-2 space-x-reverse overflow-x-auto">
           <div v-for="(day, index) in revenueTrend" :key="index" class="flex-shrink-0 flex flex-col items-center min-w-12">
-            <div class="w-full bg-gray-200 rounded-t relative"
+            <div
+class="w-full bg-gray-200 rounded-t relative"
                  :style="{ height: getChartHeight(day.revenue) + 'px' }">
-              <div class="w-full bg-gradient-to-t from-green-500 to-blue-500 rounded-t transition-all duration-300 absolute bottom-0"
+              <div
+class="w-full bg-gradient-to-t from-green-500 to-blue-500 rounded-t transition-all duration-300 absolute bottom-0"
                    :style="{ height: getChartHeight(day.revenue) + 'px' }"></div>
             </div>
             <span class="text-xs text-gray-500 mt-1 text-center">{{ day.date }}</span>

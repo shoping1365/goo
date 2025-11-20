@@ -10,9 +10,9 @@ type FetchMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
 interface GoApiFetchOptions {
   method?: FetchMethod
-  body?: any
+  body?: unknown
   headers?: Record<string, string>
-  query?: Record<string, any>
+  query?: Record<string, unknown>
 }
 
 /**
@@ -20,8 +20,9 @@ interface GoApiFetchOptions {
  */
 function getGoApiBaseUrl(): string {
   // Try to get from window.__NUXT__ if available (client-side)
-  if (typeof window !== 'undefined' && (window as any).__NUXT__?.config?.public?.goApiBase) {
-    return (window as any).__NUXT__.config.public.goApiBase
+  const win = typeof window !== 'undefined' ? (window as unknown as { __NUXT__?: { config?: { public?: { goApiBase?: string } } } }) : undefined
+  if (win?.__NUXT__?.config?.public?.goApiBase) {
+    return win.__NUXT__.config.public.goApiBase
   }
   
   // Fallback to environment variable or default
@@ -32,7 +33,7 @@ function getGoApiBaseUrl(): string {
  * Make authenticated requests to Go backend API
  * Uses native fetch with cookies
  */
-export async function goApiFetch<T = any>(
+export async function goApiFetch<T = unknown>(
   endpoint: string,
   options: GoApiFetchOptions = {}
 ): Promise<T> {
@@ -77,7 +78,7 @@ export async function goApiFetch<T = any>(
     if (typeof options.body === 'object') {
       requestOptions.body = JSON.stringify(options.body)
     } else {
-      requestOptions.body = options.body
+      requestOptions.body = options.body as BodyInit
     }
   }
 
@@ -105,8 +106,8 @@ export async function goApiFetch<T = any>(
 
     // Return JSON response
     return await response.json()
-  } catch (error: any) {
-    console.error('goApiFetch error:', error)
+  } catch (error) {
+    // console.error('goApiFetch error:', error)
     throw error
   }
 }

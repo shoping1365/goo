@@ -43,7 +43,7 @@
 
       <!-- ذخیره -->
       <div class="pt-4">
-        <button @click="save" class="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700">ذخیره</button>
+        <button class="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700" @click="save">ذخیره</button>
         <span v-if="saving" class="ml-3">در حال ذخیره...</span>
       </div>
     </div>

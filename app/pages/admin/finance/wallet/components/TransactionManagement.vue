@@ -90,22 +90,23 @@
         <!-- بازه زمانی -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">بازه زمانی</label>
-          <input type="date" v-model="fromDate" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <input v-model="fromDate" type="date" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
         <!-- جستجو -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">جستجو</label>
-          <input v-model="queryText" type="text" placeholder="شماره تراکنش یا نام کاربر" 
+          <input
+v-model="queryText" type="text" placeholder="شماره تراکنش یا نام کاربر" 
                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
       </div>
 
       <div class="flex justify-between items-center">
-        <button @click="applyFilters" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button class="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500" @click="applyFilters">
           اعمال فیلتر
         </button>
-        <button @click="clearFilters" class="px-4 py-2 bg-gray-100 text-gray-700 text-sm rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500">
+        <button class="px-4 py-2 bg-gray-100 text-gray-700 text-sm rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500" @click="clearFilters">
           پاک کردن فیلترها
         </button>
       </div>
@@ -116,7 +117,7 @@
       <div class="flex items-center justify-between mb-6">
         <h3 class="text-xl font-semibold text-gray-900">لیست تراکنش‌ها</h3>
         <div class="flex space-x-2 space-x-reverse">
-          <button @click="exportCsv" class="px-4 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">خروجی CSV</button>
+          <button class="px-4 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500" @click="exportCsv">خروجی CSV</button>
           <button class="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
             گزارش
           </button>
@@ -169,8 +170,8 @@
               <td class="px-4 py-3">
                 <div class="flex space-x-2 space-x-reverse">
                   <button class="text-blue-600 hover:text-blue-800 text-sm">جزئیات</button>
-                  <button v-if="transaction.status === 'pending'" @click="updateStatus(transaction.id, 'success')" class="text-green-600 hover:text-green-800 text-sm">تأیید</button>
-                  <button v-if="transaction.status === 'pending'" @click="updateStatus(transaction.id, 'failed')" class="text-red-600 hover:text-red-800 text-sm">رد</button>
+                  <button v-if="transaction.status === 'pending'" class="text-green-600 hover:text-green-800 text-sm" @click="updateStatus(transaction.id, 'success')">تأیید</button>
+                  <button v-if="transaction.status === 'pending'" class="text-red-600 hover:text-red-800 text-sm" @click="updateStatus(transaction.id, 'failed')">رد</button>
                 </div>
               </td>
             </tr>

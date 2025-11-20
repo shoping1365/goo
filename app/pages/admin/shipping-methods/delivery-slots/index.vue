@@ -101,7 +101,8 @@
               </td>
               <td v-for="day in weekDays" :key="day.name" class="px-6 py-4 whitespace-nowrap">
                 <div class="text-center">
-                  <div v-if="getSlotStatus(day.name, timeSlot.time)" 
+                  <div
+v-if="getSlotStatus(day.name, timeSlot.time)" 
                        class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full"
                        :class="getSlotStatusClass(getSlotStatus(day.name, timeSlot.time))">
                     {{ getSlotStatusText(getSlotStatus(day.name, timeSlot.time)) }}
@@ -193,7 +194,8 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex flex-wrap gap-1">
-                  <span v-for="day in slot.days" :key="day" 
+                  <span
+v-for="day in slot.days" :key="day" 
                         class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
                     {{ day }}
                   </span>
@@ -206,7 +208,8 @@
                 {{ slot.reserved }} سفارش
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full" 
+                <span
+class="inline-flex px-2 py-1 text-xs font-semibold rounded-full" 
                       :class="getSlotStatusClass(slot.status)">
                   {{ getSlotStatusText(slot.status) }}
                 </span>
@@ -227,7 +230,7 @@
 <script setup>
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // آمار بازه‌های زمانی
 const slotStats = ref({

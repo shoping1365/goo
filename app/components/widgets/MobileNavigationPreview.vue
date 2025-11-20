@@ -17,7 +17,8 @@
         <!-- محتوای صفحه -->
         <div class="preview-page-content">
           <!-- هدر ساده -->
-          <div class="preview-simple-header" :style="{ 
+          <div
+class="preview-simple-header" :style="{ 
             backgroundColor: navigationData?.background_color || '#f8fafc',
             color: navigationData?.text_color || '#000000'
           }">

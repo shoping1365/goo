@@ -38,7 +38,10 @@
   </div>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ user: any }>();
+import type { User } from '~/types/user';
+
+defineProps<{ user: User }>();
+defineEmits(['view-all-wishlist', 'add-to-cart']);
 // Mock data for wishlist
 const wishlistItems = [
   { id: 1, name: 'لپ‌تاپ اپل', price: '۵۰٬۰۰۰٬۰۰۰', addedDate: '1402/03/10', inStock: true },

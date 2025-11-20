@@ -74,8 +74,8 @@
             <div class="flex items-center justify-between">
               <h2 class="text-xl font-semibold text-gray-900">مدیریت کانتینرها</h2>
               <button 
-                @click="refreshContainers"
                 class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                @click="refreshContainers"
               >
                 بروزرسانی
               </button>
@@ -87,7 +87,8 @@
                 <div class="flex items-center justify-between mb-2">
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <span class="font-medium text-gray-900">{{ container.name }}</span>
-                    <span :class="[
+                    <span
+:class="[
                       'px-2 py-1 rounded text-xs font-medium',
                       container.status === 'running' ? 'bg-green-100 text-green-800' :
                       container.status === 'stopped' ? 'bg-red-100 text-red-800' :
@@ -98,29 +99,29 @@
                   </div>
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <button 
-                      @click="startContainer(container)"
                       v-if="container.status === 'stopped'"
                       class="text-green-600 hover:text-green-800 text-sm font-medium"
+                      @click="startContainer(container)"
                     >
                       شروع
                     </button>
                     <button 
-                      @click="stopContainer(container)"
                       v-if="container.status === 'running'"
                       class="text-red-600 hover:text-red-800 text-sm font-medium"
+                      @click="stopContainer(container)"
                     >
                       توقف
                     </button>
                     <button 
-                      @click="restartContainer(container)"
                       v-if="container.status === 'running'"
                       class="text-yellow-600 hover:text-yellow-800 text-sm font-medium"
+                      @click="restartContainer(container)"
                     >
                       راه‌اندازی مجدد
                     </button>
                     <button 
-                      @click="removeContainer(container)"
                       class="text-gray-600 hover:text-gray-800 text-sm font-medium"
+                      @click="removeContainer(container)"
                     >
                       حذف
                     </button>
@@ -151,14 +152,14 @@
                   </div>
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <button 
-                      @click="runImage(image)"
                       class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      @click="runImage(image)"
                     >
                       اجرا
                     </button>
                     <button 
-                      @click="removeImage(image)"
                       class="text-red-600 hover:text-red-800 text-sm font-medium"
+                      @click="removeImage(image)"
                     >
                       حذف
                     </button>
@@ -191,26 +192,26 @@
               </div>
               <div class="grid grid-cols-2 gap-2">
                 <button 
-                  @click="composeUp"
                   class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="composeUp"
                 >
                   اجرا (up)
                 </button>
                 <button 
-                  @click="composeDown"
                   class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="composeDown"
                 >
                   توقف (down)
                 </button>
                 <button 
-                  @click="composeBuild"
                   class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="composeBuild"
                 >
                   ساخت (build)
                 </button>
                 <button 
-                  @click="composeLogs"
                   class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="composeLogs"
                 >
                   لاگ‌ها (logs)
                 </button>
@@ -236,9 +237,9 @@
                 </option>
               </select>
               <button 
-                @click="getLogs"
                 :disabled="!selectedContainer"
                 class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                @click="getLogs"
               >
                 دریافت لاگ‌ها
               </button>

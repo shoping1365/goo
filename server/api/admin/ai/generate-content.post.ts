@@ -5,8 +5,7 @@ import { fetchGo } from '../../_utils/fetchGo'
 
 declare const defineEventHandler: <T = unknown>(handler: (event: H3Event) => T | Promise<T>) => T
 declare const readBody: (event: H3Event) => Promise<unknown>
-declare const createError: (options: { statusCode: number; message: string }) => Error
-declare const useRuntimeConfig: () => { public: { goApiBase: string } }
+// declare const createError: (options: { statusCode: number; message: string }) => Error
 
 interface GenerateContentBody {
   prompt?: string
@@ -32,7 +31,7 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event) as GenerateContentBody
     const { prompt, model, wordCount, temperature, writingStyle, messages } = body
 
-    console.log('🔍 درخواست تولید محتوا دریافت شد:', { prompt, model, wordCount, temperature, writingStyle })
+    // console.log('🔍 درخواست تولید محتوا دریافت شد:', { prompt, model, wordCount, temperature, writingStyle })
 
     if (!prompt) {
       throw createError({
@@ -42,12 +41,12 @@ export default defineEventHandler(async (event) => {
     }
 
     // دریافت تنظیمات OpenAI
-    console.log('🔍 دریافت تنظیمات OpenAI...')
+    // console.log('🔍 دریافت تنظیمات OpenAI...')
     const apiSettings = await fetchGo(event, '/api/admin/api-settings') as ApiSettings | null
-    console.log('📄 تنظیمات دریافت شده:', apiSettings ? 'موجود' : 'ناموجود')
+    // console.log('📄 تنظیمات دریافت شده:', apiSettings ? 'موجود' : 'ناموجود')
 
     if (!apiSettings || !apiSettings.openai || !apiSettings.openai.api_key) {
-      console.error('❌ تنظیمات OpenAI یافت نشد')
+      // console.error('❌ تنظیمات OpenAI یافت نشد')
       throw createError({
         statusCode: 400,
         message: 'تنظیمات OpenAI یافت نشد. لطفاً ابتدا تنظیمات API را در بخش تنظیمات ذخیره کنید.'
@@ -58,12 +57,12 @@ export default defineEventHandler(async (event) => {
     const apiKey = openAIConfig.api_key
     const apiUrl = openAIConfig.api_url || 'https://api.openai.com/v1'
 
-    console.log('🔑 API Key موجود:', apiKey ? 'بله' : 'خیر')
-    console.log('🌐 API URL:', apiUrl)
+    // console.log('🔑 API Key موجود:', apiKey ? 'بله' : 'خیر')
+    // console.log('🌐 API URL:', apiUrl)
 
     // بررسی فعال بودن OpenAI
     if (!openAIConfig.enabled) {
-      console.error('❌ OpenAI فعال نیست')
+      // console.error('❌ OpenAI فعال نیست')
       throw createError({
         statusCode: 400,
         message: 'OpenAI فعال نیست. لطفاً ابتدا OpenAI را در تنظیمات فعال کنید.'
@@ -121,9 +120,9 @@ export default defineEventHandler(async (event) => {
       { role: 'user', content: prompt }
     ]
 
-    console.log('📤 ارسال درخواست به OpenAI...')
-    console.log('  - مدل:', model || openAIConfig.default_model || 'gpt-3.5-turbo')
-    console.log('  - تعداد پیام‌ها:', openAIMessages.length)
+    // console.log('📤 ارسال درخواست به OpenAI...')
+    // console.log('  - مدل:', model || openAIConfig.default_model || 'gpt-3.5-turbo')
+    // console.log('  - تعداد پیام‌ها:', openAIMessages.length)
 
     // ارسال درخواست به OpenAI با SDK
     const response = await openai.chat.completions.create({
@@ -136,10 +135,10 @@ export default defineEventHandler(async (event) => {
       presence_penalty: 0
     })
 
-    console.log('✅ پاسخ OpenAI دریافت شد')
+    // console.log('✅ پاسخ OpenAI دریافت شد')
 
     if (!response.choices || !response.choices[0] || !response.choices[0].message) {
-      console.error('❌ پاسخ نامعتبر از OpenAI:', response)
+      // console.error('❌ پاسخ نامعتبر از OpenAI:', response)
       throw createError({
         statusCode: 500,
         message: 'پاسخ نامعتبر از OpenAI'
@@ -147,7 +146,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const aiResponse = response.choices[0].message.content || ''
-    console.log('📝 محتوای تولید شده:', aiResponse ? aiResponse.substring(0, 100) + '...' : '(خالی)')
+    // console.log('📝 محتوای تولید شده:', aiResponse ? aiResponse.substring(0, 100) + '...' : '(خالی)')
 
     // تلاش برای parse کردن JSON
     let generatedContent
@@ -155,9 +154,9 @@ export default defineEventHandler(async (event) => {
       // حذف کدهای markdown اگر وجود دارد
       const cleanResponse = aiResponse.replace(/```json\n?|\n?```/g, '').trim()
       generatedContent = JSON.parse(cleanResponse)
-      console.log('✅ JSON با موفقیت parse شد')
+      // console.log('✅ JSON با موفقیت parse شد')
     } catch (parseError) {
-      console.warn('⚠️ خطا در parse کردن JSON، استفاده از محتوای متنی:', parseError)
+      // console.warn('⚠️ خطا در parse کردن JSON، استفاده از محتوای متنی:', parseError)
       // اگر JSON نبود، محتوای متنی برگردان
       generatedContent = {
         title: 'مقاله تولید شده',
@@ -171,14 +170,14 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    console.log('✅ محتوا با موفقیت تولید شد')
+    // console.log('✅ محتوا با موفقیت تولید شد')
     return {
       content: aiResponse,
       generatedContent
     }
 
   } catch (error: unknown) {
-    console.error('❌ خطا در تولید محتوا:', error)
+    // console.error('❌ خطا در تولید محتوا:', error)
 
     // بررسی خطاهای خاص
     const errorWithStatus = error as { statusCode?: number; statusMessage?: string; message?: string }

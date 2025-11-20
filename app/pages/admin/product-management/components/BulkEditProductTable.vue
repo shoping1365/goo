@@ -22,9 +22,9 @@
             />
             <span class="text-xs text-green-700">%</span>
             <button
-              @click="bulkIncreasePrice"
               :disabled="!priceIncreasePercent || priceIncreasePercent <= 0"
               class="px-2 py-1 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white text-xs font-medium rounded transition-colors duration-200 flex items-center gap-1"
+              @click="bulkIncreasePrice"
             >
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path>
@@ -45,9 +45,9 @@
             />
             <span class="text-xs text-orange-700">%</span>
             <button
-              @click="bulkDecreasePrice"
               :disabled="!priceDecreasePercent || priceDecreasePercent <= 0"
               class="px-2 py-1 bg-orange-600 hover:bg-orange-700 disabled:bg-gray-400 text-white text-xs font-medium rounded transition-colors duration-200 flex items-center gap-1"
+              @click="bulkDecreasePrice"
             >
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path>
@@ -56,7 +56,7 @@
             </button>
           </div>
           
-          <button @click="bulkCallForPrice" class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs lg:text-sm font-medium rounded-md transition-colors duration-200 flex items-center gap-1 lg:gap-2">
+          <button class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs lg:text-sm font-medium rounded-md transition-colors duration-200 flex items-center gap-1 lg:gap-2" @click="bulkCallForPrice">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
             </svg>
@@ -64,7 +64,7 @@
             <span class="sm:hidden">تماس</span>
           </button>
           
-          <button @click="bulkDisableBuyButton" class="px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-xs lg:text-sm font-medium rounded-md transition-colors duration-200 flex items-center gap-1 lg:gap-2">
+          <button class="px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-xs lg:text-sm font-medium rounded-md transition-colors duration-200 flex items-center gap-1 lg:gap-2" @click="bulkDisableBuyButton">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636"></path>
             </svg>
@@ -73,7 +73,7 @@
           </button>
           
 
-          <button @click="clearSelection" class="px-2 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 text-xs lg:text-sm font-medium rounded-md transition-colors duration-200" title="لغو انتخاب">
+          <button class="px-2 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 text-xs lg:text-sm font-medium rounded-md transition-colors duration-200" title="لغو انتخاب" @click="clearSelection">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -88,9 +88,9 @@
             <input 
               ref="selectAllCheckbox"
               type="checkbox" 
-              @change="toggleSelectAll"
               :checked="allSelected"
               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+              @change="toggleSelectAll"
             />
           </th>
           <th v-if="visibleColumns.includes('index')" class="px-3 py-2 bg-gray-100 border-b border-gray-200 text-gray-600 font-normal text-xs">#</th>
@@ -114,10 +114,10 @@
         <tr v-for="(product, idx) in (props.products || [])" :key="product.id" class="hover:bg-gray-100">
           <td v-if="visibleColumns.includes('select')" class="px-3 py-2 border-b border-gray-200 text-xs font-normal text-center">
             <input 
-              type="checkbox" 
-              v-model="selectedProducts[product.id]"
-              @change="updateSelection"
+              v-model="selectedProducts[product.id]" 
+              type="checkbox"
               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+              @change="updateSelection"
             />
           </td>
           <td v-if="visibleColumns.includes('index')" class="px-3 py-2 border-b border-gray-200 text-xs font-normal">{{ idx + 1 }}</td>
@@ -129,29 +129,29 @@
               @click="openModal(product.id)"
             />
             <ImagePreviewModal
-              v-model="modalProductId"
               v-if="modalProductId === product.id"
+              v-model="modalProductId"
               :image="{ url: getProductOriginalImage(product), name: product.name }"
             />
           </td>
           <td v-if="visibleColumns.includes('name')" class="px-3 py-2 border-b border-gray-200 text-xs font-normal cursor-pointer" @click="startEditing(product.id, 'name')">
             <span v-if="!isEditing[product.id]?.name">{{ editedProducts[product.id]?.name || product.name }}</span>
-            <input v-else type="text" v-model="editedProducts[product.id].name" :class="['w-full px-2 py-1 border border-gray-300 rounded text-xs font-normal', isEditing[product.id]?.name ? 'bg-white' : '']" @blur="stopEditing(product.id, 'name')" @keyup.enter="saveEdit(product.id, 'name')">
+            <input v-else v-model="editedProducts[product.id].name" type="text" :class="['w-full px-2 py-1 border border-gray-300 rounded text-xs font-normal', isEditing[product.id]?.name ? 'bg-white' : '']" @blur="stopEditing(product.id, 'name')" @keyup.enter="saveEdit(product.id, 'name')">
           </td>
           <td v-if="visibleColumns.includes('sku')" class="px-3 py-2 border-b border-gray-200 text-xs font-normal">{{ product.sku }}</td>
           <td v-if="visibleColumns.includes('price')" class="px-3 py-2 border-b border-gray-200 text-xs font-normal cursor-pointer" @click="startEditing(product.id, 'price')">
             <div v-if="!isEditing[product.id]?.price">
               <span>{{ editedProducts[product.id]?.price || product.price }}</span>
             </div>
-            <input v-else type="number" v-model="editedProducts[product.id].price" :class="['w-24 px-2 py-1 border border-gray-300 rounded text-xs font-normal', isEditing[product.id]?.price ? 'bg-white' : '']" @blur="stopEditing(product.id, 'price')" @keyup.enter="saveEdit(product.id, 'price')">
+            <input v-else v-model="editedProducts[product.id].price" type="number" :class="['w-24 px-2 py-1 border border-gray-300 rounded text-xs font-normal', isEditing[product.id]?.price ? 'bg-white' : '']" @blur="stopEditing(product.id, 'price')" @keyup.enter="saveEdit(product.id, 'price')">
           </td>
           <td v-if="visibleColumns.includes('old_price')" class="px-3 py-2 border-b border-gray-200 text-xs font-normal cursor-pointer" @click="startEditing(product.id, 'old_price')">
               <span v-if="!isEditing[product.id]?.old_price">{{ editedProducts[product.id]?.old_price || 0 }}</span>
-              <input v-else type="number" v-model="editedProducts[product.id].old_price" :class="['w-24 px-2 py-1 border border-gray-300 rounded text-xs font-normal', isEditing[product.id]?.old_price ? 'bg-white' : '']" @blur="stopEditing(product.id, 'old_price')" @keyup.enter="saveEdit(product.id, 'old_price')">
+              <input v-else v-model="editedProducts[product.id].old_price" type="number" :class="['w-24 px-2 py-1 border border-gray-300 rounded text-xs font-normal', isEditing[product.id]?.old_price ? 'bg-white' : '']" @blur="stopEditing(product.id, 'old_price')" @keyup.enter="saveEdit(product.id, 'old_price')">
           </td>
           <td v-if="visibleColumns.includes('cost')" class="px-3 py-2 border-b border-gray-200 text-xs font-normal cursor-pointer" @click="startEditing(product.id, 'cost')">
               <span v-if="!isEditing[product.id]?.cost">{{ editedProducts[product.id]?.cost || 0 }}</span>
-              <input v-else type="number" v-model="editedProducts[product.id].cost" :class="['w-24 px-2 py-1 border border-gray-300 rounded text-xs font-normal', isEditing[product.id]?.cost ? 'bg-white' : '']" @blur="stopEditing(product.id, 'cost')" @keyup.enter="saveEdit(product.id, 'cost')">
+              <input v-else v-model="editedProducts[product.id].cost" type="number" :class="['w-24 px-2 py-1 border border-gray-300 rounded text-xs font-normal', isEditing[product.id]?.cost ? 'bg-white' : '']" @blur="stopEditing(product.id, 'cost')" @keyup.enter="saveEdit(product.id, 'cost')">
           </td>
           <td v-if="visibleColumns.includes('track_inventory')" class="px-3 py-2 border-b border-gray-200 text-xs font-normal text-center cursor-pointer" @click="toggleCheckbox(product, 'trackInventory')">
             <svg v-if="editedProducts[product.id]?.track_inventory" class="h-5 w-5 text-green-600 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
@@ -159,7 +159,7 @@
           </td>
           <td v-if="visibleColumns.includes('stock_quantity')" class="px-3 py-2 border-b border-gray-200 text-xs font-normal cursor-pointer" @click="startEditing(product.id, 'stock_quantity')">
               <span v-if="!isEditing[product.id]?.stock_quantity">{{ editedProducts[product.id]?.stock_quantity || 0 }}</span>
-              <input v-else type="number" v-model="editedProducts[product.id].stock_quantity" :class="['w-24 px-2 py-1 border border-gray-300 rounded text-xs font-normal', isEditing[product.id]?.stock_quantity ? 'bg-white' : '']" @blur="stopEditing(product.id, 'stock_quantity')" @keyup.enter="saveEdit(product.id, 'stock_quantity')">
+              <input v-else v-model="editedProducts[product.id].stock_quantity" type="number" :class="['w-24 px-2 py-1 border border-gray-300 rounded text-xs font-normal', isEditing[product.id]?.stock_quantity ? 'bg-white' : '']" @blur="stopEditing(product.id, 'stock_quantity')" @keyup.enter="saveEdit(product.id, 'stock_quantity')">
           </td>
           <td v-if="visibleColumns.includes('isNew')" class="px-3 py-2 border-b border-gray-200 text-xs font-normal text-center cursor-pointer" @click="toggleCheckbox(product, 'isNew')">
                <svg v-if="editedProducts[product.id]?.isNew" class="h-5 w-5 text-blue-600 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>

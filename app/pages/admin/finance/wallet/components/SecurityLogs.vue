@@ -9,46 +9,46 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button
-            @click="activeTab = 'overview'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'overview'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'overview'"
           >
             نمای کلی
           </button>
           <button
-            @click="activeTab = 'logs'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'logs'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'logs'"
           >
             لاگ‌ها
           </button>
           <button
-            @click="activeTab = 'threats'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'threats'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'threats'"
           >
             تهدیدات
           </button>
           <button
-            @click="activeTab = 'alerts'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'alerts'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'alerts'"
           >
             هشدارها
           </button>
@@ -122,9 +122,11 @@
             <h3 class="text-lg font-semibold text-gray-900 mb-4">فعالیت‌های امنیتی (24 ساعت گذشته)</h3>
             <div class="h-64 flex items-end space-x-2 space-x-reverse overflow-x-auto">
               <div v-for="(hour, index) in securityActivity" :key="index" class="flex-shrink-0 flex flex-col items-center min-w-12">
-                <div class="w-full bg-gray-200 rounded-t relative"
+                <div
+class="w-full bg-gray-200 rounded-t relative"
                      :style="{ height: getChartHeight(hour.value) + 'px' }">
-                  <div class="w-full bg-gradient-to-t from-blue-500 to-blue-600 rounded-t transition-all duration-300 absolute bottom-0"
+                  <div
+class="w-full bg-gradient-to-t from-blue-500 to-blue-600 rounded-t transition-all duration-300 absolute bottom-0"
                        :style="{ height: getChartHeight(hour.value) + 'px' }"></div>
                 </div>
                 <span class="text-xs text-gray-500 mt-1 text-center">{{ hour.label }}</span>
@@ -196,13 +198,13 @@
               </div>
             </div>
             <div class="mt-4 flex space-x-2 space-x-reverse">
-              <button @click="applyLogFilters" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+              <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" @click="applyLogFilters">
                 اعمال فیلتر
               </button>
-              <button @click="clearLogFilters" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+              <button class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors" @click="clearLogFilters">
                 پاک کردن
               </button>
-              <button @click="exportLogs" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+              <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors" @click="exportLogs">
                 خروجی
               </button>
             </div>
@@ -341,7 +343,7 @@
                       <p class="text-xs text-gray-600">هشدار پس از 5 تلاش ناموفق</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" v-model="alertSettings.failedLogin" class="sr-only peer">
+                      <input v-model="alertSettings.failedLogin" type="checkbox" class="sr-only peer">
                       <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                     </label>
                   </div>
@@ -351,7 +353,7 @@
                       <p class="text-xs text-gray-600">تراکنش‌های بالای 10 میلیون تومان</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" v-model="alertSettings.suspiciousTransaction" class="sr-only peer">
+                      <input v-model="alertSettings.suspiciousTransaction" type="checkbox" class="sr-only peer">
                       <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                     </label>
                   </div>
@@ -361,7 +363,7 @@
                       <p class="text-xs text-gray-600">ورود از آدرس IP جدید</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" v-model="alertSettings.newIpLogin" class="sr-only peer">
+                      <input v-model="alertSettings.newIpLogin" type="checkbox" class="sr-only peer">
                       <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                     </label>
                   </div>
@@ -376,7 +378,7 @@
                       <p class="text-xs text-gray-600">ارسال هشدار به ایمیل</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" v-model="alertSettings.email" class="sr-only peer">
+                      <input v-model="alertSettings.email" type="checkbox" class="sr-only peer">
                       <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                     </label>
                   </div>
@@ -386,7 +388,7 @@
                       <p class="text-xs text-gray-600">ارسال هشدار به پیامک</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" v-model="alertSettings.sms" class="sr-only peer">
+                      <input v-model="alertSettings.sms" type="checkbox" class="sr-only peer">
                       <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                     </label>
                   </div>
@@ -396,7 +398,7 @@
                       <p class="text-xs text-gray-600">نمایش اعلان در پنل</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" v-model="alertSettings.inApp" class="sr-only peer">
+                      <input v-model="alertSettings.inApp" type="checkbox" class="sr-only peer">
                       <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                     </label>
                   </div>

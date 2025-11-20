@@ -8,8 +8,8 @@
           <p class="text-sm text-gray-500 mt-1">بررسی اعتبار مشتریان و تایید درخواست‌های خرید اقساطی</p>
         </div>
         <button
-          @click="openBulkCreditCheck"
           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
+          @click="openBulkCreditCheck"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -23,7 +23,7 @@
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
       <h3 class="text-lg font-medium text-gray-900 mb-4">اعتبارسنجی دستی</h3>
       
-      <form @submit.prevent="submitCreditCheck" class="space-y-6">
+      <form class="space-y-6" @submit.prevent="submitCreditCheck">
         <!-- اطلاعات مشتری -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
@@ -92,8 +92,8 @@
         <div class="flex justify-end space-x-3 space-x-reverse">
           <button
             type="button"
-            @click="checkCredit"
             class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            @click="checkCredit"
           >
             بررسی اعتبار
           </button>
@@ -163,8 +163,8 @@
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-medium text-gray-900">درخواست‌های در انتظار بررسی</h3>
         <button
-          @click="refreshPendingRequests"
           class="text-sm text-blue-600 hover:text-blue-700"
+          @click="refreshPendingRequests"
         >
           بروزرسانی
         </button>
@@ -192,14 +192,14 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatDate(request.createdAt) }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <button
-                  @click="quickCreditCheck(request)"
                   class="text-blue-600 hover:text-blue-900 ml-3"
+                  @click="quickCreditCheck(request)"
                 >
                   بررسی سریع
                 </button>
                 <button
-                  @click="approveRequest(request.id)"
                   class="text-green-600 hover:text-green-900"
+                  @click="approveRequest(request.id)"
                 >
                   تایید
                 </button>

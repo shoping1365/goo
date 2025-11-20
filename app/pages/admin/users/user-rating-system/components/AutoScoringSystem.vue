@@ -8,7 +8,7 @@
             <input v-model="isAutoScoringEnabled" type="checkbox" class="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
             <span class="text-sm text-gray-700">فعال‌سازی سیستم خودکار</span>
           </label>
-          <button @click="saveSettings" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+          <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors" @click="saveSettings">
             ذخیره تنظیمات
           </button>
         </div>
@@ -281,16 +281,16 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 
 // Props
-const props = defineProps<{
-  initialSettings?: any
+defineProps<{
+  initialSettings?: Record<string, unknown>
 }>()
 
 // Emits
 const emit = defineEmits<{
-  saveSettings: [settings: any]
+  saveSettings: [settings: Record<string, unknown>]
 }>()
 
 // Reactive data

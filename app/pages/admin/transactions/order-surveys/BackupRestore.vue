@@ -66,21 +66,21 @@
           <p>ایجاد پشتیبان کامل از تمام داده‌های نظرسنجی‌ها</p>
           <div class="action-options">
             <label class="checkbox-label">
-              <input type="checkbox" v-model="backupOptions.includeFiles">
+              <input v-model="backupOptions.includeFiles" type="checkbox">
               <span>شامل فایل‌های پیوست</span>
             </label>
             <label class="checkbox-label">
-              <input type="checkbox" v-model="backupOptions.compress">
+              <input v-model="backupOptions.compress" type="checkbox">
               <span>فشرده‌سازی</span>
             </label>
             <label class="checkbox-label">
-              <input type="checkbox" v-model="backupOptions.encrypt">
+              <input v-model="backupOptions.encrypt" type="checkbox">
               <span>رمزگذاری</span>
             </label>
           </div>
-          <button @click="createBackup" class="btn btn-primary" :disabled="isBackingUp">
-            <i class="fas fa-spinner fa-spin" v-if="isBackingUp"></i>
-            <i class="fas fa-download" v-else></i>
+          <button class="btn btn-primary" :disabled="isBackingUp" @click="createBackup">
+            <i v-if="isBackingUp" class="fas fa-spinner fa-spin"></i>
+            <i v-else class="fas fa-download"></i>
             {{ isBackingUp ? 'در حال پشتیبان‌گیری...' : 'ایجاد پشتیبان' }}
           </button>
         </div>
@@ -92,22 +92,22 @@
           </div>
           <p>بازیابی داده‌ها از فایل پشتیبان</p>
           <div class="file-upload">
-            <input type="file" ref="restoreFile" @change="handleFileSelect" accept=".zip,.sql,.json" style="display: none;">
-            <button @click="restoreFile?.click()" class="btn btn-secondary">
+            <input ref="restoreFile" type="file" accept=".zip,.sql,.json" style="display: none;" @change="handleFileSelect">
+            <button class="btn btn-secondary" @click="restoreFile?.click()">
               <i class="fas fa-folder-open"></i>
               انتخاب فایل
             </button>
             <div v-if="selectedFile" class="selected-file">
               <i class="fas fa-file"></i>
               <span>{{ selectedFile.name }}</span>
-              <button @click="clearSelectedFile" class="btn-clear">
+              <button class="btn-clear" @click="clearSelectedFile">
                 <i class="fas fa-times"></i>
               </button>
             </div>
           </div>
-          <button @click="restoreBackup" class="btn btn-warning" :disabled="!selectedFile || isRestoring">
-            <i class="fas fa-spinner fa-spin" v-if="isRestoring"></i>
-            <i class="fas fa-upload" v-else></i>
+          <button class="btn btn-warning" :disabled="!selectedFile || isRestoring" @click="restoreBackup">
+            <i v-if="isRestoring" class="fas fa-spinner fa-spin"></i>
+            <i v-else class="fas fa-upload"></i>
             {{ isRestoring ? 'در حال بازیابی...' : 'بازیابی' }}
           </button>
         </div>
@@ -120,7 +120,7 @@
           <p>تنظیم پشتیبان‌گیری خودکار</p>
           <div class="auto-settings">
             <label class="toggle-switch">
-              <input type="checkbox" v-model="autoBackup.enabled">
+              <input v-model="autoBackup.enabled" type="checkbox">
               <span class="slider"></span>
               <span class="label">پشتیبان‌گیری خودکار</span>
             </label>
@@ -134,10 +134,10 @@
             </div>
             <div class="form-group">
               <label>زمان:</label>
-              <input type="time" v-model="autoBackup.time" :disabled="!autoBackup.enabled">
+              <input v-model="autoBackup.time" type="time" :disabled="!autoBackup.enabled">
             </div>
           </div>
-          <button @click="saveAutoSettings" class="btn btn-success">
+          <button class="btn btn-success" @click="saveAutoSettings">
             <i class="fas fa-save"></i>
             ذخیره تنظیمات
           </button>
@@ -150,7 +150,7 @@
       <h4>تاریخچه پشتیبان‌گیری</h4>
       <div class="history-controls">
         <div class="search-box">
-          <input type="text" v-model="searchQuery" placeholder="جستجو در تاریخچه...">
+          <input v-model="searchQuery" type="text" placeholder="جستجو در تاریخچه...">
           <i class="fas fa-search"></i>
         </div>
         <div class="filter-controls">
@@ -192,13 +192,13 @@
               <td>{{ backup.description }}</td>
               <td>
                 <div class="action-buttons">
-                  <button @click="downloadBackup(backup)" class="btn-icon" title="دانلود">
+                  <button class="btn-icon" title="دانلود" @click="downloadBackup(backup)">
                     <i class="fas fa-download"></i>
                   </button>
-                  <button v-if="hasPermission('backup.delete')" @click="deleteBackup(backup.id)" class="btn-icon" title="حذف">
+                  <button v-if="hasPermission('backup.delete')" class="btn-icon" title="حذف" @click="deleteBackup(backup.id)">
                     <i class="fas fa-trash"></i>
                   </button>
-                  <button @click="viewBackupDetails(backup)" class="btn-icon" title="جزئیات">
+                  <button class="btn-icon" title="جزئیات" @click="viewBackupDetails(backup)">
                     <i class="fas fa-eye"></i>
                   </button>
                 </div>
@@ -232,11 +232,11 @@
       </div>
       
       <div class="cleanup-actions">
-        <button @click="cleanupOldBackups" class="btn btn-danger">
+        <button class="btn btn-danger" @click="cleanupOldBackups">
           <i class="fas fa-broom"></i>
           پاکسازی پشتیبان‌های قدیمی
         </button>
-        <button @click="optimizeStorage" class="btn btn-info">
+        <button class="btn btn-info" @click="optimizeStorage">
           <i class="fas fa-compress"></i>
           بهینه‌سازی فضای ذخیره
         </button>
@@ -253,7 +253,7 @@ declare const useAuth: () => { user: { id?: number; name?: string; email?: strin
 import { computed, onMounted, reactive, ref } from 'vue';
 
 // استفاده از کامپوزابل احراز هویت
-const { user, hasPermission } = useAuth()
+useAuth()
 const restoreFile = ref<HTMLInputElement | null>(null)
 
 
@@ -374,12 +374,12 @@ function getStatusText(status) {
 
 function createBackup() {
   isBackingUp.value = true
-  console.log('Creating backup with options:', backupOptions)
+  // console.log('Creating backup with options:', backupOptions)
   
   // Simulate backup process
   setTimeout(() => {
     isBackingUp.value = false
-    console.log('Backup completed successfully')
+    // console.log('Backup completed successfully')
   }, 3000)
 }
 
@@ -392,8 +392,8 @@ function handleFileSelect(event) {
 
 function clearSelectedFile() {
   selectedFile.value = null
-  if (this.$refs.restoreFile) {
-    this.$refs.restoreFile.value = ''
+  if (restoreFile.value) {
+    restoreFile.value.value = ''
   }
 }
 
@@ -401,46 +401,46 @@ function restoreBackup() {
   if (!selectedFile.value) return
   
   isRestoring.value = true
-  console.log('Restoring from file:', selectedFile.value.name)
+  // console.log('Restoring from file:', selectedFile.value.name)
   
   // Simulate restore process
   setTimeout(() => {
     isRestoring.value = false
     clearSelectedFile()
-    console.log('Restore completed successfully')
+    // console.log('Restore completed successfully')
   }, 5000)
 }
 
 function saveAutoSettings() {
-  console.log('Saving auto backup settings:', autoBackup)
+  // console.log('Saving auto backup settings:', autoBackup)
 }
 
 function downloadBackup(backup) {
-  console.log('Downloading backup:', backup.id)
+  // console.log('Downloading backup:', backup.id)
 }
 
 function deleteBackup(id) {
   if (confirm('آیا از حذف این پشتیبان اطمینان دارید؟')) {
-    console.log('Deleting backup:', id)
+    // console.log('Deleting backup:', id)
   }
 }
 
 function viewBackupDetails(backup) {
-  console.log('Viewing backup details:', backup)
+  // console.log('Viewing backup details:', backup)
 }
 
 function cleanupOldBackups() {
   if (confirm('آیا از پاکسازی پشتیبان‌های قدیمی اطمینان دارید؟')) {
-    console.log('Cleaning up old backups')
+    // console.log('Cleaning up old backups')
   }
 }
 
 function optimizeStorage() {
-  console.log('Optimizing storage')
+  // console.log('Optimizing storage')
 }
 
 onMounted(() => {
-  console.log('BackupRestore component mounted')
+  // console.log('BackupRestore component mounted')
 })
 </script>
 

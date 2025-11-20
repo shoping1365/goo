@@ -34,13 +34,13 @@
              <button 
                v-for="rating in 5" 
                :key="rating"
-               @click="selectedRating = rating"
                :class="[
                  'w-10 h-10 rounded-lg text-white font-bold transition-all transform hover:scale-110',
                  selectedRating === rating 
                    ? 'bg-white bg-opacity-30 shadow-lg transform scale-110' 
                    : 'bg-white bg-opacity-20 hover:bg-opacity-30'
                ]"
+               @click="selectedRating = rating"
              >
                {{ rating }}
              </button>
@@ -58,13 +58,13 @@
                <button 
                  v-for="option in qualityOptions" 
                  :key="option.value"
-                 @click="qualityRating = option.value"
                  :class="[
                    'px-3 py-2 rounded-lg text-sm transition-all',
                    qualityRating === option.value 
                      ? 'bg-white bg-opacity-30 text-white shadow-md' 
                      : 'bg-white bg-opacity-20 hover:bg-opacity-30 text-white'
                  ]"
+                 @click="qualityRating = option.value"
                >
                  {{ option.label }}
                </button>
@@ -77,13 +77,13 @@
                <button 
                  v-for="option in deliveryOptions" 
                  :key="option.value"
-                 @click="deliveryRating = option.value"
                  :class="[
                    'px-3 py-2 rounded-lg text-sm transition-all',
                    deliveryRating === option.value 
                      ? 'bg-white bg-opacity-30 text-white shadow-md' 
                      : 'bg-white bg-opacity-20 hover:bg-opacity-30 text-white'
                  ]"
+                 @click="deliveryRating = option.value"
                >
                  {{ option.label }}
                </button>
@@ -104,9 +104,9 @@
    
          <!-- Submit Button -->
          <button 
-           @click="submitSurvey"
            :disabled="!selectedRating || submitting"
            class="w-full bg-white bg-opacity-20 hover:bg-opacity-30 disabled:bg-opacity-10 backdrop-blur-sm text-white font-semibold py-3 px-6 rounded-xl transition-all transform hover:scale-105 border border-white border-opacity-30 flex items-center justify-center space-x-2 space-x-reverse"
+           @click="submitSurvey"
          >
            <svg v-if="submitting" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

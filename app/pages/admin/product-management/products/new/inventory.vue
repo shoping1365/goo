@@ -25,7 +25,7 @@
                   </svg>
                   <label class="text-sm font-bold text-blue-800">موجودی کل</label>
                 </div>
-                <input type="number" v-model="store.inventoryForm.stock_quantity" class="w-full border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300" min="0" placeholder="0" />
+                <input v-model="store.inventoryForm.stock_quantity" type="number" class="w-full border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300" min="0" placeholder="0" />
               </div>
 
               <!-- حداقل موجودی -->
@@ -36,7 +36,7 @@
                   </svg>
                   <label class="text-sm font-bold text-orange-800">حداقل موجودی (هشدار)</label>
                 </div>
-                <input type="number" v-model="store.inventoryForm.min_stock_quantity" class="w-full border-2 border-orange-200 rounded-lg px-4 py-3 text-gray-800 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-300" min="0" placeholder="5" />
+                <input v-model="store.inventoryForm.min_stock_quantity" type="number" class="w-full border-2 border-orange-200 rounded-lg px-4 py-3 text-gray-800 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-300" min="0" placeholder="5" />
               </div>
 
               <!-- حداکثر موجودی -->
@@ -47,7 +47,7 @@
                   </svg>
                   <label class="text-sm font-bold text-green-800">حداکثر موجودی</label>
                 </div>
-                <input type="number" v-model="store.inventoryForm.max_stock_quantity" class="w-full border-2 border-green-200 rounded-lg px-4 py-3 text-gray-800 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300" min="0" placeholder="1000" />
+                <input v-model="store.inventoryForm.max_stock_quantity" type="number" class="w-full border-2 border-green-200 rounded-lg px-4 py-3 text-gray-800 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300" min="0" placeholder="1000" />
               </div>
             </div>
 
@@ -55,9 +55,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <label class="flex items-center gap-2">
                 <input
+                  v-model="store.inventoryForm.track_inventory"
                   type="checkbox"
                   class="checkbox"
-                  v-model="store.inventoryForm.track_inventory"
                 />
                 <span class="text-xs text-gray-700 font-semibold">ردیابی موجودی</span>
               </label>
@@ -67,9 +67,9 @@
               </label>
               <label class="flex items-center gap-2">
                 <input
+                  v-model="store.inventoryForm.show_stock_to_customer"
                   type="checkbox"
                   class="checkbox"
-                  v-model="store.inventoryForm.show_stock_to_customer"
                 />
                 <span class="text-xs text-gray-700 font-semibold">نمایش تعداد موجودی به مشتری</span>
               </label>

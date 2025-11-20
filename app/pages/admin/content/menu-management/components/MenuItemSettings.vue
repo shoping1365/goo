@@ -16,9 +16,9 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">عنوان</label>
             <input
               :value="item.title"
-              @input="$emit('update-item', { ...item, title: $event.target.value })"
               type="text"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              @input="$emit('update-item', { ...item, title: $event.target.value })"
             />
           </div>
 
@@ -27,9 +27,9 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">مسیر</label>
             <input
               :value="item.path"
-              @input="$emit('update-item', { ...item, path: $event.target.value })"
               type="text"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              @input="$emit('update-item', { ...item, path: $event.target.value })"
             />
           </div>
 
@@ -46,15 +46,15 @@
               />
               <select
                 :value="item.iconType"
-                @change="$emit('update-item', { ...item, iconType: $event.target.value })"
                 class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white"
+                @change="$emit('update-item', { ...item, iconType: $event.target.value })"
               >
                 <option value="icon">آیکون</option>
                 <option value="image">تصویر</option>
               </select>
               <button
-                @click="$emit('open-icon-selector')"
                 class="px-3 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-md text-sm font-medium transition-colors"
+                @click="$emit('open-icon-selector')"
               >
                 {{ item.iconType === 'image' ? 'انتخاب تصویر' : 'انتخاب آیکون' }}
               </button>
@@ -67,9 +67,9 @@
               <input
                 :id="`enabled-${item.id ?? item.clientId}`"
                 :checked="item.enabled"
-                @change="$emit('update-item', { ...item, enabled: $event.target.checked })"
                 type="checkbox"
                 class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+                @change="$emit('update-item', { ...item, enabled: $event.target.checked })"
               />
               <label :for="`enabled-${item.id ?? item.clientId}`" class="text-sm font-semibold text-gray-900 cursor-pointer">
                 وضعیت نمایش
@@ -98,9 +98,9 @@
             <input
               :id="`new-tab-${item.id ?? item.clientId}`"
               :checked="item.openInNewTab"
-              @change="$emit('update-item', { ...item, openInNewTab: $event.target.checked })"
               type="checkbox"
               class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              @change="$emit('update-item', { ...item, openInNewTab: $event.target.checked })"
             />
             <label :for="`new-tab-${item.id ?? item.clientId}`" class="text-sm font-medium text-gray-700">
               باز شدن در تب جدید
@@ -112,10 +112,10 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">نشان (Badge)</label>
             <input
               :value="item.badge"
-              @input="$emit('update-item', { ...item, badge: $event.target.value })"
               type="text"
               placeholder="متن نشان"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              @input="$emit('update-item', { ...item, badge: $event.target.value })"
             />
           </div>
 
@@ -124,8 +124,8 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">رنگ نشان</label>
             <select
               :value="item.badgeColor"
-              @change="$emit('update-item', { ...item, badgeColor: $event.target.value })"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              @change="$emit('update-item', { ...item, badgeColor: $event.target.value })"
             >
               <option value="red">قرمز</option>
               <option value="green">سبز</option>
@@ -150,9 +150,9 @@
               <input
                 :id="`mega-menu-${item.id ?? item.clientId}`"
                 :checked="item.isMegaMenu"
-                @change="$emit('update-item', { ...item, isMegaMenu: $event.target.checked })"
                 type="checkbox"
                 class="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                @change="$emit('update-item', { ...item, isMegaMenu: $event.target.checked })"
               />
               <label :for="`mega-menu-${item.id ?? item.clientId}`" class="text-sm font-medium text-gray-700">
                 مگا منو باشد
@@ -164,8 +164,8 @@
               <label class="block text-sm font-medium text-gray-700 mb-1">عرض مگا منو</label>
               <select
                 :value="item.megaWidth"
-                @change="$emit('update-item', { ...item, megaWidth: $event.target.value })"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                @change="$emit('update-item', { ...item, megaWidth: $event.target.value })"
               >
                 <option value="full">کامل</option>
                 <option value="container">کانتینر</option>
@@ -178,8 +178,8 @@
               <label class="block text-sm font-medium text-gray-700 mb-1">تعداد ستون‌ها</label>
               <select
                 :value="item.megaColumns"
-                @change="$emit('update-item', { ...item, megaColumns: $event.target.value })"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                @change="$emit('update-item', { ...item, megaColumns: $event.target.value })"
               >
                 <option value="2">2 ستون</option>
                 <option value="3">3 ستون</option>

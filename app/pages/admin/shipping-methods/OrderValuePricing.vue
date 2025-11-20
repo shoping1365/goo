@@ -29,8 +29,8 @@
                  <span :class="['status', rule.status]">{{ rule.statusText }}</span>
                </td>
                <td>
-                 <button @click="editRule(rule)" class="btn-edit">ویرایش</button>
-                 <button @click="deleteRule(rule.id)" class="btn-delete">حذف</button>
+                 <button class="btn-edit" @click="editRule(rule)">ویرایش</button>
+                 <button class="btn-delete" @click="deleteRule(rule.id)">حذف</button>
                </td>
              </tr>
            </tbody>
@@ -94,7 +94,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { reactive, ref } from 'vue'
 
 const pricingRules = ref([
   {
@@ -147,16 +147,16 @@ function formatCurrency(value) {
   }).format(value)
 }
 
-function editRule(rule) {
-  console.log('Editing rule:', rule)
+function editRule(_rule) {
+  // console.log('Editing rule:', rule)
 }
 
-function deleteRule(id) {
-  console.log('Deleting rule:', id)
+function deleteRule(_id) {
+  // console.log('Deleting rule:', id)
 }
 
 function addNewRule() {
-  console.log('Adding new rule:', newRule)
+  // console.log('Adding new rule:', newRule)
   // Reset form
   Object.assign(newRule, {
     minValue: 0,

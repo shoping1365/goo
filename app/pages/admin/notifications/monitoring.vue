@@ -13,7 +13,7 @@
 
 
 
-            <button @click="exportReport" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-emerald-400 to-green-600 hover:from-emerald-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105">
+            <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-emerald-400 to-green-600 hover:from-emerald-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105" @click="exportReport">
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
@@ -91,7 +91,7 @@
           <div class="px-6 py-4 border-b border-gray-200">
             <div class="flex items-center justify-between">
               <h3 class="text-lg font-medium text-gray-900">SMS های ارسالی بر اساس درگاه‌ها</h3>
-              <button @click="debugData" class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm">
+              <button class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm" @click="debugData">
                 تست داده‌ها
               </button>
             </div>
@@ -214,7 +214,8 @@
                     </span>
                   </td>
                   <td class="px-3 py-4 whitespace-nowrap">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" 
+                    <span
+class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" 
                           :class="getSmsStatusClass(sms.status)">
                       {{ getSmsStatusText(sms.status) }}
                     </span>
@@ -225,7 +226,7 @@
                     <span v-else class="text-gray-400">-</span>
                   </td>
                   <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <button @click="viewSmsDetails(sms)" class="text-blue-600 hover:text-blue-800 font-medium">
+                    <button class="text-blue-600 hover:text-blue-800 font-medium" @click="viewSmsDetails(sms)">
                       مشاهده
                     </button>
                   </td>
@@ -285,7 +286,7 @@
             <div class="flex items-center justify-between">
               <h3 class="text-lg font-medium text-gray-900">وضعیت درگاه‌ها</h3>
               <div class="flex items-center gap-8">
-                <button @click="loadGatewaysStatus" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105">
+                <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105" @click="loadGatewaysStatus">
                   <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                   </svg>
@@ -346,7 +347,7 @@
                 <p class="text-xs text-red-600 mt-1">{{ alert.timestamp }}</p>
               </div>
               <div class="mr-auto">
-                <button @click="dismissAlert(alert.id)" class="text-red-400 hover:text-red-600">
+                <button class="text-red-400 hover:text-red-600" @click="dismissAlert(alert.id)">
                   <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                   </svg>
@@ -507,7 +508,7 @@ const filteredSmsList = computed(() => {
 // فیلتر کردن SMS های هر درگاه
 const filteredGatewaySmsData = computed(() => {
   return gatewaySmsData.value.map(gatewayData => {
-    let filteredList = smsFilter.value === 'all' || smsFilter.value === '' 
+    const filteredList = smsFilter.value === 'all' || smsFilter.value === '' 
       ? gatewayData.smsList 
       : gatewayData.smsList.filter(sms => sms.status === smsFilter.value)
     
@@ -953,9 +954,9 @@ const showGatewayDetails = (gateway: any) => {
   try {
     // بررسی چندین فیلد برای کلید API یا اطلاعات ورود
     // اگر api_url نبود، سراغ apiKey، api_key، username و password هم برو
-    let apiKey = gateway.api_url || gateway.apiKey || gateway.api_key || '';
-    let apiKeyDisplay = apiKey ? apiKey.substring(0, 15) + '...' : 'تنظیم نشده';
-    let apiKeyLength = apiKey ? apiKey.length : 0;
+    const apiKey = gateway.api_url || gateway.apiKey || gateway.api_key || '';
+    const apiKeyDisplay = apiKey ? apiKey.substring(0, 15) + '...' : 'تنظیم نشده';
+    const apiKeyLength = apiKey ? apiKey.length : 0;
     // اگر هیچ کلیدی نبود اما username و password وجود داشت، آن‌ها را هم نمایش بده
     let authInfo = '';
     if (!apiKey && (gateway.username || gateway.password)) {

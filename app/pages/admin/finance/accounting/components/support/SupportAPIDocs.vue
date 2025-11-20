@@ -8,8 +8,8 @@
       </div>
       <div class="flex items-center space-x-3 space-x-reverse">
         <button
-          @click="downloadDocs"
           class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          @click="downloadDocs"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -43,11 +43,11 @@
         <button
           v-for="category in categories"
           :key="category.id"
-          @click="selectCategory(category.id)"
           class="px-4 py-2 text-sm font-medium rounded-full transition-colors"
           :class="selectedCategory === category.id 
             ? 'bg-blue-100 text-blue-700 border border-blue-200' 
             : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'"
+          @click="selectCategory(category.id)"
         >
           {{ category.name }}
           <span class="text-xs text-gray-500 mr-1">({{ category.count }})</span>
@@ -80,8 +80,8 @@
               </span>
             </div>
             <button
-              @click="toggleAPI(api.id)"
               class="text-gray-400 hover:text-gray-600"
+              @click="toggleAPI(api.id)"
             >
               <svg
                 class="w-5 h-5 transition-transform"
@@ -189,8 +189,8 @@
                   class="px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
                 <button
-                  @click="testAPI(api)"
                   class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  @click="testAPI(api)"
                 >
                   <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />

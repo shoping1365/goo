@@ -12,17 +12,17 @@
       </div>
       <div class="flex items-center space-x-2 space-x-reverse">
         <button
-          @click="testConnection"
           :disabled="testing"
           class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50"
+          @click="testConnection"
         >
           <span v-if="testing" class="i-heroicons-arrow-path animate-spin mr-2"></span>
           {{ testing ? 'در حال تست...' : 'تست اتصال' }}
         </button>
         <button
-          @click="saveSettings"
           :disabled="saving"
           class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
+          @click="saveSettings"
         >
           <span v-if="saving" class="i-heroicons-arrow-path animate-spin mr-2"></span>
           {{ saving ? 'در حال ذخیره...' : 'ذخیره تنظیمات' }}
@@ -34,7 +34,7 @@
       <div class="i-heroicons-arrow-path animate-spin text-2xl text-purple-600"></div>
     </div>
 
-    <form v-else @submit.prevent="saveSettings" class="space-y-6">
+    <form v-else class="space-y-6" @submit.prevent="saveSettings">
       <!-- تنظیمات اصلی -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>

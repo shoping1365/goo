@@ -17,10 +17,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch, defineAsyncComponent } from 'vue'
 import { useRoute, useState } from 'nuxt/app'
-import { usePublicMobileHeaders } from '~/composables/usePublicMobileHeaders'
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useDeviceDetection } from '~/composables/useDeviceDetection'
+import { usePublicMobileHeaders } from '~/composables/usePublicMobileHeaders'
 
 // Import تمپلیت‌ها با defineAsyncComponent
 const MinimalTemplate = defineAsyncComponent(() => import('~/pages/admin/content/mobile-app-header-management/templates/minimal-template.vue'))
@@ -81,8 +81,8 @@ onMounted(async () => {
   try {
     await loadMobileHeaders()
     activeMobileHeader.value = getActiveMobileHeader.value
-    console.log('Active mobile header loaded:', activeMobileHeader.value) // Debug log
-    console.log('Header type detected:', getHeaderType(activeMobileHeader.value)) // Debug log
+    // console.log('Active mobile header loaded:', activeMobileHeader.value) // Debug log
+    // console.log('Header type detected:', getHeaderType(activeMobileHeader.value)) // Debug log
   } catch (error) {
     console.error('خطا در بارگذاری هدرهای موبایل:', error)
   }

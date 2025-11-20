@@ -10,7 +10,7 @@
         <span>{{ formatPrice(total) }}</span>
       </div>
     </div>
-    <button v-if="count > 0" @click="proceed" class="w-full py-3 rounded-xl bg-[#e60023] text-white font-bold text-lg shadow-lg hover:bg-[#c9001b] transition">تایید و تکمیل سفارش</button>
+    <button v-if="count > 0" class="w-full py-3 rounded-xl bg-[#e60023] text-white font-bold text-lg shadow-lg hover:bg-[#c9001b] transition" @click="proceed">تایید و تکمیل سفارش</button>
     <div v-if="count > 0" class="text-xs text-gray-500 mt-2">هزینه این سفارش هنوز پرداخت نشده و در صورت اتمام موجودی، کالاها از سبد حذف می‌شوند.</div>
   </div>
 </template>
@@ -18,7 +18,7 @@
 <script setup>
 // const { isAuthenticated } = useAuth() // احراز هویت غیرفعال شده است
 
-const props = defineProps({ total: { type: Number, default: 0 }, count: { type: Number, default: 0 } })
+defineProps({ total: { type: Number, default: 0 }, count: { type: Number, default: 0 } })
 function formatPrice(val) {
   if (val == null || isNaN(val)) return '۰ تومان'
   return val.toLocaleString('fa-IR') + ' تومان'

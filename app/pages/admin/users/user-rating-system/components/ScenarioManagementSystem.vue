@@ -8,10 +8,10 @@
           <p class="mt-1 text-sm text-gray-500">تعریف و مدیریت سناریوهای مختلف امتیازدهی و رتبه‌بندی</p>
         </div>
         <div class="flex space-x-3 space-x-reverse">
-          <button @click="createNewScenario" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+          <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors" @click="createNewScenario">
             ایجاد سناریو جدید
           </button>
-          <button @click="exportScenarios" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">
+          <button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors" @click="exportScenarios">
             خروجی سناریوها
           </button>
         </div>
@@ -45,10 +45,10 @@
             </div>
           </div>
           <div class="flex space-x-2 space-x-reverse">
-            <button @click="useTemplate(template)" class="bg-blue-600 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-700">
+            <button class="bg-blue-600 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-700" @click="useTemplate(template)">
               استفاده از قالب
             </button>
-            <button @click="previewTemplate(template)" class="bg-gray-600 text-white px-3 py-1 rounded-md text-sm hover:bg-gray-700">
+            <button class="bg-gray-600 text-white px-3 py-1 rounded-md text-sm hover:bg-gray-700" @click="previewTemplate(template)">
               پیش‌نمایش
             </button>
           </div>
@@ -127,12 +127,12 @@
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button @click="editScenario(scenario)" class="text-blue-600 hover:text-blue-900 ml-3">ویرایش</button>
-                <button @click="toggleScenario(scenario)" :class="scenario.status === 'active' ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900'" class="ml-3">
+                <button class="text-blue-600 hover:text-blue-900 ml-3" @click="editScenario(scenario)">ویرایش</button>
+                <button :class="scenario.status === 'active' ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900'" class="ml-3" @click="toggleScenario(scenario)">
                   {{ scenario.status === 'active' ? 'غیرفعال' : 'فعال' }}
                 </button>
-                <button @click="duplicateScenario(scenario)" class="text-purple-600 hover:text-purple-900 ml-3">کپی</button>
-                <button @click="deleteScenario(scenario)" class="text-red-600 hover:text-red-900">حذف</button>
+                <button class="text-purple-600 hover:text-purple-900 ml-3" @click="duplicateScenario(scenario)">کپی</button>
+                <button class="text-red-600 hover:text-red-900" @click="deleteScenario(scenario)">حذف</button>
               </td>
             </tr>
           </tbody>
@@ -145,13 +145,13 @@
           <span class="text-sm text-gray-700">نمایش {{ pagination.start }} تا {{ pagination.end }} از {{ pagination.total }} سناریو</span>
         </div>
         <div class="flex space-x-2 space-x-reverse">
-          <button @click="previousPage" :disabled="currentPage === 1" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50">
+          <button :disabled="currentPage === 1" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50" @click="previousPage">
             قبلی
           </button>
-          <button v-for="page in visiblePages" :key="page" @click="goToPage(page)" :class="page === currentPage ? 'bg-blue-600 text-white' : 'bg-white text-gray-700'" class="px-3 py-1 border border-gray-300 rounded-md text-sm">
+          <button v-for="page in visiblePages" :key="page" :class="page === currentPage ? 'bg-blue-600 text-white' : 'bg-white text-gray-700'" class="px-3 py-1 border border-gray-300 rounded-md text-sm" @click="goToPage(page)">
             {{ page }}
           </button>
-          <button @click="nextPage" :disabled="currentPage === totalPages" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50">
+          <button :disabled="currentPage === totalPages" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50" @click="nextPage">
             بعدی
           </button>
         </div>
@@ -269,18 +269,18 @@
                 <div v-for="(rule, index) in newScenario.rules" :key="index" class="flex items-center space-x-2 space-x-reverse">
                   <input v-model="rule.name" type="text" placeholder="نام قانون" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                   <input v-model="rule.score" type="number" placeholder="امتیاز" class="w-24 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                  <button @click="removeRule(index)" class="text-red-600 hover:text-red-900">حذف</button>
+                  <button class="text-red-600 hover:text-red-900" @click="removeRule(index)">حذف</button>
                 </div>
-                <button @click="addRule" class="text-blue-600 hover:text-blue-900 text-sm">+ افزودن قانون</button>
+                <button class="text-blue-600 hover:text-blue-900 text-sm" @click="addRule">+ افزودن قانون</button>
               </div>
             </div>
           </div>
           
           <div class="flex justify-end space-x-3 space-x-reverse mt-6">
-            <button @click="closeCreateModal" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+            <button class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50" @click="closeCreateModal">
               انصراف
             </button>
-            <button @click="saveScenario" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+            <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" @click="saveScenario">
               ذخیره سناریو
             </button>
           </div>
@@ -291,18 +291,33 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
+
+interface Scenario {
+  id: number;
+  name: string;
+  description: string;
+  type: string;
+  status?: string;
+  createdAt?: string;
+  affectedUsers?: number;
+  performance?: number;
+  complexity?: string;
+  rulesCount?: number;
+  setupTime?: string;
+  [key: string]: unknown;
+}
 
 // Props and Emits
 defineProps<{
-  scenarios?: any[]
+  scenarios?: Scenario[]
 }>()
 
 defineEmits<{
-  saveScenario: [scenario: any]
-  updateScenario: [scenario: any]
-  deleteScenario: [scenario: any]
-  exportScenarios: [data: any]
+  saveScenario: [scenario: Record<string, unknown>]
+  updateScenario: [scenario: Record<string, unknown>]
+  deleteScenario: [scenario: Record<string, unknown>]
+  exportScenarios: [data: Record<string, unknown>]
 }>()
 
 // Reactive data
@@ -323,7 +338,7 @@ const newScenario = ref({
 })
 
 // Sample scenario templates
-const scenarioTemplates = ref([
+const scenarioTemplates = ref<Scenario[]>([
   {
     id: 1,
     name: 'سناریو پایه فروشگاه',
@@ -381,7 +396,7 @@ const scenarioTemplates = ref([
 ])
 
 // Sample scenarios data
-const scenarios = ref([
+const localScenarios = ref<Scenario[]>([
   {
     id: 1,
     name: 'سناریو پایه فروشگاه',
@@ -413,6 +428,8 @@ const scenarios = ref([
     performance: 91
   }
 ])
+
+const displayScenarios = computed(() => props.scenarios || localScenarios.value)
 
 // Statistics
 const stats = ref({
@@ -448,7 +465,7 @@ const visiblePages = computed(() => {
 
 // Filtered scenarios
 const filteredScenarios = computed(() => {
-  let filtered = scenarios.value
+  let filtered = displayScenarios.value
 
   if (searchQuery.value) {
     filtered = filtered.filter(scenario => 
@@ -588,44 +605,36 @@ const removeRule = (index: number) => {
 }
 
 const saveScenario = () => {
-  console.log('ذخیره سناریو جدید:', newScenario.value)
   // API call to save scenario
   closeCreateModal()
 }
 
-const useTemplate = (template: any) => {
-  console.log('استفاده از قالب:', template)
+const useTemplate = (_template: Record<string, unknown>) => {
   // Use template to create new scenario
 }
 
-const previewTemplate = (template: any) => {
-  console.log('پیش‌نمایش قالب:', template)
+const previewTemplate = (_template: Record<string, unknown>) => {
   // Preview template details
 }
 
 const exportScenarios = () => {
-  console.log('خروجی سناریوها')
   // Export scenarios to Excel
 }
 
-const editScenario = (scenario: any) => {
-  console.log('ویرایش سناریو:', scenario)
+const editScenario = (_scenario: Scenario) => {
   // Edit scenario
 }
 
-const toggleScenario = (scenario: any) => {
-  console.log('تغییر وضعیت سناریو:', scenario)
+const toggleScenario = (scenario: Scenario) => {
   scenario.status = scenario.status === 'active' ? 'inactive' : 'active'
   // API call to toggle scenario status
 }
 
-const duplicateScenario = (scenario: any) => {
-  console.log('کپی سناریو:', scenario)
+const duplicateScenario = (_scenario: Scenario) => {
   // Duplicate scenario
 }
 
-const deleteScenario = (scenario: any) => {
-  console.log('حذف سناریو:', scenario)
+const deleteScenario = (_scenario: Scenario) => {
   // Delete scenario
 }
 
@@ -646,7 +655,5 @@ const goToPage = (page: number) => {
 }
 
 // Lifecycle
-onMounted(() => {
-  console.log('سیستم مدیریت سناریوها بارگذاری شد')
-})
+// onMounted removed as it only contained console.log
 </script> 

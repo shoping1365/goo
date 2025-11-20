@@ -59,7 +59,7 @@ export function suppressImportWarningsPlugin(): Plugin {
         delete bundle[fileName]
       })
       
-      console.log(`🧹 حذف ${filesToRemove.length} chunk غیرضروری`)
+      // console.log(`🧹 حذف ${filesToRemove.length} chunk غیرضروری`)
     }
   }
 }

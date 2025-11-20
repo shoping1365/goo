@@ -22,7 +22,8 @@
         <!-- نمودار کوچک -->
         <div class="mt-3">
           <div class="flex items-end space-x-1 space-x-reverse h-8">
-            <div v-for="(day, index) in userTrend" :key="index" 
+            <div
+v-for="(day, index) in userTrend" :key="index" 
                  class="flex-1 bg-green-200 rounded-t"
                  :style="{ height: (day.users / Math.max(...userTrend.map(d => d.users))) * 32 + 'px' }">
             </div>
@@ -44,7 +45,8 @@
         <!-- نمودار کوچک -->
         <div class="mt-3">
           <div class="flex items-end space-x-1 space-x-reverse h-8">
-            <div v-for="(day, index) in volumeTrend" :key="index" 
+            <div
+v-for="(day, index) in volumeTrend" :key="index" 
                  class="flex-1 bg-blue-200 rounded-t"
                  :style="{ height: (day.volume / Math.max(...volumeTrend.map(d => d.volume))) * 32 + 'px' }">
             </div>
@@ -66,7 +68,8 @@
         <!-- نمودار کوچک -->
         <div class="mt-3">
           <div class="flex items-end space-x-1 space-x-reverse h-8">
-            <div v-for="(day, index) in avgTrend" :key="index" 
+            <div
+v-for="(day, index) in avgTrend" :key="index" 
                  class="flex-1 bg-purple-200 rounded-t"
                  :style="{ height: (day.avg / Math.max(...avgTrend.map(d => d.avg))) * 32 + 'px' }">
             </div>
@@ -111,9 +114,11 @@
         
         <div class="h-64 flex items-end space-x-2 space-x-reverse overflow-x-auto">
           <div v-for="(day, index) in walletGrowthTrend" :key="index" class="flex-shrink-0 flex flex-col items-center min-w-12">
-            <div class="w-full bg-gray-200 rounded-t relative"
+            <div
+class="w-full bg-gray-200 rounded-t relative"
                  :style="{ height: getChartHeight(day.balance) + 'px' }">
-              <div class="w-full bg-gradient-to-t from-green-500 to-emerald-500 rounded-t transition-all duration-300 absolute bottom-0"
+              <div
+class="w-full bg-gradient-to-t from-green-500 to-emerald-500 rounded-t transition-all duration-300 absolute bottom-0"
                    :style="{ height: getChartHeight(day.balance) + 'px' }"></div>
             </div>
             <span class="text-xs text-gray-500 mt-1 text-center">{{ day.date }}</span>

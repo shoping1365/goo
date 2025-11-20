@@ -16,12 +16,12 @@
             <!-- دکمه AI -->
             <TemplateButton
               v-if="hasPermission('post_add.create')"
-              @click="openAIChatModal"
-              bgGradient="bg-gradient-to-r from-purple-400 to-indigo-600"
-              textColor="text-white"
-              hoverClass="hover:from-purple-500 hover:to-indigo-700 hover:shadow-lg hover:scale-105"
-              focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+              bg-gradient="bg-gradient-to-r from-purple-400 to-indigo-600"
+              text-color="text-white"
+              hover-class="hover:from-purple-500 hover:to-indigo-700 hover:shadow-lg hover:scale-105"
+              focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
               size="medium"
+              @click="openAIChatModal"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
@@ -35,10 +35,10 @@
               to="/admin/post-management/add-post"
             >
               <TemplateButton
-                bgGradient="bg-gradient-to-r from-green-400 to-emerald-600"
-                textColor="text-white"
-                hoverClass="hover:from-green-500 hover:to-emerald-700 hover:shadow-lg hover:scale-105"
-                focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                bg-gradient="bg-gradient-to-r from-green-400 to-emerald-600"
+                text-color="text-white"
+                hover-class="hover:from-green-500 hover:to-emerald-700 hover:shadow-lg hover:scale-105"
+                focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                 size="medium"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -136,13 +136,13 @@
           <div v-if="selectedPosts.length > 0" class="flex items-center gap-2">
             <div class="relative">
               <TemplateButton 
-                @click="showBulkDropdown = !showBulkDropdown" 
-                type="button"
-                bgGradient="bg-white"
-                textColor="text-gray-700"
-                borderColor="border border-gray-300"
-                focusClass="focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                type="button" 
+                bg-gradient="bg-white"
+                text-color="text-gray-700"
+                border-color="border border-gray-300"
+                focus-class="focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 size="small"
+                @click="showBulkDropdown = !showBulkDropdown"
               >
                 <span>{{ bulkActionLabel }}</span>
                 <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -150,22 +150,23 @@
                 </svg>
               </TemplateButton>
               <div v-if="showBulkDropdown" class="absolute right-0 left-0 z-40 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-1 animate-fade-in-up">
-                <button v-for="item in bulkActions" :key="item.value" @click="selectBulkAction(item)" type="button"
-                  class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 transition-colors"
+                <button
+v-for="item in bulkActions" :key="item.value" type="button" class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 transition-colors"
+                  @click="selectBulkAction(item)"
                 >
                   {{ item.label }}
                 </button>
               </div>
             </div>
             <TemplateButton 
-              @click="handleBulkAction" 
               :disabled="!bulkAction" 
-              bgGradient="bg-gradient-to-r from-blue-500 to-blue-600"
-              textColor="text-white"
-              hoverClass="hover:from-blue-600 hover:to-blue-700 hover:shadow-lg hover:scale-105"
-              focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              bg-gradient="bg-gradient-to-r from-blue-500 to-blue-600" 
+              text-color="text-white"
+              hover-class="hover:from-blue-600 hover:to-blue-700 hover:shadow-lg hover:scale-105"
+              focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               size="small"
               :class="{'opacity-50': !bulkAction}"
+              @click="handleBulkAction"
             >
               اجرا
             </TemplateButton>
@@ -183,9 +184,9 @@
               <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 <input 
                   type="checkbox" 
-                  @change="toggleSelectAll"
                   :checked="selectedPosts.length === filteredPosts.length && filteredPosts.length > 0"
                   class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  @change="toggleSelectAll"
                 >
               </th>
               <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">تصویر</th>
@@ -201,9 +202,9 @@
             <tr v-for="post in paginatedPosts" :key="post.id" class="hover:bg-gray-50">
               <td class="px-6 py-4 whitespace-nowrap">
                 <input 
-                  type="checkbox" 
+                  v-model="selectedPosts" 
+                  type="checkbox"
                   :value="post.id"
-                  v-model="selectedPosts"
                   class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                 >
               </td>
@@ -261,13 +262,13 @@
                 <div class="flex items-center gap-2">
                   <TemplateButton 
                     v-if="hasPermission('post_add.update')"
-                    @click="editPost(post)"
-                    textColor="text-blue-600"
-                    hoverClass="hover:text-blue-900"
+                    text-color="text-blue-600"
+                    hover-class="hover:text-blue-900"
                     size="small"
-                    :borderColor="'border-0'"
-                    :bgGradient="'bg-transparent'"
+                    :border-color="'border-0'"
+                    :bg-gradient="'bg-transparent'"
                     title="ویرایش"
+                    @click="editPost(post)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -275,13 +276,13 @@
                   </TemplateButton>
                   <TemplateButton 
                     v-if="hasPermission('post_add.delete')"
-                    @click="deletePost(post)"
-                    textColor="text-red-600"
-                    hoverClass="hover:text-red-900"
+                    text-color="text-red-600"
+                    hover-class="hover:text-red-900"
                     size="small"
-                    :borderColor="'border-0'"
-                    :bgGradient="'bg-transparent'"
+                    :border-color="'border-0'"
+                    :bg-gradient="'bg-transparent'"
                     title="حذف"
+                    @click="deletePost(post)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -329,9 +330,9 @@
           <div class="flex items-center gap-2">
             <!-- دکمه شروع چت جدید -->
             <button 
-              @click="clearChat"
               class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
               title="شروع چت جدید"
+              @click="clearChat"
             >
               <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
@@ -340,9 +341,9 @@
             
             <!-- دکمه راهنما -->
             <button 
-              @click="showGuideModal = true"
               class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
               title="راهنمای AI Writer"
+              @click="showGuideModal = true"
             >
               <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -351,9 +352,9 @@
             
             <!-- دکمه سابقه چت -->
             <button 
-              @click="showChatHistoryModal"
               class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
               title="سابقه چت"
+              @click="showChatHistoryModal"
             >
               <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -362,8 +363,8 @@
             
             <!-- دکمه بستن -->
             <button 
-              @click="showAIChatModal = false"
               class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              @click="showAIChatModal = false"
             >
               <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -372,7 +373,7 @@
           </div>
           <!-- دکمه تست اتصال OpenAI -->
           <div class="flex items-center gap-2">
-            <button @click="testOpenAIConnection" class="px-3 py-1 rounded bg-blue-100 text-blue-700 text-sm hover:bg-blue-200 transition">
+            <button class="px-3 py-1 rounded bg-blue-100 text-blue-700 text-sm hover:bg-blue-200 transition" @click="testOpenAIConnection">
               تست اتصال OpenAI
             </button>
             <span v-if="testResult" :class="testResult.success ? 'text-green-600' : 'text-red-600'" class="text-sm">
@@ -455,9 +456,9 @@
               <!-- دکمه اسکرول به پایین -->
               <button 
                 v-if="showScrollButton"
-                @click="scrollToBottom"
                 class="absolute bottom-4 right-4 z-10 w-10 h-10 bg-purple-600 text-white rounded-full shadow-lg hover:bg-purple-700 transition-all duration-200 flex items-center justify-center"
                 title="اسکرول به پایین"
+                @click="scrollToBottom"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
@@ -535,8 +536,8 @@
                              <!-- دکمه‌های تأیید/ویرایش برای مقاله -->
                              <div v-if="message.role === 'assistant' && (message as any).requiresConfirmation" class="mt-3 flex gap-2">
                                 <button 
-                                  @click="confirmArticle(message)"
                                   class="inline-flex items-center gap-2 px-3 py-1 bg-green-600 text-white text-xs rounded-lg hover:bg-green-700 transition-colors"
+                                  @click="confirmArticle(message)"
                                 >
                                   <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -544,8 +545,8 @@
                                   تأیید و ذخیره
                                 </button>
                                 <button 
-                                  @click="editArticle(message)"
                                   class="inline-flex items-center gap-2 px-3 py-1 bg-blue-600 text-white text-xs rounded-lg hover:bg-blue-700 transition-colors"
+                                  @click="editArticle(message)"
                                 >
                                   <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -584,19 +585,19 @@
                 <div class="flex-1">
                   <textarea
                     v-model="userInput"
-                    @keydown.enter.prevent="sendMessage"
-                    @input="scrollToBottom"
                     placeholder="پیام خود را بنویسید..."
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 resize-none"
                     rows="3"
                     dir="rtl"
+                    @keydown.enter.prevent="sendMessage"
+                    @input="scrollToBottom"
                   ></textarea>
                 </div>
                 <div class="flex flex-col gap-2">
                   <button 
-                    @click="sendMessage"
                     :disabled="!userInput.trim() || isGenerating"
                     class="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    @click="sendMessage"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
@@ -604,9 +605,9 @@
                   </button>
                   
                   <button 
-                    @click="clearChat"
                     class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
                     title="پاک کردن چت"
+                    @click="clearChat"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -643,14 +644,14 @@
           
           <div class="flex items-center gap-2">
             <button 
-              @click="startNewChat"
               class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+              @click="startNewChat"
             >
               چت جدید
             </button>
             <button 
-              @click="showChatHistory = false"
               class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              @click="showChatHistory = false"
             >
               <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -688,9 +689,9 @@
                   </div>
                 </div>
                 <button 
-                  @click.stop="deleteSession(session.id)"
                   class="p-1 hover:bg-red-100 rounded text-red-600 hover:text-red-700 transition-colors"
                   title="حذف"
+                  @click.stop="deleteSession(session.id)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -714,8 +715,8 @@
         <div class="flex items-center justify-between p-6 border-b border-gray-200">
           <h3 class="text-xl font-bold text-gray-900">🎯 راهنمای استفاده از AI Writer</h3>
           <button 
-            @click="showGuideModal = false" 
-            class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            class="p-2 hover:bg-gray-100 rounded-lg transition-colors" 
+            @click="showGuideModal = false"
           >
             <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -863,8 +864,8 @@
         <!-- فوتر مودال -->
         <div class="flex justify-end p-6 border-t border-gray-200">
           <button 
-            @click="showGuideModal = false" 
-            class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" 
+            @click="showGuideModal = false"
           >
             بستن راهنما
           </button>

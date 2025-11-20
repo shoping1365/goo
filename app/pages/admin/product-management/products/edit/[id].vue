@@ -4,13 +4,13 @@
       <div class="flex justify-between items-center">
         <div class="text-xl font-bold text-gray-900">ویرایش محصول</div>
         <div class="flex gap-3">
-          <button :disabled="isSaving" @click="previewProduct" class="inline-flex items-center px-6 py-2 rounded-lg text-white bg-gradient-to-r from-purple-500 to-indigo-600 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-base font-semibold">
+          <button :disabled="isSaving" class="inline-flex items-center px-6 py-2 rounded-lg text-white bg-gradient-to-r from-purple-500 to-indigo-600 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-base font-semibold" @click="previewProduct">
             پیش‌نمایش
           </button>
-          <button :disabled="isSaving" @click="saveAndContinueEditing" class="inline-flex items-center px-6 py-2 rounded-lg text-white bg-gradient-to-r from-blue-500 to-blue-600 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-base font-semibold">
+          <button :disabled="isSaving" class="inline-flex items-center px-6 py-2 rounded-lg text-white bg-gradient-to-r from-blue-500 to-blue-600 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-base font-semibold" @click="saveAndContinueEditing">
             <span>{{ isSaving ? 'در حال ذخیره...' : 'ذخیره و ادامه ویرایش' }}</span>
           </button>
-          <button :disabled="isSaving" @click="saveProduct" class="inline-flex items-center px-6 py-2 rounded-lg text-white bg-gradient-to-r from-green-500 to-emerald-600 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-base font-semibold">
+          <button :disabled="isSaving" class="inline-flex items-center px-6 py-2 rounded-lg text-white bg-gradient-to-r from-green-500 to-emerald-600 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-base font-semibold" @click="saveProduct">
             {{ isSaving ? 'در حال ذخیره...' : 'ذخیره' }}
           </button>
         </div>
@@ -27,8 +27,9 @@
     </div>
 
     <div class="bg-gray-50 px-4 pt-2 flex gap-2 overflow-x-auto mb-6">
-      <a v-for="tab in tabs" :key="tab.value" @click.prevent="setActiveTab(tab.value)" href="#"
-         :class="['px-4 py-2 rounded-t text-sm transition cursor-pointer', activeTab === tab.value ? 'font-bold text-blue-700' : 'hover:bg-gray-50 text-gray-600']">
+      <a
+v-for="tab in tabs" :key="tab.value" href="#" :class="['px-4 py-2 rounded-t text-sm transition cursor-pointer', activeTab === tab.value ? 'font-bold text-blue-700' : 'hover:bg-gray-50 text-gray-600']"
+         @click.prevent="setActiveTab(tab.value)">
         {{ tab.label }}
       </a>
     </div>
@@ -92,11 +93,6 @@ const activeTab = ref('info')
 
 // فوراً productStore را provide کن
 provide('productStore', pStore)
-console.log('✅ ProductStore provided:', !!pStore, {
-  editingProductId: pStore.editingProductId,
-  productForm: pStore.productForm,
-  hasUrl: !!pStore.productForm?.url
-})
 
 const sectionSettings = ref({
   mainInfo: true,
@@ -162,6 +158,7 @@ const tabComponents = {
   video: ProductVideoTab
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const currentTabComponent = computed(() => (tabComponents as any)[activeTab.value] || (tabComponents as any).info)
 const currentTabProps = computed(() => {
   if (activeTab.value === 'seo') {
@@ -190,13 +187,6 @@ onMounted(async () => {
   await pStore.loadBrands()
   await pStore.loadProductForEdit(id)
   
-  console.log('✅ Product loaded and store updated:', !!pStore, {
-    editingProductId: pStore.editingProductId,
-    productForm: pStore.productForm,
-    hasUrl: !!pStore.productForm?.url,
-    url: pStore.productForm?.url
-  })
-  
   activeTab.value = 'info'
 })
 
@@ -208,18 +198,20 @@ async function saveProduct() {
   try {
     if (pStore.isEditMode && pStore.editingProductId) {
       const product = await pStore.updateProduct(pStore.editingProductId)
-      if (product && product.id) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (product && (product as any).id) {
         alert('تغییرات با موفقیت ذخیره شد')
         router.push('/admin/product-management/products')
       }
     } else {
       const product = await pStore.createProduct()
-      if (product && product.id) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (product && (product as any).id) {
         alert('محصول با موفقیت ایجاد شد')
         router.push('/admin/product-management/products')
       }
     }
-  } catch (error) {
+  } catch {
     alert('خطا در ذخیره محصول')
   }
 }
@@ -230,7 +222,7 @@ async function saveAndContinueEditing() {
     if (product && product.id) {
       alert('محصول با موفقیت ذخیره و آماده ویرایش است')
     }
-  } catch (error) {
+  } catch {
     alert('خطا در ذخیره محصول')
   }
 }

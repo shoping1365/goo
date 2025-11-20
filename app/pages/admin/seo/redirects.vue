@@ -9,8 +9,8 @@
       </div>
       <div class="flex gap-2 flex-wrap">
         <button
-          @click="importRedirects"
           class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
+          @click="importRedirects"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
@@ -18,8 +18,8 @@
           وارد کردن از فایل
         </button>
         <button
-          @click="exportRedirects"
           class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center gap-2"
+          @click="exportRedirects"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -66,7 +66,7 @@
 
     <!-- Redirect Types Info -->
     <div class="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
-      <button @click="showTypesInfo = !showTypesInfo" class="flex items-center gap-2 text-green-900 font-semibold focus:outline-none">
+      <button class="flex items-center gap-2 text-green-900 font-semibold focus:outline-none" @click="showTypesInfo = !showTypesInfo">
         <svg :class="{'rotate-90': showTypesInfo, 'rotate-0': !showTypesInfo}" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
         </svg>
@@ -129,8 +129,8 @@
         <div class="flex flex-col sm:flex-row gap-3">
           <button 
             v-if="hasPermission('seo.create')"
-            @click="showAddModal = true"
             class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+            @click="showAddModal = true"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -178,9 +178,9 @@
       <!-- دکمه تغییر گروه -->
       <div v-if="selectedRedirects.length > 0" class="p-3 bg-blue-50 flex items-center gap-3 border-b border-blue-200">
         <span class="text-blue-800 text-sm">{{ selectedRedirects.length }} ریدایرکت انتخاب شده</span>
-        <button @click="openGroupModal" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm">تغییر گروه</button>
-        <button v-if="canDeleteRedirect" @click="deleteSelectedRedirects" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm">حذف</button>
-        <button @click="selectedRedirects = []; selectAll = false" class="text-gray-500 hover:text-red-600 text-xs">لغو انتخاب</button>
+        <button class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm" @click="openGroupModal">تغییر گروه</button>
+        <button v-if="canDeleteRedirect" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm" @click="deleteSelectedRedirects">حذف</button>
+        <button class="text-gray-500 hover:text-red-600 text-xs" @click="selectedRedirects = []; selectAll = false">لغو انتخاب</button>
       </div>
 
       <!-- Empty State -->
@@ -193,8 +193,8 @@
         <div class="mt-6">
           <button 
             v-if="hasPermission('seo.create')"
-            @click="showAddModal = true"
             class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            @click="showAddModal = true"
           >
             <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -210,7 +210,7 @@
           <thead class="bg-gray-50">
             <tr>
               <th class="px-1 py-2 text-center w-6">
-                <input type="checkbox" v-model="selectAll" @change="toggleSelectAll" :checked="selectAll" />
+                <input v-model="selectAll" type="checkbox" :checked="selectAll" @change="toggleSelectAll" />
               </th>
               <th class="px-1 py-2 text-center w-10">ردیف</th>
               <th class="px-2 py-2 text-right font-medium text-gray-500 uppercase tracking-wider max-w-[120px] truncate">مسیر مبدا</th>
@@ -244,11 +244,11 @@
               <td class="px-2 py-2 w-20 text-center">{{ formatDate(redirect.last_visited_at) }}</td>
               <td class="px-1 py-2 w-20 text-center">
                 <div class="flex gap-1 justify-center">
-                  <button v-if="hasPermission('seo.update')" @click="editRedirect(redirect)" class="text-blue-600 hover:text-blue-900">ویرایش</button>
-                  <button v-if="hasPermission('seo.update')" @click="toggleRedirect(redirect)" :class="redirect.status === 'active' ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900'">
+                  <button v-if="hasPermission('seo.update')" class="text-blue-600 hover:text-blue-900" @click="editRedirect(redirect)">ویرایش</button>
+                  <button v-if="hasPermission('seo.update')" :class="redirect.status === 'active' ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900'" @click="toggleRedirect(redirect)">
                     {{ redirect.status === 'active' ? 'غیرفعال' : 'فعال' }}
                   </button>
-                  <button v-if="canDeleteRedirect" @click="deleteRedirect(redirect)" class="text-red-600 hover:text-red-900">حذف</button>
+                  <button v-if="canDeleteRedirect" class="text-red-600 hover:text-red-900" @click="deleteRedirect(redirect)">حذف</button>
                 </div>
               </td>
             </tr>
@@ -278,14 +278,14 @@
           <h3 class="text-lg font-medium text-gray-900">
             {{ editingRedirect ? 'ویرایش تغییر مسیر' : 'افزودن تغییر مسیر جدید' }}
           </h3>
-          <button @click="closeModal" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="closeModal">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
         </div>
 
-        <form @submit.prevent="saveRedirect" class="space-y-4">
+        <form class="space-y-4" @submit.prevent="saveRedirect">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">مسیر مبدا *</label>
@@ -417,8 +417,8 @@
           <div class="flex justify-end gap-3 pt-4">
             <button 
               type="button"
-              @click="closeModal"
               class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+              @click="closeModal"
             >
               انصراف
             </button>
@@ -454,14 +454,14 @@
         <div class="flex justify-end gap-3">
           <button
             type="button"
-            @click="closeGroupModal"
             class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+            @click="closeGroupModal"
           >
             انصراف
           </button>
           <button
-            @click="changeGroupForSelected"
             class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            @click="changeGroupForSelected"
           >
             تغییر گروه
           </button>
@@ -474,6 +474,7 @@
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 declare const navigateTo: (to: string) => Promise<void>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const useAuth: () => { user: any; hasPermission: (perm: string) => boolean }
 </script>
 
@@ -484,7 +485,7 @@ import ToastContainer from '@/components/common/ToastContainer.vue'
 import { useToast } from '@/composables/useToast'
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 
-const { user, hasPermission } = useAuth()
+const { hasPermission } = useAuth()
 const { showSuccess, showError } = useToast()
 
 const canDeleteRedirect = computed(() => hasPermission('seo.delete'))
@@ -497,9 +498,10 @@ definePageMeta({
 // State
 const showAddModal = ref(false)
 const showGroupModal = ref(false)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const editingRedirect = ref<any>(null)
 const filterType = ref('')
-const filterStatus = ref('')
+// const filterStatus = ref('')
 const filterGroup = ref('')
 const selectedRedirects = ref<number[]>([])
 const selectAll = ref(false)
@@ -553,41 +555,23 @@ const totalPages = computed(() => Math.ceil(totalItems.value / itemsPerPage.valu
 const paginatedRedirects = computed(() => {
   const filtered = filteredRedirects.value
   
-  // اگر صفحه فعلی بزرگ‌تر از تعداد صفحات شد، به صفحه اول برگردد
   const total = filtered.length;
-  const totalPages = Math.ceil(total / itemsPerPage.value) || 1;
-  if (currentPage.value > totalPages) {
-    currentPage.value = 1;
-  }
   if (total === 0) return [];
+  
   const start = (currentPage.value - 1) * itemsPerPage.value;
   // اگر داده‌ای وجود ندارد یا slice خارج از بازه است، آرایه خالی برگردان
   if (start >= total) return [];
   return filtered.slice(start, start + itemsPerPage.value).filter(r => r && r.id);
 })
 
+watch(totalPages, (newTotalPages) => {
+  if (currentPage.value > newTotalPages) {
+    currentPage.value = 1;
+  }
+})
+
 
 // توابع کمکی با فیلد snake_case
-const getGroupClass = (groupName: string) => {
-  if (!groupName) return 'bg-gray-100 text-gray-800'
-  switch (groupName) {
-    case 'انتقال محصولات':
-      return 'bg-blue-100 text-blue-800'
-    case 'تغییرات URL':
-      return 'bg-green-100 text-green-800'
-    case 'حذف صفحات':
-      return 'bg-red-100 text-red-800'
-    case 'SEO Optimization':
-      return 'bg-purple-100 text-purple-800'
-    case 'Mobile Redirects':
-      return 'bg-orange-100 text-orange-800'
-    case 'Landing Pages':
-      return 'bg-yellow-100 text-yellow-800'
-    default:
-      return 'bg-gray-100 text-gray-800'
-  }
-}
-
 const getTypeClass = (code: number | string) => {
   // بررسی null/undefined
   if (!code) {
@@ -711,6 +695,7 @@ const resetForm = () => {
   redirectForm.description = ''
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const editRedirect = (redirect: any) => {
   // Navigate to group redirects page
   navigateTo(`/admin/seo/redirects/group/${encodeURIComponent(redirect.group_name || 'بدون گروه')}`)
@@ -742,6 +727,7 @@ const saveRedirect = async () => {
         ? new URL(redirectForm.targetPath.trim()).pathname 
         : redirectForm.targetPath.trim()
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const response: any = await $fetch('/api/admin/seo/redirects', {
         method: 'POST',
         body: {
@@ -763,14 +749,16 @@ const saveRedirect = async () => {
       }
     }
     updateStats()
-  } catch (error: any) {
+  } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
     showError('خطا در ذخیره ریدایرکت: ' + error.message)
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const toggleRedirect = async (redirect: any) => {
   try {
     const newStatus = redirect.status === 'active' ? 'inactive' : 'active'
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response: any = await $fetch(`/api/admin/seo/redirects/${redirect.id}/status`, {
       method: 'PATCH',
       body: { status: newStatus }
@@ -782,7 +770,7 @@ const toggleRedirect = async (redirect: any) => {
       showError('خطا در تغییر وضعیت ریدایرکت: ' + response.message)
     }
     updateStats()
-  } catch (error: any) {
+  } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
     showError('خطا در تغییر وضعیت ریدایرکت: ' + error.message)
   }
 }
@@ -790,6 +778,7 @@ const toggleRedirect = async (redirect: any) => {
 // تابع بارگذاری ریدایرکت‌ها (در صورت نبود، اضافه شود)
 const loadRedirects = async () => {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response: any = await $fetch('/api/admin/seo/redirects')
     if (response && Array.isArray(response)) {
       redirects.value = response
@@ -802,7 +791,7 @@ const loadRedirects = async () => {
       currentPage.value = 1;
     }
     updateStats()
-  } catch (error: any) {
+  } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
     showError('خطا در بارگذاری ریدایرکت‌ها: ' + error.message)
     redirects.value = []
     currentPage.value = 1;
@@ -870,7 +859,7 @@ const changeGroupForSelected = async () => {
     selectedRedirects.value = []
     selectAll.value = false
     await loadRedirects()
-  } catch (e: any) {
+  } catch (e: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
     showError('خطا در تغییر گروه: ' + (e.message || e))
   }
 }
@@ -890,7 +879,7 @@ const deleteSelectedRedirects = async () => {
     selectAll.value = false;
     currentPage.value = 1; // بعد از حذف، صفحه‌بندی به اول برگردد
     await loadRedirects();
-  } catch (e: any) {
+  } catch (e: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
     showError('خطا در حذف گروهی: ' + (e.message || e));
   }
 }

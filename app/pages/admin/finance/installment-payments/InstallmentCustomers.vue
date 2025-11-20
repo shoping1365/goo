@@ -9,7 +9,7 @@
           <option value="returning">مشتریان تکراری</option>
           <option value="vip">مشتریان VIP</option>
         </select>
-        <button @click="refreshData" class="text-blue-600 hover:text-blue-800">
+        <button class="text-blue-600 hover:text-blue-800" @click="refreshData">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
@@ -86,13 +86,13 @@
         </div>
 
         <div class="mt-3 flex items-center space-x-4 space-x-reverse">
-          <button @click="viewCustomerDetails(customer)" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+          <button class="text-blue-600 hover:text-blue-800 text-sm font-medium" @click="viewCustomerDetails(customer)">
             مشاهده جزئیات
           </button>
-          <button @click="customerHistory(customer)" class="text-green-600 hover:text-green-800 text-sm font-medium">
+          <button class="text-green-600 hover:text-green-800 text-sm font-medium" @click="customerHistory(customer)">
             تاریخچه
           </button>
-          <button @click="creditCheck(customer)" class="text-purple-600 hover:text-purple-800 text-sm font-medium">
+          <button class="text-purple-600 hover:text-purple-800 text-sm font-medium" @click="creditCheck(customer)">
             بررسی اعتبار
           </button>
         </div>

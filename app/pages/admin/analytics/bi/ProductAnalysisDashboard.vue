@@ -312,7 +312,8 @@
         <div class="border border-gray-200 rounded-lg p-6">
           <h4 class="font-medium text-gray-900 mb-4">کلمات کلیدی مثبت</h4>
           <div class="flex flex-wrap gap-2">
-            <span v-for="keyword in reviewsAnalysis.positiveKeywords" :key="keyword.word" 
+            <span
+v-for="keyword in reviewsAnalysis.positiveKeywords" :key="keyword.word" 
                   class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
               {{ keyword.word }} ({{ keyword.count }})
             </span>
@@ -323,7 +324,8 @@
         <div class="border border-gray-200 rounded-lg p-6">
           <h4 class="font-medium text-gray-900 mb-4">کلمات کلیدی منفی</h4>
           <div class="flex flex-wrap gap-2">
-            <span v-for="keyword in reviewsAnalysis.negativeKeywords" :key="keyword.word" 
+            <span
+v-for="keyword in reviewsAnalysis.negativeKeywords" :key="keyword.word" 
                   class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
               {{ keyword.word }} ({{ keyword.count }})
             </span>

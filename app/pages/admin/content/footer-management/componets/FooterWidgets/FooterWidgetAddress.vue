@@ -40,8 +40,8 @@
             <span class="text-gray-600 text-sm">نقشه: {{ latitude }}, {{ longitude }}</span>
           </div>
           <button
-            @click="openMap"
             class="mt-2 w-full px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded transition-colors"
+            @click="openMap"
           >
             مشاهده در نقشه
           </button>

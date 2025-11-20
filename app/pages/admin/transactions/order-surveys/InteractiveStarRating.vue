@@ -5,15 +5,15 @@
            v-for="i in maxStars"
            :key="i"
            type="button"
-           @click="handleClick(i)"
-           @mouseenter="handleHover(i)"
-           @mouseleave="handleMouseLeave"
-           @keydown="handleKeydown"
            :aria-checked="i <= rating"
            :aria-label="`${i} ستاره`"
            class="star-button"
            :class="getStarClass(i)"
            :disabled="disabled"
+           @click="handleClick(i)"
+           @mouseenter="handleHover(i)"
+           @mouseleave="handleMouseLeave"
+           @keydown="handleKeydown"
          >
            <svg 
              class="star-icon" 
@@ -44,7 +44,7 @@
    </template>
    
    <script setup lang="ts">
-   import { ref, computed, watch } from 'vue'
+   import { computed, ref, watch } from 'vue'
    
    interface Props {
      modelValue?: number
@@ -116,7 +116,7 @@
      }
    }
    
-   const getStarClass = (starIndex: number) => {
+   const getStarClass = () => {
      const baseClasses = [
        'star-button',
        'transition-all',
@@ -142,7 +142,7 @@
      return [...baseClasses, sizeClasses[props.size], stateClasses].join(' ')
    }
    
-   const getStarIconClass = (starIndex: number) => {
+   const getStarIconClass = () => {
      const sizeClasses = {
        sm: 'w-5 h-5',
        md: 'w-6 h-6',

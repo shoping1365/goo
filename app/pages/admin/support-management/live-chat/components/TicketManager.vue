@@ -8,8 +8,8 @@
         مدیریت تیکت‌ها
       </h3>
       <button 
-        @click="showNewTicketModal = true"
         class="px-4 py-2 text-sm font-medium text-white bg-orange-500 rounded-lg hover:bg-orange-600 transition-colors"
+        @click="showNewTicketModal = true"
       >
         تیکت جدید
       </button>
@@ -40,13 +40,13 @@
       <button 
         v-for="filter in ticketFilters"
         :key="filter.id"
-        @click="activeTicketFilter = filter.id"
         :class="[
           activeTicketFilter === filter.id
             ? 'bg-orange-500 text-white'
             : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
           'px-3 py-1 text-sm rounded-lg transition-colors'
         ]"
+        @click="activeTicketFilter = filter.id"
       >
         {{ filter.name }}
       </button>
@@ -57,11 +57,11 @@
       <div 
         v-for="ticket in filteredTickets" 
         :key="ticket.id"
-        @click="selectTicket(ticket)"
         :class="[
           selectedTicket?.id === ticket.id ? 'ring-2 ring-orange-500' : '',
           'p-6 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors'
         ]"
+        @click="selectTicket(ticket)"
       >
         <div class="flex items-start justify-between">
           <div class="flex-1">
@@ -99,8 +99,8 @@
               {{ ticket.unreadMessages }}
             </div>
             <button 
-              @click.stop="assignTicket(ticket)"
               class="text-xs text-blue-600 hover:text-blue-800"
+              @click.stop="assignTicket(ticket)"
             >
               {{ ticket.assignedTo ? 'تغییر مسئول' : 'اختصاص' }}
             </button>
@@ -115,14 +115,14 @@
         <h4 class="text-lg font-medium text-gray-900">جزئیات تیکت #{{ selectedTicket.id }}</h4>
         <div class="flex space-x-2 space-x-reverse">
           <button 
-            @click="updateTicketStatus(selectedTicket, 'in_progress')"
             class="px-3 py-1 text-xs bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            @click="updateTicketStatus(selectedTicket, 'in_progress')"
           >
             شروع بررسی
           </button>
           <button 
-            @click="updateTicketStatus(selectedTicket, 'resolved')"
             class="px-3 py-1 text-xs bg-green-500 text-white rounded-lg hover:bg-green-600"
+            @click="updateTicketStatus(selectedTicket, 'resolved')"
           >
             حل شده
           </button>
@@ -177,14 +177,14 @@
           <div class="bg-white px-6 py-6">
             <div class="flex items-center justify-between mb-6">
               <h3 class="text-xl font-bold text-gray-900">تیکت جدید</h3>
-              <button @click="showNewTicketModal = false" class="text-gray-400 hover:text-gray-600">
+              <button class="text-gray-400 hover:text-gray-600" @click="showNewTicketModal = false">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
               </button>
             </div>
             
-            <form @submit.prevent="createTicket" class="space-y-4">
+            <form class="space-y-4" @submit.prevent="createTicket">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">عنوان</label>
                 <input 
@@ -238,8 +238,8 @@
               <div class="flex justify-end space-x-3 space-x-reverse">
                 <button 
                   type="button"
-                  @click="showNewTicketModal = false"
                   class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200"
+                  @click="showNewTicketModal = false"
                 >
                   انصراف
                 </button>
@@ -259,12 +259,35 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
+
+interface TicketMessage {
+  id: number
+  sender: string
+  content: string
+  timestamp: Date
+}
+
+interface Ticket {
+  id: number
+  title: string
+  description: string
+  customerName: string
+  customerEmail: string
+  customerPhone: string
+  category: string
+  priority: string
+  status: string
+  assignedTo: string | null
+  unreadMessages: number
+  createdAt: Date
+  messages: TicketMessage[]
+}
 
 // Reactive data
 const showNewTicketModal = ref(false)
 const activeTicketFilter = ref('all')
-const selectedTicket = ref(null)
+const selectedTicket = ref<Ticket | null>(null)
 
 // Ticket stats
 const ticketStats = ref({
@@ -284,7 +307,7 @@ const ticketFilters = ref([
 ])
 
 // Tickets data
-const tickets = ref([
+const tickets = ref<Ticket[]>([
   {
     id: 1001,
     title: 'مشکل در پرداخت آنلاین',
@@ -376,22 +399,22 @@ const filteredTickets = computed(() => {
 })
 
 // Methods
-const selectTicket = (ticket: any) => {
+const selectTicket = (ticket: Ticket) => {
   selectedTicket.value = ticket
 }
 
-const assignTicket = (ticket: any) => {
+const assignTicket = (ticket: Ticket) => {
   ticket.assignedTo = 'شما'
-  console.log('Ticket assigned:', ticket.id)
+  // console.log('Ticket assigned:', ticket.id)
 }
 
-const updateTicketStatus = (ticket: any, status: string) => {
+const updateTicketStatus = (ticket: Ticket, status: string) => {
   ticket.status = status
-  console.log('Ticket status updated:', ticket.id, status)
+  // console.log('Ticket status updated:', ticket.id, status)
 }
 
 const createTicket = () => {
-  const ticket = {
+  const ticket: Ticket = {
     id: Date.now(),
     title: newTicket.value.title,
     description: newTicket.value.description,
@@ -411,7 +434,7 @@ const createTicket = () => {
   showNewTicketModal.value = false
   newTicket.value = { title: '', category: '', priority: 'medium', description: '' }
   
-  console.log('New ticket created:', ticket)
+  // console.log('New ticket created:', ticket)
 }
 
 const getPriorityColor = (priority: string): string => {
@@ -466,4 +489,4 @@ const formatDate = (timestamp: Date): string => {
 
 <style scoped>
 /* Custom styles for ticket manager */
-</style> 
+</style>

@@ -17,36 +17,38 @@ export default defineEventHandler(async (event): Promise<FooterDeleteResponse> =
       }
     }
 
-    console.log('Deleting admin footer:', id)
+    // console.log('Deleting admin footer:', id)
 
     try {
       await fetchGo(event, `/api/admin/footer-settings/${id}`, {
         method: 'DELETE'
       })
-    } catch (fetchErr: any) {
-      console.error('Admin footer delete failed:', {
-        statusCode: fetchErr?.statusCode,
-        status: fetchErr?.status,
-        message: fetchErr?.message,
-        data: fetchErr?.data
-      })
+    } catch (fetchErr: unknown) {
+      const err = fetchErr as { data?: { message?: string; error?: string }; message?: string }
+      // console.error('Admin footer delete failed:', {
+      //   statusCode: err?.statusCode,
+      //   status: err?.status,
+      //   message: err?.message,
+      //   data: err?.data
+      // })
       return {
         success: false,
-        message: fetchErr?.data?.message || fetchErr?.data?.error || fetchErr?.message || 'خطا در حذف فوتر'
+        message: err?.data?.message || err?.data?.error || err?.message || 'خطا در حذف فوتر'
       }
     }
 
-    console.log('Admin footer deleted successfully.')
+    // console.log('Admin footer deleted successfully.')
 
     return {
       success: true,
       message: 'فوتر با موفقیت حذف شد'
     }
-  } catch (error: any) {
-    console.error('Unexpected error during admin footer delete:', error)
+  } catch (error: unknown) {
+    const err = error as { data?: { message?: string; error?: string }; message?: string }
+    // console.error('Unexpected error during admin footer delete:', error)
     return {
       success: false,
-      message: error?.data?.message || error?.data?.error || error?.message || 'خطا در حذف فوتر'
+      message: err?.data?.message || err?.data?.error || err?.message || 'خطا در حذف فوتر'
     }
   }
 })

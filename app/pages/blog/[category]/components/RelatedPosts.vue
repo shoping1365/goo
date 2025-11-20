@@ -28,7 +28,7 @@ interface Post {
   created_at: string
 }
 
-const props = defineProps<{
+defineProps<{
   posts?: Post[]
   category?: string
   formatDate?: (date: string) => string

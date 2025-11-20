@@ -10,10 +10,10 @@
         <div class="flex items-center justify-between mb-6">
           <h3 class="text-lg font-medium text-gray-900">ویرایشگر محتوا - {{ testName }}</h3>
           <div class="flex items-center space-x-4 space-x-reverse">
-            <button @click="previewContent" class="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200">
+            <button class="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200" @click="previewContent">
               پیش‌نمایش
             </button>
-            <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">
+            <button class="text-gray-400 hover:text-gray-600" @click="$emit('close')">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -124,7 +124,7 @@
                       class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="URL تصویر"
                     />
-                    <button @click="selectImage('A')" class="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
+                    <button class="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200" @click="selectImage('A')">
                       انتخاب
                     </button>
                   </div>
@@ -138,7 +138,7 @@
                       class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="URL تصویر"
                     />
-                    <button @click="selectImage('B')" class="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
+                    <button class="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200" @click="selectImage('B')">
                       انتخاب
                     </button>
                   </div>
@@ -256,7 +256,7 @@
                       class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="URL تصویر"
                     />
-                    <button @click="selectImage('A')" class="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
+                    <button class="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200" @click="selectImage('A')">
                       انتخاب
                     </button>
                   </div>
@@ -270,7 +270,7 @@
                       class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="URL تصویر"
                     />
-                    <button @click="selectImage('B')" class="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
+                    <button class="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200" @click="selectImage('B')">
                       انتخاب
                     </button>
                   </div>
@@ -284,10 +284,10 @@
             <div class="flex items-center justify-between">
               <h4 class="text-md font-semibold text-gray-900">پیش‌نمایش زنده</h4>
               <div class="flex space-x-2 space-x-reverse">
-                <button @click="previewVersion = 'A'" :class="previewVersion === 'A' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'" class="px-3 py-1 rounded-lg text-sm">
+                <button :class="previewVersion === 'A' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'" class="px-3 py-1 rounded-lg text-sm" @click="previewVersion = 'A'">
                   نسخه A
                 </button>
-                <button @click="previewVersion = 'B'" :class="previewVersion === 'B' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'" class="px-3 py-1 rounded-lg text-sm">
+                <button :class="previewVersion === 'B' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'" class="px-3 py-1 rounded-lg text-sm" @click="previewVersion = 'B'">
                   نسخه B
                 </button>
               </div>
@@ -351,14 +351,14 @@
         <!-- دکمه‌های عملیات -->
         <div class="flex items-center justify-end space-x-4 space-x-reverse pt-6 border-t mt-6">
           <button
-            @click="$emit('close')"
             class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+            @click="$emit('close')"
           >
             انصراف
           </button>
           <button
-            @click="saveContent"
             class="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700"
+            @click="saveContent"
           >
             ذخیره محتوا
           </button>

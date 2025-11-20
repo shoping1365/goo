@@ -4,7 +4,7 @@
       <div class="card-header">
         <h3>محدودیت‌های نوع سفارش</h3>
         <div class="toggle-switch">
-          <input type="checkbox" v-model="enabled" id="orderTypeToggle" />
+          <input id="orderTypeToggle" v-model="enabled" type="checkbox" />
           <label for="orderTypeToggle"></label>
         </div>
       </div>
@@ -14,8 +14,8 @@
           <div class="order-types">
             <label v-for="type in orderTypes" :key="type.value" class="order-type-checkbox">
               <input
-                  type="checkbox"
                   v-model="allowedOrderTypes"
+                  type="checkbox"
                   :value="type.value"
               />
               {{ type.label }}
@@ -27,8 +27,8 @@
           <div class="prohibited-order-types">
             <label v-for="type in orderTypes" :key="type.value" class="order-type-checkbox">
               <input
-                  type="checkbox"
                   v-model="prohibitedOrderTypes"
+                  type="checkbox"
                   :value="type.value"
               />
               {{ type.label }}

@@ -40,8 +40,8 @@
         </div>
         <div>
           <button
-            @click="loadUsers"
             class="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            @click="loadUsers"
           >
             جستجو
           </button>
@@ -133,22 +133,22 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex space-x-2">
                   <button
-                    @click="viewUserDetails(user)"
                     class="text-blue-600 hover:text-blue-900"
+                    @click="viewUserDetails(user)"
                   >
                     جزئیات
                   </button>
                   <button
                     v-if="!user.is_blocked"
-                    @click="blockUser(user)"
                     class="text-red-600 hover:text-red-900"
+                    @click="blockUser(user)"
                   >
                     بلاک
                   </button>
                   <button
                     v-else
-                    @click="unblockUser(user)"
                     class="text-green-600 hover:text-green-900"
+                    @click="unblockUser(user)"
                   >
                     آنبلاک
                   </button>
@@ -163,16 +163,16 @@
       <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
         <div class="flex-1 flex justify-between sm:hidden">
           <button
-            @click="previousPage"
             :disabled="currentPage === 1"
             class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+            @click="previousPage"
           >
             قبلی
           </button>
           <button
-            @click="nextPage"
             :disabled="currentPage >= totalPages"
             class="mr-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+            @click="nextPage"
           >
             بعدی
           </button>
@@ -192,29 +192,29 @@
           <div>
             <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
               <button
-                @click="previousPage"
                 :disabled="currentPage === 1"
                 class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                @click="previousPage"
               >
                 قبلی
               </button>
               <button
                 v-for="page in visiblePages"
                 :key="page"
-                @click="goToPage(page)"
                 :class="[
                   'relative inline-flex items-center px-4 py-2 border text-sm font-medium',
                   page === currentPage
                     ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
                     : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
                 ]"
+                @click="goToPage(page)"
               >
                 {{ page }}
               </button>
               <button
-                @click="nextPage"
                 :disabled="currentPage >= totalPages"
                 class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                @click="nextPage"
               >
                 بعدی
               </button>
@@ -231,8 +231,8 @@
           <div class="flex justify-between items-center mb-4">
             <h3 class="text-lg font-medium text-gray-900">جزئیات کاربر</h3>
             <button
-              @click="selectedUser = null"
               class="text-gray-400 hover:text-gray-600"
+              @click="selectedUser = null"
             >
               ✕
             </button>
@@ -275,22 +275,22 @@
 
           <div class="flex justify-end space-x-3">
             <button
-              @click="selectedUser = null"
               class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+              @click="selectedUser = null"
             >
               بستن
             </button>
             <button
               v-if="!selectedUser.is_blocked"
-              @click="blockUser(selectedUser)"
               class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+              @click="blockUser(selectedUser)"
             >
               بلاک کاربر
             </button>
             <button
               v-else
-              @click="unblockUser(selectedUser)"
               class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+              @click="unblockUser(selectedUser)"
             >
               آنبلاک کاربر
             </button>
@@ -315,15 +315,15 @@
           </div>
           <div class="flex justify-end space-x-3">
             <button
-              @click="showBlockModal = false"
               class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+              @click="showBlockModal = false"
             >
               انصراف
             </button>
             <button
-              @click="confirmBlockUser"
               :disabled="!blockReason.trim()"
               class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50"
+              @click="confirmBlockUser"
             >
               بلاک کردن
             </button>

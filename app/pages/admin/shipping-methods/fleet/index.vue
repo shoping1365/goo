@@ -161,7 +161,8 @@
                 <span v-else class="text-sm text-gray-500">بدون راننده</span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full" 
+                <span
+class="inline-flex px-2 py-1 text-xs font-semibold rounded-full" 
                       :class="getStatusClass(vehicle.status)">
                   {{ getStatusText(vehicle.status) }}
                 </span>
@@ -238,7 +239,7 @@
 <script setup>
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // آمار ناوگان
 const fleetStats = ref({

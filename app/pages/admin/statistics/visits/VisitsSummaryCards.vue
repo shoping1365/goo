@@ -87,7 +87,7 @@ interface Stats {
   growth: number
 }
 
-const props = defineProps<{
+defineProps<{
   stats: Stats
 }>()
 </script> 

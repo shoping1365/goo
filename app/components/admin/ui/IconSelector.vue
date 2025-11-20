@@ -4,24 +4,24 @@
     <div class="mb-4">
       <div class="flex space-x-1 space-x-reverse">
         <button
-          @click="activeTab = 'icon'"
           :class="[
             'flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-colors',
             activeTab === 'icon'
               ? 'bg-blue-100 text-blue-700'
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           ]"
+          @click="activeTab = 'icon'"
         >
           آیکون
         </button>
         <button
-          @click="activeTab = 'image'"
           :class="[
             'flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-colors',
             activeTab === 'image'
               ? 'bg-blue-100 text-blue-700'
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           ]"
+          @click="activeTab = 'image'"
         >
           تصویر
         </button>
@@ -36,13 +36,13 @@
           <button
             v-for="category in iconCategories"
             :key="category.name"
-            @click="selectedCategory = category.name"
             :class="[
               'px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap',
               selectedCategory === category.name
                 ? 'bg-blue-100 text-blue-700'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             ]"
+            @click="selectedCategory = category.name"
           >
             {{ category.label }}
           </button>
@@ -54,9 +54,9 @@
         <button
           v-for="icon in filteredIcons"
           :key="icon"
-          @click="selectIcon(icon)"
           class="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center"
           :class="{ 'bg-blue-100 border-blue-300': selectedIcon === icon }"
+          @click="selectIcon(icon)"
         >
           <i :class="icon" class="text-lg text-gray-600"></i>
         </button>
@@ -84,8 +84,8 @@
             class="w-20 h-20 object-cover rounded-lg border border-gray-200"
           />
           <button
-            @click="removeSelectedImage"
             class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+            @click="removeSelectedImage"
           >
             ×
           </button>
@@ -95,10 +95,10 @@
       <!-- Image Upload Area -->
       <div class="mb-4">
         <div
+          class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-blue-400 transition-colors"
           @click="triggerFileInput"
           @dragover.prevent
           @drop.prevent="handleFileDrop"
-          class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-blue-400 transition-colors"
         >
           <div class="text-gray-500">
             <svg class="mx-auto h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -128,9 +128,9 @@
             class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
           />
           <button
-            @click="loadImageFromUrl"
             :disabled="!imageUrl"
             class="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-md text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            @click="loadImageFromUrl"
           >
             بارگذاری
           </button>
@@ -186,15 +186,15 @@
     <!-- Actions -->
     <div class="mt-4 flex space-x-2 space-x-reverse">
       <button
-        @click="confirmSelection"
         :disabled="!hasSelection"
         class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        @click="confirmSelection"
       >
         انتخاب
       </button>
       <button
-        @click="closeModal"
         class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+        @click="closeModal"
       >
         انصراف
       </button>

@@ -13,7 +13,7 @@
           <option value="month">ماه جاری</option>
           <option value="year">سال جاری</option>
         </select>
-        <button @click="refreshStats" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
+        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700" @click="refreshStats">
           بروزرسانی
         </button>
       </div>

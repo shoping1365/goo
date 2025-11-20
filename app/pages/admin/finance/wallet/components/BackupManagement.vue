@@ -9,46 +9,46 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button
-            @click="activeTab = 'overview'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'overview'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'overview'"
           >
             نمای کلی
           </button>
           <button
-            @click="activeTab = 'backup'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'backup'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'backup'"
           >
             پشتیبان‌گیری
           </button>
           <button
-            @click="activeTab = 'restore'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'restore'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'restore'"
           >
             بازیابی
           </button>
           <button
-            @click="activeTab = 'settings'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'settings'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'settings'"
           >
             تنظیمات
           </button>
@@ -122,9 +122,11 @@
             <h3 class="text-lg font-semibold text-gray-900 mb-4">روند پشتیبان‌گیری (7 روز گذشته)</h3>
             <div class="h-64 flex items-end space-x-2 space-x-reverse overflow-x-auto">
               <div v-for="(day, index) in backupTrend" :key="index" class="flex-shrink-0 flex flex-col items-center min-w-16">
-                <div class="w-full bg-gray-200 rounded-t relative"
+                <div
+class="w-full bg-gray-200 rounded-t relative"
                      :style="{ height: getChartHeight(day.size) + 'px' }">
-                  <div class="w-full bg-gradient-to-t from-green-500 to-green-600 rounded-t transition-all duration-300 absolute bottom-0"
+                  <div
+class="w-full bg-gradient-to-t from-green-500 to-green-600 rounded-t transition-all duration-300 absolute bottom-0"
                        :style="{ height: getChartHeight(day.size) + 'px' }"></div>
                 </div>
                 <span class="text-xs text-gray-500 mt-1 text-center">{{ day.date }}</span>
@@ -170,15 +172,15 @@
                 <h4 class="font-medium text-gray-900 mb-3">نوع پشتیبان‌گیری</h4>
                 <div class="space-y-3">
                   <div class="flex items-center">
-                    <input type="radio" v-model="manualBackup.type" value="full" class="text-blue-600 focus:ring-blue-500">
+                    <input v-model="manualBackup.type" type="radio" value="full" class="text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">پشتیبان کامل</label>
                   </div>
                   <div class="flex items-center">
-                    <input type="radio" v-model="manualBackup.type" value="incremental" class="text-blue-600 focus:ring-blue-500">
+                    <input v-model="manualBackup.type" type="radio" value="incremental" class="text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">پشتیبان افزایشی</label>
                   </div>
                   <div class="flex items-center">
-                    <input type="radio" v-model="manualBackup.type" value="differential" class="text-blue-600 focus:ring-blue-500">
+                    <input v-model="manualBackup.type" type="radio" value="differential" class="text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">پشتیبان تفاضلی</label>
                   </div>
                 </div>
@@ -187,22 +189,22 @@
                 <h4 class="font-medium text-gray-900 mb-3">تنظیمات اضافی</h4>
                 <div class="space-y-3">
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="manualBackup.compress" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <input v-model="manualBackup.compress" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">فشرده‌سازی</label>
                   </div>
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="manualBackup.encrypt" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <input v-model="manualBackup.encrypt" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">رمزگذاری</label>
                   </div>
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="manualBackup.verify" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <input v-model="manualBackup.verify" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">تأیید یکپارچگی</label>
                   </div>
                 </div>
               </div>
             </div>
             <div class="mt-6">
-              <button @click="createManualBackup" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+              <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors" @click="createManualBackup">
                 ایجاد پشتیبان
               </button>
             </div>
@@ -279,7 +281,7 @@
               </div>
             </div>
             <div class="mt-6">
-              <button @click="startRestore" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">
+              <button class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors" @click="startRestore">
                 شروع بازیابی
               </button>
             </div>
@@ -372,15 +374,15 @@
                 <h4 class="font-medium text-gray-900 mb-3">محل ذخیره</h4>
                 <div class="space-y-3">
                   <div class="flex items-center">
-                    <input type="radio" v-model="backupSettings.storage" value="local" class="text-blue-600 focus:ring-blue-500">
+                    <input v-model="backupSettings.storage" type="radio" value="local" class="text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">ذخیره محلی</label>
                   </div>
                   <div class="flex items-center">
-                    <input type="radio" v-model="backupSettings.storage" value="cloud" class="text-blue-600 focus:ring-blue-500">
+                    <input v-model="backupSettings.storage" type="radio" value="cloud" class="text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">ذخیره ابری</label>
                   </div>
                   <div class="flex items-center">
-                    <input type="radio" v-model="backupSettings.storage" value="both" class="text-blue-600 focus:ring-blue-500">
+                    <input v-model="backupSettings.storage" type="radio" value="both" class="text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">هر دو</label>
                   </div>
                 </div>
@@ -389,22 +391,22 @@
                 <h4 class="font-medium text-gray-900 mb-3">تنظیمات امنیت</h4>
                 <div class="space-y-3">
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="backupSettings.encrypt" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <input v-model="backupSettings.encrypt" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">رمزگذاری پشتیبان‌ها</label>
                   </div>
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="backupSettings.verify" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <input v-model="backupSettings.verify" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">تأیید یکپارچگی</label>
                   </div>
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="backupSettings.notify" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <input v-model="backupSettings.notify" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">اعلان پس از پشتیبان‌گیری</label>
                   </div>
                 </div>
               </div>
             </div>
             <div class="mt-6">
-              <button @click="saveBackupSettings" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+              <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors" @click="saveBackupSettings">
                 ذخیره تنظیمات
               </button>
             </div>

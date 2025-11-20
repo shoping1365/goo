@@ -8,32 +8,39 @@
          <!-- منوی تب‌ها -->
      <div class="mb-8">
        <nav class="flex flex-wrap gap-2 border-b border-gray-200">
-         <button @click="activeTab = 'departments'"
-           :class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeTab === 'departments' ? 'bg-white border-x border-t border-b-0 border-gray-200 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']">
+         <button
+:class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeTab === 'departments' ? 'bg-white border-x border-t border-b-0 border-gray-200 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']"
+           @click="activeTab = 'departments'">
            دپارتمان بندی
          </button>
-         <button @click="activeTab = 'workingHours'"
-           :class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeTab === 'workingHours' ? 'bg-white border-x border-t border-b-0 border-gray-200 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']">
+         <button
+:class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeTab === 'workingHours' ? 'bg-white border-x border-t border-b-0 border-gray-200 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']"
+           @click="activeTab = 'workingHours'">
            زمان‌های کاری
          </button>
-         <button @click="activeTab = 'waitingMode'"
-           :class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeTab === 'waitingMode' ? 'bg-white border-x border-t border-b-0 border-gray-200 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']">
+         <button
+:class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeTab === 'waitingMode' ? 'bg-white border-x border-t border-b-0 border-gray-200 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']"
+           @click="activeTab = 'waitingMode'">
            حالت انتظار
          </button>
-         <button @click="activeTab = 'smartMessages'"
-           :class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeTab === 'smartMessages' ? 'bg-white border-x border-t border-b-0 border-gray-200 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']">
+         <button
+:class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeTab === 'smartMessages' ? 'bg-white border-x border-t border-b-0 border-gray-200 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']"
+           @click="activeTab = 'smartMessages'">
            هوشمند سازی
          </button>
-         <button @click="activeTab = 'formBuilder'"
-           :class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeTab === 'formBuilder' ? 'bg-white border-x border-t border-b-0 border-gray-200 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']">
+         <button
+:class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeTab === 'formBuilder' ? 'bg-white border-x border-t border-b-0 border-gray-200 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']"
+           @click="activeTab = 'formBuilder'">
            ایجاد فرم
          </button>
-        <button @click="activeTab = 'rateLimit'"
-          :class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeTab === 'rateLimit' ? 'bg-white border-x border-t border-b-0 border-gray-200 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']">
+        <button
+:class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeTab === 'rateLimit' ? 'bg-white border-x border-t border-b-0 border-gray-200 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']"
+          @click="activeTab = 'rateLimit'">
           نرخ پیام
         </button>
-        <button @click="activeTab = 'security'"
-          :class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeTab === 'security' ? 'bg-white border-x border-t border-b-0 border-gray-200 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']">
+        <button
+:class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeTab === 'security' ? 'bg-white border-x border-t border-b-0 border-gray-200 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']"
+          @click="activeTab = 'security'">
           امنیت چت
         </button>
 
@@ -57,7 +64,7 @@
           <div class="flex flex-col lg:flex-row gap-6">
             <!-- دکمه ایجاد تیم جدید -->
             <div class="lg:w-1/3">
-              <button @click="showCreateTeamModal = true" class="w-full bg-purple-600 text-white py-4 px-6 rounded-lg hover:bg-purple-700 transition-colors font-medium">
+              <button class="w-full bg-purple-600 text-white py-4 px-6 rounded-lg hover:bg-purple-700 transition-colors font-medium" @click="showCreateTeamModal = true">
                 ایجاد تیم جدید
               </button>
             </div>
@@ -77,10 +84,10 @@
                        </div>
                      </div>
                      <div class="flex space-x-2 space-x-reverse">
-                       <button @click="showEditTeamModal = true; currentTeam = team" class="w-6 h-6 bg-blue-500 rounded flex items-center justify-center">
+                       <button class="w-6 h-6 bg-blue-500 rounded flex items-center justify-center" @click="showEditTeamModal = true; currentTeam = team">
                          <span class="text-white text-xs">✏️</span>
                        </button>
-                       <button @click="deleteTeam(team.id)" class="w-6 h-6 bg-red-500 rounded flex items-center justify-center">
+                       <button class="w-6 h-6 bg-red-500 rounded flex items-center justify-center" @click="deleteTeam(team.id)">
                          <span class="text-white text-xs">🗑️</span>
                        </button>
                      </div>
@@ -139,7 +146,7 @@
              <p class="text-gray-600 mb-4">
                در صورتی که زمان کاری تعریف نکرده باشید، کل هفته زمان‌های کاری شما محسوب می‌شود و تنظیمات زمان‌های غیر کاری اعمال نخواهند شد.
              </p>
-             <button @click="showWorkingHoursModal = true" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors font-medium">
+             <button class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors font-medium" @click="showWorkingHoursModal = true">
                افزودن زمان کاری
              </button>
            </div>
@@ -163,7 +170,7 @@
                    <span class="text-sm">✏️</span>
                  </button>
                  <label class="relative inline-flex items-center cursor-pointer">
-                   <input type="checkbox" v-model="offlineSettings.offlineMessage" class="sr-only peer">
+                   <input v-model="offlineSettings.offlineMessage" type="checkbox" class="sr-only peer">
                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                  </label>
                </div>
@@ -177,7 +184,7 @@
                  <span class="text-sm text-gray-700">تغییر به حالت آنلاین</span>
                </div>
                <label class="relative inline-flex items-center cursor-pointer">
-                 <input type="checkbox" v-model="offlineSettings.changeToOnline" class="sr-only peer">
+                 <input v-model="offlineSettings.changeToOnline" type="checkbox" class="sr-only peer">
                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                </label>
              </div>
@@ -190,7 +197,7 @@
                  <span class="text-sm text-gray-700">فعال/غیرفعال کردن ارسال پیام‌های هوشمند</span>
                </div>
                <label class="relative inline-flex items-center cursor-pointer">
-                 <input type="checkbox" v-model="offlineSettings.smartMessages" class="sr-only peer">
+                 <input v-model="offlineSettings.smartMessages" type="checkbox" class="sr-only peer">
                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                </label>
              </div>
@@ -203,7 +210,7 @@
                  <span class="text-sm text-gray-700">ارسال پیام‌ها به تلگرام</span>
                </div>
                <label class="relative inline-flex items-center cursor-pointer">
-                 <input type="checkbox" v-model="offlineSettings.sendToTelegram" class="sr-only peer">
+                 <input v-model="offlineSettings.sendToTelegram" type="checkbox" class="sr-only peer">
                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                </label>
              </div>
@@ -216,7 +223,7 @@
                  <span class="text-sm text-gray-700">تغییر آیکون ابزارک به حالت خواب</span>
                </div>
                <label class="relative inline-flex items-center cursor-pointer">
-                 <input type="checkbox" v-model="offlineSettings.sleepMode" class="sr-only peer">
+                 <input v-model="offlineSettings.sleepMode" type="checkbox" class="sr-only peer">
                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                </label>
              </div>
@@ -229,7 +236,7 @@
                  <span class="text-sm text-gray-700">مخفی کردن ابزارک</span>
                </div>
                <label class="relative inline-flex items-center cursor-pointer">
-                 <input type="checkbox" v-model="offlineSettings.hideWidget" class="sr-only peer">
+                 <input v-model="offlineSettings.hideWidget" type="checkbox" class="sr-only peer">
                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                </label>
              </div>
@@ -242,7 +249,7 @@
                  <span class="text-sm text-gray-700">غیرفعال کردن امکان چت</span>
                </div>
                <label class="relative inline-flex items-center cursor-pointer">
-                 <input type="checkbox" v-model="offlineSettings.disableChat" class="sr-only peer">
+                 <input v-model="offlineSettings.disableChat" type="checkbox" class="sr-only peer">
                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                </label>
              </div>
@@ -274,7 +281,7 @@
                <p class="text-purple-100 mb-4">
                  حتی زمانی که تمامی اپراتورهای شما مشغول هستند همچنان به مشتریان خود توجه کنید
                </p>
-               <button @click="openCreateOperationModal" class="bg-white text-purple-600 px-6 py-3 rounded-lg hover:bg-purple-50 transition-colors font-medium">
+               <button class="bg-white text-purple-600 px-6 py-3 rounded-lg hover:bg-purple-50 transition-colors font-medium" @click="openCreateOperationModal">
                  ایجاد عملیات جدید
                </button>
              </div>
@@ -296,8 +303,8 @@
                        </div>
                      </div>
                      <div class="flex space-x-2 space-x-reverse">
-                       <button @click="openEditOperationModal(operation)" class="text-white hover:text-purple-200 text-sm">✏️</button>
-                       <button @click="deleteOperation(operation.id)" class="text-white hover:text-red-200 text-sm">✕</button>
+                       <button class="text-white hover:text-purple-200 text-sm" @click="openEditOperationModal(operation)">✏️</button>
+                       <button class="text-white hover:text-red-200 text-sm" @click="deleteOperation(operation.id)">✕</button>
                      </div>
                    </div>
                  </div>
@@ -325,7 +332,7 @@
              </p>
            </div>
            <div class="flex flex-col space-y-3 space-y-reverse">
-             <button @click="showCreateSmartMessageModal = true" class="bg-white text-purple-600 px-6 py-3 rounded-lg hover:bg-purple-50 transition-colors font-medium">
+             <button class="bg-white text-purple-600 px-6 py-3 rounded-lg hover:bg-purple-50 transition-colors font-medium" @click="showCreateSmartMessageModal = true">
                پیام هوشمند جدید
              </button>
              <a href="#" class="text-purple-100 hover:text-white text-sm flex items-center space-x-2 space-x-reverse">
@@ -394,10 +401,10 @@
                  </td>
                  <td class="py-4 px-4">
                    <div class="flex items-center space-x-2 space-x-reverse">
-                     <button @click="editSmartMessage(message)" class="text-gray-500 hover:text-blue-600">
+                     <button class="text-gray-500 hover:text-blue-600" @click="editSmartMessage(message)">
                        <span class="text-lg">✏️</span>
                      </button>
-                     <button @click="deleteSmartMessage(message.id)" class="text-gray-500 hover:text-red-600">
+                     <button class="text-gray-500 hover:text-red-600" @click="deleteSmartMessage(message.id)">
                        <span class="text-lg">🗑️</span>
                      </button>
                    </div>
@@ -422,7 +429,7 @@
          <!-- هدر مودال -->
          <div class="bg-gradient-to-r from-purple-600 to-purple-700 text-white p-6">
            <div class="flex justify-between items-center">
-             <button @click="closeSmartMessageModal" class="text-white hover:text-purple-200 text-sm">
+             <button class="text-white hover:text-purple-200 text-sm" @click="closeSmartMessageModal">
                بازگشت
              </button>
              <div class="flex items-center space-x-4 space-x-reverse">
@@ -434,16 +441,19 @@
            <!-- تب‌های ناوبری -->
            <div class="mt-4">
              <nav class="flex space-x-1 space-x-reverse">
-               <button @click="activeSmartMessageTab = 'content'" 
-                 :class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeSmartMessageTab === 'content' ? 'bg-white text-purple-600' : 'text-purple-200 hover:text-white']">
+               <button
+:class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeSmartMessageTab === 'content' ? 'bg-white text-purple-600' : 'text-purple-200 hover:text-white']" 
+                 @click="activeSmartMessageTab = 'content'">
                  محتوا
                </button>
-               <button @click="activeSmartMessageTab = 'condition'" 
-                 :class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeSmartMessageTab === 'condition' ? 'bg-white text-purple-600' : 'text-purple-200 hover:text-white']">
+               <button
+:class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeSmartMessageTab === 'condition' ? 'bg-white text-purple-600' : 'text-purple-200 hover:text-white']" 
+                 @click="activeSmartMessageTab = 'condition'">
                  شرط
                </button>
-               <button @click="activeSmartMessageTab = 'publishTime'" 
-                 :class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeSmartMessageTab === 'publishTime' ? 'bg-white text-purple-600' : 'text-purple-200 hover:text-white']">
+               <button
+:class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeSmartMessageTab === 'publishTime' ? 'bg-white text-purple-600' : 'text-purple-200 hover:text-white']" 
+                 @click="activeSmartMessageTab = 'publishTime'">
                  زمان انتشار
                </button>
              </nav>
@@ -470,7 +480,7 @@
                        <span class="text-gray-400">💬</span>
                        <span class="text-gray-400">📎</span>
                        <span class="text-gray-400">@</span>
-                       <input type="text" v-model="smartMessageForm.content" placeholder="اینجا تایپ کنید." class="flex-1 text-sm focus:outline-none">
+                       <input v-model="smartMessageForm.content" type="text" placeholder="اینجا تایپ کنید." class="flex-1 text-sm focus:outline-none">
                      </div>
                    </div>
                  </div>
@@ -542,21 +552,21 @@
                  <label class="block text-sm font-medium text-gray-700 mb-2">ارسال به عنوان</label>
                  <div class="space-y-3">
                    <div class="flex items-center space-x-3 space-x-reverse">
-                     <input type="radio" v-model="smartMessageForm.displayType" value="full" class="text-purple-600 focus:ring-purple-500">
+                     <input v-model="smartMessageForm.displayType" type="radio" value="full" class="text-purple-600 focus:ring-purple-500">
                      <div>
                        <div class="font-medium text-gray-900">پیام کامل</div>
                        <div class="text-sm text-gray-600">پیام به صورت کامل نمایش داده می‌شود.</div>
                      </div>
                    </div>
                    <div class="flex items-center space-x-3 space-x-reverse">
-                     <input type="radio" v-model="smartMessageForm.displayType" value="short" class="text-purple-600 focus:ring-purple-500">
+                     <input v-model="smartMessageForm.displayType" type="radio" value="short" class="text-purple-600 focus:ring-purple-500">
                      <div>
                        <div class="font-medium text-gray-900">پیام کوتاه</div>
                        <div class="text-sm text-gray-600">خلاصه‌ای از متن پیام نمایش داده می‌شود.</div>
                      </div>
                    </div>
                    <div class="flex items-center space-x-3 space-x-reverse">
-                     <input type="radio" v-model="smartMessageForm.displayType" value="notification" class="text-purple-600 focus:ring-purple-500">
+                     <input v-model="smartMessageForm.displayType" type="radio" value="notification" class="text-purple-600 focus:ring-purple-500">
                      <div>
                        <div class="font-medium text-gray-900">اعلان</div>
                        <div class="text-sm text-gray-600">نمایش دایره کوچک در بالای ابزارک</div>
@@ -582,7 +592,7 @@
                  <div class="flex items-center justify-between">
                    <span class="text-sm font-medium text-gray-700">برای هر بازدید کننده یک بار ارسال</span>
                    <label class="relative inline-flex items-center cursor-pointer">
-                     <input type="checkbox" v-model="smartMessageForm.sendOncePerVisitor" class="sr-only peer">
+                     <input v-model="smartMessageForm.sendOncePerVisitor" type="checkbox" class="sr-only peer">
                      <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
                    </label>
                  </div>
@@ -590,7 +600,7 @@
                  <div class="flex items-center justify-between">
                    <span class="text-sm font-medium text-gray-700">ارسال به همراه صدا</span>
                    <label class="relative inline-flex items-center cursor-pointer">
-                     <input type="checkbox" v-model="smartMessageForm.withSound" class="sr-only peer">
+                     <input v-model="smartMessageForm.withSound" type="checkbox" class="sr-only peer">
                      <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
                    </label>
                  </div>
@@ -598,7 +608,7 @@
                  <div class="flex items-center justify-between">
                    <span class="text-sm font-medium text-gray-700">در موبایل نیز ارسال شود</span>
                    <label class="relative inline-flex items-center cursor-pointer">
-                     <input type="checkbox" v-model="smartMessageForm.sendOnMobile" class="sr-only peer">
+                     <input v-model="smartMessageForm.sendOnMobile" type="checkbox" class="sr-only peer">
                      <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
                    </label>
                  </div>
@@ -619,7 +629,7 @@
                  <!-- لیست شرط‌ها -->
                  <div class="space-y-3">
                    <div v-for="(condition, index) in smartMessageForm.conditions" :key="index" class="flex items-center space-x-2 space-x-reverse p-3 bg-gray-50 rounded-lg">
-                     <button @click="removeCondition(index)" class="text-red-500 hover:text-red-700">✕</button>
+                     <button class="text-red-500 hover:text-red-700" @click="removeCondition(index)">✕</button>
                      <select v-model="condition.type" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
                        <option value="time_on_page">زمان در صفحه</option>
                        <option value="scroll_percentage">درصد اسکرول</option>
@@ -631,7 +641,7 @@
                  </div>
 
                  <!-- دکمه افزودن شرط -->
-                 <button @click="addCondition" class="flex items-center space-x-2 space-x-reverse text-purple-600 hover:text-purple-700 text-sm">
+                 <button class="flex items-center space-x-2 space-x-reverse text-purple-600 hover:text-purple-700 text-sm" @click="addCondition">
                    <span>+</span>
                    <span>افزودن شرط</span>
                  </button>
@@ -654,11 +664,11 @@
                  <label class="block text-sm font-medium text-gray-700 mb-2">پایان ارسال</label>
                  <div class="space-y-3">
                    <div class="flex items-center space-x-3 space-x-reverse">
-                     <input type="radio" v-model="smartMessageForm.endType" value="never" class="text-purple-600 focus:ring-purple-500">
+                     <input v-model="smartMessageForm.endType" type="radio" value="never" class="text-purple-600 focus:ring-purple-500">
                      <span class="text-sm text-gray-700">هیچ وقت</span>
                    </div>
                    <div class="flex items-center space-x-3 space-x-reverse">
-                     <input type="radio" v-model="smartMessageForm.endType" value="specific" class="text-purple-600 focus:ring-purple-500">
+                     <input v-model="smartMessageForm.endType" type="radio" value="specific" class="text-purple-600 focus:ring-purple-500">
                      <span class="text-sm text-gray-700">تنظیم زمان خاص</span>
                    </div>
                  </div>
@@ -674,15 +684,15 @@
                  <label class="block text-sm font-medium text-gray-700 mb-2">تنظیم روز و ساعتهایی که این چت میتواند ارسال شود</label>
                  <div class="space-y-3">
                    <div class="flex items-center space-x-3 space-x-reverse">
-                     <input type="radio" v-model="smartMessageForm.scheduleType" value="always" class="text-purple-600 focus:ring-purple-500">
+                     <input v-model="smartMessageForm.scheduleType" type="radio" value="always" class="text-purple-600 focus:ring-purple-500">
                      <span class="text-sm text-gray-700">هر روز هر ساعتی</span>
                    </div>
                    <div class="flex items-center space-x-3 space-x-reverse">
-                     <input type="radio" v-model="smartMessageForm.scheduleType" value="working_hours" class="text-purple-600 focus:ring-purple-500">
+                     <input v-model="smartMessageForm.scheduleType" type="radio" value="working_hours" class="text-purple-600 focus:ring-purple-500">
                      <span class="text-sm text-gray-700">در طول زمانهای کاری</span>
                    </div>
                    <div class="flex items-center space-x-3 space-x-reverse">
-                     <input type="radio" v-model="smartMessageForm.scheduleType" value="non_working_hours" class="text-purple-600 focus:ring-purple-500">
+                     <input v-model="smartMessageForm.scheduleType" type="radio" value="non_working_hours" class="text-purple-600 focus:ring-purple-500">
                      <span class="text-sm text-gray-700">در طول زمانهای غیرکاری</span>
                    </div>
                  </div>
@@ -694,10 +704,10 @@
          <!-- فوتر -->
          <div class="border-t border-gray-200 p-6">
            <div class="flex justify-end space-x-4 space-x-reverse">
-             <button @click="closeSmartMessageModal" class="px-6 py-2 text-sm font-medium text-purple-600 bg-purple-50 border border-purple-200 rounded-md hover:bg-purple-100">
+             <button class="px-6 py-2 text-sm font-medium text-purple-600 bg-purple-50 border border-purple-200 rounded-md hover:bg-purple-100" @click="closeSmartMessageModal">
                انصراف
              </button>
-             <button @click="saveSmartMessage" class="px-6 py-2 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700">
+             <button class="px-6 py-2 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700" @click="saveSmartMessage">
                انتشار
              </button>
            </div>
@@ -717,7 +727,7 @@
              </p>
            </div>
            <div class="flex flex-col space-y-3 space-y-reverse">
-             <button @click="openCreateFormModal" class="bg-white text-purple-600 px-6 py-3 rounded-lg hover:bg-purple-50 transition-colors font-medium">
+             <button class="bg-white text-purple-600 px-6 py-3 rounded-lg hover:bg-purple-50 transition-colors font-medium" @click="openCreateFormModal">
                ایجاد فرم جدید
              </button>
              <a href="#" class="text-purple-100 hover:text-white text-sm flex items-center space-x-2 space-x-reverse">
@@ -765,10 +775,10 @@
                  <td class="py-4 px-4 text-gray-600 text-sm">{{ form.lastUpdate }}</td>
                  <td class="py-4 px-4">
                    <div class="flex items-center space-x-2 space-x-reverse">
-                     <button @click="editForm(form)" class="text-gray-500 hover:text-blue-600">
+                     <button class="text-gray-500 hover:text-blue-600" @click="editForm(form)">
                        <span class="text-lg">✏️</span>
                      </button>
-                     <button @click="deleteForm(form.id)" class="text-gray-500 hover:text-red-600">
+                     <button class="text-gray-500 hover:text-red-600" @click="deleteForm(form.id)">
                        <span class="text-lg">🗑️</span>
                      </button>
                    </div>
@@ -792,7 +802,7 @@
        <div class="bg-white rounded-lg p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
          <div class="flex justify-between items-center mb-6">
            <h2 class="text-xl font-bold text-gray-900">افزودن تیم جدید</h2>
-           <button @click="showCreateTeamModal = false" class="text-gray-400 hover:text-gray-600">
+           <button class="text-gray-400 hover:text-gray-600" @click="showCreateTeamModal = false">
              <span class="text-2xl">×</span>
            </button>
          </div>
@@ -846,7 +856,7 @@
                      <p class="text-xs text-gray-600">{{ operator.email }}</p>
                    </div>
                  </div>
-                 <button @click="removeOperator(operator.id)" class="text-red-600 hover:text-red-700 text-sm">حذف</button>
+                 <button class="text-red-600 hover:text-red-700 text-sm" @click="removeOperator(operator.id)">حذف</button>
                </div>
              </div>
            </div>
@@ -854,10 +864,10 @@
 
          <!-- دکمه‌های عملیات -->
          <div class="flex justify-end space-x-4 space-x-reverse mt-6">
-           <button @click="showCreateTeamModal = false" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200">
+           <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200" @click="showCreateTeamModal = false">
              انصراف
            </button>
-           <button @click="createTeam" class="px-4 py-2 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700">
+           <button class="px-4 py-2 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700" @click="createTeam">
              تایید
            </button>
          </div>
@@ -869,7 +879,7 @@
        <div class="bg-white rounded-lg p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
          <div class="flex justify-between items-center mb-6">
            <h2 class="text-xl font-bold text-gray-900">ویرایش تیم</h2>
-           <button @click="showEditTeamModal = false" class="text-gray-400 hover:text-gray-600">
+           <button class="text-gray-400 hover:text-gray-600" @click="showEditTeamModal = false">
              <span class="text-2xl">×</span>
            </button>
          </div>
@@ -923,7 +933,7 @@
                      <p class="text-xs text-gray-600">{{ operator.email }}</p>
                    </div>
                  </div>
-                 <button @click="removeOperatorFromTeam(operator.id)" class="text-red-600 hover:text-red-700 text-sm">حذف</button>
+                 <button class="text-red-600 hover:text-red-700 text-sm" @click="removeOperatorFromTeam(operator.id)">حذف</button>
                </div>
              </div>
            </div>
@@ -931,10 +941,10 @@
 
          <!-- دکمه‌های عملیات -->
          <div class="flex justify-end space-x-4 space-x-reverse mt-6">
-           <button @click="showEditTeamModal = false" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200">
+           <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200" @click="showEditTeamModal = false">
              انصراف
            </button>
-           <button @click="updateTeam" class="px-4 py-2 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700">
+           <button class="px-4 py-2 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700" @click="updateTeam">
              تایید
            </button>
          </div>
@@ -946,7 +956,7 @@
        <div class="bg-white rounded-lg p-6 w-full max-w-6xl mx-4 max-h-[90vh] overflow-y-auto">
          <div class="flex justify-between items-center mb-6">
            <h2 class="text-xl font-bold text-gray-900">{{ isEditingOperation ? 'ویرایش عملیات' : 'ایجاد عملیات جدید' }}</h2>
-           <button @click="closeOperationModal" class="text-gray-400 hover:text-gray-600">
+           <button class="text-gray-400 hover:text-gray-600" @click="closeOperationModal">
              <span class="text-2xl">×</span>
            </button>
          </div>
@@ -978,7 +988,7 @@
              <div class="flex items-center justify-between">
                <span class="text-sm font-medium text-gray-700">ارسال به همراه صدا</span>
                <label class="relative inline-flex items-center cursor-pointer">
-                 <input type="checkbox" v-model="operationForm.withSound" class="sr-only peer">
+                 <input v-model="operationForm.withSound" type="checkbox" class="sr-only peer">
                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
                </label>
              </div>
@@ -1065,10 +1075,10 @@
 
          <!-- دکمه‌های عملیات -->
          <div class="flex justify-end space-x-4 space-x-reverse mt-8">
-           <button @click="closeOperationModal" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200">
+           <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200" @click="closeOperationModal">
              انصراف
            </button>
-           <button @click="saveOperation" class="px-4 py-2 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700">
+           <button class="px-4 py-2 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700" @click="saveOperation">
              انتشار
            </button>
          </div>
@@ -1077,10 +1087,10 @@
 
      <!-- دکمه‌های عملیات -->
      <div class="mt-8 flex justify-end space-x-4 space-x-reverse">
-       <button @click="resetForm" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
+       <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500" @click="resetForm">
          بازنشانی
        </button>
-       <button @click="saveAllSettings" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+       <button class="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500" @click="saveAllSettings">
          ذخیره تنظیمات
        </button>
      </div>
@@ -1092,12 +1102,12 @@
        <!-- هدر مودال -->
        <div class="bg-gradient-to-r from-purple-600 to-purple-700 text-white p-6">
          <div class="flex justify-between items-center">
-           <button @click="closeFormModal" class="text-white hover:text-purple-200 text-sm">
+           <button class="text-white hover:text-purple-200 text-sm" @click="closeFormModal">
              بازگشت
            </button>
            <div class="flex items-center space-x-4 space-x-reverse">
              <h2 class="text-xl font-bold">{{ isEditingForm ? 'ویرایش فرم' : 'ایجاد فرم جدید' }}</h2>
-             <input type="checkbox" v-model="formBuilderForm.isDisabled" class="rounded border-white text-purple-600 focus:ring-purple-500">
+             <input v-model="formBuilderForm.isDisabled" type="checkbox" class="rounded border-white text-purple-600 focus:ring-purple-500">
            </div>
          </div>
        </div>
@@ -1224,7 +1234,7 @@
              <div>
                <div class="flex justify-between items-center mb-4">
                  <h3 class="text-lg font-medium text-gray-900">فیلدهای فرم</h3>
-                 <button @click="addFormField" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 text-sm">
+                 <button class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 text-sm" @click="addFormField">
                    افزودن فیلد
                  </button>
                </div>
@@ -1233,7 +1243,7 @@
                  <div v-for="(field, index) in formBuilderForm.fields" :key="index" class="border border-gray-200 rounded-lg p-6">
                    <div class="flex justify-between items-start mb-3">
                      <h4 class="text-sm font-medium text-gray-900">فیلد {{ index + 1 }}</h4>
-                     <button @click="removeFormField(index)" class="text-red-500 hover:text-red-700 text-sm">
+                     <button class="text-red-500 hover:text-red-700 text-sm" @click="removeFormField(index)">
                        حذف
                      </button>
                    </div>
@@ -1275,14 +1285,14 @@
 
        <!-- فوتر مودال -->
        <div class="bg-gray-50 px-6 py-4 flex justify-between items-center">
-         <button @click="closeFormModal" class="px-4 py-2 text-gray-600 hover:text-gray-800">
+         <button class="px-4 py-2 text-gray-600 hover:text-gray-800" @click="closeFormModal">
            انصراف
          </button>
          <div class="flex space-x-3 space-x-reverse">
-           <button @click="resetFormBuilderForm" class="px-4 py-2 text-gray-600 hover:text-gray-800">
+           <button class="px-4 py-2 text-gray-600 hover:text-gray-800" @click="resetFormBuilderForm">
              بازنشانی
            </button>
-           <button @click="saveForm" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">
+           <button class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700" @click="saveForm">
              {{ isEditingForm ? 'ویرایش' : 'ایجاد' }}
            </button>
          </div>
@@ -1303,24 +1313,24 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">مشتری (customer)</label>
-          <input type="number" v-model.number="rateLimit.customer" min="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" />
+          <input v-model.number="rateLimit.customer" type="number" min="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">اپراتور (operator)</label>
-          <input type="number" v-model.number="rateLimit.operator" min="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" />
+          <input v-model.number="rateLimit.operator" type="number" min="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">ادمین (admin)</label>
-          <input type="number" v-model.number="rateLimit.admin" min="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" />
+          <input v-model.number="rateLimit.admin" type="number" min="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">بازه زمانی (ثانیه)</label>
-          <input type="number" v-model.number="rateLimit.window" min="10" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" />
+          <input v-model.number="rateLimit.window" type="number" min="10" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" />
         </div>
       </div>
       <p class="text-sm text-gray-500">در صورت عبور کاربر از حد مجاز، پیام او رد شده و خطای <code>rate limit exceeded</code> دریافت می‌کند. پس از گذشت یک دقیقه امکان ارسال مجدد وجود دارد.</p>
       <div class="flex justify-end">
-        <button @click="saveRateLimit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">ثبت تغییرات</button>
+        <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium" @click="saveRateLimit">ثبت تغییرات</button>
       </div>
     </div>
   </div>
@@ -1339,27 +1349,31 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">حداکثر طول پیام (کاراکتر)</label>
-            <input type="number" v-model.number="securitySettings.maxMessageLength" min="100" max="5000" 
+            <input
+v-model.number="securitySettings.maxMessageLength" type="number" min="100" max="5000" 
                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm" />
             <p class="text-xs text-gray-500 mt-1">پیش‌فرض: 1000 کاراکتر</p>
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">مدت مسدود کردن (دقیقه)</label>
-            <input type="number" v-model.number="securitySettings.blockDuration" min="1" max="1440" 
+            <input
+v-model.number="securitySettings.blockDuration" type="number" min="1" max="1440" 
                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm" />
             <p class="text-xs text-gray-500 mt-1">مدت مسدود کردن برای تهدیدات critical (پیش‌فرض: 10 دقیقه)</p>
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">مدت cooldown (ثانیه)</label>
-            <input type="number" v-model.number="securitySettings.cooldownDuration" min="10" max="300" 
+            <input
+v-model.number="securitySettings.cooldownDuration" type="number" min="10" max="300" 
                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm" />
             <p class="text-xs text-gray-500 mt-1">مدت cooldown برای تهدیدات high (پیش‌فرض: 30 ثانیه)</p>
           </div>
           
           <div class="flex items-center">
-            <input type="checkbox" v-model="securitySettings.strictMode" id="strictMode"
+            <input
+id="strictMode" v-model="securitySettings.strictMode" type="checkbox"
                    class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" />
             <label for="strictMode" class="mr-2 block text-sm text-gray-900">حالت امنیت سخت</label>
           </div>
@@ -1374,10 +1388,11 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">انواع فایل مجاز</label>
             <div class="space-y-2">
-              <div v-for="(fileType, index) in securitySettings.allowedFileTypes" :key="index" 
+              <div
+v-for="(fileType, index) in securitySettings.allowedFileTypes" :key="index" 
                    class="flex items-center justify-between p-2 bg-gray-50 rounded">
                 <span class="text-sm font-mono">{{ fileType }}</span>
-                <button @click="removeFileType(index)" class="text-red-600 hover:text-red-800">
+                <button class="text-red-600 hover:text-red-800" @click="removeFileType(index)">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                   </svg>
@@ -1385,11 +1400,13 @@
               </div>
             </div>
             <div class="flex mt-2">
-              <input type="text" v-model="newFileType" placeholder="مثال: image/png" 
+              <input
+v-model="newFileType" type="text" placeholder="مثال: image/png" 
                      class="flex-1 rounded-r-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm" 
                      @keydown.enter="addFileType" />
-              <button @click="addFileType" 
-                      class="px-3 py-2 bg-red-600 text-white rounded-l-md hover:bg-red-700 text-sm">
+              <button
+class="px-3 py-2 bg-red-600 text-white rounded-l-md hover:bg-red-700 text-sm" 
+                      @click="addFileType">
                 افزودن
               </button>
             </div>
@@ -1397,7 +1414,8 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">حداکثر اندازه فایل (MB)</label>
-            <input type="number" v-model.number="securitySettings.maxFileSize" min="1" max="100" 
+            <input
+v-model.number="securitySettings.maxFileSize" type="number" min="1" max="100" 
                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm" />
             <p class="text-xs text-gray-500 mt-1">پیش‌فرض: 5 مگابایت</p>
           </div>
@@ -1413,10 +1431,11 @@
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">کلمات ممنوع</label>
           <div class="space-y-2 max-h-40 overflow-y-auto">
-            <div v-for="(word, index) in securitySettings.bannedWords" :key="index" 
+            <div
+v-for="(word, index) in securitySettings.bannedWords" :key="index" 
                  class="flex items-center justify-between p-2 bg-gray-50 rounded">
               <span class="text-sm">{{ word }}</span>
-              <button @click="removeBannedWord(index)" class="text-red-600 hover:text-red-800">
+              <button class="text-red-600 hover:text-red-800" @click="removeBannedWord(index)">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -1424,11 +1443,13 @@
             </div>
           </div>
           <div class="flex mt-2">
-            <input type="text" v-model="newBannedWord" placeholder="کلمه ممنوع جدید" 
+            <input
+v-model="newBannedWord" type="text" placeholder="کلمه ممنوع جدید" 
                    class="flex-1 rounded-r-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm" 
                    @keydown.enter="addBannedWord" />
-            <button @click="addBannedWord" 
-                    class="px-3 py-2 bg-red-600 text-white rounded-l-md hover:bg-red-700 text-sm">
+            <button
+class="px-3 py-2 bg-red-600 text-white rounded-l-md hover:bg-red-700 text-sm" 
+                    @click="addBannedWord">
               افزودن
             </button>
           </div>
@@ -1438,10 +1459,11 @@
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">دامنه‌های مسدود</label>
           <div class="space-y-2 max-h-40 overflow-y-auto">
-            <div v-for="(domain, index) in securitySettings.blockedDomains" :key="index" 
+            <div
+v-for="(domain, index) in securitySettings.blockedDomains" :key="index" 
                  class="flex items-center justify-between p-2 bg-gray-50 rounded">
               <span class="text-sm font-mono">{{ domain }}</span>
-              <button @click="removeBlockedDomain(index)" class="text-red-600 hover:text-red-800">
+              <button class="text-red-600 hover:text-red-800" @click="removeBlockedDomain(index)">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -1449,11 +1471,13 @@
             </div>
           </div>
           <div class="flex mt-2">
-            <input type="text" v-model="newBlockedDomain" placeholder="مثال: evil.com" 
+            <input
+v-model="newBlockedDomain" type="text" placeholder="مثال: evil.com" 
                    class="flex-1 rounded-r-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm" 
                    @keydown.enter="addBlockedDomain" />
-            <button @click="addBlockedDomain" 
-                    class="px-3 py-2 bg-red-600 text-white rounded-l-md hover:bg-red-700 text-sm">
+            <button
+class="px-3 py-2 bg-red-600 text-white rounded-l-md hover:bg-red-700 text-sm" 
+                    @click="addBlockedDomain">
               افزودن
             </button>
           </div>
@@ -1488,21 +1512,25 @@
     <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
       <div class="flex flex-wrap gap-6 justify-between items-center">
         <div class="flex flex-wrap gap-2">
-          <button @click="testSecurity" 
-                  class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+          <button
+class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium" 
+                  @click="testSecurity">
             🧪 تست امنیت
           </button>
-          <button @click="resetToDefaults" 
-                  class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium">
+          <button
+class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium" 
+                  @click="resetToDefaults">
             🔄 بازگشت به پیش‌فرض
           </button>
-          <button @click="exportSecurityLogs" 
-                  class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium">
+          <button
+class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium" 
+                  @click="exportSecurityLogs">
             📥 دانلود لاگ‌ها
           </button>
         </div>
-        <button @click="saveSecuritySettings" 
-                class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium">
+        <button
+class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium" 
+                @click="saveSecuritySettings">
           💾 ذخیره تنظیمات
         </button>
       </div>
@@ -1581,7 +1609,7 @@ interface SmartMessage {
   withSound?: boolean
   sendOnMobile?: boolean
   conditionType?: string
-  conditions?: any[]
+  conditions?: unknown[]
   startDate?: string
   startTime?: string
   endType?: string
@@ -1603,11 +1631,11 @@ interface Form {
   isRequired: boolean
   sendBeforeFirstMessage: boolean
   isDisabled: boolean
-  fields: any[]
+  fields: unknown[]
 }
 
 declare const definePageMeta: (meta: { layout?: string }) => void
-declare const $fetch: <T = any>(url: string, options?: { method?: string; body?: any; responseType?: string }) => Promise<T>
+declare const $fetch: <T = unknown>(url: string, options?: { method?: string; body?: unknown; responseType?: string }) => Promise<T>
 declare const $toast: { success: (msg: string) => void; error: (msg: string) => void; warning: (msg: string) => void }
 
 export default {
@@ -1738,7 +1766,7 @@ const securityStats = ref({
   threatLevel: 'پایین'
 })
 
-async function fetchRateLimit() {
+async function _fetchRateLimit() {
   try {
     const response: ApiResponse<RateLimitData> = await $fetch('/api/admin/chat/settings/rate-limit')
     if (response.success && response.data) {
@@ -1769,7 +1797,7 @@ async function saveRateLimit() {
       $toast.success('تنظیمات با موفقیت ذخیره شد')
     }
   } catch (err) {
-    console.error('Error saving rate limit:', err)
+    // console.error('Error saving rate limit:', err)
     $toast.error('خطا در ذخیره تنظیمات')
   }
 }
@@ -1782,7 +1810,7 @@ function addFileType() {
   }
 }
 
-function removeFileType(index) {
+function removeFileType(index: number) {
   securitySettings.value.allowedFileTypes.splice(index, 1)
 }
 
@@ -1793,7 +1821,7 @@ function addBannedWord() {
   }
 }
 
-function removeBannedWord(index) {
+function removeBannedWord(index: number) {
   securitySettings.value.bannedWords.splice(index, 1)
 }
 
@@ -1804,18 +1832,18 @@ function addBlockedDomain() {
   }
 }
 
-function removeBlockedDomain(index) {
+function removeBlockedDomain(index: number) {
   securitySettings.value.blockedDomains.splice(index, 1)
 }
 
-async function fetchSecuritySettings() {
+async function _fetchSecuritySettings() {
   try {
     const response: ApiResponse<SecurityData> = await $fetch('/api/admin/chat/settings/security')
     if (response.success && response.data) {
       securitySettings.value = { ...securitySettings.value, ...response.data }
     }
   } catch (err) {
-    console.error('Error fetching security settings:', err)
+    // console.error('Error fetching security settings:', err)
   }
 }
 
@@ -1829,12 +1857,12 @@ async function saveSecuritySettings() {
       $toast.success('تنظیمات امنیتی با موفقیت ذخیره شد')
     }
   } catch (err) {
-    console.error('Error saving security settings:', err)
+    // console.error('Error saving security settings:', err)
     $toast.error('خطا در ذخیره تنظیمات امنیتی')
   }
 }
 
-async function fetchSecurityStats() {
+async function _fetchSecurityStats() {
   try {
     const response: ApiResponse<SecurityStats> = await $fetch('/api/admin/chat/security/stats')
     if (response.success && response.data) {
@@ -1844,7 +1872,7 @@ async function fetchSecurityStats() {
       }
     }
   } catch (err) {
-    console.error('Error fetching security stats:', err)
+    // console.error('Error fetching security stats:', err)
   }
 }
 
@@ -1861,7 +1889,7 @@ function testSecurity() {
       $toast.warning(`⚠️ برخی تست‌ها ناموفق: ${passed}/${total} تست (${passRate}%)`)
     }
   }).catch(err => {
-    console.error('Error running security tests:', err)
+    // console.error('Error running security tests:', err)
     $toast.error('خطا در اجرای تست‌های امنیت')
   })
 }
@@ -1914,7 +1942,7 @@ async function exportSecurityLogs() {
     
     $toast.success('لاگ‌های امنیتی دانلود شد')
   } catch (err) {
-    console.error('Error exporting security logs:', err)
+    // console.error('Error exporting security logs:', err)
     $toast.error('خطا در دانلود لاگ‌های امنیتی')
   }
 }
@@ -2191,7 +2219,7 @@ function saveOperation() {
 }
 
 // باز کردن مودال ایجاد پیام هوشمند جدید
-function openCreateSmartMessageModal() {
+function _openCreateSmartMessageModal() {
   isEditingSmartMessage.value = false
   currentSmartMessage.value = {}
   resetSmartMessageForm()
@@ -2503,7 +2531,7 @@ function saveSmartMessage() {
       lastUpdate: messageData.lastUpdate || new Date().toLocaleDateString('fa-IR'),
       updatedBy: messageData.updatedBy || { name: '۱. آذری', email: 'azitaazari۵۸۵۰@gmail.com' }
     }
-    smartMessages.value.push(newMessage as SmartMessage & { conditions: any[] })
+    smartMessages.value.push(newMessage as SmartMessage & { conditions: unknown[] })
     alert('پیام هوشمند با موفقیت ایجاد شد')
   }
 
@@ -2526,7 +2554,7 @@ function resetForm() {
 // ذخیره تمام تنظیمات
 function saveAllSettings() {
   // اینجا کد ذخیره تنظیمات در دیتابیس قرار می‌گیرد
-  console.log('تنظیمات تیم‌ها ذخیره شد:', teams.value)
+  // console.log('تنظیمات تیم‌ها ذخیره شد:', teams.value)
   
   // نمایش پیام موفقیت
   alert('تنظیمات با موفقیت ذخیره شد')
@@ -2542,7 +2570,7 @@ function addFormField() {
 }
 
 // حذف فیلد از فرم
-function removeFormField(index) {
+function removeFormField(index: number) {
   formBuilderForm.value.fields.splice(index, 1)
 }
 </script> 

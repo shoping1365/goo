@@ -5,13 +5,12 @@ declare const goApiFetch: (event: H3Event, endpoint: string, options?: { method?
 declare const isResponseStreamSafe: (event: H3Event) => boolean
 declare const safeSendResponse: (event: H3Event, response: unknown) => boolean
 declare const safeHandleError: (event: H3Event, error: unknown) => boolean
-declare const logStreamStatus: (event: H3Event, status: string) => void
 
 export default defineEventHandler(async (event) => {
   try {
     // بررسی وضعیت response stream
     if (!isResponseStreamSafe(event)) {
-      console.warn('Response stream already closed, skipping request processing')
+      // console.warn('Response stream already closed, skipping request processing')
       return
     }
 
@@ -42,14 +41,13 @@ export default defineEventHandler(async (event) => {
 
     return response
   } catch (error: unknown) {
-    console.error('خطا در به‌روزرسانی تنظیمات امنیتی چت:', error)
+    // console.error('خطا در به‌روزرسانی تنظیمات امنیتی چت:', error)
 
     // بررسی وضعیت response stream قبل از ارسال خطا
     if (!safeHandleError(event, error)) {
       return
     }
 
-    const errorWithStatus = error as { statusCode?: number; message?: string }
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error
     }

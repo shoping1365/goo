@@ -26,7 +26,8 @@
     <ItemsSelectionModal />
 
     <!-- Toast Notification -->
-    <div v-if="showToast" 
+    <div
+v-if="showToast" 
          class="fixed top-6 right-4 z-50 transition-all duration-300"
          :class="toastType === 'success' ? 'bg-green-500' : 'bg-red-500'">
       <div class="text-white px-6 py-3 rounded-lg shadow-lg font-iranyekan">

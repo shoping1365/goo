@@ -9,7 +9,7 @@
             <p class="text-xs text-gray-600 mt-1">مدیریت کامل دسته‌بندی‌ها و ساختار محصولات</p>
           </div>
           <div class="flex space-x-2 space-x-reverse">
-          <button v-if="hasPermission('categories_manage')" @click="showTypeModal = true" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105">
+          <button v-if="hasPermission('categories_manage')" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105" @click="showTypeModal = true">
             <svg fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='w-5 h-5 ml-2'>
               <path stroke-linecap='round' stroke-linejoin='round' d='M12 4v16m8-8H4' />
             </svg>
@@ -93,8 +93,8 @@
               {{ selectedCategories.size }} دسته‌بندی انتخاب شده
             </span>
             <button 
-              @click="selectedCategories.clear(); isAllSelected = false"
               class="text-sm text-blue-600 hover:text-blue-800 underline"
+              @click="selectedCategories.clear(); isAllSelected = false"
             >
               لغو انتخاب
             </button>
@@ -102,8 +102,8 @@
           <div class="flex items-center gap-2">
             <button 
               v-if="canDeleteCategory"
-              @click="bulkDeleteCategories"
               class="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors"
+              @click="bulkDeleteCategories"
             >
               <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -131,7 +131,7 @@
       <div class="flex flex-col md:flex-row items-center gap-6">
         <!-- Search input -->
         <div class="flex-1 w-full">
-              <input v-model="searchTerm" @keyup.enter="applySearch" type="text" id="category-name" class="w-full rounded-lg border border-gray-200 shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 py-3 px-6 text-gray-800 text-base transition-all duration-200" placeholder="نام دسته‌بندی را وارد کنید...">
+              <input id="category-name" v-model="searchTerm" type="text" class="w-full rounded-lg border border-gray-200 shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 py-3 px-6 text-gray-800 text-base transition-all duration-200" placeholder="نام دسته‌بندی را وارد کنید..." @keyup.enter="applySearch">
         </div>
 
         <!-- Filter select -->
@@ -177,8 +177,8 @@
               <input 
                 type="checkbox" 
                 :checked="isAllSelected"
-                @change="toggleSelectAll"
                 class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                @change="toggleSelectAll"
               />
             </th>
             <th class="w-1/12 px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">تصویر</th>
@@ -199,23 +199,23 @@
                 v-if="canDeleteCategory && cat.slug !== 'default'"
                 type="checkbox" 
                 :checked="isCategorySelected(cat.id)"
-                @change="toggleCategorySelection(cat.id)"
                 class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                @change="toggleCategorySelection(cat.id)"
               />
             </td>
             <td class="w-1/12 py-4 pr-6 whitespace-nowrap text-sm text-gray-900 text-right">
               <img 
                 :src="getCategoryThumbnail(cat)" 
-                @error="onImgError($event)" 
-                alt="img"
+                alt="img" 
                 class="object-cover rounded-md shadow-sm border cursor-pointer w-12 h-12 md:w-14 md:h-14 ms-2"
+                @error="onImgError($event)"
                 @click="openModal(cat.id)"
               />
               <ImagePreviewModal
-                :model-value="isModalOpen(cat.id)"
                 v-if="isModalOpen(cat.id)"
+                :model-value="isModalOpen(cat.id)"
                 :image="{ url: getCategoryOriginalImage(cat), name: cat.name }"
-                @update:modelValue="val => { if (!val) closeModal() }"
+                @update:model-value="val => { if (!val) closeModal() }"
               />
             </td>
             <td class="w-1/12 px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-right">{{ cat.id }}</td>
@@ -237,8 +237,8 @@
             <td class="w-1/12 px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-right">
               <span
                 v-if="cat.product_count && cat.product_count>0"
-                @click="openProductsModal(cat)"
-                    class="inline-flex items-center px-2 py-1 rounded-md bg-blue-100 text-blue-800 cursor-pointer hover:bg-blue-200 transition-colors text-xs font-medium"
+                class="inline-flex items-center px-2 py-1 rounded-md bg-blue-100 text-blue-800 cursor-pointer hover:bg-blue-200 transition-colors text-xs font-medium"
+                    @click="openProductsModal(cat)"
               >{{ cat.product_count }}</span>
                   <span v-else class="text-gray-400 text-xs">0</span>
             </td>
@@ -251,7 +251,7 @@
                   </div>
             </td>
             <td class="w-1/12 px-4 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                  <span v-if="editingOrderId !== cat.id" @click="startEditOrder(cat)" class="cursor-pointer hover:underline bg-gray-100 px-2 py-1 rounded text-xs">{{ cat.order || 0 }}</span>
+                  <span v-if="editingOrderId !== cat.id" class="cursor-pointer hover:underline bg-gray-100 px-2 py-1 rounded text-xs" @click="startEditOrder(cat)">{{ cat.order || 0 }}</span>
               <input
                 v-else
                 v-model="editingOrderValue"
@@ -259,10 +259,10 @@
                 min="1"
                 :max="categories.length"
                     class="w-16 border rounded px-1 py-0.5 text-center text-xs"
-                @blur="finishEditOrder(cat)"
-                @keyup="handleOrderInputKey($event, cat)"
                 dir="ltr"
                 autofocus
+                @blur="finishEditOrder(cat)"
+                @keyup="handleOrderInputKey($event, cat)"
               />
             </td>
                 <td class="w-3/12 px-4 py-4 whitespace-nowrap text-sm text-gray-700 text-right">
@@ -285,8 +285,8 @@
                 </NuxtLink>
                     <button 
   v-if="canDeleteCategory && cat.slug !== 'default'"
-  @click="deleteCategory(cat)"
   class="inline-flex items-center px-3 py-1 rounded-md bg-red-50 text-red-600 hover:bg-red-100 transition-colors text-xs font-semibold"
+  @click="deleteCategory(cat)"
 >
   حذف
 </button>
@@ -326,8 +326,8 @@
         <div class="space-y-3">
         <!-- Main category button -->
         <button
-          @click="createMain"
-            class="w-full flex items-center justify-center py-3 px-4 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-blue-500 to-blue-700 shadow-md hover:from-blue-600 hover:to-blue-800 transition-all duration-200 hover:shadow-lg transform hover:scale-105"
+          class="w-full flex items-center justify-center py-3 px-4 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-blue-500 to-blue-700 shadow-md hover:from-blue-600 hover:to-blue-800 transition-all duration-200 hover:shadow-lg transform hover:scale-105"
+            @click="createMain"
         >
             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
@@ -337,8 +337,8 @@
 
         <!-- Sub category button -->
         <button
-          @click="createSub"
-            class="w-full flex items-center justify-center py-3 px-4 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-green-500 to-emerald-600 shadow-md hover:from-green-600 hover:to-emerald-700 transition-all duration-200 hover:shadow-lg transform hover:scale-105"
+          class="w-full flex items-center justify-center py-3 px-4 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-green-500 to-emerald-600 shadow-md hover:from-green-600 hover:to-emerald-700 transition-all duration-200 hover:shadow-lg transform hover:scale-105"
+            @click="createSub"
         >
             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
@@ -348,8 +348,8 @@
 
         <!-- Cancel button -->
         <button
-          @click="showTypeModal = false"
-            class="w-full py-2 px-4 rounded-lg text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors border border-gray-300"
+          class="w-full py-2 px-4 rounded-lg text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors border border-gray-300"
+            @click="showTypeModal = false"
         >
           انصراف
         </button>
@@ -369,7 +369,7 @@
             </div>
             <h2 class="text-lg font-semibold text-gray-900">محصولات «{{ selectedCategory?.name }}»</h2>
           </div>
-          <button @click="showProductsModal=false" class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700 transition-colors flex items-center justify-center">
+          <button class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700 transition-colors flex items-center justify-center" @click="showProductsModal=false">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -406,7 +406,7 @@
           </div>
         </div>
         <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 text-right">
-          <button @click="showProductsModal=false" class="px-4 py-2 rounded-lg bg-gray-600 hover:bg-gray-700 text-white font-medium transition-colors">بستن</button>
+          <button class="px-4 py-2 rounded-lg bg-gray-600 hover:bg-gray-700 text-white font-medium transition-colors" @click="showProductsModal=false">بستن</button>
         </div>
       </div>
     </div>
@@ -432,8 +432,6 @@ import { computed, onActivated, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import Pagination from '~/components/admin/common/Pagination.vue'
 import DeleteConfirmModal from '~/components/common/DeleteConfirmModal.vue'
-import TemplateCard from '~/components/common/TemplateCard.vue'
-import ImagePreviewModal from '~/components/media/ImagePreviewModal.vue'
 import { useAuth } from '~/composables/useAuth'
 import { useNotifier } from '~/composables/useNotifier'
 
@@ -517,7 +515,7 @@ const fetchCategories = async () => {
       }
     });
     categories.value = raw;
-    console.log('دسته‌بندی‌های لود شده:', categories.value);
+    // console.log('دسته‌بندی‌های لود شده:', categories.value);
   } catch (error) {
     console.error('خطا در دریافت دسته‌بندی‌ها:', error);
     categories.value = [];

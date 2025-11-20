@@ -11,7 +11,8 @@
     <div class="flex items-center justify-between bg-white shadow p-6 mb-6 rounded-b-lg">
       <h1 class="text-2xl font-bold text-gray-800">مانیتورینگ دیتابیس</h1>
       <div class="flex gap-2 items-center">
-        <div :class="[
+        <div
+:class="[
           'px-6 py-2 rounded-lg text-white text-lg font-bold',
           connectionStatus === 'connected' ? 'bg-green-500' : 'bg-red-500'
         ]">
@@ -20,15 +21,15 @@
             {{ connectionStatus === 'connected' ? 'متصل' : 'قطع' }}
           </span>
         </div>
-        <button @click="testConnection" class="flex items-center gap-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg shadow">
+        <button class="flex items-center gap-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg shadow" @click="testConnection">
           <span>تست مجدد</span>
           <i class="icon-refresh"></i>
         </button>
-        <button @click="showSettings = true" class="flex items-center gap-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg shadow">
+        <button class="flex items-center gap-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg shadow" @click="showSettings = true">
           <span>تنظیمات</span>
           <i class="icon-settings"></i>
         </button>
-        <button @click="resetDatabase" class="flex items-center gap-1 bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg shadow">
+        <button class="flex items-center gap-1 bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg shadow" @click="resetDatabase">
           <span>ریست دیتابیس</span>
           <i class="icon-reset"></i>
         </button>
@@ -189,8 +190,8 @@
         <div class="p-6 rounded-lg">
           <div class="flex gap-2 mb-4 justify-start">
             <input v-model="query" type="text" placeholder="مثال: SELECT * FROM users LIMIT 5" class="flex-1 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 px-4 py-2 text-left bg-blue-50 ltr:text-left" dir="ltr" />
-            <button @click="runQuery" :disabled="queryLoading" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg shadow disabled:opacity-50">اجرا</button>
-            <button @click="resetQuery" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg">پاک‌سازی</button>
+            <button :disabled="queryLoading" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg shadow disabled:opacity-50" @click="runQuery">اجرا</button>
+            <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg" @click="resetQuery">پاک‌سازی</button>
           </div>
           <div v-if="queryLoading" class="text-blue-600 mb-2">در حال اجرا...</div>
           <div v-if="queryError" class="bg-red-50 border border-red-200 rounded-lg p-6">
@@ -220,7 +221,7 @@
     <!-- باتم‌بار -->
     <div v-if="showSettings" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-2xl relative">
-        <button @click="showSettings = false" class="absolute left-4 top-6 text-gray-500 hover:text-red-500 text-xl">×</button>
+        <button class="absolute left-4 top-6 text-gray-500 hover:text-red-500 text-xl" @click="showSettings = false">×</button>
         <div class="flex gap-2 mb-4 border-b pb-2">
           <button :class="['px-3 py-1 rounded font-bold transition-colors', settingsTab === 'db' ? 'bg-pink-200 text-pink-900' : 'bg-pink-50 text-pink-700 hover:bg-pink-100']" @click="settingsTab = 'db'">تنظیمات دیتابیس</button>
           <button :class="['px-3 py-1 rounded font-bold transition-colors', settingsTab === 'update' ? 'bg-teal-200 text-teal-900' : 'bg-teal-50 text-teal-700 hover:bg-teal-100']" @click="settingsTab = 'update'">تنظیمات بروزرسانی</button>
@@ -252,15 +253,15 @@
             </div>
           </div>
           <div class="flex justify-end gap-2 mt-6">
-            <button @click="showSettings = false" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-4 py-2 rounded transition-colors">انصراف</button>
-            <button @click="applyUpdateSettings" class="bg-green-200 hover:bg-green-300 text-green-900 font-bold px-4 py-2 rounded transition-colors">ذخیره</button>
+            <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-4 py-2 rounded transition-colors" @click="showSettings = false">انصراف</button>
+            <button class="bg-green-200 hover:bg-green-300 text-green-900 font-bold px-4 py-2 rounded transition-colors" @click="applyUpdateSettings">ذخیره</button>
           </div>
         </div>
         <div v-else-if="settingsTab === 'update'">
           <h2 class="text-lg font-bold mb-4">تنظیمات بروزرسانی</h2>
           <div class="space-y-3">
             <div class="flex items-center gap-2">
-              <input type="checkbox" v-model="autoRefresh.enabled" id="auto-refresh-checkbox" />
+              <input id="auto-refresh-checkbox" v-model="autoRefresh.enabled" type="checkbox" />
               <label for="auto-refresh-checkbox" class="text-sm">بروزرسانی خودکار فعال باشد</label>
             </div>
             <div v-if="autoRefresh.enabled">
@@ -269,15 +270,15 @@
             </div>
           </div>
           <div class="flex justify-end gap-2 mt-6">
-            <button @click="showSettings = false" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-4 py-2 rounded transition-colors">انصراف</button>
-            <button @click="applyUpdateSettings" class="bg-green-200 hover:bg-green-300 text-green-900 font-bold px-4 py-2 rounded transition-colors">ذخیره</button>
+            <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-4 py-2 rounded transition-colors" @click="showSettings = false">انصراف</button>
+            <button class="bg-green-200 hover:bg-green-300 text-green-900 font-bold px-4 py-2 rounded transition-colors" @click="applyUpdateSettings">ذخیره</button>
           </div>
         </div>
         <div v-else-if="settingsTab === 'customQuery'">
           <h2 class="text-lg font-bold mb-4">اجزای کوئری دلخواه</h2>
           <div class="space-y-3">
             <div class="flex items-center gap-2">
-              <input type="checkbox" v-model="customQueryAuto.enabled" id="custom-query-auto-checkbox" />
+              <input id="custom-query-auto-checkbox" v-model="customQueryAuto.enabled" type="checkbox" />
               <label for="custom-query-auto-checkbox" class="text-sm">اجرای خودکار کوئری فعال باشد</label>
             </div>
             <div v-if="customQueryAuto.enabled">
@@ -288,22 +289,22 @@
               <label class="block text-sm mb-1">کوئری فعلی</label>
               <div class="flex gap-2 items-center">
                 <textarea v-model="query" class="w-full border rounded px-3 py-2 bg-gray-100 ltr:text-left" rows="2" dir="ltr"></textarea>
-                <button @click="query = 'SELECT * FROM pg_stat_activity LIMIT 5'" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold px-3 py-2 rounded transition-colors">بازنشانی</button>
+                <button class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold px-3 py-2 rounded transition-colors" @click="query = 'SELECT * FROM pg_stat_activity LIMIT 5'">بازنشانی</button>
               </div>
             </div>
             <div class="flex justify-end gap-2 mt-6">
-              <button @click="showSettings = false" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-4 py-2 rounded transition-colors">انصراف</button>
-              <button @click="applyUpdateSettings" class="bg-green-200 hover:bg-green-300 text-green-900 font-bold px-4 py-2 rounded transition-colors">ذخیره</button>
+              <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-4 py-2 rounded transition-colors" @click="showSettings = false">انصراف</button>
+              <button class="bg-green-200 hover:bg-green-300 text-green-900 font-bold px-4 py-2 rounded transition-colors" @click="applyUpdateSettings">ذخیره</button>
             </div>
           </div>
           <div class="mt-6">
             <div class="flex items-center justify-between mb-2">
               <span class="font-bold">۱۰ تست آخر کوئری دلخواه</span>
               <div class="flex gap-2">
-                <button @click="showCustomQueryLogs = !showCustomQueryLogs" class="bg-pink-100 hover:bg-pink-200 text-pink-800 font-bold px-3 py-2 rounded transition-colors text-sm">
+                <button class="bg-pink-100 hover:bg-pink-200 text-pink-800 font-bold px-3 py-2 rounded transition-colors text-sm" @click="showCustomQueryLogs = !showCustomQueryLogs">
                   {{ showCustomQueryLogs ? 'بستن لیست' : 'نمایش لیست' }}
                 </button>
-                <button v-if="showCustomQueryLogs" @click="fetchCustomQueryLogs" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 font-bold px-3 py-2 rounded transition-colors text-sm">بروزرسانی</button>
+                <button v-if="showCustomQueryLogs" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 font-bold px-3 py-2 rounded transition-colors text-sm" @click="fetchCustomQueryLogs">بروزرسانی</button>
               </div>
             </div>
             <div v-if="showCustomQueryLogs">
@@ -378,8 +379,8 @@
             <div class="mt-2 text-gray-600">هسته‌های سیستم: {{ systemInfo.cpuCores }}</div>
           </div>
           <div class="flex justify-end gap-2 mt-6">
-            <button @click="loadPool()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-4 py-2 rounded transition-colors">بازیابی</button>
-            <button @click="savePool()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded transition-colors">اعمال تنظیمات</button>
+            <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-4 py-2 rounded transition-colors" @click="loadPool()">بازیابی</button>
+            <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded transition-colors" @click="savePool()">اعمال تنظیمات</button>
           </div>
         </div>
       </div>

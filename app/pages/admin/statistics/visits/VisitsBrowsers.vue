@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { h } from 'vue'
+import { h } from 'vue';
 
 interface Browser {
   browser: string
@@ -41,7 +41,7 @@ interface Browser {
   percentage: number
 }
 
-const props = defineProps<{
+defineProps<{
   browsers: Browser[]
 }>()
 
@@ -88,4 +88,4 @@ const getProgressClass = (browser: string) => {
   }
   return classes[browser] || 'bg-gray-400'
 }
-</script> 
+</script>

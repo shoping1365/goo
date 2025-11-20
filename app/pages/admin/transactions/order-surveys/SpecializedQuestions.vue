@@ -27,8 +27,8 @@
           <button
               v-for="option in paymentSatisfactionOptions"
               :key="option.value"
-              @click="answers.paymentSatisfaction = option.value"
               :class="['px-5 py-2 rounded-lg font-medium border transition', answers.paymentSatisfaction === option.value ? 'bg-blue-600 text-white border-blue-700' : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-50']"
+              @click="answers.paymentSatisfaction = option.value"
           >
             {{ option.label }}
           </button>
@@ -49,8 +49,8 @@
           <button
               v-for="option in shippingSatisfactionOptions"
               :key="option.value"
-              @click="answers.shippingSatisfaction = option.value"
               :class="['px-5 py-2 rounded-lg font-medium border transition', answers.shippingSatisfaction === option.value ? 'bg-green-600 text-white border-green-700' : 'bg-white text-gray-700 border-gray-300 hover:bg-green-50']"
+              @click="answers.shippingSatisfaction = option.value"
           >
             {{ option.label }}
           </button>
@@ -71,8 +71,8 @@
           <button
               v-for="option in communicationQualityOptions"
               :key="option.value"
-              @click="answers.communicationQuality = option.value"
               :class="['px-5 py-2 rounded-lg font-medium border transition', answers.communicationQuality === option.value ? 'bg-purple-600 text-white border-purple-700' : 'bg-white text-gray-700 border-gray-300 hover:bg-purple-50']"
+              @click="answers.communicationQuality = option.value"
           >
             {{ option.label }}
           </button>
@@ -93,8 +93,8 @@
           <button
               v-for="option in productInfoAccuracyOptions"
               :key="option.value"
-              @click="answers.productInfoAccuracy = option.value"
               :class="['px-5 py-2 rounded-lg font-medium border transition', answers.productInfoAccuracy === option.value ? 'bg-orange-600 text-white border-orange-700' : 'bg-white text-gray-700 border-gray-300 hover:bg-orange-50']"
+              @click="answers.productInfoAccuracy = option.value"
           >
             {{ option.label }}
           </button>
@@ -115,8 +115,8 @@
           <button
               v-for="option in supportResponseSpeedOptions"
               :key="option.value"
-              @click="answers.supportResponseSpeed = option.value"
               :class="['px-5 py-2 rounded-lg font-medium border transition', answers.supportResponseSpeed === option.value ? 'bg-red-600 text-white border-red-700' : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50']"
+              @click="answers.supportResponseSpeed = option.value"
           >
             {{ option.label }}
           </button>

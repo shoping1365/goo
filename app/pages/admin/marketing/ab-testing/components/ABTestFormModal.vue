@@ -11,7 +11,7 @@
           <h3 class="text-lg font-medium text-gray-900">
             {{ editingTest ? 'ویرایش تست' : 'ایجاد تست جدید' }}
           </h3>
-          <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="$emit('close')">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -19,7 +19,7 @@
         </div>
 
         <!-- Form -->
-        <form @submit.prevent="handleSubmit" class="space-y-6">
+        <form class="space-y-6" @submit.prevent="handleSubmit">
           <!-- اطلاعات پایه -->
           <div class="bg-gray-50 rounded-lg p-6">
             <h4 class="text-md font-semibold text-gray-900 mb-4">اطلاعات پایه</h4>
@@ -274,8 +274,8 @@
           <div class="flex items-center justify-end space-x-4 space-x-reverse pt-4 border-t">
             <button
               type="button"
-              @click="$emit('close')"
               class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+              @click="$emit('close')"
             >
               انصراف
             </button>

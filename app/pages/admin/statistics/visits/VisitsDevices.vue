@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { h } from 'vue'
+import { h } from 'vue';
 
 interface Device {
   device: string
@@ -41,7 +41,7 @@ interface Device {
   percentage: number
 }
 
-const props = defineProps<{
+defineProps<{
   devices: Device[]
 }>()
 
@@ -77,4 +77,4 @@ const getProgressClass = (device: string) => {
   }
   return classes[device] || 'bg-gray-400'
 }
-</script> 
+</script>

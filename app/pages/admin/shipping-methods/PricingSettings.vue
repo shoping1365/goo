@@ -16,7 +16,7 @@
     <div class="summary-section">
       <h3>خلاصه تنظیمات قیمت‌گذاری</h3>
       <div class="summary-grid">
-        <div class="summary-item" v-for="(setting, key) in pricingData" :key="key">
+        <div v-for="(setting, key) in pricingData" :key="key" class="summary-item">
           <span class="setting-name">{{ getSettingName(key) }}</span>
           <span class="setting-status" :class="{ active: setting.enabled }">
             {{ setting.enabled ? 'فعال' : 'غیرفعال' }}
@@ -28,15 +28,15 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
-import FlatRatePricing from './FlatRatePricing.vue'
-import WeightBasedPricing from './WeightBasedPricing.vue'
+import { reactive } from 'vue'
 import DistanceBasedPricing from './DistanceBasedPricing.vue'
+import FlatRatePricing from './FlatRatePricing.vue'
 import ItemCountPricing from './ItemCountPricing.vue'
 import OrderValuePricing from './OrderValuePricing.vue'
-import SpecialDiscountPricing from './SpecialDiscountPricing.vue'
 import RegionalPricing from './RegionalPricing.vue'
+import SpecialDiscountPricing from './SpecialDiscountPricing.vue'
 import TimeBasedPricing from './TimeBasedPricing.vue'
+import WeightBasedPricing from './WeightBasedPricing.vue'
 
 const pricingData = reactive({
   flatRate: { enabled: false, price: 0, currency: 'IRR' },

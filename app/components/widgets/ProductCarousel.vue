@@ -25,9 +25,9 @@
           <!-- دکمه‌های ناوبری -->
           <button
             v-show="getProducts().length > getConfig().slidesPerView"
-            @click="prevSlide"
             class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors"
             aria-label="Previous products"
+            @click="prevSlide"
           >
             <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
@@ -36,9 +36,9 @@
 
           <button
             v-show="getProducts().length > getConfig().slidesPerView"
-            @click="nextSlide"
             class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors"
             aria-label="Next products"
+            @click="nextSlide"
           >
             <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -46,7 +46,7 @@
           </button>
 
           <!-- کانتینر اسلایدها -->
-          <div class="overflow-hidden" ref="carouselContainer">
+          <div ref="carouselContainer" class="overflow-hidden">
             <div
               class="flex transition-transform duration-300 ease-in-out"
               :style="{ transform: `translateX(-${getCurrentSlide() * (100 / getConfig().slidesPerView)}%)` }"
@@ -72,7 +72,8 @@
                       </div>
 
                       <!-- تخفیف -->
-                      <div v-if="getConfig().showDiscount && product.discount_percentage"
+                      <div
+v-if="getConfig().showDiscount && product.discount_percentage"
                            class="absolute top-1 right-1 bg-red-500 text-white text-xs px-1 py-0.5 rounded-full">
                         {{ product.discount_percentage }}%
                       </div>
@@ -92,7 +93,8 @@
                     <div v-if="getConfig().showPrice && product.price && isProductInStock(product) && !product.call_for_price" class="mb-1">
                       <div class="flex items-center space-x-1">
                         <span class="text-xs font-bold text-green-600">{{ formatPrice(product.price) }}</span>
-                        <span v-if="product.original_price && product.original_price > product.price"
+                        <span
+v-if="product.original_price && product.original_price > product.price"
                               class="text-xs text-gray-500 line-through">
                           {{ formatPrice(product.original_price) }}
                         </span>
@@ -110,7 +112,8 @@
                     <!-- امتیاز -->
                     <div v-if="getConfig().showRating && product.rating" class="flex items-center space-x-1 mb-1">
                       <div class="flex text-yellow-400">
-                        <i v-for="i in 5" :key="i" class="fas fa-star text-xs"
+                        <i
+v-for="i in 5" :key="i" class="fas fa-star text-xs"
                            :class="{ 'text-gray-300': i > product.rating }"></i>
                       </div>
                       <span class="text-xs text-gray-500">({{ product.rating_count || 0 }})</span>
@@ -118,12 +121,12 @@
 
                     <!-- دکمه افزودن به سبد خرید -->
                     <button
-                      @click="addToCart(product)"
                       :disabled="getAddingToCart() === product.id || !isProductInStock(product) || product.call_for_price"
                       class="w-full py-1 px-2 rounded-md text-xs font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       :class="(isProductInStock(product) && !product.call_for_price)
                         ? 'bg-blue-600 text-white hover:bg-blue-700' 
                         : 'bg-gray-400 text-gray-600 cursor-not-allowed'"
+                      @click="addToCart(product)"
                     >
                       <span v-if="getAddingToCart() === product.id" class="flex items-center justify-center">
                         <div class="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-1"></div>
@@ -147,10 +150,10 @@
             <button
               v-for="n in Math.ceil(getProducts().length / getConfig().slidesPerView)"
               :key="`indicator-${n}`"
-              @click="goToSlide(n - 1)"
               class="w-2 h-2 rounded-full transition-colors"
               :class="getCurrentSlide() === n - 1 ? 'bg-blue-600' : 'bg-gray-300'"
               :aria-label="`Go to slide ${n}`"
+              @click="goToSlide(n - 1)"
             ></button>
           </div>
         </div>
@@ -307,7 +310,7 @@ const addToCart = async (product: Product) => {
     
     if (result.success) {
       // نمایش پیام موفقیت (اختیاری)
-      console.log('محصول با موفقیت به سبد خرید اضافه شد')
+      // console.log('محصول با موفقیت به سبد خرید اضافه شد')
     } else {
       console.error('خطا در افزودن به سبد خرید:', result.message)
     }

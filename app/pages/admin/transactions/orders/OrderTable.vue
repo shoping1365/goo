@@ -17,9 +17,9 @@
         <div class="flex items-center space-x-3 space-x-reverse">
           <!-- دکمه رفرش -->
           <button 
-            @click="$emit('refresh')" 
-            :disabled="loading"
+            :disabled="loading" 
             class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed relative group"
+            @click="$emit('refresh')"
           >
             <svg 
               :class="['w-5 h-5', { 'animate-spin': loading }]" 
@@ -37,7 +37,7 @@
         </div>
       </div>
       <div v-if="selectedOrderIds.length > 2" class="mt-4 flex justify-end">
-        <button @click="handleBulkDelete" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors">حذف سفارشات انتخاب شده</button>
+        <button class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors" @click="handleBulkDelete">حذف سفارشات انتخاب شده</button>
       </div>
     </div>
 
@@ -78,7 +78,7 @@
         <tbody class="bg-white divide-y divide-gray-200">
           <tr v-for="order in orders" :key="order.id" class="hover:bg-gray-50 transition-colors">
             <td class="px-2 py-4 text-center">
-              <input type="checkbox" :value="order.id" v-model="selectedOrderIds" />
+              <input v-model="selectedOrderIds" type="checkbox" :value="order.id" />
             </td>
             <!-- Order Number -->
             <td class="px-6 py-4 whitespace-nowrap">
@@ -161,7 +161,7 @@
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
               <div class="flex items-center space-x-2">
                 <!-- View Details -->
-                <button @click="$emit('view-details', order)" class="text-blue-600 hover:text-blue-900 p-1 rounded transition-colors">
+                <button class="text-blue-600 hover:text-blue-900 p-1 rounded transition-colors" @click="$emit('view-details', order)">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
@@ -176,7 +176,7 @@
                 </NuxtLink>
 
                 <!-- Quick Actions -->
-                <button @click="$emit('quick-actions', order)" class="text-gray-600 hover:text-gray-900 p-1 rounded transition-colors">
+                <button class="text-gray-600 hover:text-gray-900 p-1 rounded transition-colors" @click="$emit('quick-actions', order)">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
                   </svg>
@@ -200,8 +200,8 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue'
 import PersianDateFormatter from '@/components/common/PersianDateFormatter.vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps({
   orders: {
@@ -215,7 +215,7 @@ const props = defineProps({
 })
 
 // استفاده از کامپوزابل تاریخ شمسی
-const { formatPersianDate, formatPersianDateTime } = usePersianDate()
+const { } = usePersianDate()
 
 const emit = defineEmits(['view-details', 'edit-order', 'quick-actions', 'refresh', 'export', 'bulk-delete'])
 
@@ -234,10 +234,6 @@ function handleBulkDelete() {
   emit('bulk-delete', selectedOrderIds.value)
   selectedOrderIds.value = []
 }
-
-watch(selectedOrderIds, (val) => {
-  // Optionally emit selection change if needed
-})
 
 const getStatusText = (status) => {
   const statusMap = {
@@ -310,9 +306,4 @@ const formatPrice = (price) => {
   if (!price) return '0'
   return new Intl.NumberFormat('fa-IR').format(price)
 }
-
-const formatDate = (date) => {
-  if (!date) return 'نامشخص'
-  return new Date(date).toLocaleDateString('fa-IR')
-}
-</script> 
+</script>

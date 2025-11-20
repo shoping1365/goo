@@ -1,9 +1,19 @@
 // State Management مرکزی برای احراز هویت
-import { ref, readonly } from 'vue'
 import { useRequestHeaders } from 'nuxt/app'
+import { readonly, ref } from 'vue'
+
+interface User {
+  id?: number | string
+  username?: string
+  name?: string
+  role?: string
+  role_id?: number
+  permissions?: string[]
+  [key: string]: unknown
+}
 
 // Global state - shared across all components
-const user = ref<any>(null)
+const user = ref<User | null>(null)
 const isAuthenticated = ref(false)
 const isAdmin = ref(false)
 const loading = ref(false)
@@ -12,7 +22,7 @@ const authCookieNames = ['access_token', 'auth-token', 'refresh_token', 'session
 
 export const useAuthState = () => {
   // محاسبه نقش ادمین
-  const calculateIsAdmin = (userData: any): boolean => {
+  const calculateIsAdmin = (userData: User): boolean => {
     if (!userData) return false
 
     const role = (userData.role || '').toLowerCase()
@@ -28,7 +38,7 @@ export const useAuthState = () => {
   }
 
   // به‌روزرسانی اطلاعات کاربر
-  const setUser = (userData: any) => {
+  const setUser = (userData: User) => {
     user.value = userData
     isAuthenticated.value = !!userData
     isAdmin.value = calculateIsAdmin(userData)
@@ -88,7 +98,7 @@ export const useAuthState = () => {
     error.value = null
 
     try {
-      const res = await $fetch<any>('/api/auth/me')
+      const res = await $fetch<{ authenticated: boolean; user: User; role?: string; role_id?: number }>('/api/auth/me')
 
       if (res?.authenticated && res?.user) {
         if (!res.user.role && res.role) {
@@ -102,16 +112,16 @@ export const useAuthState = () => {
         isAuthenticated.value = true
         isAdmin.value = calculateIsAdmin(res.user)
 
-        console.log('✅ User authenticated:', {
-          id: res.user.id,
-          username: res.user.username,
-          role: res.user.role
-        })
+        // console.log('✅ User authenticated:', {
+        //   id: res.user.id,
+        //   username: res.user.username,
+        //   role: res.user.role
+        // })
       } else {
-        console.log('❌ User not authenticated')
+        // console.log('❌ User not authenticated')
         clearAuthState()
       }
-    } catch (fetchError) {
+    } catch {
       // اگر error بود (مثلاً 404)، فقط user را null کنید
       clearAuthState()
     } finally {

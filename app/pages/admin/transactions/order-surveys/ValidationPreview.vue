@@ -142,24 +142,24 @@
        <!-- Action Buttons -->
        <div class="flex justify-between mt-8">
          <button 
-           @click="editSurvey"
            class="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+           @click="editSurvey"
          >
            ویرایش نظرسنجی
          </button>
          
          <div class="flex space-x-3 space-x-reverse">
            <button 
-             @click="saveDraft"
              class="px-6 py-3 bg-gray-500 text-white rounded-lg font-medium hover:bg-gray-600 transition-colors"
+             @click="saveDraft"
            >
              ذخیره پیش‌نویس
            </button>
            
            <button 
-             @click="submitSurvey"
              :disabled="!isValid"
              class="px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+             @click="submitSurvey"
            >
              ارسال نهایی
            </button>
@@ -167,10 +167,10 @@
        </div>
    
        <!-- Validation Errors -->
-       <div v-if="validationErrors.length > 0" class="mt-6 bg-red-50 border border-red-200 rounded-lg p-6">
+       <div v-if="computedValidationErrors.length > 0" class="mt-6 bg-red-50 border border-red-200 rounded-lg p-6">
          <h4 class="font-semibold text-red-800 mb-2">خطاهای اعتبارسنجی:</h4>
          <ul class="list-disc list-inside space-y-1">
-           <li v-for="error in validationErrors" :key="error" class="text-sm text-red-700">
+           <li v-for="error in computedValidationErrors" :key="error" class="text-sm text-red-700">
              {{ error }}
            </li>
          </ul>
@@ -179,7 +179,8 @@
    </template>
    
    <script setup lang="ts">
-   import { ref, computed } from 'vue'
+   // Fixed validationErrors duplicate declaration
+   import { computed } from 'vue'
    
    interface SurveyData {
      overallRating: number
@@ -204,8 +205,6 @@
    
    const props = defineProps<Props>()
    const emit = defineEmits(['edit', 'save-draft', 'submit'])
-   
-   const validationErrors = ref<string[]>([])
    
    // Computed properties
    const totalSections = 6
@@ -238,22 +237,26 @@
      )
    })
    
-   const isValid = computed(() => {
-     validationErrors.value = []
+   const computedValidationErrors = computed(() => {
+     const errors: string[] = []
      
      if (props.surveyData.overallRating === 0) {
-       validationErrors.value.push('امتیاز کلی الزامی است')
+       errors.push('امتیاز کلی الزامی است')
      }
      
      if (!hasDetailedRatings.value) {
-       validationErrors.value.push('حداقل یک امتیاز جزئی الزامی است')
+       errors.push('حداقل یک امتیاز جزئی الزامی است')
      }
      
      if (!hasSpecializedAnswers.value) {
-       validationErrors.value.push('پاسخ به سوالات تخصصی الزامی است')
+       errors.push('پاسخ به سوالات تخصصی الزامی است')
      }
      
-     return validationErrors.value.length === 0
+     return errors
+   })
+
+   const isValid = computed(() => {
+     return computedValidationErrors.value.length === 0
    })
    
    // Methods

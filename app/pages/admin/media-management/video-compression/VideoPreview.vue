@@ -37,7 +37,7 @@
       <div class="flex flex-wrap flex-row gap-6 items-center justify-center my-8 bg-gradient-to-l from-purple-50 via-blue-50 to-pink-50 rounded-xl p-6 w-full max-w-full min-w-0">
         <!-- دکمه انتخاب ویدیو -->
         <input ref="fileInput" type="file" accept="video/*" class="hidden" @change="onPreviewFileChange && onPreviewFileChange($event)" />
-        <button @click="fileInput && fileInput.click && fileInput.click()" class="flex items-center gap-2 font-bold px-4 py-2 rounded-lg shadow transition-colors bg-gradient-to-l from-pink-100 via-purple-100 to-blue-100 text-blue-800 hover:from-pink-200 hover:to-blue-200">
+        <button class="flex items-center gap-2 font-bold px-4 py-2 rounded-lg shadow transition-colors bg-gradient-to-l from-pink-100 via-purple-100 to-blue-100 text-blue-800 hover:from-pink-200 hover:to-blue-200" @click="fileInput && fileInput.click && fileInput.click()">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
           انتخاب ویدیو
         </button>
@@ -53,7 +53,7 @@
         <!-- کیفیت خروجی عددی -->
         <div v-if="!smartCompression" class="flex items-center gap-2 bg-gradient-to-l from-pink-100 via-blue-50 to-purple-50 rounded-lg px-3 py-1">
           <label class="text-sm font-medium text-gray-700">بیت‌ریت خروجی</label>
-          <input type="number" v-model="previewBitrate" min="500" max="10000" class="w-20 px-2 py-1 rounded border border-gray-300 text-center text-xs focus:ring-2 focus:ring-blue-400 bg-white" />
+          <input v-model="previewBitrate" type="number" min="500" max="10000" class="w-20 px-2 py-1 rounded border border-gray-300 text-center text-xs focus:ring-2 focus:ring-blue-400 bg-white" />
           <span class="text-xs text-gray-500">kbps</span>
         </div>
         <!-- سوییچ هوشمند -->
@@ -68,7 +68,7 @@
           </label>
         </div>
         <!-- دکمه پیش‌نمایش -->
-        <button @click="onPreviewButtonClick && onPreviewButtonClick()" :disabled="isPreviewLoading" class="flex items-center gap-2 font-bold px-6 py-2 rounded-lg shadow transition-colors bg-gradient-to-l from-blue-400 to-purple-400 text-white hover:from-blue-500 hover:to-purple-500 disabled:bg-gray-400 disabled:cursor-not-allowed">
+        <button :disabled="isPreviewLoading" class="flex items-center gap-2 font-bold px-6 py-2 rounded-lg shadow transition-colors bg-gradient-to-l from-blue-400 to-purple-400 text-white hover:from-blue-500 hover:to-purple-500 disabled:bg-gray-400 disabled:cursor-not-allowed" @click="onPreviewButtonClick && onPreviewButtonClick()">
           <span v-if="isPreviewLoading">در حال تولید پیش‌نمایش...</span>
           <span v-else>پیش‌نمایش</span>
         </button>

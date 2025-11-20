@@ -9,8 +9,8 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button 
-            @click="showSaveFilterModal = true"
             class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            @click="showSaveFilterModal = true"
           >
             ذخیره فیلتر جدید
           </button>
@@ -37,18 +37,18 @@
           </div>
           <div class="flex items-center space-x-1 space-x-reverse">
             <button 
-              @click="editFilter(filter)"
               class="text-gray-400 hover:text-gray-600"
               title="ویرایش"
+              @click="editFilter(filter)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
               </svg>
             </button>
             <button 
-              @click="deleteFilter(filter)"
               class="text-gray-400 hover:text-red-600"
               title="حذف"
+              @click="deleteFilter(filter)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -96,15 +96,15 @@
         <!-- عملیات -->
         <div class="flex items-center space-x-2 space-x-reverse">
           <button 
-            @click="applyFilter(filter)"
             class="flex-1 px-3 py-2 bg-blue-600 text-white text-xs font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            @click="applyFilter(filter)"
           >
             اعمال فیلتر
           </button>
           <button 
-            @click="shareFilter(filter)"
             class="px-3 py-2 bg-gray-100 text-gray-700 text-xs font-medium rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
             title="اشتراک‌گذاری"
+            @click="shareFilter(filter)"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
@@ -122,8 +122,8 @@
       <h3 class="mt-2 text-sm font-medium text-gray-900">هیچ فیلتر ذخیره‌ای وجود ندارد</h3>
       <p class="mt-1 text-sm text-gray-500">برای شروع، یک فیلتر جدید ذخیره کنید.</p>
       <button 
-        @click="showSaveFilterModal = true"
         class="mt-4 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        @click="showSaveFilterModal = true"
       >
         ذخیره فیلتر جدید
       </button>
@@ -193,14 +193,14 @@
           
           <div class="flex items-center justify-end space-x-3 space-x-reverse mt-6">
             <button 
-              @click="showSaveFilterModal = false"
               class="px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+              @click="showSaveFilterModal = false"
             >
               انصراف
             </button>
             <button 
-              @click="saveFilter"
               class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              @click="saveFilter"
             >
               ذخیره
             </button>
@@ -226,8 +226,8 @@
                   class="flex-1 px-3 py-2 border border-gray-300 rounded-r-md shadow-sm bg-gray-50"
                 />
                 <button 
-                  @click="copyShareLink"
                   class="px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-l-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  @click="copyShareLink"
                 >
                   کپی
                 </button>
@@ -250,14 +250,14 @@
           
           <div class="flex items-center justify-end space-x-3 space-x-reverse mt-6">
             <button 
-              @click="showShareModal = false"
               class="px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+              @click="showShareModal = false"
             >
               بستن
             </button>
             <button 
-              @click="shareWithUsers"
               class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              @click="shareWithUsers"
             >
               اشتراک‌گذاری
             </button>

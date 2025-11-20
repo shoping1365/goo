@@ -20,19 +20,19 @@
         <h3 class="text-base font-medium text-gray-800 mb-3">سطح رضایت:</h3>
         <div class="flex items-center justify-center space-x-4 space-x-reverse">
           <label class="flex items-center">
-            <input type="radio" name="rating" value="1" v-model="selectedRating" class="mr-2">
+            <input v-model="selectedRating" type="radio" name="rating" value="1" class="mr-2">
             <span class="text-sm text-gray-600">ضعیف</span>
           </label>
           <label class="flex items-center">
-            <input type="radio" name="rating" value="2" v-model="selectedRating" class="mr-2">
+            <input v-model="selectedRating" type="radio" name="rating" value="2" class="mr-2">
             <span class="text-sm text-gray-600">متوسط</span>
           </label>
           <label class="flex items-center">
-            <input type="radio" name="rating" value="3" v-model="selectedRating" class="mr-2">
+            <input v-model="selectedRating" type="radio" name="rating" value="3" class="mr-2">
             <span class="text-sm text-gray-600">خوب</span>
           </label>
           <label class="flex items-center">
-            <input type="radio" name="rating" value="4" v-model="selectedRating" class="mr-2">
+            <input v-model="selectedRating" type="radio" name="rating" value="4" class="mr-2">
             <span class="text-sm text-gray-600">عالی</span>
           </label>
         </div>
@@ -46,13 +46,13 @@
             <button 
               v-for="option in qualityOptions" 
               :key="option.value"
-              @click="qualityRating = option.value"
               :class="[
                 'px-3 py-1 rounded text-sm transition-colors',
                 qualityRating === option.value 
                   ? 'bg-gray-800 text-white' 
                   : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
               ]"
+              @click="qualityRating = option.value"
             >
               {{ option.label }}
             </button>
@@ -65,13 +65,13 @@
             <button 
               v-for="option in deliveryOptions" 
               :key="option.value"
-              @click="deliveryRating = option.value"
               :class="[
                 'px-3 py-1 rounded text-sm transition-colors',
                 deliveryRating === option.value 
                   ? 'bg-gray-800 text-white' 
                   : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
               ]"
+              @click="deliveryRating = option.value"
             >
               {{ option.label }}
             </button>
@@ -92,9 +92,9 @@
 
       <!-- Submit Button -->
       <button 
-        @click="submitSurvey"
         :disabled="!selectedRating || submitting"
         class="w-full bg-gray-800 hover:bg-gray-900 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded transition-colors flex items-center justify-center"
+        @click="submitSurvey"
       >
         <svg v-if="submitting" class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

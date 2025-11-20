@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-xl font-bold text-gray-900">گزارش‌گیری</h2>
       <div class="flex items-center space-x-4 space-x-reverse">
-        <button @click="generateReport" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center">
+        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center" @click="generateReport">
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
@@ -121,10 +121,10 @@
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-semibold text-gray-900">{{ currentReport.title }}</h3>
         <div class="flex items-center space-x-2 space-x-reverse">
-          <button @click="exportReport" class="px-3 py-1 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200">
+          <button class="px-3 py-1 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200" @click="exportReport">
             صادرات
           </button>
-          <button @click="printReport" class="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200">
+          <button class="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200" @click="printReport">
             چاپ
           </button>
         </div>
@@ -228,8 +228,8 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatDate(report.createdAt) }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex items-center space-x-3 space-x-reverse">
-                  <button @click="downloadReport(report.id)" class="text-blue-600 hover:text-blue-900">دانلود</button>
-                  <button @click="deleteReport(report.id)" class="text-red-600 hover:text-red-900">حذف</button>
+                  <button class="text-blue-600 hover:text-blue-900" @click="downloadReport(report.id)">دانلود</button>
+                  <button class="text-red-600 hover:text-red-900" @click="deleteReport(report.id)">حذف</button>
                 </div>
               </td>
             </tr>

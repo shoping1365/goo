@@ -101,7 +101,8 @@
         <!-- جستجو -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">جستجو</label>
-          <input type="text" placeholder="شماره درخواست یا نام کاربر" 
+          <input
+type="text" placeholder="شماره درخواست یا نام کاربر" 
                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
       </div>
@@ -121,8 +122,8 @@
       <div class="flex items-center justify-between mb-6">
         <h3 class="text-xl font-semibold text-gray-900">درخواست‌های برداشت</h3>
         <div class="flex space-x-2 space-x-reverse">
-          <button @click="bulkUpdate('success')" class="px-4 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">تأیید همه</button>
-          <button @click="bulkUpdate('failed')" class="px-4 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">رد همه</button>
+          <button class="px-4 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500" @click="bulkUpdate('success')">تأیید همه</button>
+          <button class="px-4 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500" @click="bulkUpdate('failed')">رد همه</button>
           <button class="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
             خروجی اکسل
           </button>
@@ -178,8 +179,8 @@
               <td class="px-4 py-3">
                 <div class="flex space-x-2 space-x-reverse">
                   <button class="text-blue-600 hover:text-blue-800 text-sm">جزئیات</button>
-                  <button v-if="withdrawal.status === 'new' || withdrawal.status === 'در انتظار تأیید'" @click="updateStatus(withdrawal.id, 'success')" class="text-green-600 hover:text-green-800 text-sm">تأیید</button>
-                  <button v-if="withdrawal.status === 'new' || withdrawal.status === 'در انتظار تأیید'" @click="updateStatus(withdrawal.id, 'failed')" class="text-red-600 hover:text-red-800 text-sm">رد</button>
+                  <button v-if="withdrawal.status === 'new' || withdrawal.status === 'در انتظار تأیید'" class="text-green-600 hover:text-green-800 text-sm" @click="updateStatus(withdrawal.id, 'success')">تأیید</button>
+                  <button v-if="withdrawal.status === 'new' || withdrawal.status === 'در انتظار تأیید'" class="text-red-600 hover:text-red-800 text-sm" @click="updateStatus(withdrawal.id, 'failed')">رد</button>
                 </div>
               </td>
             </tr>
@@ -210,22 +211,26 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداقل مبلغ برداشت</label>
-            <input type="number" :value="withdrawalSettings.minAmount" 
+            <input
+type="number" :value="withdrawalSettings.minAmount" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداکثر مبلغ برداشت</label>
-            <input type="number" :value="withdrawalSettings.maxAmount" 
+            <input
+type="number" :value="withdrawalSettings.maxAmount" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">کارمزد برداشت (%)</label>
-            <input type="number" step="0.1" :value="withdrawalSettings.feePercentage" 
+            <input
+type="number" step="0.1" :value="withdrawalSettings.feePercentage" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">زمان پردازش (ساعت)</label>
-            <input type="number" :value="withdrawalSettings.processingTime" 
+            <input
+type="number" :value="withdrawalSettings.processingTime" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <button class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">

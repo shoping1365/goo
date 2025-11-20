@@ -1,8 +1,7 @@
-import { Plugin } from 'vite'
-import { createGzip, createBrotliCompress } from 'zlib'
-import { promisify } from 'util'
-import { readFile, writeFile } from 'fs/promises'
 import { extname } from 'path'
+import { promisify } from 'util'
+import { Plugin } from 'vite'
+import { createBrotliCompress, createGzip } from 'zlib'
 
 const gzip = promisify(createGzip)
 const brotli = promisify(createBrotliCompress)
@@ -48,7 +47,7 @@ export function compressionPlugin(): Plugin {
               source: brotlied
             })
 
-            console.log(`✅ فشرده‌سازی ${fileName}: Gzip ${gzipped.length} bytes, Brotli ${brotlied.length} bytes`)
+            // console.log(`✅ فشرده‌سازی ${fileName}: Gzip ${gzipped.length} bytes, Brotli ${brotlied.length} bytes`)
           } catch (error) {
             console.error(`❌ خطا در فشرده‌سازی ${fileName}:`, error)
           }

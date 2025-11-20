@@ -52,7 +52,7 @@ export function getCookieValue(event: H3Event, name: string): string | undefined
     if (cookieHeader) {
       return parseCookieHeader(cookieHeader).get(name)
     }
-  } catch (e) {
+  } catch (_e) {
     // Ignore errors
   }
   

@@ -9,46 +9,46 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button
-            @click="activeTab = 'banking'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'banking'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'banking'"
           >
             سیستم‌های بانکی
           </button>
           <button
-            @click="activeTab = 'payment'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'payment'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'payment'"
           >
             درگاه‌های پرداخت
           </button>
           <button
-            @click="activeTab = 'accounting'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'accounting'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'accounting'"
           >
             سیستم‌های حسابداری
           </button>
           <button
-            @click="activeTab = 'api'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'api'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'api'"
           >
             API و وب‌هوک
           </button>
@@ -79,7 +79,7 @@
                     </div>
                   </div>
                   <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" v-model="bank.connected" class="sr-only peer">
+                    <input v-model="bank.connected" type="checkbox" class="sr-only peer">
                     <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
@@ -132,7 +132,7 @@
                     <input v-model="bankingSettings.maxRetries" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" min="1" max="10">
                   </div>
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="bankingSettings.autoSync" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <input v-model="bankingSettings.autoSync" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">همگام‌سازی خودکار</label>
                   </div>
                 </div>
@@ -149,7 +149,7 @@
                     <input v-model="bankingSettings.password" type="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="رمز عبور">
                   </div>
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="bankingSettings.encryption" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <input v-model="bankingSettings.encryption" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">رمزنگاری داده‌ها</label>
                   </div>
                 </div>
@@ -230,7 +230,7 @@
                     <input v-model="paymentSettings.timeout" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" min="30" max="300">
                   </div>
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="paymentSettings.autoRetry" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <input v-model="paymentSettings.autoRetry" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">تلاش مجدد خودکار</label>
                   </div>
                 </div>
@@ -247,7 +247,7 @@
                     <input v-model="paymentSettings.secretKey" type="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="کلید امنیتی">
                   </div>
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="paymentSettings.sslVerification" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <input v-model="paymentSettings.sslVerification" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">تایید SSL</label>
                   </div>
                 </div>
@@ -278,7 +278,7 @@
                     </div>
                   </div>
                   <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" v-model="system.connected" class="sr-only peer">
+                    <input v-model="system.connected" type="checkbox" class="sr-only peer">
                     <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
@@ -318,7 +318,7 @@
                   <p class="text-sm text-gray-600">همگام‌سازی خودکار داده‌ها با سیستم‌های حسابداری</p>
                 </div>
                 <label class="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" v-model="accountingSettings.autoSync" class="sr-only peer">
+                  <input v-model="accountingSettings.autoSync" type="checkbox" class="sr-only peer">
                   <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>
@@ -328,7 +328,7 @@
                   <p class="text-sm text-gray-600">اجازه تغییر داده‌ها از سیستم‌های خارجی</p>
                 </div>
                 <label class="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" v-model="accountingSettings.bidirectionalSync" class="sr-only peer">
+                  <input v-model="accountingSettings.bidirectionalSync" type="checkbox" class="sr-only peer">
                   <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>
@@ -338,7 +338,7 @@
                   <p class="text-sm text-gray-600">تایید دستی تراکنش‌ها قبل از همگام‌سازی</p>
                 </div>
                 <label class="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" v-model="accountingSettings.manualApproval" class="sr-only peer">
+                  <input v-model="accountingSettings.manualApproval" type="checkbox" class="sr-only peer">
                   <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>
@@ -409,7 +409,7 @@
                     <input v-model="apiSettings.timeout" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" min="5" max="60">
                   </div>
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="apiSettings.corsEnabled" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <input v-model="apiSettings.corsEnabled" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">فعال‌سازی CORS</label>
                   </div>
                 </div>
@@ -436,7 +436,7 @@
                     </div>
                   </div>
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="apiSettings.ipWhitelist" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <input v-model="apiSettings.ipWhitelist" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">محدودیت IP</label>
                   </div>
                 </div>

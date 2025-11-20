@@ -4,7 +4,7 @@
       <thead>
         <tr class="bg-gray-100">
           <th class="p-2 text-center align-middle">
-            <input type="checkbox" v-model="allSelected" />
+            <input v-model="allSelected" type="checkbox" />
           </th>
           <th class="p-2 text-center align-middle">ردیف</th>
           <th class="p-2 text-center align-middle">
@@ -79,7 +79,7 @@
       <tbody>
         <tr v-for="(user, idx) in displayedUsers" :key="user.id" class="border-b hover:bg-gray-50">
           <td class="p-2 text-center align-middle">
-            <input type="checkbox" v-model="selected" :value="user.id" />
+            <input v-model="selected" type="checkbox" :value="user.id" />
           </td>
           <td class="p-2 text-center align-middle">{{ idx + 1 }}</td>
           <td class="p-2 text-center align-middle">{{ user.id }}</td>
@@ -112,7 +112,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, ref, watch, onMounted } from "vue";
+import { computed, ref, watch } from "vue";
 import { toPersianDate, toPersianDateTime } from "~/utils/dateUtils";
 
 interface User {
@@ -195,7 +195,7 @@ const displayedUsers = computed<User[]>(() => {
 
 const emit = defineEmits(['selectionChanged']);
 
-watch(selected, (val: number[]) => {
+watch(selected, (val: (string | number)[]) => {
   // Emit selected user ids to parent
   emit('selectionChanged', val);
 });

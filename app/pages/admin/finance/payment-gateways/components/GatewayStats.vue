@@ -64,26 +64,26 @@
       </div>
       <div class="flex space-x-2 space-x-reverse">
         <TemplateButton 
-          @click="chartPeriod = 'week'" 
-          :bgGradient="chartPeriod === 'week' ? 'bg-gradient-to-r from-blue-500 to-blue-600' : 'bg-gradient-to-r from-gray-100 to-gray-200'"
-          :textColor="chartPeriod === 'week' ? 'text-white' : 'text-gray-600'"
-          :borderColor="chartPeriod === 'week' ? 'border border-blue-500' : 'border border-gray-300'"
-          :hoverClass="chartPeriod === 'week' ? 'hover:from-blue-600 hover:to-blue-700' : 'hover:from-gray-200 hover:to-gray-300'"
-          :focusClass="chartPeriod === 'week' ? 'focus:ring-2 focus:ring-blue-500 focus:ring-offset-2' : 'focus:ring-2 focus:ring-gray-500 focus:ring-offset-2'"
+          :bg-gradient="chartPeriod === 'week' ? 'bg-gradient-to-r from-blue-500 to-blue-600' : 'bg-gradient-to-r from-gray-100 to-gray-200'" 
+          :text-color="chartPeriod === 'week' ? 'text-white' : 'text-gray-600'"
+          :border-color="chartPeriod === 'week' ? 'border border-blue-500' : 'border border-gray-300'"
+          :hover-class="chartPeriod === 'week' ? 'hover:from-blue-600 hover:to-blue-700' : 'hover:from-gray-200 hover:to-gray-300'"
+          :focus-class="chartPeriod === 'week' ? 'focus:ring-2 focus:ring-blue-500 focus:ring-offset-2' : 'focus:ring-2 focus:ring-gray-500 focus:ring-offset-2'"
           size="medium"
-          :customClass="chartPeriod === 'week' ? 'shadow-lg shadow-blue-500/25' : ''"
+          :custom-class="chartPeriod === 'week' ? 'shadow-lg shadow-blue-500/25' : ''"
+          @click="chartPeriod = 'week'"
         >
           هفته
         </TemplateButton>
         <TemplateButton 
-          @click="chartPeriod = 'month'" 
-          :bgGradient="chartPeriod === 'month' ? 'bg-gradient-to-r from-blue-500 to-blue-600' : 'bg-gradient-to-r from-gray-100 to-gray-200'"
-          :textColor="chartPeriod === 'month' ? 'text-white' : 'text-gray-600'"
-          :borderColor="chartPeriod === 'month' ? 'border border-blue-500' : 'border border-gray-300'"
-          :hoverClass="chartPeriod === 'month' ? 'hover:from-blue-600 hover:to-blue-700' : 'hover:from-gray-200 hover:to-gray-300'"
-          :focusClass="chartPeriod === 'month' ? 'focus:ring-2 focus:ring-blue-500 focus:ring-offset-2' : 'focus:ring-2 focus:ring-gray-500 focus:ring-offset-2'"
+          :bg-gradient="chartPeriod === 'month' ? 'bg-gradient-to-r from-blue-500 to-blue-600' : 'bg-gradient-to-r from-gray-100 to-gray-200'" 
+          :text-color="chartPeriod === 'month' ? 'text-white' : 'text-gray-600'"
+          :border-color="chartPeriod === 'month' ? 'border border-blue-500' : 'border border-gray-300'"
+          :hover-class="chartPeriod === 'month' ? 'hover:from-blue-600 hover:to-blue-700' : 'hover:from-gray-200 hover:to-gray-300'"
+          :focus-class="chartPeriod === 'month' ? 'focus:ring-2 focus:ring-blue-500 focus:ring-offset-2' : 'focus:ring-2 focus:ring-gray-500 focus:ring-offset-2'"
           size="medium"
-          :customClass="chartPeriod === 'month' ? 'shadow-lg shadow-blue-500/25' : ''"
+          :custom-class="chartPeriod === 'month' ? 'shadow-lg shadow-blue-500/25' : ''"
+          @click="chartPeriod = 'month'"
         >
           ماه
         </TemplateButton>
@@ -188,7 +188,8 @@
           <div class="relative w-32 h-32">
             <svg class="w-32 h-32 transform -rotate-90">
               <circle cx="64" cy="64" r="56" stroke="currentColor" stroke-width="8" fill="transparent" class="text-gray-200"></circle>
-              <circle cx="64" cy="64" r="56" stroke="currentColor" stroke-width="8" fill="transparent" 
+              <circle
+cx="64" cy="64" r="56" stroke="currentColor" stroke-width="8" fill="transparent" 
                 :stroke-dasharray="`${(stats.activeGateways / stats.totalGateways) * 352} 352`" 
                 class="text-green-400"></circle>
             </svg>

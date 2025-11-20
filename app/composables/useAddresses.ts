@@ -8,18 +8,38 @@
 
 import { ref } from 'vue'
 
-interface AddressPayload {
-  full_address: string
+interface Address {
+  id: number
+  full_address?: string
+  street?: string
   postal_code?: string
   recipient_name?: string
   recipient_mobile?: string
   phone?: string
   is_default?: boolean
-  [key: string]: any
+  province?: string
+  city?: string
+  province_id?: number
+  city_id?: number
+  [key: string]: unknown
+}
+
+interface AddressPayload {
+  full_address?: string
+  street?: string
+  postal_code?: string
+  recipient_name?: string
+  recipient_mobile?: string
+  phone?: string
+  is_default?: boolean
+  province?: string
+  city?: string
+  province_id?: number
+  city_id?: number
 }
 
 export const useAddresses = () => {
-  const addresses = ref<any[]>([])
+  const addresses = ref<Address[]>([])
   const loading = ref(false)
   const lastFetchTime = ref<number>(0)
   const cacheTimeout = 5 * 60 * 1000 // 5 دقیقه
@@ -34,14 +54,14 @@ export const useAddresses = () => {
 
     try {
       loading.value = true
-      const res: any = await $fetch('/api/user/addresses', {
+      const res = await $fetch<{ data: Address[] } | Address[]>('/api/user/addresses', {
         credentials: 'include'
       })
       // ساختار پاسخ بسته به بک‌اند ممکن است data یا لیست مستقیم باشد
-      const rawList = Array.isArray(res?.data) ? res.data : res ?? []
+      const rawList = Array.isArray((res as { data: Address[] }).data) ? (res as { data: Address[] }).data : (Array.isArray(res) ? res : [])
 
       // نرمال‌سازی فیلدها برای سازگاری فرانت و بک‌اند
-      const normalized = rawList.map((a: any) => {
+      const normalized = rawList.map((a: Address) => {
         // اگر street از بک‌اند آمد ولی full_address نبود، کپی کن
         if (a.street && !a.full_address) {
           a.full_address = a.street
@@ -64,7 +84,7 @@ export const useAddresses = () => {
 
   const addAddress = async (payload: AddressPayload) => {
     // مطابقت نام فیلدها با ساختار مورد انتظار بک‌اند
-    const backendPayload: any = {
+    const backendPayload: Record<string, unknown> = {
       ...payload,
       street: payload.street ?? payload.full_address ?? '',
       // اضافه کردن فیلدهای استان و شهر
@@ -77,7 +97,7 @@ export const useAddresses = () => {
     // جلوی ارسال full_address اضافه را بگیر
     delete backendPayload.full_address
 
-    const res: any = await $fetch('/api/user/addresses', {
+    const res = await $fetch<Address>('/api/user/addresses', {
       method: 'POST',
       body: backendPayload,
       credentials: 'include'
@@ -101,19 +121,19 @@ export const useAddresses = () => {
 
   // بروزرسانی یک آدرس بر اساس id
   const updateAddress = async (id: number, payload: Partial<AddressPayload>) => {
-    const backendPayload: any = {
+    const backendPayload: Record<string, unknown> = {
       ...payload,
-      street: (payload as any).street ?? (payload as any).full_address ?? '',
+      street: payload.street ?? payload.full_address ?? '',
       // اضافه کردن فیلدهای استان و شهر
-      province: (payload as any).province,
-      city: (payload as any).city,
-      province_id: (payload as any).province_id,
-      city_id: (payload as any).city_id,
-      phone: (payload as any).phone,
+      province: payload.province,
+      city: payload.city,
+      province_id: payload.province_id,
+      city_id: payload.city_id,
+      phone: payload.phone,
     }
     delete backendPayload.full_address
 
-    const res: any = await $fetch(`/api/user/addresses/${id}`, {
+    const res = await $fetch<Address>(`/api/user/addresses/${id}`, {
       method: 'PUT',
       body: backendPayload,
       credentials: 'include'

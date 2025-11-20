@@ -13,7 +13,8 @@
         </div>
       </div>
       <div class="flex items-center space-x-2">
-        <span class="px-3 py-1 text-xs font-medium rounded-full" 
+        <span
+class="px-3 py-1 text-xs font-medium rounded-full" 
               :class="gateway?.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
           {{ gateway?.is_active ? 'فعال' : 'غیرفعال' }}
         </span>
@@ -21,7 +22,7 @@
     </div>
 
     <!-- فرم تنظیمات -->
-    <form @submit.prevent="saveSettings" class="space-y-6">
+    <form class="space-y-6" @submit.prevent="saveSettings">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Terminal ID -->
         <div>
@@ -99,9 +100,9 @@
           <!-- حالت تست -->
           <div class="flex items-center">
             <input
+              id="testMode"
               v-model="form.isTestMode"
               type="checkbox"
-              id="testMode"
               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
             <label for="testMode" class="mr-2 block text-sm text-gray-900">
@@ -112,9 +113,9 @@
           <!-- وضعیت فعال -->
           <div class="flex items-center">
             <input
+              id="isActive"
               v-model="form.isActive"
               type="checkbox"
-              id="isActive"
               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
             <label for="isActive" class="mr-2 block text-sm text-gray-900">
@@ -129,9 +130,9 @@
         <div class="flex items-center space-x-3">
           <button
             type="button"
-            @click="testConnection"
             :disabled="testing"
             class="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 disabled:opacity-50"
+            @click="testConnection"
           >
             <span v-if="testing" class="flex items-center">
               <svg class="animate-spin -mr-1 ml-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -147,8 +148,8 @@
         <div class="flex items-center space-x-3">
           <button
             type="button"
-            @click="resetForm"
             class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            @click="resetForm"
           >
             بازنشانی
           </button>

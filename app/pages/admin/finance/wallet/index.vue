@@ -27,13 +27,13 @@
           <button
             v-for="tab in tabs"
             :key="tab.id"
-            @click="activeTab = tab.id"
             class="flex items-center space-x-2 space-x-reverse px-4 py-4 transition-colors whitespace-nowrap border-b-2"
             :class="[
               activeTab === tab.id
                 ? 'text-blue-600 border-blue-500'
                 : 'text-gray-600 hover:text-gray-900 border-transparent'
             ]"
+            @click="activeTab = tab.id"
           >
             <i :class="tab.icon + ' text-lg'"></i>
             <span class="font-medium">{{ tab.title }}</span>

@@ -20,8 +20,8 @@
         <div 
           v-for="(category, index) in displayCategories" 
           :key="category.id"
-          @click="navigateToCategory(category.link)"
           class="w-full min-w-0 flex-shrink-0"
+          @click="navigateToCategory(category.link)"
         >
           <!-- تصویر دسته‌بندی -->
           <div :class="imageContainerClasses">

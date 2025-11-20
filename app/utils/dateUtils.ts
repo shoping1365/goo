@@ -26,7 +26,7 @@ export function toPersianDate(date: Date | string | null | undefined): string {
     }).format(dateObj);
     
     return persianDate;
-  } catch (error) {
+  } catch {
     return '-';
   }
 }
@@ -63,7 +63,7 @@ export function toPersianDateTime(date: Date | string | null | undefined): strin
     
     // ترکیب تاریخ و ساعت با ترتیب صحیح (ساعت سمت راست)
     return `${persianTime} ${persianDate}`;
-  } catch (error) {
+  } catch {
     return '-';
   }
 }
@@ -92,7 +92,7 @@ export function toPersianDateShort(date: Date | string | null | undefined): stri
     }).format(dateObj);
     
     return persianDate;
-  } catch (error) {
+  } catch {
     return '-';
   }
 }
@@ -123,7 +123,7 @@ export function toPersianDateFull(date: Date | string | null | undefined): strin
     }).format(dateObj);
     
     return persianDate;
-  } catch (error) {
+  } catch {
     return '-';
   }
 } 

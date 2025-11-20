@@ -7,21 +7,21 @@
     <form class="p-6 space-y-6" @submit.prevent="saveSettings">
       <div class="flex items-center gap-6">
         <label class="flex items-center cursor-pointer">
-          <input type="checkbox" v-model="settings.enableUsageLimit" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+          <input v-model="settings.enableUsageLimit" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
           <span class="mr-2 text-sm text-gray-700">محدودیت تعداد استفاده فعال باشد</span>
         </label>
         <input v-if="settings.enableUsageLimit" v-model.number="settings.usageLimit" type="number" min="1" class="w-24 px-2 py-1 border border-gray-300 rounded-lg text-sm" placeholder="تعداد مجاز">
       </div>
       <div class="flex items-center gap-6">
         <label class="flex items-center cursor-pointer">
-          <input type="checkbox" v-model="settings.enableIpLimit" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+          <input v-model="settings.enableIpLimit" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
           <span class="mr-2 text-sm text-gray-700">محدودیت IP فعال باشد</span>
         </label>
         <input v-if="settings.enableIpLimit" v-model="settings.allowedIps" type="text" class="w-64 px-2 py-1 border border-gray-300 rounded-lg text-sm" placeholder="مثال: 192.168.1.1, 10.0.0.2">
       </div>
       <div class="flex items-center gap-6">
         <label class="flex items-center cursor-pointer">
-          <input type="checkbox" v-model="settings.enableTimeLimit" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+          <input v-model="settings.enableTimeLimit" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
           <span class="mr-2 text-sm text-gray-700">محدودیت زمانی فعال باشد</span>
         </label>
         <input v-if="settings.enableTimeLimit" v-model.number="settings.timeLimitMinutes" type="number" min="1" class="w-24 px-2 py-1 border border-gray-300 rounded-lg text-sm" placeholder="دقیقه">

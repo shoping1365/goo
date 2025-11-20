@@ -7,8 +7,8 @@
         <p class="text-gray-600 text-sm">مدیریت قالب‌های پیام‌کش برای نظرسنجی</p>
       </div>
       <button 
-        @click="showCreateModal = true"
         class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition-colors flex items-center space-x-2 space-x-reverse"
+        @click="showCreateModal = true"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -24,13 +24,13 @@
         <button 
           v-for="category in templateCategories"
           :key="category.id"
-          @click="selectedCategory = category.id"
           :class="[
             'px-3 py-1 rounded-full text-sm font-medium transition-colors',
             selectedCategory === category.id 
               ? 'bg-blue-100 text-blue-800 border border-blue-200' 
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           ]"
+          @click="selectedCategory = category.id"
         >
           {{ category.name }}
         </button>
@@ -60,8 +60,8 @@
               {{ getStatusText(template.status) }}
             </span>
             <button 
-              @click="toggleFavorite(template.id)"
               class="text-gray-400 hover:text-yellow-500 transition-colors"
+              @click="toggleFavorite(template.id)"
             >
               <svg 
                 :class="['w-4 h-4', template.isFavorite ? 'text-yellow-500 fill-current' : '']"
@@ -112,9 +112,9 @@
         <div class="flex items-center justify-between pt-4 border-t border-gray-100">
           <div class="flex items-center space-x-2 space-x-reverse">
             <button 
-              @click="editTemplate(template.id)"
               class="text-blue-600 hover:text-blue-800 transition-colors"
               title="ویرایش"
+              @click="editTemplate(template.id)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -122,9 +122,9 @@
             </button>
             
             <button 
-              @click="duplicateTemplate(template.id)"
               class="text-green-600 hover:text-green-800 transition-colors"
               title="کپی"
+              @click="duplicateTemplate(template.id)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
@@ -132,9 +132,9 @@
             </button>
             
             <button 
-              @click="previewTemplate(template.id)"
               class="text-purple-600 hover:text-purple-800 transition-colors"
               title="پیش‌نمایش"
+              @click="previewTemplate(template.id)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -145,9 +145,9 @@
           
           <button 
             v-if="canDeleteSMSTemplate"
-            @click="deleteTemplate(template.id)"
             class="text-red-600 hover:text-red-800 transition-colors"
             title="حذف"
+            @click="deleteTemplate(template.id)"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -172,8 +172,8 @@
             {{ showEditModal ? 'ویرایش قالب' : 'قالب جدید' }}
           </h3>
           <button 
-            @click="closeModal"
             class="text-gray-400 hover:text-gray-600 transition-colors"
+            @click="closeModal"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -181,7 +181,7 @@
           </button>
         </div>
 
-        <form @submit.prevent="saveTemplate" class="space-y-4">
+        <form class="space-y-4" @submit.prevent="saveTemplate">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">نام قالب</label>
             <input 
@@ -230,8 +230,8 @@
                   v-for="variable in availableVariables"
                   :key="variable.key"
                   type="button"
-                  @click="insertVariable(variable.key)"
                   class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs font-medium hover:bg-blue-200 transition-colors"
+                  @click="insertVariable(variable.key)"
                 >
                   {{ variable.label }}
                 </button>
@@ -290,8 +290,8 @@
             
             <button 
               type="button"
-              @click="closeModal"
               class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg text-sm transition-colors"
+              @click="closeModal"
             >
               انصراف
             </button>
@@ -313,8 +313,8 @@
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-gray-800">پیش‌نمایش قالب</h3>
           <button 
-            @click="showPreviewModal = false"
             class="text-gray-400 hover:text-gray-600 transition-colors"
+            @click="showPreviewModal = false"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -341,7 +341,7 @@ declare const useAuth: () => { user: { id?: number; name?: string; email?: strin
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 // 
-const { user, hasPermission } = useAuth()
+const { hasPermission } = useAuth()
 
 const canDeleteSMSTemplate = computed(() => hasPermission('sms-template.delete'))
 

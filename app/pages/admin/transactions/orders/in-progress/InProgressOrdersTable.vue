@@ -12,7 +12,7 @@
             </div>
             <h3 class="text-sm font-semibold text-gray-900">فیلترهای پیشرفته</h3>
           </div>
-          <button @click="showFilters = !showFilters" class="text-sm text-green-600 hover:text-green-800 transition-colors font-medium hover:bg-green-50 px-3 py-1 rounded-lg">
+          <button class="text-sm text-green-600 hover:text-green-800 transition-colors font-medium hover:bg-green-50 px-3 py-1 rounded-lg" @click="showFilters = !showFilters">
             {{ showFilters ? 'مخفی کردن' : 'نمایش' }}
           </button>
         </div>
@@ -72,7 +72,7 @@
         </div>
 
         <div class="mt-4 flex justify-end">
-          <button @click="clearFilters" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+          <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors" @click="clearFilters">
             پاک کردن فیلترها
           </button>
         </div>
@@ -94,12 +94,12 @@
           
           <div class="flex items-center space-x-2 space-x-reverse">
             <!-- Bulk Actions -->
-            <div class="flex items-center space-x-2 space-x-reverse bg-blue-50 rounded-md px-2 py-1.5 border border-blue-200" v-if="selectedOrders.length > 0">
+            <div v-if="selectedOrders.length > 0" class="flex items-center space-x-2 space-x-reverse bg-blue-50 rounded-md px-2 py-1.5 border border-blue-200">
               <span class="text-xs text-blue-700 font-medium">{{ selectedOrders.length }} مورد انتخاب شده</span>
               <select 
                 v-model="bulkAction"
-                @change="executeBulkAction"
                 class="text-xs border border-blue-300 rounded px-2 py-1 bg-blue-50"
+                @change="executeBulkAction"
               >
                 <option value="">عملیات گروهی</option>
                 <option value="confirm">تایید سفارشات</option>
@@ -139,7 +139,7 @@
       <!-- Error State -->
       <div v-else-if="error" class="text-center py-8">
         <div class="text-red-600 mb-4">{{ error }}</div>
-        <button @click="fetchInProgressOrders" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+        <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" @click="fetchInProgressOrders">
           تلاش مجدد
         </button>
       </div>
@@ -151,10 +151,10 @@
             <tr>
               <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 <input 
-                  type="checkbox" 
-                  v-model="selectAll"
-                  @change="toggleSelectAll"
+                  v-model="selectAll" 
+                  type="checkbox"
                   class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  @change="toggleSelectAll"
                 />
               </th>
               <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">شماره سفارش</th>
@@ -175,8 +175,8 @@
             <tr v-for="order in paginatedOrders" :key="order.id" class="hover:bg-gray-50">
               <td class="px-6 py-4 whitespace-nowrap">
                 <input 
-                  type="checkbox" 
-                  v-model="selectedOrders"
+                  v-model="selectedOrders" 
+                  type="checkbox"
                   :value="order.id"
                   class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                 />
@@ -206,14 +206,14 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex items-center space-x-2">
-                  <button @click="viewOrderDetails(order)" class="text-blue-600 hover:text-blue-900">
+                  <button class="text-blue-600 hover:text-blue-900" @click="viewOrderDetails(order)">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                     </svg>
                   </button>
-                  <button @click="processOrder(order)" class="text-green-600 hover:text-green-900">پردازش</button>
-                  <button @click="downloadReceipt(order)" class="text-purple-600 hover:text-purple-900">رسید</button>
+                  <button class="text-green-600 hover:text-green-900" @click="processOrder(order)">پردازش</button>
+                  <button class="text-purple-600 hover:text-purple-900" @click="downloadReceipt(order)">رسید</button>
                 </div>
               </td>
             </tr>
@@ -302,10 +302,10 @@ const fetchInProgressOrders = async () => {
     }
     
     inProgressOrders.value = orders
-    console.log('Orders loaded:', orders.length)
-  } catch (err) {
+    // console.log('Orders loaded:', orders.length)
+  } catch {
     error.value = 'خطا در دریافت داده‌های سفارشات'
-    console.error('Error fetching in-progress orders:', err)
+    // console.error('Error fetching in-progress orders:', err)
   } finally {
     isLoading.value = false
   }
@@ -402,7 +402,7 @@ watch(selectedOrders, (newSelection) => {
 const executeBulkAction = () => {
   if (!bulkAction.value) return
   
-  console.log('عملیات گروهی:', bulkAction.value, 'بر روی سفارشات:', selectedOrders.value)
+  // console.log('عملیات گروهی:', bulkAction.value, 'بر روی سفارشات:', selectedOrders.value)
   
   // اینجا می‌توانید منطق عملیات گروهی را پیاده‌سازی کنید
   bulkAction.value = ''
@@ -420,22 +420,22 @@ const closeModal = () => {
   selectedOrder.value = null
 }
 
-const editOrder = (order) => {
-  console.log('ویرایش سفارش:', order)
+const editOrder = (_order) => {
+  // console.log('ویرایش سفارش:', order)
   // اینجا می‌توانید کاربر را به صفحه ویرایش هدایت کنید
 }
 
 // متدهای عملیات
-const viewOrder = (order) => {
-  console.log('مشاهده سفارش:', order)
+const _viewOrder = (_order) => {
+  // console.log('مشاهده سفارش:', order)
 }
 
-const processOrder = (order) => {
-  console.log('پردازش سفارش:', order)
+const processOrder = (_order) => {
+  // console.log('پردازش سفارش:', order)
 }
 
-const downloadReceipt = (order) => {
-  console.log('دانلود رسید:', order)
+const downloadReceipt = (_order) => {
+  // console.log('دانلود رسید:', order)
 }
 
 // متدهای صفحه‌بندی

@@ -37,14 +37,14 @@
         <div>
           <div class="text-xs text-gray-500 mb-2 font-medium">وضعیت reCAPTCHA</div>
           <div class="flex gap-2">
-            <button @click="toggleRecaptcha(true)" :class="recaptchaEnabled ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700'" class="px-4 py-1 rounded-full text-sm font-bold transition-colors">فعال</button>
-            <button @click="toggleRecaptcha(false)" :class="!recaptchaEnabled ? 'bg-gray-400 text-white' : 'bg-gray-200 text-gray-700'" class="px-4 py-1 rounded-full text-sm font-bold transition-colors">غیرفعال</button>
+            <button :class="recaptchaEnabled ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700'" class="px-4 py-1 rounded-full text-sm font-bold transition-colors" @click="toggleRecaptcha(true)">فعال</button>
+            <button :class="!recaptchaEnabled ? 'bg-gray-400 text-white' : 'bg-gray-200 text-gray-700'" class="px-4 py-1 rounded-full text-sm font-bold transition-colors" @click="toggleRecaptcha(false)">غیرفعال</button>
           </div>
         </div>
         <!-- نوع reCAPTCHA -->
         <div>
           <div class="text-xs text-gray-500 mb-2 font-medium">نوع reCAPTCHA</div>
-          <select v-model="recaptchaType" @change="changeRecaptchaType" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm bg-gray-50">
+          <select v-model="recaptchaType" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm bg-gray-50" @change="changeRecaptchaType">
             <option value="v2">reCAPTCHA v2</option>
             <option value="v3">reCAPTCHA v3</option>
             <option value="invisible">reCAPTCHA Invisible</option>
@@ -55,12 +55,12 @@
         <div>
           <div class="flex gap-6 justify-end">
             <TemplateButton 
-              @click="testRecaptcha" 
-              bgGradient="bg-gradient-to-r from-cyan-400 to-blue-600" 
-              textColor="text-white" 
-              borderColor="border border-blue-500" 
-              hoverClass="hover:from-cyan-500 hover:to-blue-700" 
-              size="medium"
+              bg-gradient="bg-gradient-to-r from-cyan-400 to-blue-600" 
+              text-color="text-white" 
+              border-color="border border-blue-500" 
+              hover-class="hover:from-cyan-500 hover:to-blue-700" 
+              size="medium" 
+              @click="testRecaptcha"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -68,12 +68,12 @@
               تست reCAPTCHA
             </TemplateButton>
             <TemplateButton 
-              @click="showSettingsModal = true" 
-              bgGradient="bg-gradient-to-r from-emerald-400 to-green-600" 
-              textColor="text-white" 
-              borderColor="border border-green-500" 
-              hoverClass="hover:from-emerald-500 hover:to-green-700" 
-              size="medium"
+              bg-gradient="bg-gradient-to-r from-emerald-400 to-green-600" 
+              text-color="text-white" 
+              border-color="border border-green-500" 
+              hover-class="hover:from-emerald-500 hover:to-green-700" 
+              size="medium" 
+              @click="showSettingsModal = true"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
@@ -97,7 +97,7 @@
           <span class="text-blue-900 font-medium">نمونه فرم محافظت شده با Turnstile</span>
         </div>
         
-        <form @submit.prevent="testTurnstileForm" class="space-y-4">
+        <form class="space-y-4" @submit.prevent="testTurnstileForm">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">نام</label>
             <input v-model="testForm.name" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="نام خود را وارد کنید">
@@ -129,10 +129,10 @@
             <TemplateButton 
               type="submit"
               :disabled="!turnstileToken"
-              bgGradient="bg-gradient-to-r from-blue-500 to-indigo-600" 
-              textColor="text-white" 
-              borderColor="border border-blue-600" 
-              hoverClass="hover:from-blue-600 hover:to-indigo-700" 
+              bg-gradient="bg-gradient-to-r from-blue-500 to-indigo-600" 
+              text-color="text-white" 
+              border-color="border border-blue-600" 
+              hover-class="hover:from-blue-600 hover:to-indigo-700" 
               size="medium"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -170,12 +170,12 @@
       <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
         <h3 class="text-lg font-semibold text-gray-900">تنظیمات فرم‌ها</h3>
         <TemplateButton 
-          @click="showAddFormModal = true" 
-          bgGradient="bg-gradient-to-r from-emerald-400 to-green-600" 
-          textColor="text-white" 
-          borderColor="border border-green-500" 
-          hoverClass="hover:from-emerald-500 hover:to-green-700" 
-          size="medium"
+          bg-gradient="bg-gradient-to-r from-emerald-400 to-green-600" 
+          text-color="text-white" 
+          border-color="border border-green-500" 
+          hover-class="hover:from-emerald-500 hover:to-green-700" 
+          size="medium" 
+          @click="showAddFormModal = true"
         >
           <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -207,12 +207,12 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ form.lastTest }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button @click="toggleForm(form.id)" class="text-blue-600 hover:text-blue-900 ml-2">
+                <button class="text-blue-600 hover:text-blue-900 ml-2" @click="toggleForm(form.id)">
                   {{ form.enabled ? 'غیرفعال' : 'فعال' }}
                 </button>
-                <button @click="editForm(form.id)" class="text-green-600 hover:text-green-900 ml-2">ویرایش</button>
-                <button @click="testFormById(form.id)" class="text-purple-600 hover:text-purple-900 ml-2">تست</button>
-                <button @click="deleteForm(form.id)" class="text-red-600 hover:text-red-900">حذف</button>
+                <button class="text-green-600 hover:text-green-900 ml-2" @click="editForm(form.id)">ویرایش</button>
+                <button class="text-purple-600 hover:text-purple-900 ml-2" @click="testFormById(form.id)">تست</button>
+                <button class="text-red-600 hover:text-red-900" @click="deleteForm(form.id)">حذف</button>
               </td>
             </tr>
           </tbody>
@@ -262,7 +262,7 @@
       <!-- مودال -->
       <div class="relative bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-2xl max-w-4xl w-full mx-4 p-6 transform transition-all duration-300 scale-100 border-2 border-purple-500 max-h-[90vh] overflow-y-auto" @click.stop>
         <!-- دکمه بستن -->
-        <button @click="showSettingsModal = false" class="absolute top-6 left-6 text-gray-400 hover:text-gray-600 transition-all duration-200 hover:scale-110">
+        <button class="absolute top-6 left-6 text-gray-400 hover:text-gray-600 transition-all duration-200 hover:scale-110" @click="showSettingsModal = false">
           <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
           </svg>
@@ -371,22 +371,22 @@
 
         <div class="flex justify-end space-x-3 space-x-reverse mt-6">
           <TemplateButton 
-            @click="showSettingsModal = false" 
-            bgGradient="bg-gradient-to-r from-gray-400 to-gray-600" 
-            textColor="text-white" 
-            borderColor="border border-gray-500" 
-            hoverClass="hover:from-gray-500 hover:to-gray-700" 
-            size="medium"
+            bg-gradient="bg-gradient-to-r from-gray-400 to-gray-600" 
+            text-color="text-white" 
+            border-color="border border-gray-500" 
+            hover-class="hover:from-gray-500 hover:to-gray-700" 
+            size="medium" 
+            @click="showSettingsModal = false"
           >
             انصراف
           </TemplateButton>
           <TemplateButton 
-            @click="saveSettings" 
-            bgGradient="bg-gradient-to-r from-indigo-400 to-blue-600" 
-            textColor="text-white" 
-            borderColor="border border-blue-500" 
-            hoverClass="hover:from-indigo-500 hover:to-blue-700" 
-            size="medium"
+            bg-gradient="bg-gradient-to-r from-indigo-400 to-blue-600" 
+            text-color="text-white" 
+            border-color="border border-blue-500" 
+            hover-class="hover:from-indigo-500 hover:to-blue-700" 
+            size="medium" 
+            @click="saveSettings"
           >
             ذخیره تنظیمات
           </TemplateButton>
@@ -401,7 +401,7 @@
       <!-- مودال -->
       <div class="relative bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-2xl max-w-lg w-full mx-4 p-8 transform transition-all duration-300 scale-100 border-2 border-purple-500" @click.stop>
         <!-- دکمه بستن -->
-        <button @click="showAddFormModal = false" class="absolute top-6 left-6 text-gray-400 hover:text-gray-600 transition-all duration-200 hover:scale-110">
+        <button class="absolute top-6 left-6 text-gray-400 hover:text-gray-600 transition-all duration-200 hover:scale-110" @click="showAddFormModal = false">
           <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
           </svg>
@@ -440,22 +440,22 @@
 
         <div class="flex justify-end space-x-3 space-x-reverse mt-8">
           <TemplateButton 
-            @click="showAddFormModal = false" 
-            bgGradient="bg-gradient-to-r from-gray-400 to-gray-600" 
-            textColor="text-white" 
-            borderColor="border border-gray-500" 
-            hoverClass="hover:from-gray-500 hover:to-gray-700" 
-            size="medium"
+            bg-gradient="bg-gradient-to-r from-gray-400 to-gray-600" 
+            text-color="text-white" 
+            border-color="border border-gray-500" 
+            hover-class="hover:from-gray-500 hover:to-gray-700" 
+            size="medium" 
+            @click="showAddFormModal = false"
           >
             انصراف
           </TemplateButton>
           <TemplateButton 
-            @click="addForm" 
-            bgGradient="bg-gradient-to-r from-emerald-400 to-green-600" 
-            textColor="text-white" 
-            borderColor="border border-green-500" 
-            hoverClass="hover:from-emerald-500 hover:to-green-700" 
-            size="medium"
+            bg-gradient="bg-gradient-to-r from-emerald-400 to-green-600" 
+            text-color="text-white" 
+            border-color="border border-green-500" 
+            hover-class="hover:from-emerald-500 hover:to-green-700" 
+            size="medium" 
+            @click="addForm"
           >
             افزودن فرم
           </TemplateButton>
@@ -504,21 +504,21 @@ interface TestForm {
   threshold: number
 }
 
-interface TestResult {
-  success: boolean
-  score?: number
-  message: string
-}
+// interface TestResult {
+//   success: boolean
+//   score?: number
+//   message: string
+// }
 
-interface RequestLog {
-  id: number
-  timestamp: string
-  userIP: string
-  formName: string
-  score: number
-  success: boolean
-  details: string
-}
+// interface RequestLog {
+//   id: number
+//   timestamp: string
+//   userIP: string
+//   formName: string
+//   score: number
+//   success: boolean
+//   details: string
+// }
 
 interface Rule {
   id: number
@@ -571,17 +571,17 @@ const turnstileSize = ref('normal')
 // توابع Turnstile
 const onTurnstileToken = (token: string) => {
   turnstileToken.value = token
-  console.log('Turnstile token received:', token)
+  // console.log('Turnstile token received:', token)
 }
 
 const onTurnstileExpired = () => {
   turnstileToken.value = ''
-  console.log('Turnstile token expired')
+  // console.log('Turnstile token expired')
 }
 
 const onTurnstileError = (error: string) => {
   turnstileToken.value = ''
-  console.log('Turnstile error:', error)
+  // console.log('Turnstile error:', error)
 }
 
 // فرم جدید
@@ -656,11 +656,11 @@ const toggleRecaptcha = (enabled: boolean) => {
 }
 
 const changeRecaptchaType = () => {
-  console.log('نوع reCAPTCHA تغییر کرد به:', recaptchaType.value)
+  // console.log('نوع reCAPTCHA تغییر کرد به:', recaptchaType.value)
 }
 
 const testRecaptcha = () => {
-  console.log('تست reCAPTCHA انجام شد')
+  // console.log('تست reCAPTCHA انجام شد')
 }
 
 const testTurnstileForm = async () => {
@@ -717,7 +717,7 @@ const testTurnstileForm = async () => {
 }
 
 const saveSettings = () => {
-  console.log('تنظیمات ذخیره شد:', settings.value)
+  // console.log('تنظیمات ذخیره شد:', settings.value)
   showSettingsModal.value = false
 }
 
@@ -744,11 +744,11 @@ const toggleForm = (id: number) => {
 }
 
 const editForm = (id: number) => {
-  console.log('ویرایش فرم با ID:', id)
+  // console.log('ویرایش فرم با ID:', id)
 }
 
 const testFormById = (id: number) => {
-  console.log('تست فرم با ID:', id)
+  // console.log('تست فرم با ID:', id)
 }
 
 const deleteForm = (id: number) => {

@@ -22,7 +22,7 @@
           const sanitizedContent = computed(() => DOMPurify.sanitize(props.content))
           <div v-html="sanitizedContent"></div>
         -->
-        <div v-if="isHtml" v-html="content" class="text-white text-opacity-90"></div>
+        <div v-if="isHtml" class="text-white text-opacity-90" v-html="content"></div>
         
         <!-- متن ساده -->
         <div v-else class="text-white text-opacity-90 text-sm leading-relaxed whitespace-pre-line">
@@ -46,7 +46,6 @@
           <button
             v-for="button in buttons"
             :key="button.id"
-            @click="handleButtonClick(button)"
             :class="[
               'px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200',
               button.variant === 'primary' ? 'bg-blue-600 hover:bg-blue-700 text-white' : '',
@@ -57,6 +56,7 @@
               button.size === 'large' ? 'px-6 py-3 text-base' : ''
             ]"
             :disabled="button.disabled"
+            @click="handleButtonClick(button)"
           >
             <span v-if="button.icon" class="mr-2">{{ button.icon }}</span>
             <span>{{ button.text }}</span>
@@ -114,7 +114,7 @@
       </div>
       
       <!-- فرم -->
-      <form v-if="form" @submit.prevent="handleFormSubmit" class="custom-form mb-4">
+      <form v-if="form" class="custom-form mb-4" @submit.prevent="handleFormSubmit">
         <div class="space-y-3">
           <div
             v-for="field in form.fields"

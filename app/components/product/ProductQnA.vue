@@ -26,11 +26,11 @@
       <textarea v-model="newQuestion" class="qna-textarea" placeholder="پرسش خود را بنویسید..." rows="3"></textarea>
       <div class="qna-public-row">
         <label class="qna-public-label">
-          <input type="checkbox" v-model="isPublic" />
+          <input v-model="isPublic" type="checkbox" />
           <span>به صورت عمومی در سایت منتشر شود</span>
         </label>
       </div>
-      <button @click="submitQuestion" :disabled="submitting || !newQuestion || (!isAuthenticated && (!guestName || !guestPhone))" class="qna-submit-btn">
+      <button :disabled="submitting || !newQuestion || (!isAuthenticated && (!guestName || !guestPhone))" class="qna-submit-btn" @click="submitQuestion">
         <span v-if="submitting">در حال ارسال...</span>
         <span v-else>ارسال پرسش</span>
       </button>

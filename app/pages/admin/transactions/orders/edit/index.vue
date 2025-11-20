@@ -153,9 +153,9 @@
             </div>
             <div class="flex items-center space-x-2 space-x-reverse">
               <button 
-                @click="previousPage"
                 :disabled="currentPage === 1"
                 class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                @click="previousPage"
               >
                 قبلی
               </button>
@@ -163,9 +163,9 @@
                 صفحه {{ currentPage }} از {{ totalPages }}
               </span>
               <button 
-                @click="nextPage"
                 :disabled="currentPage === totalPages"
                 class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                @click="nextPage"
               >
                 بعدی
               </button>
@@ -208,7 +208,7 @@ const formatPersianDateTime = (dateString) => {
 }
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 // Import کامپوننت
 import OrderFilters from './components/OrderFilters.vue'
@@ -371,7 +371,7 @@ const formatPrice = (price) => {
   return new Intl.NumberFormat('fa-IR').format(price)
 }
 
-const formatDate = (date) => {
+const _formatDate = (date) => {
   if (!date) return 'نامشخص'
   return new Date(date).toLocaleDateString('fa-IR')
 }

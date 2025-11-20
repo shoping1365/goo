@@ -7,7 +7,7 @@
 export async function verifyTurnstileToken(token: string, secretKey: string): Promise<{
   success: boolean
   message: string
-  data?: any
+  data?: unknown
   error?: string
 }> {
   try {

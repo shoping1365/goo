@@ -21,8 +21,8 @@
       </div>
       <p class="text-red-600 text-sm">{{ error }}</p>
       <button
-        @click="fetchSuccessfulLogins"
         class="mt-2 px-3 py-1 bg-red-100 text-red-600 rounded text-sm hover:bg-red-200"
+        @click="fetchSuccessfulLogins"
       >
         تلاش مجدد
       </button>
@@ -81,14 +81,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import ViewAllModal from '~/components/admin/modals/ViewAllModal.vue';
+import type { User } from '~/types/user';
 
-const props = defineProps<{ user: any }>();
+const props = defineProps<{ user: User }>();
 const showAllLogins = ref(false);
 
+interface Login {
+  id: number;
+  createdAt: string;
+  ipAddress: string;
+  deviceType: string;
+  browser: string;
+}
+
+interface LoginResponse {
+  success: boolean;
+  data: {
+    successfulLogins: Login[];
+  };
+}
+
 // Real data for successful logins
-const successfulLogins = ref([]);
+const successfulLogins = ref<{ id: number; date: string; ip: string; device: string; browser: string }[]>([]);
 const loading = ref(false);
 const error = ref('');
 
@@ -103,15 +119,15 @@ const fetchSuccessfulLogins = async () => {
   error.value = '';
 
   try {
-    const response = await $fetch(`/api/admin/users/${props.user.id}/successful-logins`, {
+    const response = await $fetch<LoginResponse>(`/api/admin/users/${props.user.id}/successful-logins`, {
       query: {
         page: 1,
         limit: 100
       }
-    }) as any;
+    });
 
     if (response.success) {
-      successfulLogins.value = response.data.successfulLogins.map((login: any) => ({
+      successfulLogins.value = response.data.successfulLogins.map((login) => ({
         id: login.id,
         date: formatDateTime(login.createdAt),
         ip: login.ipAddress,
@@ -121,9 +137,10 @@ const fetchSuccessfulLogins = async () => {
     } else {
       error.value = 'خطا در دریافت داده‌ها';
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('خطا در دریافت ورودهای موفق:', err);
-    error.value = err.data?.message || 'خطا در دریافت ورودهای موفق';
+    const e = err as { data?: { message?: string } };
+    error.value = e.data?.message || 'خطا در دریافت ورودهای موفق';
   } finally {
     loading.value = false;
   }

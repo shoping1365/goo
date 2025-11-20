@@ -2,7 +2,7 @@
   <div>
     <div class="flex items-center justify-between mb-4">
       <h4 class="text-base font-semibold text-gray-900">تعریف حساب‌های فروش</h4>
-      <button @click="showAddModal = true" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">افزودن حساب فروش</button>
+      <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg" @click="showAddModal = true">افزودن حساب فروش</button>
     </div>
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
@@ -20,8 +20,8 @@
             <td class="py-3 px-4 font-mono">{{ account.code }}</td>
             <td class="py-3 px-4">{{ account.description }}</td>
             <td class="py-3 px-4">
-              <button @click="editAccount(account)" class="text-yellow-600 hover:text-yellow-800 mx-1">ویرایش</button>
-              <button @click="deleteAccount(account)" class="text-red-600 hover:text-red-800 mx-1">حذف</button>
+              <button class="text-yellow-600 hover:text-yellow-800 mx-1" @click="editAccount(account)">ویرایش</button>
+              <button class="text-red-600 hover:text-red-800 mx-1" @click="deleteAccount(account)">حذف</button>
             </td>
           </tr>
         </tbody>
@@ -31,7 +31,7 @@
     <div v-if="showAddModal || showEditModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
       <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4">
         <h5 class="font-bold mb-4">{{ showEditModal ? 'ویرایش حساب فروش' : 'افزودن حساب فروش' }}</h5>
-        <form @submit.prevent="showEditModal ? updateAccount() : addAccount()" class="space-y-4">
+        <form class="space-y-4" @submit.prevent="showEditModal ? updateAccount() : addAccount()">
           <div>
             <label class="block text-sm mb-1">نام حساب</label>
             <input v-model="form.name" required class="w-full px-3 py-2 border rounded-lg" />
@@ -46,7 +46,7 @@
           </div>
           <div class="flex gap-2 mt-4">
             <button type="submit" class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">ذخیره</button>
-            <button type="button" @click="closeModal" class="flex-1 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg">انصراف</button>
+            <button type="button" class="flex-1 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg" @click="closeModal">انصراف</button>
           </div>
         </form>
       </div>

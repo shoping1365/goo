@@ -10,13 +10,13 @@
         <div class="flex gap-3">
           <button
             :disabled="isSaving"
-            @click="previewProduct"
             :class="[
               'inline-flex items-center px-6 py-2 rounded-lg text-white bg-gradient-to-r from-purple-500 to-indigo-600 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-base font-semibold',
               isSaving 
                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
                 : ''
             ]"
+            @click="previewProduct"
           >
             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553 2.276A2 2 0 0121 14.118V17a2 2 0 01-2 2H5a2 2 0 01-2-2v-2.882a2 2 0 01.447-1.842L8 10m7 0V7a5 5 0 00-10 0v3m10 0a5 5 0 01-10 0" />
@@ -26,13 +26,13 @@
 
           <button
             :disabled="isSaving"
-            @click="saveAndContinueEditing"
             :class="[
               'inline-flex items-center px-6 py-2 rounded-lg text-white bg-gradient-to-r from-blue-500 to-blue-600 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-base font-semibold',
               isSaving 
                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
                 : ''
             ]"
+            @click="saveAndContinueEditing"
           >
             <svg v-if="isSaving" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -46,13 +46,13 @@
 
           <button
             :disabled="isSaving"
-            @click="saveProduct"
             :class="[
               'inline-flex items-center px-6 py-2 rounded-lg text-white bg-gradient-to-r from-green-500 to-emerald-600 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 text-base font-semibold',
               isSaving 
                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
                 : ''
             ]"
+            @click="saveProduct"
           >
             <svg v-if="isSaving" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -67,9 +67,9 @@
           <!-- دکمه تنظیمات (چرخ‌دنده) -->
           <button
             type="button"
-            @click="openSettings"
             class="px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-200 bg-gradient-to-r from-pink-100 to-blue-100 text-blue-700"
             title="تنظیمات بخش‌ها"
+            @click="openSettings"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7zm7.94-2.06a1 1 0 0 0 .26-1.09l-1-1.73a1 1 0 0 1 0-.94l1-1.73a1 1 0 0 0-.26-1.09l-2-2a1 1 0 0 0-1.09-.26l-1.73 1a1 1 0 0 1-.94 0l-1.73-1a1 1 0 0 0-1.09.26l-2 2a1 1 0 0 0-.26 1.09l1 1.73a1 1 0 0 1 0 .94l-1 1.73a1 1 0 0 0 .26 1.09l2 2a1 1 0 0 0 1.09.26l1.73-1a1 1 0 0 1 .94 0l1.73 1a1 1 0 0 0 1.09-.26l2-2z" />
@@ -94,7 +94,6 @@
       <a 
         v-for="tab in tabs" 
         :key="tab.value" 
-        @click.prevent="setActiveTab(tab.value)"
         href="#"
         :class="[
           'px-4 py-2 rounded-t text-sm transition cursor-pointer',
@@ -102,6 +101,7 @@
             ? 'font-bold text-blue-700' 
             : 'hover:bg-gray-50 text-gray-600'
         ]"
+        @click.prevent="setActiveTab(tab.value)"
       >
         {{ tab.label }}
       </a>
@@ -129,7 +129,7 @@ declare const navigateTo: (to: string) => Promise<void>
 
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, onUnmounted, provide, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import DeleteConfirmModal from '~/components/common/DeleteConfirmModal.vue'
 import ProductImagesTab from '~/components/product/ProductImagesTab.vue'
 import ProductSeoTab from '~/components/product/ProductSeoTab.vue'
@@ -153,7 +153,7 @@ const { buildProductLink } = useProductLink()
 const { deleteModalRef } = useDeleteConfirmModal()
 
 // Router for navigation
-const router = useRouter()
+// const router = useRouter()
 
 // Tabs Management
 const activeTab = ref('info')
@@ -290,14 +290,16 @@ async function saveProduct() {
     // Otherwise, we create a new product.
     if (pStore.isEditMode && pStore.editingProductId) {
       const product = await pStore.updateProduct(pStore.editingProductId);
-      if (product && product.id) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (product && (product as any).id) {
         // نمایش پیام موفقیت با notifier
         notifier.success('تغییرات با موفقیت ذخیره شد')
         navigateTo('/admin/product-management/products')
       }
     } else {
       const product = await pStore.createProduct()
-      if (product && product.id) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (product && (product as any).id) {
         notifier.success('محصول با موفقیت ایجاد شد')
         navigateTo('/admin/product-management/products')
       }

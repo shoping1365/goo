@@ -62,9 +62,9 @@
 
           <div class="flex justify-end">
             <button
-              @click="handleSaveRecaptchaSettings"
               :disabled="loading"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+              @click="handleSaveRecaptchaSettings"
             >
               <span v-if="loading" class="ml-2">
                 <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -108,9 +108,9 @@
           </div>
           <div class="flex justify-end">
             <button
-              @click="handleChangePassword"
               :disabled="loading"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+              @click="handleChangePassword"
             >
               <span v-if="loading" class="ml-2">
                 <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -220,9 +220,9 @@
 
           <div class="flex justify-end">
             <button
-              @click="handleSaveRateLimitSettings"
               :disabled="loading"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
+              @click="handleSaveRateLimitSettings"
             >
               <span v-if="loading" class="ml-2">
                 <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -246,10 +246,10 @@
               <p class="text-sm text-gray-500">با فعال‌سازی این گزینه، علاوه بر رمز عبور، کد تایید ارسال شده به تلفن همراه نیز نیاز خواهد بود.</p>
             </div>
             <button
-              @click="handleToggleTwoFactor"
               :disabled="loading"
               class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
               :class="[twoFactorEnabled ? 'bg-indigo-600' : 'bg-gray-200']"
+              @click="handleToggleTwoFactor"
             >
               <span
                 class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"
@@ -270,9 +270,9 @@
               <p class="text-sm text-gray-500">{{ session.location }} - {{ session.lastActive }}</p>
             </div>
             <button
-              @click="handleTerminateSession(session.id)"
               :disabled="loading"
               class="text-sm text-red-600 hover:text-red-900 disabled:opacity-50"
+              @click="handleTerminateSession(session.id)"
             >
               خاتمه نشست
             </button>
@@ -284,7 +284,7 @@
       <div class="bg-white shadow rounded-lg p-6">
         <h3 class="text-lg font-medium text-gray-900 mb-4">تاریخچه ورود</h3>
         <div class="space-y-4">
-          <div v-for="login in loginHistory" :key="login.id" class="py-3 border-b border-gray-200">
+          <div v-for="login in loginHistory" :key="(login as any).id" class="py-3 border-b border-gray-200">
             <p class="text-sm font-medium text-gray-900">{{ login.device }}</p>
             <p class="text-sm text-gray-500">{{ login.location }} - {{ login.timestamp }}</p>
           </div>
@@ -296,12 +296,11 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
-declare const useAuth: () => { user: any; hasPermission: (perm: string) => boolean }
 </script>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useSecuritySettings } from '~/composables/useSecuritySettings'
+import { onMounted, ref } from 'vue';
+import { useSecuritySettings } from '~/composables/useSecuritySettings';
 
 definePageMeta({
   layout: 'admin-main',
@@ -309,11 +308,11 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 const {
   loading,
-  error,
+  // error,
   recaptchaSettings,
   saveRecaptchaSettings,
   changePassword,

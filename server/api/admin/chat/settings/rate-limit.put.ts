@@ -17,7 +17,7 @@ interface RateLimitBody {
 declare const requireAuth: (event: H3Event) => Promise<User | null>
 declare const hasPermission: (user: User, permission: string) => boolean
 declare const useRuntimeConfig: () => { public: { goApiBase: string } }
-declare const $fetch: <T = unknown>(url: string, options?: { method?: string; headers?: Record<string, string>; body?: unknown }) => Promise<{ data?: unknown }>
+declare const $fetch: (url: string, options?: { method?: string; headers?: Record<string, string>; body?: unknown }) => Promise<{ data?: unknown }>
 
 export default defineEventHandler(async (event: H3Event) => {
   try {

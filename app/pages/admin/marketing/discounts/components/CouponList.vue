@@ -8,11 +8,11 @@
           <p class="text-gray-600 mt-1">ایجاد و مدیریت کوپن‌های تخفیف</p>
         </div>
         <div class="flex items-center gap-3 flex-shrink-0">
-          <button @click="showBulkActions = !showBulkActions" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors whitespace-nowrap">
+          <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors whitespace-nowrap" @click="showBulkActions = !showBulkActions">
             <span class="i-heroicons-squares-2x2 ml-2"></span>
             عملیات دسته‌ای
           </button>
-          <button @click="showAddCoupon = true" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap">
+          <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap" @click="showAddCoupon = true">
             <span class="i-heroicons-plus ml-2"></span>
             افزودن کوپن جدید
           </button>
@@ -25,7 +25,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
         <div class="min-w-0">
           <label class="block text-sm font-medium text-gray-700 mb-2">نوع کوپن</label>
-          <select v-model="filters.type" @change="applyFilters" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <select v-model="filters.type" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" @change="applyFilters">
             <option value="">همه انواع</option>
             <option value="percentage">درصدی</option>
             <option value="fixed">مبلغ ثابت</option>
@@ -34,7 +34,7 @@
         </div>
         <div class="min-w-0">
           <label class="block text-sm font-medium text-gray-700 mb-2">وضعیت</label>
-          <select v-model="filters.status" @change="applyFilters" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <select v-model="filters.status" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" @change="applyFilters">
             <option value="">همه وضعیت‌ها</option>
             <option value="active">فعال</option>
             <option value="inactive">غیرفعال</option>
@@ -43,11 +43,11 @@
         </div>
         <div class="min-w-0">
           <label class="block text-sm font-medium text-gray-700 mb-2">جستجو</label>
-          <input v-model="filters.search" @input="applyFilters" type="text" placeholder="جستجو در کد یا نام..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <input v-model="filters.search" type="text" placeholder="جستجو در کد یا نام..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" @input="applyFilters">
         </div>
         <div class="min-w-0">
           <label class="block text-sm font-medium text-gray-700 mb-2">تاریخ انقضا</label>
-          <select v-model="filters.expiry" @change="applyFilters" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <select v-model="filters.expiry" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" @change="applyFilters">
             <option value="">همه</option>
             <option value="today">امروز</option>
             <option value="week">این هفته</option>
@@ -56,7 +56,7 @@
           </select>
         </div>
         <div class="flex items-end min-w-0">
-          <button @click="resetFilters" class="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors whitespace-nowrap">
+          <button class="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors whitespace-nowrap" @click="resetFilters">
             پاک کردن فیلترها
           </button>
         </div>

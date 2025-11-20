@@ -4,7 +4,7 @@
       <div class="card-header">
         <h3>قیمت منطقه‌ای</h3>
         <div class="toggle-switch">
-          <input type="checkbox" v-model="enabled" id="regionalToggle" />
+          <input id="regionalToggle" v-model="enabled" type="checkbox" />
           <label for="regionalToggle"></label>
         </div>
       </div>
@@ -24,7 +24,7 @@
           <div class="regions-section">
             <div class="table-header">
               <h4>مناطق و قیمت‌ها</h4>
-              <button @click="addRegion" class="add-btn">
+              <button class="add-btn" @click="addRegion">
                 <span>+</span> افزودن منطقه
               </button>
             </div>
@@ -75,7 +75,7 @@
                   </select>
                 </div>
                 <div class="col actions">
-                  <button @click="removeRegion(index)" class="remove-btn">
+                  <button class="remove-btn" @click="removeRegion(index)">
                     حذف
                   </button>
                 </div>
@@ -97,7 +97,7 @@
                   placeholder="0"
                 />
                 <span class="currency-label">تومان</span>
-                <button @click="applyBulkPrice" class="bulk-btn">
+                <button class="bulk-btn" @click="applyBulkPrice">
                   اعمال
                 </button>
               </div>

@@ -8,8 +8,8 @@
       </div>
       <div class="flex gap-2">
         <button
-          @click="showNewPricingModal = true"
           class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+          @click="showNewPricingModal = true"
         >
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
@@ -17,8 +17,8 @@
           تعریف قیمت جدید
         </button>
         <button
-          @click="showDiscountModal = true"
           class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          @click="showDiscountModal = true"
         >
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
@@ -26,8 +26,8 @@
           تخفیف ویژه
         </button>
         <button
-          @click="exportPricing"
           class="inline-flex items-center px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+          @click="exportPricing"
         >
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -101,42 +101,42 @@
       <div class="border-b border-gray-200">
         <nav class="-mb-px flex space-x-8 space-x-reverse">
           <button
-            @click="activeTab = 'pricing'"
             :class="{
               'border-blue-500 text-blue-600': activeTab === 'pricing',
               'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'pricing'
             }"
             class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+            @click="activeTab = 'pricing'"
           >
             قیمت‌گذاری
           </button>
           <button
-            @click="activeTab = 'discounts'"
             :class="{
               'border-blue-500 text-blue-600': activeTab === 'discounts',
               'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'discounts'
             }"
             class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+            @click="activeTab = 'discounts'"
           >
             تخفیف‌ها
           </button>
           <button
-            @click="activeTab = 'commissions'"
             :class="{
               'border-blue-500 text-blue-600': activeTab === 'commissions',
               'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'commissions'
             }"
             class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+            @click="activeTab = 'commissions'"
           >
             کارمزدها
           </button>
           <button
-            @click="activeTab = 'occasions'"
             :class="{
               'border-blue-500 text-blue-600': activeTab === 'occasions',
               'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'occasions'
             }"
             class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+            @click="activeTab = 'occasions'"
           >
             مناسبت‌ها
           </button>
@@ -236,17 +236,17 @@
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div class="flex gap-2">
                       <button
-                        @click="editPricing(pricing)"
                         class="text-blue-600 hover:text-blue-900"
+                        @click="editPricing(pricing)"
                       >
                         ویرایش
                       </button>
                       <button
-                        @click="togglePricingStatus(pricing)"
                         :class="{
                           'text-red-600 hover:text-red-900': pricing.status === 'active',
                           'text-green-600 hover:text-green-900': pricing.status === 'inactive'
                         }"
+                        @click="togglePricingStatus(pricing)"
                       >
                         {{ pricing.status === 'active' ? 'غیرفعال' : 'فعال' }}
                       </button>
@@ -324,18 +324,18 @@
 
               <div class="flex gap-2">
                 <button
-                  @click="editDiscount(discount)"
                   class="flex-1 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  @click="editDiscount(discount)"
                 >
                   ویرایش
                 </button>
                 <button
-                  @click="toggleDiscountStatus(discount)"
                   :class="{
                     'flex-1 px-3 py-2 text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2': true,
                     'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500': discount.status === 'active',
                     'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500': discount.status === 'inactive'
                   }"
+                  @click="toggleDiscountStatus(discount)"
                 >
                   {{ discount.status === 'active' ? 'غیرفعال' : 'فعال' }}
                 </button>
@@ -349,8 +349,8 @@
           <div class="flex justify-between items-center mb-4">
             <h4 class="text-lg font-semibold text-gray-900">مدیریت کارمزدها</h4>
             <button
-              @click="showCommissionModal = true"
               class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+              @click="showCommissionModal = true"
             >
               تعریف کارمزد جدید
             </button>
@@ -396,18 +396,18 @@
 
               <div class="flex gap-2">
                 <button
-                  @click="editCommission(commission)"
                   class="flex-1 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  @click="editCommission(commission)"
                 >
                   ویرایش
                 </button>
                 <button
-                  @click="toggleCommissionStatus(commission)"
                   :class="{
                     'flex-1 px-3 py-2 text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2': true,
                     'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500': commission.status === 'active',
                     'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500': commission.status === 'inactive'
                   }"
+                  @click="toggleCommissionStatus(commission)"
                 >
                   {{ commission.status === 'active' ? 'غیرفعال' : 'فعال' }}
                 </button>
@@ -421,8 +421,8 @@
           <div class="flex justify-between items-center mb-4">
             <h4 class="text-lg font-semibold text-gray-900">قیمت‌گذاری بر اساس مناسبت‌ها</h4>
             <button
-              @click="showOccasionModal = true"
               class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+              @click="showOccasionModal = true"
             >
               تعریف مناسبت جدید
             </button>
@@ -469,18 +469,18 @@
 
               <div class="flex gap-2">
                 <button
-                  @click="editOccasion(occasion)"
                   class="flex-1 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  @click="editOccasion(occasion)"
                 >
                   ویرایش
                 </button>
                 <button
-                  @click="toggleOccasionStatus(occasion)"
                   :class="{
                     'flex-1 px-3 py-2 text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2': true,
                     'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500': occasion.status === 'active',
                     'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500': occasion.status === 'inactive'
                   }"
+                  @click="toggleOccasionStatus(occasion)"
                 >
                   {{ occasion.status === 'active' ? 'غیرفعال' : 'فعال' }}
                 </button>

@@ -1,7 +1,4 @@
-import { ref, reactive, readonly } from 'vue'
-
-// تعریف useFetch برای Nuxt 3
-declare const useFetch: any
+import { readonly, ref } from 'vue'
 
 export interface HeaderLayer {
   id?: number
@@ -40,6 +37,12 @@ export interface Header {
   updatedAt?: string
 }
 
+interface ApiResponse<T> {
+  success: boolean
+  data: T
+  message?: string
+}
+
 export const useHeaders = () => {
   const headers = ref<Header[]>([])
   const loading = ref(false)
@@ -51,11 +54,13 @@ export const useHeaders = () => {
       loading.value = true
       error.value = null
 
-      const response = await $fetch('/api/admin/header-settings') as any
+      const response = await $fetch<ApiResponse<Header[]>>('/api/admin/header-settings')
       if (response?.success) {
         // حذف رکوردهای تکراری بر اساس id
-        const map = new Map<number, any>()
-        response.data.forEach((h: any) => map.set(h.id, h))
+        const map = new Map<number, Header>()
+        response.data.forEach((h: Header) => {
+          if (h.id) map.set(h.id, h)
+        })
         headers.value = Array.from(map.values())
       } else {
         error.value = response?.message || 'خطا در بارگذاری هدرها'
@@ -71,7 +76,7 @@ export const useHeaders = () => {
   // دریافت هدر خاص
   const getHeader = async (id: number): Promise<Header | null> => {
     try {
-      const response = await $fetch(`/api/admin/header-settings/${id}`) as any
+      const response = await $fetch<ApiResponse<Header>>(`/api/admin/header-settings/${id}`)
       if (response?.success) {
         return response.data
       }
@@ -85,10 +90,10 @@ export const useHeaders = () => {
   // ایجاد هدر جدید
   const createHeader = async (headerData: Omit<Header, 'id' | 'createdAt' | 'updatedAt'>): Promise<Header | null> => {
     try {
-      const response = await $fetch('/api/admin/header-settings', {
+      const response = await $fetch<ApiResponse<Header>>('/api/admin/header-settings', {
         method: 'POST',
         body: headerData
-      }) as any
+      })
 
       if (response?.success) {
         // اضافه کردن به لیست محلی بدون ایجاد تکراری
@@ -107,10 +112,10 @@ export const useHeaders = () => {
   // به‌روزرسانی هدر
   const updateHeader = async (id: number, headerData: Partial<Header>): Promise<Header | null> => {
     try {
-      const response = await $fetch(`/api/admin/header-settings/${id}`, {
+      const response = await $fetch<ApiResponse<Header>>(`/api/admin/header-settings/${id}`, {
         method: 'PUT',
         body: headerData
-      }) as any
+      })
 
       if (response?.success) {
         // به‌روزرسانی در لیست محلی
@@ -140,10 +145,10 @@ export const useHeaders = () => {
       // تغییر وضعیت
       const newStatus = !currentHeader.is_active
 
-      const response = await $fetch(`/api/admin/header-settings/${id}`, {
+      const response = await $fetch<ApiResponse<Header>>(`/api/admin/header-settings/${id}`, {
         method: 'PUT',
         body: { is_active: newStatus }
-      }) as any
+      })
 
       if (response?.success) {
         // به‌روزرسانی در لیست محلی
@@ -163,9 +168,9 @@ export const useHeaders = () => {
   // حذف هدر
   const deleteHeader = async (id: number): Promise<boolean> => {
     try {
-      const response = await $fetch(`/api/admin/header-settings/${id}`, {
+      const response = await $fetch<ApiResponse<null>>(`/api/admin/header-settings/${id}`, {
         method: 'DELETE'
-      }) as any
+      })
 
       if (response?.success) {
         // حذف از لیست محلی

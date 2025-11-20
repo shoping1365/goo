@@ -60,8 +60,8 @@
         </div>
         <div class="flex justify-end mt-4">
           <button 
-            @click="clearFilters"
             class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+            @click="clearFilters"
           >
             پاک کردن فیلترها
           </button>
@@ -89,9 +89,9 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex flex-col gap-1">
                     <button 
-                      @click="moveUp(banner.id)"
                       :disabled="banner.order === 1"
                       class="w-6 h-6 bg-gray-100 hover:bg-gray-200 rounded flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                      @click="moveUp(banner.id)"
                     >
                       <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
@@ -99,9 +99,9 @@
                     </button>
                     <span class="text-sm font-medium text-gray-900">{{ banner.order }}</span>
                     <button 
-                      @click="moveDown(banner.id)"
                       :disabled="banner.order === banners.length"
                       class="w-6 h-6 bg-gray-100 hover:bg-gray-200 rounded flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                      @click="moveDown(banner.id)"
                     >
                       <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -160,21 +160,21 @@
                       ویرایش
                     </NuxtLink>
                     <button 
-                      @click="toggleStatus(banner.id)"
                       :class="banner.status === 'active' ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900'"
                       class="transition-colors"
+                      @click="toggleStatus(banner.id)"
                     >
                       {{ banner.status === 'active' ? 'غیرفعال' : 'فعال' }}
                     </button>
                     <button 
-                      @click="duplicateBanner(banner.id)"
                       class="text-purple-600 hover:text-purple-900 transition-colors"
+                      @click="duplicateBanner(banner.id)"
                     >
                       تکرار
                     </button>
                     <button 
-                      @click="deleteBanner(banner.id)"
                       class="text-red-600 hover:text-red-900 transition-colors"
+                      @click="deleteBanner(banner.id)"
                     >
                       حذف
                     </button>

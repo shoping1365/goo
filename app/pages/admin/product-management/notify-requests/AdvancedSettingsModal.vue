@@ -34,13 +34,13 @@ const persistAdvanced = async () => {
           <button
               v-for="tab in settingsTabs"
               :key="tab.id"
-              @click="activeSettingsTab = tab.id"
               :class="[
                 'w-full flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all',
                 activeSettingsTab === tab.id
                   ? 'bg-blue-100 text-blue-700 border-blue-200 border'
                   : 'text-gray-700 hover:bg-gray-100'
               ]"
+              @click="activeSettingsTab = tab.id"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="tab.icon"></path>
@@ -58,7 +58,7 @@ const persistAdvanced = async () => {
             <h4 class="text-xl font-semibold text-gray-900">{{ settingsTabs.find(t => t.id === activeSettingsTab)?.name }}</h4>
             <p class="text-sm text-gray-600 mt-1">پیکربندی تنظیمات {{ settingsTabs.find(t => t.id === activeSettingsTab)?.name }}</p>
           </div>
-          <button @click="showSettings = false" class="text-gray-400 hover:text-gray-600 transition-colors">
+          <button class="text-gray-400 hover:text-gray-600 transition-colors" @click="showSettings = false">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -596,14 +596,14 @@ const persistAdvanced = async () => {
         <!-- Footer -->
         <div class="p-6 border-t border-gray-200 flex justify-end space-x-3 space-x-reverse">
           <button
-              @click="showSettings = false"
               class="px-6 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all font-medium"
+              @click="showSettings = false"
           >
             لغو
           </button>
           <button
-              @click="(async () => { await persistAdvanced(); saveAdvancedSettings() })()"
               class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all shadow-md hover:shadow-lg font-medium"
+              @click="(async () => { await persistAdvanced(); saveAdvancedSettings() })()"
           >
             ذخیره تغییرات
           </button>

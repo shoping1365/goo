@@ -106,7 +106,7 @@
               </div>
             </div>
             
-            <button @click="refreshStats" class="mt-4 w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+            <button class="mt-4 w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" @click="refreshStats">
               بروزرسانی آمار
             </button>
           </div>
@@ -133,7 +133,7 @@
                 <span class="text-white">{{ log.message }}</span>
               </div>
             </div>
-            <button @click="clearLogs" class="mt-4 w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">
+            <button class="mt-4 w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors" @click="clearLogs">
               پاک کردن لاگ‌ها
             </button>
           </div>
@@ -157,10 +157,10 @@
               </div>
               
               <div class="grid grid-cols-2 gap-6">
-                <button @click="backupDatabase" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" @click="backupDatabase">
                   پشتیبان‌گیری
                 </button>
-                <button @click="optimizeDatabase" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors" @click="optimizeDatabase">
                   بهینه‌سازی
                 </button>
               </div>
@@ -195,10 +195,10 @@
               </div>
               
               <div class="grid grid-cols-2 gap-6">
-                <button @click="clearCache" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">
+                <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors" @click="clearCache">
                   پاک کردن کش
                 </button>
-                <button @click="warmCache" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                <button class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors" @click="warmCache">
                   گرم کردن کش
                 </button>
               </div>
@@ -232,7 +232,7 @@
                 </div>
               </div>
               
-              <button @click="runSecurityScan" class="w-full bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors">
+              <button class="w-full bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors" @click="runSecurityScan">
                 اجرای اسکن امنیتی
               </button>
               
@@ -275,7 +275,7 @@
                 </div>
               </div>
               
-              <button @click="optimizePerformance" class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+              <button class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors" @click="optimizePerformance">
                 بهینه‌سازی عملکرد
               </button>
             </div>
@@ -290,28 +290,28 @@
         </div>
         <div class="p-6">
           <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <button @click="restartServices" class="p-6 bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 transition-colors">
+            <button class="p-6 bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 transition-colors" @click="restartServices">
               <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
               </svg>
               <span class="block text-sm font-medium">Restart Services</span>
             </button>
             
-            <button @click="checkUpdates" class="p-6 bg-green-100 text-green-800 rounded-lg hover:bg-green-200 transition-colors">
+            <button class="p-6 bg-green-100 text-green-800 rounded-lg hover:bg-green-200 transition-colors" @click="checkUpdates">
               <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
               </svg>
               <span class="block text-sm font-medium">Check Updates</span>
             </button>
             
-            <button @click="exportLogs" class="p-6 bg-yellow-100 text-yellow-800 rounded-lg hover:bg-yellow-200 transition-colors">
+            <button class="p-6 bg-yellow-100 text-yellow-800 rounded-lg hover:bg-yellow-200 transition-colors" @click="exportLogs">
               <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
               </svg>
               <span class="block text-sm font-medium">Export Logs</span>
             </button>
             
-            <button @click="systemHealth" class="p-6 bg-purple-100 text-purple-800 rounded-lg hover:bg-purple-200 transition-colors">
+            <button class="p-6 bg-purple-100 text-purple-800 rounded-lg hover:bg-purple-200 transition-colors" @click="systemHealth">
               <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>

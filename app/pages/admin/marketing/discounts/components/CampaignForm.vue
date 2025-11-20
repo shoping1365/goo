@@ -48,7 +48,7 @@
           </div>
         </div>
         <div class="flex gap-3 justify-end">
-          <button type="button" @click="$emit('cancel')" class="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">لغو</button>
+          <button type="button" class="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors" @click="$emit('cancel')">لغو</button>
           <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">{{ isEditing ? 'ویرایش' : 'افزودن' }}</button>
         </div>
       </form>

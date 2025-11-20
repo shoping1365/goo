@@ -14,7 +14,8 @@
         </div>
       </div>
       <div class="flex items-center space-x-2">
-        <span class="px-3 py-1 text-xs font-medium rounded-full" 
+        <span
+class="px-3 py-1 text-xs font-medium rounded-full" 
               :class="gateway?.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
           {{ gateway?.status === 'active' ? 'فعال' : 'غیرفعال' }}
         </span>
@@ -22,7 +23,7 @@
     </div>
 
     <!-- فرم تنظیمات -->
-    <form @submit.prevent="saveSettings" class="space-y-6">
+    <form class="space-y-6" @submit.prevent="saveSettings">
       <!-- اطلاعات پایه -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
@@ -157,9 +158,9 @@
         <div class="flex items-center space-x-3">
           <button 
             type="button"
-            @click="testConnection"
             :disabled="testing"
             class="px-4 py-2 text-sm font-medium text-blue-700 bg-blue-100 border border-blue-300 rounded-md hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+            @click="testConnection"
           >
             <span v-if="testing">در حال تست...</span>
             <span v-else>تست اتصال</span>
@@ -167,8 +168,8 @@
           
           <button 
             type="button"
-            @click="resetForm"
             class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            @click="resetForm"
           >
             بازنشانی
           </button>

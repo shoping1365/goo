@@ -31,15 +31,15 @@
               </span>
       </td>
       <td>
-        <button @click="editSetting(setting.id)" class="btn btn-secondary">
+        <button class="btn btn-secondary" @click="editSetting(setting.id)">
           <i class="fas fa-edit"></i>
           ویرایش
         </button>
-        <button @click="toggleSetting(setting.id)" class="btn" :class="setting.active ? 'btn-warning' : 'btn-success'">
+        <button class="btn" :class="setting.active ? 'btn-warning' : 'btn-success'" @click="toggleSetting(setting.id)">
           <i :class="setting.active ? 'fas fa-pause' : 'fas fa-play'"></i>
           {{ setting.active ? 'غیرفعال' : 'فعال' }}
         </button>
-        <button @click="deleteSetting(setting.id)" class="btn btn-danger">
+        <button class="btn btn-danger" @click="deleteSetting(setting.id)">
           <i class="fas fa-trash"></i>
           حذف
         </button>
@@ -56,7 +56,7 @@
     <div class="form-row">
       <div class="form-group">
         <label>عنوان تنظیم:</label>
-        <input type="text" v-model="newSetting.title" placeholder="مثال: محدودیت ارسال">
+        <input v-model="newSetting.title" type="text" placeholder="مثال: محدودیت ارسال">
       </div>
       <div class="form-group">
         <label>نوع:</label>
@@ -70,19 +70,19 @@
     <div class="form-row">
       <div class="form-group">
         <label>شرط فعال‌سازی:</label>
-        <input type="text" v-model="newSetting.activationCondition" placeholder="مثال: تاخیر بیش از ۳ روز">
+        <input v-model="newSetting.activationCondition" type="text" placeholder="مثال: تاخیر بیش از ۳ روز">
       </div>
       <div class="form-group">
         <label>اقدام:</label>
-        <input type="text" v-model="newSetting.action" placeholder="مثال: ارسال اعلان">
+        <input v-model="newSetting.action" type="text" placeholder="مثال: ارسال اعلان">
       </div>
     </div>
     <div class="form-actions">
-      <button @click="addSetting" class="btn btn-success">
+      <button class="btn btn-success" @click="addSetting">
         <i class="fas fa-plus"></i>
         افزودن تنظیم
       </button>
-      <button @click="resetNewSetting" class="btn btn-secondary">
+      <button class="btn btn-secondary" @click="resetNewSetting">
         <i class="fas fa-undo"></i>
         بازنشانی
       </button>

@@ -1,4 +1,4 @@
-import { ref, reactive, computed, watch } from 'vue'
+import { reactive, ref, watch } from 'vue'
 
 /*
 کامپوزابل مدیریت فشرده سازی تصاویر (image compression)
@@ -59,7 +59,7 @@ const compressionSettings = ref({
   enabled: true
 })
 const unsavedChanges = ref(false)
-const lastLoadedSettings = ref<any>({})
+const lastLoadedSettings = ref<Record<string, unknown>>({})
 
 // Compression queue
 const compressionQueue = reactive({
@@ -111,17 +111,20 @@ function compressSelected() {
 // ---------- API helpers ----------
 async function loadCompressionSettings() {
   try {
-    const res = await $fetch('/api/admin/settings')
+    const res = await $fetch<Array<{ key?: string; Key?: string; value?: unknown; Value?: unknown }>>('/api/admin/settings')
     if (Array.isArray(res)) {
-      const map: Record<string, any> = {}
-      res.forEach((s: any) => {
-        map[s.key || s.Key] = s.value ?? s.Value
+      const map: Record<string, unknown> = {}
+      res.forEach((s) => {
+        const key = s.key || s.Key
+        if (key) {
+          map[key] = s.value ?? s.Value
+        }
       })
       // mapping values
-      const toBool = (v: any) => (typeof v === 'boolean' ? v : String(v).toLowerCase() === 'true' || v === '1')
-      if (map['compression.quality']) compressionSettings.value.quality = map['compression.quality']
+      const toBool = (v: unknown) => (typeof v === 'boolean' ? v : String(v).toLowerCase() === 'true' || v === '1')
+      if (map['compression.quality']) compressionSettings.value.quality = map['compression.quality'] as string
       if (map['compression.custom_quality']) compressionSettings.value.customQuality = Number(map['compression.custom_quality']) || 75
-      if (map['compression.format']) compressionSettings.value.format = map['compression.format']
+      if (map['compression.format']) compressionSettings.value.format = map['compression.format'] as string
       compressionSettings.value.progressive = toBool(map['compression.progressive'])
       compressionSettings.value.removeMetadata = toBool(map['compression.remove_metadata'])
       compressionSettings.value.optimizeColors = toBool(map['compression.optimize_colors'])
@@ -132,7 +135,7 @@ async function loadCompressionSettings() {
       lastLoadedSettings.value = { ...compressionSettings.value }
     }
     unsavedChanges.value = false
-  } catch (e) {
+  } catch {
     // silent
   }
 }
@@ -155,7 +158,7 @@ async function saveCompressionSettings() {
     showToast('تنظیمات ذخیره شد')
     unsavedChanges.value = false
     lastLoadedSettings.value = { ...compressionSettings.value }
-  } catch (e) {
+  } catch {
     showToast('خطا در ذخیره تنظیمات', 'error')
   }
 }
@@ -166,8 +169,8 @@ async function scanImages() {
   try {
     isScanning.value = true
     showToast('در حال اسکن تصاویر...')
-    const res = await $fetch('/api/media/list')
-    images.value = (res as any[]).map((it: any) => ({
+    const res = await $fetch<Array<{ id: number; name: string; url: string; size: number; dimensions?: string }>>('/api/media/list')
+    images.value = res.map((it) => ({
       id: it.id,
       name: it.name,
       url: it.url,
@@ -175,7 +178,7 @@ async function scanImages() {
       dimensions: it.dimensions
     }))
     showToast('اسکن به اتمام رسید')
-  } catch (e) {
+  } catch {
     showToast('خطا در اسکن تصاویر', 'error')
   } finally {
     isScanning.value = false

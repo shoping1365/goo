@@ -1,9 +1,9 @@
 <template>
   <div class="theme-toggle">
     <button
-      @click="toggleColorMode"
       class="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
       :title="colorMode.value === 'dark' ? 'تغییر به حالت روشن' : 'تغییر به حالت تاریک'"
+      @click="toggleColorMode"
     >
       <!-- آیکون خورشید برای حالت تاریک -->
       <svg

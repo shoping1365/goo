@@ -31,8 +31,8 @@
             <span :class="['status', rule.status]">{{ rule.statusText }}</span>
           </td>
           <td>
-            <button @click="editRule(rule)" class="btn-edit">ویرایش</button>
-            <button @click="deleteRule(rule.id)" class="btn-delete">حذف</button>
+            <button class="btn-edit" @click="editRule(rule)">ویرایش</button>
+            <button class="btn-delete" @click="deleteRule(rule.id)">حذف</button>
           </td>
         </tr>
         </tbody>
@@ -117,7 +117,7 @@
             </select>
           </div>
         </div>
-        <button @click="calculateCustoms" class="btn-calculate">محاسبه</button>
+        <button class="btn-calculate" @click="calculateCustoms">محاسبه</button>
       </div>
 
       <div v-if="customsCalculation" class="calculation-result">
@@ -144,7 +144,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 const customsRules = ref([
   {
@@ -186,11 +186,11 @@ const calculator = reactive({
 
 const customsCalculation = ref(null)
 
-const editRule = (rule) => {
+const editRule = (_rule) => {
   // Edit rule logic
 }
 
-const deleteRule = (id) => {
+const deleteRule = (_id) => {
   // Delete rule logic
 }
 

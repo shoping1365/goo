@@ -71,7 +71,7 @@
         سوال خود را بپرسید
       </h4>
       
-      <form @submit.prevent="submitQuestion" class="space-y-4">
+      <form class="space-y-4" @submit.prevent="submitQuestion">
         <div>
           <label for="question" class="block text-sm font-medium text-blue-900 mb-2">سوال شما</label>
           <textarea
@@ -133,8 +133,8 @@
           </button>
           <button
             type="button"
-            @click="resetForm"
             class="bg-white border border-blue-300 text-blue-700 hover:bg-blue-50 px-6 py-2 rounded-lg text-sm font-medium transition-colors"
+            @click="resetForm"
           >
             پاک کردن
           </button>
@@ -145,7 +145,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 
 const props = defineProps({
   product: {
@@ -174,7 +174,7 @@ const fetchQuestions = async () => {
     loading.value = true
     const response = await $fetch(`/api/products/${props.product.id}/questions`)
     questions.value = response || []
-    console.log('Questions loaded:', questions.value)
+    // console.log('Questions loaded:', questions.value)
   } catch (error) {
     console.error('Error fetching questions:', error)
   } finally {
@@ -228,7 +228,7 @@ const formatDate = (dateString) => {
 
 // Lifecycle
 onMounted(() => {
-  console.log('ProductQA mounted, product:', props.product)
+  // console.log('ProductQA mounted, product:', props.product)
   fetchQuestions()
 })
 </script> 

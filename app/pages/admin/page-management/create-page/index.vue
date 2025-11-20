@@ -9,22 +9,22 @@
         </div>
         <div class="flex space-x-3 space-x-reverse">
           <TemplateButton
-            @click="saveAsDraft"
-            bgGradient="bg-gradient-to-r from-gray-400 to-gray-600"
-            textColor="text-white"
-            hoverClass="hover:from-gray-500 hover:to-gray-700 hover:shadow-lg hover:scale-105"
-            focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            bg-gradient="bg-gradient-to-r from-gray-400 to-gray-600"
+            text-color="text-white"
+            hover-class="hover:from-gray-500 hover:to-gray-700 hover:shadow-lg hover:scale-105"
+            focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
             size="medium"
+            @click="saveAsDraft"
           >
             ذخیره پیش‌نویس
           </TemplateButton>
           <TemplateButton
-            @click="publishPage"
-            bgGradient="bg-gradient-to-r from-blue-400 to-blue-600"
-            textColor="text-white"
-            hoverClass="hover:from-blue-500 hover:to-blue-700 hover:shadow-lg hover:scale-105"
-            focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            bg-gradient="bg-gradient-to-r from-blue-400 to-blue-600"
+            text-color="text-white"
+            hover-class="hover:from-blue-500 hover:to-blue-700 hover:shadow-lg hover:scale-105"
+            focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             size="medium"
+            @click="publishPage"
           >
             انتشار صفحه
           </TemplateButton>
@@ -133,10 +133,10 @@
             <div class="mt-4">
               <TemplateButton
                 type="button"
-                bgGradient="bg-gradient-to-r from-blue-400 to-blue-600"
-                textColor="text-white"
-                hoverClass="hover:from-blue-500 hover:to-blue-700 hover:shadow-lg hover:scale-105"
-                focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                bg-gradient="bg-gradient-to-r from-blue-400 to-blue-600"
+                text-color="text-white"
+                hover-class="hover:from-blue-500 hover:to-blue-700 hover:shadow-lg hover:scale-105"
+                focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 size="medium"
               >
                 انتخاب تصویر

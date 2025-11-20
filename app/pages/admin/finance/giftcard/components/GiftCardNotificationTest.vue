@@ -9,14 +9,14 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button 
-            @click="runAllTests"
             class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+            @click="runAllTests"
           >
             اجرای همه تست‌ها
           </button>
           <button 
-            @click="clearResults"
             class="px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            @click="clearResults"
           >
             پاک کردن نتایج
           </button>
@@ -136,8 +136,8 @@
           
           <div class="flex items-center space-x-3 space-x-reverse">
             <button 
-              @click="testPurchaseNotification"
               class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              @click="testPurchaseNotification"
             >
               اجرای تست
             </button>
@@ -189,8 +189,8 @@
           
           <div class="flex items-center space-x-3 space-x-reverse">
             <button 
-              @click="testExpiryNotification"
               class="px-4 py-2 bg-yellow-600 text-white text-sm font-medium rounded-lg hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
+              @click="testExpiryNotification"
             >
               اجرای تست
             </button>
@@ -245,8 +245,8 @@
           
           <div class="flex items-center space-x-3 space-x-reverse">
             <button 
-              @click="testSuspiciousNotification"
               class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              @click="testSuspiciousNotification"
             >
               اجرای تست
             </button>
@@ -290,8 +290,8 @@
           
           <div class="flex items-center space-x-3 space-x-reverse">
             <button 
-              @click="testSystemNotification"
               class="px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+              @click="testSystemNotification"
             >
               اجرای تست
             </button>

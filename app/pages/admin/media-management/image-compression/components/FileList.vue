@@ -2,9 +2,9 @@
   <div>
     <!-- Action Bar -->
     <div class="flex items-center gap-2 mb-4 select-none">
-      <button @click="scanImages" class="bg-purple-100 text-purple-700 text-xs md:text-sm px-3 py-1 rounded-lg hover:bg-purple-200 transition-colors">اسکن</button>
-      <button v-if="selectedImages.length>0 && selectedImages.length<images.length" @click="selectAllImages" class="bg-indigo-100 text-indigo-700 text-xs md:text-sm px-3 py-1 rounded-lg hover:bg-indigo-200 transition-colors">انتخاب همه</button>
-      <button v-if="selectedImages.length>0" :disabled="isCompressing" @click="$emit('compress')" class="bg-pink-100 text-pink-700 text-xs md:text-sm px-3 py-1 rounded-lg hover:bg-pink-200 transition-colors disabled:opacity-50">فشرده‌سازی</button>
+      <button class="bg-purple-100 text-purple-700 text-xs md:text-sm px-3 py-1 rounded-lg hover:bg-purple-200 transition-colors" @click="scanImages">اسکن</button>
+      <button v-if="selectedImages.length>0 && selectedImages.length<images.length" class="bg-indigo-100 text-indigo-700 text-xs md:text-sm px-3 py-1 rounded-lg hover:bg-indigo-200 transition-colors" @click="selectAllImages">انتخاب همه</button>
+      <button v-if="selectedImages.length>0" :disabled="isCompressing" class="bg-pink-100 text-pink-700 text-xs md:text-sm px-3 py-1 rounded-lg hover:bg-pink-200 transition-colors disabled:opacity-50" @click="$emit('compress')">فشرده‌سازی</button>
     </div>
 
     <!-- Images Grid -->

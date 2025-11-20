@@ -76,9 +76,11 @@
       <div class="h-64 w-full overflow-x-auto">
         <div class="flex items-end space-x-1 h-full min-w-max px-4">
           <div v-for="(day, index) in balanceTrend" :key="index" class="flex flex-col items-center flex-shrink-0 min-w-[6px]">
-            <div class="w-full bg-gray-200 rounded-t relative"
+            <div
+class="w-full bg-gray-200 rounded-t relative"
                  :style="{ height: getChartHeight(day.balance) + 'px' }">
-              <div class="w-full bg-gradient-to-t from-blue-500 to-indigo-500 rounded-t transition-all duration-300 absolute bottom-0"
+              <div
+class="w-full bg-gradient-to-t from-blue-500 to-indigo-500 rounded-t transition-all duration-300 absolute bottom-0"
                    :style="{ height: getChartHeight(day.balance) + 'px' }"></div>
             </div>
             <span class="text-xs text-gray-500 mt-1 text-center hidden md:block">{{ day.date }}</span>
@@ -151,12 +153,14 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">مبلغ شارژ</label>
-            <input type="number" placeholder="مبلغ را وارد کنید" 
+            <input
+type="number" placeholder="مبلغ را وارد کنید" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">توضیحات</label>
-            <textarea placeholder="توضیحات شارژ" rows="3"
+            <textarea
+placeholder="توضیحات شارژ" rows="3"
                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
           </div>
           <button class="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
@@ -179,12 +183,14 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">مبلغ کسر</label>
-            <input type="number" placeholder="مبلغ را وارد کنید" 
+            <input
+type="number" placeholder="مبلغ را وارد کنید" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">دلیل کسر</label>
-            <textarea placeholder="دلیل کسر از کیف پول" rows="3"
+            <textarea
+placeholder="دلیل کسر از کیف پول" rows="3"
                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
           </div>
           <button class="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">

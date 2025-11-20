@@ -91,7 +91,7 @@
              <label class="block text-sm font-medium text-gray-700 mb-2">ارسال خودکار</label>
              <div class="space-y-2">
                <label class="flex items-center">
-                 <input type="checkbox" v-model="emailSettings.autoSend" class="rounded border-gray-300">
+                 <input v-model="emailSettings.autoSend" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">فعال کردن ارسال خودکار</span>
                </label>
                <select v-model="emailSettings.timing" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
@@ -112,7 +112,7 @@
                  <option value="branded">قالب برندینگ</option>
                </select>
                <label class="flex items-center">
-                 <input type="checkbox" v-model="emailSettings.includeReward" class="rounded border-gray-300">
+                 <input v-model="emailSettings.includeReward" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">شامل پاداش</span>
                </label>
              </div>
@@ -130,15 +130,15 @@
              <label class="block text-sm font-medium text-gray-700 mb-2">تنظیمات پیشرفته</label>
              <div class="space-y-2">
                <label class="flex items-center">
-                 <input type="checkbox" v-model="emailSettings.trackOpens" class="rounded border-gray-300">
+                 <input v-model="emailSettings.trackOpens" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">پیگیری باز شدن</span>
                </label>
                <label class="flex items-center">
-                 <input type="checkbox" v-model="emailSettings.trackClicks" class="rounded border-gray-300">
+                 <input v-model="emailSettings.trackClicks" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">پیگیری کلیک</span>
                </label>
                <label class="flex items-center">
-                 <input type="checkbox" v-model="emailSettings.retryFailed" class="rounded border-gray-300">
+                 <input v-model="emailSettings.retryFailed" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">تلاش مجدد برای ناموفق</span>
                </label>
              </div>
@@ -154,7 +154,7 @@
              <label class="block text-sm font-medium text-gray-700 mb-2">ارسال پیامک</label>
              <div class="space-y-2">
                <label class="flex items-center">
-                 <input type="checkbox" v-model="smsSettings.enabled" class="rounded border-gray-300">
+                 <input v-model="smsSettings.enabled" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">فعال کردن پیامک</span>
                </label>
                <select v-model="smsSettings.provider" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
@@ -185,7 +185,7 @@
                  <option value="24_hours">۲۴ ساعت بعد</option>
                </select>
                <label class="flex items-center">
-                 <input type="checkbox" v-model="smsSettings.includeLink" class="rounded border-gray-300">
+                 <input v-model="smsSettings.includeLink" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">شامل لینک نظرسنجی</span>
                </label>
              </div>
@@ -195,11 +195,11 @@
              <label class="block text-sm font-medium text-gray-700 mb-2">تنظیمات پیشرفته</label>
              <div class="space-y-2">
                <label class="flex items-center">
-                 <input type="checkbox" v-model="smsSettings.retryFailed" class="rounded border-gray-300">
+                 <input v-model="smsSettings.retryFailed" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">تلاش مجدد</span>
                </label>
                <label class="flex items-center">
-                 <input type="checkbox" v-model="smsSettings.unicodeSupport" class="rounded border-gray-300">
+                 <input v-model="smsSettings.unicodeSupport" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">پشتیبانی از یونیکد</span>
                </label>
              </div>
@@ -215,7 +215,7 @@
              <label class="block text-sm font-medium text-gray-700 mb-2">نمایش اعلان</label>
              <div class="space-y-2">
                <label class="flex items-center">
-                 <input type="checkbox" v-model="siteNotificationSettings.enabled" class="rounded border-gray-300">
+                 <input v-model="siteNotificationSettings.enabled" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">فعال کردن اعلان‌های سایت</span>
                </label>
                <select v-model="siteNotificationSettings.position" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
@@ -253,15 +253,15 @@
              <label class="block text-sm font-medium text-gray-700 mb-2">تنظیمات پیشرفته</label>
              <div class="space-y-2">
                <label class="flex items-center">
-                 <input type="checkbox" v-model="siteNotificationSettings.sound" class="rounded border-gray-300">
+                 <input v-model="siteNotificationSettings.sound" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">صدای اعلان</span>
                </label>
                <label class="flex items-center">
-                 <input type="checkbox" v-model="siteNotificationSettings.vibration" class="rounded border-gray-300">
+                 <input v-model="siteNotificationSettings.vibration" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">لرزش (موبایل)</span>
                </label>
                <label class="flex items-center">
-                 <input type="checkbox" v-model="siteNotificationSettings.autoClose" class="rounded border-gray-300">
+                 <input v-model="siteNotificationSettings.autoClose" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">بستن خودکار</span>
                </label>
              </div>
@@ -282,10 +282,10 @@
              </div>
              <p class="text-sm text-gray-600 mb-3">{{ template.description }}</p>
              <div class="flex space-x-2 space-x-reverse">
-               <button @click="editTemplate(template)" class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+               <button class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700" @click="editTemplate(template)">
                  ویرایش
                </button>
-               <button @click="previewTemplate(template)" class="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700">
+               <button class="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700" @click="previewTemplate(template)">
                  پیش‌نمایش
                </button>
              </div>
@@ -295,15 +295,15 @@
    
        <!-- Action Buttons -->
        <div class="flex justify-between">
-         <button @click="testNotifications" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+         <button class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="testNotifications">
            تست اطلاع‌رسانی
          </button>
          
          <div class="flex space-x-3 space-x-reverse">
-           <button @click="resetSettings" class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
+           <button class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors" @click="resetSettings">
              بازنشانی
            </button>
-           <button @click="saveSettings" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+           <button class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors" @click="saveSettings">
              ذخیره تنظیمات
            </button>
          </div>
@@ -468,25 +468,25 @@
      }
    }
    
-   const editTemplate = (template: NotificationTemplate) => {
-     console.log('Editing template:', template)
+   const editTemplate = (_template: NotificationTemplate) => {
+     // console.log('Editing template:', template)
    }
    
-   const previewTemplate = (template: NotificationTemplate) => {
-     console.log('Previewing template:', template)
+   const previewTemplate = (_template: NotificationTemplate) => {
+     // console.log('Previewing template:', template)
    }
    
    const testNotifications = () => {
-     console.log('Testing notifications...')
+     // console.log('Testing notifications...')
    }
    
    const saveSettings = () => {
-     console.log('Saving notification settings...')
+     // console.log('Saving notification settings...')
    }
    
    const resetSettings = () => {
      if (confirm('آیا از بازنشانی تنظیمات اطلاع‌رسانی اطمینان دارید؟')) {
-       console.log('Resetting notification settings')
+       // console.log('Resetting notification settings')
      }
    }
    

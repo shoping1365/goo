@@ -9,13 +9,11 @@
 declare const useRequestHeaders: (names?: string[]) => Record<string, string | undefined>
 
 // @ts-ignore
-export default defineNuxtRouteMiddleware(async (to, from) => {
+export default defineNuxtRouteMiddleware(async (to, _from) => {
   // اجرا روی هم server و هم client برای امنیت کامل
   // Server-side execution prevents page content from being rendered for unauthorized users
 
   try {
-    console.log('🔐 Admin middleware checking for path:', to.path)
-
     const headers: Record<string, string> = {
       Accept: 'application/json',
     }
@@ -31,13 +29,10 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     const response = await $fetch('/api/auth/me', {
       credentials: 'include',
       headers
-    }) as any
-
-    console.log('🔐 Auth response:', response)
+    }) as { authenticated: boolean; user?: { role: string }; role?: string }
 
     // Check if user is authenticated
     if (!response?.authenticated) {
-      console.log('❌ User not authenticated')
       throw new Error('User not authenticated')
     }
 
@@ -46,20 +41,14 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     const adminRoles = ['admin', 'developer']
     const isAdmin = adminRoles.includes(userRole.toLowerCase())
 
-    console.log('🔐 User role:', userRole, 'Is admin:', isAdmin)
-
     if (!isAdmin) {
-      console.log('❌ User is not admin')
       throw new Error('User is not admin')
     }
 
     // Admin access confirmed - allow navigation
-    console.log('✅ Admin access granted')
     return
 
-  } catch (error: any) {
-    console.log('❌ Admin middleware error:', error.message)
-
+  } catch (_error) {
     // If not authenticated or not admin, redirect to login
     const loginUrl = `/auth/login?redirect=${encodeURIComponent(to.path)}`
 

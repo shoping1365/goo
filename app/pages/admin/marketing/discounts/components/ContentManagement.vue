@@ -8,7 +8,7 @@
           <p class="text-gray-600 mt-1">مدیریت قالب‌های پیام، متن‌های پیش‌فرض و شخصی‌سازی محتوا</p>
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
-          <button @click="showTemplateForm = true" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="showTemplateForm = true">
             <span class="i-heroicons-plus ml-2"></span>
             افزودن قالب جدید
           </button>
@@ -69,8 +69,9 @@
     <!-- تب‌های محتوا -->
     <div class="border-b border-gray-200">
       <div class="flex border-b border-gray-200 overflow-x-auto">
-        <button v-for="tab in tabs" :key="tab.value" @click="activeTab = tab.value"
-          :class="['px-6 py-3 -mb-px font-medium text-sm focus:outline-none whitespace-nowrap', activeTab === tab.value ? 'border-b-2 border-blue-600 text-blue-700' : 'text-gray-500 hover:text-blue-600']">
+        <button
+v-for="tab in tabs" :key="tab.value" :class="['px-6 py-3 -mb-px font-medium text-sm focus:outline-none whitespace-nowrap', activeTab === tab.value ? 'border-b-2 border-blue-600 text-blue-700' : 'text-gray-500 hover:text-blue-600']"
+          @click="activeTab = tab.value">
           {{ tab.label }}
         </button>
       </div>
@@ -93,10 +94,10 @@
                 </div>
               </div>
               <div class="flex items-center space-x-2 space-x-reverse">
-                <button @click="editTemplate(template)" class="text-blue-600 hover:text-blue-900">
+                <button class="text-blue-600 hover:text-blue-900" @click="editTemplate(template)">
                   <span class="i-heroicons-pencil-square"></span>
                 </button>
-                <button @click="deleteTemplate(template)" class="text-red-600 hover:text-red-900">
+                <button class="text-red-600 hover:text-red-900" @click="deleteTemplate(template)">
                   <span class="i-heroicons-trash"></span>
                 </button>
               </div>
@@ -152,14 +153,14 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">انتخاب قالب</label>
-            <select v-model="selectedTemplate" @change="updatePreview" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <select v-model="selectedTemplate" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" @change="updatePreview">
               <option value="">انتخاب کنید</option>
               <option v-for="template in templates" :key="template.id" :value="template.id">{{ template.name }}</option>
             </select>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">نوع پیش‌نمایش</label>
-            <select v-model="previewType" @change="updatePreview" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <select v-model="previewType" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" @change="updatePreview">
               <option value="email">ایمیل</option>
               <option value="sms">پیامک</option>
               <option value="push">اعلان</option>
@@ -185,7 +186,7 @@
               const sanitizedPreviewContent = computed(() => DOMPurify.sanitize(previewContent.value))
               <div v-html="sanitizedPreviewContent"></div>
             -->
-            <div v-if="previewContent" v-html="previewContent" class="text-sm text-gray-700"></div>
+            <div v-if="previewContent" class="text-sm text-gray-700" v-html="previewContent"></div>
             <div v-else class="text-gray-400 text-center py-8">قالبی انتخاب نشده است</div>
           </div>
         </div>
@@ -228,13 +229,13 @@
             <h3 class="text-lg font-semibold text-gray-900">
               {{ editingTemplate ? 'ویرایش قالب' : 'افزودن قالب جدید' }}
             </h3>
-            <button @click="closeForm" class="text-gray-400 hover:text-gray-600">
+            <button class="text-gray-400 hover:text-gray-600" @click="closeForm">
               <span class="i-heroicons-x-mark text-xl"></span>
             </button>
           </div>
         </div>
         
-        <form @submit.prevent="handleSubmit" class="p-6 space-y-6">
+        <form class="p-6 space-y-6" @submit.prevent="handleSubmit">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">نام قالب *</label>
@@ -273,10 +274,10 @@
         </form>
         
         <div class="p-6 border-t border-gray-200 flex justify-end space-x-3 space-x-reverse">
-          <button @click="closeForm" class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+          <button class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors" @click="closeForm">
             انصراف
           </button>
-          <button @click="handleSubmit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="handleSubmit">
             ذخیره
           </button>
         </div>

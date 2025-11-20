@@ -2,20 +2,20 @@
   <div class="space-y-6" dir="rtl">
     <div v-if="relatedProducts.length" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       <NuxtLink
-        v-for="product in relatedProducts"
-        :key="product.id"
-        :to="`/product/sku-${product.sku || product.id}${product.slug ? '/' + encodeURIComponent(product.slug) : ''}`"
+        v-for="relatedProduct in relatedProducts"
+        :key="relatedProduct.id"
+        :to="`/product/sku-${relatedProduct.sku || relatedProduct.id}${relatedProduct.slug ? '/' + encodeURIComponent(relatedProduct.slug) : ''}`"
         class="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow group"
       >
         <div class="aspect-square bg-gray-100 overflow-hidden">
           <img
-            :src="toThumbnail(product.main_image)"
-            :alt="product.name"
+            :src="toThumbnail(relatedProduct.main_image)"
+            :alt="relatedProduct.name"
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
         <div class="p-6">
-          <h3 class="font-medium text-gray-900 text-sm mb-2 line-clamp-2">{{ product.name }}</h3>
+          <h3 class="font-medium text-gray-900 text-sm mb-2 line-clamp-2">{{ relatedProduct.name }}</h3>
           <div class="flex items-center justify-between">
             <div class="text-green-600 font-bold text-sm">
               {{ formatPrice(product.price) }} تومان

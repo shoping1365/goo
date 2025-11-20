@@ -1,11 +1,11 @@
 <template>
   <div class="bg-white rounded-lg border border-gray-200 p-6 max-w-xl mx-auto">
     <h3 class="text-lg font-semibold text-gray-900 mb-6">تنظیمات عمومی گیفت کارت</h3>
-    <form @submit.prevent="handleSubmit" class="space-y-6">
+    <form class="space-y-6" @submit.prevent="handleSubmit">
       <!-- فعال/غیرفعال کردن سیستم -->
       <div class="flex items-center justify-between">
         <label class="text-sm font-medium text-gray-700">فعال بودن سیستم گیفت کارت</label>
-        <input type="checkbox" v-model="form.enabled" class="h-5 w-5 text-green-600 focus:ring-green-500 border-gray-300 rounded" />
+        <input v-model="form.enabled" type="checkbox" class="h-5 w-5 text-green-600 focus:ring-green-500 border-gray-300 rounded" />
       </div>
       <!-- حداقل و حداکثر مبلغ کارت -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

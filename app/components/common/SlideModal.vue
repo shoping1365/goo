@@ -8,8 +8,8 @@
             {{ isEditing ? 'ویرایش اسلاید' : 'افزودن اسلاید جدید' }}
           </h3>
                     <button
-                    @click="closeModal"
                     class="text-gray-400 hover:text-gray-600"
+                    @click="closeModal"
                     >
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -17,7 +17,7 @@
                     </button>
                </div>
 
-               <form @submit.prevent="handleSave" class="space-y-4">
+               <form class="space-y-4" @submit.prevent="handleSave">
                                 <!-- عنوان اسلاید -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1" style="font-family: 'Yekan', sans-serif;">عنوان اسلاید *</label>
@@ -57,7 +57,8 @@
                     </label>
                     <div class="space-y-4">
                     <!-- Custom File Upload Area -->
-                    <div class="border-2 border-dashed rounded-lg px-4 py-4 text-center transition-colors"
+                    <div
+class="border-2 border-dashed rounded-lg px-4 py-4 text-center transition-colors"
                          :class="imageError ? 'border-red-400 bg-red-50' : 'border-gray-300 hover:border-blue-400'">
                          <div v-if="!currentImage" class="space-y-3">
                          <svg class="w-12 h-12 text-gray-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,9 +68,9 @@
                          <!-- Library Selection Button (Primary) -->
                          <button
                            type="button"
-                           @click="handleOpenMediaLibrary"
                            class="inline-flex items-center font-medium rounded-lg focus:outline-none transition-all duration-200 shadow-md bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 px-5 py-3 text-sm cursor-pointer mb-3"
                            style="font-family: 'Yekan', sans-serif;"
+                           @click="handleOpenMediaLibrary"
                          >
                            <svg class="w-5 h-5 inline-block ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                            </svg>
@@ -93,9 +94,9 @@
                          <div class="flex gap-2 justify-center flex-wrap">
                               <button
                               type="button"
-                              @click="handleOpenMediaLibrary"
                               class="bg-green-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-600 transition-colors"
                               style="font-family: 'Yekan', sans-serif;"
+                              @click="handleOpenMediaLibrary"
                          >
                               <svg class="w-4 h-4 inline-block ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               </svg>
@@ -104,9 +105,9 @@
 
                          <button
                               type="button"
-                              @click="handleRemoveImage"
                               class="bg-red-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-600 transition-colors"
                               style="font-family: 'Yekan', sans-serif;"
+                              @click="handleRemoveImage"
                          >
                               <svg class="w-4 h-4 inline-block ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -139,9 +140,9 @@
                     <!-- باز کردن در صفحه جدید -->
                     <div v-if="slideData.link" class="flex items-center gap-3">
                     <input
-                      type="checkbox"
                       id="openInNewTabCheckbox"
                       v-model="slideData.openInNewTab"
+                      type="checkbox"
                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                     />
                     <label for="openInNewTabCheckbox" class="text-sm font-medium text-gray-700" style="font-family: 'Yekan', sans-serif;">
@@ -154,9 +155,9 @@
                     <!-- کنترل نمایش عنوان -->
                     <div class="flex items-center gap-3">
                     <input
-                         type="checkbox"
                          id="showTitleCheckbox"
                          v-model="showTitleValue"
+                         type="checkbox"
                          class="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 focus:ring-2"
                     />
                     <label for="showTitleCheckbox" class="text-sm font-medium text-gray-700">
@@ -168,9 +169,9 @@
                     <div class="flex gap-3">
                                   <button
                 type="button"
-                @click="closeModal"
                 class="px-4 py-2 text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
                 style="font-family: 'Yekan', sans-serif;"
+                @click="closeModal"
               >
                 لغو
               </button>

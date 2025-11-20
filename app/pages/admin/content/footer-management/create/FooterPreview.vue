@@ -125,22 +125,22 @@
               <div class="form-field">
                 <label>عرض (%)</label>
                 <input
-                  type="number"
                   v-model.number="currentItems[activeIndex].width"
+                  type="number"
                   min="5"
                   max="95"
                   step="0.1"
                   class="form-control"
-                  @blur="normalizeWidth(activeIndex)"
                   dir="ltr"
+                  @blur="normalizeWidth(activeIndex)"
                 />
               </div>
 
               <div class="form-field">
                 <label>پدینگ راست (px)</label>
                 <input
-                  type="number"
                   v-model.number="currentItems[activeIndex].paddingRight"
+                  type="number"
                   min="0"
                   max="200"
                   class="form-control"
@@ -151,8 +151,8 @@
               <div class="form-field">
                 <label>پدینگ چپ (px)</label>
                 <input
-                  type="number"
                   v-model.number="currentItems[activeIndex].paddingLeft"
+                  type="number"
                   min="0"
                   max="200"
                   class="form-control"
@@ -167,9 +167,9 @@
                 <label>تصویر</label>
                 <div v-if="currentItems[activeIndex].imageUrl" class="selected-image-preview">
                   <img :src="currentItems[activeIndex].imageUrl" alt="تصویر انتخاب‌شده" />
-                  <button @click="removeSelectedImage" class="btn btn-sm btn-outline">حذف تصویر</button>
+                  <button class="btn btn-sm btn-outline" @click="removeSelectedImage">حذف تصویر</button>
                 </div>
-                <button v-else @click="openMediaLibrary" class="btn btn-sm btn-primary">انتخاب تصویر</button>
+                <button v-else class="btn btn-sm btn-primary" @click="openMediaLibrary">انتخاب تصویر</button>
               </div>
 
               <div

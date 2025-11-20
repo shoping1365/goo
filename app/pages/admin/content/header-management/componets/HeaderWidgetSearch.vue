@@ -1,21 +1,21 @@
 <template>
   <!-- باکس جستجو -->
   <div class="header-search-wrapper w-full h-full flex items-center" :style="getItemStyle()">
-    <div class="w-[70%] mx-auto relative" ref="searchContainer">
+    <div ref="searchContainer" class="w-[70%] mx-auto relative">
       <!-- Input جستجو -->
       <div class="relative w-full">
         <input
           ref="searchInput"
           v-model="searchQuery"
-          @input="handleSearchInput"
-          @focus="handleFocus"
-          @blur="handleBlur"
-          @keydown="handleKeydown"
           type="text"
           placeholder="جستجو در محصولات، مقالات و..."
           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400 transition-all duration-200 bg-white"
           dir="rtl"
           autocomplete="off"
+          @input="handleSearchInput"
+          @focus="handleFocus"
+          @blur="handleBlur"
+          @keydown="handleKeydown"
         />
         
         <!-- آیکون جستجو -->
@@ -46,10 +46,10 @@
             <div class="px-1 flex items-center justify-between">
               <span class="text-xs text-gray-400">آخرین جستجوهای شما</span>
               <button
-                @click="clearRecentSearches"
                 type="button"
                 class="text-red-500 hover:text-red-700 transition-colors p-1"
                 title="پاک کردن همه"
+                @click="clearRecentSearches"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -104,12 +104,12 @@
               <div
                 v-for="(suggestion, index) in suggestions"
                 :key="`suggestion-${index}`"
-                @click="selectSuggestion(suggestion)"
-                @mouseenter="highlightedIndex = index"
                 :class="[
                   'px-4 py-2 cursor-pointer hover:bg-gray-50 transition-colors duration-150 flex items-center',
                   highlightedIndex === index ? 'bg-blue-50' : ''
                 ]"
+                @click="selectSuggestion(suggestion)"
+                @mouseenter="highlightedIndex = index"
               >
                 <svg class="w-4 h-4 text-gray-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -133,12 +133,12 @@
                   <div
                     v-for="(result, index) in group.items"
                     :key="`${group.key}-${result.type}-${result.id}`"
-                    @click="selectResult(result)"
-                    @mouseenter="highlightedIndex = suggestions.length + group.offset + index"
                     :class="[
                       'px-4 py-3 cursor-pointer hover:bg-gray-50 transition-colors duration-150 border-b border-gray-100 last:border-b-0',
                       highlightedIndex === suggestions.length + group.offset + index ? 'bg-blue-50' : ''
                     ]"
+                    @click="selectResult(result)"
+                    @mouseenter="highlightedIndex = suggestions.length + group.offset + index"
                   >
                     <div class="flex items-start space-x-3 space-x-reverse">
                       <div class="flex-shrink-0">
@@ -187,8 +187,8 @@
 
               <div class="px-4 py-2 border-t border-gray-100">
                 <button
-                  @click="viewAllResults"
                   class="w-full text-center text-sm text-blue-600 hover:text-blue-800 font-medium py-2"
+                  @click="viewAllResults"
                 >
                   مشاهده همه نتایج ({{ totalResults }})
                 </button>

@@ -36,9 +36,9 @@
               اطلاعات حساب
             </h4>
             <button 
-              @click="fetchUsageData"
               :disabled="fetchingUsage"
               class="flex items-center px-3 py-2 text-sm font-medium text-green-600 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 hover:border-green-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              @click="fetchUsageData"
             >
               <i v-if="fetchingUsage" class="i-heroicons-arrow-path animate-spin mr-2"></i>
               <i v-else class="i-heroicons-arrow-path mr-2"></i>
@@ -53,7 +53,7 @@
               </div>
               <div class="text-2xl font-bold text-gray-900">{{ openAISettings.accountBalance || '0.00' }} $</div>
               <div class="text-xs text-gray-500 mt-1">آخرین بروزرسانی: {{ openAISettings.lastBalanceUpdate || 'نامشخص' }}</div>
-              <div class="text-xs text-blue-500 mt-1" v-if="openAISettings.accountBalance === '0.00'">
+              <div v-if="openAISettings.accountBalance === '0.00'" class="text-xs text-blue-500 mt-1">
                 <i class="i-heroicons-information-circle mr-1"></i>
                 برخی API Key ها دسترسی به اطلاعات billing ندارند
               </div>
@@ -88,15 +88,15 @@
             </label>
             <div class="relative">
               <input 
-                v-model="openAISettings.apiKey" 
+                v-model="localOpenAISettings.apiKey" 
                 :type="showApiKey ? 'text' : 'password'"
                 class="w-full px-4 py-3 pr-12 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-200 group-hover:border-gray-300"
                 placeholder="sk-..."
               >
               <button 
                 type="button"
-                @click="showApiKey = !showApiKey"
                 class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                @click="toggleApiKey"
               >
                 <i :class="showApiKey ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'" class="text-lg"></i>
               </button>
@@ -110,7 +110,7 @@
               آدرس API
             </label>
             <input 
-              v-model="openAISettings.apiUrl" 
+              v-model="localOpenAISettings.apiUrl" 
               type="url" 
               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-200 group-hover:border-gray-300"
               placeholder="https://api.openai.com/v1"
@@ -159,7 +159,7 @@
           </h4>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div 
-              v-for="(section, sectionKey) in sectionConfigs" 
+              v-for="(section, sectionKey) in localSectionConfigs" 
               :key="sectionKey"
               class="bg-white rounded-lg p-3 border border-gray-200"
             >
@@ -235,7 +235,7 @@
               محدودیت درخواست (دقیقه)
             </label>
             <input 
-              v-model="openAISettings.rateLimit" 
+              v-model="localOpenAISettings.rateLimit" 
               type="number" 
               min="1" 
               max="1000"
@@ -250,7 +250,7 @@
               تایم‌اوت (ثانیه)
             </label>
             <input 
-              v-model="openAISettings.timeout" 
+              v-model="localOpenAISettings.timeout" 
               type="number" 
               min="5" 
               max="120"
@@ -265,7 +265,7 @@
               حداکثر هزینه روزانه ($)
             </label>
             <input 
-              v-model="openAISettings.maxDailyCost" 
+              v-model="localOpenAISettings.maxDailyCost" 
               type="number" 
               min="0" 
               max="1000"
@@ -283,25 +283,25 @@
             صفحات مصرف کننده API
           </label>
           <div class="space-y-3">
-            <div v-for="(page, index) in openAISettings.consumingPages" :key="index" class="flex items-center gap-3">
+            <div v-for="(page, index) in localOpenAISettings.consumingPages" :key="index" class="flex items-center gap-3">
               <input 
-                v-model="openAISettings.consumingPages[index]" 
+                v-model="localOpenAISettings.consumingPages[index]" 
                 type="text" 
                 class="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-200"
                 placeholder="مثلاً: /admin/seo/content-generation"
               >
               <button 
                 type="button" 
-                @click="removeConsumingPage(index)"
                 class="px-3 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-200"
+                @click="removeConsumingPage(index)"
               >
                 <i class="i-heroicons-trash text-sm"></i>
               </button>
             </div>
             <button 
               type="button" 
-              @click="addConsumingPage"
               class="w-full px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-md hover:shadow-lg"
+              @click="addConsumingPage"
             >
               <i class="i-heroicons-plus mr-2"></i>
               افزودن صفحه جدید
@@ -312,9 +312,9 @@
         <!-- وضعیت فعال‌سازی -->
         <div class="flex items-center p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
           <input 
-            v-model="openAISettings.enabled" 
-            type="checkbox" 
-            id="openaiEnabled"
+            id="openaiEnabled" 
+            v-model="localOpenAISettings.enabled" 
+            type="checkbox"
             class="w-5 h-5 text-green-600 border-gray-300 rounded focus:ring-green-500"
           >
           <label for="openaiEnabled" class="mr-3 text-sm font-semibold text-gray-700 flex items-center">
@@ -336,9 +336,9 @@
       <div class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3 sm:space-x-reverse">
         <button 
           type="button" 
-          @click="testOpenAIConnection"
           :disabled="testingConnection"
           class="px-8 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl hover:from-blue-600 hover:to-indigo-700 disabled:opacity-50 transition-all duration-200 shadow-lg hover:shadow-xl font-semibold flex items-center justify-center"
+          @click="testOpenAIConnection"
         >
           <i v-if="testingConnection" class="i-heroicons-arrow-path animate-spin mr-2"></i>
           <i v-else class="i-heroicons-arrow-path mr-2"></i>
@@ -346,17 +346,17 @@
         </button>
         <button 
           type="button" 
-          @click="resetApiSettings"
           class="px-8 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 font-semibold flex items-center justify-center"
+          @click="resetApiSettings"
         >
           <i class="i-heroicons-arrow-path mr-2"></i>
           بازنشانی تنظیمات
         </button>
         <button 
           type="button" 
-          @click="saveApiSettings"
           :disabled="savingApi"
           class="px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl hover:from-green-600 hover:to-emerald-700 disabled:opacity-50 transition-all duration-200 shadow-lg hover:shadow-xl font-semibold flex items-center justify-center"
+          @click="saveApiSettings"
         >
           <i v-if="savingApi" class="i-heroicons-arrow-path animate-spin mr-2"></i>
           <i v-else class="i-heroicons-check mr-2"></i>
@@ -368,6 +368,8 @@
 </template>
 
 <script setup>
+import { ref, watch } from 'vue'
+
 const props = defineProps({
   openAISettings: {
     type: Object,
@@ -399,7 +401,26 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['save', 'reset', 'testConnection', 'fetchUsage', 'toggleApiKey', 'addConsumingPage', 'removeConsumingPage'])
+const emit = defineEmits(['save', 'reset', 'testConnection', 'fetchUsage', 'toggleApiKey', 'addConsumingPage', 'removeConsumingPage', 'update:openAISettings', 'update:sectionConfigs'])
+
+const localOpenAISettings = ref({ ...props.openAISettings })
+const localSectionConfigs = ref(JSON.parse(JSON.stringify(props.sectionConfigs)))
+
+watch(() => props.openAISettings, (newVal) => {
+  localOpenAISettings.value = { ...newVal }
+}, { deep: true })
+
+watch(() => props.sectionConfigs, (newVal) => {
+  localSectionConfigs.value = JSON.parse(JSON.stringify(newVal))
+}, { deep: true })
+
+watch(localOpenAISettings, (newVal) => {
+  emit('update:openAISettings', newVal)
+}, { deep: true })
+
+watch(localSectionConfigs, (newVal) => {
+  emit('update:sectionConfigs', newVal)
+}, { deep: true })
 
 // وضعیت تاشو بودن لیست مدل‌ها (به صورت پیش‌فرض بسته است)
 const isModelsCollapsed = ref(true)

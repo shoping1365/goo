@@ -85,7 +85,8 @@
                 
                 <div>
                   <div style="color:red; font-size:12px;">excerpt: {{ post.excerpt }}</div>
-                  <div v-html="post.excerpt" style="border:1px dashed #aaa; padding:4px; margin-bottom:8px;"></div>
+                  <!-- eslint-disable-next-line vue/no-v-html -->
+                  <div style="border:1px dashed #aaa; padding:4px; margin-bottom:8px;" v-html="sanitize(post.excerpt)"></div>
                 </div>
                 
                 <div class="flex items-center justify-between">
@@ -131,7 +132,7 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string }) => void
-declare const useFetch: <T = unknown>(url: string, options?: { transform?: (data: any) => T }) => Promise<{ data: { value: T }; pending: { value: boolean }; error: { value: Error | null } }>
+declare const useFetch: <T = unknown>(url: string, options?: { transform?: (data: unknown) => T }) => Promise<{ data: { value: T }; pending: { value: boolean }; error: { value: Error | null } }>
 declare const useHead: (head: { title?: string; meta?: Array<{ name?: string; content?: string }> }) => void
 declare const useRoute: () => { params: Record<string, string>; query: Record<string, string> }
 
@@ -161,6 +162,7 @@ interface Category {
 </script>
 
 <script setup lang="ts">
+import DOMPurify from 'dompurify';
 import { computed } from 'vue';
 
 definePageMeta({
@@ -170,11 +172,15 @@ definePageMeta({
 const route = useRoute()
 const { category: categorySlug } = route.params
 
+const sanitize = (content: string) => {
+  return DOMPurify.sanitize(content || '')
+}
+
 // دریافت اطلاعات دسته‌بندی
-const { data: category, pending: categoryPending, error: categoryError } = await useFetch<Category | null>(`/api/post-categories?all=1`, {
-  transform: (data: any[]) => {
+const { data: category } = await useFetch<Category | null>(`/api/post-categories?all=1`, {
+  transform: (data: Category[]) => {
     if (Array.isArray(data)) {
-      return data.find(cat => cat.slug === categorySlug) as Category | null
+      return data.find(cat => cat.slug === categorySlug) || null
     }
     return null
   }
@@ -182,9 +188,9 @@ const { data: category, pending: categoryPending, error: categoryError } = await
 
 // دریافت نوشته‌های دسته‌بندی
 const { data: posts, pending, error } = await useFetch<Post[]>(`/api/posts?all=1`, {
-  transform: (data: any[]) => {
+  transform: (data: Post[]) => {
     if (Array.isArray(data) && category.value) {
-      return data.filter(p => p.category_id === category.value?.id && p.status === 'published') as Post[]
+      return data.filter(p => p.category_id === category.value?.id && p.status === 'published')
     }
     return []
   }

@@ -21,8 +21,8 @@
       </div>
       <p class="text-red-600 text-sm">{{ error }}</p>
       <button
-        @click="fetchCart"
         class="mt-2 px-3 py-1 bg-red-100 text-red-600 rounded text-sm hover:bg-red-200"
+        @click="fetchCart"
       >
         تلاش مجدد
       </button>
@@ -82,14 +82,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import ViewAllModal from '~/components/admin/modals/ViewAllModal.vue';
+import type { User } from '~/types/user';
 
-const props = defineProps<{ user: any }>();
+interface CartItem {
+  id: number;
+  productName: string;
+  quantity: number;
+  finalPrice: number;
+  dateAdded: string;
+}
+
+const props = defineProps<{ user: User }>();
 const showAll = ref(false);
 
 // Real data for cart
-const cart = ref([]);
+const cart = ref<CartItem[]>([]);
 const loading = ref(false);
 const error = ref('');
 
@@ -109,22 +118,22 @@ const fetchCart = async () => {
         page: 1,
         limit: 100
       }
-    }) as any;
+    }) as { success: boolean; data: { cartItems: Record<string, unknown>[] } };
 
     if (response.success) {
-      cart.value = response.data.cartItems.map((item: any) => ({
-        id: item.id,
-        productName: item.productName,
-        quantity: item.quantity,
-        finalPrice: item.finalPrice,
-        dateAdded: formatDateTime(item.addedAt)
+      cart.value = response.data.cartItems.map((item) => ({
+        id: item.id as number,
+        productName: item.productName as string,
+        quantity: item.quantity as number,
+        finalPrice: item.finalPrice as number,
+        dateAdded: formatDateTime(item.addedAt as string)
       }));
     } else {
       error.value = 'خطا در دریافت داده‌ها';
     }
-  } catch (err: any) {
-    console.error('خطا در دریافت سبد خرید:', err);
-    error.value = err.data?.message || 'خطا در دریافت سبد خرید';
+  } catch (err: unknown) {
+    const e = err as { data?: { message?: string } };
+    error.value = e.data?.message || 'خطا در دریافت سبد خرید';
   } finally {
     loading.value = false;
   }
@@ -149,4 +158,4 @@ const formatPrice = (price: number) => {
 onMounted(() => {
   fetchCart();
 });
-</script> 
+</script>

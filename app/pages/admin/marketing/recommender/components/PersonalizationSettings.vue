@@ -89,7 +89,7 @@
           <h3 class="text-lg font-semibold text-gray-900 mr-3">تنظیم شدت پیشنهادات</h3>
         </div>
         <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" v-model="settings.intensity.enabled" class="sr-only peer">
+          <input v-model="settings.intensity.enabled" type="checkbox" class="sr-only peer">
           <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-pink-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-pink-600"></div>
         </label>
       </div>
@@ -98,7 +98,7 @@
         <div class="space-y-6">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">تعداد پیشنهادات در صفحه اصلی</label>
-            <input type="range" v-model="settings.intensity.homePage" min="1" max="20" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="settings.intensity.homePage" type="range" min="1" max="20" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>1</span>
               <span>{{ settings.intensity.homePage }}</span>
@@ -108,7 +108,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">تعداد پیشنهادات در صفحه محصول</label>
-            <input type="range" v-model="settings.intensity.productPage" min="1" max="15" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="settings.intensity.productPage" type="range" min="1" max="15" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>1</span>
               <span>{{ settings.intensity.productPage }}</span>
@@ -118,7 +118,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">تعداد پیشنهادات در سبد خرید</label>
-            <input type="range" v-model="settings.intensity.cartPage" min="1" max="10" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="settings.intensity.cartPage" type="range" min="1" max="10" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>1</span>
               <span>{{ settings.intensity.cartPage }}</span>
@@ -140,7 +140,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداقل فاصله بین پیشنهادات</label>
-            <input type="range" v-model="settings.intensity.minInterval" min="1" max="60" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="settings.intensity.minInterval" type="range" min="1" max="60" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>1 دقیقه</span>
               <span>{{ settings.intensity.minInterval }} دقیقه</span>
@@ -150,7 +150,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداکثر پیشنهادات در روز</label>
-            <input type="range" v-model="settings.intensity.maxDaily" min="5" max="50" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="settings.intensity.maxDaily" type="range" min="5" max="50" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>5</span>
               <span>{{ settings.intensity.maxDaily }}</span>
@@ -175,7 +175,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">فیلتر دسته‌بندی</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="settings.categoryFilter.enabled" class="sr-only peer">
+            <input v-model="settings.categoryFilter.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
           </label>
         </div>
@@ -186,7 +186,7 @@
             <div class="space-y-2 max-h-32 overflow-y-auto">
               <div v-for="category in settings.categoryFilter.excludedCategories" :key="category.id" class="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
                 <span class="text-sm text-gray-700">{{ category.name }}</span>
-                <button @click="removeCategory(category.id)" class="text-red-600 hover:text-red-800">
+                <button class="text-red-600 hover:text-red-800" @click="removeCategory(category.id)">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                   </svg>
@@ -202,7 +202,7 @@
                 <option value="">انتخاب دسته‌بندی</option>
                 <option v-for="cat in availableCategories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
               </select>
-              <button @click="addCategory" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">افزودن</button>
+              <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700" @click="addCategory">افزودن</button>
             </div>
           </div>
         </div>
@@ -220,7 +220,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">فیلتر برند</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="settings.brandFilter.enabled" class="sr-only peer">
+            <input v-model="settings.brandFilter.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
           </label>
         </div>
@@ -231,7 +231,7 @@
             <div class="space-y-2 max-h-32 overflow-y-auto">
               <div v-for="brand in settings.brandFilter.excludedBrands" :key="brand.id" class="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
                 <span class="text-sm text-gray-700">{{ brand.name }}</span>
-                <button @click="removeBrand(brand.id)" class="text-red-600 hover:text-red-800">
+                <button class="text-red-600 hover:text-red-800" @click="removeBrand(brand.id)">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                   </svg>
@@ -247,7 +247,7 @@
                 <option value="">انتخاب برند</option>
                 <option v-for="brand in availableBrands" :key="brand.id" :value="brand.id">{{ brand.name }}</option>
               </select>
-              <button @click="addBrand" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">افزودن</button>
+              <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700" @click="addBrand">افزودن</button>
             </div>
           </div>
         </div>
@@ -266,7 +266,7 @@
           <h3 class="text-lg font-semibold text-gray-900 mr-3">اولویت‌بندی پیشنهادات</h3>
         </div>
         <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" v-model="settings.priority.enabled" class="sr-only peer">
+          <input v-model="settings.priority.enabled" type="checkbox" class="sr-only peer">
           <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
         </label>
       </div>
@@ -283,15 +283,15 @@
             </div>
           </div>
           <div class="flex items-center space-x-4 space-x-reverse">
-            <input type="range" v-model="priority.weight" min="0" max="100" class="w-32 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="priority.weight" type="range" min="0" max="100" class="w-32 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <span class="text-sm font-medium text-gray-900 w-12">{{ priority.weight }}%</span>
             <div class="flex space-x-1 space-x-reverse">
-              <button @click="movePriority(index, 'up')" :disabled="index === 0" class="p-1 text-gray-400 hover:text-gray-600 disabled:opacity-50">
+              <button :disabled="index === 0" class="p-1 text-gray-400 hover:text-gray-600 disabled:opacity-50" @click="movePriority(index, 'up')">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
                 </svg>
               </button>
-              <button @click="movePriority(index, 'down')" :disabled="index === settings.priority.types.length - 1" class="p-1 text-gray-400 hover:text-gray-600 disabled:opacity-50">
+              <button :disabled="index === settings.priority.types.length - 1" class="p-1 text-gray-400 hover:text-gray-600 disabled:opacity-50" @click="movePriority(index, 'down')">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
@@ -314,7 +314,7 @@
           <h3 class="text-lg font-semibold text-gray-900 mr-3">زبان و فرهنگ</h3>
         </div>
         <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" v-model="settings.culture.enabled" class="sr-only peer">
+          <input v-model="settings.culture.enabled" type="checkbox" class="sr-only peer">
           <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-600"></div>
         </label>
       </div>
@@ -345,19 +345,19 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">مناسبت‌های فرهنگی</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="settings.culture.culturalEvents" value="nowruz" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
+                <input v-model="settings.culture.culturalEvents" type="checkbox" value="nowruz" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
                 <span class="mr-2 text-sm text-gray-700">نوروز</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="settings.culture.culturalEvents" value="ramadan" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
+                <input v-model="settings.culture.culturalEvents" type="checkbox" value="ramadan" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
                 <span class="mr-2 text-sm text-gray-700">رمضان</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="settings.culture.culturalEvents" value="christmas" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
+                <input v-model="settings.culture.culturalEvents" type="checkbox" value="christmas" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
                 <span class="mr-2 text-sm text-gray-700">کریسمس</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="settings.culture.culturalEvents" value="valentine" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
+                <input v-model="settings.culture.culturalEvents" type="checkbox" value="valentine" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
                 <span class="mr-2 text-sm text-gray-700">ولنتاین</span>
               </label>
             </div>
@@ -377,7 +377,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">تنوع فرهنگی</label>
-            <input type="range" v-model="settings.culture.diversity" min="0" max="100" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="settings.culture.diversity" type="range" min="0" max="100" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>کم</span>
               <span>{{ settings.culture.diversity }}%</span>
@@ -410,7 +410,7 @@
           <h3 class="text-lg font-semibold text-gray-900 mr-3">سطح کاربر</h3>
         </div>
         <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" v-model="settings.userLevel.enabled" class="sr-only peer">
+          <input v-model="settings.userLevel.enabled" type="checkbox" class="sr-only peer">
           <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
         </label>
       </div>
@@ -427,7 +427,7 @@
           <div class="space-y-3">
             <div>
               <label class="block text-xs font-medium text-gray-700 mb-1">تعداد پیشنهادات</label>
-              <input type="range" v-model="level.recommendationCount" min="1" max="20" class="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+              <input v-model="level.recommendationCount" type="range" min="1" max="20" class="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer">
               <div class="flex justify-between text-xs text-gray-500 mt-1">
                 <span>1</span>
                 <span>{{ level.recommendationCount }}</span>
@@ -448,15 +448,15 @@
               <label class="block text-xs font-medium text-gray-700 mb-1">نوع پیشنهادات</label>
               <div class="space-y-1">
                 <label class="flex items-center">
-                  <input type="checkbox" v-model="level.types" value="popular" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 w-3 h-3">
+                  <input v-model="level.types" type="checkbox" value="popular" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 w-3 h-3">
                   <span class="mr-1 text-xs text-gray-700">محبوب</span>
                 </label>
                 <label class="flex items-center">
-                  <input type="checkbox" v-model="level.types" value="trending" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 w-3 h-3">
+                  <input v-model="level.types" type="checkbox" value="trending" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 w-3 h-3">
                   <span class="mr-1 text-xs text-gray-700">ترند</span>
                 </label>
                 <label class="flex items-center">
-                  <input type="checkbox" v-model="level.types" value="personalized" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 w-3 h-3">
+                  <input v-model="level.types" type="checkbox" value="personalized" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 w-3 h-3">
                   <span class="mr-1 text-xs text-gray-700">شخصی</span>
                 </label>
               </div>

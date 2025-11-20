@@ -19,7 +19,7 @@
               <p class="text-sm text-gray-500">سفارش: {{ order?.orderNumber }}</p>
             </div>
           </div>
-          <button @click="closeModal" class="text-gray-400 hover:text-gray-600 transition-colors">
+          <button class="text-gray-400 hover:text-gray-600 transition-colors" @click="closeModal">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -36,13 +36,13 @@
                 <button
                   v-for="status in availableStatuses"
                   :key="status.value"
-                  @click="changeStatus(status.value)"
                   :class="[
                     'px-3 py-2 text-sm rounded-lg transition-colors',
                     order?.status === status.value
                       ? 'bg-blue-100 text-blue-800 border border-blue-300'
                       : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
                   ]"
+                  @click="changeStatus(status.value)"
                 >
                   {{ status.label }}
                 </button>
@@ -52,8 +52,8 @@
             <!-- Quick Actions -->
             <div class="space-y-2">
               <button
-                @click="sendNotification"
                 class="w-full flex items-center justify-between p-3 text-right bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+                @click="sendNotification"
               >
                 <div class="flex items-center">
                   <svg class="w-5 h-5 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,8 +68,8 @@
               </button>
 
               <button
-                @click="printInvoice"
                 class="w-full flex items-center justify-between p-3 text-right bg-green-50 hover:bg-green-100 rounded-lg transition-colors"
+                @click="printInvoice"
               >
                 <div class="flex items-center">
                   <svg class="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -83,8 +83,8 @@
               </button>
 
               <button
-                @click="duplicateOrder"
                 class="w-full flex items-center justify-between p-3 text-right bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors"
+                @click="duplicateOrder"
               >
                 <div class="flex items-center">
                   <svg class="w-5 h-5 text-purple-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -98,8 +98,8 @@
               </button>
 
               <button
-                @click="exportOrder"
                 class="w-full flex items-center justify-between p-3 text-right bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors"
+                @click="exportOrder"
               >
                 <div class="flex items-center">
                   <svg class="w-5 h-5 text-orange-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,8 +118,8 @@
               <h4 class="text-sm font-medium text-red-900 mb-3">منطقه خطر</h4>
               <div class="space-y-2">
                 <button
-                  @click="cancelOrder"
                   class="w-full flex items-center justify-between p-3 text-right bg-red-50 hover:bg-red-100 rounded-lg transition-colors"
+                  @click="cancelOrder"
                 >
                   <div class="flex items-center">
                     <svg class="w-5 h-5 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -134,8 +134,8 @@
 
                 <button
                   v-if="canDeleteOrder"
-                  @click="deleteOrder"
                   class="w-full flex items-center justify-between p-3 text-right bg-red-50 hover:bg-red-100 rounded-lg transition-colors"
+                  @click="deleteOrder"
                 >
                   <div class="flex items-center">
                     <svg class="w-5 h-5 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -154,7 +154,7 @@
 
         <!-- Footer -->
         <div class="flex items-center justify-end px-4 py-4 border-t border-gray-200">
-          <button @click="closeModal" class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
+          <button class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors" @click="closeModal">
             بستن
           </button>
         </div>

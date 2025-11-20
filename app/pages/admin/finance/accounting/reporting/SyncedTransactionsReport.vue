@@ -8,8 +8,8 @@
       </div>
       <div class="flex items-center space-x-3 space-x-reverse">
         <button
-          @click="showFilters = !showFilters"
           class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          @click="showFilters = !showFilters"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z" />
@@ -17,8 +17,8 @@
           فیلترها
         </button>
         <button
-          @click="exportTransactionsReport"
           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          @click="exportTransactionsReport"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -36,8 +36,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">نوع تراکنش</label>
           <select
             v-model="filters.transactionType"
-            @change="applyFilters"
             class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="applyFilters"
           >
             <option value="">همه انواع</option>
             <option value="sale">فروش</option>
@@ -51,8 +51,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">نرم‌افزار</label>
           <select
             v-model="filters.software"
-            @change="applyFilters"
             class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="applyFilters"
           >
             <option value="">همه نرم‌افزارها</option>
             <option value="helo">هلو</option>
@@ -67,8 +67,8 @@
           <input
             v-model="filters.dateFrom"
             type="date"
-            @change="applyFilters"
             class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="applyFilters"
           />
         </div>
 
@@ -77,8 +77,8 @@
           <input
             v-model="filters.dateTo"
             type="date"
-            @change="applyFilters"
             class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="applyFilters"
           />
         </div>
       </div>
@@ -208,9 +208,9 @@
               <td class="py-3 px-4">
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <button
-                    @click="viewTransaction(transaction)"
                     class="p-1 text-blue-600 hover:text-blue-800"
                     title="مشاهده جزئیات"
+                    @click="viewTransaction(transaction)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -218,9 +218,9 @@
                     </svg>
                   </button>
                   <button
-                    @click="resyncTransaction(transaction)"
                     class="p-1 text-green-600 hover:text-green-800"
                     title="همگام‌سازی مجدد"
+                    @click="resyncTransaction(transaction)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -288,9 +288,9 @@
       </div>
       <div class="flex gap-2">
         <button
-          @click="previousPage"
           :disabled="pagination.currentPage === 1"
           class="px-3 py-1 border border-gray-300 rounded text-sm disabled:opacity-50"
+          @click="previousPage"
         >
           قبلی
         </button>
@@ -298,9 +298,9 @@
           صفحه {{ pagination.currentPage }} از {{ pagination.totalPages }}
         </span>
         <button
-          @click="nextPage"
           :disabled="pagination.currentPage === pagination.totalPages"
           class="px-3 py-1 border border-gray-300 rounded text-sm disabled:opacity-50"
+          @click="nextPage"
         >
           بعدی
         </button>

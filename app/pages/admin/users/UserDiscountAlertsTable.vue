@@ -32,7 +32,10 @@
   </div>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ user: any }>();
+import type { User } from '~/types/user';
+
+defineProps<{ user: User }>();
+defineEmits(['view-all-discount-alerts']);
 // Mock data for discount alerts
 const discountAlerts = [
   { id: 1, name: 'لپ‌تاپ لنوو', originalPrice: '۳۰٬۰۰۰٬۰۰۰', discountPercent: 20, registeredDate: '1402/03/10', isActive: true },

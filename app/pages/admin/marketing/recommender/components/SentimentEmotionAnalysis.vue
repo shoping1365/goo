@@ -105,7 +105,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">Sentiment Analysis</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="features.sentimentAnalysis.enabled" class="sr-only peer">
+            <input v-model="features.sentimentAnalysis.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-pink-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-pink-600"></div>
           </label>
         </div>
@@ -133,7 +133,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">آستانه اطمینان</label>
-            <input type="range" v-model="features.sentimentAnalysis.confidenceThreshold" min="0.5" max="1" step="0.05" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="features.sentimentAnalysis.confidenceThreshold" type="range" min="0.5" max="1" step="0.05" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>0.5</span>
               <span>{{ features.sentimentAnalysis.confidenceThreshold }}</span>
@@ -173,7 +173,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">Emotion Detection</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="features.emotionDetection.enabled" class="sr-only peer">
+            <input v-model="features.emotionDetection.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
           </label>
         </div>
@@ -183,23 +183,23 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">احساسات قابل تشخیص</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.emotionDetection.emotions" value="joy" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                <input v-model="features.emotionDetection.emotions" type="checkbox" value="joy" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                 <span class="mr-2 text-sm text-gray-700">شادی</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.emotionDetection.emotions" value="sadness" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                <input v-model="features.emotionDetection.emotions" type="checkbox" value="sadness" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                 <span class="mr-2 text-sm text-gray-700">غم</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.emotionDetection.emotions" value="anger" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                <input v-model="features.emotionDetection.emotions" type="checkbox" value="anger" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                 <span class="mr-2 text-sm text-gray-700">خشم</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.emotionDetection.emotions" value="fear" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                <input v-model="features.emotionDetection.emotions" type="checkbox" value="fear" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                 <span class="mr-2 text-sm text-gray-700">ترس</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.emotionDetection.emotions" value="surprise" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                <input v-model="features.emotionDetection.emotions" type="checkbox" value="surprise" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                 <span class="mr-2 text-sm text-gray-700">تعجب</span>
               </label>
             </div>
@@ -208,7 +208,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">دقت تشخیص احساسات</label>
             <div class="flex items-center space-x-4 space-x-reverse">
-              <input type="range" v-model="features.emotionDetection.accuracy" min="0" max="100" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+              <input v-model="features.emotionDetection.accuracy" type="range" min="0" max="100" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
               <span class="text-sm font-medium text-gray-900 w-12">{{ features.emotionDetection.accuracy }}%</span>
             </div>
           </div>
@@ -246,7 +246,7 @@
           <h3 class="text-lg font-semibold text-gray-900 mr-3">Tone Analysis</h3>
         </div>
         <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" v-model="features.toneAnalysis.enabled" class="sr-only peer">
+          <input v-model="features.toneAnalysis.enabled" type="checkbox" class="sr-only peer">
           <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
         </label>
       </div>
@@ -257,19 +257,19 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">ویژگی‌های لحن</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.toneAnalysis.characteristics" value="formality" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="features.toneAnalysis.characteristics" type="checkbox" value="formality" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">رسمیت</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.toneAnalysis.characteristics" value="politeness" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="features.toneAnalysis.characteristics" type="checkbox" value="politeness" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">ادب</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.toneAnalysis.characteristics" value="enthusiasm" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="features.toneAnalysis.characteristics" type="checkbox" value="enthusiasm" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">اشتیاق</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.toneAnalysis.characteristics" value="urgency" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="features.toneAnalysis.characteristics" type="checkbox" value="urgency" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">فوریت</span>
               </label>
             </div>
@@ -292,17 +292,17 @@
             <div class="space-y-2">
               <div class="flex items-center justify-between">
                 <span class="text-sm text-gray-700">رسمیت</span>
-                <input type="range" v-model="features.toneAnalysis.weights.formality" min="0" max="100" class="w-24 h-2 bg-gray-200 rounded-lg">
+                <input v-model="features.toneAnalysis.weights.formality" type="range" min="0" max="100" class="w-24 h-2 bg-gray-200 rounded-lg">
                 <span class="text-xs text-gray-500 w-8">{{ features.toneAnalysis.weights.formality }}%</span>
               </div>
               <div class="flex items-center justify-between">
                 <span class="text-sm text-gray-700">ادب</span>
-                <input type="range" v-model="features.toneAnalysis.weights.politeness" min="0" max="100" class="w-24 h-2 bg-gray-200 rounded-lg">
+                <input v-model="features.toneAnalysis.weights.politeness" type="range" min="0" max="100" class="w-24 h-2 bg-gray-200 rounded-lg">
                 <span class="text-xs text-gray-500 w-8">{{ features.toneAnalysis.weights.politeness }}%</span>
               </div>
               <div class="flex items-center justify-between">
                 <span class="text-sm text-gray-700">اشتیاق</span>
-                <input type="range" v-model="features.toneAnalysis.weights.enthusiasm" min="0" max="100" class="w-24 h-2 bg-gray-200 rounded-lg">
+                <input v-model="features.toneAnalysis.weights.enthusiasm" type="range" min="0" max="100" class="w-24 h-2 bg-gray-200 rounded-lg">
                 <span class="text-xs text-gray-500 w-8">{{ features.toneAnalysis.weights.enthusiasm }}%</span>
               </div>
             </div>
@@ -332,7 +332,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">Brand Sentiment</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="features.brandSentiment.enabled" class="sr-only peer">
+            <input v-model="features.brandSentiment.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-600"></div>
           </label>
         </div>
@@ -345,7 +345,7 @@
                 <span class="text-sm text-gray-700">{{ brand.name }}</span>
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <span class="text-xs px-2 py-1 rounded-full" :class="brand.sentimentClass">{{ brand.sentiment }}</span>
-                  <button @click="removeBrand(brand.id)" class="text-red-600 hover:text-red-800">
+                  <button class="text-red-600 hover:text-red-800" @click="removeBrand(brand.id)">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
@@ -358,8 +358,8 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">افزودن برند جدید</label>
             <div class="flex space-x-2 space-x-reverse">
-              <input type="text" v-model="newBrand" placeholder="نام برند" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
-              <button @click="addBrand" class="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors">
+              <input v-model="newBrand" type="text" placeholder="نام برند" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+              <button class="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors" @click="addBrand">
                 افزودن
               </button>
             </div>
@@ -387,7 +387,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">Trend Analysis</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="features.trendAnalysis.enabled" class="sr-only peer">
+            <input v-model="features.trendAnalysis.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
           </label>
         </div>
@@ -407,19 +407,19 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">نوع روند</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.trendAnalysis.trends" value="sentiment" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="features.trendAnalysis.trends" type="checkbox" value="sentiment" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">احساسات</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.trendAnalysis.trends" value="emotions" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="features.trendAnalysis.trends" type="checkbox" value="emotions" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">عواطف</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.trendAnalysis.trends" value="topics" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="features.trendAnalysis.trends" type="checkbox" value="topics" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">موضوعات</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.trendAnalysis.trends" value="keywords" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="features.trendAnalysis.trends" type="checkbox" value="keywords" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">کلمات کلیدی</span>
               </label>
             </div>

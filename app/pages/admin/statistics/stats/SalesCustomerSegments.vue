@@ -37,5 +37,5 @@
   </div>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ segments: any[] }>()
+defineProps<{ segments: unknown[] }>()
 </script> 

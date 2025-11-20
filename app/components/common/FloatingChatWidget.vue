@@ -1,7 +1,7 @@
 <template>
   <ClientOnly>
     <!-- Chat Button (when closed) -->
-    <button v-if="!isVisible" @click="openWidget" class="chat-button">
+    <button v-if="!isVisible" class="chat-button" @click="openWidget">
       <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
       </svg>
@@ -29,7 +29,7 @@
             <p v-else class="text-xs opacity-80">{{ connectionStatus === 'connected' ? 'متصل' : connectionStatus === 'connecting' ? 'در حال اتصال...' : 'قطع شده' }}</p>
           </div>
         </div>
-        <button @click.stop="closeWidget" class="w-8 h-8 hover:bg-red-500/20 rounded-lg flex items-center justify-center transition-colors">
+        <button class="w-8 h-8 hover:bg-red-500/20 rounded-lg flex items-center justify-center transition-colors" @click.stop="closeWidget">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
           </svg>
@@ -37,7 +37,7 @@
       </div>
       
       <div class="flex flex-col h-[calc(100%-4rem)]">
-        <div class="flex-1 overflow-y-auto p-6 space-y-3" ref="messagesContainer">
+        <div ref="messagesContainer" class="flex-1 overflow-y-auto p-6 space-y-3">
           <div v-if="messages.length === 0 && connectionStatus === 'connected'" class="text-center py-8">
             <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -117,15 +117,15 @@
             <div class="flex-1 relative">
               <textarea 
                 v-model="newMessage" 
+                ref="messageInput"
+                placeholder="پیام خود را بنویسید..."
+                class="w-full px-4 py-3 border rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none bg-white" 
+                :class="securityWarning ? 'border-red-300' : 'border-gray-300'" 
+                rows="1"
+                :disabled="connectionStatus !== 'connected' || rateLimitExceeded || isBlocked || securityCooldown" 
+                maxlength="1000"
                 @keydown.enter.prevent="sendMessage"
                 @input="validateInput"
-                placeholder="پیام خود را بنویسید..." 
-                class="w-full px-4 py-3 border rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none bg-white" 
-                :class="securityWarning ? 'border-red-300' : 'border-gray-300'"
-                rows="1" 
-                ref="messageInput"
-                :disabled="connectionStatus !== 'connected' || rateLimitExceeded || isBlocked || securityCooldown"
-                maxlength="1000"
               ></textarea>
               <!-- Character count and security indicator -->
               <div class="flex justify-between items-center mt-1 text-xs">
@@ -138,9 +138,9 @@
               </div>
             </div>
             <button 
-              @click="sendMessage" 
               :disabled="!newMessage.trim() || connectionStatus !== 'connected' || rateLimitExceeded" 
-              class="px-4 py-3 bg-blue-500 text-white rounded-2xl hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl flex-shrink-0"
+              class="px-4 py-3 bg-blue-500 text-white rounded-2xl hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl flex-shrink-0" 
+              @click="sendMessage"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>

@@ -17,8 +17,8 @@
         
         <div class="flex items-center space-x-3 space-x-reverse">
           <button 
-            @click="exportToExcel"
             class="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg font-medium transition-colors flex items-center space-x-2 space-x-reverse"
+            @click="exportToExcel"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -27,8 +27,8 @@
           </button>
           
           <button 
-            @click="refreshData"
             class="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg font-medium transition-colors flex items-center space-x-2 space-x-reverse"
+            @click="refreshData"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -170,14 +170,14 @@
           <label class="block text-sm font-medium text-gray-700">&nbsp;</label>
           <div class="flex space-x-2 space-x-reverse">
             <button 
-              @click="applyFilters"
               class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+              @click="applyFilters"
             >
               اعمال فیلتر
             </button>
             <button 
-              @click="clearFilters"
               class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-medium transition-colors"
+              @click="clearFilters"
             >
               پاک کردن
             </button>
@@ -193,9 +193,9 @@
           <label class="flex items-center space-x-2 space-x-reverse">
             <input 
               v-model="selectAll" 
+              type="checkbox"
+              class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" 
               @change="toggleSelectAll"
-              type="checkbox" 
-              class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
             >
             <span class="text-sm font-medium text-gray-700">انتخاب همه</span>
           </label>
@@ -207,8 +207,8 @@
         
         <div v-if="selectedOrders.length > 0" class="flex items-center space-x-3 space-x-reverse">
           <button 
-            @click="sendBulkSMS"
             class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors flex items-center space-x-2 space-x-reverse"
+            @click="sendBulkSMS"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
@@ -217,8 +217,8 @@
           </button>
           
           <button 
-            @click="resendFailedSMS"
             class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-medium transition-colors flex items-center space-x-2 space-x-reverse"
+            @click="resendFailedSMS"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -237,9 +237,9 @@
             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
               <input 
                 v-model="selectAll" 
+                type="checkbox"
+                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" 
                 @change="toggleSelectAll"
-                type="checkbox" 
-                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               >
             </th>
             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -400,9 +400,9 @@
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
               <div class="flex items-center space-x-2 space-x-reverse">
                 <button 
-                  @click="sendSMS(order.id)"
                   class="text-blue-600 hover:text-blue-900 transition-colors"
                   title="ارسال SMS"
+                  @click="sendSMS(order.id)"
                 >
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
@@ -410,9 +410,9 @@
                 </button>
                 
                 <button 
-                  @click="viewDetails(order.id)"
                   class="text-green-600 hover:text-green-900 transition-colors"
                   title="مشاهده جزئیات"
+                  @click="viewDetails(order.id)"
                 >
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -421,9 +421,9 @@
                 </button>
                 
                 <button 
-                  @click="editOrder(order.id)"
                   class="text-orange-600 hover:text-orange-900 transition-colors"
                   title="ویرایش"
+                  @click="editOrder(order.id)"
                 >
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -440,16 +440,16 @@
     <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
       <div class="flex-1 flex justify-between sm:hidden">
         <button 
-          @click="previousPage"
           :disabled="currentPage === 1"
           class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          @click="previousPage"
         >
           قبلی
         </button>
         <button 
-          @click="nextPage"
           :disabled="currentPage >= totalPages"
           class="mr-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          @click="nextPage"
         >
           بعدی
         </button>
@@ -469,9 +469,9 @@
         <div>
           <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
             <button 
-              @click="previousPage"
               :disabled="currentPage === 1"
               class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              @click="previousPage"
             >
               <span class="sr-only">قبلی</span>
               <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -482,21 +482,21 @@
             <button 
               v-for="page in visiblePages" 
               :key="page"
-              @click="goToPage(page)"
               :class="[
                 'relative inline-flex items-center px-4 py-2 border text-sm font-medium',
                 page === currentPage
                   ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
                   : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
               ]"
+              @click="goToPage(page)"
             >
               {{ page }}
             </button>
             
             <button 
-              @click="nextPage"
               :disabled="currentPage >= totalPages"
               class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              @click="nextPage"
             >
               <span class="sr-only">بعدی</span>
               <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -511,7 +511,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 
 // Types
 interface Order {
@@ -713,8 +713,8 @@ const loadOrders = async () => {
     ]
     
     totalItems.value = orders.value.length
-  } catch (error) {
-    console.error('Error loading orders:', error)
+  } catch {
+    // console.error('Error loading orders:', error)
   } finally {
     loading.value = false
   }
@@ -744,15 +744,15 @@ const sendSMS = async (orderId: number) => {
   try {
     // Simulate SMS sending
     await new Promise(resolve => setTimeout(resolve, 1000))
-    console.log(`Sending SMS for order ${orderId}`)
+    // console.log(`Sending SMS for order ${orderId}`)
     // Update order status
     const order = orders.value.find(o => o.id === orderId)
     if (order) {
       order.smsStatus = 'sent'
       order.smsSentDate = new Date().toISOString().split('T')[0]
     }
-  } catch (error) {
-    console.error('Error sending SMS:', error)
+  } catch {
+    // console.error('Error sending SMS:', error)
   }
 }
 
@@ -760,7 +760,7 @@ const sendBulkSMS = async () => {
   try {
     // Simulate bulk SMS sending
     await new Promise(resolve => setTimeout(resolve, 2000))
-    console.log(`Sending bulk SMS to ${selectedOrders.value.length} orders`)
+    // console.log(`Sending bulk SMS to ${selectedOrders.value.length} orders`)
     // Update all selected orders
     selectedOrders.value.forEach(orderId => {
       const order = orders.value.find(o => o.id === orderId)
@@ -771,8 +771,8 @@ const sendBulkSMS = async () => {
     })
     selectedOrders.value = []
     selectAll.value = false
-  } catch (error) {
-    console.error('Error sending bulk SMS:', error)
+  } catch {
+    // console.error('Error sending bulk SMS:', error)
   }
 }
 
@@ -784,7 +784,7 @@ const resendFailedSMS = async () => {
     })
     
     await new Promise(resolve => setTimeout(resolve, 1500))
-    console.log(`Resending SMS to ${failedOrders.length} failed orders`)
+    // console.log(`Resending SMS to ${failedOrders.length} failed orders`)
     
     failedOrders.forEach(orderId => {
       const order = orders.value.find(o => o.id === orderId)
@@ -796,23 +796,23 @@ const resendFailedSMS = async () => {
     
     selectedOrders.value = []
     selectAll.value = false
-  } catch (error) {
-    console.error('Error resending failed SMS:', error)
+  } catch {
+    // console.error('Error resending failed SMS:', error)
   }
 }
 
-const viewDetails = (orderId: number) => {
-  console.log(`Viewing details for order ${orderId}`)
+const viewDetails = (_orderId: number) => {
+  // console.log(`Viewing details for order ${orderId}`)
   // Navigate to order details page
 }
 
-const editOrder = (orderId: number) => {
-  console.log(`Editing order ${orderId}`)
+const editOrder = (_orderId: number) => {
+  // console.log(`Editing order ${orderId}`)
   // Navigate to edit order page
 }
 
 const exportToExcel = () => {
-  console.log('Exporting to Excel...')
+  // console.log('Exporting to Excel...')
   // Implement Excel export functionality
 }
 

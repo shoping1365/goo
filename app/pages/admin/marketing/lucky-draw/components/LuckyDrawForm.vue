@@ -8,8 +8,8 @@
             {{ isEditing ? 'ویرایش گرونه' : 'ایجاد گرونه جدید' }}
           </h3>
           <button 
-            @click="$emit('close')"
             class="text-gray-400 hover:text-gray-600"
+            @click="$emit('close')"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -18,7 +18,7 @@
         </div>
 
         <!-- فرم -->
-        <form @submit.prevent="saveLuckyDraw" class="space-y-6">
+        <form class="space-y-6" @submit.prevent="saveLuckyDraw">
           <!-- نام و توضیحات -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -111,9 +111,9 @@
             
             <div class="flex items-center">
               <input 
+                id="requirePurchase"
                 v-model="form.requirePurchase"
                 type="checkbox"
-                id="requirePurchase"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label for="requirePurchase" class="mr-2 text-sm text-gray-700">نیاز به خرید</label>
@@ -132,9 +132,9 @@
 
             <div class="flex items-center">
               <input 
+                id="requireRegistration"
                 v-model="form.requireRegistration"
                 type="checkbox"
-                id="requireRegistration"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label for="requireRegistration" class="mr-2 text-sm text-gray-700">نیاز به ثبت‌نام</label>
@@ -142,9 +142,9 @@
 
             <div class="flex items-center">
               <input 
+                id="oneEntryPerUser"
                 v-model="form.oneEntryPerUser"
                 type="checkbox"
-                id="oneEntryPerUser"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label for="oneEntryPerUser" class="mr-2 text-sm text-gray-700">یک شرکت در هر کاربر</label>
@@ -168,8 +168,8 @@
           <div class="flex justify-end space-x-3 space-x-reverse">
             <button 
               type="button"
-              @click="$emit('close')"
               class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors"
+              @click="$emit('close')"
             >
               انصراف
             </button>

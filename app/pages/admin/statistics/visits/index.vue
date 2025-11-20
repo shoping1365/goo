@@ -52,7 +52,7 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
-declare const useAuth: () => { user: any; hasPermission: (perm: string) => boolean }
+declare const useAuth: () => { user: unknown; hasPermission: (perm: string) => boolean }
 </script>
 
 <script setup lang="ts">
@@ -78,7 +78,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission: _hasPermission } = useAuth()
 
 // Enhanced data with realistic values
 const stats = ref({
@@ -175,7 +175,7 @@ const browsersData = ref([
   { browser: 'Opera', visits: 2190, percentage: 1.8 }
 ])
 
-const visits = ref([])
+const _visits = ref([])
 const filteredVisits = ref([])
 const advancedAnalytics = ref({
   conversionRate: 3.2,
@@ -184,8 +184,8 @@ const advancedAnalytics = ref({
   newVisitorRate: 67.3
 })
 
-const onFilter = (filters: any) => {
-  console.log('Filtering with:', filters)
+const onFilter = (filters: Record<string, unknown>) => {
+  // console.log('Filtering with:', filters)
   // TODO: implement actual filtering logic
 }
 

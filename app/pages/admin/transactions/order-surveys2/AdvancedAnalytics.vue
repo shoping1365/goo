@@ -62,7 +62,7 @@
           </select>
         </div>
         <div class="flex items-end">
-          <button @click="comparePeriods" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm">مقایسه</button>
+          <button class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm" @click="comparePeriods">مقایسه</button>
         </div>
       </div>
       <div v-if="comparisonData" class="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -146,9 +146,17 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
+
+interface ComparisonData {
+  responseRate1: number
+  responseRate2: number
+  satisfaction1: number
+  satisfaction2: number
+}
+
 const period1 = ref('2024-06')
 const period2 = ref('2024-05')
-const comparisonData = ref(null)
+const comparisonData = ref<ComparisonData | null>(null)
 const bestHours = ref([
   { hour: '09:00-11:00', rate: 85 },
   { hour: '14:00-16:00', rate: 78 },

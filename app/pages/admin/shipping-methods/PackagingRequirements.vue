@@ -4,7 +4,7 @@
          <div class="card-header">
            <h3>نیازمندی‌های خاص بسته‌بندی</h3>
            <div class="toggle-switch">
-             <input type="checkbox" v-model="enabled" id="packagingToggle" />
+             <input id="packagingToggle" v-model="enabled" type="checkbox" />
              <label for="packagingToggle"></label>
            </div>
          </div>
@@ -15,8 +15,8 @@
              <div class="packaging-types">
                <label v-for="type in packaging.requiredTypes" :key="type.value" class="packaging-checkbox">
                  <input
-                   type="checkbox"
                    v-model="packaging.selectedTypes"
+                   type="checkbox"
                    :value="type.value"
                  />
                  {{ type.label }}
@@ -47,10 +47,10 @@
                        <option value="policy">سیاست شرکت</option>
                      </select>
                    </div>
-                   <button @click="removeMaterial(index)" class="remove-btn">حذف</button>
+                   <button class="remove-btn" @click="removeMaterial(index)">حذف</button>
                  </div>
                </div>
-               <button @click="addMaterial" class="add-btn">+ افزودن ماده ممنوعه</button>
+               <button class="add-btn" @click="addMaterial">+ افزودن ماده ممنوعه</button>
              </div>
            </div>
    
@@ -76,7 +76,7 @@
                        <option value="optional">اختیاری</option>
                      </select>
                    </div>
-                   <button @click="removeStandard(index)" class="remove-btn">حذف</button>
+                   <button class="remove-btn" @click="removeStandard(index)">حذف</button>
                  </div>
                  <div class="form-group">
                    <label>توضیحات</label>
@@ -88,7 +88,7 @@
                    ></textarea>
                  </div>
                </div>
-               <button @click="addStandard" class="add-btn">+ افزودن استاندارد</button>
+               <button class="add-btn" @click="addStandard">+ افزودن استاندارد</button>
              </div>
            </div>
    
@@ -127,15 +127,15 @@
                  <label>نحوه اعمال بسته‌بندی</label>
                  <div class="application-methods">
                    <label class="radio-label">
-                     <input type="radio" v-model="packaging.applicationMethod" value="automatic" />
+                     <input v-model="packaging.applicationMethod" type="radio" value="automatic" />
                      اعمال خودکار
                    </label>
                    <label class="radio-label">
-                     <input type="radio" v-model="packaging.applicationMethod" value="manual" />
+                     <input v-model="packaging.applicationMethod" type="radio" value="manual" />
                      اعمال دستی
                    </label>
                    <label class="radio-label">
-                     <input type="radio" v-model="packaging.applicationMethod" value="conditional" />
+                     <input v-model="packaging.applicationMethod" type="radio" value="conditional" />
                      اعمال شرطی
                    </label>
                  </div>

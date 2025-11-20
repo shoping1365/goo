@@ -7,14 +7,14 @@
       </div>
       <div class="flex items-center space-x-3 space-x-reverse">
         <button 
-          @click="clearFilters"
           class="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+          @click="clearFilters"
         >
           پاک کردن فیلترها
         </button>
         <button 
-          @click="toggleAdvanced"
           class="inline-flex items-center text-sm text-blue-600 hover:text-blue-700 transition-colors"
+          @click="toggleAdvanced"
         >
           <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -31,8 +31,8 @@
         <label class="block text-sm font-medium text-gray-700 mb-2">بازه زمانی</label>
         <select 
           v-model="filters.dateRange"
-          @change="applyFilters"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          @change="applyFilters"
         >
           <option value="today">امروز</option>
           <option value="yesterday">دیروز</option>
@@ -51,8 +51,8 @@
         <label class="block text-sm font-medium text-gray-700 mb-2">وضعیت پرداخت</label>
         <select 
           v-model="filters.status"
-          @change="applyFilters"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          @change="applyFilters"
         >
           <option value="">همه وضعیت‌ها</option>
           <option value="success">موفق</option>
@@ -68,8 +68,8 @@
         <label class="block text-sm font-medium text-gray-700 mb-2">روش پرداخت</label>
         <select 
           v-model="filters.paymentMethod"
-          @change="applyFilters"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          @change="applyFilters"
         >
           <option value="">همه روش‌ها</option>
           <option value="card">کارت به کارت</option>
@@ -85,8 +85,8 @@
         <label class="block text-sm font-medium text-gray-700 mb-2">مبلغ (تومان)</label>
         <select 
           v-model="filters.amountRange"
-          @change="applyFilters"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          @change="applyFilters"
         >
           <option value="">همه مبالغ</option>
           <option value="0-100000">کمتر از ۱۰۰ هزار</option>
@@ -154,8 +154,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">بانک</label>
           <select 
             v-model="filters.bank"
-            @change="applyFilters"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="applyFilters"
           >
             <option value="">همه بانک‌ها</option>
             <option value="melli">ملی</option>
@@ -173,8 +173,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">درگاه پرداخت</label>
           <select 
             v-model="filters.gateway"
-            @change="applyFilters"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="applyFilters"
           >
             <option value="">همه درگاه‌ها</option>
             <option value="zarinpal">زرین‌پال</option>
@@ -246,8 +246,8 @@
       
       <div class="flex items-center space-x-3 space-x-reverse">
         <button 
-          @click="saveFilterPreset"
           class="inline-flex items-center px-3 py-2 text-sm text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+          @click="saveFilterPreset"
         >
           <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
@@ -256,8 +256,8 @@
         </button>
         
         <button 
-          @click="applyFilters"
           class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          @click="applyFilters"
         >
           <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>

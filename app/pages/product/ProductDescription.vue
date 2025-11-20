@@ -23,6 +23,7 @@
         const sanitizedDescription = DOMPurify.sanitize(product.description)
         <div v-html="sanitizedDescription"></div>
       -->
+      <!-- eslint-disable-next-line vue/no-v-html -->
       <div class="prose prose-sm max-w-none text-gray-800 leading-relaxed overflow-hidden" v-html="product.description"></div>
     </div>
 
@@ -49,6 +50,7 @@
         const sanitizedFullDescription = DOMPurify.sanitize(product.full_description)
         <div v-html="sanitizedFullDescription"></div>
       -->
+      <!-- eslint-disable-next-line vue/no-v-html -->
       <div class="prose prose-sm max-w-none text-gray-700 leading-relaxed overflow-hidden" v-html="product.full_description"></div>
     </div>
     <!-- اگر توضیحات کامل نباشد اما کوتاه هست همان را نشان بده -->
@@ -74,6 +76,7 @@
         const sanitizedDescription = DOMPurify.sanitize(product.description)
         <div v-html="sanitizedDescription"></div>
       -->
+      <!-- eslint-disable-next-line vue/no-v-html -->
       <div class="prose prose-sm max-w-none text-gray-700 leading-relaxed overflow-hidden" v-html="product.description"></div>
     </div>
 
@@ -139,6 +142,7 @@
         const sanitizedUsageGuide = DOMPurify.sanitize(product.usage_guide)
         <div v-html="sanitizedUsageGuide"></div>
       -->
+      <!-- eslint-disable-next-line vue/no-v-html -->
       <div class="prose prose-sm max-w-none text-blue-700 leading-relaxed overflow-hidden" v-html="product.usage_guide"></div>
     </div>
 
@@ -162,7 +166,7 @@
 
 <script setup lang="ts">
 interface Props {
-  product: any
+  product: Record<string, unknown>
 }
 
 defineProps<Props>()

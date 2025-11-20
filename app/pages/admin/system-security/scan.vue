@@ -37,7 +37,7 @@
           <h3 class="text-lg font-bold text-gray-900">اسکن سریع</h3>
           <p class="text-sm text-gray-600">اسکن فوری فایل‌ها و پیکربندی‌های اصلی</p>
         </div>
-        <button @click="startQuickScan" :disabled="isScanning" class="w-full px-4 py-3 bg-gradient-to-r from-cyan-400 to-blue-600 text-white rounded-lg hover:from-cyan-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 shadow-md transition-all duration-200 hover:shadow-lg disabled:opacity-50 font-medium">
+        <button :disabled="isScanning" class="w-full px-4 py-3 bg-gradient-to-r from-cyan-400 to-blue-600 text-white rounded-lg hover:from-cyan-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 shadow-md transition-all duration-200 hover:shadow-lg disabled:opacity-50 font-medium" @click="startQuickScan">
           {{ isScanning ? 'در حال اسکن...' : 'شروع اسکن سریع' }}
         </button>
       </div>
@@ -48,7 +48,7 @@
           <h3 class="text-lg font-bold text-gray-900">اسکن کامل</h3>
           <p class="text-sm text-gray-600">اسکن کامل تمام فایل‌ها و دیتابیس</p>
         </div>
-        <button @click="startFullScan" :disabled="isScanning" class="w-full px-4 py-3 bg-gradient-to-r from-teal-400 to-emerald-600 text-white rounded-lg hover:from-teal-500 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 shadow-md transition-all duration-200 hover:shadow-lg disabled:opacity-50 font-medium">
+        <button :disabled="isScanning" class="w-full px-4 py-3 bg-gradient-to-r from-teal-400 to-emerald-600 text-white rounded-lg hover:from-teal-500 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 shadow-md transition-all duration-200 hover:shadow-lg disabled:opacity-50 font-medium" @click="startFullScan">
           {{ isScanning ? 'در حال اسکن...' : 'شروع اسکن کامل' }}
         </button>
       </div>
@@ -59,7 +59,7 @@
           <h3 class="text-lg font-bold text-gray-900">اسکن سفارشی</h3>
           <p class="text-sm text-gray-600">انتخاب مسیرها و نوع اسکن</p>
         </div>
-        <button @click="showCustomScanModal = true" :disabled="isScanning" class="w-full px-4 py-3 bg-gradient-to-r from-indigo-400 to-purple-600 text-white rounded-lg hover:from-indigo-500 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-md transition-all duration-200 hover:shadow-lg disabled:opacity-50 font-medium">
+        <button :disabled="isScanning" class="w-full px-4 py-3 bg-gradient-to-r from-indigo-400 to-purple-600 text-white rounded-lg hover:from-indigo-500 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-md transition-all duration-200 hover:shadow-lg disabled:opacity-50 font-medium" @click="showCustomScanModal = true">
           اسکن سفارشی
         </button>
       </div>
@@ -110,8 +110,8 @@
               <td class="px-6 py-4 text-sm text-gray-900">{{ vulnerability.filePath }}</td>
               <td class="px-6 py-4 text-sm text-gray-900">{{ vulnerability.description }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button @click="fixVulnerability(vulnerability.id)" class="text-green-600 hover:text-green-900 ml-2">رفع خودکار</button>
-                <button @click="viewDetails(vulnerability.id)" class="text-blue-600 hover:text-blue-900">جزئیات</button>
+                <button class="text-green-600 hover:text-green-900 ml-2" @click="fixVulnerability(vulnerability.id)">رفع خودکار</button>
+                <button class="text-blue-600 hover:text-blue-900" @click="viewDetails(vulnerability.id)">جزئیات</button>
               </td>
             </tr>
           </tbody>
@@ -172,8 +172,8 @@
           </div>
         </div>
         <div class="mt-6 flex justify-end space-x-3">
-          <button @click="showCustomScanModal = false" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">انصراف</button>
-          <button @click="startCustomScan" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">شروع اسکن</button>
+          <button class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300" @click="showCustomScanModal = false">انصراف</button>
+          <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" @click="startCustomScan">شروع اسکن</button>
         </div>
       </div>
     </div>

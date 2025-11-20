@@ -2,8 +2,8 @@
 // -------------------------
 // Imports & Shared State
 // -------------------------
-import { ref, readonly } from 'vue'
-import type { Product } from '~/types/widget'
+import { readonly, ref } from 'vue';
+import type { Product } from '~/types/widget';
 // این متغیرها در سطح ماژول تعریف شده‌اند تا در تمام فراخوانی‌های
 // useCart به‌صورت مشترک استفاده شوند و وضعیت سبد خرید در سراسر
 // برنامه یکسان باقی بماند.
@@ -11,6 +11,14 @@ const cartItems = ref<(Product & { quantity: number; id: number; product_id: num
 const cartCount = ref<number>(0)
 const cartTotal = ref<number>(0)
 const loading = ref<boolean>(false)
+
+interface ApiError {
+  status?: number
+  data?: {
+    message?: string
+  }
+  [key: string]: unknown
+}
 
 export const useCart = () => {
   // اطمینان از ایجاد سشن سبد خرید
@@ -23,7 +31,7 @@ export const useCart = () => {
       // ابتدا سعی می‌کنیم session ایجاد کنیم
       await $fetch('/api/cart/create-session', { method: 'POST', credentials: 'include' })
       return
-    } catch (e) {
+    } catch {
       // اگر ایجاد session شکست خورد، سعی می‌کنیم از بک‌اند session بگیریم
       try {
         await $fetch('/api/cart', { method: 'GET', credentials: 'include' })
@@ -38,43 +46,44 @@ export const useCart = () => {
   const fetchCart = async () => {
     try {
       loading.value = true
-      const response = await $fetch('/api/cart', { credentials: 'include' }) as any
+      const response = await $fetch<unknown>('/api/cart', { credentials: 'include' })
 
       // پشتیبانی از هر دو ساختار پاسخ (Go و Nuxt)
       const cartData = (response && typeof response === 'object')
-        ? (response.data && typeof response.data === 'object' ? response.data : response)
+        ? ((response as { data?: unknown }).data && typeof (response as { data?: unknown }).data === 'object' ? (response as { data: Record<string, unknown> }).data : response as Record<string, unknown>)
         : { items: [], total_items: 0, total_price: 0 }
 
       const itemsArr = Array.isArray(cartData.items) ? cartData.items : []
 
       cartItems.value = itemsArr
-        .filter(item => item && typeof item === 'object')
-        .map((item: any) => {
-          if (!item.id || !item.product_id) return null
+        .filter((item: unknown) => item && typeof item === 'object')
+        .map((item: unknown) => {
+          const it = item as Record<string, unknown>
+          if (!it.id || !it.product_id) return null
           return {
-            id: item.id,
-            cart_id: item.cart_id || 0,
-            product_id: item.product_id,
-            quantity: item.quantity || 1,
-            is_next: item.is_next || item.IsNextPurchase || false,
-            qty: item.quantity || 1,
-            name: item.name || 'محصول بدون نام',
-            sku: item.sku || '',
-            image: item.image || '/default-product.svg',
-            price: item.price || 0,
-            original_price: item.original_price,
-            discount_percentage: item.discount_percentage,
-            rating: item.rating,
-            rating_count: item.rating_count,
-            features: Array.isArray(item.features) ? item.features : [],
-            created_at: item.created_at || null,
-            updated_at: item.updated_at || null
+            id: Number(it.id),
+            cart_id: Number(it.cart_id) || 0,
+            product_id: Number(it.product_id),
+            quantity: Number(it.quantity) || 1,
+            is_next: Boolean(it.is_next || it.IsNextPurchase || false),
+            qty: Number(it.quantity) || 1,
+            name: String(it.name || 'محصول بدون نام'),
+            sku: String(it.sku || ''),
+            image: String(it.image || '/default-product.svg'),
+            price: Number(it.price) || 0,
+            original_price: it.original_price ? Number(it.original_price) : undefined,
+            discount_percentage: it.discount_percentage ? Number(it.discount_percentage) : undefined,
+            rating: it.rating ? Number(it.rating) : undefined,
+            rating_count: it.rating_count ? Number(it.rating_count) : undefined,
+            features: Array.isArray(it.features) ? it.features as string[] : [],
+            created_at: it.created_at ? String(it.created_at) : null,
+            updated_at: it.updated_at ? String(it.updated_at) : null
           }
         })
         .filter(Boolean) as (Product & { quantity: number; id: number; product_id: number; cart_id?: number; is_next?: boolean })[]
 
-      cartCount.value = cartData.total_items || 0
-      cartTotal.value = cartData.total_price || 0
+      cartCount.value = Number(cartData.total_items) || 0
+      cartTotal.value = Number(cartData.total_price) || 0
     } catch (error) {
       console.error('خطا در دریافت سبد خرید:', error)
       // در صورت خطا، سبد خرید را خالی می‌کنیم
@@ -138,21 +147,22 @@ export const useCart = () => {
         credentials: 'include'
       })
 
-      if (response && (response as any).success) {
+      if (response && (response as { success: boolean; message?: string }).success) {
         // بعد از افزودن، سبد خرید را به‌روزرسانی می‌کنیم
         await fetchCart()
-        return { success: true, message: (response as any).message || 'محصول به سبد خرید اضافه شد' }
+        return { success: true, message: (response as { message?: string }).message || 'محصول به سبد خرید اضافه شد' }
       }
 
-      return { success: false, message: (response as any)?.message || 'خطا در افزودن به سبد خرید' }
-    } catch (error: any) {
+      return { success: false, message: (response as { message?: string })?.message || 'خطا در افزودن به سبد خرید' }
+    } catch (error) {
       console.error('خطا در افزودن به سبد خرید:', error)
-      console.error('Error details:', error.data) // جزئیات بیشتر
+      const apiError = error as ApiError
+      console.error('Error details:', apiError.data) // جزئیات بیشتر
 
       // پردازش خطاهای مختلف
-      if (error.status === 400) {
-        return { success: false, message: error.data?.message || 'داده‌های ورودی نامعتبر است' }
-      } else if (error.status === 404) {
+      if (apiError.status === 400) {
+        return { success: false, message: apiError.data?.message || 'داده‌های ورودی نامعتبر است' }
+      } else if (apiError.status === 404) {
         return { success: false, message: 'محصول یافت نشد' }
       } else {
         return { success: false, message: 'خطا در افزودن به سبد خرید' }
@@ -162,17 +172,19 @@ export const useCart = () => {
     }
   }
 
-  // انتقال آیتم به خرید بعدی
+      // انتقال آیتم به خرید بعدی
   const moveCartItemToNext = async (cartItemId: number) => {
     // @ts-ignore - Nuxt auto-imports
-    await $fetch('/api/cart/move-next', { method: 'PUT', body: { cart_item_id: cartItemId, session_id: useCookie('session_id').value }, credentials: 'include' })
+    const sessionId = useCookie<string>('session_id').value
+    await $fetch<unknown>('/api/cart/move-next', { method: 'PUT', body: { cart_item_id: cartItemId, session_id: sessionId }, credentials: 'include' })
     await fetchCart()
   }
 
   // بازگرداندن آیتم از خرید بعدی به سبد
   const moveCartItemToCart = async (cartItemId: number) => {
     // @ts-ignore - Nuxt auto-imports
-    await $fetch('/api/cart/move-cart', { method: 'PUT', body: { cart_item_id: cartItemId, session_id: useCookie('session_id').value }, credentials: 'include' })
+    const sessionId = useCookie<string>('session_id').value
+    await $fetch<unknown>('/api/cart/move-cart', { method: 'PUT', body: { cart_item_id: cartItemId, session_id: sessionId }, credentials: 'include' })
     await fetchCart()
   }
 
@@ -204,12 +216,12 @@ export const useCart = () => {
         credentials: 'include'
       })
 
-      if ((response as any).success) {
+      if ((response as { success: boolean; message?: string }).success) {
         await fetchCart()
-        return { success: true, message: (response as any).message }
+        return { success: true, message: (response as { message?: string }).message }
       }
 
-      return { success: false, message: (response as any).message || 'خطا در به‌روزرسانی' }
+      return { success: false, message: (response as { message?: string }).message || 'خطا در به‌روزرسانی' }
     } catch (error) {
       console.error('خطا در به‌روزرسانی سبد خرید:', error)
       return { success: false, message: 'خطا در به‌روزرسانی سبد خرید' }
@@ -245,12 +257,12 @@ export const useCart = () => {
         credentials: 'include'
       })
 
-      if ((response as any).success) {
+      if ((response as { success: boolean; message?: string }).success) {
         await fetchCart()
-        return { success: true, message: (response as any).message }
+        return { success: true, message: (response as { message?: string }).message }
       }
 
-      return { success: false, message: (response as any).message || 'خطا در حذف' }
+      return { success: false, message: (response as { message?: string }).message || 'خطا در حذف' }
     } catch (error) {
       console.error('خطا در حذف از سبد خرید:', error)
       return { success: false, message: 'خطا در حذف از سبد خرید' }

@@ -10,7 +10,7 @@ interface SearchLog {
     resultsCount: number
     clickedResults: number
     searchDuration: number
-    filters?: Record<string, any>
+    filters?: Record<string, unknown>
     userAgent?: string
     ip?: string
 }
@@ -65,7 +65,7 @@ export default defineEventHandler(async (event) => {
                     console.error('Error parsing log line:', parseError)
                 }
             }
-        } catch (fileError) {
+        } catch {
             console.warn('Search logs file not found, returning empty data')
         }
 

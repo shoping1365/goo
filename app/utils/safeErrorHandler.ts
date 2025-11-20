@@ -3,24 +3,24 @@
  */
 
 // تابع امن برای دسترسی به property های object
-export function safeGet<T>(obj: any, path: string, defaultValue: T): T {
+export function safeGet<T>(obj: unknown, path: string, defaultValue: T): T {
   if (!obj) return defaultValue
   
   const keys = path.split('.')
-  let current = obj
+  let current = obj as Record<string, unknown>
   
   for (const key of keys) {
     if (current === null || current === undefined || typeof current !== 'object') {
       return defaultValue
     }
-    current = current[key]
+    current = current[key] as Record<string, unknown>
   }
   
-  return current !== undefined ? current : defaultValue
+  return current !== undefined ? (current as T) : defaultValue
 }
 
 // تابع امن برای استخراج پیام خطا
-export function safeGetErrorMessage(error: any): string {
+export function safeGetErrorMessage(error: unknown): string {
   if (!error) return 'خطای غیرمنتظره رخ داده است'
   
   // بررسی انواع مختلف error object
@@ -31,38 +31,38 @@ export function safeGetErrorMessage(error: any): string {
                  safeGet(error, 'statusMessage', '') ||
                  safeGet(error, 'user_message', '')
   
-  return message || 'خطای غیرمنتظره رخ داده است'
+  return (message as string) || 'خطای غیرمنتظره رخ داده است'
 }
 
 // تابع امن برای استخراج کد خطا
-export function safeGetErrorCode(error: any): number {
+export function safeGetErrorCode(error: unknown): number {
   if (!error) return 500
   
-  return safeGet(error, 'status', 500) ||
-         safeGet(error, 'statusCode', 500) ||
-         safeGet(error, 'code', 500)
+  return (safeGet(error, 'status', 500) as number) ||
+         (safeGet(error, 'statusCode', 500) as number) ||
+         (safeGet(error, 'code', 500) as number)
 }
 
 // تابع امن برای استخراج جزئیات خطا
-export function safeGetErrorDetails(error: any): any {
+export function safeGetErrorDetails(error: unknown): Record<string, unknown> {
   if (!error) return {}
   
-  return safeGet(error, 'data', {}) ||
-         safeGet(error, 'details', {}) ||
+  return (safeGet(error, 'data', {}) as Record<string, unknown>) ||
+         (safeGet(error, 'details', {}) as Record<string, unknown>) ||
          {}
 }
 
 // تابع امن برای لاگ کردن خطا
-export function safeLogError(error: any, context?: string): void {
+export function safeLogError(_error: unknown, _context?: string): void {
   // خطا لاگ شده است
 }
 
 // تابع امن برای نمایش خطا به کاربر
-export function safeShowError(error: any, toast?: any): void {
+export function safeShowError(error: unknown, toast?: Record<string, unknown>): void {
   const message = safeGetErrorMessage(error)
   
   if (toast && typeof toast.error === 'function') {
-    toast.error(message, {
+    (toast.error as (msg: string, opts?: unknown) => void)(message, {
       duration: 5000
     })
   } else {
@@ -72,7 +72,7 @@ export function safeShowError(error: any, toast?: any): void {
 }
 
 // تابع امن برای بررسی اینکه آیا خطا قابل retry است
-export function safeIsRetryable(error: any): boolean {
+export function safeIsRetryable(error: unknown): boolean {
   if (!error) return false
   
   const code = safeGetErrorCode(error)

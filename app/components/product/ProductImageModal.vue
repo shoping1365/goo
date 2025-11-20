@@ -3,8 +3,8 @@
     <div class="relative bg-black rounded-lg shadow-2xl max-w-5xl max-h-[90vh] overflow-hidden" @click.stop>
       <!-- Close Button -->
       <button 
-        @click="closeModal" 
-        class="absolute top-6 right-4 z-20 bg-blue-500 hover:bg-blue-600 rounded-full p-2 transition-all"
+        class="absolute top-6 right-4 z-20 bg-blue-500 hover:bg-blue-600 rounded-full p-2 transition-all" 
+        @click="closeModal"
       >
         <svg class="w-6 h-6 text-white" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -16,8 +16,8 @@
         <!-- Navigation Arrows -->
         <button 
           v-if="hasMultipleImages"
-          @click="previousImage"
           class="absolute left-4 z-10 bg-blue-500 hover:bg-blue-600 rounded-full p-3 transition-all"
+          @click="previousImage"
         >
           <svg class="w-6 h-6 text-white" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -26,8 +26,8 @@
         
         <button 
           v-if="hasMultipleImages"
-          @click="nextImage"
           class="absolute right-4 z-10 bg-blue-500 hover:bg-blue-600 rounded-full p-3 transition-all"
+          @click="nextImage"
         >
           <svg class="w-6 h-6 text-white" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -54,13 +54,13 @@
           <button
             v-for="(image, index) in images"
             :key="index"
-            @click="setCurrentImage(index)"
             :class="[
               'w-12 h-12 rounded-lg border-2 overflow-hidden transition-all',
               currentImageIndex === index 
                 ? 'border-blue-500 shadow-lg' 
                 : 'border-gray-300 hover:border-gray-400'
             ]"
+            @click="setCurrentImage(index)"
           >
             <img 
               :src="image" 

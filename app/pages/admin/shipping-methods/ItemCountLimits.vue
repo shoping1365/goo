@@ -4,7 +4,7 @@
       <div class="card-header">
         <h3>محدودیت تعداد آیتم در سفارش</h3>
         <div class="toggle-switch">
-          <input type="checkbox" v-model="enabled" id="itemCountToggle" />
+          <input id="itemCountToggle" v-model="enabled" type="checkbox" />
           <label for="itemCountToggle"></label>
         </div>
       </div>

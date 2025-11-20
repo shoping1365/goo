@@ -13,8 +13,8 @@
               <NuxtLink 
                 v-if="hasPermission('attribute.create')"
                 to="/admin/product-management/attributes/new"
-                @click.prevent="navigateTo('/admin/product-management/attributes/new')"
                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+                @click.prevent="navigateTo('/admin/product-management/attributes/new')"
               >
                 مورد جدید
               </NuxtLink>
@@ -108,8 +108,8 @@
                   <span class="text-xs text-red-700 font-medium">{{ selectedAttributes.length }} مورد انتخاب شده</span>
                   <button
                     v-if="hasPermission('attribute.delete')"
-                    @click="openBulkDeleteConfirm()"
                     class="inline-flex items-center px-2 py-1 border border-red-300 text-xs font-medium rounded-sm text-red-700 bg-red-100 hover:bg-red-200 transition-colors"
+                    @click="openBulkDeleteConfirm()"
                   >
                     🗑️ حذف انتخاب شده‌ها
                   </button>
@@ -145,8 +145,8 @@
                         <input 
                           type="checkbox" 
                           :checked="isAllSelected"
-                          @change="toggleSelectAll"
                           class="h-3 w-3 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                          @change="toggleSelectAll"
                         />
                       </th>
                       <th scope="col" class="py-2 text-right text-xs font-medium text-gray-600 uppercase tracking-wider pr-4">
@@ -192,13 +192,13 @@
                     </tr>
                     
                     <!-- Attributes Data -->
-                    <tr v-else v-for="(attribute, index) in paginatedAttributes" :key="attribute.id" class="hover:bg-gray-50 transition-colors">
+                    <tr v-for="(attribute, index) in paginatedAttributes" v-else :key="attribute.id" class="hover:bg-gray-50 transition-colors">
                       <!-- Checkbox -->
                       <td class="px-4 py-3 whitespace-nowrap text-center">
                         <input 
-                          type="checkbox" 
+                          v-model="selectedAttributes" 
+                          type="checkbox"
                           :value="attribute.id"
-                          v-model="selectedAttributes"
                           class="h-3 w-3 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                         />
                       </td>
@@ -218,15 +218,15 @@
                         <div class="flex flex-row items-center justify-center gap-x-4">
                           <button 
                             v-if="hasPermission('attribute.update')"
-                            @click="navigateToEdit(attribute)"
                             class="inline-flex items-center px-2 py-1 border border-blue-300 text-xs font-medium rounded-sm text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors"
+                            @click="navigateToEdit(attribute)"
                           >
                             ✏️ ویرایش
                           </button>
                           <button 
                             v-if="hasPermission('attribute.delete')"
-                            @click="confirmDelete(attribute)"
                             class="inline-flex items-center px-2 py-1 border border-red-300 text-xs font-medium rounded-sm text-red-700 bg-red-50 hover:bg-red-100 transition-colors mr-2"
+                            @click="confirmDelete(attribute)"
                           >
                             🗑️ حذف
                           </button>
@@ -277,7 +277,7 @@ import { useAuth } from '~/composables/useAuth'
 import { useDeleteConfirmModal } from '~/composables/useDeleteConfirmModal'
 
 // استفاده از useAuth برای چک کردن پرمیژن
-const { user, hasPermission } = useAuth()
+const { hasPermission } = useAuth()
 
 
 definePageMeta({
@@ -480,13 +480,7 @@ const paginatedAttributes = computed(() => {
   }
 })
 
-const paginationInfo = computed(() => {
-  const total = filteredAttributes.value?.length || 0
-  const start = total === 0 ? 0 : (currentPage.value - 1) * itemsPerPage.value + 1
-  const end = Math.min(currentPage.value * itemsPerPage.value, total)
-  
-  return { start, end, total }
-})
+
 
 const isAllSelected = computed(() => {
   if (!paginatedAttributes.value || !Array.isArray(paginatedAttributes.value) || 
@@ -563,12 +557,7 @@ const navigateToEdit = (attr) => {
   navigateTo(`/admin/product-management/attributes/edit/${attr.id}`)
 }
 
-const createNewAttribute = () => {
-  // Navigating to create new attribute
-  localStorage.removeItem('attributeNewDraft')
-  // Navigate to the correct new attribute page
-  navigateTo('/admin/product-management/attributes/new')
-}
+
 
 // Pagination methods
 const goToPage = async (page: number) => {
@@ -579,21 +568,7 @@ const goToPage = async (page: number) => {
   }
 }
 
-const nextPage = async () => {
-  if (currentPage.value < totalPages.value) {
-    currentPage.value++
-    selectedAttributes.value = []
-    await refresh()
-  }
-}
 
-const prevPage = async () => {
-  if (currentPage.value > 1) {
-    currentPage.value--
-    selectedAttributes.value = []
-    await refresh()
-  }
-}
 
 // Watch for search query changes to reset pagination
 watch(searchQuery, async () => {

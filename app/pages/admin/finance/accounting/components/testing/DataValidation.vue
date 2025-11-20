@@ -8,8 +8,8 @@
       </div>
       <div class="flex items-center space-x-3 space-x-reverse">
         <button
-          @click="runValidation"
           class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          @click="runValidation"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -94,16 +94,16 @@
               </div>
               <div class="flex items-center space-x-2 space-x-reverse">
                 <button
-                  @click="editRule(rule)"
                   class="text-blue-600 hover:text-blue-800"
+                  @click="editRule(rule)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                   </svg>
                 </button>
                 <button
-                  @click="toggleRule(rule)"
                   class="text-gray-600 hover:text-gray-800"
+                  @click="toggleRule(rule)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="rule.enabled ? 'M5 13l4 4L19 7' : 'M18 9v12m0 0l-4-4m4 4l4-4'" />
@@ -145,14 +145,14 @@
               </div>
               <div class="mt-2 flex items-center space-x-2 space-x-reverse">
                 <button
-                  @click="fixError(error)"
                   class="text-blue-600 hover:text-blue-800 text-xs"
+                  @click="fixError(error)"
                 >
                   اصلاح خودکار
                 </button>
                 <button
-                  @click="ignoreError(error)"
                   class="text-gray-600 hover:text-gray-800 text-xs"
+                  @click="ignoreError(error)"
                 >
                   نادیده گرفتن
                 </button>

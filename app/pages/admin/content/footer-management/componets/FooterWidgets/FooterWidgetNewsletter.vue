@@ -10,7 +10,7 @@
       </p>
       
       <!-- فرم خبرنامه -->
-      <form @submit.prevent="handleSubmit" class="space-y-4">
+      <form class="space-y-4" @submit.prevent="handleSubmit">
         <!-- ایمیل -->
         <div class="relative">
           <input

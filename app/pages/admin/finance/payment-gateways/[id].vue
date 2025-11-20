@@ -24,8 +24,8 @@
             <h3 class="text-lg font-medium text-gray-900 mb-1">خطا در بارگذاری اطلاعات</h3>
             <p class="text-gray-600 mb-6">{{ error }}</p>
             <button 
-              @click="loadGateway" 
-              class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" 
+              @click="loadGateway"
             >
               <span class="i-heroicons-arrow-path ml-2"></span>
               تلاش مجدد

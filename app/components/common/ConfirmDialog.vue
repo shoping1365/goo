@@ -13,8 +13,8 @@
           <!-- Header -->
           <div class="flex items-center justify-between mb-4">
             <button
-              @click="handleCancel"
               class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              @click="handleCancel"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -35,14 +35,14 @@
           <!-- Actions -->
           <div class="flex justify-between space-x-3 rtl:space-x-reverse">
             <button
-              @click="handleCancel"
               class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors"
+              @click="handleCancel"
             >
               {{ currentCancelText }}
             </button>
             <button
-              @click="handleConfirm"
               class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors"
+              @click="handleConfirm"
             >
               {{ currentConfirmText }}
             </button>

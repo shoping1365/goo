@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, reactive, computed, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 // استفاده از auto-import Nuxt: کامپوننت‌های پوشه components/admin/chat با پیشوند AdminChat*
 
 const waitingUsers = ref([])
@@ -106,6 +106,7 @@ const selectUser = (chat) => {
   }
   showNotification('شروع چت با ' + selectedUser.value.name, 'success')
 }
+const _selectUser = selectUser
 
 const endChat = () => {
   if (selectedUser.value) {
@@ -190,13 +191,15 @@ const showNotification = (message, type = 'info') => {
 
 // Event handlers for Sidebar
 const handleCategoryChange = (category) => {
-  console.log('دسته‌بندی تغییر کرد:', category)
+  // console.log('دسته‌بندی تغییر کرد:', category)
   showNotification(`دسته‌بندی به ${category} تغییر کرد`, 'info')
 }
+const _handleCategoryChange = handleCategoryChange
 
-const handleSearchChange = (query) => {
-  console.log('جستجو تغییر کرد:', query)
+const handleSearchChange = (_query) => {
+  // console.log('جستجو تغییر کرد:', query)
 }
+const _handleSearchChange = handleSearchChange
 
 // Window controls
 const isDragging = ref(false)

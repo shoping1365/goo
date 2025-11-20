@@ -10,14 +10,14 @@
       <h4 class="text-md font-semibold text-gray-800 mb-4">خروجی اکسل گزارشات</h4>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
         <div class="space-y-2">
-          <button @click="exportSurveyResponses" :disabled="exporting" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm flex items-center justify-center space-x-2 space-x-reverse">
+          <button :disabled="exporting" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm flex items-center justify-center space-x-2 space-x-reverse" @click="exportSurveyResponses">
             <svg v-if="exporting" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
             <span>{{ exporting ? 'در حال خروجی...' : 'خروجی پاسخ‌های نظرسنجی' }}</span>
           </button>
-          <button @click="exportSMSLogs" :disabled="exporting" class="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm flex items-center justify-center space-x-2 space-x-reverse">
+          <button :disabled="exporting" class="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm flex items-center justify-center space-x-2 space-x-reverse" @click="exportSMSLogs">
             <svg v-if="exporting" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -26,14 +26,14 @@
           </button>
         </div>
         <div class="space-y-2">
-          <button @click="exportErrorLogs" :disabled="exporting" class="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm flex items-center justify-center space-x-2 space-x-reverse">
+          <button :disabled="exporting" class="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm flex items-center justify-center space-x-2 space-x-reverse" @click="exportErrorLogs">
             <svg v-if="exporting" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
             <span>{{ exporting ? 'در حال خروجی...' : 'خروجی خطاهای ارسال' }}</span>
           </button>
-          <button @click="exportAllData" :disabled="exporting" class="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm flex items-center justify-center space-x-2 space-x-reverse">
+          <button :disabled="exporting" class="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm flex items-center justify-center space-x-2 space-x-reverse" @click="exportAllData">
             <svg v-if="exporting" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -47,15 +47,15 @@
     <div class="bg-white rounded-lg border border-gray-200 px-4 py-4">
       <h4 class="text-md font-semibold text-gray-800 mb-4">مدیریت پشتیبان‌گیری</h4>
       <div class="flex flex-col md:flex-row gap-4 py-4 items-center">
-        <button @click="createBackup" :disabled="backingUp" class="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-sm flex items-center space-x-2 space-x-reverse">
+        <button :disabled="backingUp" class="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-sm flex items-center space-x-2 space-x-reverse" @click="createBackup">
           <svg v-if="backingUp" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
           <span>{{ backingUp ? 'در حال پشتیبان‌گیری...' : 'ایجاد پشتیبان' }}</span>
         </button>
-        <input type="file" @change="restoreBackup" accept=".json,.zip" class="hidden" ref="fileInput">
-        <button @click="fileInput?.click()" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm">بازیابی پشتیبان</button>
+        <input ref="fileInput" type="file" accept=".json,.zip" class="hidden" @change="restoreBackup">
+        <button class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm" @click="fileInput?.click()">بازیابی پشتیبان</button>
       </div>
     </div>
     <!-- Backup History -->
@@ -68,8 +68,8 @@
             <div class="text-xs text-gray-500">{{ formatDate(backup.date) }} - {{ backup.size }}</div>
           </div>
           <div class="flex items-center space-x-2 space-x-reverse">
-            <button @click="downloadBackup(backup.id)" class="text-blue-600 hover:text-blue-800 text-sm">دانلود</button>
-            <button @click="deleteBackup(backup.id)" class="text-red-600 hover:text-red-800 text-sm">حذف</button>
+            <button class="text-blue-600 hover:text-blue-800 text-sm" @click="downloadBackup(backup.id)">دانلود</button>
+            <button class="text-red-600 hover:text-red-800 text-sm" @click="deleteBackup(backup.id)">حذف</button>
           </div>
         </div>
       </div>

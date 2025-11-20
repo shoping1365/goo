@@ -8,8 +8,8 @@
       </div>
       <div class="flex items-center space-x-3 space-x-reverse">
         <button
-          @click="previewDesign"
           class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          @click="previewDesign"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -30,9 +30,9 @@
             <button
               v-for="theme in themes"
               :key="theme.id"
-              @click="selectedTheme = theme.id"
               class="relative p-3 border-2 rounded-lg transition-all"
               :class="selectedTheme === theme.id ? 'border-blue-500' : 'border-gray-200 hover:border-gray-300'"
+              @click="selectedTheme = theme.id"
             >
               <div class="w-full h-8 rounded" :class="theme.colors.primary"></div>
               <div class="mt-2 text-xs text-center">{{ theme.name }}</div>
@@ -202,9 +202,9 @@
         <button
           v-for="device in devices"
           :key="device.id"
-          @click="selectedDevice = device.id"
           class="flex items-center px-4 py-2 border rounded-md transition-colors"
           :class="selectedDevice === device.id ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:bg-gray-50'"
+          @click="selectedDevice = device.id"
         >
           <svg class="w-4 h-4 ml-2" :class="device.icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="device.path" />

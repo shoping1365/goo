@@ -23,7 +23,7 @@
                 <p class="text-sm text-gray-600">مشاهده اطلاعات کامل سفارش</p>
               </div>
             </div>
-            <button @click="closeModal" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <button class="text-gray-400 hover:text-gray-600 transition-colors" @click="closeModal">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
               </svg>
@@ -195,10 +195,10 @@
         <!-- فوتر مودال -->
         <div class="bg-gray-50 px-6 py-3 border-t border-gray-200">
           <div class="flex justify-end space-x-2 space-x-reverse">
-            <button @click="closeModal" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors">
+            <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors" @click="closeModal">
               بستن
             </button>
-            <button @click="editOrder" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
+            <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors" @click="editOrder">
               ویرایش سفارش
             </button>
           </div>

@@ -33,15 +33,15 @@
               </span>
           </td>
           <td>
-            <button @click="editDiscount(discount.id)" class="btn btn-secondary">
+            <button class="btn btn-secondary" @click="editDiscount(discount.id)">
               <i class="fas fa-edit"></i>
               ویرایش
             </button>
-            <button @click="toggleDiscount(discount.id)" class="btn" :class="discount.active ? 'btn-warning' : 'btn-success'">
+            <button class="btn" :class="discount.active ? 'btn-warning' : 'btn-success'" @click="toggleDiscount(discount.id)">
               <i :class="discount.active ? 'fas fa-pause' : 'fas fa-play'"></i>
               {{ discount.active ? 'غیرفعال' : 'فعال' }}
             </button>
-            <button @click="deleteDiscount(discount.id)" class="btn btn-danger">
+            <button class="btn btn-danger" @click="deleteDiscount(discount.id)">
               <i class="fas fa-trash"></i>
               حذف
             </button>
@@ -58,11 +58,11 @@
         <div class="form-row">
           <div class="form-group">
             <label>عنوان تخفیف:</label>
-            <input type="text" v-model="newDiscount.title" placeholder="مثال: تخفیف ویژه VIP">
+            <input v-model="newDiscount.title" type="text" placeholder="مثال: تخفیف ویژه VIP">
           </div>
           <div class="form-group">
             <label>درصد تخفیف:</label>
-            <input type="number" v-model="newDiscount.percent" min="1" max="100" placeholder="10">
+            <input v-model="newDiscount.percent" type="number" min="1" max="100" placeholder="10">
           </div>
         </div>
         <div class="form-row">
@@ -76,19 +76,19 @@
           </div>
           <div class="form-group">
             <label>تاریخ شروع:</label>
-            <input type="date" v-model="newDiscount.startDate">
+            <input v-model="newDiscount.startDate" type="date">
           </div>
           <div class="form-group">
             <label>تاریخ پایان:</label>
-            <input type="date" v-model="newDiscount.endDate">
+            <input v-model="newDiscount.endDate" type="date">
           </div>
         </div>
         <div class="form-actions">
-          <button @click="addDiscount" class="btn btn-success">
+          <button class="btn btn-success" @click="addDiscount">
             <i class="fas fa-plus"></i>
             افزودن تخفیف
           </button>
-          <button @click="resetNewDiscount" class="btn btn-secondary">
+          <button class="btn btn-secondary" @click="resetNewDiscount">
             <i class="fas fa-undo"></i>
             بازنشانی
           </button>

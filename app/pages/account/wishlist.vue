@@ -45,7 +45,7 @@
                 </div>
                 <div class="flex-shrink-0 mr-4">
                   <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" v-model="notificationsEnabled" class="sr-only peer">
+                    <input v-model="notificationsEnabled" type="checkbox" class="sr-only peer">
                     <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
@@ -63,9 +63,9 @@
                   <button 
                     v-for="sort in sortOptions" 
                     :key="sort.value"
-                    @click="currentSort = sort.value"
                     class="px-2 py-1 text-xs transition-colors"
                     :class="currentSort === sort.value ? 'text-red-600 border-b-2 border-red-600' : 'text-gray-500 hover:text-gray-700'"
+                    @click="currentSort = sort.value"
                   >
                     {{ sort.label }}
                   </button>
@@ -124,8 +124,8 @@
                 
                 <!-- دکمه حذف -->
                 <button 
-                  @click="toggleFavorite(product.id)"
                   class="w-10 h-10 bg-gray-200 hover:bg-gray-300 rounded-lg flex items-center justify-center transition-colors"
+                  @click="toggleFavorite(product.id)"
                 >
                   <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>

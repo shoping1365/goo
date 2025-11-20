@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, inject, isRef, onMounted, reactive, ref, watch, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
-import { useToast } from '~/composables/useToast';
+import { useSlugManagement } from '~/composables/useSlugManagement';
 
 // Props
 const props = defineProps<{ 
@@ -35,8 +35,6 @@ const emit = defineEmits([
 ])
 
 // Local reactive slug linked to input
-import { useProductLink } from '~/composables/useProductLink';
-import { useSlugManagement } from '~/composables/useSlugManagement';
 
 
 const slug = ref(props.slug || '')
@@ -47,16 +45,20 @@ const storedUrl = ref(props.url || '')
 const productStore = inject('productStore', null)
 const route = useRoute()
 
+// استفاده از composable
+const { checkSlugUnique: checkSlugUniqueAPI, generateUniqueSlug: generateUniqueSlugAPI, generateSlugFromTitle } = useSlugManagement()
+// const { buildProductLink } = useProductLink()
+
 // Debug: بررسی inject (فقط در development)
 if (process.env.NODE_ENV === 'development') {
-  console.log('ProductStore injected:', !!productStore)
+  // console.log('ProductStore injected:', !!productStore)
   if (productStore) {
-    console.log('✅ ProductStore successfully injected with data:', {
-      editingProductId: productStore.editingProductId,
-      productForm: productStore.productForm
-    })
+    // console.log('✅ ProductStore successfully injected with data:', {
+    //   editingProductId: productStore.editingProductId,
+    //   productForm: productStore.productForm
+    // })
   } else {
-    console.warn('⚠️ productStore inject نشده است!')
+    // console.warn('⚠️ productStore inject نشده است!')
   }
 }
 
@@ -66,14 +68,14 @@ if (productStore?.productForm?.slug && !slug.value) {
 }
 if (productStore?.productForm?.url) {
   storedUrl.value = productStore.productForm.url
-  console.log('✅ Initial URL from ProductStore:', productStore.productForm.url)
+  // console.log('✅ Initial URL from ProductStore:', productStore.productForm.url)
 }
 
 // Watch برای به‌روزرسانی از productStore
 watch(() => productStore?.productForm, (newForm) => {
   if (newForm) {
     if (process.env.NODE_ENV === 'development') {
-      console.log('ProductForm updated:', newForm)
+      // console.log('ProductForm updated:', newForm)
     }
     
     // Update slug if not manually changed
@@ -84,7 +86,7 @@ watch(() => productStore?.productForm, (newForm) => {
     // Update URL
     if (newForm.url) {
       storedUrl.value = newForm.url
-      console.log('✅ URL updated from ProductForm:', newForm.url)
+      // console.log('✅ URL updated from ProductForm:', newForm.url)
     }
   }
 }, { deep: true, immediate: true })
@@ -96,7 +98,7 @@ const isLoadingProduct = ref(false)
 const loadProductData = async () => {
   // اگر store موجود است و URL هم دارد، نیازی به API نیست
   if (productStore?.productForm?.sku && productStore?.productForm?.url) {
-    console.log('✅ ProductStore has URL, no need for API:', productStore.productForm.url)
+    // console.log('✅ ProductStore has URL, no need for API:', productStore.productForm.url)
     return
   }
   
@@ -107,29 +109,29 @@ const loadProductData = async () => {
   }
   
   if (!productId) {
-    console.warn('⚠️ No product ID found in route params or query:', {
-      params: route.params,
-      query: route.query
-    })
+    // console.warn('⚠️ No product ID found in route params or query:', {
+    //   params: route.params,
+    //   query: route.query
+    // })
     return
   }
   
   isLoadingProduct.value = true
   try {
-    console.log('📡 Loading product data from API for ID:', productId)
-    const response = await $fetch(`/api/admin/products/${productId}`) as any
+    // console.log('📡 Loading product data from API for ID:', productId)
+    const response = await $fetch<Record<string, unknown>>(`/api/admin/products/${productId}`)
     productData.value = response
-    console.log('✅ Product data loaded:', response)
+    // console.log('✅ Product data loaded:', response)
     
     // اگر URL در response موجود است، آن را تنظیم کن
     if (response?.url) {
-      storedUrl.value = response.url
-      console.log('✅ URL updated from API:', response.url)
+      storedUrl.value = (response.url as string)
+      // console.log('✅ URL updated from API:', response.url)
     } else {
-      console.warn('⚠️ No URL found in API response:', response)
+      // console.warn('⚠️ No URL found in API response:', response)
     }
   } catch (error) {
-    console.error('❌ Error loading product data:', error)
+    // console.error('❌ Error loading product data:', error)
   } finally {
     isLoadingProduct.value = false
   }
@@ -139,24 +141,25 @@ const loadProductData = async () => {
 onMounted(() => {
   // اگر productStore موجود نیست یا URL ندارد، از API استفاده کن
   if (!productStore || !productStore.productForm?.url) {
-    console.log('🔄 ProductStore not available or URL missing, loading from API...')
+    // console.log('🔄 ProductStore not available or URL missing, loading from API...')
     loadProductData()
   } else {
-    console.log('✅ ProductStore available with URL:', productStore.productForm.url)
+    // console.log('✅ ProductStore available with URL:', productStore.productForm.url)
   }
 })
 
 // Watch برای به‌روزرسانی وقتی productData لود شد
 watch(() => productData.value, (newData) => {
   if (newData) {
-    console.log('🔄 ProductData loaded, updating URL:', newData)
+    // console.log('🔄 ProductData loaded, updating URL:', newData)
     // اگر slug در productData موجود است، آن را تنظیم کن
-    if (newData.slug && !slug.value) {
-      slug.value = newData.slug
+    const data = newData as { slug?: string; url?: string }
+    if (data.slug && !slug.value) {
+      slug.value = data.slug
     }
     // اگر URL در productData موجود است، آن را تنظیم کن
-    if (newData.url) {
-      storedUrl.value = newData.url
+    if (data.url) {
+      storedUrl.value = data.url
     }
   }
 }, { immediate: true })
@@ -164,11 +167,11 @@ watch(() => productData.value, (newData) => {
 // Watch برای به‌روزرسانی وقتی productStore تغییر کرد
 watch(() => productStore, (newStore) => {
   if (newStore && newStore.productForm) {
-    console.log('🔄 ProductStore updated:', newStore.productForm)
+    // console.log('🔄 ProductStore updated:', newStore.productForm)
     // اگر URL در store موجود است، آن را تنظیم کن
     if (newStore.productForm.url) {
       storedUrl.value = newStore.productForm.url
-      console.log('✅ URL updated from ProductStore:', newStore.productForm.url)
+      // console.log('✅ URL updated from ProductStore:', newStore.productForm.url)
     }
   }
 }, { immediate: true })
@@ -181,77 +184,65 @@ const isGeneratingSlug = ref(false)
 
 // Debug: بررسی وضعیت productStore
 if (process.env.NODE_ENV === 'development') {
-  console.log('Product URL Debug:', {
-    productSku: productStore?.productForm?.sku,
-    productId: productStore?.editingProductId,
-    routeId: route.params.id,
-    queryId: route.query.id,
-    englishName: productStore?.productForm?.englishName,
-    currentSlug: slug.value,
-    storedUrl: storedUrl.value,
-    productStore: !!productStore,
-    productForm: productStore?.productForm,
-    routeParams: route.params,
-    routeQuery: route.query
-  })
+  // console.log('Product URL Debug:', {
+  //   productSku: productStore?.productForm?.sku,
+  //   productId: productStore?.editingProductId,
+  //   routeId: route.params.id,
+  //   queryId: route.query.id,
+  //   englishName: productStore?.productForm?.englishName,
+  //   currentSlug: slug.value,
+  //   storedUrl: storedUrl.value,
+  //   productStore: !!productStore,
+  //   productForm: productStore?.productForm,
+  //   routeParams: route.params,
+  //   routeQuery: route.query
+  // })
   
   if (!productStore) {
-    console.warn('⚠️ هیچ SKU یا ID محصولی یافت نشد!', { 
-      productStore: false, 
-      routeId: route.params.id, 
-      queryId: route.query.id,
-      routeParams: route.params,
-      routeQuery: route.query,
-      productForm: undefined 
-    })
+    // console.warn('⚠️ هیچ SKU یا ID محصولی یافت نشد!', { 
+    //   productStore: false, 
+    //   routeId: route.params.id, 
+    //   queryId: route.query.id,
+    //   routeParams: route.params,
+    //   routeQuery: route.query,
+    //   productForm: undefined 
+    // })
   } else {
-    console.log('✅ ProductStore available with data:', {
-      editingProductId: productStore.editingProductId,
-      sku: productStore.productForm?.sku,
-      url: productStore.productForm?.url
-    })
+    // console.log('✅ ProductStore available with data:', {
+    //   editingProductId: productStore.editingProductId,
+    //   sku: productStore.productForm?.sku,
+    //   url: productStore.productForm?.url
+    // })
   }
 }
 
-
-// استفاده از composable
-const { slugify, checkSlugUnique: checkSlugUniqueAPI, generateUniqueSlug: generateUniqueSlugAPI, generateSlugFromTitle } = useSlugManagement()
-const { buildProductLink } = useProductLink()
-
 // Fallback ID برای زمانی که productStore موجود نیست
-const fallbackId = computed(() => {
-  if (productStore?.editingProductId) return productStore.editingProductId
-  if (productStore?.productForm?.sku) return productStore.productForm.sku
-  if (route.params.id) return route.params.id
-  if (route.query.id) return route.query.id as string
-  return '[id]'
-})
+// const fallbackId = computed(() => {
+//   if (productStore?.editingProductId) return productStore.editingProductId
+//   if (productStore?.productForm?.sku) return productStore.productForm.sku
+//   if (route.params.id) return route.params.id
+//   if (route.query.id) return route.query.id as string
+//   return '[id]'
+// })
 
 if (process.env.NODE_ENV === 'development') {
-  console.log('🔄 Using fallback ID:', fallbackId.value, {
-    editingProductId: productStore?.editingProductId,
-    sku: productStore?.productForm?.sku,
-    routeId: route.params.id,
-    queryId: route.query.id,
-    routeParams: route.params,
-    routeQuery: route.query
-  })
+  // console.log('🔄 Using fallback ID:', fallbackId)
 }
-const { showSuccess, showError, showWarning, showInfo } = useToast()
+// const { showSuccess, showError, showWarning, showInfo } = useToast()
 
 // Try to get title provided by parent via provide('pageTitle')
-const providedTitle = inject<any>('pageTitle', null)
+const providedTitle = inject<unknown>('pageTitle', null)
 const seoTitleTouched = ref(false)
 
 function getProvided(){ return providedTitle ? (isRef(providedTitle) ? providedTitle.value : providedTitle) : '' }
 
 if (!props.defaultTitle && !seoTitle.value && providedTitle) {
-  seoTitle.value = getProvided() || ''
+  seoTitle.value = (getProvided() as string) || ''
 }
 
 if (providedTitle) {
   watch(() => getProvided(), v => {
-    if (!seoTitleTouched.value) seoTitle.value = v || ''
+    if (!seoTitleTouched.value) seoTitle.value = (v as string) || ''
   })
 }
 
@@ -323,10 +314,6 @@ const titleColor = computed(()=>{
 })
 
 // slug length
-const slugLength = computed(()=> slug.value.length)
-
-
-
 watch(() => props.slug, val => slug.value = val || '')
 watch(() => props.defaultTitle, val => { if(!seoTitle.value) seoTitle.value = val || '' })
 watch(slug, val => emit('update:slug', val))
@@ -450,19 +437,36 @@ const productUrl = computed(() => {
       
       // Debug: نمایش اطلاعات دریافتی
       if (process.env.NODE_ENV === 'development') {
-        console.log('Product URL Debug:', {
-          productSku,
-          productId,
-          routeId: route.params.id,
-          englishName,
-          currentSlug,
-          productSlug,
-          productStore: !!productStore,
-          productForm: productStore?.productForm,
-          productData: !!productData.value,
-          finalSlug: finalSlug,
-          timestamp: new Date().toISOString()
-        })
+        // console.log('Product URL Debug:', {
+        //   productSku: productStore?.productForm?.sku,
+        //   productId: productStore?.editingProductId,
+        //   routeId: route.params.id,
+        //   queryId: route.query.id,
+        //   englishName: productStore?.productForm?.englishName,
+        //   currentSlug: slug.value,
+        //   storedUrl: storedUrl.value,
+        //   productStore: !!productStore,
+        //   productForm: productStore?.productForm,
+        //   routeParams: route.params,
+        //   routeQuery: route.query
+        // })
+        
+        if (!productStore) {
+          // console.warn('⚠️ هیچ SKU یا ID محصولی یافت نشد!', { 
+          //   productStore: false, 
+          //   routeId: route.params.id, 
+          //   queryId: route.query.id,
+          //   routeParams: route.params,
+          //   routeQuery: route.query,
+          //   productForm: undefined 
+          // })
+        } else {
+          // console.log('✅ ProductStore available with data:', {
+          //   editingProductId: productStore.editingProductId,
+          //   sku: productStore.productForm?.sku,
+          //   url: productStore.productForm?.url
+          // })
+        }
       }
       
       // اگر هیچ اطلاعاتی موجود نیست، هشدار بده
@@ -522,7 +526,7 @@ const canonicalFromSlug = computed(() => {
   // در غیر این صورت، از URL محاسبه شده استفاده کن
   const computedUrl = productUrl.value
   if (process.env.NODE_ENV === 'development') {
-    console.log('🔄 Canonical URL computed:', { storedUrl: storedUrl.value, computedUrl })
+    // console.log('🔄 Canonical URL computed:', { storedUrl: storedUrl.value, computedUrl })
   }
   return computedUrl
 })
@@ -530,13 +534,12 @@ const canonicalFromSlug = computed(() => {
 // Watch برای به‌روزرسانی canonical URL وقتی slug تغییر کرد
 watch([slug, storedUrl], ([newSlug, newStoredUrl]) => {
   if (process.env.NODE_ENV === 'development') {
-    console.log('🔄 Slug or storedUrl changed:', { newSlug, newStoredUrl })
-  }
-  
-  // همیشه canonical URL را به‌روزرسانی کن
-  canonicalUrl.value = canonicalFromSlug.value
-  if (process.env.NODE_ENV === 'development') {
-    console.log('✅ Canonical URL updated:', canonicalUrl.value)
+    // اگر slug یا storedUrl تغییر کرده باشد، canonicalUrl را آپدیت کن
+    if (slug.value !== newSlug || storedUrl.value !== newStoredUrl) {
+      // console.log('🔄 Slug or storedUrl changed:', { newSlug, newStoredUrl })
+    }
+    
+    // console.log('✅ Canonical URL updated:', canonicalUrl.value)
   }
 }, { immediate: true })
 
@@ -604,8 +607,8 @@ watch(ogTitle, (val) => {
 })
 
 // هر بار که ogImage تغییر کرد، مقدار را به والد emit کن
-watch(ogImage, (val) => {
-  // emit برای ogImage از قبل در صفحه والد تعریف شده است
+watch(ogImage, (_val) => {
+  emit('update:ogImage', ogImage.value)
 })
 
 // هر بار که ogDescription تغییر کرد، مقدار را به والد emit کن
@@ -696,7 +699,7 @@ defineExpose({
             </div>
             عنوان SEO (Title Tag)
           </label>
-          <input type="text" class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900 transition-all duration-200" dir="rtl" placeholder="عنوان برای موتورهای جستجو" v-model="seoTitle" />
+          <input v-model="seoTitle" type="text" class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900 transition-all duration-200" dir="rtl" placeholder="عنوان برای موتورهای جستجو" />
           <!-- Progress bar below field -->
           <div class="flex items-center gap-3 mt-3">
             <div class="relative h-2 flex-1 bg-gray-200 rounded overflow-hidden">
@@ -787,9 +790,9 @@ defineExpose({
             <div class="flex items-center gap-3">
               <button 
                 v-if="slugError && slug"
-                @click="generateUniqueSlug(slug)"
                 :disabled="isGeneratingSlug"
                 class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                @click="generateUniqueSlug(slug)"
               >
                 <svg v-if="isGeneratingSlug" class="w-4 h-4 ml-2 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -960,7 +963,7 @@ defineExpose({
                 <div class="p-2 bg-pink-100 rounded-lg">
                   <svg class="w-4 h-4 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
-                  </svg>
+              </svg>
                 </div>
                 عنوان Open Graph
               </label>
@@ -1151,7 +1154,7 @@ defineExpose({
             <label class="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-4">
               <div class="p-2 bg-blue-100 rounded-lg">
                 <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293ل5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                 </svg>
               </div>
               GTIN/UPC/EAN
@@ -1182,7 +1185,7 @@ defineExpose({
         <div class="flex items-center gap-3">
           <div class="p-2 bg-white/20 rounded-xl">
             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2v-5a1.5 1.5 0 013 0v6a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
             </svg>
           </div>
           <h3 class="text-xl font-bold text-white">آنالیز و گزارش SEO</h3>
@@ -1248,6 +1251,7 @@ defineExpose({
             </div>
             <div class="bg-gray-50 p-2 rounded text-xs">
               <span class="font-semibold">Schema:</span> اطلاعات برند و سازنده را تکمیل کنید
+           
             </div>
           </div>
         </div>
@@ -1323,6 +1327,7 @@ select {
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -1330,6 +1335,7 @@ select {
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

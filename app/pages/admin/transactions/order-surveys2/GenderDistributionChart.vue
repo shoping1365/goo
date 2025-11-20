@@ -5,10 +5,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, nextTick } from 'vue'
-import Chart from 'chart.js/auto'
+import Chart from 'chart.js/auto';
+import { nextTick, onMounted, ref, watch } from 'vue';
 
-const props = defineProps<{ data: any }>()
+const props = defineProps<{ data: unknown }>()
 const chartCanvas = ref<HTMLCanvasElement>()
 let chart: Chart | null = null
 

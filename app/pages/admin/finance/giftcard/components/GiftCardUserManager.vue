@@ -8,8 +8,8 @@
       </div>
       <div class="flex gap-2">
         <button
-          @click="showNewUserModal = true"
           class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+          @click="showNewUserModal = true"
         >
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
@@ -17,8 +17,8 @@
           ثبت استفاده‌کننده جدید
         </button>
         <button
-          @click="showBulkImportModal = true"
           class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          @click="showBulkImportModal = true"
         >
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
@@ -26,8 +26,8 @@
           ورود گروهی
         </button>
         <button
-          @click="exportUsers"
           class="inline-flex items-center px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+          @click="exportUsers"
         >
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -101,42 +101,42 @@
       <div class="border-b border-gray-200">
         <nav class="-mb-px flex space-x-8 space-x-reverse">
           <button
-            @click="activeTab = 'users'"
             :class="{
               'border-blue-500 text-blue-600': activeTab === 'users',
               'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'users'
             }"
             class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+            @click="activeTab = 'users'"
           >
             استفاده‌کنندگان
           </button>
           <button
-            @click="activeTab = 'usage_history'"
             :class="{
               'border-blue-500 text-blue-600': activeTab === 'usage_history',
               'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'usage_history'
             }"
             class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+            @click="activeTab = 'usage_history'"
           >
             تاریخچه استفاده
           </button>
           <button
-            @click="activeTab = 'balances'"
             :class="{
               'border-blue-500 text-blue-600': activeTab === 'balances',
               'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'balances'
             }"
             class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+            @click="activeTab = 'balances'"
           >
             اعتبار باقی‌مانده
           </button>
           <button
-            @click="activeTab = 'restrictions'"
             :class="{
               'border-blue-500 text-blue-600': activeTab === 'restrictions',
               'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'restrictions'
             }"
             class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+            @click="activeTab = 'restrictions'"
           >
             محدودیت‌ها
           </button>
@@ -239,23 +239,23 @@
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div class="flex gap-2">
                       <button
-                        @click="viewUserDetails(user)"
                         class="text-blue-600 hover:text-blue-900"
+                        @click="viewUserDetails(user)"
                       >
                         جزئیات
                       </button>
                       <button
-                        @click="editUser(user)"
                         class="text-green-600 hover:text-green-900"
+                        @click="editUser(user)"
                       >
                         ویرایش
                       </button>
                       <button
-                        @click="toggleUserStatus(user)"
                         :class="{
                           'text-red-600 hover:text-red-900': user.status === 'active',
                           'text-green-600 hover:text-green-900': user.status === 'inactive'
                         }"
+                        @click="toggleUserStatus(user)"
                       >
                         {{ user.status === 'active' ? 'غیرفعال' : 'فعال' }}
                       </button>
@@ -299,7 +299,8 @@
             >
               <div class="flex items-center justify-between mb-3">
                 <div class="flex items-center">
-                  <div class="p-2 rounded-lg mr-3"
+                  <div
+class="p-2 rounded-lg mr-3"
                     :class="{
                       'bg-green-100': usage.type === 'usage',
                       'bg-blue-100': usage.type === 'purchase',
@@ -307,7 +308,8 @@
                       'bg-red-100': usage.type === 'expiry'
                     }"
                   >
-                    <svg class="w-5 h-5"
+                    <svg
+class="w-5 h-5"
                       :class="{
                         'text-green-600': usage.type === 'usage',
                         'text-blue-600': usage.type === 'purchase',
@@ -356,15 +358,15 @@
 
               <div class="flex gap-2">
                 <button
-                  @click="viewUsageDetails(usage)"
                   class="flex-1 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  @click="viewUsageDetails(usage)"
                 >
                   جزئیات
                 </button>
                 <button
                   v-if="usage.type === 'usage' && usage.status === 'failed'"
-                  @click="retryUsage(usage)"
                   class="flex-1 px-3 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                  @click="retryUsage(usage)"
                 >
                   تلاش مجدد
                 </button>
@@ -439,15 +441,15 @@
 
               <div class="flex gap-2">
                 <button
-                  @click="viewCardDetails(card)"
                   class="flex-1 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  @click="viewCardDetails(card)"
                 >
                   جزئیات
                 </button>
                 <button
                   v-if="card.status === 'active'"
-                  @click="extendCard(card)"
                   class="flex-1 px-3 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                  @click="extendCard(card)"
                 >
                   تمدید
                 </button>
@@ -461,8 +463,8 @@
           <div class="flex justify-between items-center mb-4">
             <h4 class="text-lg font-semibold text-gray-900">مدیریت محدودیت‌های استفاده</h4>
             <button
-              @click="showNewRestrictionModal = true"
               class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+              @click="showNewRestrictionModal = true"
             >
               افزودن محدودیت جدید
             </button>
@@ -508,18 +510,18 @@
 
               <div class="flex gap-2">
                 <button
-                  @click="editRestriction(restriction)"
                   class="flex-1 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  @click="editRestriction(restriction)"
                 >
                   ویرایش
                 </button>
                 <button
-                  @click="toggleRestrictionStatus(restriction)"
                   :class="{
                     'flex-1 px-3 py-2 text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2': true,
                     'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500': restriction.status === 'active',
                     'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500': restriction.status === 'inactive'
                   }"
+                  @click="toggleRestrictionStatus(restriction)"
                 >
                   {{ restriction.status === 'active' ? 'غیرفعال' : 'فعال' }}
                 </button>

@@ -5,18 +5,17 @@
     <div class="mb-6">
       <nav class="flex rounded-lg overflow-hidden">
         <button
-          @click="switchTab('desktop')"
           :class="[
             'w-1/2 text-center py-3 font-medium text-sm transition-colors',
             activeTab === 'desktop'
               ? 'bg-purple-200 text-purple-800'
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
           ]"
+          @click="switchTab('desktop')"
         >
           دسکتاپ
         </button>
         <button
-          @click="switchTab('mobile')"
           :disabled="!isMobileEnabled"
           :class="[
             'w-1/2 text-center py-3 font-medium text-sm transition-colors',
@@ -27,6 +26,7 @@
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
           ]"
           :title="!isMobileEnabled ? 'نمایش در موبایل غیرفعال است' : ''"
+          @click="switchTab('mobile')"
         >
           موبایل
           <span v-if="!isMobileEnabled" class="text-xs block">(غیرفعال)</span>
@@ -47,9 +47,9 @@
           <h3 class="text-lg font-bold text-gray-700">تنظیمات موبایل</h3>
           <div class="flex items-center gap-2 border-2 border-blue-200 rounded-lg p-1 bg-blue-50">
             <input
-              type="checkbox"
               id="easyLoadMobile"
               v-model="props.sliderConfig.easy_load_enabled"
+              type="checkbox"
               class="w-4 h-4 text-blue-600 bg-blue-100 border-blue-300 rounded focus:ring-blue-500 focus:ring-2"
             />
             <label for="easyLoadMobile" class="text-sm font-medium text-blue-700">لیزی لود</label>
@@ -63,11 +63,11 @@
             <input
               type="number"
               :value="props.sliderConfig.mobile_padding_top !== undefined ? props.sliderConfig.mobile_padding_top : ''"
-              @input="e => props.sliderConfig.mobile_padding_top = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
               min="0"
               max="100"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
               placeholder="0"
+              @input="e => props.sliderConfig.mobile_padding_top = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             />
           </div>
 
@@ -77,11 +77,11 @@
             <input
               type="number"
               :value="props.sliderConfig.mobile_padding_bottom !== undefined ? props.sliderConfig.mobile_padding_bottom : ''"
-              @input="e => props.sliderConfig.mobile_padding_bottom = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
               min="0"
               max="100"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
               placeholder="0"
+              @input="e => props.sliderConfig.mobile_padding_bottom = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             />
           </div>
 
@@ -91,11 +91,11 @@
             <input
               type="number"
               :value="props.sliderConfig.mobile_margin_right !== undefined ? props.sliderConfig.mobile_margin_right : ''"
-              @input="e => props.sliderConfig.mobile_margin_right = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
               min="0"
               max="100"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
               placeholder="0"
+              @input="e => props.sliderConfig.mobile_margin_right = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             />
           </div>
 
@@ -105,11 +105,11 @@
             <input
               type="number"
               :value="props.sliderConfig.mobile_margin_left !== undefined ? props.sliderConfig.mobile_margin_left : ''"
-              @input="e => props.sliderConfig.mobile_margin_left = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
               min="0"
               max="100"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
               placeholder="0"
+              @input="e => props.sliderConfig.mobile_margin_left = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             />
           </div>
 
@@ -204,8 +204,8 @@
                     <div v-if="props.sliderConfig.bg_enabled">
                     <label class="block mb-2 text-sm font-medium text-gray-700">رنگ پس‌زمینه</label>
                     <input
-                    type="color"
                     v-model="props.sliderConfig.bg_color"
+                    type="color"
                     class="w-full h-10 border border-gray-300 rounded-md"
                     />
                     </div>
@@ -452,16 +452,16 @@
                                     </div>
                                     <div class="flex gap-2">
                                     <button
-                                        @click="props.editSlide(idx)"
                                         class="text-blue-500 hover:text-blue-700 p-1"
+                                        @click="props.editSlide(idx)"
                                     >
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 11l6 6M3 17v4h4l10.293-10.293a1 1 0 00-1.414-1.414L3 17z"></path>
                                         </svg>
                                     </button>
                                     <button
-                                        @click="props.removeSlide(idx)"
                                         class="text-red-500 hover:text-red-700 p-1"
+                                        @click="props.removeSlide(idx)"
                                     >
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -518,16 +518,16 @@
                                     </div>
                                     <div class="flex gap-2">
                                     <button
-                                        @click="props.editBanner(idx)"
                                         class="text-blue-500 hover:text-blue-700 p-1"
+                                        @click="props.editBanner(idx)"
                                     >
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 11l6 6M3 17v4h4l10.293-10.293a1 1 0 00-1.414-1.414L3 17z"></path>
                                         </svg>
                                     </button>
                                     <button
-                                        @click="props.removeBanner(idx)"
                                         class="text-red-500 hover:text-red-700 p-1"
+                                        @click="props.removeBanner(idx)"
                                     >
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>

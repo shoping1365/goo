@@ -5,8 +5,8 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       <!-- Excel Export -->
       <button
-        @click="exportExcel"
         class="flex flex-col items-center p-6 border-2 border-dashed border-green-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition-all duration-200 group"
+        @click="exportExcel"
       >
         <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-green-200 transition-colors">
           <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
@@ -19,8 +19,8 @@
 
       <!-- PDF Export -->
       <button
-        @click="exportPDF"
         class="flex flex-col items-center p-6 border-2 border-dashed border-red-300 rounded-lg hover:border-red-500 hover:bg-red-50 transition-all duration-200 group"
+        @click="exportPDF"
       >
         <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-200 transition-colors">
           <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
@@ -33,8 +33,8 @@
 
       <!-- CSV Export -->
       <button
-        @click="exportCSV"
         class="flex flex-col items-center p-6 border-2 border-dashed border-blue-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all duration-200 group"
+        @click="exportCSV"
       >
         <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-200 transition-colors">
           <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
@@ -47,8 +47,8 @@
 
       <!-- Email Report -->
       <button
-        @click="emailReport"
         class="flex flex-col items-center p-6 border-2 border-dashed border-purple-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all duration-200 group"
+        @click="emailReport"
       >
         <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-purple-200 transition-colors">
           <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
@@ -158,22 +158,22 @@ const avgDuration = computed(() => {
 })
 
 const exportExcel = () => {
-  console.log('Exporting to Excel...')
+  // console.log('Exporting to Excel...')
   // TODO: Implement Excel export
 }
 
 const exportPDF = () => {
-  console.log('Exporting to PDF...')
+  // console.log('Exporting to PDF...')
   // TODO: Implement PDF export
 }
 
 const exportCSV = () => {
-  console.log('Exporting to CSV...')
+  // console.log('Exporting to CSV...')
   // TODO: Implement CSV export
 }
 
 const emailReport = () => {
-  console.log('Sending email report...')
+  // console.log('Sending email report...')
   // TODO: Implement email functionality
 }
 </script> 

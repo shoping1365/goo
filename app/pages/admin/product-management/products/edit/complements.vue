@@ -32,17 +32,18 @@
           
           <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
             <div class="md:col-span-8">
-              <input type="text" 
+              <input
+v-model="q" 
+                type="text" 
                 class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900 transition-all duration-200" 
-                dir="rtl" 
+                dir="rtl"
                 placeholder="نام محصول، کد محصول یا دسته‌بندی را جستجو کنید..."
-                v-model="q"
                 @input="searchProducts" />
             </div>
             <div class="md:col-span-2">
               <select
-                class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900 transition-all duration-200 appearance-none"
                 v-model="selectedCategory"
+                class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900 transition-all duration-200 appearance-none"
                 @change="searchProducts"
               >
                 <option :value="''">همه دسته‌ها</option>
@@ -248,22 +249,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, watch } from 'vue'
+import { reactive, ref } from 'vue'
 import ImagePreviewModal from '~/components/media/ImagePreviewModal.vue'
-import { useProductCreateStore } from '~/stores/productCreate'
+// import { useProductCreateStore } from '~/stores/productCreate'
 const sections = reactive({
   relatedProducts: false,
   relatedSettings: false
 })
 
-const toggleSection = (section) => {
+const toggleSection = (section: keyof typeof sections) => {
   sections[section] = !sections[section]
 }
 
-const store = useProductCreateStore()
+// const store = useProductCreateStore()
 const q = ref('')
-const results = ref([])
-const selected = ref([])
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const results = ref<any[]>([])
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const selected = ref<any[]>([])
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const categories = ref<any[]>([])
 const selectedCategory = ref<string | number | ''>('')
 
@@ -282,8 +286,10 @@ async function searchProducts(){
       limit: '10',
     })
     if (selectedCategory.value) params.set('category_id', String(selectedCategory.value))
-    const res = await $fetch(`/api/products?${params.toString()}`)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const res = await $fetch(`/api/products?${params.toString()}`) as any
     const arr = Array.isArray(res) ? res : []
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     results.value = arr.map((p: any) => {
       const firstImage = (p?.images && p.images.length > 0 && p.images[0]?.image_url) || p.image || p.main_image || p.thumbnail
       const thumb = toThumbnail(firstImage as string)
@@ -360,9 +366,10 @@ function openPreview(obj:any){
 
 onMounted(async () => {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const res = await $fetch<any>('/api/admin/product-categories?all=1')
     categories.value = Array.isArray(res) ? res : []
-  } catch(e){ categories.value = [] }
+  } catch { categories.value = [] }
   // اگر محصول در حالت ویرایش است، مکمل‌ها را لود کن
   if (store.isEditMode && store.editingProductId) {
     await refreshSelected()

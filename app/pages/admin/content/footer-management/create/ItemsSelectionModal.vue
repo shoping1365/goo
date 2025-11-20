@@ -3,7 +3,7 @@
     <div class="modal-content" @click.stop>
       <div class="modal-header">
         <h3>انتخاب آیتم‌ها برای لایه</h3>
-        <button @click="closeModal" class="close-button">
+        <button class="close-button" @click="closeModal">
           <span>&times;</span>
         </button>
       </div>
@@ -63,7 +63,7 @@
         <div v-if="menus.length === 0" class="no-menus">هیچ منویی موجود نیست</div>
         <div v-else class="menus-list">
           <label v-for="m in menus" :key="m.id" class="menu-item">
-            <input type="checkbox" v-model="selectedMenuIds" :value="m.id" />
+            <input v-model="selectedMenuIds" type="checkbox" :value="m.id" />
             <span class="menu-title">{{ m.title || m.name || ('menu_' + m.id) }}</span>
           </label>
         </div>
@@ -90,7 +90,7 @@
 
         <div class="trust-checkbox">
           <label>
-            <input type="checkbox" v-model="trustAutoPlay" />
+            <input v-model="trustAutoPlay" type="checkbox" />
             <span>حرکت خودکار اسلایدر</span>
           </label>
         </div>
@@ -110,11 +110,11 @@
 
         <div class="trust-options">
           <label class="trust-checkbox">
-            <input type="checkbox" v-model="trustShowArrows" />
+            <input v-model="trustShowArrows" type="checkbox" />
             <span>نمایش دکمه‌های قبلی/بعدی</span>
           </label>
           <label class="trust-checkbox">
-            <input type="checkbox" v-model="trustShowIndicators" />
+            <input v-model="trustShowIndicators" type="checkbox" />
             <span>نمایش نشانگرهای پایین</span>
           </label>
         </div>
@@ -156,7 +156,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button @click="closeModal" class="btn btn-secondary">
+        <button class="btn btn-secondary" @click="closeModal">
           بستن
         </button>
       </div>

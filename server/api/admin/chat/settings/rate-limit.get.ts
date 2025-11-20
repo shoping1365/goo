@@ -10,7 +10,7 @@ declare const requireAuth: (event: H3Event) => Promise<User | null>
 declare const createError: (options: { statusCode: number; message: string }) => Error
 declare const hasPermission: (user: User, permission: string) => boolean
 declare const useRuntimeConfig: () => { public: { goApiBase: string } }
-declare const $fetch: <T = unknown>(url: string, options?: { headers?: Record<string, string> }) => Promise<{ data?: unknown }>
+declare const $fetch: (url: string, options?: { headers?: Record<string, string> }) => Promise<{ data?: unknown }>
 
 export default defineEventHandler(async (event: H3Event) => {
   try {
@@ -46,7 +46,7 @@ export default defineEventHandler(async (event: H3Event) => {
     }
 
   } catch (error: unknown) {
-    console.error('خطا در دریافت تنظیمات نرخ پیام:', error)
+    // console.error('خطا در دریافت تنظیمات نرخ پیام:', error)
 
     const errorWithStatus = error as { statusCode?: number; statusMessage?: string }
     throw createError({

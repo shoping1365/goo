@@ -16,8 +16,8 @@
             <span class="text-xs text-red-700 font-medium">{{ selectedAttributes.length }} مورد انتخاب شده</span>
             <button
               v-if="hasPermission('attribute.delete')"
-              @click="$emit('bulk-delete')"
               class="inline-flex items-center px-2 py-1 border border-red-300 text-xs font-medium rounded-sm text-red-700 bg-red-100 hover:bg-red-200 transition-colors"
+              @click="$emit('bulk-delete')"
             >
               🗑️ حذف انتخاب شده‌ها
             </button>
@@ -27,11 +27,11 @@
           <div class="relative">
             <input 
               :value="searchQuery"
-              @input="(event) => $emit('update:searchQuery', (event.target as HTMLInputElement).value)"
-              type="text" 
+              type="text"
               class="block w-56 pl-8 pr-3 py-1.5 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs shadow-sm" 
-              placeholder="جستجو نام مشخصه فنی"
+              placeholder="جستجو نام مشخصه فنی" 
               dir="rtl"
+              @input="(event) => $emit('update:searchQuery', (event.target as HTMLInputElement).value)"
             />
             <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
               <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -54,8 +54,8 @@
                   <input 
                     type="checkbox" 
                     :checked="isAllSelected"
-                    @change="$emit('toggle-select-all')"
                     class="h-3 w-3 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    @change="$emit('toggle-select-all')"
                   />
                 </th>
                 <th scope="col" class="py-2 text-right text-xs font-medium text-gray-600 uppercase tracking-wider pr-4">
@@ -77,8 +77,8 @@
                            type="checkbox" 
                            :value="attribute.id"
                            :checked="selectedAttributes.includes(attribute.id)"
-                           @change="(event) => handleCheckboxChange(attribute.id, (event.target as HTMLInputElement).checked)"
                            class="h-3 w-3 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                           @change="(event) => handleCheckboxChange(attribute.id, (event.target as HTMLInputElement).checked)"
                          />
                        </td>
 
@@ -97,15 +97,15 @@
                   <div class="flex flex-row items-center justify-center gap-x-4">
                     <button 
                       v-if="hasPermission('attribute.update')"
-                      @click="$emit('edit', attribute)"
                       class="inline-flex items-center px-2 py-1 border border-blue-300 text-xs font-medium rounded-sm text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors"
+                      @click="$emit('edit', attribute)"
                     >
                       ✏️ ویرایش
                     </button>
                     <button 
                       v-if="hasPermission('attribute.delete')"
-                      @click="$emit('delete', attribute)"
                       class="inline-flex items-center px-2 py-1 border border-red-300 text-xs font-medium rounded-sm text-red-700 bg-red-50 hover:bg-red-100 transition-colors mr-2"
+                      @click="$emit('delete', attribute)"
                     >
                       🗑️ حذف
                     </button>

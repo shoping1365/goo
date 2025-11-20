@@ -28,7 +28,8 @@
             @mouseover="showTooltip(index, 'visits', $event)"
             @mouseleave="hideTooltip"
           >
-            <div v-if="tooltipVisible && tooltipIndex === index && tooltipType === 'visits'" 
+            <div
+v-if="tooltipVisible && tooltipIndex === index && tooltipType === 'visits'" 
                  class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-sm rounded-lg z-10">
               {{ item.visits.toLocaleString('fa-IR') }} بازدید
               <div class="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
@@ -42,7 +43,8 @@
             @mouseover="showTooltip(index, 'unique', $event)"
             @mouseleave="hideTooltip"
           >
-            <div v-if="tooltipVisible && tooltipIndex === index && tooltipType === 'unique'" 
+            <div
+v-if="tooltipVisible && tooltipIndex === index && tooltipType === 'unique'" 
                  class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-sm rounded-lg z-10">
               {{ item.unique.toLocaleString('fa-IR') }} یکتا
               <div class="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
@@ -75,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue';
 
 interface ChartData {
   date: string
@@ -108,7 +110,7 @@ const formatDate = (dateStr: string) => {
   return `${parts[2]}/${parts[1]}`
 }
 
-const showTooltip = (index: number, type: string, event: MouseEvent) => {
+const showTooltip = (index: number, type: string, _event: MouseEvent) => {
   tooltipIndex.value = index
   tooltipType.value = type
   tooltipVisible.value = true

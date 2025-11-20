@@ -72,13 +72,13 @@
             <button
               v-for="tab in tabs"
               :key="tab.value"
-              @click="activeTab = tab.value"
               :class="[
                 'py-4 px-2 border-b-2 font-medium text-sm transition-colors',
                 activeTab === tab.value
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               ]"
+              @click="activeTab = tab.value"
             >
               <div class="flex items-center gap-2">
                 {{ tab.label }}
@@ -99,10 +99,10 @@
       <!-- Add to Cart -->
       <button
         v-if="product"
-        @click="addToCart"
         :disabled="!(product.in_stock ?? product.stock_quantity > 0)"
         class="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white px-4 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 group"
         :title="(product.in_stock ?? product.stock_quantity > 0) ? 'افزودن به سبد خرید' : 'ناموجود'"
+        @click="addToCart"
       >
         <svg class="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m-2.4 0L3 3m4 10v6a1 1 0 001 1h8a1 1 0 001-1v-6m-9 0V9a1 1 0 011-1h6a1 1 0 011 1v4.01"></path>
@@ -111,12 +111,12 @@
 
       <!-- Add to Wishlist -->
       <button
-        @click="toggleWishlist"
         :class="[
           'px-4 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 group',
           isInWishlist ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-600 hover:bg-gray-700'
         ]"
         title="افزودن به علاقه‌مندی‌ها"
+        @click="toggleWishlist"
       >
         <svg class="w-6 h-6 group-hover:scale-110 transition-transform text-white" fill="currentColor" viewBox="0 0 24 24">
           <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -125,9 +125,9 @@
 
       <!-- Share -->
       <button
-        @click="shareProduct"
         class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 group"
         title="اشتراک‌گذاری"
+        @click="shareProduct"
       >
         <svg class="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
@@ -136,7 +136,8 @@
     </div>
 
     <!-- Toast Notifications -->
-    <div v-if="toast.show" :class="[
+    <div
+v-if="toast.show" :class="[
       'fixed topx-4 py-4 right-6 z-50 px-6 py-4 rounded-lg shadow-lg transition-all duration-300',
       toast.type === 'success' ? 'bg-green-100 text-green-800 border border-green-200' :
       toast.type === 'error' ? 'bg-red-100 text-red-800 border border-red-200' :
@@ -159,13 +160,13 @@
 </template>
 
 <script setup>
-import ProductMainInfo from './ProductMainInfo.vue'
-import ProductDescription from './ProductDescription.vue'
-import ProductSpecifications from './ProductSpecifications.vue'
-import ProductReviews from './ProductReviews.vue'
-import ProductFAQ from './ProductFAQ.vue'
-import ProductRelated from './ProductRelated.vue'
 import ProductComplements from './ProductComplements.vue'
+import ProductDescription from './ProductDescription.vue'
+import ProductFAQ from './ProductFAQ.vue'
+import ProductMainInfo from './ProductMainInfo.vue'
+import ProductRelated from './ProductRelated.vue'
+import ProductReviews from './ProductReviews.vue'
+import ProductSpecifications from './ProductSpecifications.vue'
 
 // Meta
 definePageMeta({
@@ -294,9 +295,9 @@ const checkWishlistStatus = async () => {
   try {
     const response = await $fetch(`/api/wishlist/check/${productId.value}`)
     isInWishlist.value = response?.isInWishlist || false
-  } catch (err) {
+  } catch {
     // Silently fail for non-authenticated users
-    console.log('Wishlist check failed:', err)
+    // console.log('Wishlist check failed:', err)
     isInWishlist.value = false
   }
 }
@@ -319,7 +320,7 @@ const trackProductView = async (prodId) => {
     // شروع ردیابی زمان برای این محصول
     viewStartTime.value = Date.now()
     currentProductId.value = prodId
-  } catch (err) {
+  } catch {
     // Silent fail - بازدید ثبت نشد ولی مشکلی ایجاد نمی‌کنیم
   }
 }
@@ -340,7 +341,7 @@ const updateViewDuration = async () => {
       credentials: 'include',
       onResponseError: () => {}
     })
-  } catch (err) {
+  } catch {
     // Silent fail
   }
 }

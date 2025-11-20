@@ -257,6 +257,29 @@ declare const definePageMeta: (meta: { layout?: string; middleware?: string[] })
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue';
 
+interface Chat {
+  id: number
+  name: string
+  avatar: string
+  lastMessage: string
+  lastMessageTime: number
+  unread: number
+  online: boolean
+  type: 'user' | 'group'
+}
+
+interface Message {
+  id: number
+  type: 'text' | 'image' | 'file' | 'voice'
+  text?: string
+  sender: 'me' | 'them'
+  time: string
+  status: 'sent' | 'delivered' | 'read'
+  fileSize?: number
+  fileName?: string
+  duration?: string
+}
+
 definePageMeta({
   layout: 'admin',
   middleware: ['auth']
@@ -265,7 +288,7 @@ definePageMeta({
 // Data
 const searchQuery = ref('')
 const activeTab = ref('all')
-const selectedChat = ref<any>(null)
+const selectedChat = ref<Chat | null>(null)
 const messageText = ref('')
 const showFileMenu = ref(false)
 const showEmojiPicker = ref(false)
@@ -283,7 +306,7 @@ const tabs = [
 ]
 
 // Sample Chats Data
-const chats = ref([
+const chats = ref<Chat[]>([
   {
     id: 1,
     name: 'محمد احمدی',
@@ -327,7 +350,7 @@ const chats = ref([
 ])
 
 // Sample Messages
-const messages = ref<{ [key: number]: any[] }>({
+const messages = ref<{ [key: number]: Message[] }>({
   1: [
     {
       id: 1,
@@ -407,7 +430,7 @@ const currentMessages = computed(() => {
 })
 
 // Methods
-const selectChat = (chat: any) => {
+const selectChat = (chat: Chat) => {
   selectedChat.value = chat
   chat.unread = 0
   nextTick(() => {
@@ -417,7 +440,7 @@ const selectChat = (chat: any) => {
 
 const startNewChat = () => {
   // TODO: Implement new chat modal
-  console.log('Start new chat')
+  // console.log('Start new chat')
 }
 
 const sendMessage = () => {
@@ -528,20 +551,20 @@ const handleFileSelect = (event: Event) => {
   if (!file) return
 
   // TODO: Upload file and add to messages
-  console.log('Selected file:', file)
+  // console.log('Selected file:', file)
 }
 
 const startVoiceRecording = () => {
   isRecording.value = true
   // TODO: Implement voice recording
-  console.log('Start recording')
+  // console.log('Start recording')
 }
 
 const stopVoiceRecording = () => {
   if (isRecording.value) {
     isRecording.value = false
     // TODO: Stop recording and send
-    console.log('Stop recording')
+    // console.log('Stop recording')
   }
 }
 
@@ -549,7 +572,7 @@ const cancelVoiceRecording = () => {
   if (isRecording.value) {
     isRecording.value = false
     // TODO: Cancel recording
-    console.log('Cancel recording')
+    // console.log('Cancel recording')
   }
 }
 

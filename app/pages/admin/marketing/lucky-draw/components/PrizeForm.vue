@@ -8,8 +8,8 @@
             {{ isEditing ? 'ویرایش جایزه' : 'ایجاد جایزه جدید' }}
           </h3>
           <button 
-            @click="$emit('close')"
             class="text-gray-400 hover:text-gray-600"
+            @click="$emit('close')"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -18,7 +18,7 @@
         </div>
 
         <!-- فرم -->
-        <form @submit.prevent="savePrize" class="space-y-6">
+        <form class="space-y-6" @submit.prevent="savePrize">
           <!-- نام و نوع جایزه -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -168,9 +168,9 @@
             
             <div class="flex items-center">
               <input 
+                id="requireRegistration"
                 v-model="form.requireRegistration"
                 type="checkbox"
-                id="requireRegistration"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label for="requireRegistration" class="mr-2 text-sm text-gray-700">نیاز به ثبت‌نام</label>
@@ -178,9 +178,9 @@
 
             <div class="flex items-center">
               <input 
+                id="oneTimeUse"
                 v-model="form.oneTimeUse"
                 type="checkbox"
-                id="oneTimeUse"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label for="oneTimeUse" class="mr-2 text-sm text-gray-700">استفاده یکبار</label>
@@ -188,9 +188,9 @@
 
             <div class="flex items-center">
               <input 
+                id="combinable"
                 v-model="form.combinable"
                 type="checkbox"
-                id="combinable"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label for="combinable" class="mr-2 text-sm text-gray-700">قابل ترکیب با سایر تخفیف‌ها</label>
@@ -214,8 +214,8 @@
           <div class="flex justify-end space-x-3 space-x-reverse">
             <button 
               type="button"
-              @click="$emit('close')"
               class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors"
+              @click="$emit('close')"
             >
               انصراف
             </button>

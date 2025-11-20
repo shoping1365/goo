@@ -8,10 +8,10 @@
           <p class="mt-1 text-sm text-gray-500">محاسبه امتیاز بر اساس سن حساب و وفاداری طولانی‌مدت کاربران</p>
         </div>
         <div class="flex space-x-3 space-x-reverse">
-          <button @click="analyzeAccountAges" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+          <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors" @click="analyzeAccountAges">
             تحلیل قدمت
           </button>
-          <button @click="exportAgeReport" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">
+          <button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors" @click="exportAgeReport">
             خروجی گزارش
           </button>
         </div>
@@ -64,10 +64,10 @@
       </div>
       
       <div class="mt-4 flex space-x-3 space-x-reverse">
-        <button @click="saveAgeSettings" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+        <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors" @click="saveAgeSettings">
           ذخیره تنظیمات
         </button>
-        <button @click="testAgeSystem" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors">
+        <button class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors" @click="testAgeSystem">
           تست سیستم
         </button>
       </div>
@@ -217,9 +217,9 @@
                 {{ account.score }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button @click="viewAccountHistory(account)" class="text-blue-600 hover:text-blue-900 ml-3">تاریخچه</button>
-                <button @click="celebrateMilestone(account)" class="text-green-600 hover:text-green-900 ml-3">جشن</button>
-                <button @click="sendAnniversary(account)" class="text-purple-600 hover:text-purple-900">سالگرد</button>
+                <button class="text-blue-600 hover:text-blue-900 ml-3" @click="viewAccountHistory(account)">تاریخچه</button>
+                <button class="text-green-600 hover:text-green-900 ml-3" @click="celebrateMilestone(account)">جشن</button>
+                <button class="text-purple-600 hover:text-purple-900" @click="sendAnniversary(account)">سالگرد</button>
               </td>
             </tr>
           </tbody>
@@ -232,13 +232,13 @@
           <span class="text-sm text-gray-700">نمایش {{ pagination.start }} تا {{ pagination.end }} از {{ pagination.total }} حساب</span>
         </div>
         <div class="flex space-x-2 space-x-reverse">
-          <button @click="previousPage" :disabled="currentPage === 1" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50">
+          <button :disabled="currentPage === 1" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50" @click="previousPage">
             قبلی
           </button>
-          <button v-for="page in visiblePages" :key="page" @click="goToPage(page)" :class="page === currentPage ? 'bg-blue-600 text-white' : 'bg-white text-gray-700'" class="px-3 py-1 border border-gray-300 rounded-md text-sm">
+          <button v-for="page in visiblePages" :key="page" :class="page === currentPage ? 'bg-blue-600 text-white' : 'bg-white text-gray-700'" class="px-3 py-1 border border-gray-300 rounded-md text-sm" @click="goToPage(page)">
             {{ page }}
           </button>
-          <button @click="nextPage" :disabled="currentPage === totalPages" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50">
+          <button :disabled="currentPage === totalPages" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50" @click="nextPage">
             بعدی
           </button>
         </div>
@@ -276,10 +276,10 @@
             </div>
           </div>
           <div class="flex space-x-2 space-x-reverse">
-            <button @click="sendCongratulations(milestone)" class="bg-yellow-600 text-white px-3 py-1 rounded-md text-sm hover:bg-yellow-700">
+            <button class="bg-yellow-600 text-white px-3 py-1 rounded-md text-sm hover:bg-yellow-700" @click="sendCongratulations(milestone)">
               تبریک
             </button>
-            <button @click="viewUserDetails(milestone)" class="bg-gray-600 text-white px-3 py-1 rounded-md text-sm hover:bg-gray-700">
+            <button class="bg-gray-600 text-white px-3 py-1 rounded-md text-sm hover:bg-gray-700" @click="viewUserDetails(milestone)">
               مشاهده
             </button>
           </div>
@@ -290,17 +290,38 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
+
+interface User {
+  id: number;
+  userName: string;
+  userEmail: string;
+  userAvatar: string;
+  joinDate: string;
+  age: number;
+  loyaltyLevel: string;
+  lastActivity: string;
+  status: string;
+  score: number;
+  [key: string]: unknown;
+}
+
+interface Milestone {
+  id: number;
+  userName: string;
+  milestone: string;
+  date: string;
+}
 
 // Props and Emits
 defineProps<{
-  users?: any[]
+  users?: User[]
 }>()
 
-defineEmits<{
-  saveSettings: [settings: any]
-  analyzeAges: [users: any[]]
-  exportReport: [data: any]
+const emit = defineEmits<{
+  saveSettings: [settings: Record<string, unknown>]
+  analyzeAges: [users: User[]]
+  exportReport: [data: Record<string, unknown>]
 }>()
 
 // Reactive data
@@ -324,7 +345,7 @@ const ageSettings = ref({
 })
 
 // Sample account age data
-const accountAges = ref([
+const accountAges = ref<User[]>([
   {
     id: 1,
     userName: 'علی احمدی',
@@ -364,7 +385,7 @@ const accountAges = ref([
 ])
 
 // Sample milestones
-const milestones = ref([
+const milestones = ref<Milestone[]>([
   {
     id: 1,
     userName: 'علی احمدی',
@@ -530,47 +551,41 @@ const getStatusText = (status: string) => {
 }
 
 const saveAgeSettings = () => {
-  console.log('ذخیره تنظیمات قدمت حساب:', ageSettings.value)
   // API call to save age settings
+  emit('saveSettings', ageSettings.value)
 }
 
 const testAgeSystem = () => {
-  console.log('تست سیستم قدمت حساب')
   // Test age system functionality
 }
 
 const analyzeAccountAges = () => {
-  console.log('تحلیل قدمت حساب‌ها')
   // Analyze account ages for all users
+  emit('analyzeAges', accountAges.value)
 }
 
 const exportAgeReport = () => {
-  console.log('خروجی گزارش قدمت حساب')
   // Export age report
+  emit('exportReport', { stats: stats.value, accounts: filteredAccounts.value })
 }
 
-const viewAccountHistory = (account: any) => {
-  console.log('مشاهده تاریخچه حساب:', account)
+const viewAccountHistory = (_account: User) => {
   // Open account history modal
 }
 
-const celebrateMilestone = (account: any) => {
-  console.log('جشن مرحله مهم:', account)
+const celebrateMilestone = (_account: User) => {
   // Celebrate user milestone
 }
 
-const sendAnniversary = (account: any) => {
-  console.log('ارسال سالگرد:', account)
+const sendAnniversary = (_account: User) => {
   // Send anniversary notification
 }
 
-const sendCongratulations = (milestone: any) => {
-  console.log('ارسال تبریک:', milestone)
+const sendCongratulations = (_milestone: Milestone) => {
   // Send congratulations message
 }
 
-const viewUserDetails = (milestone: any) => {
-  console.log('مشاهده جزئیات کاربر:', milestone)
+const viewUserDetails = (_milestone: Milestone) => {
   // View user details
 }
 
@@ -591,7 +606,5 @@ const goToPage = (page: number) => {
 }
 
 // Lifecycle
-onMounted(() => {
-  console.log('سیستم قدمت حساب کاربری بارگذاری شد')
-})
+// onMounted removed as it only contained console.log
 </script> 

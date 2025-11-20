@@ -85,14 +85,14 @@
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
               <button 
-                @click="$emit('show-referral-details', referral)"
                 class="text-blue-600 hover:text-blue-900 ml-4"
+                @click="$emit('show-referral-details', referral)"
               >
                 جزئیات
               </button>
               <button 
-                @click="$emit('edit-referral', referral)"
                 class="text-green-600 hover:text-green-900"
+                @click="$emit('edit-referral', referral)"
               >
                 ویرایش
               </button>
@@ -109,17 +109,17 @@
       </div>
       <div class="flex space-x-2 space-x-reverse">
         <button 
-          @click="currentPage--"
           :disabled="currentPage === 1"
           class="px-3 py-2 border border-gray-300 rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          @click="currentPage--"
         >
           قبلی
         </button>
         <span class="px-3 py-2 text-sm text-gray-700">{{ currentPage }} از {{ totalPages }}</span>
         <button 
-          @click="currentPage++"
           :disabled="currentPage === totalPages"
           class="px-3 py-2 border border-gray-300 rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          @click="currentPage++"
         >
           بعدی
         </button>

@@ -3,8 +3,8 @@
     <div class="flex items-center justify-between mb-6">
       <h3 class="text-lg font-semibold text-gray-900">کنترل‌های مدیریتی</h3>
       <button 
-        @click="refreshLogs" 
-        class="px-3 py-2 text-sm bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 flex items-center"
+        class="px-3 py-2 text-sm bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 flex items-center" 
+        @click="refreshLogs"
       >
         <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -58,8 +58,8 @@
           </div>
           
           <button 
-            @click="saveUserPermissions" 
-            class="mt-4 w-full px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700"
+            class="mt-4 w-full px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700" 
+            @click="saveUserPermissions"
           >
             ذخیره مجوزها
           </button>
@@ -105,8 +105,8 @@
           </div>
           
           <button 
-            @click="saveSystemLimits" 
-            class="mt-4 w-full px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700"
+            class="mt-4 w-full px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700" 
+            @click="saveSystemLimits"
           >
             ذخیره محدودیت‌ها
           </button>
@@ -123,13 +123,13 @@
         <button 
           v-for="filter in logFilters" 
           :key="filter.value"
-          @click="setLogFilter(filter.value)"
           :class="[
             'px-3 py-1 text-xs rounded-full',
             currentLogFilter === filter.value 
               ? 'bg-blue-100 text-blue-800' 
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
           ]"
+          @click="setLogFilter(filter.value)"
         >
           {{ filter.label }}
         </button>
@@ -162,8 +162,8 @@
                 <td class="px-4 py-3 text-sm text-gray-900">{{ log.action }}</td>
                 <td class="px-4 py-3 text-sm text-gray-500">
                   <button 
-                    @click="showLogDetails(log)"
                     class="text-blue-600 hover:text-blue-800 text-xs"
+                    @click="showLogDetails(log)"
                   >
                     مشاهده جزئیات
                   </button>
@@ -181,7 +181,6 @@
         </div>
         <div class="flex items-center space-x-2 space-x-reverse">
           <button 
-            @click="previousPage"
             :disabled="currentPage === 1"
             :class="[
               'px-3 py-1 text-sm rounded-lg',
@@ -189,12 +188,12 @@
                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
                 : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
             ]"
+            @click="previousPage"
           >
             قبلی
           </button>
           <span class="text-sm text-gray-700">{{ currentPage }} از {{ totalPages }}</span>
           <button 
-            @click="nextPage"
             :disabled="currentPage === totalPages"
             :class="[
               'px-3 py-1 text-sm rounded-lg',
@@ -202,6 +201,7 @@
                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
                 : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
             ]"
+            @click="nextPage"
           >
             بعدی
           </button>
@@ -214,7 +214,7 @@
       <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-gray-900">جزئیات لاگ</h3>
-          <button @click="closeLogModal" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="closeLogModal">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>

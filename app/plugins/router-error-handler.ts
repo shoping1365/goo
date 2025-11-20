@@ -1,12 +1,12 @@
 // فیلتر کردن Vue Router warnings برای 404 و static assets
 // @ts-ignore
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin((_nuxtApp) => {
   // فقط در سمت کلاینت
   if (process.client) {
     const originalWarn = console.warn
     const originalError = console.error
     
-    console.warn = (...args: any[]) => {
+    console.warn = (...args: unknown[]) => {
       // فیلتر کردن warning های "No match found"
       const message = args[0]
       if (
@@ -22,7 +22,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       originalWarn.apply(console, args)
     }
     
-    console.error = (...args: any[]) => {
+    console.error = (...args: unknown[]) => {
       const message = args[0]
       if (
         typeof message === 'string' && 

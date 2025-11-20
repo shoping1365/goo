@@ -127,7 +127,7 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-semibold text-gray-900">هشدارها و تغییرات مهم</h3>
-        <button @click="showAllAlerts = true" class="text-sm text-blue-600 hover:text-blue-700 font-medium">
+        <button class="text-sm text-blue-600 hover:text-blue-700 font-medium" @click="showAllAlerts = true">
           مشاهده همه
         </button>
       </div>
@@ -157,7 +157,7 @@
       <div class="bg-white rounded-lg p-6 w-full max-w-4xl mx-4 max-h-[80vh] overflow-y-auto">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-gray-900">همه هشدارها و تغییرات</h3>
-          <button @click="showAllAlerts = false" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="showAllAlerts = false">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>

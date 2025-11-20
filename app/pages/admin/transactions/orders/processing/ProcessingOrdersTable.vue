@@ -12,7 +12,7 @@
             </div>
             <h3 class="text-sm font-semibold text-gray-900">فیلترهای پیشرفته</h3>
           </div>
-          <button @click="showFilters = !showFilters" class="text-sm text-blue-600 hover:text-blue-800 transition-colors font-medium hover:bg-blue-50 px-3 py-1 rounded-lg">
+          <button class="text-sm text-blue-600 hover:text-blue-800 transition-colors font-medium hover:bg-blue-50 px-3 py-1 rounded-lg" @click="showFilters = !showFilters">
             {{ showFilters ? 'مخفی کردن' : 'نمایش' }}
           </button>
         </div>
@@ -67,7 +67,7 @@
         </div>
 
         <div class="mt-4 flex justify-end">
-          <button @click="clearFilters" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+          <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors" @click="clearFilters">
             پاک کردن فیلترها
           </button>
         </div>
@@ -89,12 +89,12 @@
           
           <div class="flex items-center space-x-2 space-x-reverse">
             <!-- Bulk Actions -->
-            <div class="flex items-center space-x-2 space-x-reverse bg-blue-50 rounded-md px-2 py-1.5 border border-blue-200" v-if="selectedOrders.length > 0">
+            <div v-if="selectedOrders.length > 0" class="flex items-center space-x-2 space-x-reverse bg-blue-50 rounded-md px-2 py-1.5 border border-blue-200">
               <span class="text-xs text-blue-700 font-medium">{{ selectedOrders.length }} مورد انتخاب شده</span>
               <select 
                 v-model="bulkAction"
-                @change="executeBulkAction"
                 class="text-xs border border-blue-300 rounded px-2 py-1 bg-blue-50"
+                @change="executeBulkAction"
               >
                 <option value="">عملیات گروهی</option>
                 <option value="move_to_packaging">انتقال به بسته‌بندی</option>
@@ -133,7 +133,7 @@
       <!-- Error State -->
       <div v-else-if="error" class="text-center py-8">
         <div class="text-red-600 mb-4">{{ error }}</div>
-        <button @click="fetchProcessingOrders" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+        <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" @click="fetchProcessingOrders">
           تلاش مجدد
         </button>
       </div>
@@ -145,10 +145,10 @@
             <tr>
               <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 <input 
-                  type="checkbox" 
-                  v-model="selectAll"
-                  @change="toggleSelectAll"
+                  v-model="selectAll" 
+                  type="checkbox"
                   class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  @change="toggleSelectAll"
                 />
               </th>
               <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">شماره سفارش</th>
@@ -169,8 +169,8 @@
             <tr v-for="order in paginatedOrders" :key="order.id" class="hover:bg-gray-50">
               <td class="px-6 py-4 whitespace-nowrap">
                 <input 
-                  type="checkbox" 
-                  v-model="selectedOrders"
+                  v-model="selectedOrders" 
+                  type="checkbox"
                   :value="order.id"
                   class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                 />
@@ -200,14 +200,14 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex items-center space-x-2">
-                  <button @click="viewOrderDetails(order)" class="text-blue-600 hover:text-blue-900">
+                  <button class="text-blue-600 hover:text-blue-900" @click="viewOrderDetails(order)">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                     </svg>
                   </button>
-                  <button @click="updateProgress(order)" class="text-green-600 hover:text-green-900">بروزرسانی</button>
-                  <button @click="pauseOrder(order)" class="text-orange-600 hover:text-orange-900">متوقف</button>
+                  <button class="text-green-600 hover:text-green-900" @click="updateProgress(order)">بروزرسانی</button>
+                  <button class="text-orange-600 hover:text-orange-900" @click="pauseOrder(order)">متوقف</button>
                 </div>
               </td>
             </tr>
@@ -237,36 +237,6 @@
 </template>
 
 <script setup>
-// تابع تبدیل تاریخ میلادی به شمسی
-const formatPersianDate = (dateString) => {
-  if (!dateString) return 'نامشخص'
-  
-  try {
-    const PersianDate = require('persian-date')
-    const date = new Date(dateString)
-    const persianDate = new PersianDate(date)
-    return `${persianDate.year()}/${persianDate.month().toString().padStart(2, '0')}/${persianDate.date().toString().padStart(2, '0')}`
-  } catch (error) {
-    return 'نامشخص'
-  }
-}
-
-// تابع تبدیل تاریخ و زمان میلادی به شمسی
-const formatPersianDateTime = (dateString) => {
-  if (!dateString) return 'نامشخص'
-  
-  try {
-    const PersianDate = require('persian-date')
-    const date = new Date(dateString)
-    const persianDate = new PersianDate(date)
-    const hours = date.getHours().toString().padStart(2, '0')
-    const minutes = date.getMinutes().toString().padStart(2, '0')
-    return `${persianDate.year()}/${persianDate.month().toString().padStart(2, '0')}/${persianDate.date().toString().padStart(2, '0')} - ${hours}:${minutes}`
-  } catch (error) {
-    return 'نامشخص'
-  }
-}
-
 // Import کامپوننت‌ها
 import Pagination from '~/components/admin/common/Pagination.vue'
 import OrderDetailsModal from '~/components/admin/modals/OrderDetailsModal.vue'
@@ -344,7 +314,6 @@ const fetchProcessingOrders = async () => {
       recipientPhone: order.recipientPhone || ''
     }))
     
-    console.log('Processing orders loaded:', processingOrders.value.length)
   } catch (err) {
     error.value = 'خطا در دریافت داده‌های سفارشات'
     console.error('Error fetching processing orders:', err)
@@ -451,8 +420,6 @@ watch(selectedOrders, (newSelection) => {
 const executeBulkAction = () => {
   if (!bulkAction.value) return
   
-  console.log('عملیات گروهی:', bulkAction.value, 'بر روی سفارشات:', selectedOrders.value)
-  
   // اینجا می‌توانید منطق عملیات گروهی را پیاده‌سازی کنید
   bulkAction.value = ''
   selectedOrders.value = []
@@ -469,22 +436,17 @@ const closeModal = () => {
   selectedOrder.value = null
 }
 
-const editOrder = (order) => {
-  console.log('ویرایش سفارش:', order)
+const editOrder = (_order) => {
   // اینجا می‌توانید کاربر را به صفحه ویرایش هدایت کنید
 }
 
 // متدهای عملیات
-const viewOrder = (order) => {
-  console.log('مشاهده سفارش:', order)
+const updateProgress = (_order) => {
+  // Update progress logic
 }
 
-const updateProgress = (order) => {
-  console.log('بروزرسانی پیشرفت سفارش:', order)
-}
-
-const pauseOrder = (order) => {
-  console.log('متوقف کردن سفارش:', order)
+const pauseOrder = (_order) => {
+  // Pause order logic
 }
 
 // متدهای صفحه‌بندی
@@ -498,10 +460,6 @@ const handleItemsPerPageChange = (newItemsPerPage) => {
 }
 
 // متدهای کمکی
-const formatDate = (date) => {
-  return new Date(date).toLocaleDateString('fa-IR')
-}
-
 const formatPrice = (price) => {
   return new Intl.NumberFormat('fa-IR').format(price) + ' تومان'
 }

@@ -14,7 +14,7 @@
           <option value="twitter">Twitter</option>
           <option value="linkedin">LinkedIn</option>
         </select>
-        <button @click="refreshSocialData" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+        <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" @click="refreshSocialData">
           <svg class="w-4 h-4 ml-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
           </svg>
@@ -152,7 +152,7 @@
             <option value="story">استوری</option>
             <option value="reel">ریل</option>
           </select>
-          <button @click="createPost" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm">
+          <button class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm" @click="createPost">
             <svg class="w-4 h-4 ml-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
             </svg>
@@ -175,7 +175,8 @@
               <p class="text-sm font-medium text-gray-900">{{ post.title }}</p>
               <p class="text-xs text-gray-500">{{ getPlatformName(post.platform) }} • {{ formatDate(post.date) }}</p>
             </div>
-            <span :class="[
+            <span
+:class="[
               post.performance === 'excellent' ? 'bg-green-100 text-green-800' :
               post.performance === 'good' ? 'bg-blue-100 text-blue-800' :
               post.performance === 'fair' ? 'bg-yellow-100 text-yellow-800' :
@@ -289,7 +290,8 @@
                 <span class="text-sm text-gray-900">{{ competitor.postingFrequency }}/هفته</span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span :class="[
+                <span
+:class="[
                   competitor.performance === 'excellent' ? 'bg-green-100 text-green-800' :
                   competitor.performance === 'good' ? 'bg-blue-100 text-blue-800' :
                   competitor.performance === 'fair' ? 'bg-yellow-100 text-yellow-800' :
@@ -300,7 +302,7 @@
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <button @click="analyzeCompetitor(competitor.id)" class="text-sm text-blue-600 hover:text-blue-800">
+                <button class="text-sm text-blue-600 hover:text-blue-800" @click="analyzeCompetitor(competitor.id)">
                   تحلیل
                 </button>
               </td>

@@ -18,8 +18,8 @@
           <option value="year">سال جاری</option>
         </select>
         <button 
-          @click="exportReport"
           class="px-3 py-1 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          @click="exportReport"
         >
           خروجی
         </button>
@@ -235,13 +235,13 @@ const performance = ref({
 
 // Methods
 const exportReport = () => {
-  console.log('Exporting analytics report for period:', selectedPeriod.value)
+  // console.log('Exporting analytics report for period:', selectedPeriod.value)
   // Implementation for exporting report
 }
 
 // Watch for period changes
 watch(selectedPeriod, (newPeriod) => {
-  console.log('Period changed to:', newPeriod)
+  // console.log('Period changed to:', newPeriod)
   // Update metrics based on selected period
   updateMetrics(newPeriod)
 })

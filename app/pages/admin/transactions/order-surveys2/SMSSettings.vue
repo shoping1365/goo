@@ -8,9 +8,9 @@
       </div>
       <div class="flex space-x-3 space-x-reverse">
         <button 
-          @click="testAllConnections"
           :disabled="testing"
           class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm flex items-center space-x-2 space-x-reverse"
+          @click="testAllConnections"
         >
           <svg v-if="testing" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -19,8 +19,8 @@
           <span>{{ testing ? 'در حال تست اتصالات...' : 'تست همه اتصالات' }}</span>
         </button>
         <button 
-          @click="addGateway"
           class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm flex items-center space-x-2 space-x-reverse"
+          @click="addGateway"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -46,8 +46,8 @@
             </span>
           </div>
           <div class="flex items-center space-x-2 space-x-reverse">
-            <button @click="testGateway(index)" class="text-blue-600 hover:text-blue-800 text-sm">تست</button>
-            <button @click="removeGateway(index)" class="text-red-600 hover:text-red-800 text-sm">حذف</button>
+            <button class="text-blue-600 hover:text-blue-800 text-sm" @click="testGateway(index)">تست</button>
+            <button class="text-red-600 hover:text-red-800 text-sm" @click="removeGateway(index)">حذف</button>
           </div>
         </div>
 
@@ -219,9 +219,9 @@
     <!-- Save Button -->
     <div class="flex items-center justify-end">
       <button 
-        @click="saveSettings"
         :disabled="saving"
         class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm flex items-center space-x-2 space-x-reverse"
+        @click="saveSettings"
       >
         <svg v-if="saving" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -234,7 +234,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 interface SMSGateway {
   name: string
@@ -341,7 +341,7 @@ const removeGateway = (index: number) => {
 
 const testGateway = async (index: number) => {
   const gateway = gateways.value[index]
-  console.log(`Testing gateway: ${gateway.name}`)
+  // console.log(`Testing gateway: ${gateway.name}`)
   // اینجا باید تست اتصال واقعی انجام شود
   await new Promise(resolve => setTimeout(resolve, 1000))
   alert(`تست اتصال ${gateway.name} انجام شد!`)
@@ -353,12 +353,12 @@ const testAllConnections = async () => {
     // تست همه درگاه‌ها
     for (const gateway of gateways.value) {
       if (gateway.status === 'active') {
-        console.log(`Testing: ${gateway.name}`)
+        // console.log(`Testing: ${gateway.name}`)
         await new Promise(resolve => setTimeout(resolve, 500))
       }
     }
     alert('تست همه اتصالات با موفقیت انجام شد!')
-  } catch (error) {
+  } catch {
     alert('خطا در تست اتصالات!')
   } finally {
     testing.value = false

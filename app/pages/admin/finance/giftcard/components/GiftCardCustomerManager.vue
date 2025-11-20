@@ -44,7 +44,8 @@
               <span>+{{ customerStats.purchaseGrowth }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300"
+              <div
+class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300"
                    :style="{ width: customerStats.purchaseGrowth + '%' }"></div>
             </div>
           </div>
@@ -67,7 +68,8 @@
           </div>
           
           <div class="space-y-3">
-            <div v-for="(customer, index) in topCustomers" :key="customer.id" 
+            <div
+v-for="(customer, index) in topCustomers" :key="customer.id" 
                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
               <div class="flex items-center space-x-3 space-x-reverse">
                 <div class="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
@@ -152,7 +154,8 @@
           </div>
           
           <div class="space-y-3">
-            <div v-for="region in topRegions" :key="region.name" 
+            <div
+v-for="region in topRegions" :key="region.name" 
                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
               <div class="flex items-center space-x-3 space-x-reverse">
                 <div class="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs">
@@ -192,10 +195,12 @@
           </div>
           
           <div class="space-y-3">
-            <div v-for="category in popularCategories" :key="category.name" 
+            <div
+v-for="category in popularCategories" :key="category.name" 
                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
               <div class="flex items-center space-x-3 space-x-reverse">
-                <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm"
+                <div
+class="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm"
                      :class="category.color">
                   {{ category.icon }}
                 </div>
@@ -226,10 +231,12 @@
           </div>
           
           <div class="space-y-3">
-            <div v-for="occasion in popularOccasions" :key="occasion.name" 
+            <div
+v-for="occasion in popularOccasions" :key="occasion.name" 
                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
               <div class="flex items-center space-x-3 space-x-reverse">
-                <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm"
+                <div
+class="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm"
                      :class="occasion.color">
                   {{ occasion.icon }}
                 </div>
@@ -309,10 +316,12 @@
           </div>
           
           <div class="space-y-3">
-            <div v-for="ageGroup in ageGroups" :key="ageGroup.range" 
+            <div
+v-for="ageGroup in ageGroups" :key="ageGroup.range" 
                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
               <div class="flex items-center space-x-3 space-x-reverse">
-                <div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs"
+                <div
+class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs"
                      :class="ageGroup.color">
                   {{ ageGroup.percentage }}%
                 </div>
@@ -366,9 +375,11 @@
           <h4 class="text-sm font-medium text-gray-900 mb-3">روند مشتریان (6 ماه گذشته)</h4>
           <div class="flex items-end space-x-2 space-x-reverse h-32 overflow-x-auto">
             <div v-for="(month, index) in customerTrend" :key="index" class="flex-shrink-0 flex flex-col items-center min-w-16">
-              <div class="w-full bg-gray-200 rounded-t relative"
+              <div
+class="w-full bg-gray-200 rounded-t relative"
                    :style="{ height: getChartHeight(month.customers) + 'px' }">
-                <div class="w-full bg-gradient-to-t from-blue-500 to-purple-500 rounded-t transition-all duration-300 absolute bottom-0"
+                <div
+class="w-full bg-gradient-to-t from-blue-500 to-purple-500 rounded-t transition-all duration-300 absolute bottom-0"
                      :style="{ height: getChartHeight(month.customers) + 'px' }"></div>
               </div>
               <span class="text-xs text-gray-500 mt-1 text-center">{{ month.label }}</span>

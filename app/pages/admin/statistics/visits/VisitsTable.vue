@@ -63,7 +63,8 @@
               </div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+              <span
+class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                     :class="getDeviceBadgeClass(visit.device)">
                 {{ visit.device }}
               </span>
@@ -77,7 +78,8 @@
               </a>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+              <span
+class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                     :class="getReferrerBadgeClass(visit.referrer)">
                 {{ visit.referrer }}
               </span>
@@ -121,7 +123,7 @@ interface Visit {
   duration: string
 }
 
-const props = defineProps<{
+defineProps<{
   visits: Visit[]
 }>()
 

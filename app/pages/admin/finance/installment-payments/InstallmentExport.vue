@@ -2,7 +2,7 @@
   <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-6">
       <h3 class="text-lg font-semibold text-gray-900">صادرات داده‌ها</h3>
-      <button @click="exportAll" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+      <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700" @click="exportAll">
         صادرات همه
       </button>
     </div>
@@ -18,13 +18,13 @@
         </div>
         <p class="text-sm text-gray-600 mb-4">صادرات داده‌ها در فرمت Excel برای تحلیل پیشرفته</p>
         <div class="space-y-2">
-          <button @click="exportExcel('all')" class="w-full text-left px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+          <button class="w-full text-left px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50" @click="exportExcel('all')">
             همه درخواست‌ها
           </button>
-          <button @click="exportExcel('approved')" class="w-full text-left px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+          <button class="w-full text-left px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50" @click="exportExcel('approved')">
             فقط تایید شده‌ها
           </button>
-          <button @click="exportExcel('pending')" class="w-full text-left px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+          <button class="w-full text-left px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50" @click="exportExcel('pending')">
             در انتظار بررسی
           </button>
         </div>
@@ -39,13 +39,13 @@
         </div>
         <p class="text-sm text-gray-600 mb-4">گزارش‌های قابل چاپ و ارسال</p>
         <div class="space-y-2">
-          <button @click="exportPDF('summary')" class="w-full text-left px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+          <button class="w-full text-left px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50" @click="exportPDF('summary')">
             گزارش خلاصه
           </button>
-          <button @click="exportPDF('detailed')" class="w-full text-left px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+          <button class="w-full text-left px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50" @click="exportPDF('detailed')">
             گزارش تفصیلی
           </button>
-          <button @click="exportPDF('analytics')" class="w-full text-left px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+          <button class="w-full text-left px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50" @click="exportPDF('analytics')">
             گزارش تحلیلی
           </button>
         </div>
@@ -60,13 +60,13 @@
         </div>
         <p class="text-sm text-gray-600 mb-4">فرمت ساده برای پردازش داده‌ها</p>
         <div class="space-y-2">
-          <button @click="exportCSV('customers')" class="w-full text-left px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+          <button class="w-full text-left px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50" @click="exportCSV('customers')">
             اطلاعات مشتریان
           </button>
-          <button @click="exportCSV('transactions')" class="w-full text-left px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+          <button class="w-full text-left px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50" @click="exportCSV('transactions')">
             تراکنش‌ها
           </button>
-          <button @click="exportCSV('products')" class="w-full text-left px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+          <button class="w-full text-left px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50" @click="exportCSV('products')">
             محصولات
           </button>
         </div>
@@ -144,7 +144,7 @@
             <span class="px-2 py-1 text-xs rounded-full" :class="getStatusClass(export_item.status)">
               {{ getStatusLabel(export_item.status) }}
             </span>
-            <button v-if="export_item.status === 'completed'" @click="downloadExport(export_item)" class="text-blue-600 hover:text-blue-800">
+            <button v-if="export_item.status === 'completed'" class="text-blue-600 hover:text-blue-800" @click="downloadExport(export_item)">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
@@ -183,7 +183,7 @@
         </div>
         
         <div class="mt-4">
-          <button @click="saveScheduleSettings" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+          <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700" @click="saveScheduleSettings">
             ذخیره تنظیمات
           </button>
         </div>

@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed, type Ref } from 'vue'
 
 export interface MobileImageConfig {
      banners: Array<{
@@ -23,7 +23,7 @@ export interface MobileImageConfig {
      margin_right?: number
 }
 
-export const useMobileImageHandler = (config: any) => {
+export const useMobileImageHandler = (config: Ref<MobileImageConfig>) => {
      // تشخیص نوع دستگاه و دریافت URL مناسب
      const getDeviceSpecificImageUrl = () => {
           if (!config.value.banners || !config.value.banners.length) {
@@ -88,7 +88,7 @@ export const useMobileImageHandler = (config: any) => {
 
      // استایل container با تنظیمات responsive
      const containerStyle = computed(() => {
-          const styles: any = {
+          const styles: Record<string, string | number> = {
                height: getResponsiveHeight(),
                '--desktop-height': config.value.height ? `${config.value.height}px` : '200px',
                '--mobile-height': config.value.mobile_height ? `${config.value.mobile_height}px` : '150px'

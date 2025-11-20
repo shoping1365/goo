@@ -8,8 +8,8 @@
           <p class="text-sm text-gray-600 mt-1">مدیریت پیام‌های پیش‌فرض و سفارشی برای گیفت کارت‌ها</p>
         </div>
         <button 
-          @click="showCreateModal = true"
           class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          @click="showCreateModal = true"
         >
           افزودن پیام جدید
         </button>
@@ -20,42 +20,42 @@
     <div class="border-b border-gray-200">
       <nav class="-mb-px flex space-x-8 space-x-reverse px-6">
         <button
-          @click="activeTab = 'default'"
           :class="{
             'border-blue-500 text-blue-600': activeTab === 'default',
             'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'default'
           }"
           class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm"
+          @click="activeTab = 'default'"
         >
           پیام‌های پیش‌فرض
         </button>
         <button
-          @click="activeTab = 'custom'"
           :class="{
             'border-blue-500 text-blue-600': activeTab === 'custom',
             'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'custom'
           }"
           class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm"
+          @click="activeTab = 'custom'"
         >
           پیام‌های سفارشی
         </button>
         <button
-          @click="activeTab = 'templates'"
           :class="{
             'border-blue-500 text-blue-600': activeTab === 'templates',
             'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'templates'
           }"
           class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm"
+          @click="activeTab = 'templates'"
         >
           قالب‌های پیام
         </button>
         <button
-          @click="activeTab = 'settings'"
           :class="{
             'border-blue-500 text-blue-600': activeTab === 'settings',
             'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'settings'
           }"
           class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm"
+          @click="activeTab = 'settings'"
         >
           تنظیمات
         </button>
@@ -83,19 +83,19 @@
               </div>
               <div class="flex items-center space-x-1 space-x-reverse">
                 <button 
-                  @click="editMessage(message)"
                   class="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
                   title="ویرایش"
+                  @click="editMessage(message)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                   </svg>
                 </button>
                 <button 
-                  @click="toggleMessageStatus(message)"
                   :class="message.isActive ? 'text-yellow-600 hover:text-yellow-900' : 'text-green-600 hover:text-green-900'"
                   class="p-1 rounded hover:bg-gray-50"
                   :title="message.isActive ? 'غیرفعال کردن' : 'فعال کردن'"
+                  @click="toggleMessageStatus(message)"
                 >
                   <svg v-if="message.isActive" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728" />
@@ -167,28 +167,28 @@
               </div>
               <div class="flex items-center space-x-1 space-x-reverse">
                 <button 
-                  @click="editMessage(message)"
                   class="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
                   title="ویرایش"
+                  @click="editMessage(message)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                   </svg>
                 </button>
                 <button 
-                  @click="approveMessage(message)"
                   v-if="message.status === 'pending'"
                   class="text-green-600 hover:text-green-900 p-1 rounded hover:bg-green-50"
                   title="تأیید"
+                  @click="approveMessage(message)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                   </svg>
                 </button>
                 <button 
-                  @click="deleteMessage(message)"
                   class="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50"
                   title="حذف"
+                  @click="deleteMessage(message)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -223,8 +223,8 @@
             <div class="flex justify-between items-start mb-3">
               <h4 class="font-medium text-gray-900">{{ template.name }}</h4>
               <button 
-                @click="useTemplate(template)"
                 class="text-blue-600 hover:text-blue-900 text-sm font-medium"
+                @click="useTemplate(template)"
               >
                 استفاده
               </button>
@@ -279,27 +279,27 @@
             <div class="space-y-3">
               <div class="flex items-center">
                 <input 
-                  type="checkbox" 
-                  v-model="settings.enableContentFilter" 
                   id="enableContentFilter" 
+                  v-model="settings.enableContentFilter" 
+                  type="checkbox" 
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label for="enableContentFilter" class="mr-2 block text-sm text-gray-900">فعال‌سازی فیلتر محتوای نامناسب</label>
               </div>
               <div class="flex items-center">
                 <input 
-                  type="checkbox" 
-                  v-model="settings.requireApproval" 
                   id="requireApproval" 
+                  v-model="settings.requireApproval" 
+                  type="checkbox" 
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label for="requireApproval" class="mr-2 block text-sm text-gray-900">نیاز به تأیید پیام‌های سفارشی</label>
               </div>
               <div class="flex items-center">
                 <input 
-                  type="checkbox" 
-                  v-model="settings.autoTranslate" 
                   id="autoTranslate" 
+                  v-model="settings.autoTranslate" 
+                  type="checkbox" 
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label for="autoTranslate" class="mr-2 block text-sm text-gray-900">ترجمه خودکار پیام‌ها</label>
@@ -322,14 +322,14 @@
               </div>
               <div class="flex items-center space-x-4 space-x-reverse">
                 <button 
-                  @click="addBannedWord"
                   class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700"
+                  @click="addBannedWord"
                 >
                   افزودن کلمه
                 </button>
                 <button 
-                  @click="clearBannedWords"
                   class="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700"
+                  @click="clearBannedWords"
                 >
                   پاک کردن همه
                 </button>
@@ -341,8 +341,8 @@
         <!-- دکمه ذخیره تنظیمات -->
         <div class="flex justify-end">
           <button 
-            @click="saveSettings"
             class="px-6 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+            @click="saveSettings"
           >
             ذخیره تنظیمات
           </button>

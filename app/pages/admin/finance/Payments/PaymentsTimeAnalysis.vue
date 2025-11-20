@@ -35,13 +35,15 @@
             style="width: calc(100% / 7 - 8px)"
           >
             <div class="text-xs text-gray-500 mb-1">{{ day.name }}</div>
-            <div class="w-full bg-blue-500 rounded-t mb-1 relative group cursor-pointer"
+            <div
+class="w-full bg-blue-500 rounded-t mb-1 relative group cursor-pointer"
                  :style="{ height: (day.amount / maxAmount * 100) + '%', minHeight: '10px' }">
               <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                 {{ formatPrice(day.amount) }}
               </div>
             </div>
-            <div class="w-full bg-green-500 rounded-t relative group cursor-pointer"
+            <div
+class="w-full bg-green-500 rounded-t relative group cursor-pointer"
                  :style="{ height: (day.count / maxCount * 100) + '%', minHeight: '10px' }">
               <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                 {{ day.count }} تراکنش

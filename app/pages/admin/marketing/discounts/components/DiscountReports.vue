@@ -8,11 +8,11 @@
           <p class="text-gray-600 mt-1">آمار و گزارش‌های مربوط به کوپن‌ها و کمپین‌ها</p>
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
-          <button @click="exportReport" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+          <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors" @click="exportReport">
             <span class="i-heroicons-arrow-down-tray ml-2"></span>
             خروجی اکسل
           </button>
-          <button @click="refreshData" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="refreshData">
             <span class="i-heroicons-arrow-path ml-2"></span>
             بروزرسانی
           </button>
@@ -25,7 +25,7 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">بازه زمانی</label>
-          <select v-model="filters.period" @change="applyFilters" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <select v-model="filters.period" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" @change="applyFilters">
             <option value="today">امروز</option>
             <option value="week">این هفته</option>
             <option value="month">این ماه</option>
@@ -36,15 +36,15 @@
         </div>
         <div v-if="filters.period === 'custom'">
           <label class="block text-sm font-medium text-gray-700 mb-2">از تاریخ</label>
-          <input v-model="filters.startDate" type="date" @change="applyFilters" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <input v-model="filters.startDate" type="date" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" @change="applyFilters">
         </div>
         <div v-if="filters.period === 'custom'">
           <label class="block text-sm font-medium text-gray-700 mb-2">تا تاریخ</label>
-          <input v-model="filters.endDate" type="date" @change="applyFilters" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <input v-model="filters.endDate" type="date" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" @change="applyFilters">
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">نوع گزارش</label>
-          <select v-model="filters.reportType" @change="applyFilters" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <select v-model="filters.reportType" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" @change="applyFilters">
             <option value="overview">نمای کلی</option>
             <option value="coupons">کوپن‌ها</option>
             <option value="campaigns">کمپین‌ها</option>

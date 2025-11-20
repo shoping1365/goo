@@ -37,7 +37,7 @@
             >
               {{ salePriceWarning }}
             </span>
-            <input type="number" v-model="store.pricingForm.price" :disabled="isSaleActive" class="flex-1 border-2 border-green-200 rounded-lg px-4 py-3 text-gray-800 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 disabled:bg-gray-100 disabled:text-gray-500" min="0" placeholder="0" @input="updatePricingField('price', $event)" />
+            <input v-model="store.pricingForm.price" type="number" :disabled="isSaleActive" class="flex-1 border-2 border-green-200 rounded-lg px-4 py-3 text-gray-800 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 disabled:bg-gray-100 disabled:text-gray-500" min="0" placeholder="0" @input="updatePricingField('price', $event)" />
             <span class="text-sm font-medium text-green-600 bg-green-100 px-3 py-2 rounded-lg">تومان</span>
           </div>
         </div>
@@ -57,7 +57,7 @@
             >
               {{ formattedOldPrice }}
             </span>
-            <input type="number" v-model="store.pricingForm.old_price" :disabled="isSaleActive" class="flex-1 border-2 border-orange-200 rounded-lg px-4 py-3 text-gray-800 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-300 disabled:bg-gray-100 disabled:text-gray-500" min="0" placeholder="0" @input="updatePricingField('old_price', $event)" />
+            <input v-model="store.pricingForm.old_price" type="number" :disabled="isSaleActive" class="flex-1 border-2 border-orange-200 rounded-lg px-4 py-3 text-gray-800 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-300 disabled:bg-gray-100 disabled:text-gray-500" min="0" placeholder="0" @input="updatePricingField('old_price', $event)" />
             <span class="text-sm font-medium text-orange-600 bg-orange-100 px-3 py-2 rounded-lg">تومان</span>
           </div>
         </div>
@@ -77,7 +77,7 @@
             >
               {{ formattedCost }}
             </span>
-            <input type="number" v-model="store.pricingForm.cost" class="flex-1 border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300" min="0" placeholder="0" @input="updatePricingField('cost', $event)" />
+            <input v-model="store.pricingForm.cost" type="number" class="flex-1 border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300" min="0" placeholder="0" @input="updatePricingField('cost', $event)" />
             <span class="text-sm font-medium text-blue-600 bg-blue-100 px-3 py-2 rounded-lg">تومان</span>
           </div>
         </div>
@@ -107,7 +107,7 @@
               <label class="text-sm font-bold text-red-800">درصد تخفیف</label>
             </div>
             <div class="bg-white p-6 rounded-lg border border-red-200">
-              <input type="number" v-model.number="store.pricingForm.discount_percent" class="w-full text-xl font-bold text-red-600 bg-transparent border-0 outline-none text-center" min="0" max="100" step="0.1" placeholder="0" @input="updatePricingField('discount_percent', $event)" />
+              <input v-model.number="store.pricingForm.discount_percent" type="number" class="w-full text-xl font-bold text-red-600 bg-transparent border-0 outline-none text-center" min="0" max="100" step="0.1" placeholder="0" @input="updatePricingField('discount_percent', $event)" />
             </div>
           </div>
           <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-xl p-5 shadow-md border border-red-200">
@@ -118,7 +118,7 @@
               <label class="text-sm font-bold text-red-800">مبلغ تخفیف</label>
             </div>
             <div class="bg-white p-6 rounded-lg border border-red-200">
-              <input type="number" v-model="store.pricingForm.discount_amount" class="w-full text-xl font-bold text-red-600 bg-transparent border-0 outline-none text-center" min="0" placeholder="0" @input="updatePricingField('discount_amount', $event)" />
+              <input v-model="store.pricingForm.discount_amount" type="number" class="w-full text-xl font-bold text-red-600 bg-transparent border-0 outline-none text-center" min="0" placeholder="0" @input="updatePricingField('discount_amount', $event)" />
             </div>
           </div>
           <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5 shadow-md border border-blue-200">
@@ -226,8 +226,8 @@
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-all duration-300 cursor-pointer">
               <input 
-                type="checkbox" 
                 v-model="store.pricingForm.disableBuyButton" 
+                type="checkbox" 
                 :disabled="store.pricingForm.callForPrice"
                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2" 
               />
@@ -239,8 +239,8 @@
             </label>
             <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-all duration-300 cursor-pointer">
               <input 
-                type="checkbox" 
                 v-model="store.pricingForm.callForPrice" 
+                type="checkbox" 
                 :disabled="store.pricingForm.disableBuyButton"
                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2" 
               />
@@ -308,11 +308,11 @@
           <div v-if="store.pricingForm.sale_start_jalali || store.pricingForm.sale_end_jalali" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="text-xs font-semibold text-gray-700">قیمت فروش (مبنای مقایسه)</label>
-              <input type="number" v-model.number="store.pricingForm.price" :disabled="isSaleActive" min="0" class="w-full border-2 border-green-200 rounded-lg px-3 py-2 disabled:bg-gray-100" />
+              <input v-model.number="store.pricingForm.price" type="number" :disabled="isSaleActive" min="0" class="w-full border-2 border-green-200 rounded-lg px-3 py-2 disabled:bg-gray-100" />
             </div>
             <div>
               <label class="text-xs font-semibold text-gray-700">قیمت فروش ویژه</label>
-              <input type="number" v-model.number="store.pricingForm.sale_price" min="0" class="w-full border-2 border-purple-200 rounded-lg px-3 py-2" />
+              <input v-model.number="store.pricingForm.sale_price" type="number" min="0" class="w-full border-2 border-purple-200 rounded-lg px-3 py-2" />
             </div>
           </div>
           <div v-if="store.pricingForm.sale_start_jalali || store.pricingForm.sale_end_jalali" class="mt-2">
@@ -322,9 +322,10 @@
           <div class="mt-6 border-t pt-4">
             <div class="flex items-center justify-between mb-3">
               <h5 class="text-sm font-bold text-purple-800">طرح‌های فروش ویژه (قیمت/تعداد)</h5>
-              <button type="button"
-                @click="addSpecialOffer()"
-                class="px-3 py-1 text-xs rounded bg-purple-600 text-white hover:bg-purple-700">
+              <button
+type="button"
+                class="px-3 py-1 text-xs rounded bg-purple-600 text-white hover:bg-purple-700"
+                @click="addSpecialOffer()">
                 + افزودن طرح
               </button>
             </div>
@@ -332,18 +333,18 @@
             <div v-for="(offer, idx) in (specialOffers?.value || [])" :key="idx" class="grid grid-cols-1 md:grid-cols-6 gap-3 items-end mb-3">
               <div class="md:col-span-2">
                 <label class="text-xs font-semibold text-gray-700">قیمت فروش</label>
-                <input type="number" v-model.number="offer.base_price" min="0" class="w-full border-2 border-green-200 rounded-lg px-3 py-2" placeholder="مثال: 900000" />
+                <input v-model.number="offer.base_price" type="number" min="0" class="w-full border-2 border-green-200 rounded-lg px-3 py-2" placeholder="مثال: 900000" />
               </div>
               <div class="md:col-span-2">
                 <label class="text-xs font-semibold text-gray-700">قیمت فروش ویژه</label>
-                <input type="number" v-model.number="offer.price" min="0" class="w-full border-2 border-purple-200 rounded-lg px-3 py-2" placeholder="مثال: 800000" />
+                <input v-model.number="offer.price" type="number" min="0" class="w-full border-2 border-purple-200 rounded-lg px-3 py-2" placeholder="مثال: 800000" />
               </div>
               <div class="md:col-span-1">
                 <label class="text-xs font-semibold text-gray-700">تعداد با این قیمت</label>
-                <input type="number" v-model.number="offer.quantity" min="1" class="w-full border-2 border-purple-200 rounded-lg px-3 py-2" placeholder="مثال: 10" />
+                <input v-model.number="offer.quantity" type="number" min="1" class="w-full border-2 border-purple-200 rounded-lg px-3 py-2" placeholder="مثال: 10" />
               </div>
               <div class="md:col-span-1 flex gap-2">
-                <button type="button" @click="removeSpecialOffer(idx)" class="px-3 py-2 text-xs rounded bg-red-100 text-red-700 hover:bg-red-200">حذف</button>
+                <button type="button" class="px-3 py-2 text-xs rounded bg-red-100 text-red-700 hover:bg-red-200" @click="removeSpecialOffer(idx)">حذف</button>
               </div>
             </div>
             <p class="text-[11px] text-gray-500 mt-1">منطق: ابتدا از قیمت‌های ویژه استفاده می‌شود (به ترتیب فهرست). با اتمام تعداد هر پله یا پایان بازه زمانی، قیمت به حالت بعدی/قیمت اصلی برمی‌گردد.</p>
@@ -687,7 +688,8 @@
 
 
 <script setup>
-import { reactive, watch, computed, ref } from 'vue'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { computed, ref, watch } from 'vue'
 import { useProductCreateStore } from '~/stores/productCreate'
 
 // Props for edit mode
@@ -715,18 +717,18 @@ const props = defineProps({
 const store = useProductCreateStore()
 const specialOffers = store.specialOffers
 // پیش‌پر کردن تاریخ با امروز در صورت خالی بودن ورودی هنگام فوکوس
-const prefillIfEmpty = (which) => {
-  const now = new Date()
-  const dateFmt = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year: 'numeric', month: '2-digit', day: '2-digit' })
-  const timeFmt = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { hour: '2-digit', minute: '2-digit' })
-  const formatted = `${dateFmt.format(now)} ${timeFmt.format(now)}`
-  if (which === 'start' && !store.pricingForm.sale_start_jalali) {
-    store.pricingForm.sale_start_jalali = formatted
-  }
-  if (which === 'end' && !store.pricingForm.sale_end_jalali) {
-    store.pricingForm.sale_end_jalali = formatted
-  }
-}
+// const prefillIfEmpty = (which) => {
+//   const now = new Date()
+//   const dateFmt = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year: 'numeric', month: '2-digit', day: '2-digit' })
+//   const timeFmt = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { hour: '2-digit', minute: '2-digit' })
+//   const formatted = `${dateFmt.format(now)} ${timeFmt.format(now)}`
+//   if (which === 'start' && !store.pricingForm.sale_start_jalali) {
+//     store.pricingForm.sale_start_jalali = formatted
+//   }
+//   if (which === 'end' && !store.pricingForm.sale_end_jalali) {
+//     store.pricingForm.sale_end_jalali = formatted
+//   }
+// }
 
 // افزودن/حذف طرح فروش ویژه
 const addSpecialOffer = () => {
@@ -966,17 +968,17 @@ const salePriceWarning = computed(() => {
 })
 
 // Mutual exclusion handlers for disableBuyButton and callForPrice
-const onDisableBuyButtonChange = () => {
-  if (store.pricingForm.disableBuyButton) {
-    store.pricingForm.callForPrice = false
-  }
-}
+// const onDisableBuyButtonChange = () => {
+//   if (store.pricingForm.disableBuyButton) {
+//     store.pricingForm.callForPrice = false
+//   }
+// }
 
-const onCallForPriceChange = () => {
-  if (store.pricingForm.callForPrice) {
-    store.pricingForm.disableBuyButton = false
-  }
-}
+// const onCallForPriceChange = () => {
+//   if (store.pricingForm.callForPrice) {
+//     store.pricingForm.disableBuyButton = false
+//   }
+// }
 
 // Watch for mutual exclusion
 watch(() => store.pricingForm.disableBuyButton, (val) => {

@@ -1,7 +1,7 @@
 import { defineNuxtRouteMiddleware } from 'nuxt/app'
 
 // Global middleware to handle chunk loading errors
-export default defineNuxtRouteMiddleware((to, from) => {
+export default defineNuxtRouteMiddleware((_to, _from) => {
      // Only run on client side
      if (import.meta.client) {
           // Listen for chunk loading errors

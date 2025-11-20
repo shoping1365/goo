@@ -128,9 +128,9 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex flex-col items-center space-y-1">
                   <button 
-                    @click="viewDetails(login.id)" 
-                    class="text-blue-600 hover:text-blue-900 transition-colors"
+                    class="text-blue-600 hover:text-blue-900 transition-colors" 
                     title="مشاهده جزئیات"
+                    @click="viewDetails(login.id)"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -139,9 +139,9 @@
                   </button>
                   <button 
                     v-if="(login.status === 'failed' || login.status === 'suspicious') && !login.isBlocked" 
-                    @click="blockIP(login)" 
-                    class="text-red-600 hover:text-red-900 transition-colors"
+                    class="text-red-600 hover:text-red-900 transition-colors" 
                     title="مسدود کردن IP"
+                    @click="blockIP(login)"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
@@ -149,9 +149,9 @@
                   </button>
                   <button 
                     v-if="login.isBlocked" 
-                    @click="unblockIP(login)" 
-                    class="text-green-600 hover:text-green-900 transition-colors"
+                    class="text-green-600 hover:text-green-900 transition-colors" 
                     title="آزاد کردن IP"
+                    @click="unblockIP(login)"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"></path>
@@ -237,7 +237,7 @@ type LoginStats = {
   onlineUsers: number
 }
 
-const { data: statsData, refresh: refreshStats } = useFetch<LoginStats>('/api/admin/login-stats', {
+const { data: statsData, refresh: _refreshStats } = useFetch<LoginStats>('/api/admin/login-stats', {
   key: 'admin-login-stats',
   server: true,
   default: () => ({ successfulLogins: 0, failedLogins: 0, suspiciousActivity: 0, onlineUsers: 0 }),
@@ -362,7 +362,7 @@ function getLoginRowClass(login: LoginRow) {
   return ''
 }
 
-async function applyFilters() {
+async function _applyFilters() {
   currentPage.value = 1
   await fetchHistory()
 }

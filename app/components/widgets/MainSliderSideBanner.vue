@@ -45,17 +45,17 @@
             <!-- Navigation Buttons Desktop -->
             <button
               v-if="slides.length > 1 && showNavigation"
-              @click="prevSlide"
               class="navigation-btn navigation-btn-prev"
               aria-label="Previous slide"
+              @click="prevSlide"
             >
               ←
             </button>
             <button
               v-if="slides.length > 1 && showNavigation"
-              @click="nextSlide"
               class="navigation-btn navigation-btn-next"
               aria-label="Next slide"
+              @click="nextSlide"
             >
               →
             </button>
@@ -65,10 +65,10 @@
               <button
                 v-for="(slide, index) in slides"
                 :key="`dot-${index}`"
-                @click="goToSlide(index)"
                 class="dot"
                 :class="currentSlideIndex === index ? 'active' : 'inactive'"
                 :aria-label="`Go to slide ${index + 1}`"
+                @click="goToSlide(index)"
               ></button>
             </div>
           </div>
@@ -77,9 +77,9 @@
         <!-- بنرهای دسکتاپ -->
         <div v-if="sideBanners.length > 0" class="banner-container flex flex-col gap-3 lg:gap-6" :style="bannerStyle">
           <component
+            :is="banner.link ? 'a' : 'div'"
             v-for="(banner, index) in sideBanners"
             :key="banner.id || index"
-            :is="banner.link ? 'a' : 'div'"
             :href="banner.link"
             :target="banner.link && banner.openInNewTab ? '_blank' : undefined"
             :rel="banner.link && banner.openInNewTab ? 'noopener noreferrer' : undefined"
@@ -100,7 +100,7 @@
       <div class="md:hidden flex flex-col gap-2" :class="currentMobileBannerPosition === 'top' ? 'flex-col-reverse' : ''">
         
         <!-- اسلایدر اصلی موبایل -->
-        <div v-if="mobileSlides.length > 0" class="slider-container relative w-full" ref="mobileSliderWrapperRef">
+        <div v-if="mobileSlides.length > 0" ref="mobileSliderWrapperRef" class="slider-container relative w-full">
           <!-- Simple CSS Slider -->
           <div class="simple-slider">
             <div class="slides-container" :style="`height: ${currentHeight}px`">
@@ -140,17 +140,17 @@
             <!-- Navigation Buttons Mobile -->
             <button
               v-if="mobileSlides.length > 1 && showNavigation"
-              @click="prevSlide"
               class="navigation-btn navigation-btn-prev"
               aria-label="Previous slide"
+              @click="prevSlide"
             >
               ←
             </button>
             <button
               v-if="mobileSlides.length > 1 && showNavigation"
-              @click="nextSlide"
               class="navigation-btn navigation-btn-next"
               aria-label="Next slide"
+              @click="nextSlide"
             >
               →
             </button>
@@ -160,10 +160,10 @@
               <button
                 v-for="(slide, index) in mobileSlides"
                 :key="`mobile-dot-${index}`"
-                @click="goToSlide(index)"
                 class="dot"
                 :class="currentSlideIndex === index ? 'active' : 'inactive'"
                 :aria-label="`Go to slide ${index + 1}`"
+                @click="goToSlide(index)"
               ></button>
             </div>
           </div>
@@ -172,9 +172,9 @@
         <!-- بنرهای موبایل -->
         <div v-if="mobileBanners.length > 0" class="banner-container-mobile flex flex-col gap-2 sm:gap-3 w-full">
           <component
+            :is="banner.link ? 'a' : 'div'"
             v-for="(banner, index) in mobileBanners"
             :key="`mobile-${banner.id || index}`"
-            :is="banner.link ? 'a' : 'div'"
             :href="banner.link"
             :target="banner.link && banner.openInNewTab ? '_blank' : undefined"
             :rel="banner.link && banner.openInNewTab ? 'noopener noreferrer' : undefined"
@@ -196,10 +196,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
-import type { CSSProperties } from 'vue'
-import { Widget, SliderConfig } from '~/types/widget'
-import type { SlideItem, BannerItem } from '~/types/widget'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import type { SliderConfig, Widget } from '~/types/widget'
 
 interface Props {
   widget: Widget

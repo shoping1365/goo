@@ -33,7 +33,8 @@
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">نوع قالب</label>
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+              <span
+class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                 :class="isDefaultTemplate ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'"
               >
                 {{ isDefaultTemplate ? 'پیش‌فرض' : 'سفارشی' }}
@@ -47,8 +48,8 @@
             </div>
             <div class="pt-4">
               <button
-                @click="customizeActiveTemplate"
                 class="w-full px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                @click="customizeActiveTemplate"
               >
                 سفارشی‌سازی قالب فعال
               </button>
@@ -66,9 +67,9 @@
           <img :src="tpl.image" alt="قالب پیش‌فرض" class="w-32 h-20 object-cover rounded mb-2 border" />
           <div class="text-sm text-gray-700 mb-1">{{ tpl.name }}</div>
           <button
-            @click="selectTemplate(tpl)"
             :class="tpl.id === selectedTemplateId ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'"
             class="px-3 py-1 rounded text-xs font-medium mt-1"
+            @click="selectTemplate(tpl)"
           >
             {{ tpl.id === selectedTemplateId ? 'قالب فعال' : 'انتخاب قالب' }}
           </button>
@@ -80,13 +81,13 @@
           <img :src="tpl.image" alt="قالب سفارشی" class="w-32 h-20 object-cover rounded mb-2 border" />
           <div class="text-sm text-gray-700 mb-1">{{ tpl.name }}</div>
           <div class="flex gap-2">
-            <button @click="editTemplate(tpl)" class="text-blue-600 text-xs">ویرایش</button>
-            <button @click="deleteTemplate(tpl.id)" class="text-red-600 text-xs">حذف</button>
+            <button class="text-blue-600 text-xs" @click="editTemplate(tpl)">ویرایش</button>
+            <button class="text-red-600 text-xs" @click="deleteTemplate(tpl.id)">حذف</button>
           </div>
           <button
-            @click="selectTemplate(tpl)"
             :class="tpl.id === selectedTemplateId ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'"
             class="px-3 py-1 rounded text-xs font-medium mt-2"
+            @click="selectTemplate(tpl)"
           >
             {{ tpl.id === selectedTemplateId ? 'قالب فعال' : 'انتخاب قالب' }}
           </button>
@@ -103,20 +104,20 @@
     <!-- مودال افزودن قالب سفارشی -->
     <div v-if="showAddModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg px-4 py-4 w-full max-w-md relative">
-        <button @click="showAddModal = false" class="absolute top-2 left-2 text-gray-400 hover:text-gray-600">
+        <button class="absolute top-2 left-2 text-gray-400 hover:text-gray-600" @click="showAddModal = false">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
         <h4 class="text-md font-bold text-gray-800 mb-4">افزودن قالب سفارشی جدید</h4>
-        <form @submit.prevent="handleAddTemplate" class="space-y-4">
+        <form class="space-y-4" @submit.prevent="handleAddTemplate">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">نام قالب</label>
             <input v-model="newTemplate.name" type="text" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">آپلود تصویر قالب</label>
-            <input type="file" accept="image/*" @change="onImageChange" class="w-full" />
+            <input type="file" accept="image/*" class="w-full" @change="onImageChange" />
             <img v-if="newTemplate.image" :src="newTemplate.image" alt="پیش‌نمایش" class="w-32 h-20 object-cover rounded mt-2 border" />
           </div>
           <div class="flex justify-end">
@@ -128,7 +129,7 @@
     <!-- ویرایشگر طراحی ساده -->
     <div v-if="showEditor" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg px-4 py-4 w-full max-w-6xl relative max-h-[90vh] overflow-y-auto">
-        <button @click="showEditor = false" class="absolute top-2 left-2 text-gray-400 hover:text-gray-600">
+        <button class="absolute top-2 left-2 text-gray-400 hover:text-gray-600" @click="showEditor = false">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -137,25 +138,25 @@
         
         <!-- نوار ابزار -->
         <div class="flex gap-2 mb-4 pb-2 border-b">
-          <button @click="addNewLayer" class="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">
+          <button class="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700" @click="addNewLayer">
             افزودن لایه
           </button>
-          <button @click="duplicateLayer" class="px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700">
+          <button class="px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700" @click="duplicateLayer">
             تکثیر لایه
           </button>
-          <button @click="deleteLayer" class="px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700">
+          <button class="px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700" @click="deleteLayer">
             حذف لایه
           </button>
-          <button @click="undoAction" :disabled="!canUndo" class="px-3 py-1 bg-gray-600 text-white text-xs rounded hover:bg-gray-700 disabled:opacity-50">
+          <button :disabled="!canUndo" class="px-3 py-1 bg-gray-600 text-white text-xs rounded hover:bg-gray-700 disabled:opacity-50" @click="undoAction">
             بازگشت
           </button>
-          <button @click="redoAction" :disabled="!canRedo" class="px-3 py-1 bg-gray-600 text-white text-xs rounded hover:bg-gray-700 disabled:opacity-50">
+          <button :disabled="!canRedo" class="px-3 py-1 bg-gray-600 text-white text-xs rounded hover:bg-gray-700 disabled:opacity-50" @click="redoAction">
             تکرار
           </button>
-          <button @click="exportTemplate" class="px-3 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700">
+          <button class="px-3 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700" @click="exportTemplate">
             خروجی قالب
           </button>
-          <button @click="showTemplates" class="px-3 py-1 bg-orange-600 text-white text-xs rounded hover:bg-orange-700">
+          <button class="px-3 py-1 bg-orange-600 text-white text-xs rounded hover:bg-orange-700" @click="showTemplates">
             قالب‌های آماده
           </button>
         </div>
@@ -197,11 +198,11 @@
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">رنگ</label>
-                  <input type="color" v-model="currentLayer.color" class="w-full h-10 border border-gray-300 rounded-lg" />
+                  <input v-model="currentLayer.color" type="color" class="w-full h-10 border border-gray-300 rounded-lg" />
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">اندازه</label>
-                  <input type="range" v-model="currentLayer.fontSize" min="12" max="48" class="w-full" />
+                  <input v-model="currentLayer.fontSize" type="range" min="12" max="48" class="w-full" />
                   <span class="text-sm text-gray-600">{{ currentLayer.fontSize }}px</span>
                 </div>
                 <div>
@@ -215,7 +216,7 @@
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">چرخش</label>
-                  <input type="range" v-model="currentLayer.rotation" min="-180" max="180" class="w-full" />
+                  <input v-model="currentLayer.rotation" type="range" min="-180" max="180" class="w-full" />
                   <span class="text-sm text-gray-600">{{ currentLayer.rotation }}°</span>
                 </div>
                 
@@ -224,15 +225,15 @@
                   <label class="block text-sm font-medium text-gray-700 mb-2">افکت‌های متن</label>
                   <div class="space-y-2">
                     <div class="flex items-center">
-                      <input type="checkbox" v-model="currentLayer.effects.shadow" id="shadow" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
+                      <input id="shadow" v-model="currentLayer.effects.shadow" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
                       <label for="shadow" class="mr-2 block text-sm text-gray-900">سایه متن</label>
                     </div>
                     <div class="flex items-center">
-                      <input type="checkbox" v-model="currentLayer.effects.outline" id="outline" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
+                      <input id="outline" v-model="currentLayer.effects.outline" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
                       <label for="outline" class="mr-2 block text-sm text-gray-900">حاشیه متن</label>
                     </div>
                     <div class="flex items-center">
-                      <input type="checkbox" v-model="currentLayer.effects.gradient" id="gradient" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
+                      <input id="gradient" v-model="currentLayer.effects.gradient" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
                       <label for="gradient" class="mr-2 block text-sm text-gray-900">گرادیانت</label>
                     </div>
                   </div>
@@ -240,22 +241,22 @@
                 
                 <div v-if="currentLayer.effects.shadow">
                   <label class="block text-sm font-medium text-gray-700 mb-2">رنگ سایه</label>
-                  <input type="color" v-model="currentLayer.effects.shadowColor" class="w-full h-8 border border-gray-300 rounded-lg" />
+                  <input v-model="currentLayer.effects.shadowColor" type="color" class="w-full h-8 border border-gray-300 rounded-lg" />
                 </div>
                 <div v-if="currentLayer.effects.outline">
                   <label class="block text-sm font-medium text-gray-700 mb-2">رنگ حاشیه</label>
-                  <input type="color" v-model="currentLayer.effects.outlineColor" class="w-full h-8 border border-gray-300 rounded-lg" />
+                  <input v-model="currentLayer.effects.outlineColor" type="color" class="w-full h-8 border border-gray-300 rounded-lg" />
                 </div>
               </div>
               
               <div v-if="currentLayer.type === 'image'">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">آپلود تصویر</label>
-                  <input type="file" accept="image/*" @change="onLayerImageChange" class="w-full" />
+                  <input type="file" accept="image/*" class="w-full" @change="onLayerImageChange" />
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">شفافیت</label>
-                  <input type="range" v-model="currentLayer.opacity" min="0" max="100" class="w-full" />
+                  <input v-model="currentLayer.opacity" type="range" min="0" max="100" class="w-full" />
                   <span class="text-sm text-gray-600">{{ currentLayer.opacity }}%</span>
                 </div>
               </div>
@@ -265,11 +266,11 @@
                 <div class="grid grid-cols-2 gap-2 text-sm">
                   <div>
                     <label class="block text-xs text-gray-600">X</label>
-                    <input type="number" v-model="currentLayer.position.x" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" />
+                    <input v-model="currentLayer.position.x" type="number" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" />
                   </div>
                   <div>
                     <label class="block text-xs text-gray-600">Y</label>
-                    <input type="number" v-model="currentLayer.position.y" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" />
+                    <input v-model="currentLayer.position.y" type="number" class="w-full px-2 py-1 border border-gray-300 rounded text-xs" />
                   </div>
                 </div>
               </div>
@@ -279,11 +280,11 @@
                 <label class="block text-sm font-medium text-gray-700 mb-2">تنظیمات پیشرفته</label>
                 <div class="space-y-2">
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="currentLayer.locked" id="locked" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
+                    <input id="locked" v-model="currentLayer.locked" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
                     <label for="locked" class="mr-2 block text-sm text-gray-900">قفل لایه</label>
                   </div>
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="currentLayer.visible" id="visible" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
+                    <input id="visible" v-model="currentLayer.visible" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
                     <label for="visible" class="mr-2 block text-sm text-gray-900">نمایش لایه</label>
                   </div>
                 </div>
@@ -291,7 +292,7 @@
             </div>
             
             <div class="pt-4">
-              <button @click="saveEditor" class="w-full px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+              <button class="w-full px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2" @click="saveEditor">
                 ذخیره تغییرات
               </button>
             </div>
@@ -411,7 +412,7 @@
       <div class="bg-white rounded-lg px-4 py-4 w-full max-w-4xl max-h-[80vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-4">
           <h4 class="text-lg font-bold text-gray-800">قالب‌های آماده</h4>
-          <button @click="showTemplatesModal = false" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="showTemplatesModal = false">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>

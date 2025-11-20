@@ -5,8 +5,8 @@
       <div class="flex items-center justify-between mb-6">
         <h3 class="text-lg font-semibold text-gray-900">پیش‌نمایش تم گیفت کارت</h3>
         <button
-          @click="$emit('close')"
           class="text-gray-400 hover:text-gray-600"
+          @click="$emit('close')"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -219,26 +219,26 @@
             <h4 class="text-sm font-medium text-gray-700 mb-3">عملیات</h4>
             <div class="grid grid-cols-2 gap-3">
               <button
-                @click="downloadTheme"
                 class="px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                @click="downloadTheme"
               >
                 دانلود
               </button>
               <button
-                @click="shareTheme"
                 class="px-3 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                @click="shareTheme"
               >
                 اشتراک‌گذاری
               </button>
               <button
-                @click="printTheme"
                 class="px-3 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                @click="printTheme"
               >
                 چاپ
               </button>
               <button
-                @click="copyThemeCode"
                 class="px-3 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                @click="copyThemeCode"
               >
                 کپی کد
               </button>
@@ -250,8 +250,8 @@
       <!-- دکمه بستن -->
       <div class="flex justify-end mt-6">
         <button
-          @click="$emit('close')"
           class="px-4 py-2 bg-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+          @click="$emit('close')"
         >
           بستن
         </button>

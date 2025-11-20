@@ -1,4 +1,4 @@
-export type ErrorMapper = (payload?: any) => string
+export type ErrorMapper = (payload?: Record<string, unknown>) => string
 
 // Persian default messages for known API error codes. Can be enhanced with i18n later.
 export const errorMessages: Record<string, ErrorMapper> = {
@@ -148,9 +148,11 @@ export const errorMessages: Record<string, ErrorMapper> = {
   VARIANT_NOT_AVAILABLE: () => 'این تنوع محصول موجود نیست.'
 }
 
-export function resolveErrorMessage(payload: any): string {
+export function resolveErrorMessage(payload: unknown): string {
   if (!payload) return 'خطا در انجام عملیات'
-  const { code } = payload
+  const p = payload as Record<string, unknown>
+  const code = typeof p.code === 'string' ? p.code : undefined
   const mapper = code && errorMessages[code]
-  return mapper ? mapper(payload) : (payload.message || payload.error || 'خطا در انجام عملیات')
+  const message = typeof p.message === 'string' ? p.message : (typeof p.error === 'string' ? p.error : 'خطا در انجام عملیات')
+  return mapper ? mapper(p) : message
 } 

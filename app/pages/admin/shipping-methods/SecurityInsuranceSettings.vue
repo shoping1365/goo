@@ -4,7 +4,7 @@
       <div class="card-header">
         <h3>تنظیمات امنیتی و بیمه</h3>
         <div class="toggle-switch">
-          <input type="checkbox" v-model="enabled" id="securityToggle" />
+          <input id="securityToggle" v-model="enabled" type="checkbox" />
           <label for="securityToggle"></label>
         </div>
       </div>
@@ -15,7 +15,7 @@
           <h4>بیمه کالا</h4>
           <div class="insurance-settings">
             <label class="checkbox-label">
-              <input type="checkbox" v-model="insurance.enabled" />
+              <input v-model="insurance.enabled" type="checkbox" />
               فعال‌سازی بیمه کالا
             </label>
             <div v-if="insurance.enabled" class="insurance-options">
@@ -84,7 +84,7 @@
           <h4>امضای گیرنده</h4>
           <div class="signature-settings">
             <label class="checkbox-label">
-              <input type="checkbox" v-model="signature.enabled" />
+              <input v-model="signature.enabled" type="checkbox" />
               الزام امضای گیرنده
             </label>
             <div v-if="signature.enabled" class="signature-options">
@@ -125,7 +125,7 @@
           <h4>عکس از تحویل</h4>
           <div class="photo-settings">
             <label class="checkbox-label">
-              <input type="checkbox" v-model="photo.enabled" />
+              <input v-model="photo.enabled" type="checkbox" />
               الزام عکس از تحویل
             </label>
             <div v-if="photo.enabled" class="photo-options">
@@ -156,19 +156,19 @@
                 <label>نوع عکس‌های الزامی</label>
                 <div class="photo-types">
                   <label class="checkbox-label">
-                    <input type="checkbox" v-model="photo.types" value="package" />
+                    <input v-model="photo.types" type="checkbox" value="package" />
                     بسته بسته‌بندی شده
                   </label>
                   <label class="checkbox-label">
-                    <input type="checkbox" v-model="photo.types" value="delivery" />
+                    <input v-model="photo.types" type="checkbox" value="delivery" />
                     لحظه تحویل
                   </label>
                   <label class="checkbox-label">
-                    <input type="checkbox" v-model="photo.types" value="signature" />
+                    <input v-model="photo.types" type="checkbox" value="signature" />
                     امضای گیرنده
                   </label>
                   <label class="checkbox-label">
-                    <input type="checkbox" v-model="photo.types" value="location" />
+                    <input v-model="photo.types" type="checkbox" value="location" />
                     موقعیت تحویل
                   </label>
                 </div>

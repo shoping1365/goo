@@ -101,7 +101,8 @@
         <!-- جستجو -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">جستجو</label>
-          <input type="text" placeholder="نام، ایمیل یا شماره موبایل" 
+          <input
+type="text" placeholder="نام، ایمیل یا شماره موبایل" 
                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
       </div>
@@ -185,9 +186,11 @@
               <td class="px-4 py-3">
                 <div class="flex space-x-2 space-x-reverse">
                   <button class="text-blue-600 hover:text-blue-800 text-sm">جزئیات</button>
-                  <button v-if="user.status === 'فعال'" 
+                  <button
+v-if="user.status === 'فعال'" 
                           class="text-red-600 hover:text-red-800 text-sm">مسدود</button>
-                  <button v-if="user.status === 'مسدود'" 
+                  <button
+v-if="user.status === 'مسدود'" 
                           class="text-green-600 hover:text-green-800 text-sm">باز کردن</button>
                   <button class="text-purple-600 hover:text-purple-800 text-sm">تنظیمات</button>
                 </div>

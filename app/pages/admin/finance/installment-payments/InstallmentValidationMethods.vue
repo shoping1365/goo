@@ -9,7 +9,7 @@
           <option value="90">90 روز گذشته</option>
           <option value="365">یک سال گذشته</option>
         </select>
-        <button @click="refreshData" class="text-blue-600 hover:text-blue-800">
+        <button class="text-blue-600 hover:text-blue-800" @click="refreshData">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
@@ -120,13 +120,13 @@
         </div>
 
         <div class="flex items-center space-x-4 space-x-reverse">
-          <button @click="testMethod('nationalId')" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+          <button class="text-blue-600 hover:text-blue-800 text-sm font-medium" @click="testMethod('nationalId')">
             تست سرویس
           </button>
-          <button @click="viewLogs('nationalId')" class="text-green-600 hover:text-green-800 text-sm font-medium">
+          <button class="text-green-600 hover:text-green-800 text-sm font-medium" @click="viewLogs('nationalId')">
             مشاهده لاگ‌ها
           </button>
-          <button @click="configure('nationalId')" class="text-purple-600 hover:text-purple-800 text-sm font-medium">
+          <button class="text-purple-600 hover:text-purple-800 text-sm font-medium" @click="configure('nationalId')">
             پیکربندی
           </button>
         </div>
@@ -174,13 +174,13 @@
         </div>
 
         <div class="flex items-center space-x-4 space-x-reverse">
-          <button @click="testMethod('mobile')" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+          <button class="text-blue-600 hover:text-blue-800 text-sm font-medium" @click="testMethod('mobile')">
             تست سرویس
           </button>
-          <button @click="viewLogs('mobile')" class="text-green-600 hover:text-green-800 text-sm font-medium">
+          <button class="text-green-600 hover:text-green-800 text-sm font-medium" @click="viewLogs('mobile')">
             مشاهده لاگ‌ها
           </button>
-          <button @click="configure('mobile')" class="text-purple-600 hover:text-purple-800 text-sm font-medium">
+          <button class="text-purple-600 hover:text-purple-800 text-sm font-medium" @click="configure('mobile')">
             پیکربندی
           </button>
         </div>
@@ -228,13 +228,13 @@
         </div>
 
         <div class="flex items-center space-x-4 space-x-reverse">
-          <button @click="testMethod('bankAccount')" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+          <button class="text-blue-600 hover:text-blue-800 text-sm font-medium" @click="testMethod('bankAccount')">
             تست سرویس
           </button>
-          <button @click="viewLogs('bankAccount')" class="text-green-600 hover:text-green-800 text-sm font-medium">
+          <button class="text-green-600 hover:text-green-800 text-sm font-medium" @click="viewLogs('bankAccount')">
             مشاهده لاگ‌ها
           </button>
-          <button @click="configure('bankAccount')" class="text-purple-600 hover:text-purple-800 text-sm font-medium">
+          <button class="text-purple-600 hover:text-purple-800 text-sm font-medium" @click="configure('bankAccount')">
             پیکربندی
           </button>
         </div>
@@ -282,13 +282,13 @@
         </div>
 
         <div class="flex items-center space-x-4 space-x-reverse">
-          <button @click="testMethod('creditBureau')" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+          <button class="text-blue-600 hover:text-blue-800 text-sm font-medium" @click="testMethod('creditBureau')">
             تست سرویس
           </button>
-          <button @click="viewLogs('creditBureau')" class="text-green-600 hover:text-green-800 text-sm font-medium">
+          <button class="text-green-600 hover:text-green-800 text-sm font-medium" @click="viewLogs('creditBureau')">
             مشاهده لاگ‌ها
           </button>
-          <button @click="configure('creditBureau')" class="text-purple-600 hover:text-purple-800 text-sm font-medium">
+          <button class="text-purple-600 hover:text-purple-800 text-sm font-medium" @click="configure('creditBureau')">
             پیکربندی
           </button>
         </div>
@@ -336,13 +336,13 @@
         </div>
 
         <div class="flex items-center space-x-4 space-x-reverse">
-          <button @click="testMethod('employment')" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+          <button class="text-blue-600 hover:text-blue-800 text-sm font-medium" @click="testMethod('employment')">
             تست سرویس
           </button>
-          <button @click="viewLogs('employment')" class="text-green-600 hover:text-green-800 text-sm font-medium">
+          <button class="text-green-600 hover:text-green-800 text-sm font-medium" @click="viewLogs('employment')">
             مشاهده لاگ‌ها
           </button>
-          <button @click="configure('employment')" class="text-purple-600 hover:text-purple-800 text-sm font-medium">
+          <button class="text-purple-600 hover:text-purple-800 text-sm font-medium" @click="configure('employment')">
             پیکربندی
           </button>
         </div>
@@ -363,10 +363,10 @@
         </div>
       </div>
       <div class="mt-4 flex items-center space-x-2 space-x-reverse">
-        <button @click="saveGlobalSettings" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+        <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700" @click="saveGlobalSettings">
           ذخیره تنظیمات
         </button>
-        <button @click="testAllMethods" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+        <button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700" @click="testAllMethods">
           تست همه سرویس‌ها
         </button>
       </div>

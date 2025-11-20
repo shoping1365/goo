@@ -74,11 +74,11 @@
         <div class="p-6">
           <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
             <button 
-              @click="selectEnvironment('development')"
               :class="[
                 'flex items-center justify-center p-6 rounded-lg border-2 transition-colors',
                 selectedEnvironment === 'development' ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:border-gray-300'
               ]"
+              @click="selectEnvironment('development')"
             >
               <div class="text-center">
                 <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mx-auto mb-2">
@@ -89,11 +89,11 @@
             </button>
 
             <button 
-              @click="selectEnvironment('staging')"
               :class="[
                 'flex items-center justify-center p-6 rounded-lg border-2 transition-colors',
                 selectedEnvironment === 'staging' ? 'border-yellow-500 bg-yellow-50' : 'border-gray-200 hover:border-gray-300'
               ]"
+              @click="selectEnvironment('staging')"
             >
               <div class="text-center">
                 <div class="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center mx-auto mb-2">
@@ -104,11 +104,11 @@
             </button>
 
             <button 
-              @click="selectEnvironment('production')"
               :class="[
                 'flex items-center justify-center p-6 rounded-lg border-2 transition-colors',
                 selectedEnvironment === 'production' ? 'border-red-500 bg-red-50' : 'border-gray-200 hover:border-gray-300'
               ]"
+              @click="selectEnvironment('production')"
             >
               <div class="text-center">
                 <div class="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center mx-auto mb-2">
@@ -119,11 +119,11 @@
             </button>
 
             <button 
-              @click="selectEnvironment('testing')"
               :class="[
                 'flex items-center justify-center p-6 rounded-lg border-2 transition-colors',
                 selectedEnvironment === 'testing' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
               ]"
+              @click="selectEnvironment('testing')"
             >
               <div class="text-center">
                 <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-2">
@@ -145,20 +145,20 @@
               <h2 class="text-xl font-semibold text-gray-900">مدیریت متغیرها</h2>
               <div class="flex items-center space-x-2 space-x-reverse">
                 <button 
-                  @click="addVariable"
                   class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="addVariable"
                 >
                   افزودن متغیر
                 </button>
                 <button 
-                  @click="importVariables"
                   class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="importVariables"
                 >
                   وارد کردن
                 </button>
                 <button 
-                  @click="exportVariables"
                   class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="exportVariables"
                 >
                   صادر کردن
                 </button>
@@ -171,7 +171,8 @@
                 <div class="flex items-center justify-between mb-2">
                   <div class="flex items-center space-x-3 space-x-reverse">
                     <span class="font-medium text-gray-900">{{ variable.name }}</span>
-                    <span :class="[
+                    <span
+:class="[
                       'px-2 py-1 rounded text-xs font-medium',
                       variable.type === 'secure' ? 'bg-red-100 text-red-800' :
                       variable.type === 'sensitive' ? 'bg-yellow-100 text-yellow-800' :
@@ -182,20 +183,20 @@
                   </div>
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <button 
-                      @click="editVariable(variable)"
                       class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      @click="editVariable(variable)"
                     >
                       ویرایش
                     </button>
                     <button 
-                      @click="toggleVariableVisibility(variable)"
                       class="text-gray-600 hover:text-gray-800 text-sm font-medium"
+                      @click="toggleVariableVisibility(variable)"
                     >
                       {{ variable.visible ? 'مخفی' : 'نمایش' }}
                     </button>
                     <button 
-                      @click="deleteVariable(variable)"
                       class="text-red-600 hover:text-red-800 text-sm font-medium"
+                      @click="deleteVariable(variable)"
                     >
                       حذف
                     </button>
@@ -226,14 +227,14 @@
                 <p class="text-sm text-gray-500 mb-3">{{ template.description }}</p>
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <button 
-                    @click="useTemplate(template)"
                     class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                    @click="useTemplate(template)"
                   >
                     استفاده
                   </button>
                   <button 
-                    @click="previewTemplate(template)"
                     class="text-gray-600 hover:text-gray-800 text-sm font-medium"
+                    @click="previewTemplate(template)"
                   >
                     پیش‌نمایش
                   </button>
@@ -255,14 +256,14 @@
               <h3 class="font-medium text-gray-900">بررسی امنیت</h3>
               <div class="space-y-2">
                 <button 
-                  @click="validateSecurity"
                   class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="validateSecurity"
                 >
                   بررسی امنیت
                 </button>
                 <button 
-                  @click="scanSecrets"
                   class="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="scanSecrets"
                 >
                   اسکن اسرار
                 </button>
@@ -273,14 +274,14 @@
               <h3 class="font-medium text-gray-900">بررسی فرمت</h3>
               <div class="space-y-2">
                 <button 
-                  @click="validateFormat"
                   class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="validateFormat"
                 >
                   بررسی فرمت
                 </button>
                 <button 
-                  @click="checkDuplicates"
                   class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="checkDuplicates"
                 >
                   بررسی تکرار
                 </button>
@@ -291,14 +292,14 @@
               <h3 class="font-medium text-gray-900">بررسی عملکرد</h3>
               <div class="space-y-2">
                 <button 
-                  @click="testConnections"
                   class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="testConnections"
                 >
                   تست اتصالات
                 </button>
                 <button 
-                  @click="validateUrls"
                   class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="validateUrls"
                 >
                   بررسی URL ها
                 </button>
@@ -309,14 +310,14 @@
               <h3 class="font-medium text-gray-900">گزارش‌ها</h3>
               <div class="space-y-2">
                 <button 
-                  @click="generateReport"
                   class="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="generateReport"
                 >
                   تولید گزارش
                 </button>
                 <button 
-                  @click="exportAudit"
                   class="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="exportAudit"
                 >
                   صادر کردن حسابرسی
                 </button>
@@ -348,7 +349,8 @@
                 <tr v-for="change in variableHistory" :key="change.id">
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ change.variable }}</td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <span :class="[
+                    <span
+:class="[
                       'px-2 py-1 rounded text-xs font-medium',
                       change.action === 'created' ? 'bg-green-100 text-green-800' :
                       change.action === 'updated' ? 'bg-blue-100 text-blue-800' :
@@ -362,8 +364,8 @@
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ change.date }}</td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button 
-                      @click="viewChangeDetails(change)"
                       class="text-blue-600 hover:text-blue-800"
+                      @click="viewChangeDetails(change)"
                     >
                       جزئیات
                     </button>
@@ -381,7 +383,7 @@
           <div class="p-6 border-b border-gray-200">
             <div class="flex items-center justify-between">
               <h3 class="text-lg font-semibold text-gray-900">{{ variableModal.isEdit ? 'ویرایش متغیر' : 'افزودن متغیر جدید' }}</h3>
-              <button @click="variableModal.show = false" class="text-gray-400 hover:text-gray-600">
+              <button class="text-gray-400 hover:text-gray-600" @click="variableModal.show = false">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -430,14 +432,14 @@
               </div>
               <div class="flex items-center justify-end space-x-2 space-x-reverse">
                 <button 
-                  @click="variableModal.show = false"
                   class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="variableModal.show = false"
                 >
                   انصراف
                 </button>
                 <button 
-                  @click="saveVariable"
                   class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="saveVariable"
                 >
                   ذخیره
                 </button>

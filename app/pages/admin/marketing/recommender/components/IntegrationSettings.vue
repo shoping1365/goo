@@ -106,7 +106,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">ایمیل مارکتینگ</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="integrations.email.enabled" class="sr-only peer">
+            <input v-model="integrations.email.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
           </label>
         </div>
@@ -124,7 +124,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداکثر پیشنهاد در هر ایمیل</label>
-            <input type="number" v-model="integrations.email.maxRecommendations" min="1" max="10" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <input v-model="integrations.email.maxRecommendations" type="number" min="1" max="10" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
           </div>
           
           <div>
@@ -150,7 +150,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">پیامک</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="integrations.sms.enabled" class="sr-only peer">
+            <input v-model="integrations.sms.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
           </label>
         </div>
@@ -158,7 +158,7 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">ساعت ارسال</label>
-            <input type="time" v-model="integrations.sms.sendTime" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+            <input v-model="integrations.sms.sendTime" type="time" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
           </div>
           
           <div>
@@ -168,7 +168,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداکثر طول پیام</label>
-            <input type="number" v-model="integrations.sms.maxLength" min="50" max="160" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+            <input v-model="integrations.sms.maxLength" type="number" min="50" max="160" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
           </div>
         </div>
       </div>
@@ -188,7 +188,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">پوش نوتیفیکیشن</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="integrations.push.enabled" class="sr-only peer">
+            <input v-model="integrations.push.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
           </label>
         </div>
@@ -198,15 +198,15 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">نوع اعلان</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="integrations.push.types" value="product" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="integrations.push.types" type="checkbox" value="product" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">پیشنهاد محصول</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="integrations.push.types" value="discount" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="integrations.push.types" type="checkbox" value="discount" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">تخفیف ویژه</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="integrations.push.types" value="reminder" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="integrations.push.types" type="checkbox" value="reminder" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">یادآوری</span>
               </label>
             </div>
@@ -219,7 +219,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">لینک عمیق</label>
-            <input type="text" v-model="integrations.push.deepLink" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500" placeholder="https://example.com/product/123">
+            <input v-model="integrations.push.deepLink" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500" placeholder="https://example.com/product/123">
           </div>
         </div>
       </div>
@@ -236,7 +236,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">چت زنده</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="integrations.chat.enabled" class="sr-only peer">
+            <input v-model="integrations.chat.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-600"></div>
           </label>
         </div>
@@ -244,7 +244,7 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">زمان تاخیر پیشنهاد</label>
-            <input type="number" v-model="integrations.chat.delaySeconds" min="5" max="300" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+            <input v-model="integrations.chat.delaySeconds" type="number" min="5" max="300" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
             <p class="text-xs text-gray-500 mt-1">ثانیه</p>
           </div>
           
@@ -252,15 +252,15 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">شرایط پیشنهاد</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="integrations.chat.conditions" value="idle" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
+                <input v-model="integrations.chat.conditions" type="checkbox" value="idle" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
                 <span class="mr-2 text-sm text-gray-700">کاربر غیرفعال</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="integrations.chat.conditions" value="browsing" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
+                <input v-model="integrations.chat.conditions" type="checkbox" value="browsing" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
                 <span class="mr-2 text-sm text-gray-700">در حال مرور</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="integrations.chat.conditions" value="cart" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
+                <input v-model="integrations.chat.conditions" type="checkbox" value="cart" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
                 <span class="mr-2 text-sm text-gray-700">سبد خرید خالی</span>
               </label>
             </div>
@@ -286,7 +286,7 @@
           <h3 class="text-lg font-semibold text-gray-900 mr-3">API خارجی</h3>
         </div>
         <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" v-model="integrations.api.enabled" class="sr-only peer">
+          <input v-model="integrations.api.enabled" type="checkbox" class="sr-only peer">
           <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
         </label>
       </div>
@@ -295,12 +295,12 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Endpoint URL</label>
-            <input type="url" v-model="integrations.api.endpoint" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500" placeholder="https://api.example.com/recommendations">
+            <input v-model="integrations.api.endpoint" type="url" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500" placeholder="https://api.example.com/recommendations">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">API Key</label>
-            <input type="password" v-model="integrations.api.apiKey" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500" placeholder="API Key">
+            <input v-model="integrations.api.apiKey" type="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500" placeholder="API Key">
           </div>
           
           <div>
@@ -317,19 +317,19 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">محدودیت درخواست</label>
-            <input type="number" v-model="integrations.api.rateLimit" min="1" max="1000" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+            <input v-model="integrations.api.rateLimit" type="number" min="1" max="1000" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
             <p class="text-xs text-gray-500 mt-1">درخواست در دقیقه</p>
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Timeout</label>
-            <input type="number" v-model="integrations.api.timeout" min="1" max="60" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+            <input v-model="integrations.api.timeout" type="number" min="1" max="60" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
             <p class="text-xs text-gray-500 mt-1">ثانیه</p>
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Retry Count</label>
-            <input type="number" v-model="integrations.api.retryCount" min="0" max="5" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+            <input v-model="integrations.api.retryCount" type="number" min="0" max="5" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
             <p class="text-xs text-gray-500 mt-1">تعداد تلاش مجدد</p>
           </div>
         </div>

@@ -1,5 +1,5 @@
-import type { H3Event } from 'h3'
-import { defineEventHandler, createError } from 'h3'
+import type { H3Event } from 'h3';
+import { createError, defineEventHandler } from 'h3';
 
 declare const goApiFetch: (event: H3Event, endpoint: string, options?: { method?: string; body?: unknown }) => Promise<unknown>
 
@@ -12,9 +12,8 @@ export default defineEventHandler(async (event) => {
 
     return response
   } catch (error: unknown) {
-    console.error('خطا در دریافت آمار امنیتی چت:', error)
+    // console.error('خطا در دریافت آمار امنیتی چت:', error)
     
-    const errorWithStatus = error as { statusCode?: number; message?: string }
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error
     }

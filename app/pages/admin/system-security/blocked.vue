@@ -11,8 +11,8 @@
           <div class="flex">
             <!-- دکمه خروجی اکسل -->
             <button
-              @click="exportToExcel"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 ml-8"
+              @click="exportToExcel"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -22,8 +22,8 @@
             
             <!-- دکمه بلاک کردن لیست IP -->
             <button
-              @click="showBulkBlockModal = true"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 ml-8"
+              @click="showBulkBlockModal = true"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -32,8 +32,8 @@
             </button>
             
             <button
-              @click="showAddBlockModal = true"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+              @click="showAddBlockModal = true"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -103,7 +103,7 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ ip.blockedAt }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ ip.expiresAt }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button v-if="hasPermission('security.delete')" @click="removeBlock(ip.id)" class="text-green-600 hover:text-green-900">حذف مسدودی</button>
+                  <button v-if="hasPermission('security.delete')" class="text-green-600 hover:text-green-900" @click="removeBlock(ip.id)">حذف مسدودی</button>
                 </td>
               </tr>
             </tbody>
@@ -115,8 +115,8 @@
         :total-pages="blockedIPsTotalPages"
         :total="blockedIPsList.length"
         :items-per-page="blockedIPsItemsPerPage"
-        @items-per-page-changed="blockedIPsItemsPerPage = $event"
         class="mb-8"
+        @items-per-page-changed="blockedIPsItemsPerPage = $event"
       />
     </div>
 
@@ -163,7 +163,7 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ user.blockedAt }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ user.expiresAt }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button v-if="hasPermission('security.delete')" @click="removeUserBlock(user.id)" class="text-green-600 hover:text-green-900">حذف مسدودی</button>
+                  <button v-if="hasPermission('security.delete')" class="text-green-600 hover:text-green-900" @click="removeUserBlock(user.id)">حذف مسدودی</button>
                 </td>
               </tr>
             </tbody>
@@ -175,8 +175,8 @@
         :total-pages="blockedUsersTotalPages"
         :total="blockedUsersList.length"
         :items-per-page="blockedUsersItemsPerPage"
-        @items-per-page-changed="blockedUsersItemsPerPage = $event"
         class="mb-12"
+        @items-per-page-changed="blockedUsersItemsPerPage = $event"
       />
 
 
@@ -186,7 +186,7 @@
       <div class="mt-3">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-gray-900">بلاک کردن لیست IP</h3>
-          <button @click="showBulkBlockModal = false" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="showBulkBlockModal = false">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -225,10 +225,10 @@
         </div>
         
         <div class="flex justify-end space-x-2 space-x-reverse">
-          <button @click="showBulkBlockModal = false" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500">
+          <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500" @click="showBulkBlockModal = false">
             انصراف
           </button>
-          <button @click="bulkBlockIPs" class="px-4 py-2 bg-orange-600 text-white rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500">
+          <button class="px-4 py-2 bg-orange-600 text-white rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500" @click="bulkBlockIPs">
             بلاک کردن IP ها
           </button>
         </div>
@@ -242,7 +242,7 @@
       <div class="mt-3">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-gray-900">افزودن مسدودی جدید</h3>
-          <button @click="showAddBlockModal = false" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="showAddBlockModal = false">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -280,10 +280,10 @@
         </div>
         
         <div class="flex justify-end space-x-2 space-x-reverse">
-          <button @click="showAddBlockModal = false" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500">
+          <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500" @click="showAddBlockModal = false">
             انصراف
           </button>
-          <button @click="addBlock" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
+          <button class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500" @click="addBlock">
             افزودن مسدودی
           </button>
         </div>

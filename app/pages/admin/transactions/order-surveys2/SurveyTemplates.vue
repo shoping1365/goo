@@ -13,13 +13,13 @@
         <div 
           v-for="template in templates" 
           :key="template.id"
-          @click="selectTemplate(template.id)"
           :class="[
             'border-2 rounded-lg px-4 py-4 cursor-pointer transition-all hover:shadow-lg',
             selectedTemplate === template.id 
               ? 'border-blue-500 bg-blue-50 shadow-lg' 
               : 'border-gray-200 hover:border-gray-300'
           ]"
+          @click="selectTemplate(template.id)"
         >
           <div class="flex items-center justify-between mb-3">
             <h5 class="font-medium text-gray-900">{{ template.name }}</h5>
@@ -90,9 +90,9 @@
     <!-- Save Button -->
     <div class="flex items-center justify-end">
       <button 
-        @click="saveTemplate"
         :disabled="saving"
         class="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg text-sm transition-colors flex items-center space-x-2 space-x-reverse"
+        @click="saveTemplate"
       >
         <svg v-if="saving" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

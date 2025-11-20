@@ -10,10 +10,10 @@
           <option value="error">خطا</option>
           <option value="debug">اشکال‌زدایی</option>
         </select>
-        <button @click="clearLogs" class="text-red-600 hover:text-red-800">
+        <button class="text-red-600 hover:text-red-800" @click="clearLogs">
           پاک کردن لاگ‌ها
         </button>
-        <button @click="refreshLogs" class="text-blue-600 hover:text-blue-800">
+        <button class="text-blue-600 hover:text-blue-800" @click="refreshLogs">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
@@ -81,7 +81,7 @@
               <p class="text-sm text-gray-600 mb-2">{{ log.message }}</p>
               
               <div v-if="log.details" class="mt-2">
-                <button @click="toggleDetails(log.id)" class="text-blue-600 hover:text-blue-800 text-sm">
+                <button class="text-blue-600 hover:text-blue-800 text-sm" @click="toggleDetails(log.id)">
                   {{ expandedLogs.includes(log.id) ? 'مخفی کردن جزئیات' : 'نمایش جزئیات' }}
                 </button>
                 
@@ -97,10 +97,10 @@
           </div>
           
           <div class="flex items-center space-x-2 space-x-reverse">
-            <button v-if="log.level === 'error'" @click="reportBug(log)" class="text-red-600 hover:text-red-800 text-sm">
+            <button v-if="log.level === 'error'" class="text-red-600 hover:text-red-800 text-sm" @click="reportBug(log)">
               گزارش باگ
             </button>
-            <button @click="copyLog(log)" class="text-gray-600 hover:text-gray-800">
+            <button class="text-gray-600 hover:text-gray-800" @click="copyLog(log)">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
@@ -118,9 +118,9 @@
       
       <div class="flex items-center space-x-2 space-x-reverse">
         <button 
-          @click="previousPage" 
-          :disabled="currentPage === 1"
+          :disabled="currentPage === 1" 
           class="px-3 py-1 border border-gray-300 rounded-md disabled:opacity-50"
+          @click="previousPage"
         >
           قبلی
         </button>
@@ -128,9 +128,9 @@
         <span class="px-3 py-1">{{ currentPage }} از {{ totalPages }}</span>
         
         <button 
-          @click="nextPage" 
-          :disabled="currentPage === totalPages"
+          :disabled="currentPage === totalPages" 
           class="px-3 py-1 border border-gray-300 rounded-md disabled:opacity-50"
+          @click="nextPage"
         >
           بعدی
         </button>
@@ -142,13 +142,13 @@
       <div class="flex items-center justify-between">
         <span class="text-md font-semibold text-gray-900">صادرات لاگ‌ها</span>
         <div class="flex items-center space-x-2 space-x-reverse">
-          <button @click="exportLogs('txt')" class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700">
+          <button class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700" @click="exportLogs('txt')">
             TXT
           </button>
-          <button @click="exportLogs('csv')" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+          <button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700" @click="exportLogs('csv')">
             CSV
           </button>
-          <button @click="exportLogs('json')" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+          <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700" @click="exportLogs('json')">
             JSON
           </button>
         </div>

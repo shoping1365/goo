@@ -13,12 +13,12 @@
           <div class="text-xs text-gray-400 mt-1">کد: {{ item.sku }}</div>
         </div>
         <div class="flex items-center gap-2">
-          <button @click="decrease(item)" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-lg font-bold">-</button>
+          <button class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-lg font-bold" @click="decrease(item)">-</button>
           <span class="w-8 text-center">{{ item.qty }}</span>
-          <button @click="increase(item)" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-lg font-bold">+</button>
+          <button class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-lg font-bold" @click="increase(item)">+</button>
         </div>
         <div class="w-24 text-center font-bold text-base text-blue-600">{{ formatPrice(item.price * item.qty) }}</div>
-        <button @click="remove(item)" class="ml-2 text-red-500 hover:text-red-700"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        <button class="ml-2 text-red-500 hover:text-red-700" @click="remove(item)"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
       </div>
     </div>
   </div>

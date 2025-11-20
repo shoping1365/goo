@@ -34,9 +34,9 @@
               v-for="i in 5"
               :key="i"
               type="button"
-              @click="ratings.productQuality = i"
               class="text-2xl transition-all duration-200 hover:scale-110"
               :class="i <= ratings.productQuality ? 'text-yellow-400' : 'text-gray-300 hover:text-yellow-300'"
+              @click="ratings.productQuality = i"
             >★</button>
           </div>
           
@@ -62,9 +62,9 @@
               v-for="i in 5"
               :key="i"
               type="button"
-              @click="ratings.pricing = i"
               class="text-2xl transition-all duration-200 hover:scale-110"
               :class="i <= ratings.pricing ? 'text-yellow-400' : 'text-gray-300 hover:text-yellow-300'"
+              @click="ratings.pricing = i"
             >★</button>
           </div>
           
@@ -90,9 +90,9 @@
               v-for="i in 5"
               :key="i"
               type="button"
-              @click="ratings.deliverySpeed = i"
               class="text-2xl transition-all duration-200 hover:scale-110"
               :class="i <= ratings.deliverySpeed ? 'text-yellow-400' : 'text-gray-300 hover:text-yellow-300'"
+              @click="ratings.deliverySpeed = i"
             >★</button>
           </div>
           
@@ -121,9 +121,9 @@
               v-for="i in 5"
               :key="i"
               type="button"
-              @click="ratings.packaging = i"
               class="text-2xl transition-all duration-200 hover:scale-110"
               :class="i <= ratings.packaging ? 'text-yellow-400' : 'text-gray-300 hover:text-yellow-300'"
+              @click="ratings.packaging = i"
             >★</button>
           </div>
           
@@ -149,9 +149,9 @@
               v-for="i in 5"
               :key="i"
               type="button"
-              @click="ratings.afterSales = i"
               class="text-2xl transition-all duration-200 hover:scale-110"
               :class="i <= ratings.afterSales ? 'text-yellow-400' : 'text-gray-300 hover:text-yellow-300'"
+              @click="ratings.afterSales = i"
             >★</button>
           </div>
           
@@ -177,9 +177,9 @@
               v-for="i in 5"
               :key="i"
               type="button"
-              @click="ratings.userInterface = i"
               class="text-2xl transition-all duration-200 hover:scale-110"
               :class="i <= ratings.userInterface ? 'text-yellow-400' : 'text-gray-300 hover:text-yellow-300'"
+              @click="ratings.userInterface = i"
             >★</button>
           </div>
           

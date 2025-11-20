@@ -34,8 +34,8 @@
           </div>
         </div>
         <div class="flex justify-end mt-6 space-x-2 space-x-reverse">
-          <button @click="$emit('edit', referral)" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">ویرایش</button>
-          <button @click="$emit('close')" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors">بستن</button>
+          <button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors" @click="$emit('edit', referral)">ویرایش</button>
+          <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors" @click="$emit('close')">بستن</button>
         </div>
       </div>
     </div>

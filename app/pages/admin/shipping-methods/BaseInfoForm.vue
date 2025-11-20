@@ -12,7 +12,7 @@
       </div>
       <div class="form-row">
         <label>آیکون/لوگو</label>
-        <input type="file" @change="onIconChange" accept="image/*" />
+        <input type="file" accept="image/*" @change="onIconChange" />
         <img v-if="form.iconUrl" :src="form.iconUrl" class="icon-preview" />
       </div>
       <div class="form-row">

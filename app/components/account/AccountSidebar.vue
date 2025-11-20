@@ -61,8 +61,8 @@
         <!-- دکمه logout -->
         <button 
           v-else-if="item.action === 'logout'"
-          @click="handleLogout"
           class="flex items-center space-x-3 space-x-reverse p-3 rounded-lg transition-colors relative w-full text-right text-gray-700 hover:bg-gray-50"
+          @click="handleLogout"
         >
           <!-- آیکون -->
           <div class="flex-shrink-0 relative">

@@ -284,8 +284,8 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
-declare const useAuth: () => { user: any; hasPermission: (perm: string) => boolean }
-declare const useHead: (head: { title?: string; meta?: any[] }) => void
+// declare const useAuth: () => { user: unknown; hasPermission: (perm: string) => boolean }
+declare const useHead: (head: { title?: string; meta?: Record<string, unknown>[] }) => void
 </script>
 
 <script setup lang="ts">
@@ -297,7 +297,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // Sample data for components
 const stats = {

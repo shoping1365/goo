@@ -1,4 +1,4 @@
-import { defineEventHandler, createError, getCookie } from 'h3'
+import { createError, defineEventHandler, getCookie } from 'h3'
 import { goApiFetch } from '~/server/utils/goApi'
 
 export default defineEventHandler(async (event) => {
@@ -17,11 +17,12 @@ export default defineEventHandler(async (event) => {
       })
 
       return data
-    } catch (goError: any) {
+    } catch {
       return { success: true, message: 'Heartbeat sent to Go Backend' }
     }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.error('خطا در heartbeat:', error)
+    // console.error('خطا در heartbeat:', error)
 
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error

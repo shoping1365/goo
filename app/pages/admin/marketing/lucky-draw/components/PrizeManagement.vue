@@ -7,14 +7,14 @@
           <h3 class="text-lg font-medium text-gray-900">مدیریت جوایز</h3>
           <div class="flex items-center space-x-3 space-x-reverse">
             <button 
-              @click="showPrizeForm = true"
               class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              @click="showPrizeForm = true"
             >
               افزودن جایزه جدید
             </button>
             <button 
-              @click="$emit('close')"
               class="text-gray-400 hover:text-gray-600"
+              @click="$emit('close')"
             >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -93,8 +93,8 @@
                     </span>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button @click="editPrize(prize)" class="text-blue-600 hover:text-blue-900 ml-3">ویرایش</button>
-                    <button @click="deletePrize(prize.id)" class="text-red-600 hover:text-red-900">حذف</button>
+                    <button class="text-blue-600 hover:text-blue-900 ml-3" @click="editPrize(prize)">ویرایش</button>
+                    <button class="text-red-600 hover:text-red-900" @click="deletePrize(prize.id)">حذف</button>
                   </td>
                 </tr>
               </tbody>

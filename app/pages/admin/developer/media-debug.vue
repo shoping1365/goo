@@ -82,16 +82,16 @@
                 </svg>
                 <p class="text-gray-600 mb-2">فایل‌ها را اینجا بکشید یا کلیک کنید</p>
                 <input 
+                  ref="fileInput" 
                   type="file" 
-                  multiple 
-                  @change="handleFileUpload"
+                  multiple
                   class="hidden"
-                  ref="fileInput"
                   accept="image/*,video/*,audio/*"
+                  @change="handleFileUpload"
                 >
                 <button 
-                  @click="$refs.fileInput.click()"
                   class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="$refs.fileInput.click()"
                 >
                   انتخاب فایل
                 </button>
@@ -114,22 +114,22 @@
               <!-- Actions -->
               <div class="space-y-2">
                 <button 
-                  @click="refreshFileList"
                   class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="refreshFileList"
                 >
                   بارگذاری مجدد لیست
                 </button>
                 <button 
-                  @click="optimizeAllFiles"
                   :disabled="optimizing"
                   class="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="optimizeAllFiles"
                 >
                   <span v-if="optimizing">در حال بهینه‌سازی...</span>
                   <span v-else>بهینه‌سازی همه فایل‌ها</span>
                 </button>
                 <button 
-                  @click="cleanupOrphanedFiles"
                   class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="cleanupOrphanedFiles"
                 >
                   پاکسازی فایل‌های یتیم
                 </button>
@@ -191,20 +191,20 @@
                   <!-- Actions -->
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <button 
-                      @click="previewFile(file)"
                       class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      @click="previewFile(file)"
                     >
                       پیش‌نمایش
                     </button>
                     <button 
-                      @click="optimizeFile(file)"
                       class="text-purple-600 hover:text-purple-800 text-sm font-medium"
+                      @click="optimizeFile(file)"
                     >
                       بهینه‌سازی
                     </button>
                     <button 
-                      @click="deleteFile(file)"
                       class="text-red-600 hover:text-red-800 text-sm font-medium"
+                      @click="deleteFile(file)"
                     >
                       حذف
                     </button>
@@ -213,7 +213,8 @@
 
                 <!-- File Status -->
                 <div class="mt-3 flex items-center space-x-4 space-x-reverse">
-                  <span :class="[
+                  <span
+:class="[
                     'px-2 py-1 rounded text-xs font-medium',
                     file.status === 'optimized' ? 'bg-green-100 text-green-800' : 
                     file.status === 'corrupted' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'
@@ -242,7 +243,7 @@
           <div class="p-6 border-b border-gray-200">
             <div class="flex items-center justify-between">
               <h3 class="text-lg font-semibold text-gray-900">{{ previewModal.file?.name }}</h3>
-              <button @click="previewModal.show = false" class="text-gray-400 hover:text-gray-600">
+              <button class="text-gray-400 hover:text-gray-600" @click="previewModal.show = false">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>

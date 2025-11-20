@@ -19,16 +19,33 @@ export interface RecaptchaSettings {
 }
 
 // تعریف interface برای response های API
-interface ApiResponse<T = any> {
+interface ApiResponse<T = unknown> {
   success: boolean
   data?: T
   message?: string
 }
 
+interface RateLimitSettings {
+  [key: string]: unknown
+}
+
 interface SecuritySettingsResponse {
   security?: SecuritySettings
   recaptcha?: RecaptchaSettings
-  rateLimit?: any
+  rateLimit?: RateLimitSettings
+}
+
+interface Session {
+  id: number
+  [key: string]: unknown
+}
+
+interface LoginHistory {
+  [key: string]: unknown
+}
+
+interface ApiError {
+  message?: string
 }
 
 export const useSecuritySettings = () => {
@@ -49,10 +66,10 @@ export const useSecuritySettings = () => {
   const twoFactorEnabled = ref(false)
 
   // Active sessions
-  const activeSessions = ref<any[]>([])
+  const activeSessions = ref<Session[]>([])
 
   // Login history
-  const loginHistory = ref<any[]>([])
+  const loginHistory = ref<LoginHistory[]>([])
 
   const fetchSettings = async () => {
     loading.value = true
@@ -73,11 +90,12 @@ export const useSecuritySettings = () => {
         // به‌روزرسانی تنظیمات Rate Limiting
         if (res.data.rateLimit) {
           // این مقدار در صفحه security.vue استفاده می‌شود
-          console.log('Rate limit settings loaded:', res.data.rateLimit)
+          console.warn('Rate limit settings loaded:', res.data.rateLimit)
         }
       }
-    } catch (err: any) {
-      error.value = err?.message || 'خطا در دریافت تنظیمات'
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e?.message || 'خطا در دریافت تنظیمات'
     } finally {
       loading.value = false
     }
@@ -93,8 +111,9 @@ export const useSecuritySettings = () => {
       if (res.data) {
         settings.value = res.data
       }
-    } catch (err: any) {
-      error.value = err?.message || 'خطا در ذخیره تنظیمات'
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e?.message || 'خطا در ذخیره تنظیمات'
     } finally {
       loading.value = false
     }
@@ -110,22 +129,24 @@ export const useSecuritySettings = () => {
 
       if (res.success) {
         recaptchaSettings.value = { ...data }
-        console.log('reCAPTCHA settings saved successfully')
+        console.warn('reCAPTCHA settings saved successfully')
       }
-    } catch (err: any) {
-      error.value = err?.message || 'خطا در ذخیره تنظیمات reCAPTCHA'
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e?.message || 'خطا در ذخیره تنظیمات reCAPTCHA'
     } finally {
       loading.value = false
     }
   }
 
-  const changePassword = async (currentPassword: string, newPassword: string) => {
+  const changePassword = async (_currentPassword: string, _newPassword: string) => {
     loading.value = true
     try {
       // اینجا باید API call برای تغییر رمز عبور اضافه شود
-      console.log('Changing password...')
-    } catch (err: any) {
-      error.value = err?.message || 'خطا در تغییر رمز عبور'
+      console.warn('Changing password...')
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e?.message || 'خطا در تغییر رمز عبور'
     } finally {
       loading.value = false
     }
@@ -136,8 +157,9 @@ export const useSecuritySettings = () => {
     try {
       twoFactorEnabled.value = !twoFactorEnabled.value
       // اینجا باید API call برای تغییر وضعیت 2FA اضافه شود
-    } catch (err: any) {
-      error.value = err?.message || 'خطا در تغییر وضعیت احراز هویت دو مرحله‌ای'
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e?.message || 'خطا در تغییر وضعیت احراز هویت دو مرحله‌ای'
     } finally {
       loading.value = false
     }
@@ -147,8 +169,9 @@ export const useSecuritySettings = () => {
     try {
       // اینجا باید API call برای خاتمه نشست اضافه شود
       activeSessions.value = activeSessions.value.filter(s => s.id !== sessionId)
-    } catch (err: any) {
-      error.value = err?.message || 'خطا در خاتمه نشست'
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e?.message || 'خطا در خاتمه نشست'
     }
   }
 
@@ -156,8 +179,9 @@ export const useSecuritySettings = () => {
     try {
       // اینجا باید API call برای بارگذاری نشست‌های فعال اضافه شود
       activeSessions.value = []
-    } catch (err: any) {
-      error.value = err?.message || 'خطا در بارگذاری نشست‌های فعال'
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e?.message || 'خطا در بارگذاری نشست‌های فعال'
     }
   }
 
@@ -165,12 +189,13 @@ export const useSecuritySettings = () => {
     try {
       // اینجا باید API call برای بارگذاری تاریخچه ورود اضافه شود
       loginHistory.value = []
-    } catch (err: any) {
-      error.value = err?.message || 'خطا در بارگذاری تاریخچه ورود'
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e?.message || 'خطا در بارگذاری تاریخچه ورود'
     }
   }
 
-  const saveRateLimitSettings = async (data: any) => {
+  const saveRateLimitSettings = async (data: RateLimitSettings) => {
     loading.value = true
     try {
       const res = await $fetch<ApiResponse>('/api/admin/security/settings', {
@@ -179,11 +204,12 @@ export const useSecuritySettings = () => {
       })
 
       if (res.success) {
-        console.log('Rate limit settings saved successfully')
+        console.warn('Rate limit settings saved successfully')
         return { success: true, message: 'تنظیمات محدودیت نرخ درخواست با موفقیت ذخیره شد' }
       }
-    } catch (err: any) {
-      error.value = err?.message || 'خطا در ذخیره تنظیمات Rate Limiting'
+    } catch (err) {
+      const e = err as ApiError
+      error.value = e?.message || 'خطا در ذخیره تنظیمات Rate Limiting'
       return { success: false, message: 'خطا در ذخیره تنظیمات' }
     } finally {
       loading.value = false

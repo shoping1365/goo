@@ -115,21 +115,21 @@
           <div class="flex items-center">
             <TemplateButton 
               v-if="hasActiveFilters"
-              @click="clearAllFilters" 
-              bgGradient="bg-gradient-to-r from-red-500 to-pink-600"
-              textColor="text-white"
-              borderColor="border border-red-500"
-              hoverClass="hover:from-red-600 hover:to-pink-700"
-              focusClass="focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              bg-gradient="bg-gradient-to-r from-red-500 to-pink-600" 
+              text-color="text-white"
+              border-color="border border-red-500"
+              hover-class="hover:from-red-600 hover:to-pink-700"
+              focus-class="focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
               size="medium"
+              @click="clearAllFilters"
             >
               🗑️
               پاک کردن فیلترها
             </TemplateButton>
             <div class="ml-4"></div>
             <button
-                @click="showFilters = !showFilters"
                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-cyan-400 to-cyan-600 hover:from-cyan-500 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+                @click="showFilters = !showFilters"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"></path>
@@ -138,8 +138,8 @@
             </button>
             <div class="ml-4"></div>
             <button
-                @click="exportLogs"
                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+                @click="exportLogs"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -220,7 +220,8 @@
                 {{ formatDateTime(log.timestamp) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span :class="[
+                <span
+:class="[
                   'inline-flex px-2 py-1 text-xs font-semibold rounded-full',
                   log.level === 'error' ? 'bg-red-100 text-red-800' : '',
                   log.level === 'warning' ? 'bg-yellow-100 text-yellow-800' : '',
@@ -246,7 +247,7 @@
                 <span v-else>-</span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button @click="viewLogDetails(log)" class="text-blue-600 hover:text-blue-900">
+                <button class="text-blue-600 hover:text-blue-900" @click="viewLogDetails(log)">
                   جزئیات
                 </button>
               </td>
@@ -263,17 +264,17 @@
           </div>
           <div class="flex items-center space-x-2 space-x-reverse">
             <button 
-              @click="currentPage--" 
-              :disabled="currentPage === 1"
+              :disabled="currentPage === 1" 
               class="px-3 py-1 text-sm border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              @click="currentPage--"
             >
               قبلی
             </button>
             <span class="px-3 py-1 text-sm text-gray-700">{{ currentPage }} از {{ totalPages }}</span>
             <button 
-              @click="currentPage++" 
-              :disabled="currentPage === totalPages"
+              :disabled="currentPage === totalPages" 
               class="px-3 py-1 text-sm border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              @click="currentPage++"
             >
               بعدی
             </button>
@@ -287,7 +288,7 @@
       <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-gray-900">جزئیات لاگ</h3>
-          <button @click="selectedLog = null" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="selectedLog = null">
             ❌
           </button>
         </div>
@@ -300,7 +301,8 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">سطح</label>
-            <span :class="[
+            <span
+:class="[
               'inline-flex px-2 py-1 text-xs font-semibold rounded-full',
               selectedLog.level === 'error' ? 'bg-red-100 text-red-800' : '',
               selectedLog.level === 'warning' ? 'bg-yellow-100 text-yellow-800' : '',

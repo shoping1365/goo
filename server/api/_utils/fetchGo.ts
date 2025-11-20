@@ -17,7 +17,7 @@ function resolveGoApiBase(): string {
 
 // Allow JSON-like bodies in addition to standard RequestInit body types
 type FetchGoOptions = Omit<RequestInit, 'body'> & {
-  body?: any
+  body?: unknown
   retry?: number
   retryDelayMs?: number
   timeout?: number
@@ -87,12 +87,13 @@ export async function fetchGo(event: H3Event, path: string, opts: FetchGoOptions
       // Validate the URL
       const urlObj = new URL(path)
       url = urlObj.toString()
-    } catch (urlError: any) {
-      console.error('[fetchGo] Invalid absolute URL:', { path, error: urlError?.message })
+    } catch (urlError) {
+      const err = urlError as Record<string, any>
+      console.error('[fetchGo] Invalid absolute URL:', { path, error: err?.message })
       throw createError({
         statusCode: 500,
-        message: `Invalid URL: ${urlError?.message || 'Unknown error'}`,
-        data: { path, error: urlError?.message }
+        message: `Invalid URL: ${err?.message || 'Unknown error'}`,
+        data: { path, error: err?.message }
       })
     }
   } else {
@@ -115,21 +116,22 @@ export async function fetchGo(event: H3Event, path: string, opts: FetchGoOptions
       // Validate the constructed URL
       const urlObj = new URL(url)
       url = urlObj.toString()
-    } catch (urlError: any) {
+    } catch (urlError) {
+      const err = urlError as Record<string, any>
       console.error('[fetchGo] Failed to construct URL', {
         base,
         path,
-        error: urlError?.message
+        error: err?.message
       })
       throw createError({
         statusCode: 500,
-        message: `Invalid upstream URL: ${urlError?.message || 'Unknown error'}`,
-        data: { base, path, error: urlError?.message }
+        message: `Invalid upstream URL: ${err?.message || 'Unknown error'}`,
+        data: { base, path, error: err?.message }
       })
     }
   }
 
-  console.log('[fetchGo] Making request to:', url)
+  // console.log('[fetchGo] Making request to:', url)
 
   const maxRetry = typeof opts.retry === 'number' ? opts.retry : 3
   const retryDelay = typeof opts.retryDelayMs === 'number' ? opts.retryDelayMs : 1000
@@ -178,7 +180,7 @@ export async function fetchGo(event: H3Event, path: string, opts: FetchGoOptions
       }
     }
   } catch (headerError) {
-    console.warn('[fetchGo] Failed to get headers:', headerError)
+    // console.warn('[fetchGo] Failed to get headers:', headerError)
   }
 
   // Merge with custom headers
@@ -189,7 +191,7 @@ export async function fetchGo(event: H3Event, path: string, opts: FetchGoOptions
   let lastError: any = null
   for (let attempt = 0; attempt <= maxRetry; attempt++) {
     try {
-      console.log('[fetchGo] Attempting request:', { url, method: opts.method || 'GET', headers })
+      // console.log('[fetchGo] Attempting request:', { url, method: opts.method || 'GET', headers })
 
       // Use native fetch instead of $fetch for better h3 v2 compatibility
       const fetchOptions: RequestInit = {
@@ -216,7 +218,7 @@ export async function fetchGo(event: H3Event, path: string, opts: FetchGoOptions
       const res = await fetch(url, fetchOptions)
       clearTimeout(timeoutId)
 
-      console.log('[fetchGo] Response received:', { status: res.status, statusText: res.statusText })
+      // console.log('[fetchGo] Response received:', { status: res.status, statusText: res.statusText })
 
       // Forward Set-Cookie headers from Go backend to client
       const setCookieHeader = res.headers.get('set-cookie')
@@ -250,21 +252,22 @@ export async function fetchGo(event: H3Event, path: string, opts: FetchGoOptions
 
       // Parse response
       const contentType = res.headers.get('content-type')
-      let response: any
+      let response: unknown
       if (contentType?.includes('application/json')) {
         response = await res.json()
       } else {
         response = await res.text()
       }
 
-      console.log('[fetchGo] Success:', { url, responseType: typeof response })
+      // console.log('[fetchGo] Success:', { url, responseType: typeof response })
       return response
-    } catch (err: any) {
-      lastError = err
-      const code = (err?.code || err?.statusCode || '').toString()
-      const causeCode = (err?.cause?.code || '').toString()
-      const message: string = (typeof err === 'string' ? err : (err?.message || err?.statusMessage || ''))
-      const isAbortName = err?.name === 'AbortError' || err?.cause?.name === 'AbortError'
+    } catch (err) {
+      lastError = err as Record<string, any>
+      const e = lastError
+      const code = (e?.code || e?.statusCode || '').toString()
+      const causeCode = (e?.cause?.code || '').toString()
+      const message: string = (typeof e === 'string' ? e : (e?.message || e?.statusMessage || ''))
+      const isAbortName = e?.name === 'AbortError' || e?.cause?.name === 'AbortError'
       const isTransient =
         transientNetworkCodes.has(code) ||
         transientNetworkCodes.has(causeCode) ||

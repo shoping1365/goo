@@ -41,34 +41,34 @@
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="user in users" :key="user.id" class="hover:bg-gray-50">
+            <tr v-for="userItem in users" :key="userItem.id" class="hover:bg-gray-50">
               <td class="px-4 py-3 whitespace-nowrap">
                 <div class="flex items-center">
                   <div class="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
-                    <span class="text-white text-xs font-medium">{{ getInitials(user.name) }}</span>
+                    <span class="text-white text-xs font-medium">{{ getInitials(userItem.name) }}</span>
                   </div>
                   <div class="mr-3">
-                    <div class="text-sm font-medium text-gray-900">{{ user.name }}</div>
-                    <div class="text-xs text-gray-500">{{ user.email }}</div>
+                    <div class="text-sm font-medium text-gray-900">{{ userItem.name }}</div>
+                    <div class="text-xs text-gray-500">{{ userItem.email }}</div>
                   </div>
                 </div>
               </td>
               <td class="px-4 py-3 whitespace-nowrap">
-                <select v-model="user.roleId" class="text-sm border border-gray-300 rounded px-2 py-1">
+                <select v-model="userItem.roleId" class="text-sm border border-gray-300 rounded px-2 py-1">
                   <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
                 </select>
               </td>
               <td class="px-4 py-3 whitespace-nowrap">
-                <span :class="user.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'" class="inline-flex px-2 py-1 text-xs font-medium rounded-full">
-                  {{ user.active ? 'فعال' : 'غیرفعال' }}
+                <span :class="userItem.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'" class="inline-flex px-2 py-1 text-xs font-medium rounded-full">
+                  {{ userItem.active ? 'فعال' : 'غیرفعال' }}
                 </span>
               </td>
-              <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-500">{{ formatDate(user.lastLogin) }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-500">{{ formatDate(userItem.lastLogin) }}</td>
               <td class="px-4 py-3 whitespace-nowrap text-sm">
-                <button @click="toggleUserStatus(user.id)" class="text-blue-600 hover:text-blue-800 mr-2">
-                  {{ user.active ? 'غیرفعال' : 'فعال' }}
+                <button class="text-blue-600 hover:text-blue-800 mr-2" @click="toggleUserStatus(userItem.id)">
+                  {{ userItem.active ? 'غیرفعال' : 'فعال' }}
                 </button>
-                <button v-if="hasPermission('user.delete')" @click="deleteUser(user.id)" class="text-red-600 hover:text-red-800">حذف</button>
+                <button v-if="hasPermission('user.delete')" class="text-red-600 hover:text-red-800" @click="deleteUser(userItem.id)">حذف</button>
               </td>
             </tr>
           </tbody>
@@ -106,7 +106,7 @@ declare const useAuth: () => { user: { id?: number; name?: string; email?: strin
 import { ref } from 'vue';
 
 // استفاده از کامپوزابل احراز هویت
-const { user, hasPermission } = useAuth()
+const { hasPermission } = useAuth()
 
 const roles = ref([
   {

@@ -115,8 +115,8 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string }) => void
-declare const useRoute: () => any
-declare const useRouter: () => any
+declare const useRoute: () => { params: { id: string } }
+declare const useRouter: () => { push: (path: string) => void }
 declare const $fetch: <T = unknown>(url: string, options?: { method?: string; body?: unknown; credentials?: string }) => Promise<T>
 </script>
 
@@ -143,19 +143,62 @@ import UserWishlistSection from './UserWishlistSection.vue';
 
 definePageMeta({ layout: 'admin-main' })
 
+interface UserDetail {
+  id: number | string
+  ID?: number | string
+  name: string
+  fullName?: string
+  username: string
+  email: string
+  mobile: string
+  landline?: string
+  landlineNumber?: string
+  nationalCode?: string
+  national_code?: string
+  selectedAddress?: string
+  selected_address?: string
+  registered_at?: string
+  registeredAt?: string
+  registered?: string
+  last_seen?: string
+  lastSeenAt?: string
+  lastSeen?: string
+  online?: boolean
+  role_id?: number
+  status?: string
+  first_name?: string
+  last_name?: string
+  profile_data?: {
+    first_name?: string
+    last_name?: string
+  }
+}
+
+interface EditForm {
+  name: string
+  firstName: string
+  lastName: string
+  username: string
+  email: string
+  mobile: string
+  landline: string
+  nationalCode: string
+  selectedAddress: string
+}
+
 const route = useRoute();
 const router = useRouter();
-const user = ref<any>(null);
-const editOpen = ref(false) // deprecated (modal removed)
+const user = ref<UserDetail | null>(null);
+// const editOpen = ref(false) // deprecated (modal removed)
 const isEditingInline = ref(false)
-const editForm = ref<any>({ name: '', firstName: '', lastName: '', username: '', email: '', mobile: '', landline: '', nationalCode: '', selectedAddress: '' })
+const editForm = ref<EditForm>({ name: '', firstName: '', lastName: '', username: '', email: '', mobile: '', landline: '', nationalCode: '', selectedAddress: '' })
 
 onMounted(async () => {
   const id = route.params.id;
   try {
-    const detail = await $fetch(`/api/users/${id}`) as any
+    const detail = await $fetch<UserDetail>(`/api/users/${id}`)
     user.value = {
-      id: detail.id || detail.ID,
+      id: detail.id || detail.ID || '',
       name: detail.name || detail.fullName || detail.username || '-',
       username: detail.username,
       email: detail.email,
@@ -164,7 +207,7 @@ onMounted(async () => {
       nationalCode: detail.nationalCode || detail.national_code || '',
       selectedAddress: detail.selectedAddress || detail.selected_address || '',
       registered: detail.registered_at || detail.registeredAt || detail.registered || '-',
-      lastSeen: detail.last_seen || detail.lastSeenAt || detail.lastSeen || '-',
+      last_seen: detail.last_seen || detail.lastSeenAt || detail.lastSeen || '-',
       online: !!detail.online,
       role_id: detail.role_id,
       status: detail.status,
@@ -188,7 +231,7 @@ onMounted(async () => {
 function goBack() {
   router.push('/admin/users');
 }
-function handleAction(action: string) {
+function handleAction(_action: string) {
   // Placeholder for admin actions
 }
 function handleNewMessage() {
@@ -217,7 +260,7 @@ function startInlineEdit(){
 
 async function saveUserEdits() {
   if (!user.value) return
-  const payload:any = {
+  const payload: Record<string, unknown> = {
     name: editForm.value.name,
     email: editForm.value.email,
     mobile: editForm.value.mobile,

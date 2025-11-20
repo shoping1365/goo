@@ -105,13 +105,13 @@
         <div class="flex items-center justify-between">
           <h4 class="text-lg font-semibold text-gray-900">تراکنش‌های اخیر</h4>
           <TemplateButton 
-            @click="viewAllTransactions" 
-            bgGradient="bg-gradient-to-r from-teal-100 to-teal-200"
-            textColor="text-teal-700"
-            borderColor="border border-teal-200"
-            hoverClass="hover:from-teal-200 hover:to-teal-300"
-            focusClass="focus:ring-2 focus:ring-teal-200 focus:ring-offset-2"
+            bg-gradient="bg-gradient-to-r from-teal-100 to-teal-200" 
+            text-color="text-teal-700"
+            border-color="border border-teal-200"
+            hover-class="hover:from-teal-200 hover:to-teal-300"
+            focus-class="focus:ring-2 focus:ring-teal-200 focus:ring-offset-2"
             size="medium"
+            @click="viewAllTransactions"
           >
             مشاهده همه
           </TemplateButton>
@@ -145,7 +145,7 @@
               </td>
             </tr>
             
-            <tr v-else v-for="transaction in recentTransactions" :key="transaction.id" class="hover:bg-gray-50">
+            <tr v-for="transaction in recentTransactions" v-else :key="transaction.id" class="hover:bg-gray-50">
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                 {{ transaction.transaction_id }}
               </td>
@@ -161,7 +161,8 @@
                 {{ formatCurrency(transaction.amount) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span :class="[
+                <span
+:class="[
                   'inline-flex px-2 py-1 text-xs font-semibold rounded-full',
                   getStatusClass(transaction.status)
                 ]">
@@ -173,13 +174,13 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <TemplateButton 
-                  @click="viewTransaction(transaction)" 
-                  bgGradient="bg-gradient-to-r from-teal-100 to-teal-200"
-                  textColor="text-teal-700"
-                  borderColor="border border-teal-200"
-                  hoverClass="hover:from-teal-200 hover:to-teal-300"
-                  focusClass="focus:ring-2 focus:ring-teal-200 focus:ring-offset-2"
+                  bg-gradient="bg-gradient-to-r from-teal-100 to-teal-200" 
+                  text-color="text-teal-700"
+                  border-color="border border-teal-200"
+                  hover-class="hover:from-teal-200 hover:to-teal-300"
+                  focus-class="focus:ring-2 focus:ring-teal-200 focus:ring-offset-2"
                   size="medium"
+                  @click="viewTransaction(transaction)"
                 >
                   جزئیات
                 </TemplateButton>
@@ -202,7 +203,7 @@
       </div>
     </div>
     
-    <div v-else-if="activeRealGateways.length > 0" v-for="gateway in activeRealGateways" :key="`transactions-${gateway.id}`" class="bg-white rounded-xl shadow-sm">
+    <div v-for="gateway in activeRealGateways" v-else-if="activeRealGateways.length > 0" :key="`transactions-${gateway.id}`" class="bg-white rounded-xl shadow-sm">
       <div class="p-6 border-b border-gray-200">
         <div class="flex items-center justify-between">
           <div class="flex items-center">
@@ -219,8 +220,8 @@
               <option value="pending">در انتظار</option>
             </select>
             <button
-                @click="exportTransactions"
                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+                @click="exportTransactions"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -257,7 +258,7 @@
               </td>
             </tr>
             
-            <tr v-else v-for="transaction in getGatewayTransactions(gateway.id)" :key="transaction.id">
+            <tr v-for="transaction in getGatewayTransactions(gateway.id)" v-else :key="transaction.id">
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                 {{ transaction.transaction_id }}
               </td>
@@ -265,7 +266,8 @@
                 {{ formatCurrency(transaction.amount) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span :class="[
+                <span
+:class="[
                   'px-2 py-1 text-xs font-semibold rounded-full',
                   getStatusClass(transaction.status)
                 ]">
@@ -277,13 +279,13 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <TemplateButton 
-                  @click="viewTransaction(transaction)" 
-                  bgGradient="bg-gradient-to-r from-teal-100 to-teal-200"
-                  textColor="text-teal-700"
-                  borderColor="border border-teal-200"
-                  hoverClass="hover:from-teal-200 hover:to-teal-300"
-                  focusClass="focus:ring-2 focus:ring-teal-200 focus:ring-offset-2"
+                  bg-gradient="bg-gradient-to-r from-teal-100 to-teal-200" 
+                  text-color="text-teal-700"
+                  border-color="border border-teal-200"
+                  hover-class="hover:from-teal-200 hover:to-teal-300"
+                  focus-class="focus:ring-2 focus:ring-teal-200 focus:ring-offset-2"
                   size="medium"
+                  @click="viewTransaction(transaction)"
                 >
                   جزئیات
                 </TemplateButton>

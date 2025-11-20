@@ -106,7 +106,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">کش پیشنهادات</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="cache.enabled" class="sr-only peer">
+            <input v-model="cache.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
           </label>
         </div>
@@ -114,12 +114,12 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">زمان انقضا (دقیقه)</label>
-            <input type="number" v-model="cache.expirationMinutes" min="1" max="1440" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <input v-model="cache.expirationMinutes" type="number" min="1" max="1440" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداکثر اندازه (MB)</label>
-            <input type="number" v-model="cache.maxSizeMB" min="10" max="10000" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <input v-model="cache.maxSizeMB" type="number" min="10" max="10000" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
           </div>
           
           <div>
@@ -136,7 +136,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">فشرده‌سازی</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="cache.compression" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                <input v-model="cache.compression" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                 <span class="mr-2 text-sm text-gray-700">فعال‌سازی فشرده‌سازی</span>
               </label>
             </div>
@@ -156,7 +156,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">پردازش موازی</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="parallel.enabled" class="sr-only peer">
+            <input v-model="parallel.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
           </label>
         </div>
@@ -164,7 +164,7 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">تعداد Thread</label>
-            <input type="range" v-model="parallel.threadCount" min="1" max="16" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="parallel.threadCount" type="range" min="1" max="16" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>1</span>
               <span>{{ parallel.threadCount }}</span>
@@ -174,12 +174,12 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداکثر درخواست همزمان</label>
-            <input type="number" v-model="parallel.maxConcurrentRequests" min="10" max="1000" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+            <input v-model="parallel.maxConcurrentRequests" type="number" min="10" max="1000" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Timeout پردازش (ثانیه)</label>
-            <input type="number" v-model="parallel.timeoutSeconds" min="1" max="300" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+            <input v-model="parallel.timeoutSeconds" type="number" min="1" max="300" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
           </div>
           
           <div>
@@ -218,7 +218,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">اندیس‌گذاری خودکار</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="database.autoIndexing" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="database.autoIndexing" type="checkbox" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">فعال‌سازی اندیس‌گذاری خودکار</span>
               </label>
             </div>
@@ -228,7 +228,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">تحلیل کوئری</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="database.queryAnalysis" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="database.queryAnalysis" type="checkbox" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">تحلیل خودکار کوئری‌های کند</span>
               </label>
             </div>
@@ -236,12 +236,12 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Connection Pool</label>
-            <input type="number" v-model="database.connectionPoolSize" min="5" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+            <input v-model="database.connectionPoolSize" type="number" min="5" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Query Cache</label>
-            <input type="number" v-model="database.queryCacheSize" min="10" max="1000" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+            <input v-model="database.queryCacheSize" type="number" min="10" max="1000" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
           </div>
         </div>
       </div>
@@ -267,7 +267,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">Auto Scaling</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="scaling.autoScaling" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                <input v-model="scaling.autoScaling" type="checkbox" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
                 <span class="mr-2 text-sm text-gray-700">مقیاس‌بندی خودکار</span>
               </label>
             </div>
@@ -275,17 +275,17 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداقل Instance</label>
-            <input type="number" v-model="scaling.minInstances" min="1" max="10" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+            <input v-model="scaling.minInstances" type="number" min="1" max="10" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداکثر Instance</label>
-            <input type="number" v-model="scaling.maxInstances" min="1" max="50" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+            <input v-model="scaling.maxInstances" type="number" min="1" max="50" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">آستانه CPU (%)</label>
-            <input type="number" v-model="scaling.cpuThreshold" min="10" max="90" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+            <input v-model="scaling.cpuThreshold" type="number" min="10" max="90" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
           </div>
         </div>
       </div>
@@ -326,7 +326,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">نگهداری Backup</label>
-            <input type="number" v-model="backup.retentionDays" min="1" max="365" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+            <input v-model="backup.retentionDays" type="number" min="1" max="365" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
             <p class="text-xs text-gray-500 mt-1">روز</p>
           </div>
           
@@ -334,7 +334,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">فشرده‌سازی</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="backup.compression" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
+                <input v-model="backup.compression" type="checkbox" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
                 <span class="mr-2 text-sm text-gray-700">فشرده‌سازی Backup</span>
               </label>
             </div>
@@ -346,7 +346,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">رمزنگاری</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="backup.encryption" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
+                <input v-model="backup.encryption" type="checkbox" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
                 <span class="mr-2 text-sm text-gray-700">رمزنگاری Backup</span>
               </label>
             </div>
@@ -365,7 +365,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">تست بازیابی</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="backup.testRecovery" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
+                <input v-model="backup.testRecovery" type="checkbox" class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
                 <span class="mr-2 text-sm text-gray-700">تست خودکار بازیابی</span>
               </label>
             </div>

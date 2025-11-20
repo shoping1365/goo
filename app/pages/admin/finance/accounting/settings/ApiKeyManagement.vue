@@ -8,8 +8,8 @@
       </div>
       <div class="flex items-center space-x-3 space-x-reverse">
         <button
-          @click="showCreateModal = true"
           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          @click="showCreateModal = true"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -17,8 +17,8 @@
           ایجاد کلید جدید
         </button>
         <button
-          @click="refreshApiKeys"
           class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          @click="refreshApiKeys"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -123,9 +123,9 @@
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <code class="text-xs bg-gray-100 px-2 py-1 rounded">{{ key.maskedKey }}</code>
                   <button
-                    @click="toggleKeyVisibility(key)"
                     class="p-1 text-blue-600 hover:text-blue-800"
                     :title="key.showKey ? 'مخفی کردن' : 'نمایش'"
+                    @click="toggleKeyVisibility(key)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path v-if="key.showKey" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
@@ -157,27 +157,27 @@
               <td class="py-3 px-4">
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <button
-                    @click="regenerateKey(key)"
                     class="p-1 text-green-600 hover:text-green-800"
                     title="تولید مجدد"
+                    @click="regenerateKey(key)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
                   </button>
                   <button
-                    @click="editKey(key)"
                     class="p-1 text-blue-600 hover:text-blue-800"
                     title="ویرایش"
+                    @click="editKey(key)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                     </svg>
                   </button>
                   <button
-                    @click="revokeKey(key)"
                     class="p-1 text-red-600 hover:text-red-800"
                     title="لغو کلید"
+                    @click="revokeKey(key)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728" />
@@ -242,7 +242,7 @@
       <div class="relative top-20 mx-auto p-5 border w-full max-w-md sm:max-w-lg md:max-w-xl shadow-lg rounded-md bg-white">
         <div class="mt-3">
           <h3 class="text-lg font-medium text-gray-900 mb-4">ایجاد کلید API جدید</h3>
-          <form @submit.prevent="createApiKey" class="space-y-4">
+          <form class="space-y-4" @submit.prevent="createApiKey">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">نام کلید</label>
               <input
@@ -294,8 +294,8 @@
             <div class="flex items-center justify-end space-x-3 space-x-reverse">
               <button
                 type="button"
-                @click="showCreateModal = false"
                 class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
+                @click="showCreateModal = false"
               >
                 انصراف
               </button>

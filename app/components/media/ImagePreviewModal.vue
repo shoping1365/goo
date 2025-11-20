@@ -1,7 +1,7 @@
 <template>
   <div v-if="!!modelValue" class="fixed inset-0 flex items-center justify-center z-50" @click="emitClose">
     <div class="relative">
-      <button @click="emitClose" class="absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 bg-rose-200 hover:bg-rose-300 rounded-full p-2 shadow hover:bg-opacity-100 transition-all z-10">
+      <button class="absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 bg-rose-200 hover:bg-rose-300 rounded-full p-2 shadow hover:bg-opacity-100 transition-all z-10" @click="emitClose">
         <svg class="w-7 h-7 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>

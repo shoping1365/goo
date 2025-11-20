@@ -13,9 +13,9 @@
         <h3 class="text-lg font-semibold text-gray-900">ساختار منو</h3>
         <!-- Quick Actions -->
         <button
-          @click="enableAllItems"
           class="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg font-medium transition-colors"
           title="فعال کردن همه آیتم‌ها"
+          @click="enableAllItems"
         >
           ✓ فعال کردن همه
         </button>
@@ -80,10 +80,10 @@
       <!-- Save Button -->
       <div class="mt-6 pt-6 border-t border-gray-200">
         <button
-          @click="$emit('save')"
           :disabled="!menu.name || isSaving"
           class="bg-green-200 hover:bg-green-300 text-green-900 px-6 py-2 rounded-lg font-bold transition-colors duration-150 border border-green-300 disabled:opacity-50 disabled:cursor-not-allowed"
           style="box-shadow: 0 2px 12px 0 rgba(34,197,94,0.10);"
+          @click="$emit('save')"
         >
           {{ isSaving ? 'در حال ذخیره...' : 'ذخیره منو' }}
         </button>

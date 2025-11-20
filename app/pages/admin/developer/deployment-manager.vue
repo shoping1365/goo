@@ -73,24 +73,27 @@
         </div>
         <div class="p-6">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <button @click="startDeployment('staging')" :disabled="isDeploying" 
-                    class="flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+            <button
+:disabled="isDeploying" class="flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" 
+                    @click="startDeployment('staging')">
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
               </svg>
               استقرار در Staging
             </button>
 
-            <button @click="startDeployment('production')" :disabled="isDeploying"
-                    class="flex items-center justify-center px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+            <button
+:disabled="isDeploying" class="flex items-center justify-center px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    @click="startDeployment('production')">
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
               </svg>
               استقرار در Production
             </button>
 
-            <button @click="rollbackDeployment()" :disabled="isDeploying"
-                    class="flex items-center justify-center px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+            <button
+:disabled="isDeploying" class="flex items-center justify-center px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    @click="rollbackDeployment()">
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
               </svg>
@@ -130,7 +133,8 @@
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">تعداد Replica</label>
-                  <input v-model="deploymentConfig.replicas" type="number" min="1" max="10" 
+                  <input
+v-model="deploymentConfig.replicas" type="number" min="1" max="10" 
                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
               </div>
@@ -150,12 +154,14 @@
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">Commit Hash</label>
-                  <input v-model="deploymentConfig.commitHash" type="text" 
+                  <input
+v-model="deploymentConfig.commitHash" type="text" 
                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                          placeholder="a1b2c3d4...">
                 </div>
                 <div class="flex items-center">
-                  <input v-model="deploymentConfig.autoRollback" type="checkbox" id="auto-rollback" 
+                  <input
+id="auto-rollback" v-model="deploymentConfig.autoRollback" type="checkbox" 
                          class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                   <label for="auto-rollback" class="mr-2 text-sm text-gray-700">بازگشت خودکار در صورت خطا</label>
                 </div>
@@ -164,8 +170,9 @@
           </div>
 
           <div class="mt-6 flex justify-end">
-            <button @click="saveDeploymentConfiguration" 
-                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            <button
+class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" 
+                    @click="saveDeploymentConfiguration">
               ذخیره تنظیمات
             </button>
           </div>
@@ -206,7 +213,8 @@
             <tbody class="bg-white divide-y divide-gray-200">
               <tr v-for="deployment in filteredDeployments" :key="deployment.id" class="hover:bg-gray-50">
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                  <span
+class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                         :class="getEnvironmentBadgeClass(deployment.environment)">
                     {{ getEnvironmentLabel(deployment.environment) }}
                   </span>
@@ -218,7 +226,8 @@
                   </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                  <span
+class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                         :class="getStatusBadgeClass(deployment.status)">
                     {{ getStatusLabel(deployment.status) }}
                   </span>
@@ -231,10 +240,12 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div class="flex space-x-2 space-x-reverse">
-                    <button @click="viewDeploymentLogs(deployment.id)" 
-                            class="text-blue-600 hover:text-blue-900">لاگ‌ها</button>
-                    <button v-if="deployment.status === 'successful'" @click="rollbackToVersion(deployment.id)" 
-                            class="text-red-600 hover:text-red-900">بازگشت</button>
+                    <button
+class="text-blue-600 hover:text-blue-900" 
+                            @click="viewDeploymentLogs(deployment.id)">لاگ‌ها</button>
+                    <button
+v-if="deployment.status === 'successful'" class="text-red-600 hover:text-red-900" 
+                            @click="rollbackToVersion(deployment.id)">بازگشت</button>
                   </div>
                 </td>
               </tr>
@@ -250,11 +261,13 @@
         </div>
         <div class="p-6">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div v-for="env in environments" :key="env.name" 
+            <div
+v-for="env in environments" :key="env.name" 
                  class="border border-gray-200 rounded-lg p-6">
               <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-medium text-gray-900">{{ env.name }}</h3>
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                <span
+class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                       :class="getStatusBadgeClass(env.status)">
                   {{ getStatusLabel(env.status) }}
                 </span>
@@ -280,12 +293,14 @@
               </div>
 
               <div class="mt-4 flex space-x-2 space-x-reverse">
-                <button @click="scaleEnvironment(env.name, 'up')" 
-                        class="flex-1 px-3 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition-colors">
+                <button
+class="flex-1 px-3 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition-colors" 
+                        @click="scaleEnvironment(env.name, 'up')">
                   افزایش
                 </button>
-                <button @click="scaleEnvironment(env.name, 'down')" 
-                        class="flex-1 px-3 py-2 bg-yellow-600 text-white text-sm rounded hover:bg-yellow-700 transition-colors">
+                <button
+class="flex-1 px-3 py-2 bg-yellow-600 text-white text-sm rounded hover:bg-yellow-700 transition-colors" 
+                        @click="scaleEnvironment(env.name, 'down')">
                   کاهش
                 </button>
               </div>
@@ -301,9 +316,11 @@
         </div>
         <div class="p-6">
           <div class="space-y-6">
-            <div v-for="stage in deploymentPipeline" :key="stage.id" 
+            <div
+v-for="stage in deploymentPipeline" :key="stage.id" 
                  class="flex items-center">
-              <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mr-4"
+              <div
+class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mr-4"
                    :class="getStageStatusClass(stage.status)">
                 <svg v-if="stage.status === 'completed'" class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>

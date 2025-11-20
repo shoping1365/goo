@@ -17,7 +17,7 @@
                 <p class="text-purple-100 text-sm">تغییر اطلاعات سفارش و وضعیت</p>
               </div>
             </div>
-            <button @click="closeModal" class="text-white hover:text-gray-200 transition-colors">
+            <button class="text-white hover:text-gray-200 transition-colors" @click="closeModal">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
               </svg>
@@ -28,7 +28,7 @@
         <!-- Content -->
         <div class="max-h-[calc(100vh-200px)] overflow-y-auto bg-gray-50">
           <div class="px-4 py-4">
-            <form @submit.prevent="saveOrder" class="space-y-6">
+            <form class="space-y-6" @submit.prevent="saveOrder">
               
               <!-- تب‌ها -->
               <div class="border-b border-gray-200">
@@ -37,13 +37,13 @@
                     v-for="tab in tabs" 
                     :key="tab.id"
                     type="button"
-                    @click="activeTab = tab.id"
                     :class="[
                       'py-2 px-1 border-b-2 font-medium text-sm',
                       activeTab === tab.id 
                         ? 'border-purple-500 text-purple-600' 
                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                     ]"
+                    @click="activeTab = tab.id"
                   >
                     {{ tab.name }}
                   </button>
@@ -187,8 +187,8 @@
                     <h5 class="text-lg font-semibold text-gray-900">محصولات سفارش</h5>
                     <button 
                       type="button"
-                      @click="addProduct"
                       class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
+                      @click="addProduct"
                     >
                       <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -250,8 +250,8 @@
                         <div class="flex space-x-2 space-x-reverse">
                           <button 
                             type="button"
-                            @click="removeProduct(index)"
                             class="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                            @click="removeProduct(index)"
                           >
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -313,8 +313,8 @@
           <div class="flex space-x-2 space-x-reverse">
             <button 
               type="button"
-              @click="resetForm"
               class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+              @click="resetForm"
             >
               بازنشانی
             </button>
@@ -323,14 +323,13 @@
           <div class="flex space-x-2 space-x-reverse">
             <button 
               type="button"
-              @click="closeModal" 
-              class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+              class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors" 
+              @click="closeModal"
             >
               لغو
             </button>
             <button 
               type="button"
-              @click="saveOrder"
               :disabled="isSaving"
               :class="[
                 'px-6 py-2 rounded-lg font-medium transition-colors',
@@ -338,6 +337,7 @@
                   ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
                   : 'bg-purple-600 text-white hover:bg-purple-700'
               ]"
+              @click="saveOrder"
             >
               <div v-if="isSaving" class="flex items-center">
                 <svg class="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -356,11 +356,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue';
 
 interface Props {
   show: boolean
-  order: any
+  order: Record<string, unknown>
 }
 
 const props = defineProps<Props>()
@@ -419,11 +419,11 @@ watch(() => props.show, (newShow) => {
 
 // Computed
 const calculatedSubtotal = computed(() => {
-  return editedOrder.value.items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+  return editedOrder.value.items.reduce((sum, item: { price: number; quantity: number }) => sum + (item.price * item.quantity), 0)
 })
 
 const calculatedTotal = computed(() => {
-  let subtotal = calculatedSubtotal.value
+  const subtotal = calculatedSubtotal.value
   let discount = 0
   
   if (discountType.value === 'percent') {
@@ -521,10 +521,10 @@ const saveOrder = async () => {
     await new Promise(resolve => setTimeout(resolve, 1500))
     
     emit('save', editedOrder.value)
-    console.log('سفارش ذخیره شد:', editedOrder.value)
+    // console.log('سفارش ذخیره شد:', editedOrder.value)
     
-  } catch (error) {
-    console.error('خطا در ذخیره سفارش:', error)
+  } catch {
+    // console.error('خطا در ذخیره سفارش:', error)
     alert('خطا در ذخیره سفارش. لطفاً دوباره تلاش کنید.')
   } finally {
     isSaving.value = false

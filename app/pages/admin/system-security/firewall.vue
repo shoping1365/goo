@@ -36,14 +36,14 @@
         <div>
           <div class="text-xs text-gray-500 mb-2 font-medium">وضعیت فایروال</div>
           <div class="flex gap-2">
-            <button @click="toggleFirewall(true)" :class="firewallEnabled ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700'" class="px-4 py-1 rounded-full text-sm font-bold transition-colors">فعال</button>
-            <button @click="toggleFirewall(false)" :class="!firewallEnabled ? 'bg-gray-400 text-white' : 'bg-gray-200 text-gray-700'" class="px-4 py-1 rounded-full text-sm font-bold transition-colors">غیرفعال</button>
+            <button :class="firewallEnabled ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700'" class="px-4 py-1 rounded-full text-sm font-bold transition-colors" @click="toggleFirewall(true)">فعال</button>
+            <button :class="!firewallEnabled ? 'bg-gray-400 text-white' : 'bg-gray-200 text-gray-700'" class="px-4 py-1 rounded-full text-sm font-bold transition-colors" @click="toggleFirewall(false)">غیرفعال</button>
           </div>
         </div>
         <!-- حالت امنیتی -->
         <div>
           <div class="text-xs text-gray-500 mb-2 font-medium">حالت امنیتی</div>
-          <select v-model="securityMode" @change="changeSecurityMode" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm bg-gray-50">
+          <select v-model="securityMode" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm bg-gray-50" @change="changeSecurityMode">
             <option value="low">کم</option>
             <option value="medium">متوسط</option>
             <option value="high">زیاد</option>
@@ -53,13 +53,13 @@
         <!-- عملیات سریع -->
         <div>
           <div class="flex gap-6 justify-end">
-            <button @click="clearLogs" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-gray-400 to-gray-600 hover:from-gray-500 hover:to-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105">
+            <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-gray-400 to-gray-600 hover:from-gray-500 hover:to-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105" @click="clearLogs">
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
               </svg>
               پاک کردن لاگ‌ها
             </button>
-            <button @click="backupRules" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105">
+            <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105" @click="backupRules">
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
               </svg>
@@ -82,7 +82,7 @@
     <div class="bg-white rounded-lg shadow-md border border-gray-200 mb-8">
       <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
         <h3 class="text-lg font-semibold text-gray-900">قوانین فایروال</h3>
-        <button @click="showAddRuleModal = true" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105">
+        <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105" @click="showAddRuleModal = true">
           <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
           </svg>
@@ -117,11 +117,11 @@
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button @click="toggleRule(rule.name)" class="text-blue-600 hover:text-blue-900 ml-2">
+                <button class="text-blue-600 hover:text-blue-900 ml-2" @click="toggleRule(rule.name)">
                   {{ rule.enabled ? 'غیرفعال' : 'فعال' }}
                 </button>
-                <button @click="openEdit(rule)" class="text-green-600 hover:text-green-900 ml-2">ویرایش</button>
-                <button v-if="hasPermission('security_firewall.write')" @click="deleteRule(rule.name)" class="text-red-600 hover:text-red-900">حذف</button>
+                <button class="text-green-600 hover:text-green-900 ml-2" @click="openEdit(rule)">ویرایش</button>
+                <button v-if="hasPermission('security_firewall.write')" class="text-red-600 hover:text-red-900" @click="deleteRule(rule.name)">حذف</button>
               </td>
             </tr>
           </tbody>
@@ -170,7 +170,7 @@
         <!-- Header -->
         <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
           <h3 class="text-lg font-bold text-gray-900">{{ isEdit ? 'ویرایش قانون' : 'افزودن قانون جدید' }}</h3>
-          <button @click="showAddRuleModal = false" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+          <button class="p-2 hover:bg-gray-100 rounded-lg transition-colors" @click="showAddRuleModal = false">
             <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -221,10 +221,10 @@
         
         <!-- Footer -->
         <div class="px-6 py-4 border-t border-gray-100 flex justify-end gap-3">
-          <button @click="showAddRuleModal = false" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium">
+          <button class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium" @click="showAddRuleModal = false">
             انصراف
           </button>
-          <button @click="isEdit ? updateRule() : addRule()" class="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-md transition-all duration-200 hover:shadow-lg">
+          <button class="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-md transition-all duration-200 hover:shadow-lg" @click="isEdit ? updateRule() : addRule()">
             <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
@@ -347,7 +347,7 @@ async function toggleRule(name: string) {
   await fetchRules()
 }
 
-function openCreate() {
+function _openCreate() {
   isEdit.value = false
   showAddRuleModal.value = true
 }

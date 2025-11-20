@@ -29,8 +29,8 @@
             <span :class="['status', image.status]">{{ image.statusText }}</span>
           </td>
           <td>
-            <button @click="editImage(image)" class="btn-edit">ویرایش</button>
-            <button @click="deleteImage(image.id)" class="btn-delete">حذف</button>
+            <button class="btn-edit" @click="editImage(image)">ویرایش</button>
+            <button class="btn-delete" @click="deleteImage(image.id)">حذف</button>
           </td>
         </tr>
         </tbody>
@@ -59,7 +59,7 @@
         </div>
         <div class="form-group">
           <label>انتخاب تصویر:</label>
-          <input type="file" @change="onFileChange" accept="image/*" required>
+          <input type="file" accept="image/*" required @change="onFileChange">
         </div>
         <button type="submit" class="btn-primary">افزودن تصویر</button>
       </form>
@@ -68,7 +68,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 definePageMeta({
   layout: 'admin-main',
@@ -76,7 +76,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 const images = ref([
   {
@@ -107,11 +107,11 @@ const onFileChange = (e) => {
   newImage.file = e.target.files[0]
 }
 
-const editImage = (image) => {
+const editImage = (_image) => {
   // Edit image logic
 }
 
-const deleteImage = (id) => {
+const deleteImage = (_id) => {
   // Delete image logic
 }
 

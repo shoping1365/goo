@@ -30,9 +30,9 @@
         <!-- دکمه‌های ناوبری -->
         <button
           v-show="showNavigation"
-          @click="prevSlide"
           class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors"
           aria-label="Previous products"
+          @click="prevSlide"
         >
           <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
@@ -41,9 +41,9 @@
 
         <button
           v-show="showNavigation"
-          @click="nextSlide"
           class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors"
           aria-label="Next products"
+          @click="nextSlide"
         >
           <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -51,7 +51,7 @@
         </button>
 
         <!-- کانتینر اسلایدها -->
-        <div class="overflow-hidden" ref="carouselContainer">
+        <div ref="carouselContainer" class="overflow-hidden">
           <div
             class="flex transition-transform duration-300 ease-in-out"
             :style="{ transform: `translateX(-${slideTransform}%)` }"
@@ -109,10 +109,10 @@
           <button
             v-for="n in totalSlides"
             :key="`indicator-${n}`"
-            @click="goToSlide(n - 1)"
             class="w-2 h-2 rounded-full transition-colors"
             :class="isActiveSlide(n - 1) ? 'bg-blue-600' : 'bg-gray-300'"
             :aria-label="`Go to slide ${n}`"
+            @click="goToSlide(n - 1)"
           ></button>
         </div>
         </template>

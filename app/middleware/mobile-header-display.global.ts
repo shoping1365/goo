@@ -108,7 +108,7 @@ export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized, fro
         isFetching: false
       }
     }
-  } catch (error) {
+  } catch (_error) {
     // در صورت خطا، هدر را نمایش نده
     mobileHeaderDisplayState.value = {
       shouldShow: false,

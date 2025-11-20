@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
     const url = `${config.public.goApiBase}/api/chat/admin/sessions/${id}`
     const res = await $fetch(url, { method: 'GET' })
     return res
-  } catch (error) {
+  } catch {
     throw createError({ statusCode: 500, message: 'خطا در دریافت جلسه' })
   }
 })

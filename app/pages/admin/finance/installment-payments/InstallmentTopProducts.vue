@@ -15,7 +15,7 @@
           <option value="approval_rate">بالاترین نرخ تایید</option>
           <option value="avg_installments">بیشترین اقساط</option>
         </select>
-        <button @click="refreshData" class="text-blue-600 hover:text-blue-800">
+        <button class="text-blue-600 hover:text-blue-800" @click="refreshData">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
@@ -139,13 +139,13 @@
 
             <!-- Action Buttons -->
             <div class="mt-4 flex items-center space-x-2 space-x-reverse">
-              <button @click="viewDetails(product)" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+              <button class="text-blue-600 hover:text-blue-800 text-sm font-medium" @click="viewDetails(product)">
                 مشاهده جزئیات
               </button>
-              <button @click="editInstallmentSettings(product)" class="text-green-600 hover:text-green-800 text-sm font-medium">
+              <button class="text-green-600 hover:text-green-800 text-sm font-medium" @click="editInstallmentSettings(product)">
                 تنظیمات اقساط
               </button>
-              <button @click="viewHistory(product)" class="text-purple-600 hover:text-purple-800 text-sm font-medium">
+              <button class="text-purple-600 hover:text-purple-800 text-sm font-medium" @click="viewHistory(product)">
                 تاریخچه
               </button>
             </div>
@@ -156,7 +156,7 @@
 
     <!-- Load More -->
     <div v-if="hasMore" class="text-center mt-6">
-      <button @click="loadMore" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700">
+      <button class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700" @click="loadMore">
         نمایش بیشتر
       </button>
     </div>

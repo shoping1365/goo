@@ -13,7 +13,7 @@
             </svg>
             حذف
           </button>
-          <button @click="saveBrand" class="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-md transition-all duration-200 font-semibold">
+          <button class="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-md transition-all duration-200 font-semibold" @click="saveBrand">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 3.75H6.912a2.25 2.25 0 00-2.15 1.588L2.25 16.5l1.75 1.75 5.125-5.125M15 1.5l1.5 1.5m-1.5-1.5l-3.182 3.182A9.962 9.962 0 0121.75 8.25c0 2.278-.674 4.42-1.902 6.25" />
             </svg>
@@ -26,8 +26,8 @@
             ذخیره
           </button>
           <button 
-            @click="previewBrand"
-            class="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 shadow-md transition-all duration-200 font-semibold">
+            class="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 shadow-md transition-all duration-200 font-semibold"
+            @click="previewBrand">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
             </svg>
@@ -41,12 +41,12 @@
     <div class="bg-white rounded-lg shadow px-4 py-4 flex items-center justify-between border-b border-gray-200 mt-4 mb-6">
       <!-- Tabs -->
       <nav class="-mb-px flex" aria-label="Tabs">
-        <a href="#" @click.prevent="selectTab('info')" :class="[activeTab === 'info' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-6']">اطلاعات برند</a>
-        <a href="#" @click.prevent="selectTab('display')" :class="[activeTab === 'display' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-6']">تنظیمات نمایش برند در دسته بندی</a>
-        <a href="#" @click.prevent="selectTab('seo')" :class="[activeTab === 'seo' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-6']">سئو</a>
-        <a href="#" @click.prevent="selectTab('products')" :class="[activeTab === 'products' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-6']">محصولات</a>
-        <a href="#" @click.prevent="selectTab('images')" :class="[activeTab === 'images' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-16']">تصاویر مرتبط</a>
-        <a href="#" @click.prevent="selectTab('video')" :class="[activeTab === 'video' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']">ویدیو</a>
+        <a href="#" :class="[activeTab === 'info' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-6']" @click.prevent="selectTab('info')">اطلاعات برند</a>
+        <a href="#" :class="[activeTab === 'display' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-6']" @click.prevent="selectTab('display')">تنظیمات نمایش برند در دسته بندی</a>
+        <a href="#" :class="[activeTab === 'seo' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-6']" @click.prevent="selectTab('seo')">سئو</a>
+        <a href="#" :class="[activeTab === 'products' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-6']" @click.prevent="selectTab('products')">محصولات</a>
+        <a href="#" :class="[activeTab === 'images' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ml-16']" @click.prevent="selectTab('images')">تصاویر مرتبط</a>
+        <a href="#" :class="[activeTab === 'video' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']" @click.prevent="selectTab('video')">ویدیو</a>
       </nav>
       <!-- Back link -->
       <NuxtLink to="/admin/product-management/brands" class="flex items-center text-blue-600 hover:text-blue-800 text-sm">
@@ -65,7 +65,7 @@
           <!-- Name Field -->
           <div class="mb-6">
             <label for="brand-name" class="block text-sm font-medium text-gray-700 mb-1 text-right">نام</label>
-            <input v-model="name" type="text" id="brand-name" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-gray-50 p-2 text-right" dir="rtl">
+            <input id="brand-name" v-model="name" type="text" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-gray-50 p-2 text-right" dir="rtl">
           </div>
           <!-- Description Field -->
           <div>
@@ -80,7 +80,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gapx-4 py-4">
             <div>
               <label for="official-name" class="block text-sm font-medium text-gray-700 mb-1 text-right">نام رسمی</label>
-              <input @blur="onEnglishBlur" v-model="officialName" type="text" id="official-name" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 focus:outline-blue-500 bg-gray-50 p-2 text-right" dir="rtl">
+              <input id="official-name" v-model="officialName" type="text" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 focus:outline-blue-500 bg-gray-50 p-2 text-right" dir="rtl" @blur="onEnglishBlur">
             </div>
             <div>
               <label for="brand-image" class="block text-sm font-medium text-gray-700 mb-1 text-right">تصویر</label>
@@ -93,7 +93,7 @@
                   </div>
                   <span class="text-gray-600 mr-2" v-text="selectedFileName"></span>
                 </div>
-                <input type="file" id="brand-image-upload" @change="handleFileChange" class="hidden" />
+                <input id="brand-image-upload" type="file" class="hidden" @change="handleFileChange" />
               </div>
             </div>
           </div>
@@ -127,7 +127,7 @@
               <!-- Display Order -->
               <div class="flex items-center justify-start">
                 <label for="display-order" class="block text-sm font-medium text-gray-700 ml-2">ترتیب نمایش</label>
-                <input type="number" id="display-order" v-model="displayOrder" placeholder="0" class="w-24 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-gray-50 p-2 text-sm focus:outline-none">
+                <input id="display-order" v-model="displayOrder" type="number" placeholder="0" class="w-24 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-gray-50 p-2 text-sm focus:outline-none">
               </div>
             </div>
 
@@ -209,7 +209,6 @@ const handleFileChange = (event: Event) => {
 const isPublished = ref(true);
 const showOnHomepage = ref(false);
 const showInMainMenu = ref(false);
-const showBrandLogo = ref(false);
 const displayOrder = ref(0);
 
 // brand description
@@ -224,7 +223,6 @@ function slugify(str){return str.toLowerCase().trim().replace(/[^a-z0-9\s-]/g,''
 function onEnglishBlur(){if(!slugTouched.value){programmaticUpdate=true;seoSlug.value=slugify(officialName.value||'');programmaticUpdate=false}}
 function updateSlug(v){seoSlug.value=v;if(!programmaticUpdate)slugTouched.value=true}
 
-const seoPageName = ref('');
 const seoMetaTitle = ref('');
 const seoMetaKeywords = ref('');
 const seoMetaDescription = ref('');
@@ -288,7 +286,7 @@ async function saveBrand(){
       }
     });
     alert('برند ذخیره شد');
-  }catch(e){alert('خطا در ذخیره');}
+  }catch{alert('خطا در ذخیره');}
 }
 </script>
 

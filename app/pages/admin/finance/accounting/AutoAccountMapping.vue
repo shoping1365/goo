@@ -2,7 +2,7 @@
   <div>
     <div class="flex items-center justify-between mb-4">
       <h4 class="text-base font-semibold text-gray-900">نگاشت خودکار حساب‌ها</h4>
-      <button @click="runAutoMapping" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg">اجرای نگاشت خودکار</button>
+      <button class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg" @click="runAutoMapping">اجرای نگاشت خودکار</button>
     </div>
     <div class="overflow-x-auto">
       <table class="w-full text-sm">

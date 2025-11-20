@@ -1,9 +1,9 @@
-import { defineEventHandler, createError, getRouterParam, readRawBody, readBody } from 'h3'
+import { createError, defineEventHandler, getRouterParam, readBody, readRawBody } from 'h3'
 import { fetchGo } from '../../_utils/fetchGo'
 
 interface MobileAppHeaderUpdateResponse {
      success: boolean
-     data: any
+     data: unknown
      message?: string
 }
 
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event): Promise<MobileAppHeaderUpdateRe
                     try {
                          body = JSON.parse(raw)
                     } catch (parseErr) {
-                         console.error('❌ خطا در parse بدنه به‌روزرسانی هدر موبایل:', parseErr, raw)
+                         // console.error('❌ خطا در parse بدنه به‌روزرسانی هدر موبایل:', parseErr, raw)
                          throw createError({ statusCode: 400, message: 'به‌روزرسانی هدر موبایل: بدنه نامعتبر است' })
                     }
                }
@@ -32,32 +32,33 @@ export default defineEventHandler(async (event): Promise<MobileAppHeaderUpdateRe
                })
           }
 
-          console.log('درخواست به‌روزرسانی هدر موبایل با ID:', id, 'داده:', body)
+          // console.log('درخواست به‌روزرسانی هدر موبایل با ID:', id, 'داده:', body)
 
-          let responseData: any
+          let responseData: unknown
           try {
                responseData = await fetchGo(event, `/api/admin/mobile-app-header-settings/${id}`, {
                     method: 'PUT',
                     body
                })
-          } catch (fetchErr: any) {
-               console.error('❌ fetchGo به‌روزرسانی هدر موبایل شکست خورد:', {
-                    statusCode: fetchErr?.statusCode,
-                    status: fetchErr?.status,
-                    message: fetchErr?.message,
-                    data: fetchErr?.data || fetchErr?.response?._data
-               })
+          } catch (fetchErr: unknown) {
+               const err = fetchErr as Record<string, any>
+               // console.error('❌ fetchGo به‌روزرسانی هدر موبایل شکست خورد:', {
+               //      statusCode: err?.statusCode,
+               //      status: err?.status,
+               //      message: err?.message,
+               //      data: err?.data || err?.response?._data
+               // })
                throw createError({
-                    statusCode: fetchErr?.statusCode || fetchErr?.status || fetchErr?.response?.status || 500,
-                    message: fetchErr?.data?.message || fetchErr?.data?.error || fetchErr?.message || 'خطا در به‌روزرسانی هدر موبایل',
-                    data: fetchErr?.data || fetchErr?.response?._data
+                    statusCode: err?.statusCode || err?.status || err?.response?.status || 500,
+                    message: err?.data?.message || err?.data?.error || err?.message || 'خطا در به‌روزرسانی هدر موبایل',
+                    data: err?.data || err?.response?._data
                })
           }
 
-          console.log('پاسخ به‌روزرسانی هدر موبایل:', responseData)
+          // console.log('پاسخ به‌روزرسانی هدر موبایل:', responseData)
 
           if (responseData && typeof responseData === 'object') {
-               const payload = responseData as Record<string, any>
+               const payload = responseData as Record<string, unknown>
                return {
                     success: payload.success !== false,
                     data: payload.data || null
@@ -69,22 +70,24 @@ export default defineEventHandler(async (event): Promise<MobileAppHeaderUpdateRe
                data: responseData || null
           }
 
-     } catch (error: any) {
-          if (error?.statusCode || error?.status) {
+     } catch (error: unknown) {
+          const err = error as { statusCode?: number; status?: number; message?: string; data?: { message?: string; error?: string } }
+          if (err?.statusCode || err?.status) {
                throw createError({
-                    statusCode: error?.statusCode || error?.status,
-                    message: error?.message || error?.data?.message || error?.data?.error || 'خطا در به‌روزرسانی هدر موبایل',
-                    data: error?.data
+                    statusCode: err?.statusCode || err?.status,
+                    message: err?.message || err?.data?.message || err?.data?.error || 'خطا در به‌روزرسانی هدر موبایل',
+                    data: err?.data
                })
           }
 
-          console.error('خطا در به‌روزرسانی هدر موبایل:', error)
+          // console.error('خطا در به‌روزرسانی هدر موبایل:', error)
 
-          if (error?.data) {
+          if ((error as any)?.data) {
+               const e = error as { statusCode?: number; data: { message?: string; error?: string } }
                throw createError({
-                    statusCode: error?.statusCode || 500,
-                    message: error.data.message || error.data.error || 'خطا در به‌روزرسانی هدر موبایل',
-                    data: error.data
+                    statusCode: e?.statusCode || 500,
+                    message: e.data.message || e.data.error || 'خطا در به‌روزرسانی هدر موبایل',
+                    data: e.data
                })
           }
 

@@ -10,8 +10,8 @@
           </div>
           <div class="flex space-x-2 space-x-reverse">
             <button 
-              @click="showCreateOrderModal = true"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+              @click="showCreateOrderModal = true"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
@@ -19,8 +19,8 @@
               سفارش جدید
             </button>
             <button 
-              @click="exportOrders"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+              @click="exportOrders"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -28,8 +28,8 @@
               خروجی Excel
             </button>
             <button 
-              @click="printOrders"
               class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200"
+              @click="printOrders"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
@@ -146,7 +146,7 @@
             </div>
             <h3 class="text-sm font-semibold text-gray-900">فیلترهای پیشرفته در صف پردازش</h3>
           </div>
-          <button @click="showFilters = !showFilters" class="text-sm text-green-600 hover:text-green-800 transition-colors font-medium hover:bg-green-50 px-3 py-1 rounded-lg">
+          <button class="text-sm text-green-600 hover:text-green-800 transition-colors font-medium hover:bg-green-50 px-3 py-1 rounded-lg" @click="showFilters = !showFilters">
             {{ showFilters ? 'مخفی کردن' : 'نمایش' }}
           </button>
         </div>
@@ -172,12 +172,12 @@
           
           <div class="flex items-center space-x-2 space-x-reverse">
             <!-- Bulk Actions -->
-            <div class="flex items-center space-x-2 space-x-reverse bg-blue-50 rounded-md px-2 py-1.5 border border-blue-200" v-if="selectedOrders.length > 0">
+            <div v-if="selectedOrders.length > 0" class="flex items-center space-x-2 space-x-reverse bg-blue-50 rounded-md px-2 py-1.5 border border-blue-200">
               <span class="text-xs text-blue-700 font-medium">{{ selectedOrders.length }} مورد انتخاب شده</span>
               <select 
                 v-model="bulkAction"
-                @change="executeBulkAction"
                 class="text-xs border border-blue-300 rounded px-2 py-1 bg-blue-50"
+                @change="executeBulkAction"
               >
                 <option value="">عملیات گروهی</option>
                 <option value="confirm">تایید سفارشات</option>
@@ -236,9 +236,9 @@ definePageMeta({
 })
 
 // Import components
+import Pagination from '~/components/common/Pagination.vue'
 import OrderFilters from '../OrderFilters.vue'
 import OrderTable from '../OrderTable.vue'
-import Pagination from '~/components/common/Pagination.vue'
 
 // داده‌های نمونه
 const stats = ref({
@@ -369,34 +369,34 @@ const paginatedOrders = computed(() => {
 
 // متدهای عملیاتی
 const exportOrders = () => {
-  console.log('خروجی Excel سفارشات...')
+  // console.log('خروجی Excel سفارشات...')
 }
 
 const printOrders = () => {
-  console.log('چاپ سفارشات...')
+  // console.log('چاپ سفارشات...')
 }
 
-const handleFiltersChange = (filters) => {
-  console.log('فیلترها تغییر کردند:', filters)
+const handleFiltersChange = (_filters) => {
+  // console.log('فیلترها تغییر کردند:', filters)
   currentPage.value = 1
 }
 
 const executeBulkAction = () => {
   if (!bulkAction.value) return
   
-  console.log('اجرای عملیات گروهی:', bulkAction.value, 'برای سفارشات:', selectedOrders.value)
+  // console.log('اجرای عملیات گروهی:', bulkAction.value, 'برای سفارشات:', selectedOrders.value)
   bulkAction.value = ''
   selectedOrders.value = []
 }
 
 const openOrderDetail = (order) => {
   selectedOrder.value = order
-  console.log('نمایش جزئیات سفارش:', order)
+  // console.log('نمایش جزئیات سفارش:', order)
 }
 
 const openQuickActions = (order) => {
   selectedOrder.value = order
-  console.log('عملیات سریع برای سفارش:', order)
+  // console.log('عملیات سریع برای سفارش:', order)
 }
 
 const handlePageChange = (page) => {
@@ -409,6 +409,6 @@ const handleItemsPerPageChange = (newItemsPerPage) => {
 }
 
 const loadOrders = () => {
-  console.log('بارگذاری مجدد سفارشات...')
+  // console.log('بارگذاری مجدد سفارشات...')
 }
 </script> 

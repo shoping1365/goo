@@ -20,9 +20,9 @@
           v-for="i in 5"
           :key="i"
           type="button"
-          @click="overallRating = i"
           class="text-4xl transition-colors focus:outline-none"
           :class="i <= overallRating ? 'text-yellow-400' : 'text-gray-300 hover:text-yellow-300'"
+          @click="overallRating = i"
         >★</button>
         <span class="ml-4 text-lg text-gray-700 font-semibold">{{ ratingText }}</span>
       </div>
@@ -35,8 +35,8 @@
         <button
           v-for="(option, idx) in satisfactionOptions"
           :key="idx"
-          @click="satisfaction = option.value"
           :class="['px-5 py-2 rounded-lg font-medium border transition', satisfaction === option.value ? 'bg-blue-600 text-white border-blue-700' : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-50']"
+          @click="satisfaction = option.value"
         >
           {{ option.label }}
         </button>
@@ -50,8 +50,8 @@
         <button
           v-for="(option, idx) in repurchaseOptions"
           :key="idx"
-          @click="repurchase = option.value"
           :class="['px-5 py-2 rounded-lg font-medium border transition', repurchase === option.value ? 'bg-green-600 text-white border-green-700' : 'bg-white text-gray-700 border-gray-300 hover:bg-green-50']"
+          @click="repurchase = option.value"
         >
           {{ option.label }}
         </button>
@@ -65,8 +65,8 @@
         <button
           v-for="(option, idx) in recommendOptions"
           :key="idx"
-          @click="recommend = option.value"
           :class="['px-5 py-2 rounded-lg font-medium border transition', recommend === option.value ? 'bg-purple-600 text-white border-purple-700' : 'bg-white text-gray-700 border-gray-300 hover:bg-purple-50']"
+          @click="recommend = option.value"
         >
           {{ option.label }}
         </button>

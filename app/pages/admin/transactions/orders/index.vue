@@ -10,8 +10,8 @@
           </div>
           <div class="flex space-x-2 space-x-reverse">
             <button 
-              @click="showCreateOrderModal = true"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+              @click="showCreateOrderModal = true"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
@@ -19,8 +19,8 @@
               سفارش دستی
             </button>
             <button 
-              @click="exportOrders"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+              @click="exportOrders"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -28,8 +28,8 @@
               خروجی Excel
             </button>
             <button 
-              @click="printOrders"
               class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200"
+              @click="printOrders"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
@@ -63,7 +63,7 @@
             <p class="text-sm text-green-800">{{ successMessage }}</p>
           </div>
           <div class="mr-auto pr-3">
-            <button @click="showSuccessMessage = false" class="text-green-400 hover:text-green-600">
+            <button class="text-green-400 hover:text-green-600" @click="showSuccessMessage = false">
               <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
               </svg>
@@ -78,13 +78,13 @@
             <button
               v-for="tab in tabs"
               :key="tab.id"
-              @click="activeTab = tab.id"
               :class="[
                 activeTab === tab.id
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
               'flex-1 whitespace-nowrap py-4 px-4 border-b-2 font-medium text-sm text-center'
               ]"
+              @click="activeTab = tab.id"
             >
               {{ tab.name }}
             </button>
@@ -277,7 +277,7 @@
                   </div>
                   <h3 class="text-sm font-semibold text-gray-900">فیلترهای پیشرفته سفارشات</h3>
                 </div>
-                <button @click="showFilters = !showFilters" class="text-sm text-green-600 hover:text-green-800 transition-colors font-medium hover:bg-green-50 px-3 py-1 rounded-lg">
+                <button class="text-sm text-green-600 hover:text-green-800 transition-colors font-medium hover:bg-green-50 px-3 py-1 rounded-lg" @click="showFilters = !showFilters">
                   {{ showFilters ? 'مخفی کردن' : 'نمایش' }}
                 </button>
               </div>
@@ -311,12 +311,12 @@
                   
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <!-- Bulk Actions -->
-                    <div class="flex items-center space-x-2 space-x-reverse bg-blue-50 rounded-md px-2 py-1.5 border border-blue-200" v-if="selectedOrders.length > 0">
+                    <div v-if="selectedOrders.length > 0" class="flex items-center space-x-2 space-x-reverse bg-blue-50 rounded-md px-2 py-1.5 border border-blue-200">
                       <span class="text-xs text-blue-700 font-medium">{{ selectedOrders.length }} مورد انتخاب شده</span>
                       <select 
                         v-model="bulkAction"
-                        @change="executeBulkAction"
                         class="text-xs border border-blue-300 rounded px-2 py-1 bg-blue-50"
+                        @change="executeBulkAction"
                       >
                         <option value="">عملیات گروهی</option>
                         <option value="confirm">تایید سفارشات</option>
@@ -660,7 +660,7 @@
               </div>
                   <h3 class="text-sm font-semibold text-gray-900">فیلترهای پیشرفته گزارشات</h3>
                 </div>
-                <button @click="showReportFilters = !showReportFilters" class="text-sm text-indigo-600 hover:text-indigo-800 transition-colors font-medium hover:bg-indigo-50 px-3 py-1 rounded-lg">
+                <button class="text-sm text-indigo-600 hover:text-indigo-800 transition-colors font-medium hover:bg-indigo-50 px-3 py-1 rounded-lg" @click="showReportFilters = !showReportFilters">
                   {{ showReportFilters ? 'مخفی کردن' : 'نمایش' }}
                 </button>
               </div>
@@ -821,22 +821,22 @@
               <!-- دکمه‌های عملیات -->
               <div class="mt-6 flex justify-between items-center">
                 <div class="flex space-x-2 space-x-reverse">
-                  <button @click="clearReportFilters" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+                  <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors" @click="clearReportFilters">
                     پاک کردن فیلترها
                   </button>
-                  <button @click="resetReportFilters" class="px-4 py-2 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors">
+                  <button class="px-4 py-2 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors" @click="resetReportFilters">
                     بازنشانی فیلترها
                   </button>
                 </div>
                 
                 <div class="flex space-x-2 space-x-reverse">
-                  <button @click="exportFilteredReports" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors flex items-center">
+                  <button class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors flex items-center" @click="exportFilteredReports">
                     <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
                     خروجی Excel
                   </button>
-                  <button @click="exportFilteredReportsPDF" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors flex items-center">
+                  <button class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors flex items-center" @click="exportFilteredReportsPDF">
                     <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
                     </svg>
@@ -887,8 +887,8 @@
                   <tr class="bg-gray-50 border-b border-gray-200">
                     <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200" style="width: 20%;">
                       <button 
-                        @click="sortReports('period')" 
-                        class="flex items-center justify-center gap-1 w-full cursor-pointer hover:bg-gray-100 transition-colors select-none py-1"
+                        class="flex items-center justify-center gap-1 w-full cursor-pointer hover:bg-gray-100 transition-colors select-none py-1" 
+                        @click="sortReports('period')"
                       >
                         <span :class="getSortClass('period')">دوره</span>
                         <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -898,8 +898,8 @@
                     </th>
                     <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200" style="width: 15%;">
                       <button 
-                        @click="sortReports('orderCount')" 
-                        class="flex items-center justify-center gap-1 w-full cursor-pointer hover:bg-gray-100 transition-colors select-none py-1"
+                        class="flex items-center justify-center gap-1 w-full cursor-pointer hover:bg-gray-100 transition-colors select-none py-1" 
+                        @click="sortReports('orderCount')"
                       >
                         <span :class="getSortClass('orderCount')">تعداد سفارش</span>
                         <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -909,8 +909,8 @@
                     </th>
                     <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200" style="width: 20%;">
                       <button 
-                        @click="sortReports('totalRevenue')" 
-                        class="flex items-center justify-center gap-1 w-full cursor-pointer hover:bg-gray-100 transition-colors select-none py-1"
+                        class="flex items-center justify-center gap-1 w-full cursor-pointer hover:bg-gray-100 transition-colors select-none py-1" 
+                        @click="sortReports('totalRevenue')"
                       >
                         <span :class="getSortClass('totalRevenue')">ارزش فروش</span>
                         <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -920,8 +920,8 @@
                     </th>
                     <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200" style="width: 20%;">
                       <button 
-                        @click="sortReports('avgOrderValue')" 
-                        class="flex items-center justify-center gap-1 w-full cursor-pointer hover:bg-gray-100 transition-colors select-none py-1"
+                        class="flex items-center justify-center gap-1 w-full cursor-pointer hover:bg-gray-100 transition-colors select-none py-1" 
+                        @click="sortReports('avgOrderValue')"
                       >
                         <span :class="getSortClass('avgOrderValue')">متوسط سبد خرید</span>
                         <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -931,8 +931,8 @@
                     </th>
                     <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200" style="width: 12%;">
                       <button 
-                        @click="sortReports('conversionRate')" 
-                        class="flex items-center justify-center gap-1 w-full cursor-pointer hover:bg-gray-100 transition-colors select-none py-1"
+                        class="flex items-center justify-center gap-1 w-full cursor-pointer hover:bg-gray-100 transition-colors select-none py-1" 
+                        @click="sortReports('conversionRate')"
                       >
                         <span :class="getSortClass('conversionRate')">نرخ تبدیل</span>
                         <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -942,8 +942,8 @@
                     </th>
                     <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider" style="width: 13%;">
                       <button 
-                        @click="sortReports('change')" 
-                        class="flex items-center justify-center gap-1 w-full cursor-pointer hover:bg-gray-100 transition-colors select-none py-1"
+                        class="flex items-center justify-center gap-1 w-full cursor-pointer hover:bg-gray-100 transition-colors select-none py-1" 
+                        @click="sortReports('change')"
                       >
                         <span :class="getSortClass('change')">تغییر</span>
                         <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1287,7 +1287,7 @@ const handleReportPageChange = (page) => {
 // دریافت تحلیل کامل سفارشات از API
 const fetchOrdersAnalytics = async () => {
   try {
-    const response = await $fetch('/api/admin/orders/real-reports') as any
+    const response = await $fetch('/api/admin/orders/real-reports') as Record<string, unknown>
     
     if (response && response.success && response.data) {
       const data = response.data
@@ -1332,7 +1332,7 @@ const fetchOrdersAnalytics = async () => {
 // دریافت تحلیل پیشرفته سفارشات از API
 const fetchAdvancedAnalytics = async () => {
   try {
-    const response = await $fetch('/api/admin/orders/advanced-analytics') as any
+    const response = await $fetch('/api/admin/orders/advanced-analytics') as Record<string, unknown>
     
     if (response && response.success && response.data) {
       const data = response.data
@@ -1397,7 +1397,7 @@ const formatPersianDate = (dateString) => {
 }
 
 // تابع تبدیل تاریخ و زمان میلادی به شمسی
-const formatPersianDateTime = (dateString) => {
+const _formatPersianDateTime = (dateString) => {
   if (!dateString) return 'نامشخص'
   
   try {
@@ -1430,7 +1430,7 @@ const handleReportItemsPerPageChange = (newItemsPerPage) => {
   reportCurrentPage.value = 1
 }
 
-const viewDetailedReport = (report) => {
+const _viewDetailedReport = (_report) => {
   // مشاهده گزارش تفصیلی
 }
 
@@ -1481,17 +1481,17 @@ watch(activeTab, (newTab) => {
 // --- دریافت سفارشات از API ادمین ---
 const {
   data: ordersData,
-  refresh: refreshOrders,
+  refresh: _refreshOrders,
   pending: ordersPending
 } = useAsyncData('admin-orders', () =>
-  $fetch('/api/admin/orders?pageSize=10000').then((res:any)=> res.data || [])
+  $fetch('/api/admin/orders?pageSize=10000').then((res: { data: Record<string, unknown>[] })=> res.data || [])
 )
 
 // مقداردهی لیست سفارشات فقط از API
-const sampleOrders = ref<any[]>([])
+const sampleOrders = ref<Record<string, unknown>[]>([])
 watch(() => ordersData.value, (newData) => {
   if (newData) {
-    sampleOrders.value = newData as any[]
+    sampleOrders.value = newData as Record<string, unknown>[]
     currentPage.value = 1
   }
 }, { immediate: true })
@@ -1503,11 +1503,11 @@ async function loadOrders() {
 
     // آخرین شناسه موجود در لیست فعلی
     const lastId = sampleOrders.value.length
-      ? Math.max(...sampleOrders.value.map((o:any) => o.id))
+      ? Math.max(...sampleOrders.value.map((o: { id: number }) => o.id))
       : 0
 
     // فراخوانی API فقط برای سفارشات جدید
-    const res: any = await $fetch(
+    const res = await $fetch<{ data: Record<string, unknown>[] }>(
       `/api/admin/orders${lastId ? `?afterId=${lastId}` : ''}`
     )
 
@@ -1555,18 +1555,18 @@ const stats = ref({
 })
 
 // دریافت آمار کارت‌ها از API ادمین
-const { data: statsData, refresh: refreshOrderStats } = useAsyncData('admin-orders-stats', () =>
+const { data: statsData, refresh: _refreshOrderStats } = useAsyncData('admin-orders-stats', () =>
   $fetch('/api/admin/orders/stats')
 )
 
-watch(() => statsData.value, (val: any) => {
+watch(() => statsData.value, (val: Record<string, unknown> | null) => {
   if (val) {
     stats.value = { ...stats.value, ...val }
   }
 }, { immediate: true })
 
 // Methods
-const updateStats = (newStats: any) => {
+const _updateStats = (newStats: Partial<typeof stats.value>) => {
   stats.value = { ...stats.value, ...newStats }
 }
 
@@ -1577,7 +1577,7 @@ const formatPrice = (price: number): string => {
 // تعریف متغیرهای اضافی
 const showFilters = ref(false)
 const bulkAction = ref('')
-const filteredOrdersCount = ref(0)
+const _filteredOrdersCount = ref(0)
 
 // تعریف متغیر فیلترها
 const filters = ref({
@@ -1588,34 +1588,34 @@ const filters = ref({
   maxAmount: null as number | null
 })
 
-const handleFiltersChange = (newFilters: any) => {
+const handleFiltersChange = (newFilters: typeof filters.value) => {
   filters.value = newFilters
   currentPage.value = 1
 }
 
-const openOrderDetail = (order: any) => {
+const openOrderDetail = (order: Record<string, unknown>) => {
   selectedOrder.value = order
   showOrderDetail.value = true
 }
 
-const openQuickActions = (order: any) => {
+const openQuickActions = (order: Record<string, unknown>) => {
   selectedOrder.value = order
   showQuickActions.value = true
 }
 
 
 
-const handleOrderUpdate = (updatedOrder: any) => {
+const _handleOrderUpdate = (_updatedOrder: Record<string, unknown>) => {
   // Update order in the list and refresh stats
   // Order updated
 }
 
-const handleOrderCreated = (newOrder: any) => {
+const handleOrderCreated = (_newOrder: Record<string, unknown>) => {
   // Add new order to the list and refresh stats
   // Order created
 }
 
-const handleStatusChange = (data: any) => {
+const handleStatusChange = (data: { orderId: number, status: string }) => {
   // Status changed
   // Update order status in the list
   const order = sampleOrders.value.find(o => o.id === data.orderId)
@@ -1624,23 +1624,23 @@ const handleStatusChange = (data: any) => {
   }
 }
 
-const handleNotification = (order: any) => {
+const handleNotification = (order: Record<string, unknown>) => {
   // Sending notification for order
 }
 
-const handlePrint = (order: any) => {
+const handlePrint = (order: Record<string, unknown>) => {
   // Printing order
 }
 
-const handleDuplicate = (order: any) => {
+const handleDuplicate = (order: Record<string, unknown>) => {
   // Duplicating order
 }
 
-const handleExport = (order: any) => {
+const handleExport = (order: Record<string, unknown>) => {
   // Exporting order
 }
 
-const handleCancel = (order: any) => {
+const handleCancel = (order: { id: number }) => {
   // Cancelling order
   // Update order status to cancelled
   const orderIndex = sampleOrders.value.findIndex(o => o.id === order.id)
@@ -1649,7 +1649,7 @@ const handleCancel = (order: any) => {
   }
 }
 
-const handleDelete = async (order: any) => {
+const handleDelete = async (order: { id: number, orderNumber: string }) => {
   const confirmed = await confirmDialog.value?.show({
     title: 'حذف سفارش',
     message: `آیا از حذف سفارش ${order.orderNumber} مطمئن هستید؟`,
@@ -1674,7 +1674,7 @@ const handleDelete = async (order: any) => {
         successMessage.value = ''
       }, 3000)
     } catch (error) {
-      console.error('خطا در حذف سفارش:', error)
+      // console.error('خطا در حذف سفارش:', error)
       alert('خطا در حذف سفارش. لطفاً دوباره تلاش کنید.')
     }
   }
@@ -1735,7 +1735,7 @@ async function handleBulkDelete(ids: number[]) {
         successMessage.value = ''
       }, 3000)
     } catch (error) {
-      console.error('خطا در حذف سفارشات:', error)
+      // console.error('خطا در حذف سفارشات:', error)
       alert('خطا در حذف سفارشات. لطفاً دوباره تلاش کنید.')
     }
   }

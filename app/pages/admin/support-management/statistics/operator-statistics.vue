@@ -285,29 +285,29 @@ const operatorStats = ref([
   }
 ])
 
-function getStatusClass(status) {
-  switch (status) {
-    case 'online':
-      return 'bg-green-100 text-green-800'
-    case 'busy':
-      return 'bg-yellow-100 text-yellow-800'
-    case 'offline':
-      return 'bg-red-100 text-red-800'
-    default:
-      return 'bg-gray-100 text-gray-800'
-  }
-}
+// function getStatusClass(status) {
+//   switch (status) {
+//     case 'online':
+//       return 'bg-green-100 text-green-800'
+//     case 'busy':
+//       return 'bg-yellow-100 text-yellow-800'
+//     case 'offline':
+//       return 'bg-red-100 text-red-800'
+//     default:
+//       return 'bg-gray-100 text-gray-800'
+//   }
+// }
 
-function getStatusText(status) {
-  switch (status) {
-    case 'online':
-      return 'آنلاین'
-    case 'busy':
-      return 'مشغول'
-    case 'offline':
-      return 'آفلاین'
-    default:
-      return 'نامشخص'
-  }
-}
+// function getStatusText(status) {
+//   switch (status) {
+//     case 'online':
+//       return 'آنلاین'
+//     case 'busy':
+//       return 'مشغول'
+//     case 'offline':
+//       return 'آفلاین'
+//     default:
+//       return 'نامشخص'
+//   }
+// }
 </script> 

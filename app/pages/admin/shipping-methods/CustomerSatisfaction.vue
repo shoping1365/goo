@@ -21,11 +21,11 @@
          <div v-if="selectedPeriod === 'custom'" class="custom-date-range">
            <div class="form-group">
              <label>از تاریخ:</label>
-             <input type="date" v-model="customStartDate" @change="updateSatisfactionData">
+             <input v-model="customStartDate" type="date" @change="updateSatisfactionData">
            </div>
            <div class="form-group">
              <label>تا تاریخ:</label>
-             <input type="date" v-model="customEndDate" @change="updateSatisfactionData">
+             <input v-model="customEndDate" type="date" @change="updateSatisfactionData">
            </div>
          </div>
        </div>
@@ -40,7 +40,8 @@
              <h4>رضایت کلی</h4>
              <div class="rating">
                <div class="stars">
-                 <i v-for="star in 5" :key="star" 
+                 <i
+v-for="star in 5" :key="star" 
                     :class="star <= Math.round(satisfactionData.overallRating) ? 'fas fa-star filled' : 'far fa-star'"></i>
                </div>
                <div class="rating-number">{{ satisfactionData.overallRating.toFixed(1) }}/5</div>
@@ -116,14 +117,15 @@
        <div class="method-satisfaction">
          <h4>رضایت بر اساس روش ارسال</h4>
          <div class="method-grid">
-           <div class="method-card" v-for="method in methodSatisfaction" :key="method.id">
+           <div v-for="method in methodSatisfaction" :key="method.id" class="method-card">
              <div class="method-header">
                <h5>{{ method.name }}</h5>
                <span class="method-type">{{ method.type }}</span>
              </div>
              <div class="method-rating">
                <div class="stars">
-                 <i v-for="star in 5" :key="star" 
+                 <i
+v-for="star in 5" :key="star" 
                     :class="star <= Math.round(method.rating) ? 'fas fa-star filled' : 'far fa-star'"></i>
                </div>
                <div class="rating-number">{{ method.rating.toFixed(1) }}/5</div>
@@ -155,7 +157,8 @@
            <div class="feedback-chart">
              <h5>کلمات کلیدی مثبت</h5>
              <div class="word-cloud positive">
-               <span v-for="word in positiveKeywords" :key="word.text" 
+               <span
+v-for="word in positiveKeywords" :key="word.text" 
                      :style="{ fontSize: word.size + 'px' }" class="keyword">
                  {{ word.text }}
                </span>
@@ -165,7 +168,8 @@
            <div class="feedback-chart">
              <h5>کلمات کلیدی منفی</h5>
              <div class="word-cloud negative">
-               <span v-for="word in negativeKeywords" :key="word.text" 
+               <span
+v-for="word in negativeKeywords" :key="word.text" 
                      :style="{ fontSize: word.size + 'px' }" class="keyword">
                  {{ word.text }}
                </span>
@@ -186,7 +190,8 @@
                </div>
                <div class="feedback-rating">
                  <div class="stars">
-                   <i v-for="star in 5" :key="star" 
+                   <i
+v-for="star in 5" :key="star" 
                       :class="star <= feedback.rating ? 'fas fa-star filled' : 'far fa-star'"></i>
                  </div>
                  <span class="rating-text">{{ feedback.rating }}/5</span>
@@ -207,15 +212,15 @@
        <div class="export-section">
          <h4>خروجی گزارش رضایت</h4>
          <div class="export-buttons">
-           <button @click="exportToExcel" class="btn btn-secondary">
+           <button class="btn btn-secondary" @click="exportToExcel">
              <i class="fas fa-file-excel"></i>
              خروجی اکسل
            </button>
-           <button @click="exportToPDF" class="btn btn-secondary">
+           <button class="btn btn-secondary" @click="exportToPDF">
              <i class="fas fa-file-pdf"></i>
              خروجی PDF
            </button>
-           <button @click="printReport" class="btn btn-secondary">
+           <button class="btn btn-secondary" @click="printReport">
              <i class="fas fa-print"></i>
              چاپ گزارش
            </button>
@@ -225,18 +230,18 @@
    </template>
    
    <script setup lang="ts">
-   import { ref, reactive, onMounted } from 'vue'
+   import { onMounted, reactive, ref } from 'vue';
    
    // Props
    interface Props {
-     shippingMethods?: any[]
+     shippingMethods?: unknown[]
    }
    
-   const props = defineProps<Props>()
+   defineProps<Props>()
    
    // Emits
    const emit = defineEmits<{
-     exportData: [data: any, format: string]
+     exportData: [data: unknown, format: string]
    }>()
    
    // Reactive data

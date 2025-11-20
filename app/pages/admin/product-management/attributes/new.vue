@@ -6,9 +6,9 @@
         <div class="flex justify-between items-center py-6">
           <div class="flex items-center space-x-4 space-x-reverse">
             <button 
-              @click="goBack"
               class="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100"
               title="بازگشت"
+              @click="goBack"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -21,27 +21,27 @@
           </div>
           <div class="flex gap-3">
             <button
-              @click="saveAndContinueEdit"
               class="inline-flex items-center px-4 py-2 rounded-lg text-white bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 font-semibold"
+              @click="saveAndContinueEdit"
             >
               ذخیره و ادامه ویرایش
             </button>
             <button
-              @click="saveChanges"
               class="inline-flex items-center px-4 py-2 rounded-lg text-white bg-gradient-to-r from-emerald-400 to-green-600 hover:from-emerald-500 hover:to-green-700 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 font-semibold"
+              @click="saveChanges"
             >
               ذخیره
             </button>
             <button
               v-if="formData.name"
-              @click="deleteAttribute"
               class="inline-flex items-center px-4 py-2 rounded-lg text-white bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 font-semibold"
+              @click="deleteAttribute"
             >
               حذف
             </button>
             <button
-              @click="goBack"
               class="flex items-center px-4 py-2 border border-gray-300 rounded-md text-gray-600 hover:bg-gray-100 transition-colors font-semibold"
+              @click="goBack"
             >
               {{ cancelLabel }}
             </button>
@@ -170,8 +170,8 @@
                 مقادیر مختلف این ویژگی
               </div>
               <button
-                @click="openAddOptionModal"
                 class="inline-flex items-center px-4 py-2 rounded-lg text-white bg-gradient-to-r from-emerald-400 to-green-600 hover:from-emerald-500 hover:to-green-700 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 text-sm font-semibold"
+                @click="openAddOptionModal"
               >
                 افزودن گزینه جدید
               </button>
@@ -194,8 +194,8 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ opt.name }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-left">
                       <div class="flex flex-row items-center space-x-2 space-x-reverse justify-end">
-                        <button @click="editOption(opt.name)" class="text-blue-600 hover:text-blue-900 w-max" title="ویرایش">✏️ ویرایش</button>
-                        <button @click="deleteOption(opt.name)" class="text-red-600 hover:text-red-900 w-max" title="حذف">🗑️ حذف</button>
+                        <button class="text-blue-600 hover:text-blue-900 w-max" title="ویرایش" @click="editOption(opt.name)">✏️ ویرایش</button>
+                        <button class="text-red-600 hover:text-red-900 w-max" title="حذف" @click="deleteOption(opt.name)">🗑️ حذف</button>
                       </div>
                     </td>
                   </tr>
@@ -209,9 +209,9 @@
               :total-pages="optionsTotalPages"
               :total="optionsTotal"
               :per-page="optionsPerPage"
+              class="mt-4"
               @page-changed="handleOptionsPageChange"
               @per-page-changed="val => { optionsPerPage = val; optionsPage = 1 }"
-              class="mt-4"
             />
           </div>
         </div>
@@ -249,7 +249,7 @@
                       <input type="checkbox" :checked="prod.published" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-center">
-                      <button @click="viewProduct(prod.name)" class="inline-flex items-center px-3 py-1 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">👁️ مشاهده</button>
+                      <button class="inline-flex items-center px-3 py-1 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" @click="viewProduct(prod.name)">👁️ مشاهده</button>
                     </td>
                   </tr>
                 </tbody>
@@ -261,9 +261,9 @@
               :total-pages="usedProductsTotalPages"
               :total="usedProductsTotal"
               :per-page="usedProductsPerPage"
+              class="mt-4 px-4"
               @page-changed="handleUsedProductsPageChange"
               @per-page-changed="val => { usedProductsPerPage = val; usedProductsPage = 1 }"
-              class="mt-4 px-4"
             />
           </div>
         </div>
@@ -290,7 +290,7 @@
       <div class="relative w-full max-w-md mx-auto p-0 md:p-0 animate-fade-in">
         <div class="bg-white rounded-2xl shadow-2xl border border-blue-200 px-6 py-7 md:px-8 md:py-8 transition-transform duration-200 hover:scale-[1.02]" dir="rtl">
           <!-- Close Button -->
-          <button @click="closeAddOptionModal" class="absolute left-4 top-6 text-gray-400 hover:text-red-500 transition-colors text-2xl focus:outline-none">
+          <button class="absolute left-4 top-6 text-gray-400 hover:text-red-500 transition-colors text-2xl focus:outline-none" @click="closeAddOptionModal">
             <span aria-hidden="true">×</span>
           </button>
           <!-- Title -->
@@ -299,7 +299,7 @@
           </div>
           <hr class="mb-6 border-blue-100">
           <!-- Form -->
-          <form @submit.prevent="saveNewOption" class="space-y-6">
+          <form class="space-y-6" @submit.prevent="saveNewOption">
             <div>
               <label class="block text-sm font-bold text-gray-700 mb-2">نام</label>
               <input
@@ -321,8 +321,8 @@
               </button>
               <button
                 type="button"
-                @click="closeAddOptionModal"
                 class="inline-flex items-center justify-center px-6 py-2 rounded-lg text-gray-700 bg-gradient-to-r from-gray-200 to-gray-300 hover:from-gray-300 hover:to-gray-400 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 text-base font-bold gap-2"
+                @click="closeAddOptionModal"
               >
                 <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                 انصراف
@@ -337,9 +337,9 @@
 </template>
 
 <script setup>
-import { ref, watch, computed, onMounted } from 'vue'
-import Pagination from '~/components/admin/common/Pagination.vue'
 import { navigateTo } from '#app'
+import { computed, onMounted, ref, watch } from 'vue'
+import Pagination from '~/components/admin/common/Pagination.vue'
 import UnitManagerModal from '~/components/admin/modals/UnitManagerModal.vue'
 
 definePageMeta({
@@ -348,7 +348,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { } = useAuth()
 
 // Get route for query parameters
 const route = useRoute()
@@ -552,7 +552,7 @@ const clearDraft = () => {
   if (typeof window !== 'undefined') localStorage.removeItem(DRAFT_KEY)
 }
 
-const showToast = (msg, type = 'success') => {
+const showToast = (msg) => {
   // You can replace with your own toast library
   alert(msg)
 }
@@ -831,7 +831,7 @@ const loadUnits = () => {
   try {
     const saved = localStorage.getItem('measurementUnits')
     unitOptions.value = saved ? JSON.parse(saved) : DEFAULT_UNITS
-  } catch (_) {
+  } catch {
     unitOptions.value = DEFAULT_UNITS
   }
 }

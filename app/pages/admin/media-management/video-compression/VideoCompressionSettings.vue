@@ -14,7 +14,7 @@
         <div class="flex items-center gap-2 whitespace-nowrap justify-start w-full ml-12">
           <span class="text-sm text-gray-700">فشرده‌سازی خودکار</span>
           <label class="inline-flex items-center cursor-pointer select-none">
-            <input type="checkbox" v-model="compressionSettings.enabled" class="sr-only peer">
+            <input v-model="compressionSettings.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 rounded-full relative transition peer-checked:bg-green-500">
               <span class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></span>
             </div>
@@ -26,8 +26,8 @@
         <!-- Save button (shown only on unsaved changes) -->
         <button
           v-if="unsavedChanges"
-          @click="saveCompressionSettings"
           class="bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-1.5 rounded-lg shadow mt-2 md:mt-0 ml-32 md:ml-40 w-full md:w-auto block md:inline-block whitespace-nowrap"
+          @click="saveCompressionSettings"
         >
           ذخیره تغییرات
         </button>
@@ -246,9 +246,9 @@
             <span class="mr-2 text-sm">ایجاد تصویر بندانگشتی</span>
           </label>
           <button 
-            @click="testScheduler"
             class="bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors"
             style="padding: 0;"
+            @click="testScheduler"
           >
             تست Scheduler
           </button>

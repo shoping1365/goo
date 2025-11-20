@@ -107,9 +107,11 @@
               <td class="px-4 py-3">
                 <div class="flex space-x-2 space-x-reverse">
                   <button class="text-blue-600 hover:text-blue-800 text-sm">جزئیات</button>
-                  <button v-if="key.status === 'فعال'" 
+                  <button
+v-if="key.status === 'فعال'" 
                           class="text-red-600 hover:text-red-800 text-sm">غیرفعال</button>
-                  <button v-if="key.status === 'غیرفعال'" 
+                  <button
+v-if="key.status === 'غیرفعال'" 
                           class="text-green-600 hover:text-green-800 text-sm">فعال</button>
                   <button class="text-red-600 hover:text-red-800 text-sm">حذف</button>
                 </div>
@@ -150,7 +152,8 @@
               </td>
               <td class="px-4 py-3">
                 <div class="flex flex-wrap gap-1">
-                  <span v-for="event in webhook.events" :key="event" 
+                  <span
+v-for="event in webhook.events" :key="event" 
                         class="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">
                     {{ event }}
                   </span>
@@ -171,9 +174,11 @@
                 <div class="flex space-x-2 space-x-reverse">
                   <button class="text-blue-600 hover:text-blue-800 text-sm">جزئیات</button>
                   <button class="text-green-600 hover:text-green-800 text-sm">تست</button>
-                  <button v-if="webhook.status === 'فعال'" 
+                  <button
+v-if="webhook.status === 'فعال'" 
                           class="text-red-600 hover:text-red-800 text-sm">غیرفعال</button>
-                  <button v-if="webhook.status === 'غیرفعال'" 
+                  <button
+v-if="webhook.status === 'غیرفعال'" 
                           class="text-green-600 hover:text-green-800 text-sm">فعال</button>
                   <button class="text-red-600 hover:text-red-800 text-sm">حذف</button>
                 </div>
@@ -242,21 +247,25 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">محدودیت درخواست (در دقیقه)</label>
-            <input type="number" :value="apiSettings.rateLimit" 
+            <input
+type="number" :value="apiSettings.rateLimit" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">زمان انقضای توکن (ساعت)</label>
-            <input type="number" :value="apiSettings.tokenExpiry" 
+            <input
+type="number" :value="apiSettings.tokenExpiry" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداکثر اندازه درخواست (MB)</label>
-            <input type="number" :value="apiSettings.maxRequestSize" 
+            <input
+type="number" :value="apiSettings.maxRequestSize" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div class="flex items-center">
-            <input type="checkbox" :checked="apiSettings.enableCors" 
+            <input
+type="checkbox" :checked="apiSettings.enableCors" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
             <label class="mr-2 text-sm text-gray-700">فعال کردن CORS</label>
           </div>
@@ -272,21 +281,25 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداکثر تلاش تحویل</label>
-            <input type="number" :value="webhookSettings.maxRetries" 
+            <input
+type="number" :value="webhookSettings.maxRetries" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">فاصله تلاش مجدد (ثانیه)</label>
-            <input type="number" :value="webhookSettings.retryInterval" 
+            <input
+type="number" :value="webhookSettings.retryInterval" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">زمان تایم‌اوت (ثانیه)</label>
-            <input type="number" :value="webhookSettings.timeout" 
+            <input
+type="number" :value="webhookSettings.timeout" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div class="flex items-center">
-            <input type="checkbox" :checked="webhookSettings.enableRetries" 
+            <input
+type="checkbox" :checked="webhookSettings.enableRetries" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
             <label class="mr-2 text-sm text-gray-700">فعال کردن تلاش مجدد</label>
           </div>

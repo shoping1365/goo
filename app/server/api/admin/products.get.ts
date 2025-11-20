@@ -8,29 +8,29 @@ export default defineEventHandler(async (event) => {
      // دریافت query parameters از درخواست
      const query = getQuery(event)
      
-     console.log('🔍 Nuxt API Route - Query params:', query)
+     // console.log('🔍 Nuxt API Route - Query params:', query)
 
      try {
           // ارسال query parameters به Backend
           const url = `${base}/api/admin/products`
-          console.log('📡 Nuxt API Route - Sending to:', url, 'with query:', query)
+          // console.log('📡 Nuxt API Route - Sending to:', url, 'with query:', query)
           
           const response = await $fetch(url, {
                headers: {
                     cookie: getHeader(event, 'cookie') || '',
                },
                query: query  // ✅ ارسال page, limit, search, filters
-          }) as any
+          }) as { data: unknown[]; total: number; page: number; limit: number }
           
-          console.log('📦 Nuxt API Route - Backend response:', {
-               dataLength: response?.data?.length,
-               total: response?.total,
-               page: response?.page,
-               limit: response?.limit
-          })
+          // console.log('📦 Nuxt API Route - Backend response:', {
+          //      dataLength: response?.data?.length,
+          //      total: response?.total,
+          //      page: response?.page,
+          //      limit: response?.limit
+          // })
 
           return response
-     } catch (error) {
+     } catch {
           throw createError({
                statusCode: 500,
                statusMessage: 'خطا در دریافت محصولات'

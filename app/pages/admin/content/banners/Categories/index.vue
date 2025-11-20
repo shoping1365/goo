@@ -10,9 +10,9 @@
           </div>
           <div class="flex gap-3">
             <button
-              @click="fetchCategories"
               :disabled="loading"
               class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center gap-2 disabled:opacity-50"
+              @click="fetchCategories"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
@@ -86,8 +86,8 @@
       <div v-else-if="error" class="bg-red-50 border border-red-200 rounded-lg p-6 mb-6">
         <p class="text-red-800">{{ error }}</p>
         <button
-          @click="clearError"
           class="mt-2 text-red-600 hover:text-red-800"
+          @click="clearError"
         >
           بستن
         </button>
@@ -123,8 +123,8 @@
                   type="number"
                   :value="category.order"
                   min="1"
-                  @change="updateOrder(category.id, $event)"
                   class="w-16 h-8 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2 text-center font-semibold"
+                  @change="updateOrder(category.id, $event)"
                 />
               </div>
 
@@ -168,9 +168,9 @@
               <!-- Status -->
               <div class="col-span-1 flex justify-center">
                 <button
-                  @click="toggleStatus(category.id)"
                   class="px-3 py-1 text-xs font-semibold rounded-full transition-colors"
                   :class="getStatusBadgeClass(category.status)"
+                  @click="toggleStatus(category.id)"
                 >
                   {{ getStatusLabel(category.status) }}
                 </button>
@@ -193,16 +193,16 @@
                   </svg>
                 </NuxtLink>
                 <button
-                  @click="duplicateCategory(category.id)"
                   class="w-8 h-8 bg-green-100 hover:bg-green-200 text-green-600 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                  @click="duplicateCategory(category.id)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                   </svg>
                 </button>
                 <button
-                  @click="confirmDelete(category.id)"
                   class="w-8 h-8 bg-red-100 hover:bg-red-200 text-red-600 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                  @click="confirmDelete(category.id)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>

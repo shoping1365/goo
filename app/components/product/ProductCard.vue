@@ -31,8 +31,8 @@
       </div>
       <div class="mt-4">
         <button
-          @click="addToCart"
           class="w-full bg-primary text-white py-2 rounded hover:bg-primary-dark transition-colors"
+          @click="addToCart"
         >
           افزودن به سبد خرید
         </button>

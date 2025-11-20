@@ -74,7 +74,7 @@
              <label class="block text-sm font-medium text-gray-700 mb-2">CAPTCHA</label>
              <div class="space-y-2">
                <label class="flex items-center">
-                 <input type="checkbox" v-model="securitySettings.captcha.enabled" class="rounded border-gray-300">
+                 <input v-model="securitySettings.captcha.enabled" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">فعال کردن CAPTCHA</span>
                </label>
                <select v-model="securitySettings.captcha.type" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500">
@@ -103,15 +103,15 @@
              <label class="block text-sm font-medium text-gray-700 mb-2">فیلتر محتوا</label>
              <div class="space-y-2">
                <label class="flex items-center">
-                 <input type="checkbox" v-model="securitySettings.contentFilter.enabled" class="rounded border-gray-300">
+                 <input v-model="securitySettings.contentFilter.enabled" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">فیلتر کلمات نامناسب</span>
                </label>
                <label class="flex items-center">
-                 <input type="checkbox" v-model="securitySettings.contentFilter.blockLinks" class="rounded border-gray-300">
+                 <input v-model="securitySettings.contentFilter.blockLinks" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">مسدود کردن لینک‌ها</span>
                </label>
                <label class="flex items-center">
-                 <input type="checkbox" v-model="securitySettings.contentFilter.detectSpam" class="rounded border-gray-300">
+                 <input v-model="securitySettings.contentFilter.detectSpam" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">تشخیص خودکار اسپم</span>
                </label>
              </div>
@@ -121,7 +121,7 @@
              <label class="block text-sm font-medium text-gray-700 mb-2">IP Blocking</label>
              <div class="space-y-2">
                <label class="flex items-center">
-                 <input type="checkbox" v-model="securitySettings.ipBlocking.enabled" class="rounded border-gray-300">
+                 <input v-model="securitySettings.ipBlocking.enabled" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">مسدود کردن IP مشکوک</span>
                </label>
                <div>
@@ -141,7 +141,7 @@
              <label class="block text-sm font-medium text-gray-700 mb-2">روش تأیید</label>
              <div class="space-y-2">
                <label class="flex items-center">
-                 <input type="checkbox" v-model="securitySettings.purchaseVerification.enabled" class="rounded border-gray-300">
+                 <input v-model="securitySettings.purchaseVerification.enabled" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">تأیید خرید اجباری</span>
                </label>
                <select v-model="securitySettings.purchaseVerification.method" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
@@ -161,7 +161,7 @@
                  <input v-model.number="securitySettings.purchaseVerification.timeLimit" type="number" min="1" max="365" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
                </div>
                <label class="flex items-center">
-                 <input type="checkbox" v-model="securitySettings.purchaseVerification.allowMultiple" class="rounded border-gray-300">
+                 <input v-model="securitySettings.purchaseVerification.allowMultiple" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">اجازه نظرسنجی چندگانه</span>
                </label>
              </div>
@@ -195,7 +195,7 @@
                  <input v-model.number="securitySettings.timeLimits.linkExpiry" type="number" min="1" max="90" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500">
                </div>
                <label class="flex items-center">
-                 <input type="checkbox" v-model="securitySettings.timeLimits.autoExpire" class="rounded border-gray-300">
+                 <input v-model="securitySettings.timeLimits.autoExpire" type="checkbox" class="rounded border-gray-300">
                  <span class="text-sm text-gray-700 mr-2">انقضای خودکار</span>
                </label>
              </div>
@@ -240,15 +240,15 @@
    
        <!-- Action Buttons -->
        <div class="flex justify-between">
-         <button @click="resetSettings" class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
+         <button class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors" @click="resetSettings">
            بازنشانی تنظیمات
          </button>
          
          <div class="flex space-x-3 space-x-reverse">
-           <button @click="testSecurity" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+           <button class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="testSecurity">
              تست امنیت
            </button>
-           <button @click="saveSettings" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+           <button class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors" @click="saveSettings">
              ذخیره تنظیمات
            </button>
          </div>
@@ -447,19 +447,19 @@
    
    const saveSettings = () => {
      // Save security settings to backend
-     console.log('Saving security settings:', securitySettings.value)
+     // console.log('Saving security settings:', securitySettings.value)
    }
    
    const resetSettings = () => {
      if (confirm('آیا از بازنشانی تنظیمات امنیتی اطمینان دارید؟')) {
        // Reset to default settings
-       console.log('Resetting security settings')
+       // console.log('Resetting security settings')
      }
    }
    
    const testSecurity = () => {
      // Test security features
-     console.log('Testing security features')
+     // console.log('Testing security features')
    }
    
    // Expose methods for parent component

@@ -2,7 +2,7 @@
   <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-6">
       <h3 class="text-lg font-semibold text-gray-900">تنظیمات سیستم</h3>
-      <button @click="saveAllSettings" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+      <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700" @click="saveAllSettings">
         ذخیره همه تنظیمات
       </button>
     </div>
@@ -193,10 +193,10 @@
         </div>
         
         <div class="flex items-center space-x-4 space-x-reverse">
-          <button @click="createBackup" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+          <button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700" @click="createBackup">
             ایجاد پشتیبان فوری
           </button>
-          <button @click="restoreBackup" class="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700">
+          <button class="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700" @click="restoreBackup">
             بازیابی از پشتیبان
           </button>
         </div>

@@ -17,8 +17,8 @@
         
         <div class="flex items-center space-x-3 space-x-reverse">
           <button 
-            @click="showSMSStatus"
             class="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg font-medium transition-colors flex items-center space-x-2 space-x-reverse"
+            @click="showSMSStatus"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
@@ -27,8 +27,8 @@
           </button>
           
           <button 
-            @click="showSMSTemplate"
             class="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg font-medium transition-colors flex items-center space-x-2 space-x-reverse"
+            @click="showSMSTemplate"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -45,13 +45,13 @@
         <button 
           v-for="tab in tabs" 
           :key="tab.id"
-          @click="activeTab = tab.id"
           :class="[
             'py-4 px-1 border-b-2 font-medium text-sm transition-colors',
             activeTab === tab.id
               ? 'border-green-500 text-green-600'
               : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
           ]"
+          @click="activeTab = tab.id"
         >
           <div class="flex items-center space-x-2 space-x-reverse">
             <component :is="tab.icon" class="w-5 h-5" />
@@ -86,7 +86,7 @@
       <!-- Error Management Tab -->
       <div v-else-if="activeTab === 'errors'" class="space-y-6">
         <ErrorManagement 
-          :failedSMS="failedSMS"
+          :failed-s-m-s="failedSMS"
           @resend="resendFailedSMS"
           @retry-all="retryAllFailed"
           @analyze-error="analyzeError"
@@ -134,7 +134,7 @@ const TemplateIcon = {
 const activeTab = ref('manual')
 const showStatusModal = ref(false)
 const showTemplateModal = ref(false)
-const currentTemplate = ref(null)
+const _currentTemplate = ref(null)
 
 const tabs = [
   { id: 'manual', name: 'ارسال دستی', icon: ManualIcon },
@@ -218,7 +218,7 @@ const smsTemplates = ref([
   }
 ])
 
-const smsStatusData = ref({
+const _smsStatusData = ref({
   totalSent: 0,
   successful: 0,
   failed: 0,
@@ -226,21 +226,21 @@ const smsStatusData = ref({
 })
 
 // Methods
-const sendSingleSMS = async (orderId: number) => {
+const sendSingleSMS = async (_orderId: number) => {
   try {
-    console.log(`Sending SMS for order ${orderId}`)
+    // console.log(`Sending SMS for order ${orderId}`)
     // API call implementation
-  } catch (error) {
-    console.error('Error sending SMS:', error)
+  } catch {
+    // console.error('Error sending SMS:', error)
   }
 }
 
-const sendBulkSMS = async (orderIds: number[]) => {
+const sendBulkSMS = async (_orderIds: number[]) => {
   try {
-    console.log(`Sending bulk SMS to ${orderIds.length} orders`)
+    // console.log(`Sending bulk SMS to ${orderIds.length} orders`)
     // API call implementation
-  } catch (error) {
-    console.error('Error sending bulk SMS:', error)
+  } catch {
+    // console.error('Error sending bulk SMS:', error)
   }
 }
 
@@ -248,46 +248,46 @@ const updateSelectedOrders = (orders: number[]) => {
   selectedOrders.value = orders
 }
 
-const updateAutoSettings = (settings: any) => {
+const updateAutoSettings = (settings: Record<string, unknown>) => {
   Object.assign(autoSettings, settings)
 }
 
 const testSchedule = () => {
-  console.log('Testing automatic schedule...')
+  // console.log('Testing automatic schedule...')
 }
 
-const resendFailedSMS = async (smsId: number) => {
+const resendFailedSMS = async (_smsId: number) => {
   try {
-    console.log(`Resending failed SMS ${smsId}`)
+    // console.log(`Resending failed SMS ${smsId}`)
     // API call implementation
-  } catch (error) {
-    console.error('Error resending SMS:', error)
+  } catch {
+    // console.error('Error resending SMS:', error)
   }
 }
 
 const retryAllFailed = async () => {
   try {
-    console.log('Retrying all failed SMS...')
+    // console.log('Retrying all failed SMS...')
     // API call implementation
-  } catch (error) {
-    console.error('Error retrying all failed SMS:', error)
+  } catch {
+    // console.error('Error retrying all failed SMS:', error)
   }
 }
 
-const analyzeError = (errorId: number) => {
-  console.log(`Analyzing error ${errorId}`)
+const analyzeError = (_errorId: number) => {
+  // console.log(`Analyzing error ${errorId}`)
 }
 
-const saveTemplate = (template: any) => {
-  console.log('Saving template:', template)
+const saveTemplate = (_template: Record<string, unknown>) => {
+  // console.log('Saving template:', template)
 }
 
-const deleteTemplate = (templateId: number) => {
-  console.log('Deleting template:', templateId)
+const deleteTemplate = (_templateId: number) => {
+  // console.log('Deleting template:', templateId)
 }
 
-const testTemplate = (templateId: number) => {
-  console.log('Testing template:', templateId)
+const testTemplate = (_templateId: number) => {
+  // console.log('Testing template:', templateId)
 }
 
 const showSMSStatus = () => {

@@ -7,29 +7,29 @@
       </div>
       <div class="flex items-center space-x-2 space-x-reverse">
         <button 
-          @click="changePeriod('week')"
           :class="[
             'px-3 py-1 text-sm rounded-lg transition-colors',
             period === 'week' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
           ]"
+          @click="changePeriod('week')"
         >
           هفته
         </button>
         <button 
-          @click="changePeriod('month')"
           :class="[
             'px-3 py-1 text-sm rounded-lg transition-colors',
             period === 'month' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
           ]"
+          @click="changePeriod('month')"
         >
           ماه
         </button>
         <button 
-          @click="changePeriod('year')"
           :class="[
             'px-3 py-1 text-sm rounded-lg transition-colors',
             period === 'year' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
           ]"
+          @click="changePeriod('year')"
         >
           سال
         </button>

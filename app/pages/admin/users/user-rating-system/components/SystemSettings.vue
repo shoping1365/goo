@@ -301,10 +301,10 @@
 
     <!-- دکمه‌های عملیات -->
     <div class="flex justify-end space-x-3 space-x-reverse">
-      <button @click="resetSettings" class="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors">
+      <button class="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors" @click="resetSettings">
         بازنشانی
       </button>
-      <button @click="saveSettings" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+      <button class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors" @click="saveSettings">
         ذخیره تنظیمات
       </button>
     </div>
@@ -316,12 +316,12 @@ import { onMounted, ref } from 'vue';
 
 // Props
 const props = defineProps<{
-  initialSettings?: any
+  initialSettings?: Record<string, unknown>
 }>()
 
 // Emits
 const emit = defineEmits<{
-  saveSettings: [settings: any]
+  saveSettings: [settings: Record<string, unknown>]
 }>()
 
 // Reactive data

@@ -13,13 +13,13 @@
         <div 
           v-for="theme in themes" 
           :key="theme.id"
-          @click="selectTheme(theme.id)"
           :class="[
             'border-2 rounded-lg px-4 py-4 cursor-pointer transition-all',
             selectedTheme === theme.id 
               ? 'border-blue-500 bg-blue-50' 
               : 'border-gray-200 hover:border-gray-300'
           ]"
+          @click="selectTheme(theme.id)"
         >
           <div class="flex items-center justify-between mb-3">
             <h5 class="font-medium text-gray-900">{{ theme.name }}</h5>
@@ -71,8 +71,8 @@
             <div v-for="widget in availableWidgets" :key="widget.id" class="flex items-center">
               <input 
                 :id="widget.id"
-                type="checkbox" 
-                v-model="widget.enabled"
+                v-model="widget.enabled" 
+                type="checkbox"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               >
               <label :for="widget.id" class="mr-2 text-sm text-gray-700">{{ widget.name }}</label>
@@ -85,13 +85,13 @@
             <div 
               v-for="layout in layouts" 
               :key="layout.id"
-              @click="selectLayout(layout.id)"
               :class="[
                 'border-2 rounded-lg p-3 cursor-pointer transition-all',
                 selectedLayout === layout.id 
                   ? 'border-blue-500 bg-blue-50' 
                   : 'border-gray-200 hover:border-gray-300'
               ]"
+              @click="selectLayout(layout.id)"
             >
               <div class="text-sm font-medium text-gray-900 mb-2">{{ layout.name }}</div>
               <div class="text-xs text-gray-500">{{ layout.description }}</div>
@@ -127,9 +127,9 @@
     <!-- Save Button -->
     <div class="flex items-center justify-end">
       <button 
-        @click="saveSettings"
         :disabled="saving"
         class="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg text-sm transition-colors flex items-center space-x-2 space-x-reverse"
+        @click="saveSettings"
       >
         <svg v-if="saving" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

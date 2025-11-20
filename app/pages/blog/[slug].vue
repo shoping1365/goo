@@ -32,39 +32,11 @@
       <div v-if="post.published_at" class="text-xs text-gray-400 mb-4">منتشر شده در {{ toPersianDate(post.published_at) }}</div>
       <img v-if="post.featured_image" :src="post.featured_image" :alt="post.title" class="rounded-lg mb-6 w-full object-cover max-h-96">
       
-      <!-- 
-        ⚠️ امنیت XSS: استفاده از v-html خطرناک است!
-        
-        این کد محتوای HTML را بدون sanitization نمایش می‌دهد که می‌تواند منجر به حملات XSS شود.
-        
-        ✅ راه حل صحیح:
-        1. قبل از استفاده از v-html، محتوا را با کتابخانه sanitization (مثل DOMPurify) پاکسازی کنید
-        2. یا از {{ }} به جای v-html استفاده کنید اگر HTML نیاز نیست
-        3. محتوای کاربر را هرگز بدون sanitization در v-html قرار ندهید
-        
-        مثال صحیح:
-        import DOMPurify from 'dompurify'
-        const sanitizedExcerpt = DOMPurify.sanitize(post.excerpt)
-        <div v-html="sanitizedExcerpt"></div>
-      -->
-      <div v-if="post.excerpt" class="prose max-w-none mb-6 text-gray-600 border-r-4 border-gray-200 pr-4" v-html="post.excerpt"></div>
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <div v-if="post.excerpt" class="prose max-w-none mb-6 text-gray-600 border-r-4 border-gray-200 pr-4" v-html="sanitizedExcerpt"></div>
       
-      <!-- 
-        ⚠️ امنیت XSS: استفاده از v-html خطرناک است!
-        
-        این کد محتوای HTML را بدون sanitization نمایش می‌دهد که می‌تواند منجر به حملات XSS شود.
-        
-        ✅ راه حل صحیح:
-        1. قبل از استفاده از v-html، محتوا را با کتابخانه sanitization (مثل DOMPurify) پاکسازی کنید
-        2. یا از {{ }} به جای v-html استفاده کنید اگر HTML نیاز نیست
-        3. محتوای کاربر را هرگز بدون sanitization در v-html قرار ندهید
-        
-        مثال صحیح:
-        import DOMPurify from 'dompurify'
-        const sanitizedContent = DOMPurify.sanitize(post.content)
-        <div v-html="sanitizedContent"></div>
-      -->
-      <div class="prose prose-lg max-w-none mb-8" v-html="post.content"></div>
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <div class="prose prose-lg max-w-none mb-8" v-html="sanitizedContent"></div>
 
       <div v-if="relatedPosts.length" class="mt-12">
         <h2 class="text-lg font-semibold mb-4">نوشته‌های مرتبط</h2>
@@ -102,7 +74,8 @@ interface Post {
 </script>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import DOMPurify from 'dompurify';
+import { computed, ref, watch } from 'vue';
 import { toPersianDate } from '~/utils/dateUtils';
 
 const route = useRoute()
@@ -110,7 +83,7 @@ const slug = route.params.slug
 
 const post = ref<Post | null>(null)
 const pending = ref(false)
-const error = ref(null)
+const error = ref<{ statusCode: number; statusMessage: string } | null>(null)
 
 const fetchPost = async () => {
   try {
@@ -118,15 +91,16 @@ const fetchPost = async () => {
     const isPreview = route.query.preview === '1' || route.query.preview === 'true'
     const apiUrl = isPreview ? `/api/posts/${slug}?preview=1` : `/api/posts/${slug}`
     
-    console.log('🔍 Fetching post from:', apiUrl)
-    console.log('🔍 Slug:', slug)
+    // console.log('🔍 Fetching post from:', apiUrl)
+    // console.log('🔍 Slug:', slug)
     
     post.value = await $fetch<Post>(apiUrl)
-    console.log('✅ Post fetched successfully:', post.value)
+    // console.log('✅ Post fetched successfully:', post.value)
     error.value = null
-  } catch (e: any) {
-    console.error('❌ Error fetching post:', e)
-    if (e.statusCode === 404) {
+  } catch (e: unknown) {
+    // console.error('❌ Error fetching post:', e)
+    const err = e as { statusCode?: number }
+    if (err.statusCode === 404) {
       error.value = { statusCode: 404, statusMessage: 'نوشته یافت نشد' }
     } else {
       error.value = { statusCode: 500, statusMessage: 'خطا در دریافت اطلاعات نوشته' }
@@ -140,15 +114,25 @@ const fetchPost = async () => {
 // همیشه پست را fetch کن
 await fetchPost()
 
-const relatedPosts = ref<any[]>([])
+const sanitizedExcerpt = computed(() => {
+  if (!post.value?.excerpt) return '';
+  return DOMPurify.sanitize(post.value.excerpt);
+});
+
+const sanitizedContent = computed(() => {
+  if (!post.value?.content) return '';
+  return DOMPurify.sanitize(post.value.content);
+});
+
+const relatedPosts = ref<Post[]>([])
 
 watch(post, async (val) => {
   if (!val?.id) return
   try {
     const res = await $fetch<Post[]>(`/api/posts?limit=4&exclude=${val.id}`)
     relatedPosts.value = Array.isArray(res) ? res.filter((p: Post) => p.id !== val.id) : []
-  } catch (err) {
-    console.error('خطا در دریافت نوشته‌های مرتبط:', err)
+  } catch (_err) {
+    // console.error('خطا در دریافت نوشته‌های مرتبط:', err)
   }
 }, { immediate: true })
 
@@ -164,10 +148,10 @@ useHead({
   ]
 })
 
-const getPostLink = (item: any) => {
-  if (item.category && item.category.slug) {
+const getPostLink = (item: Post) => {
+  if (item.category?.slug) {
     return `/blog/${item.category.slug}/${item.slug}`
   }
   return `/blog/${item.slug}`
 }
-</script> 
+</script>

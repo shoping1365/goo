@@ -80,24 +80,26 @@ export const useHeaderSettings = () => {
       })
 
       if (Array.isArray(response)) {
-        response.forEach((setting: any) => {
+        response.forEach((setting: { key?: string; Key?: string; value?: unknown; Value?: unknown }) => {
           const key = setting.key || setting.Key
           const value = setting.value ?? setting.Value
+
+          if (!key) return
 
           // حذف پیشوند header. از کلید
           const cleanKey = key.replace('header.', '')
 
           if (cleanKey in settings) {
-            const key = cleanKey as keyof HeaderSettings
-            const currentValue = settings[key]
+            const settingsKey = cleanKey as keyof HeaderSettings
+            const currentValue = settings[settingsKey]
 
             // تبدیل نوع داده
             if (typeof currentValue === 'number') {
-              ; (settings as any)[key] = Number(value)
+              (settings as Record<string, unknown>)[settingsKey] = Number(value)
             } else if (typeof currentValue === 'boolean') {
-              ; (settings as any)[key] = value === 'true' || value === true
+              (settings as Record<string, unknown>)[settingsKey] = value === 'true' || value === true
             } else {
-              ; (settings as any)[key] = value
+              (settings as Record<string, unknown>)[settingsKey] = value
             }
           }
         })

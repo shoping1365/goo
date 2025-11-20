@@ -9,8 +9,8 @@
           <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
             <div class="flex items-center justify-between">
               <button
-                @click="showAddForm = true"
                 class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                @click="showAddForm = true"
               >
                 افزودن حساب جدید
               </button>
@@ -37,20 +37,20 @@
                 <div class="flex items-center gap-2">
                   <button
                     v-if="!account.is_default"
-                    @click="setAsDefault(account.id)"
                     class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200 transition-colors"
+                    @click="setAsDefault(account.id)"
                   >
                     تنظیم به عنوان پیشفرض
                   </button>
                   <button
-                    @click="editAccount(account)"
                     class="px-3 py-1 bg-blue-100 text-blue-700 rounded text-sm hover:bg-blue-200 transition-colors"
+                    @click="editAccount(account)"
                   >
                     ویرایش
                   </button>
                   <button
-                    @click="deleteAccount(account.id)"
                     class="px-3 py-1 bg-red-100 text-red-700 rounded text-sm hover:bg-red-200 transition-colors"
+                    @click="deleteAccount(account.id)"
                   >
                     حذف
                   </button>
@@ -108,7 +108,7 @@
               {{ message }}
             </div>
 
-            <form @submit.prevent="submitForm" class="space-y-6">
+            <form class="space-y-6" @submit.prevent="submitForm">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- نام بانک -->
                 <div>
@@ -127,13 +127,13 @@
                   <label class="block text-sm font-medium text-gray-700 mb-2 text-right">شماره کارت</label>
                   <input
                     v-model="bankingForm.cardNumber"
-                    @input="formatCardNumberInput"
-                    @blur="detectBankFromCard"
                     type="text"
                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-right"
                     placeholder="شماره کارت را وارد کنید"
                     maxlength="19"
                     required
+                    @input="formatCardNumberInput"
+                    @blur="detectBankFromCard"
                   />
                 </div>
 
@@ -157,12 +157,12 @@
                   </label>
                   <input
                     v-model="bankingForm.shebaNumber"
-                    @input="formatShebaNumberInput"
-                    @blur="detectBankFromSheba"
                     type="text"
                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-right"
                     placeholder="شماره شبا را وارد کنید (اختیاری)"
                     maxlength="26"
+                    @input="formatShebaNumberInput"
+                    @blur="detectBankFromSheba"
                   />
                 </div>
 
@@ -212,8 +212,8 @@
                 <div class="flex gap-3">
                   <button
                     type="button"
-                    @click="cancelForm"
                     class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors text-sm font-medium"
+                    @click="cancelForm"
                   >
                     انصراف
                   </button>
@@ -228,10 +228,10 @@
                 </div>
                 <div class="flex gap-3">
                   <button
-                    type="button"
-                    @click="setAsDefault(editingAccount.id)"
                     v-if="editingAccount && !editingAccount.is_default"
+                    type="button"
                     class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium"
+                    @click="setAsDefault(editingAccount.id)"
                   >
                     تنظیم به عنوان حساب پیشفرض
                   </button>

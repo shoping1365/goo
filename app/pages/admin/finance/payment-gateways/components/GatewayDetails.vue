@@ -15,7 +15,7 @@
           <span :class="`px-3 py-1 rounded-full text-sm font-medium ${getStatusBadgeClass(gateway.status)}`">
             {{ getStatusName(gateway.status) }}
           </span>
-          <button @click="refreshData" :disabled="loading" class="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+          <button :disabled="loading" class="p-2 text-gray-400 hover:text-gray-600 transition-colors" @click="refreshData">
             <span v-if="loading" class="i-heroicons-arrow-path animate-spin"></span>
             <span v-else class="i-heroicons-arrow-path"></span>
           </button>
@@ -26,8 +26,9 @@
     <!-- تب‌های جزئیات -->
     <div class="border-b border-gray-200">
       <div class="flex">
-        <button v-for="tab in detailTabs" :key="tab.value" @click="activeTab = tab.value"
-          :class="['px-6 py-3 font-medium text-sm focus:outline-none', activeTab === tab.value ? 'border-b-2 border-blue-600 text-blue-700' : 'text-gray-500 hover:text-blue-600']">
+        <button
+v-for="tab in detailTabs" :key="tab.value" :class="['px-6 py-3 font-medium text-sm focus:outline-none', activeTab === tab.value ? 'border-b-2 border-blue-600 text-blue-700' : 'text-gray-500 hover:text-blue-600']"
+          @click="activeTab = tab.value">
           {{ tab.label }}
         </button>
       </div>
@@ -148,15 +149,15 @@
       <div v-if="activeTab === 'transactions'" class="space-y-6">
         <!-- فیلترهای تراکنش -->
         <div class="flex flex-wrap gap-6">
-          <select v-model="transactionFilters.status" @change="loadTransactions" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <select v-model="transactionFilters.status" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" @change="loadTransactions">
             <option value="">همه وضعیت‌ها</option>
             <option value="success">موفق</option>
             <option value="failed">ناموفق</option>
             <option value="pending">در انتظار</option>
             <option value="cancelled">لغو شده</option>
           </select>
-          <input v-model="transactionFilters.search" @input="loadTransactions" type="text" placeholder="جستجو در شماره تراکنش..." class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-          <button @click="exportTransactions" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+          <input v-model="transactionFilters.search" type="text" placeholder="جستجو در شماره تراکنش..." class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" @input="loadTransactions">
+          <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors" @click="exportTransactions">
             <span class="i-heroicons-arrow-down-tray ml-2"></span>
             خروجی
           </button>
@@ -185,7 +186,7 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ formatDate(transaction.createdAt) }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button @click="viewTransaction(transaction)" class="text-blue-600 hover:text-blue-900">مشاهده</button>
+                  <button class="text-blue-600 hover:text-blue-900" @click="viewTransaction(transaction)">مشاهده</button>
                 </td>
               </tr>
             </tbody>
@@ -198,10 +199,10 @@
             نمایش {{ pagination.from }} تا {{ pagination.to }} از {{ pagination.total }} نتیجه
           </div>
           <div class="flex space-x-2 space-x-reverse">
-            <button @click="previousPage" :disabled="pagination.currentPage === 1" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50">
+            <button :disabled="pagination.currentPage === 1" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50" @click="previousPage">
               قبلی
             </button>
-            <button @click="nextPage" :disabled="pagination.currentPage === pagination.lastPage" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50">
+            <button :disabled="pagination.currentPage === pagination.lastPage" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50" @click="nextPage">
               بعدی
             </button>
           </div>
@@ -212,15 +213,15 @@
       <div v-if="activeTab === 'logs'" class="space-y-6">
         <!-- فیلترهای لاگ -->
         <div class="flex flex-wrap gap-6">
-          <select v-model="logFilters.level" @change="loadLogs" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <select v-model="logFilters.level" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" @change="loadLogs">
             <option value="">همه سطوح</option>
             <option value="error">خطا</option>
             <option value="warning">هشدار</option>
             <option value="info">اطلاعات</option>
             <option value="debug">دیباگ</option>
           </select>
-          <input v-model="logFilters.search" @input="loadLogs" type="text" placeholder="جستجو در لاگ‌ها..." class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-          <button @click="clearLogs" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+          <input v-model="logFilters.search" type="text" placeholder="جستجو در لاگ‌ها..." class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" @input="loadLogs">
+          <button class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors" @click="clearLogs">
             <span class="i-heroicons-trash ml-2"></span>
             پاک کردن لاگ‌ها
           </button>
@@ -274,12 +275,12 @@
         </div>
 
         <div class="flex space-x-3 space-x-reverse">
-          <button @click="testPayment" :disabled="testing" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50">
+          <button :disabled="testing" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50" @click="testPayment">
             <span v-if="testing" class="i-heroicons-arrow-path animate-spin ml-2"></span>
             <span v-else class="i-heroicons-beaker ml-2"></span>
             {{ testing ? 'در حال تست...' : 'تست پرداخت' }}
           </button>
-          <button @click="testVerification" :disabled="testing" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50">
+          <button :disabled="testing" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50" @click="testVerification">
             <span v-if="testing" class="i-heroicons-arrow-path animate-spin ml-2"></span>
             <span v-else class="i-heroicons-check ml-2"></span>
             {{ testing ? 'در حال تست...' : 'تست تایید' }}

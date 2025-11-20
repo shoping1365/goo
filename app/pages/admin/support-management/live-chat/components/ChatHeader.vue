@@ -20,12 +20,12 @@
           <span class="counter-number">{{ waitingCount }}</span>
           <span class="counter-label">منتظر</span>
         </div>
-        <button @click="$emit('minimize')" class="text-white hover:text-gray-300" title="کوچک کردن">
+        <button class="text-white hover:text-gray-300" title="کوچک کردن" @click="$emit('minimize')">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
           </svg>
         </button>
-        <button @click="$emit('close')" class="text-white hover:text-gray-300" title="بستن">
+        <button class="text-white hover:text-gray-300" title="بستن" @click="$emit('close')">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>

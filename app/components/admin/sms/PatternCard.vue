@@ -69,8 +69,8 @@
       <div class="flex items-center justify-between pt-3 border-t border-gray-100">
         <div class="flex space-x-2 space-x-reverse">
           <button
-            @click="$emit('edit', pattern)"
             class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+            @click="$emit('edit', pattern)"
           >
             <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -79,8 +79,8 @@
           </button>
           
           <button
-            @click="$emit('duplicate', pattern)"
             class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+            @click="$emit('duplicate', pattern)"
           >
             <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
@@ -91,9 +91,9 @@
 
         <div class="flex space-x-2 space-x-reverse">
           <button
-            @click="testPatternDirect"
             :disabled="isTesting"
             class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors disabled:opacity-60"
+            @click="testPatternDirect"
           >
             <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -104,8 +104,8 @@
           
           <button
             v-if="!isReserved"
-            @click="$emit('delete', pattern)"
             class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+            @click="$emit('delete', pattern)"
           >
             <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -141,7 +141,7 @@ async function testPatternDirect() {
       return
     }
     // استخراج متغیرها از pattern.variables
-    let variables: Record<string, string> = {}
+    const variables: Record<string, string> = {}
     if (props.pattern.variables) {
       const vars = props.pattern.variables.split(',').map(v => v.trim()).filter(v => v.startsWith('%') && v.endsWith('%')).map(v => v.slice(1, -1))
       vars.forEach(v => {

@@ -83,8 +83,8 @@
               <p class="text-sm text-gray-600 mb-3">تصویر بندانگشتی را آپلود کنید</p>
               <div class="flex flex-col gap-2">
                 <button 
-                  @click="openMediaLibrary('thumbnail')"
                   class="bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg px-4 py-2 text-sm font-medium hover:from-blue-600 hover:to-indigo-600 transition-all duration-200"
+                  @click="openMediaLibrary('thumbnail')"
                 >
                   انتخاب از رسانه
                 </button>
@@ -116,8 +116,8 @@
               <p class="text-sm text-gray-600 mb-3">فایل ویدیو را آپلود کنید</p>
               <div class="flex flex-col gap-2">
                 <button 
-                  @click="openMediaLibrary('video')"
                   class="bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-lg px-4 py-2 text-sm font-medium hover:from-green-600 hover:to-teal-600 transition-all duration-200"
+                  @click="openMediaLibrary('video')"
                 >
                   انتخاب از رسانه
                 </button>
@@ -215,15 +215,15 @@
         <div class="flex justify-end gap-3">
           <button 
             v-if="isEditing"
-            @click="cancelEdit"
             class="bg-gray-500 text-white rounded-lg px-6 py-3 font-semibold hover:bg-gray-600 transition-all duration-200 shadow-md hover:shadow-lg"
+            @click="cancelEdit"
           >
             انصراف
           </button>
           <button 
-            @click="isEditing ? handleUpdateVideo() : handleAddVideo()"
             :disabled="isLoading"
             class="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg px-8 py-3 font-semibold hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            @click="isEditing ? handleUpdateVideo() : handleAddVideo()"
           >
             <span v-if="isLoading">در حال پردازش...</span>
             <span v-else>{{ isEditing ? 'ویرایش ویدیو' : 'افزودن ویدیو' }}</span>
@@ -267,7 +267,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
             <p class="text-red-800">{{ error }}</p>
-            <button @click="clearError" class="text-red-600 hover:text-red-800">×</button>
+            <button class="text-red-600 hover:text-red-800" @click="clearError">×</button>
           </div>
         </div>
 
@@ -322,27 +322,27 @@
               <!-- Actions -->
               <div class="flex items-center gap-2">
                 <button 
-                  @click="openPreview(video)"
                   class="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
                   title="پیش‌نمایش ویدیو"
+                  @click="openPreview(video)"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
                     <path d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7zm0 12a5 5 0 110-10 5 5 0 010 10zm0-2a3 3 0 100-6 3 3 0 000 6z"/>
                   </svg>
                 </button>
                 <button 
-                  @click="startEditVideo(video)"
                   class="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors"
                   title="ویرایش ویدیو"
+                  @click="startEditVideo(video)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                   </svg>
                 </button>
                 <button 
-                  @click="handleDeleteVideo(video.id!)"
                   class="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors"
                   title="حذف ویدیو"
+                  @click="handleDeleteVideo(video.id!)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>

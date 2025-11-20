@@ -7,8 +7,8 @@
         <p class="page-subtitle">ویرایش ناوبری موبایل و اپلیکیشن</p>
       </div>
       <button
-        @click="goBack"
         class="btn btn-secondary"
+        @click="goBack"
       >
         <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -24,7 +24,7 @@
       <!-- فرم ویرایش ناوبری (سمت چپ) -->
       <div>
         <div class="bg-white rounded-lg shadow p-6 h-full">
-          <form @submit.prevent="updateNavigation" class="space-y-6">
+          <form class="space-y-6" @submit.prevent="updateNavigation">
             <!-- اطلاعات اصلی -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <!-- نام ناوبری -->

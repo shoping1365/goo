@@ -30,9 +30,9 @@
             </div>
 
             <div class="map-controls">
-              <button @click="selectByProvince" class="map-btn">انتخاب استان</button>
-              <button @click="selectByCity" class="map-btn">انتخاب شهر</button>
-              <button @click="selectByDistrict" class="map-btn">انتخاب محله</button>
+              <button class="map-btn" @click="selectByProvince">انتخاب استان</button>
+              <button class="map-btn" @click="selectByCity">انتخاب شهر</button>
+              <button class="map-btn" @click="selectByDistrict">انتخاب محله</button>
             </div>
           </div>
         </div>
@@ -41,10 +41,10 @@
       <!-- لیست مناطق -->
       <div class="areas-section">
         <div class="tabs">
-          <button @click="activeTab = 'covered'" :class="['tab', { active: activeTab === 'covered' }]">
+          <button :class="['tab', { active: activeTab === 'covered' }]" @click="activeTab = 'covered'">
             مناطق تحت پوشش
           </button>
-          <button @click="activeTab = 'excluded'" :class="['tab', { active: activeTab === 'excluded' }]">
+          <button :class="['tab', { active: activeTab === 'excluded' }]" @click="activeTab = 'excluded'">
             مناطق مستثنی
           </button>
         </div>
@@ -52,7 +52,7 @@
         <div class="areas-list">
           <div class="list-header">
             <h4>{{ activeTab === 'covered' ? 'مناطق تحت پوشش' : 'مناطق مستثنی' }}</h4>
-            <button @click="addArea" class="add-btn">+ افزودن</button>
+            <button class="add-btn" @click="addArea">+ افزودن</button>
           </div>
 
           <div class="areas-grid">
@@ -60,8 +60,8 @@
               <div class="area-header">
                 <span class="area-type">{{ getAreaTypeLabel(area.type) }}</span>
                 <div class="actions">
-                  <button @click="editArea(index)" class="edit-btn">✏️</button>
-                  <button @click="removeArea(index)" class="delete-btn">🗑️</button>
+                  <button class="edit-btn" @click="editArea(index)">✏️</button>
+                  <button class="delete-btn" @click="removeArea(index)">🗑️</button>
                 </div>
               </div>
 
@@ -94,7 +94,7 @@
       <div class="modal-content" @click.stop>
         <div class="modal-header">
           <h4>{{ isEditing ? 'ویرایش منطقه' : 'افزودن منطقه' }}</h4>
-          <button @click="closeModal" class="close-btn">×</button>
+          <button class="close-btn" @click="closeModal">×</button>
         </div>
 
         <div class="modal-body">
@@ -131,8 +131,8 @@
         </div>
 
         <div class="modal-footer">
-          <button @click="closeModal" class="btn-cancel">انصراف</button>
-          <button @click="saveArea" class="btn-save">ذخیره</button>
+          <button class="btn-cancel" @click="closeModal">انصراف</button>
+          <button class="btn-save" @click="saveArea">ذخیره</button>
         </div>
       </div>
     </div>
@@ -140,7 +140,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps({
   modelValue: {
@@ -152,7 +152,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:modelValue'])
+defineEmits(['update:modelValue'])
 
 const activeTab = ref('covered')
 const showModal = ref(false)
@@ -179,15 +179,15 @@ const editingArea = ref({
 const currentAreas = computed(() => activeTab.value === 'covered' ? coveredAreas.value : excludedAreas.value)
 
 function selectByProvince() {
-  console.log('انتخاب بر اساس استان')
+  // console.log('انتخاب بر اساس استان')
 }
 
 function selectByCity() {
-  console.log('انتخاب بر اساس شهر')
+  // console.log('انتخاب بر اساس شهر')
 }
 
 function selectByDistrict() {
-  console.log('انتخاب بر اساس محله')
+  // console.log('انتخاب بر اساس محله')
 }
 
 function addArea() {

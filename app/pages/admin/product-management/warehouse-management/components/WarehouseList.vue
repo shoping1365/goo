@@ -60,7 +60,7 @@
           <!-- افزودن انبار جدید -->
           <div class="relative group">
             <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity"></div>
-            <button @click="onAddClick" :disabled="creating" class="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-8 py-3 rounded-2xl hover:from-blue-700 hover:to-indigo-800 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 flex items-center gap-3 font-semibold">
+            <button :disabled="creating" class="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-8 py-3 rounded-2xl hover:from-blue-700 hover:to-indigo-800 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 flex items-center gap-3 font-semibold" @click="onAddClick">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
@@ -196,7 +196,7 @@
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                     </svg>
                   </button>
-                  <button @click="onRemove(warehouse)" class="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="حذف">
+                  <button class="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="حذف" @click="onRemove(warehouse)">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
@@ -387,6 +387,7 @@ async function onAddClick() {
     await refresh()
     notification.value = { message: 'انبار با موفقیت ایجاد شد', type: 'success' }
     setTimeout(() => (notification.value = null), 2500)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
     notification.value = { message: e?.data?.message || e?.statusMessage || 'خطا در ثبت انبار', type: 'error' }
     setTimeout(() => (notification.value = null), 3000)

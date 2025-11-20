@@ -10,12 +10,12 @@
           </div>
           <div class="flex space-x-2 space-x-reverse">
             <TemplateButton
-              @click="exportToExcel"
-              bgGradient="bg-gradient-to-r from-green-400 to-green-600"
-              textColor="text-white"
-              hoverClass="hover:from-green-500 hover:to-green-700 hover:shadow-lg hover:scale-105"
-              focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              bg-gradient="bg-gradient-to-r from-green-400 to-green-600"
+              text-color="text-white"
+              hover-class="hover:from-green-500 hover:to-green-700 hover:shadow-lg hover:scale-105"
+              focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
               size="medium"
+              @click="exportToExcel"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -23,12 +23,12 @@
               خروجی اکسل
             </TemplateButton>
             <TemplateButton
-              @click="refreshData"
-              bgGradient="bg-white"
-              textColor="text-gray-500"
-              borderColor="border border-gray-200"
-              hoverClass="hover:bg-gray-50"
+              bg-gradient="bg-white"
+              text-color="text-gray-500"
+              border-color="border border-gray-200"
+              hover-class="hover:bg-gray-50"
               size="medium"
+              @click="refreshData"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -44,13 +44,13 @@
           <button
             v-for="navItem in navigationItems"
             :key="navItem.id"
-            @click="activeNavItem = navItem.id"
             :class="[
               'flex items-center space-x-2 space-x-reverse px-4 py-2 rounded-lg transition-all duration-200 whitespace-nowrap text-sm font-medium',
               activeNavItem === navItem.id
                 ? 'bg-white text-blue-600 shadow-md border border-blue-200'
                 : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'
             ]"
+            @click="activeNavItem = navItem.id"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="navItem.icon"></path>

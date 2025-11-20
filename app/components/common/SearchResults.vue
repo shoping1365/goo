@@ -15,8 +15,8 @@
         <div
           v-for="result in results"
           :key="`${result.type}-${result.id}`"
-          @click="selectResult(result)"
           class="flex items-center space-x-3 space-x-reverse p-2 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+          @click="selectResult(result)"
         >
           <!-- تصویر -->
           <div class="flex-shrink-0">

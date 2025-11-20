@@ -1,7 +1,8 @@
 <template>
   <ClientOnly>
     <!-- Notification -->
-    <div v-if="notification.show" :class="[
+    <div
+v-if="notification.show" :class="[
       'fixed top-6 right-4 z-50 max-w-sm w-full rounded-lg shadow-lg transition-all duration-300',
       notification.type === 'success' ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'
     ]">
@@ -16,7 +17,8 @@
             </svg>
           </div>
           <div class="mr-3 w-0 flex-1">
-            <p :class="[
+            <p
+:class="[
               'text-sm font-medium',
               notification.type === 'success' ? 'text-green-800' : 'text-red-800'
             ]">
@@ -24,10 +26,11 @@
             </p>
           </div>
           <div class="mr-4 flex-shrink-0 flex">
-            <button @click="notification.show = false" :class="[
+            <button
+:class="[
               'rounded-md inline-flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2',
               notification.type === 'success' ? 'text-green-500 hover:text-green-600 focus:ring-green-500' : 'text-red-500 hover:text-red-600 focus:ring-red-500'
-            ]">
+            ]" @click="notification.show = false">
               <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
               </svg>
@@ -79,14 +82,14 @@
             </div>
             <!-- Action buttons -->
             <div class="flex gap-2">
-              <button v-if="stats.changed > 0" @click="bulkEditTableRef.resetEdits()" class="inline-flex items-center px-4 py-1.5 rounded text-xs font-medium text-gray-800 bg-gradient-to-r from-gray-200 to-gray-400 hover:from-gray-300 hover:to-gray-500 shadow transition">
+              <button v-if="stats.changed > 0" class="inline-flex items-center px-4 py-1.5 rounded text-xs font-medium text-gray-800 bg-gradient-to-r from-gray-200 to-gray-400 hover:from-gray-300 hover:to-gray-500 shadow transition" @click="bulkEditTableRef.resetEdits()">
                 لغو ویرایش
               </button>
               <button 
                 v-if="stats.changed > 0" 
-                @click="saveChanges" 
-                :disabled="saving"
+                :disabled="saving" 
                 class="inline-flex items-center px-4 py-1.5 rounded text-xs font-medium text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed shadow transition"
+                @click="saveChanges"
               >
                 <svg v-if="saving" class="animate-spin -mr-1 ml-2 h-3 w-3 text-white" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -134,12 +137,12 @@
   </ClientOnly>
 </template>
 
-<script setup>
-import { ref, reactive, onMounted } from 'vue'
-import ProductFilters from '~/pages/admin/product-management/components/ProductFilters.vue';
+<script setup lang="ts">
+import { reactive, ref } from 'vue';
+import Pagination from '~/components/admin/common/Pagination.vue';
 import BulkEditProductTable from '~/pages/admin/product-management/components/BulkEditProductTable.vue';
 import ColumnSettingsModal from '~/pages/admin/product-management/components/ColumnSettingsModal.vue';
-import Pagination from '~/components/admin/common/Pagination.vue';
+import ProductFilters from '~/pages/admin/product-management/components/ProductFilters.vue';
 
 definePageMeta({
   layout: 'admin-main'
@@ -198,7 +201,7 @@ const stats = reactive({
 // Add a function to load column settings from the backend
 async function loadColumnSettings() {
   try {
-    const response = await $fetch('/api/admin/admin-settings/bulk-edit-columns', { method: 'GET' })
+    const response = await $fetch<{ value: string }>('/api/admin/admin-settings/bulk-edit-columns', { method: 'GET' })
     if (response && response.value) {
       // If a value is returned and it's not an empty string, parse it
       productTableVisibleColumns.value = JSON.parse(response.value)

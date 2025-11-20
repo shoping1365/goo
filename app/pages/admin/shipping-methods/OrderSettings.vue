@@ -4,7 +4,7 @@
       <div class="card-header">
         <h3>تنظیمات سفارش</h3>
         <div class="toggle-switch">
-          <input type="checkbox" v-model="enabled" id="orderToggle" />
+          <input id="orderToggle" v-model="enabled" type="checkbox" />
           <label for="orderToggle"></label>
         </div>
       </div>
@@ -88,8 +88,8 @@
               <div class="order-types">
                 <label v-for="type in orderTypes" :key="type.value" class="order-type-checkbox">
                   <input 
-                    type="checkbox" 
                     v-model="allowedOrderTypes" 
+                    type="checkbox" 
                     :value="type.value"
                   />
                   {{ type.label }}
@@ -101,8 +101,8 @@
               <div class="prohibited-order-types">
                 <label v-for="type in orderTypes" :key="type.value" class="order-type-checkbox">
                   <input 
-                    type="checkbox" 
                     v-model="prohibitedOrderTypes" 
+                    type="checkbox" 
                     :value="type.value"
                   />
                   {{ type.label }}
@@ -119,7 +119,7 @@
               <label>سفارش‌های فوری</label>
               <div class="express-orders">
                 <label class="checkbox-label">
-                  <input type="checkbox" v-model="expressOrders.enabled" />
+                  <input v-model="expressOrders.enabled" type="checkbox" />
                   فعال‌سازی سفارش‌های فوری
                 </label>
                 <div v-if="expressOrders.enabled" class="express-options">
@@ -158,7 +158,7 @@
               <label>سفارش‌های گروهی</label>
               <div class="bulk-orders">
                 <label class="checkbox-label">
-                  <input type="checkbox" v-model="bulkOrders.enabled" />
+                  <input v-model="bulkOrders.enabled" type="checkbox" />
                   فعال‌سازی سفارش‌های گروهی
                 </label>
                 <div v-if="bulkOrders.enabled" class="bulk-options">
@@ -195,7 +195,7 @@
               <label>سفارش‌های تکرار شونده</label>
               <div class="recurring-orders">
                 <label class="checkbox-label">
-                  <input type="checkbox" v-model="recurringOrders.enabled" />
+                  <input v-model="recurringOrders.enabled" type="checkbox" />
                   فعال‌سازی سفارش‌های تکرار شونده
                 </label>
                 <div v-if="recurringOrders.enabled" class="recurring-options">

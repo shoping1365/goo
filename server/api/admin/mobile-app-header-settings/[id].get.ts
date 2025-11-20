@@ -1,9 +1,9 @@
-import { defineEventHandler, createError, getRouterParam } from 'h3'
+import { createError, defineEventHandler, getRouterParam } from 'h3'
 import { fetchGo } from '../../_utils/fetchGo'
 
 interface MobileAppHeaderResponse {
      success: boolean
-     data: any
+     data: unknown
      message?: string
 }
 
@@ -18,16 +18,16 @@ export default defineEventHandler(async (event): Promise<MobileAppHeaderResponse
                })
           }
 
-          console.log('درخواست دریافت هدر موبایل با ID:', id)
+          // console.log('درخواست دریافت هدر موبایل با ID:', id)
 
           const responseData = await fetchGo(event, `/api/admin/mobile-app-header-settings/${id}`, {
                method: 'GET'
           })
 
-          console.log('پاسخ هدر موبایل:', responseData)
+          // console.log('پاسخ هدر موبایل:', responseData)
 
           if (responseData && typeof responseData === 'object') {
-               const payload = responseData as Record<string, any>
+               const payload = responseData as Record<string, unknown>
                return {
                     success: payload.success !== false,
                     data: payload.data || null
@@ -39,15 +39,16 @@ export default defineEventHandler(async (event): Promise<MobileAppHeaderResponse
                data: responseData || null
           }
 
-     } catch (error: any) {
-          console.error('خطا در دریافت هدر موبایل:', error)
+     } catch (error: unknown) {
+          const err = error as { statusCode?: number; data?: { message?: string; error?: string } }
+          // console.error('خطا در دریافت هدر موبایل:', error)
 
           // اگر خطا از سرور Go آمده باشد
-          if (error.data) {
+          if (err.data) {
                throw createError({
-                    statusCode: error.statusCode || 500,
-                    message: error.data.message || error.data.error || 'خطا در دریافت هدر موبایل',
-                    data: error.data
+                    statusCode: err.statusCode || 500,
+                    message: err.data.message || err.data.error || 'خطا در دریافت هدر موبایل',
+                    data: err.data
                })
           }
 

@@ -33,7 +33,9 @@
   </div>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ user: any }>();
+import type { User } from '~/types/user';
+
+defineProps<{ user: User }>();
 // Mock data for activity
 const totalTime = '2 ساعت و 35 دقیقه';
 const peakHours = '10:00 تا 13:00';

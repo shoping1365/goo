@@ -9,14 +9,14 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button 
-            @click="markAllAsRead"
             class="px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            @click="markAllAsRead"
           >
             علامت‌گذاری همه به عنوان خوانده شده
           </button>
           <button 
-            @click="refreshNotifications"
             class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            @click="refreshNotifications"
           >
             به‌روزرسانی
           </button>
@@ -102,8 +102,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-1">نوع نوتیفیکیشن</label>
           <select 
             v-model="filters.type"
-            @change="applyFilters"
             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            @change="applyFilters"
           >
             <option value="">همه</option>
             <option value="purchase">خرید جدید</option>
@@ -117,8 +117,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-1">اولویت</label>
           <select 
             v-model="filters.priority"
-            @change="applyFilters"
             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            @change="applyFilters"
           >
             <option value="">همه</option>
             <option value="high">بالا</option>
@@ -131,8 +131,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-1">وضعیت</label>
           <select 
             v-model="filters.status"
-            @change="applyFilters"
             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            @change="applyFilters"
           >
             <option value="">همه</option>
             <option value="unread">خوانده نشده</option>
@@ -144,8 +144,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-1">تاریخ</label>
           <select 
             v-model="filters.date"
-            @change="applyFilters"
             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            @change="applyFilters"
           >
             <option value="">همه</option>
             <option value="today">امروز</option>
@@ -194,19 +194,19 @@
                   <span class="text-xs text-gray-500">{{ formatDate(notification.createdAt) }}</span>
                   <div class="flex items-center space-x-1 space-x-reverse">
                     <button 
-                      @click="markAsRead(notification)"
                       v-if="!notification.isRead"
                       class="text-gray-400 hover:text-gray-600"
                       title="علامت‌گذاری به عنوان خوانده شده"
+                      @click="markAsRead(notification)"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                       </svg>
                     </button>
                     <button 
-                      @click="deleteNotification(notification)"
                       class="text-gray-400 hover:text-red-600"
                       title="حذف"
+                      @click="deleteNotification(notification)"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -233,9 +233,9 @@
                 <button 
                   v-for="action in notification.actions"
                   :key="action.id"
-                  @click="handleAction(notification, action)"
                   :class="getActionButtonClass(action.type)"
                   class="px-3 py-1 text-xs font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2"
+                  @click="handleAction(notification, action)"
                 >
                   {{ action.label }}
                 </button>
@@ -259,16 +259,16 @@
     <div v-if="totalPages > 1" class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
       <div class="flex-1 flex justify-between sm:hidden">
         <button 
-          @click="previousPage"
           :disabled="currentPage === 1"
           class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          @click="previousPage"
         >
           قبلی
         </button>
         <button 
-          @click="nextPage"
           :disabled="currentPage === totalPages"
           class="mr-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          @click="nextPage"
         >
           بعدی
         </button>
@@ -288,9 +288,9 @@
         <div>
           <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
             <button 
-              @click="previousPage"
               :disabled="currentPage === 1"
               class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              @click="previousPage"
             >
               <span class="sr-only">قبلی</span>
               <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -300,19 +300,19 @@
             <button 
               v-for="page in visiblePages" 
               :key="page"
-              @click="goToPage(page)"
               :class="{
                 'bg-blue-50 border-blue-500 text-blue-600': page === currentPage,
                 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50': page !== currentPage
               }"
               class="relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+              @click="goToPage(page)"
             >
               {{ page }}
             </button>
             <button 
-              @click="nextPage"
               :disabled="currentPage === totalPages"
               class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              @click="nextPage"
             >
               <span class="sr-only">بعدی</span>
               <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

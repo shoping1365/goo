@@ -10,7 +10,7 @@
     <p class="text-gray-600 text-sm">{{ address.recipient_name }} | {{ address.recipient_mobile }}</p>
     <p v-if="address.phone" class="text-gray-600 text-sm">تلفن ثابت: {{ address.phone }}</p>
 
-    <button @click="$emit('edit')" class="self-start text-sm text-[#1a2341] font-bold flex items-center gap-1 mt-2 hover:underline">
+    <button class="self-start text-sm text-[#1a2341] font-bold flex items-center gap-1 mt-2 hover:underline" @click="$emit('edit')">
       <span>تغییر آدرس</span>
     </button>
   </div>
@@ -18,10 +18,11 @@
 
 <script setup lang="ts">
 interface Props {
-  address: any
+  address: Record<string, unknown>
 }
 
 defineProps<Props>()
+defineEmits(['edit'])
 </script>
 
 <style scoped>

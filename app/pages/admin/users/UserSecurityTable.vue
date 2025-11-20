@@ -32,7 +32,10 @@
   </div>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ user: any }>();
+import type { User } from '~/types/user';
+
+defineProps<{ user: User }>();
+defineEmits(['view-all-security']);
 // Mock data for security logs
 const securityLogs = [
   { action: 'ورود به سیستم', date: '1402/03/10 09:12', ip: '192.168.1.10', device: 'موبایل', status: 'موفق' },

@@ -82,7 +82,7 @@ export const useCSRF = () => {
       */
      const fetchWithCSRF = async <T>(
           url: string,
-          options: any = {}
+          options: Record<string, unknown> = {}
      ): Promise<T> => {
           const token = await getCSRFToken()
 
@@ -92,7 +92,7 @@ export const useCSRF = () => {
 
           const headers = {
                'x-csrf-token': token,
-               ...options.headers
+               ...(options.headers as Record<string, string>)
           }
 
           return await $fetch<T>(url, {

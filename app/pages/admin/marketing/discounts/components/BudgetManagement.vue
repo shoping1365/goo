@@ -8,7 +8,7 @@
           <p class="text-gray-600 mt-1">تعیین و کنترل بودجه کمپین‌ها و کوپن‌ها</p>
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
-          <button @click="showBudgetForm = true" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="showBudgetForm = true">
             <span class="i-heroicons-plus ml-2"></span>
             افزودن بودجه جدید
           </button>
@@ -105,10 +105,10 @@
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
               <div class="flex items-center space-x-2 space-x-reverse">
-                <button @click="editBudget(budget)" class="text-blue-600 hover:text-blue-900">
+                <button class="text-blue-600 hover:text-blue-900" @click="editBudget(budget)">
                   <span class="i-heroicons-pencil-square"></span>
                 </button>
-                <button @click="deleteBudget(budget)" class="text-red-600 hover:text-red-900">
+                <button class="text-red-600 hover:text-red-900" @click="deleteBudget(budget)">
                   <span class="i-heroicons-trash"></span>
                 </button>
               </div>
@@ -133,12 +133,12 @@
         <div class="p-6 border-b border-gray-200">
           <div class="flex items-center justify-between">
             <h3 class="text-lg font-semibold text-gray-900">{{ editingBudget ? 'ویرایش بودجه' : 'افزودن بودجه جدید' }}</h3>
-            <button @click="closeForm" class="text-gray-400 hover:text-gray-600">
+            <button class="text-gray-400 hover:text-gray-600" @click="closeForm">
               <span class="i-heroicons-x-mark text-xl"></span>
             </button>
           </div>
         </div>
-        <form @submit.prevent="handleSubmit" class="p-6 space-y-6">
+        <form class="p-6 space-y-6" @submit.prevent="handleSubmit">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">نام کمپین *</label>
             <input v-model="form.campaignName" type="text" required class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="نام کمپین">
@@ -157,10 +157,10 @@
           </div>
         </form>
         <div class="p-6 border-t border-gray-200 flex justify-end space-x-3 space-x-reverse">
-          <button @click="closeForm" class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+          <button class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors" @click="closeForm">
             انصراف
           </button>
-          <button @click="handleSubmit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="handleSubmit">
             ذخیره
           </button>
         </div>

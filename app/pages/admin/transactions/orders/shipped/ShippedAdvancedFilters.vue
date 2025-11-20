@@ -13,8 +13,8 @@
         </div>
         <div class="flex items-center space-x-2 space-x-reverse">
           <button 
-            @click="toggleAdvancedFilters"
             class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center"
+            @click="toggleAdvancedFilters"
           >
             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -200,14 +200,14 @@
       <div class="flex items-center justify-between mt-6 pt-6 border-t border-gray-200">
         <div class="flex items-center space-x-2 space-x-reverse">
           <button 
-            @click="applyFilters"
             class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+            @click="applyFilters"
           >
             اعمال فیلترها
           </button>
           <button 
-            @click="clearAllFilters"
             class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+            @click="clearAllFilters"
           >
             پاک کردن همه
           </button>

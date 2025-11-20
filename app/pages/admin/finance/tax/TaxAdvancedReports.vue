@@ -10,8 +10,8 @@
       <!-- دکمه‌های عملیاتی -->
       <div class="flex gap-2">
         <button 
-          @click="generateReport"
           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
+          @click="generateReport"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
@@ -19,8 +19,8 @@
           تولید گزارش
         </button>
         <button 
-          @click="exportToExcel"
           class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-200"
+          @click="exportToExcel"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -28,8 +28,8 @@
           خروجی Excel
         </button>
         <button 
-          @click="exportToPDF"
           class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200"
+          @click="exportToPDF"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
@@ -46,8 +46,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">نوع گزارش</label>
           <select 
             v-model="reportConfig.type"
-            @change="updateReportConfig"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="updateReportConfig"
           >
             <option value="periodic">دوره‌ای</option>
             <option value="comparative">مقایسه‌ای</option>
@@ -60,8 +60,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">دوره زمانی</label>
           <select 
             v-model="reportConfig.period"
-            @change="updateReportConfig"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="updateReportConfig"
           >
             <option value="daily">روزانه</option>
             <option value="weekly">هفتگی</option>
@@ -75,8 +75,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">سطح جزئیات</label>
           <select 
             v-model="reportConfig.detailLevel"
-            @change="updateReportConfig"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="updateReportConfig"
           >
             <option value="summary">خلاصه</option>
             <option value="detailed">تفصیلی</option>
@@ -92,8 +92,8 @@
           <input 
             v-model="reportConfig.dateFrom"
             type="date"
-            @change="updateReportConfig"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="updateReportConfig"
           />
         </div>
         
@@ -102,8 +102,8 @@
           <input 
             v-model="reportConfig.dateTo"
             type="date"
-            @change="updateReportConfig"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="updateReportConfig"
           />
         </div>
         
@@ -111,8 +111,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">دسته‌بندی</label>
           <select 
             v-model="reportConfig.category"
-            @change="updateReportConfig"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="updateReportConfig"
           >
             <option value="">همه دسته‌ها</option>
             <option value="products">محصولات</option>
@@ -125,8 +125,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">منطقه</label>
           <select 
             v-model="reportConfig.region"
-            @change="updateReportConfig"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="updateReportConfig"
           >
             <option value="">همه مناطق</option>
             <option value="tehran">تهران</option>
@@ -185,13 +185,13 @@
           <button 
             v-for="tab in reportTabs" 
             :key="tab.id"
-            @click="activeReportTab = tab.id"
             :class="[
               'py-2 px-1 border-b-2 font-medium text-sm transition-colors duration-200',
               activeReportTab === tab.id 
                 ? 'border-blue-500 text-blue-600' 
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             ]"
+            @click="activeReportTab = tab.id"
           >
             {{ tab.label }}
           </button>
@@ -550,14 +550,14 @@
 
             <div class="flex gap-3">
               <button 
-                @click="saveCustomReport"
                 class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+                @click="saveCustomReport"
               >
                 ذخیره گزارش
               </button>
               <button 
-                @click="loadCustomReport"
                 class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg"
+                @click="loadCustomReport"
               >
                 بارگذاری گزارش
               </button>

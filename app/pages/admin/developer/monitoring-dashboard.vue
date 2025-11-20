@@ -12,7 +12,7 @@
             <!-- سوییچ روشن/خاموش مانیتورینگ -->
             <label class="flex items-center cursor-pointer select-none">
               <span class="ml-3 text-sm text-gray-600">مانیتورینگ</span>
-              <input type="checkbox" class="sr-only" v-model="monitoringEnabled" @change="toggleMonitoring">
+              <input v-model="monitoringEnabled" type="checkbox" class="sr-only" @change="toggleMonitoring">
               <div :class="['w-12 h-7 rounded-full p-1 transition', monitoringEnabled ? 'bg-green-500' : 'bg-gray-300']">
                 <div :class="['w-5 h-5 bg-white rounded-full transition', monitoringEnabled ? 'translate-x-5' : 'translate-x-0']"></div>
               </div>
@@ -20,12 +20,12 @@
             <!-- سوییچ روشن/خاموش ثبت لاگ ترافیک -->
             <label class="flex items-center cursor-pointer select-none">
               <span class="ml-3 text-sm text-gray-600">ثبت لاگ ترافیک</span>
-              <input type="checkbox" class="sr-only" v-model="trafficLoggingEnabled" @change="toggleTrafficLoggingMD">
+              <input v-model="trafficLoggingEnabled" type="checkbox" class="sr-only" @change="toggleTrafficLoggingMD">
               <div :class="['w-12 h-7 rounded-full p-1 transition', trafficLoggingEnabled ? 'bg-green-500' : 'bg-gray-300']">
                 <div :class="['w-5 h-5 bg-white rounded-full transition', trafficLoggingEnabled ? 'translate-x-5' : 'translate-x-0']"></div>
               </div>
             </label>
-            <button @click="loadMonitoringStatus" class="px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg hover:bg-gray-50">به‌روزرسانی وضعیت</button>
+            <button class="px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg hover:bg-gray-50" @click="loadMonitoringStatus">به‌روزرسانی وضعیت</button>
           </div>
         </div>
       </div>
@@ -114,7 +114,8 @@
           </div>
           <div class="p-6">
             <div class="h-64 flex items-end justify-between space-x-1">
-              <div v-for="(value, index) in cpuHistory" :key="index" 
+              <div
+v-for="(value, index) in cpuHistory" :key="index" 
                    class="flex-1 bg-blue-500 rounded-t" 
                    :style="{ height: `${value}%` }">
               </div>
@@ -134,7 +135,8 @@
           </div>
           <div class="p-6">
             <div class="h-64 flex items-end justify-between space-x-1">
-              <div v-for="(value, index) in memoryHistory" :key="index" 
+              <div
+v-for="(value, index) in memoryHistory" :key="index" 
                    class="flex-1 bg-green-500 rounded-t" 
                    :style="{ height: `${value}%` }">
               </div>
@@ -155,10 +157,12 @@
         </div>
         <div class="p-6">
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div v-for="service in services" :key="service.name" 
+            <div
+v-for="service in services" :key="service.name" 
                  class="flex items-center justify-between p-6 border border-gray-200 rounded-lg">
               <div class="flex items-center">
-                <div class="w-3 h-3 rounded-full mr-3" 
+                <div
+class="w-3 h-3 rounded-full mr-3" 
                      :class="service.status === 'running' ? 'bg-green-500' : 'bg-red-500'"></div>
                 <div>
                   <p class="font-medium text-gray-900">{{ service.name }}</p>
@@ -166,7 +170,8 @@
                 </div>
               </div>
               <div class="text-right">
-                <p class="text-sm font-medium" 
+                <p
+class="text-sm font-medium" 
                    :class="service.status === 'running' ? 'text-green-600' : 'text-red-600'">
                   {{ service.status === 'running' ? 'فعال' : 'غیرفعال' }}
                 </p>
@@ -224,13 +229,14 @@
       <div class="bg-white rounded-lg shadow">
         <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
           <h2 class="text-lg font-semibold text-gray-900">هشدارها و اعلان‌ها</h2>
-          <button @click="refreshAlerts" class="text-blue-600 hover:text-blue-800 text-sm">
+          <button class="text-blue-600 hover:text-blue-800 text-sm" @click="refreshAlerts">
             به‌روزرسانی
           </button>
         </div>
         <div class="p-6">
           <div class="space-y-4">
-            <div v-for="alert in alerts" :key="alert.id" 
+            <div
+v-for="alert in alerts" :key="alert.id" 
                  class="flex items-start p-6 border border-gray-200 rounded-lg"
                  :class="getAlertClass(alert.severity)">
               <div class="flex-shrink-0 mr-3">
@@ -245,7 +251,7 @@
                 <p class="text-sm text-gray-600 mt-1">{{ alert.message }}</p>
                 <p class="text-xs text-gray-500 mt-2">{{ formatDate(alert.timestamp) }}</p>
               </div>
-              <button @click="dismissAlert(alert.id)" class="text-gray-400 hover:text-gray-600">
+              <button class="text-gray-400 hover:text-gray-600" @click="dismissAlert(alert.id)">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>

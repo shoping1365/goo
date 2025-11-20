@@ -20,7 +20,8 @@
           <td class="p-2 text-right">{{ alert.productName }}</td>
           <td class="p-2 text-right">{{ alert.requestDate }}</td>
           <td class="p-2 text-right">
-            <span class="px-2 py-1 rounded text-xs font-bold" :class="{
+            <span
+class="px-2 py-1 rounded text-xs font-bold" :class="{
               'bg-green-100 text-green-700': alert.status === 'active',
               'bg-red-100 text-red-700': alert.status === 'expired',
               'bg-yellow-100 text-yellow-700': alert.status === 'pending'
@@ -45,7 +46,8 @@
             <td class="p-2 text-right">{{ alert.productName }}</td>
             <td class="p-2 text-right">{{ alert.requestDate }}</td>
             <td class="p-2 text-right">
-              <span class="px-2 py-1 rounded text-xs font-bold" :class="{
+              <span
+class="px-2 py-1 rounded text-xs font-bold" :class="{
                 'bg-green-100 text-green-700': alert.status === 'active',
                 'bg-red-100 text-red-700': alert.status === 'expired',
                 'bg-yellow-100 text-yellow-700': alert.status === 'pending'
@@ -61,8 +63,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import ViewAllModal from '~/components/admin/modals/ViewAllModal.vue';
+import type { User } from '~/types/user';
 
-const props = defineProps<{ user: any }>();
+defineProps<{ user: User }>();
 const showAll = ref(false);
 
 // Mock data for discount alerts

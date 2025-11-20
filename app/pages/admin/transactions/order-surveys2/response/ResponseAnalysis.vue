@@ -60,7 +60,7 @@
           <label class="block text-xs text-gray-700 mb-1">دوره دوم</label>
           <input v-model="period2" type="month" class="px-3 py-2 border border-gray-300 rounded-lg">
         </div>
-        <button @click="comparePeriods" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm">مقایسه</button>
+        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm" @click="comparePeriods">مقایسه</button>
       </div>
       <div v-if="comparisonResult" class="mt-4">
         <div class="text-sm text-gray-700">درصد رضایت دوره اول: <span class="font-bold">{{ comparisonResult.p1 }}%</span></div>

@@ -29,15 +29,15 @@
           <!-- دکمه‌های عملیات -->
           <div class="flex space-x-2 space-x-reverse mt-3">
             <button
-              @click="openGoogleMaps"
               class="flex-1 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded transition-colors"
+              @click="openGoogleMaps"
             >
               مشاهده در نقشه
             </button>
             <button
-              @click="copyCoordinates"
               class="px-3 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm rounded transition-colors"
               :title="copyButtonText"
+              @click="copyCoordinates"
             >
               {{ copyButtonText }}
             </button>

@@ -3,12 +3,12 @@
     <div class="relative">
       <input
         v-model="searchTerm"
-        @input="handleSearch"
-        @focus="showDropdown = true"
-        @blur="handleBlur"
         type="text"
         :placeholder="placeholder"
         class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
+        @input="handleSearch"
+        @focus="showDropdown = true"
+        @blur="handleBlur"
       />
       <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
         <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -17,8 +17,8 @@
       </div>
       <button
         v-if="selectedCategory"
-        @click="clearSelection"
         class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+        @click="clearSelection"
       >
         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -43,8 +43,8 @@
         <div
           v-for="category in filteredCategories"
           :key="category.id"
-          @click="selectCategory(category)"
           class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm border-b border-gray-100 last:border-b-0"
+          @click="selectCategory(category)"
         >
           <div class="flex items-center justify-between">
             <div>

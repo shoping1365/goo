@@ -28,5 +28,5 @@
    </template>
    
    <script setup lang="ts">
-   defineProps<{ data: any[] }>()
+   defineProps<{ data: Record<string, unknown>[] }>()
    </script>

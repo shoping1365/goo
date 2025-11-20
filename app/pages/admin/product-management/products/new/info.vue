@@ -73,9 +73,9 @@
             </div>
           </div>
           <button
-              @click="generateAIContent('short')"
               class="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-lg px-4 py-2 text-sm font-medium hover:from-purple-600 hover:to-indigo-600 transition-all duration-200 shadow-lg hover:shadow-xl"
               title="تولید محتوا با هوش مصنوعی"
+              @click="generateAIContent('short')"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -109,9 +109,9 @@
             </div>
           </div>
           <button
-              @click="generateAIContent('full')"
               class="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-lg px-4 py-2 text-sm font-medium hover:from-purple-600 hover:to-indigo-600 transition-all duration-200 shadow-lg hover:shadow-xl"
               title="تولید محتوا با هوش مصنوعی"
+              @click="generateAIContent('full')"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -211,8 +211,8 @@
             دسته‌بندی اصلی
           </label>
           <select 
-            v-model="productForm.category_id"
             :key="mainCategories.length"
+            v-model="productForm.category_id"
             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
           >
             <option :value="''">انتخاب دسته‌بندی</option>
@@ -250,7 +250,7 @@
             </svg>
             برند
           </label>
-          <select v-model="productForm.brand_id" :key="brands.length" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-rose-500 transition-colors">
+          <select :key="brands.length" v-model="productForm.brand_id" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-rose-500 transition-colors">
             <option :value="''">انتخاب برند</option>
             <option v-for="b in brands" :key="b.id" :value="b.id">{{ b.name }}</option>
           </select>
@@ -546,7 +546,7 @@
         <!-- علامت‌گذاری کالای جدید -->
         <div class="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-xl p-6">
           <div class="flex items-center gap-3 mb-6">
-            <input type="checkbox" class="w-5 h-5 text-purple-600 border-purple-300 rounded focus:ring-purple-500" id="newProduct" />
+            <input id="newProduct" type="checkbox" class="w-5 h-5 text-purple-600 border-purple-300 rounded focus:ring-purple-500" />
             <label for="newProduct" class="text-lg font-bold text-purple-800 flex items-center gap-2 cursor-pointer">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
@@ -1078,9 +1078,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch, inject, ref } from 'vue'
-import { useProductCreateStore } from '~/stores/productCreate'
+import { computed, inject, ref, watch } from 'vue'
 import RichTextEditor from '~/components/common/RichTextEditor.vue'
+import { useProductCreateStore } from '~/stores/productCreate'
 
 const store = useProductCreateStore()
 
@@ -1097,17 +1097,20 @@ const sectionSettings = inject('sectionSettings', {
 // Use store state and actions directly
 const sections = store.sections
 const productForm = store.productForm
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const brands = inject<any>('brands', ref([]))
 const tinyApiKey = store.tinyApiKey
 const categories = computed(() => store.categories)
 
 // دسته‌بندی‌های اصلی (parent_id == null)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mainCategories = computed(() => categories.value.filter((c:any) => !c.parent_id))
 
 // زیردسته‌ها بر اساس انتخاب دسته اصلی
 const subCategories = computed(() => {
   const pid = productForm.category_id
   if (!pid) return []
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return categories.value.filter((c:any) => c.parent_id == pid)
 })
 

@@ -85,9 +85,9 @@
                   class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                 <button 
-                  @click="updateCoreSettings" 
-                  :disabled="updatingCores"
+                  :disabled="updatingCores" 
                   class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="updateCoreSettings"
                 >
                   <span v-if="updatingCores">🔄</span>
                   <span v-else>💾</span>
@@ -122,9 +122,9 @@
                   class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                 <button 
-                  @click="updateMemorySettings" 
-                  :disabled="updatingMemory"
+                  :disabled="updatingMemory" 
                   class="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="updateMemorySettings"
                 >
                   <span v-if="updatingMemory">🔄</span>
                   <span v-else>💾</span>
@@ -164,18 +164,18 @@
             
             <div class="grid grid-cols-2 gap-2">
               <button 
-                @click="refreshCPUInfo" 
-                :disabled="refreshingCPU"
+                :disabled="refreshingCPU" 
                 class="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                @click="refreshCPUInfo"
               >
                 <span v-if="refreshingCPU">🔄</span>
                 <span v-else>🔄</span>
               </button>
               
               <button 
-                @click="showCPUDetails" 
-                :disabled="showingCPUDetails"
+                :disabled="showingCPUDetails" 
                 class="bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                @click="showCPUDetails"
               >
                 <span v-if="showingCPUDetails">🔍</span>
                 <span v-else>🔍</span>
@@ -198,9 +198,9 @@
           <div class="space-y-4">
             <div>
               <button 
-                @click="runPM2Test" 
-                :disabled="pm2TestRunning"
+                :disabled="pm2TestRunning" 
                 class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                @click="runPM2Test"
               >
                 <span v-if="pm2TestRunning">🔄 در حال اجرا...</span>
                 <span v-else>🚀 راه‌اندازی و تست PM2</span>
@@ -209,9 +209,9 @@
             
             <div>
               <button 
-                @click="runClusterTest" 
-                :disabled="clusterTestRunning"
+                :disabled="clusterTestRunning" 
                 class="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                @click="runClusterTest"
               >
                 <span v-if="clusterTestRunning">🔄 در حال تست...</span>
                 <span v-else>📊 تست عملکرد چند هسته‌ای</span>
@@ -220,15 +220,15 @@
 
             <div class="grid grid-cols-2 gap-6">
               <button 
-                @click="showPM2Status" 
-                class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors"
+                class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors" 
+                @click="showPM2Status"
               >
                 📋 وضعیت PM2
               </button>
               
               <button 
-                @click="showPM2Logs" 
-                class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors"
+                class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors" 
+                @click="showPM2Logs"
               >
                 📝 نمایش Logs
               </button>
@@ -277,9 +277,9 @@
             </div>
 
             <button 
-              @click="runLoadTest" 
-              :disabled="loadTestRunning"
+              :disabled="loadTestRunning" 
               class="w-full bg-red-600 hover:bg-red-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+              @click="runLoadTest"
             >
               <span v-if="loadTestRunning">🔄 در حال تست بارگذاری...</span>
               <span v-else>⚡ شروع تست بارگذاری</span>

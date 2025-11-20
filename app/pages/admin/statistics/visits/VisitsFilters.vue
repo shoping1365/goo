@@ -69,14 +69,14 @@
       <!-- Action Buttons -->
       <div class="flex gap-2">
         <button
-          @click="applyFilters"
           class="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors duration-200"
+          @click="applyFilters"
         >
           اعمال فیلتر
         </button>
         <button
-          @click="resetFilters"
           class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors duration-200"
+          @click="resetFilters"
         >
           پاک کردن
         </button>
@@ -88,9 +88,9 @@
       <button
         v-for="quick in quickFilters"
         :key="quick.label"
-        @click="applyQuickFilter(quick)"
         class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors duration-200"
         :class="{ 'bg-blue-100 text-blue-700': isQuickFilterActive(quick) }"
+        @click="applyQuickFilter(quick)"
       >
         {{ quick.label }}
       </button>
@@ -99,10 +99,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { reactive, ref } from 'vue';
 
 const emit = defineEmits<{
-  filter: [filters: any]
+  filter: [filters: Record<string, unknown>]
 }>()
 
 const filters = reactive({
@@ -139,7 +139,7 @@ const resetFilters = () => {
   emit('filter', { ...filters })
 }
 
-const applyQuickFilter = (quick: any) => {
+const applyQuickFilter = (quick: { label: string, days: number }) => {
   const today = new Date()
   const fromDate = new Date(today)
   fromDate.setDate(today.getDate() - quick.days)
@@ -151,7 +151,7 @@ const applyQuickFilter = (quick: any) => {
   emit('filter', { ...filters })
 }
 
-const isQuickFilterActive = (quick: any) => {
+const isQuickFilterActive = (quick: { label: string, days: number }) => {
   return activeQuickFilter.value === quick.label
 }
 </script> 

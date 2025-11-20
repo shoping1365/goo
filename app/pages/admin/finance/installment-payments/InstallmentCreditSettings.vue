@@ -2,7 +2,7 @@
   <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-6">
       <h3 class="text-lg font-semibold text-gray-900">تنظیمات اعتباری</h3>
-      <button @click="saveSettings" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+      <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700" @click="saveSettings">
         ذخیره تنظیمات
       </button>
     </div>

@@ -66,13 +66,13 @@
           <button 
             v-for="tab in tabs" 
             :key="tab.key"
-            @click="activeTab = tab.key"
             :class="[
               'py-4 px-1 border-b-2 font-medium text-sm',
               activeTab === tab.key
                 ? 'border-blue-500 text-blue-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             ]"
+            @click="activeTab = tab.key"
           >
             {{ tab.title }}
           </button>
@@ -147,11 +147,13 @@
           </div>
           
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div v-for="notification in notificationsList" :key="notification.id" 
+            <div
+v-for="notification in notificationsList" :key="notification.id" 
                  class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
               <div class="flex items-start justify-between mb-2">
                 <h4 class="font-medium text-gray-900">{{ notification.title }}</h4>
-                <span :class="getNotificationTypeClass(notification.type)" 
+                <span
+:class="getNotificationTypeClass(notification.type)" 
                       class="inline-flex px-2 py-1 text-xs font-semibold rounded-full">
                   {{ getNotificationTypeText(notification.type) }}
                 </span>
@@ -191,7 +193,8 @@
           </div>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div v-for="template in templatesList" :key="template.id" 
+            <div
+v-for="template in templatesList" :key="template.id" 
                  class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
               <div class="flex items-start justify-between mb-2">
                 <h4 class="font-medium text-gray-900">{{ template.name }}</h4>
@@ -238,12 +241,14 @@
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1">API Key</label>
-                  <input type="password" class="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                  <input
+type="password" class="w-full px-3 py-2 border border-gray-300 rounded-md" 
                          placeholder="کلید API پیامک" />
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1">شماره فرستنده</label>
-                  <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                  <input
+type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md" 
                          placeholder="شماره فرستنده" />
                 </div>
               </div>
@@ -255,25 +260,31 @@
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
                   <span class="text-sm text-gray-700">اعلان سفارش جدید</span>
-                  <button class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" 
+                  <button
+class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" 
                           :class="settings.newOrderNotification ? 'bg-blue-600' : 'bg-gray-200'">
-                    <span class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200" 
+                    <span
+class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200" 
                           :class="settings.newOrderNotification ? 'translate-x-5' : 'translate-x-0'"></span>
                   </button>
                 </div>
                 <div class="flex items-center justify-between">
                   <span class="text-sm text-gray-700">اعلان تغییر وضعیت سفارش</span>
-                  <button class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" 
+                  <button
+class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" 
                           :class="settings.orderStatusNotification ? 'bg-blue-600' : 'bg-gray-200'">
-                    <span class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200" 
+                    <span
+class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200" 
                           :class="settings.orderStatusNotification ? 'translate-x-5' : 'translate-x-0'"></span>
                   </button>
                 </div>
                 <div class="flex items-center justify-between">
                   <span class="text-sm text-gray-700">اعلان موجودی محصول</span>
-                  <button class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" 
+                  <button
+class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" 
                           :class="settings.inventoryNotification ? 'bg-blue-600' : 'bg-gray-200'">
-                    <span class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200" 
+                    <span
+class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200" 
                           :class="settings.inventoryNotification ? 'translate-x-5' : 'translate-x-0'"></span>
                   </button>
                 </div>

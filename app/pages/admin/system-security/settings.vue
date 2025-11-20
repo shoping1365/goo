@@ -20,7 +20,7 @@
         <div class="flex items-center space-x-2 space-x-reverse">
           <input v-model.number="tempHours" type="number" min="1" max="24" class="w-20 px-2 py-1 border rounded" />
           <span>ساعت</span>
-          <button @click="disableTemporarily" class="px-4 py-1 bg-red-600 text-white rounded hover:bg-red-700">اعمال</button>
+          <button class="px-4 py-1 bg-red-600 text-white rounded hover:bg-red-700" @click="disableTemporarily">اعمال</button>
         </div>
       </div>
     </div>

@@ -3,11 +3,11 @@
     <!-- Previous Button -->
     <button
       v-if="canGoPrev"
-      @click="$emit('prev')"
       class="nav-button nav-prev"
       :class="navigationStyleClass"
       :style="{ width: `${navigationSize}px`, height: `${navigationSize}px` }"
       aria-label="Previous slide"
+      @click="$emit('prev')"
     >
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
@@ -17,11 +17,11 @@
     <!-- Next Button -->
     <button
       v-if="canGoNext"
-      @click="$emit('next')"
       class="nav-button nav-next"
       :class="navigationStyleClass"
       :style="{ width: `${navigationSize}px`, height: `${navigationSize}px` }"
       aria-label="Next slide"
+      @click="$emit('next')"
     >
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>

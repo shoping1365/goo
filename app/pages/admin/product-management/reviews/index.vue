@@ -10,8 +10,8 @@
           </div>
           <div class="flex space-x-2 space-x-reverse">
             <button
-              @click="showFilters = !showFilters"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-cyan-400 to-cyan-600 hover:from-cyan-500 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+              @click="showFilters = !showFilters"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"></path>
@@ -19,8 +19,8 @@
               فیلترها
             </button>
             <button 
-              @click="showSettingsModal = true" 
-              class="inline-flex items-center px-3 py-2 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 transition-all shadow-md"
+              class="inline-flex items-center px-3 py-2 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 transition-all shadow-md" 
+              @click="showSettingsModal = true"
             >
               <svg v-if="settingsLoading" class="w-5 h-5 text-gray-500 animate-spin" fill="none" viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none" />
@@ -32,8 +32,8 @@
               </svg>
             </button>
             <button
-              @click="exportReviews"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+              @click="exportReviews"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -210,20 +210,20 @@
           </div>
           <div class="flex space-x-2 space-x-reverse">
             <button 
-              @click="bulkApprove"
               class="inline-flex items-center px-3 py-2 border border-transparent text-xs font-medium rounded text-white bg-green-600 hover:bg-green-700"
+              @click="bulkApprove"
             >
               تایید همه
             </button>
             <button 
-              @click="bulkReject"
               class="inline-flex items-center px-3 py-2 border border-transparent text-xs font-medium rounded text-white bg-red-600 hover:bg-red-700"
+              @click="bulkReject"
             >
               رد همه
             </button>
             <button 
-              @click="bulkDelete"
               class="inline-flex items-center px-3 py-2 border border-transparent text-xs font-medium rounded text-white bg-gray-600 hover:bg-gray-700"
+              @click="bulkDelete"
             >
               حذف همه
             </button>
@@ -250,9 +250,9 @@
                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   <input 
                     type="checkbox" 
-                    @change="toggleSelectAll" 
-                    :checked="allSelected"
+                    :checked="allSelected" 
                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    @change="toggleSelectAll"
                   />
                 </th>
                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -283,8 +283,8 @@
                 <!-- Checkbox -->
                 <td class="px-6 py-4 whitespace-nowrap">
                   <input 
-                    type="checkbox" 
                     v-model="selectedReviews" 
+                    type="checkbox" 
                     :value="review.id"
                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
@@ -361,9 +361,9 @@
                 <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <button 
-                      @click="viewReview(review)"
                       class="text-blue-600 hover:text-blue-900 p-1 rounded-full hover:bg-blue-100"
                       title="مشاهده جزئیات"
+                      @click="viewReview(review)"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -372,9 +372,9 @@
                     </button>
                     <button 
                       v-if="review.status === 'pending' && hasPermission('review.approve')"
-                      @click="approveReview(review.id)"
                       class="text-green-600 hover:text-green-900 p-1 rounded-full hover:bg-green-100"
                       title="تایید"
+                      @click="approveReview(review.id)"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -382,9 +382,9 @@
                     </button>
                     <button 
                       v-if="review.status === 'pending' && hasPermission('review.reject')"
-                      @click="rejectReview(review.id)"
                       class="text-red-600 hover:text-red-900 p-1 rounded-full hover:bg-red-100"
                       title="رد"
+                      @click="rejectReview(review.id)"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -393,9 +393,9 @@
                     
                     <button 
                       v-if="hasPermission('review.delete')"
-                      @click="deleteReview(review.id)"
                       class="text-red-600 hover:text-red-900 p-1 rounded-full hover:bg-red-100"
                       title="حذف"
+                      @click="deleteReview(review.id)"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -413,8 +413,8 @@
           :current-page="currentPage"
           :total-pages="totalPages"
           :total="filteredReviews.length"
-          @page-changed="goToPage"
           class="mt-6 mb-4"
+          @page-changed="goToPage"
         />
       </div>
     </div>
@@ -442,7 +442,7 @@
                 </div>
                 <div><h3 class="text-lg font-bold text-white">جزئیات نظر مشتری</h3></div>
               </div>
-              <button @click="showReviewModal = false" class="text-white/80 hover:text-white hover:bg-white/10 rounded-lg p-1 transition-all">
+              <button class="text-white/80 hover:text-white hover:bg-white/10 rounded-lg p-1 transition-all" @click="showReviewModal = false">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
               </button>
             </div>
@@ -574,7 +574,7 @@
                   </div>
                   <!-- دکمه پاسخ چپ -->
                   <div class="flex items-center space-x-2 space-x-reverse">
-                    <button @click="showReplyModal = true" class="inline-flex items-center gap-1 px-3 py-1 text-xs font-bold text-white rounded-lg shadow-lg bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500">
+                    <button class="inline-flex items-center gap-1 px-3 py-1 text-xs font-bold text-white rounded-lg shadow-lg bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500" @click="showReplyModal = true">
                       <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
                       </svg>
@@ -593,8 +593,8 @@
                   <h5 class="text-lg font-bold text-green-900 mb-3">{{ selectedReview.adminReply ? 'ویرایش پاسخ' : 'ثبت پاسخ جدید' }}</h5>
                   <textarea v-model="inlineAnswerText" rows="5" class="block w-full border-green-300 rounded-lg shadow-sm p-3" placeholder="پاسخ خود را اینجا بنویسید..."></textarea>
                   <div class="flex justify-end gap-2 mt-3">
-                    <button @click="isAnsweringInline = false" class="px-4 py-2 rounded-lg text-sm bg-gray-200 hover:bg-gray-300">انصراف</button>
-                    <button @click="submitInlineAnswer" class="px-4 py-2 rounded-lg text-sm text-white bg-green-600 hover:bg-green-700">ارسال پاسخ</button>
+                    <button class="px-4 py-2 rounded-lg text-sm bg-gray-200 hover:bg-gray-300" @click="isAnsweringInline = false">انصراف</button>
+                    <button class="px-4 py-2 rounded-lg text-sm text-white bg-green-600 hover:bg-green-700" @click="submitInlineAnswer">ارسال پاسخ</button>
                   </div>
                 </div>
 
@@ -608,7 +608,7 @@
               <!-- این بخش به طور کامل حذف شد -->
 
               <div class="bg-slate-50 rounded-xl border border-slate-200 shadow-sm">
-                <button @click="isAdditionalInfoOpen = !isAdditionalInfoOpen" class="w-full p-6 flex items-center justify-between cursor-pointer">
+                <button class="w-full p-6 flex items-center justify-between cursor-pointer" @click="isAdditionalInfoOpen = !isAdditionalInfoOpen">
                   <h4 class="text-base font-semibold text-gray-900">اطلاعات اضافی</h4>
                   <svg class="w-5 h-5 text-gray-600 transition-transform" :class="{'rotate-180': isAdditionalInfoOpen}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
@@ -636,9 +636,9 @@
                       <!-- دکمه رهگیری آی پی -->
                       <div class="flex items-center ml-16">
                         <button
-                          @click="selectedReview.ipAddress && trackIP(selectedReview.ipAddress)"
                           :disabled="!selectedReview.ipAddress"
                           class="bg-blue-500 hover:bg-blue-600 text-white text-xs px-3 py-1 rounded-lg transition-colors duration-200 flex items-center gap-1 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                          @click="selectedReview.ipAddress && trackIP(selectedReview.ipAddress)"
                         >
                           رهگیری آی پی
                         </button>
@@ -649,17 +649,17 @@
               </div>
 
               <div class="bg-blue-50 rounded-xl border border-blue-200 shadow-sm">
-                <button @click="isStatusSectionOpen = !isStatusSectionOpen" class="w-full p-6 flex items-center justify-between cursor-pointer">
+                <button class="w-full p-6 flex items-center justify-between cursor-pointer" @click="isStatusSectionOpen = !isStatusSectionOpen">
                   <h4 class="text-base font-semibold text-gray-900">تغییر وضعیت</h4>
                   <svg class="w-5 h-5 text-gray-600 transition-transform" :class="{'rotate-180': isStatusSectionOpen}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 <div v-if="isStatusSectionOpen" class="p-6 border-t border-blue-200">
                   <div class="flex flex-wrap gap-3">
-                    <button @click="approveReview(selectedReview.id)" :disabled="selectedReview.status === 'approved'" :class="selectedReview.status === 'approved' ? 'bg-green-600 text-white border-2 border-green-700 font-bold' : 'bg-green-100 text-green-800 hover:bg-green-200 border border-green-300'" class="flex-1 btn-status-no-shadow disabled:opacity-50 transition-all duration-150">
+                    <button :disabled="selectedReview.status === 'approved'" :class="selectedReview.status === 'approved' ? 'bg-green-600 text-white border-2 border-green-700 font-bold' : 'bg-green-100 text-green-800 hover:bg-green-200 border border-green-300'" class="flex-1 btn-status-no-shadow disabled:opacity-50 transition-all duration-150" @click="approveReview(selectedReview.id)">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                       تایید شده
                     </button>
-                    <button @click="rejectReview(selectedReview.id)" :disabled="selectedReview.status === 'rejected'" :class="selectedReview.status === 'rejected' ? 'bg-red-600 text-white border-2 border-red-700 font-bold' : 'bg-red-100 text-red-800 hover:bg-red-200 border border-red-300'" class="flex-1 btn-status-no-shadow disabled:opacity-50 transition-all duration-150">
+                    <button :disabled="selectedReview.status === 'rejected'" :class="selectedReview.status === 'rejected' ? 'bg-red-600 text-white border-2 border-red-700 font-bold' : 'bg-red-100 text-red-800 hover:bg-red-200 border border-red-300'" class="flex-1 btn-status-no-shadow disabled:opacity-50 transition-all duration-150" @click="rejectReview(selectedReview.id)">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                       رد شده
                     </button>
@@ -671,8 +671,8 @@
 
           <div class="bg-gray-50 px-4 py-3 border-t">
             <div class="flex gap-2 justify-end">
-              <button v-if="!isAnsweringInline" @click="startInlineAnswer" class="btn bg-green-600 text-white hover:bg-green-700">{{ selectedReview && selectedReview.adminReply ? 'ویرایش پاسخ' : 'پاسخ دادن' }}</button>
-              <button @click="showReviewModal = false" class="btn bg-gray-200 text-gray-700 hover:bg-gray-300">بستن</button>
+              <button v-if="!isAnsweringInline" class="btn bg-green-600 text-white hover:bg-green-700" @click="startInlineAnswer">{{ selectedReview && selectedReview.adminReply ? 'ویرایش پاسخ' : 'پاسخ دادن' }}</button>
+              <button class="btn bg-gray-200 text-gray-700 hover:bg-gray-300" @click="showReviewModal = false">بستن</button>
             </div>
           </div>
         </div>
@@ -691,7 +691,7 @@
             <!-- Modal Header -->
             <div class="flex items-center justify-between pb-4 border-b border-gray-200">
               <h3 class="text-lg font-medium text-gray-900">پاسخ به نظر</h3>
-              <button @click="showReplyModal = false" class="text-gray-400 hover:text-gray-600">
+              <button class="text-gray-400 hover:text-gray-600" @click="showReplyModal = false">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -733,20 +733,20 @@
                 <span class="text-xs text-gray-500">{{ replyText.length }}/500 کاراکتر</span>
                 <div class="flex space-x-2 space-x-reverse text-xs">
                   <button 
-                    @click="insertTemplate('thanks')"
                     class="text-blue-600 hover:text-blue-700"
+                    @click="insertTemplate('thanks')"
                   >
                     + تشکر
                   </button>
                   <button 
-                    @click="insertTemplate('apology')"
                     class="text-blue-600 hover:text-blue-700"
+                    @click="insertTemplate('apology')"
                   >
                     + عذرخواهی
                   </button>
                   <button 
-                    @click="insertTemplate('followup')"
                     class="text-blue-600 hover:text-blue-700"
+                    @click="insertTemplate('followup')"
                   >
                     + پیگیری
                   </button>
@@ -758,15 +758,15 @@
           <!-- Reply Modal Actions -->
           <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse space-y-2 sm:space-y-0 sm:space-x-3 sm:space-x-reverse">
             <button 
-              @click="submitReply"
               :disabled="!replyText.trim()"
               class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed sm:ml-3 sm:w-auto sm:text-sm"
+              @click="submitReply"
             >
               ارسال پاسخ
             </button>
             <button 
-              @click="showReplyModal = false"
               class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
+              @click="showReplyModal = false"
             >
               انصراف
             </button>
@@ -953,36 +953,9 @@ const paginatedReviews = computed(() => {
   return filteredReviews.value.slice(start, end)
 })
 
-const visiblePages = computed(() => {
-  const total = totalPages.value
-  const current = currentPage.value
-  const delta = 2
-  const range = []
-  const rangeWithDots = []
-
-  for (let i = Math.max(2, current - delta); i <= Math.min(total - 1, current + delta); i++) {
-    range.push(i)
-  }
-
-  if (current - delta > 2) {
-    rangeWithDots.push(1, '...')
-  } else {
-    rangeWithDots.push(1)
-  }
-
-  rangeWithDots.push(...range)
-
-  if (current + delta < total - 1) {
-    rangeWithDots.push('...', total)
-  } else if (total > 1) {
-    rangeWithDots.push(total)
-  }
-
-  return rangeWithDots
-})
-
 // Methods
 // Local alias to avoid deep type instantiation on $fetch
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const $f: any = (globalThis as any).$fetch || (window as any).$fetch
 const loadReviews = async () => {
   try {
@@ -993,9 +966,11 @@ const loadReviews = async () => {
     params.append('page', String(currentPage.value))
     params.append('per_page', String(itemsPerPage.value))
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response: any = await $f(`/api/admin/reviews?${params.toString()}`)
     // Map ID, createdAt, joinDate, and product.image for frontend compatibility
     const list = Array.isArray(response?.reviews) ? response.reviews : []
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     reviews.value = list.map((r: any) => ({
       ...r,
       id: r.id || r.ID,
@@ -1089,31 +1064,9 @@ const toggleSelectAll = () => {
   }
 }
 
-const applyFilters = () => {
-  currentPage.value = 1
-  // فیلترها خودکار اعمال می‌شوند
-  loadReviews()
-}
-
-const clearFilters = () => {
-  filters.value = {
-    search: '',
-    status: '',
-    rating: '',
-    dateRange: ''
-  }
-  currentPage.value = 1
-  loadReviews()
-}
-
 const viewReview = (review: Review) => {
   selectedReview.value = review
   showReviewModal.value = true
-}
-
-const editReview = (review: Review) => {
-  // پیاده‌سازی ویرایش نظر - در آینده با modal یا صفحه جدید
-  useNotifier().info(`ویرایش نظر ${review.id} - این قابلیت در نسخه بعدی اضافه خواهد شد`)
 }
 
 const approveReview = async (reviewId: string) => {
@@ -1185,11 +1138,6 @@ const deleteReview = async (reviewId: string) => {
   }
 }
 
-const replyToReview = (review: Review) => {
-  // پیاده‌سازی پاسخ به نظر - در آینده با modal مخصوص
-  useNotifier().info(`پاسخ به نظر ${review.customer.name} - این قابلیت در نسخه بعدی اضافه خواهد شد`)
-}
-
 const bulkApprove = () => {
   if (selectedReviews.value.length === 0) return
   
@@ -1255,10 +1203,6 @@ const exportReviews = () => {
   document.body.removeChild(link)
 }
 
-const viewImage = (imageUrl: string) => {
-  window.open(imageUrl, '_blank', 'width=800,height=600')
-}
-
 const getFullSizeImage = (product: Product) => {
   // اگر تصویر اصلی موجود است همان را برمی‌گردانیم
   if (product.image && product.image !== '/default-product.svg') return product.image
@@ -1284,18 +1228,6 @@ const goToPage = (page: number | string) => {
   if (typeof page === 'number' && page >= 1 && page <= totalPages.value) {
     currentPage.value = page
     loadReviews()
-  }
-}
-
-const previousPage = () => {
-  if (currentPage.value > 1) {
-    currentPage.value--
-  }
-}
-
-const nextPage = () => {
-  if (currentPage.value < totalPages.value) {
-    currentPage.value++
   }
 }
 
@@ -1400,7 +1332,7 @@ onMounted(() => {
   loadReviews()
 })
 
-function getRatingStyle(rating) {
+function getRatingStyle(rating: number) {
   switch (rating) {
     case 1:
       return {

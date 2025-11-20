@@ -29,8 +29,8 @@
       </div>
       <button
         class="flex items-center justify-center gap-2 bg-white rounded-lg p-3 shadow-sm hover:bg-green-100 text-green-700 font-semibold transition h-full w-full"
-        @click="$emit('view-all')"
         type="button"
+        @click="$emit('view-all')"
       >
         <span class="bg-green-100 text-green-600 rounded-lg p-2">
           <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
@@ -46,8 +46,10 @@ declare const $fetch: <T = unknown>(url: string, options?: { credentials?: strin
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import type { User } from '~/types/user';
 
-const props = defineProps<{ user?: any }>()
+const props = defineProps<{ user?: User }>()
+defineEmits(['view-all'])
 
 const walletBalance = ref<string>('-')
 const lastTransactionAmount = ref<string>('-')
@@ -60,16 +62,16 @@ function formatAmount(n: number) {
 
 function toFaDate(d?: string | Date | null) {
   if (!d) return '-'
-  try { return new Date(d as any).toLocaleDateString('fa-IR') } catch { return '-' }
+  try { return new Date(d as string | number | Date).toLocaleDateString('fa-IR') } catch { return '-' }
 }
 
 async function loadWallet(userId?: number | string) {
   if (!userId) return
-  const summary: any = await $fetch(`/api/users/${userId}/wallet/summary`, { credentials: 'include' })
+  const summary = await $fetch<{ balance?: number; status?: string }>(`/api/users/${userId}/wallet/summary`, { credentials: 'include' })
   walletBalance.value = formatAmount(Number(summary?.balance || 0))
   walletStatus.value = summary?.status === 'active' ? 'فعال' : 'غیرفعال'
 
-  const txs: any[] = await $fetch(`/api/users/${userId}/wallet/transactions?limit=1`, { credentials: 'include' })
+  const txs = await $fetch<{ type: string; amount: number; created_at?: string; createdAt?: string }[]>(`/api/users/${userId}/wallet/transactions?limit=1`, { credentials: 'include' })
   if (Array.isArray(txs) && txs.length) {
     const t = txs[0]
     const sign = t.type === 'credit' ? '+' : '-'

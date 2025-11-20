@@ -10,7 +10,7 @@
           </p>
         </div>
         <div class="flex flex-col space-y-3 space-y-reverse">
-          <button @click="openCreateBotModal" class="bg-white text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors font-medium">
+          <button class="bg-white text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors font-medium" @click="openCreateBotModal">
             ایجاد بات جدید
           </button>
           <a href="#" class="text-blue-100 hover:text-white text-sm flex items-center space-x-2 space-x-reverse">
@@ -89,12 +89,12 @@ const botForm = ref({
 })
 
 // لیست ربات‌ها از API
-const chatbots = ref<any[]>([])
+const chatbots = ref<Record<string, unknown>[]>([])
 async function loadBots() {
   try {
-    const res: any = await $fetch('/api/admin/chat/ai-bots')
+    const res = await $fetch<Record<string, unknown>>('/api/admin/chat/ai-bots')
     if (res?.status === 'success') {
-      chatbots.value = (res.data || []).map((b: any) => ({
+      chatbots.value = ((res.data as Record<string, unknown>[]) || []).map((b: Record<string, unknown>) => ({
         id: b.id,
         name: b.name,
         description: b.description,
@@ -195,18 +195,18 @@ function resetBotForm() {
   }
 }
 
-function saveBot() {
-  if (!botForm.value.name.trim()) { alert('لطفاً نام بات را وارد کنید'); return }
-  if (!botForm.value.type) { alert('لطفاً نوع بات را انتخاب کنید'); return }
+function saveBot(formData: Record<string, unknown>) {
+  if (!formData.name.trim()) { alert('لطفاً نام بات را وارد کنید'); return }
+  if (!formData.type) { alert('لطفاً نوع بات را انتخاب کنید'); return }
 
   const payload = {
-    name: botForm.value.name,
-    description: botForm.value.description,
-    model: botForm.value.aiModel,
-    temperature: botForm.value.temperature,
-    max_tokens: botForm.value.maxTokens,
-    system_prompt: botForm.value.personality,
-    is_active: !!botForm.value.isActive
+    name: formData.name,
+    description: formData.description,
+    model: formData.aiModel,
+    temperature: formData.temperature,
+    max_tokens: formData.maxTokens,
+    system_prompt: formData.personality,
+    is_active: !!formData.isActive
   }
 
   const doRequest = async () => {

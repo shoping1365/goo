@@ -90,13 +90,13 @@
           <button
             v-for="period in chartPeriods"
             :key="period.id"
-            @click="selectedChartPeriod = period.id"
             :class="[
               'px-3 py-1 text-xs font-medium rounded-md transition-colors',
               selectedChartPeriod === period.id
                 ? 'bg-green-500 text-white'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="selectedChartPeriod = period.id"
           >
             {{ period.name }}
           </button>
@@ -130,7 +130,7 @@
             </div>
             <h3 class="text-sm font-semibold text-gray-900">فیلترهای پیشرفته گزارشات</h3>
           </div>
-          <button @click="showFilters = !showFilters" class="text-sm text-green-600 hover:text-green-800 transition-colors font-medium hover:bg-green-50 px-3 py-1 rounded-lg">
+          <button class="text-sm text-green-600 hover:text-green-800 transition-colors font-medium hover:bg-green-50 px-3 py-1 rounded-lg" @click="showFilters = !showFilters">
             {{ showFilters ? 'مخفی کردن' : 'نمایش' }}
           </button>
         </div>
@@ -211,7 +211,7 @@
         </div>
 
         <div class="mt-4 flex justify-end">
-          <button @click="clearFilters" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+          <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors" @click="clearFilters">
             پاک کردن فیلترها
           </button>
         </div>
@@ -290,7 +290,7 @@
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button @click="viewReport(report)" class="text-blue-600 hover:text-blue-900">جزئیات</button>
+                <button class="text-blue-600 hover:text-blue-900" @click="viewReport(report)">جزئیات</button>
               </td>
             </tr>
           </tbody>
@@ -476,7 +476,7 @@ const filteredReports = computed(() => {
 
   // فیلتر بر اساس دوره
   if (filters.value.period) {
-    filtered = filtered.filter(report => {
+    filtered = filtered.filter(_report => {
       // اینجا می‌توانید منطق فیلتر بر اساس دوره را پیاده‌سازی کنید
       return true
     })
@@ -592,8 +592,8 @@ const clearFilters = () => {
 }
 
 // تابع مشاهده گزارش
-const viewReport = (report) => {
-  console.log('مشاهده گزارش:', report)
+const viewReport = (_report) => {
+  // View report logic
 }
 
 // تابع فرمت قیمت

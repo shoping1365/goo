@@ -3,7 +3,7 @@
     <div class="bg-white rounded-lg shadow p-6 mb-8 flex items-center justify-between">
       <div class="flex items-center gap-6 w-full justify-between">
         <h1 class="text-2xl font-bold">ویرایش درگاه پیامک</h1>
-        <button @click="$router.back()" class="inline-flex items-center justify-center gap-2 w-40 h-12 text-base px-0 py-0 rounded-lg bg-gradient-to-r from-purple-400 to-purple-600 text-white font-bold shadow hover:from-purple-500 hover:to-purple-700 transition">
+        <button class="inline-flex items-center justify-center gap-2 w-40 h-12 text-base px-0 py-0 rounded-lg bg-gradient-to-r from-purple-400 to-purple-600 text-white font-bold shadow hover:from-purple-500 hover:to-purple-700 transition" @click="$router.back()">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
           بازگشت
         </button>
@@ -31,7 +31,7 @@
         </div>
         <h3 class="text-lg font-medium text-red-800 mb-2">خطا در بارگذاری اطلاعات درگاه</h3>
         <p class="text-red-600 mb-4">متأسفانه در بارگذاری اطلاعات درگاه مشکلی پیش آمده است.</p>
-        <button @click="() => refresh()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+        <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" @click="() => refresh()">
           تلاش مجدد
         </button>
       </div>
@@ -63,10 +63,10 @@
         <div class="flex items-center gap-3">
           <span class="text-sm font-medium text-gray-700">وضعیت درگاه:</span>
           <button 
-            @click="toggleGatewayStatus" 
-            :disabled="isUpdatingStatus"
+            :disabled="isUpdatingStatus" 
             class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
             :class="gatewayStatus ? 'bg-purple-600' : 'bg-gray-200'"
+            @click="toggleGatewayStatus"
           >
             <span 
               class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
@@ -104,10 +104,10 @@
         <div v-for="field in getGatewayFields(selectedGateway)" :key="field.name" class="bg-white border-2 border-purple-300 rounded-xl p-6 flex flex-col gap-2">
           <label :for="field.name" class="block mb-2 font-semibold">{{ field.label }}</label>
           <input
-              :type="field.name === 'password' ? 'password' : 'text'"
-              class="form-input w-full rounded-lg border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-200"
               :id="field.name"
               v-model="form[field.name]"
+              :type="field.name === 'password' ? 'password' : 'text'"
+              class="form-input w-full rounded-lg border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-200"
               :placeholder="field.placeholder || ''"
           />
         </div>
@@ -116,11 +116,11 @@
           <label class="block mb-2 font-semibold">ارسال بر اساس پترن</label>
           <div class="flex gap-6">
             <label class="inline-flex items-center gap-2 cursor-pointer">
-              <input type="radio" value="yes" v-model="form.pattern_based" class="form-radio text-purple-500" />
+              <input v-model="form.pattern_based" type="radio" value="yes" class="form-radio text-purple-500" />
               <span>بله</span>
             </label>
             <label class="inline-flex items-center gap-2 cursor-pointer">
-              <input type="radio" value="no" v-model="form.pattern_based" class="form-radio text-purple-500" />
+              <input v-model="form.pattern_based" type="radio" value="no" class="form-radio text-purple-500" />
               <span>خیر</span>
             </label>
           </div>
@@ -136,7 +136,7 @@
         <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6 flex flex-col gap-6">
           <div>
             <label class="block mb-2 font-semibold text-gray-700">شماره موبایل گیرنده</label>
-            <input type="text" v-model="testMobile" placeholder="مثال: 0912xxxxxxx" class="form-input w-full rounded-lg border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-200" />
+            <input v-model="testMobile" type="text" placeholder="مثال: 0912xxxxxxx" class="form-input w-full rounded-lg border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-200" />
           </div>
           <hr class="my-2 border-t border-purple-300" />
           <div>
@@ -144,7 +144,7 @@
             <textarea v-model="testMessage" rows="3" placeholder="متن پیام تستی" class="form-input w-full rounded-lg border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-200 resize-none"></textarea>
           </div>
         </div>
-        <button @click="testSendSms" :disabled="!testMobile || !testMessage || !isFormValid" class="inline-flex items-center justify-center gap-2 w-40 h-12 text-base px-0 py-0 rounded-lg bg-gradient-to-r from-purple-400 to-purple-600 text-white font-bold shadow hover:from-purple-500 hover:to-purple-700 transition disabled:opacity-50 disabled:cursor-not-allowed mt-4 self-start md:self-auto">
+        <button :disabled="!testMobile || !testMessage || !isFormValid" class="inline-flex items-center justify-center gap-2 w-40 h-12 text-base px-0 py-0 rounded-lg bg-gradient-to-r from-purple-400 to-purple-600 text-white font-bold shadow hover:from-purple-500 hover:to-purple-700 transition disabled:opacity-50 disabled:cursor-not-allowed mt-4 self-start md:self-auto" @click="testSendSms">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
           تست ارسال
         </button>
@@ -162,13 +162,13 @@
       <!-- دکمه تست اتصال و ثبت درگاه (در انتهای فرم) -->
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mt-8">
         <div class="flex items-center gap-6 order-2 md:order-1">
-          <button @click="testConnection" :disabled="!isFormValid" class="inline-flex items-center justify-center gap-2 w-40 h-12 text-base px-0 py-0 rounded-lg bg-gradient-to-r from-blue-400 to-blue-600 text-white font-bold shadow hover:from-blue-500 hover:to-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+          <button :disabled="!isFormValid" class="inline-flex items-center justify-center gap-2 w-40 h-12 text-base px-0 py-0 rounded-lg bg-gradient-to-r from-blue-400 to-blue-600 text-white font-bold shadow hover:from-blue-500 hover:to-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed" @click="testConnection">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11V7m0 8h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             تست اتصال
           </button>
         </div>
         <div class="flex justify-end order-1 md:order-2 w-full md:w-auto">
-          <button @click="submitForm" :disabled="!selectedGateway || !isFormValid" class="inline-flex items-center justify-center gap-2 w-40 h-12 text-base px-0 py-0 rounded-lg bg-gradient-to-r from-purple-400 to-purple-600 text-white font-bold shadow hover:from-purple-500 hover:to-purple-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+          <button :disabled="!selectedGateway || !isFormValid" class="inline-flex items-center justify-center gap-2 w-40 h-12 text-base px-0 py-0 rounded-lg bg-gradient-to-r from-purple-400 to-purple-600 text-white font-bold shadow hover:from-purple-500 hover:to-purple-700 transition disabled:opacity-50 disabled:cursor-not-allowed" @click="submitForm">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
             ثبت درگاه
           </button>

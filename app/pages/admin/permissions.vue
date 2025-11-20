@@ -8,7 +8,7 @@
         <p class="text-gray-600">درحال بارگذاری...</p>
       </div>
 
-      <div class="overflow-x-auto" v-else>
+      <div v-else class="overflow-x-auto">
         <table class="w-full border-collapse">
           <thead class="bg-gray-50">
             <tr>
@@ -39,8 +39,8 @@
                     <input
                       type="checkbox"
                       :checked="roleHasPermission(role.id, perm.id)"
-                      @change="togglePermission(role.id, perm.id, $event)"
                       class="w-4 h-4 rounded border-gray-300"
+                      @change="togglePermission(role.id, perm.id, $event)"
                     />
                   </div>
                 </div>
@@ -53,14 +53,14 @@
       <!-- Action Buttons -->
       <div class="mt-6 flex gap-3">
         <button
-          @click="savePermissions"
           class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+          @click="savePermissions"
         >
           💾 ذخیره
         </button>
         <button
-          @click="resetPermissions"
           class="px-6 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors"
+          @click="resetPermissions"
         >
           ↺ بازنشانی
         </button>

@@ -16,7 +16,7 @@
              >
                ذخیره
              </button>
-              <button @click="previewCategory" class="flex items-center px-4 py-2 bg-purple-500/20 text-purple-600 rounded-md hover:bg-purple-500/30 transition-colors font-semibold">
+              <button class="flex items-center px-4 py-2 bg-purple-500/20 text-purple-600 rounded-md hover:bg-purple-500/30 transition-colors font-semibold" @click="previewCategory">
                پیش نمایش
              </button>
            </div>
@@ -28,14 +28,14 @@
          <div class="bg-white rounded-t-lg shadow p-6 flex items-center justify-between">
            <!-- Tabs - Moved to the right -->
            <nav class="-mb-px flex gap-6 space-x-reverse" aria-label="Tabs">
-             <a href="#" @click.prevent="selectTab('info')" :class="[activeTab === 'info' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']">اطلاعات دسته</a>
-             <a href="#" @click.prevent="selectTab('display')" :class="[activeTab === 'display' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']">تنظیمات نمایش</a>
-             <a href="#" @click.prevent="selectTab('seo')" :class="[activeTab === 'seo' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']">سئو</a>
-             <a href="#" @click.prevent="selectTab('products')" :class="[activeTab === 'products' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']">محصولات</a>
-             <a href="#" @click.prevent="selectTab('images')" :class="[activeTab === 'images' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']">بنر دسته بندی</a>
-             <a href="#" @click.prevent="selectTab('message')" :class="[activeTab === 'message' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']">پیغام دسته بندی</a>
-             <a href="#" @click.prevent="selectTab('faq')" :class="[activeTab === 'faq' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']">سوالات متداول</a>
-             <a href="#" @click.prevent="selectTab('video')" :class="[activeTab === 'video' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']">ویدیو</a>
+             <a href="#" :class="[activeTab === 'info' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']" @click.prevent="selectTab('info')">اطلاعات دسته</a>
+             <a href="#" :class="[activeTab === 'display' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']" @click.prevent="selectTab('display')">تنظیمات نمایش</a>
+             <a href="#" :class="[activeTab === 'seo' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']" @click.prevent="selectTab('seo')">سئو</a>
+             <a href="#" :class="[activeTab === 'products' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']" @click.prevent="selectTab('products')">محصولات</a>
+             <a href="#" :class="[activeTab === 'images' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']" @click.prevent="selectTab('images')">بنر دسته بندی</a>
+             <a href="#" :class="[activeTab === 'message' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']" @click.prevent="selectTab('message')">پیغام دسته بندی</a>
+             <a href="#" :class="[activeTab === 'faq' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']" @click.prevent="selectTab('faq')">سوالات متداول</a>
+             <a href="#" :class="[activeTab === 'video' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']" @click.prevent="selectTab('video')">ویدیو</a>
              <!-- Add other tabs as needed -->
            </nav>
            <!-- Back link - Moved to the left -->
@@ -59,11 +59,11 @@
                <div class="mb-8 flex flex-col md:flex-row gap-6">
                  <div class="flex-1">
                    <label for="category-name" class="block text-sm font-medium text-gray-700 mb-1">نام</label>
-                   <input v-model="categoryName" type="text" id="category-name" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-gray-50 p-2">
+                   <input id="category-name" v-model="categoryName" type="text" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-gray-50 p-2">
                  </div>
                  <div class="flex-1">
                    <label for="category-name-en" class="block text-sm font-medium text-gray-700 mb-1">نام رسمی (English)</label>
-                   <input v-model="categoryNameEn" @blur="onEnglishBlur" type="text" id="category-name-en" dir="ltr" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-gray-50 p-2">
+                   <input id="category-name-en" v-model="categoryNameEn" type="text" dir="ltr" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-gray-50 p-2" @blur="onEnglishBlur">
                  </div>
                </div>
 
@@ -106,7 +106,7 @@
                    <div class="flex items-center">
                      <div class="flex gap-2">
                        <!-- فقط انتخاب از رسانه -->
-                       <button @click="openMedia" type="button" class="bg-blue-500/20 text-blue-600 rounded-md px-4 py-2 text-sm hover:bg-blue-500/30 transition-colors font-semibold">انتخاب از رسانه</button>
+                       <button type="button" class="bg-blue-500/20 text-blue-600 rounded-md px-4 py-2 text-sm hover:bg-blue-500/30 transition-colors font-semibold" @click="openMedia">انتخاب از رسانه</button>
                      </div>
                      <!-- File name display -->
                      <span class="text-gray-600 mr-2" v-text="selectedFileName"></span>
@@ -151,7 +151,7 @@
                <!-- Product Count Per Page -->
                <div class="flex items-center justify-start">
                  <label for="product-count-per-page" class="block text-sm font-medium text-gray-700 ml-2">تعداد محصول در هر صفحه دسته بندی</label>
-                 <input type="text" id="product-count-per-page" v-model="productCountPerPage" placeholder="20" class="w-24 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-gray-50 p-2 text-sm focus:outline-none">
+                 <input id="product-count-per-page" v-model="productCountPerPage" type="text" placeholder="20" class="w-24 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-gray-50 p-2 text-sm focus:outline-none">
                </div>
              </div>
    
@@ -188,7 +188,7 @@
                    <template v-if="productsInCategory.length">
                      <tr v-for="p in productsInCategory" :key="p.id">
                                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          <img :src="productImage(p)" @error="onImgError($event)" class="object-cover rounded w-12 h-12 md:w-14 md:h-14" />
+                          <img :src="productImage(p)" class="object-cover rounded w-12 h-12 md:w-14 md:h-14" @error="onImgError($event)" />
                         </td>
                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ p.name }}</td>
                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center">
@@ -202,7 +202,7 @@
                          <NuxtLink :to="`/admin/product-management/products/edit?id=${p.id}`" class="text-indigo-600 hover:text-indigo-900">ویرایش</NuxtLink>
                        </td>
                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                         <button @click="deleteProduct(p)" class="text-red-600 hover:text-red-900">حذف</button>
+                         <button class="text-red-600 hover:text-red-900" @click="deleteProduct(p)">حذف</button>
                        </td>
                      </tr>
                    </template>
@@ -282,7 +282,7 @@
      </div>
    
      <!-- Media Library Modal -->
-     <MediaLibraryModal v-model="showMediaModal" @confirm="onMediaSelected" default-category="product-categories" />
+     <MediaLibraryModal v-model="showMediaModal" default-category="product-categories" @confirm="onMediaSelected" />
  </template>
    
 <script lang="ts">
@@ -316,13 +316,14 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
  const duplicateName = computed(()=>{
    const n = categoryName.value.trim().replace(/\s+/g,' ').toLowerCase()
    if(!n) return false
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
    return categories.value.some((c:any)=>{
       if(route.params.id && Number(route.params.id) === Number(c.id)) return false
       return (c.name||'').trim().replace(/\s+/g,' ').toLowerCase() === n
    })
  })
    
- const tinyApiKey = 'qwa4j6x5mh2e3241igpyi345b4uhe2d5qeq6f8hy9qfkw2ro';
+ // const tinyApiKey = 'qwa4j6x5mh2e3241igpyi345b4uhe2d5qeq6f8hy9qfkw2ro';
    
  // Dynamically import the RichTextEditor component
  const RichTextEditor = defineAsyncComponent(() =>
@@ -334,51 +335,10 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
  const imageUrl = ref('');
  const imagePreview = computed(()=> imageUrl.value || '/statics/images/default-image_100.png')
    
- 
-   
  // Media modal state
  const showMediaModal = ref(false)
    
- const previewShow = ref(false)
-   
  function openMedia(){ showMediaModal.value = true }
-   
- async function handleFileChange(event: Event) {
-   const target = event.target as HTMLInputElement
-   if (!target.files || !target.files.length) return
-   const file = target.files[0]
-   selectedFileName.value = file.name
-
-   // direct preview until upload finishes
-   imageUrl.value = URL.createObjectURL(file)
-
-   const xhr = new XMLHttpRequest()
-   xhr.open('POST','/api/media/upload')
-
-
-   xhr.onreadystatechange = ()=>{
-     if(xhr.readyState===4){
-       if(xhr.status===200){
-         try{
-           const json = JSON.parse(xhr.responseText)
-           const payload = json.data || (Array.isArray(json.files)? json.files[0] : null)
-           if(payload){
-             let url = payload.url || payload.file_path || ''
-             if(url && !url.startsWith('/uploads/media')) url = '/uploads/media/product-categories/'+url
-             imageUrl.value = url
-           }
-         }catch(err){ console.error('parse upload resp',err) }
-       }else{
-         console.error('upload failed', xhr.status)
-       }
-     }
-   }
-
-   const fd = new FormData()
-   fd.append('file', file)
-   fd.append('category', 'product-categories')
-   xhr.send(fd)
- }
    
  // Display Settings reactive variables
  const isPublished = ref(false);
@@ -389,7 +349,6 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
    
  // SEO Settings reactive variables
  const seoSlug = ref('')
- const seoPageName = ref('');
  const seoMetaTitle = ref('');
  const seoMetaKeywords = ref('');
  const seoMetaDescription = ref('');
@@ -407,6 +366,7 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
  // ---------------------------------------------------------------------------
  // Products for this category
  // ---------------------------------------------------------------------------
+ // eslint-disable-next-line @typescript-eslint/no-explicit-any
  const allProducts = ref<any[]>([])
    
    /** Fetch all products once (simple implementation, could be paginated later) */
@@ -435,7 +395,9 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
  // computed products that belong to current category
  const productsInCategory = computed(() => {
    if (!currentCategory.value) return []
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
    const id = Number((currentCategory.value as any).id)
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
    return allProducts.value.filter((p:any) => {
      if (p.category_id && Number(p.category_id) === id) return true
      if (p.category && Number(p.category.id) === id) return true
@@ -443,6 +405,7 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
    })
  })
    
+ // eslint-disable-next-line @typescript-eslint/no-explicit-any
  function productImage(p:any) {
    // Helper to convert original url to _thumbnail variant
    const toThumbnail = (url:string)=>{
@@ -467,10 +430,12 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
    return '/statics/images/default-image_100.png'
  }
    
+ // eslint-disable-next-line @typescript-eslint/no-explicit-any
  function onImgError(e:any) {
    e.target.src = '/statics/images/default-image_100.png'
  }
    
+ // eslint-disable-next-line @typescript-eslint/no-explicit-any
  function isProductFeatured(p:any):boolean {
    if (typeof p.is_featured === 'boolean') return p.is_featured
    if (typeof p.featured === 'boolean') return p.featured
@@ -478,11 +443,14 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
    return ['1','true','yes','featured'].includes(status)
  }
    
+ // eslint-disable-next-line @typescript-eslint/no-explicit-any
  async function deleteProduct(p:any) {
    if (!confirm(`آیا از حذف «${p.name}» مطمئن هستید؟`)) return
    try {
+     // eslint-disable-next-line @typescript-eslint/no-explicit-any
      await $fetch(`/api/products/${p.id}`, { method: 'DELETE' as any })
      // Remove from local list
+     // eslint-disable-next-line @typescript-eslint/no-explicit-any
      allProducts.value = allProducts.value.filter((x:any) => x.id !== p.id)
    } catch (e) {
      alert('خطا در حذف محصول')
@@ -528,11 +496,13 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
      notice_message: categoryMessage.value,
    };
     try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const res = await ($fetch as any)(`/api/product-categories/${id}`, {
         method: 'PUT',
         body: payload
       });
       success('دسته‌بندی با موفقیت ذخیره شد!')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       const status = e?.statusCode || e?.response?.status || e?.status
       const msg = e?.data?.message || e?.data?.user_message || e?.statusMessage || e?.message || ''
@@ -596,28 +566,42 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
 
            // Populate simple input fields (use v-model conversion later if needed)
            nextTick(() => {
+             // eslint-disable-next-line @typescript-eslint/no-explicit-any
              categoryName.value = (catRes as any).name || '';
+             // eslint-disable-next-line @typescript-eslint/no-explicit-any
              categoryNameEn.value = (catRes as any).name_en || '';
+             // eslint-disable-next-line @typescript-eslint/no-explicit-any
              seoSlug.value = (catRes as any).slug || '';
            });
 
+           // eslint-disable-next-line @typescript-eslint/no-explicit-any
            categoryDescription.value = (catRes as any).description || '';
+           // eslint-disable-next-line @typescript-eslint/no-explicit-any
            if((catRes as any).image_url){
+             // eslint-disable-next-line @typescript-eslint/no-explicit-any
              imageUrl.value = (catRes as any).image_url
              selectedFileName.value = imageUrl.value.split('/').pop() || ''
            }
 
+           // eslint-disable-next-line @typescript-eslint/no-explicit-any
            isPublished.value = (catRes as any).published;
+           // eslint-disable-next-line @typescript-eslint/no-explicit-any
            showOnHomepage.value = (catRes as any).show_on_home;
+           // eslint-disable-next-line @typescript-eslint/no-explicit-any
            showInMainMenu.value = (catRes as any).show_in_menu;
            // Other fields like SEO
+           // eslint-disable-next-line @typescript-eslint/no-explicit-any
            seoMetaTitle.value = (catRes as any).meta_title || '';
+           // eslint-disable-next-line @typescript-eslint/no-explicit-any
            seoMetaKeywords.value = (catRes as any).meta_keywords || '';
+           // eslint-disable-next-line @typescript-eslint/no-explicit-any
            seoMetaDescription.value = (catRes as any).meta_description || '';
 
+           // eslint-disable-next-line @typescript-eslint/no-explicit-any
            categoryMessage.value = (catRes as any).notice_message || '';
 
            // Set parent select
+           // eslint-disable-next-line @typescript-eslint/no-explicit-any
            parentId.value = (catRes as any).parent_id ?? '';
 
            // After we know currentCategory, load products (only once)
@@ -630,12 +614,7 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
    }
  });
    
- function getParentName(parentId) {
-   if (!parentId) return '-';
-   const parent = categories.value.find(c => c.id === parentId);
-   return parent ? parent.name : '-';
- }
-
+ // eslint-disable-next-line @typescript-eslint/no-explicit-any
  function onMediaSelected(files:any[]){
    if(files && files.length){
      const f = files[0]

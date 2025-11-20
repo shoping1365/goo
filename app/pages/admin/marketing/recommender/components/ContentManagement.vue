@@ -96,7 +96,7 @@
           <div class="flex items-center justify-between mb-3">
             <h4 class="text-sm font-medium text-gray-900">{{ template.name }}</h4>
             <label class="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" v-model="template.enabled" class="sr-only peer">
+              <input v-model="template.enabled" type="checkbox" class="sr-only peer">
               <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-teal-600"></div>
             </label>
           </div>
@@ -146,7 +146,7 @@
             <div class="flex items-center justify-between mb-3">
               <h4 class="text-sm font-medium text-gray-900">{{ text.title }}</h4>
               <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" v-model="text.enabled" class="sr-only peer">
+                <input v-model="text.enabled" type="checkbox" class="sr-only peer">
                 <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-blue-600"></div>
               </label>
             </div>
@@ -218,7 +218,7 @@
           <h3 class="text-lg font-semibold text-gray-900 mr-3">تنظیمات نمایش</h3>
         </div>
         <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" v-model="displaySettings.enabled" class="sr-only peer">
+          <input v-model="displaySettings.enabled" type="checkbox" class="sr-only peer">
           <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
         </label>
       </div>
@@ -236,7 +236,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">تعداد ستون</label>
-            <input type="range" v-model="displaySettings.columns" min="1" max="6" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="displaySettings.columns" type="range" min="1" max="6" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>1</span>
               <span>{{ displaySettings.columns }}</span>
@@ -246,7 +246,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">فاصله بین کارت‌ها</label>
-            <input type="range" v-model="displaySettings.spacing" min="8" max="32" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="displaySettings.spacing" type="range" min="8" max="32" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>8px</span>
               <span>{{ displaySettings.spacing }}px</span>
@@ -259,7 +259,8 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">رنگ پس‌زمینه</label>
             <div class="flex space-x-2 space-x-reverse">
-              <div v-for="color in displaySettings.backgroundColors" :key="color" 
+              <div
+v-for="color in displaySettings.backgroundColors" :key="color" 
                    class="w-8 h-8 rounded-lg cursor-pointer border-2" 
                    :class="displaySettings.backgroundColor === color ? 'border-gray-900' : 'border-gray-300'"
                    :style="{ backgroundColor: color }"
@@ -282,15 +283,15 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">انیمیشن</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="displaySettings.animations.hover" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="displaySettings.animations.hover" type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">انیمیشن hover</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="displaySettings.animations.load" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="displaySettings.animations.load" type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">انیمیشن بارگذاری</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="displaySettings.animations.scroll" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="displaySettings.animations.scroll" type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">انیمیشن اسکرول</span>
               </label>
             </div>
@@ -302,19 +303,19 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">نمایش اطلاعات</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="displaySettings.showInfo.price" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="displaySettings.showInfo.price" type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">قیمت</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="displaySettings.showInfo.rating" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="displaySettings.showInfo.rating" type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">امتیاز</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="displaySettings.showInfo.discount" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="displaySettings.showInfo.discount" type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">تخفیف</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="displaySettings.showInfo.stock" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="displaySettings.showInfo.stock" type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">موجودی</span>
               </label>
             </div>
@@ -324,15 +325,15 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">دکمه‌های عملیات</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="displaySettings.buttons.addToCart" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="displaySettings.buttons.addToCart" type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">افزودن به سبد</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="displaySettings.buttons.wishlist" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="displaySettings.buttons.wishlist" type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">لیست علاقه</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="displaySettings.buttons.quickView" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="displaySettings.buttons.quickView" type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">مشاهده سریع</span>
               </label>
             </div>

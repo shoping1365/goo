@@ -4,7 +4,7 @@
       <div class="card-header">
         <h3>محدوده جغرافیایی</h3>
         <div class="toggle-switch">
-          <input type="checkbox" v-model="enabled" id="geographicToggle" />
+          <input id="geographicToggle" v-model="enabled" type="checkbox" />
           <label for="geographicToggle"></label>
         </div>
       </div>
@@ -41,8 +41,8 @@
               <div class="provinces-grid">
                 <label v-for="province in provinces" :key="province.value" class="province-checkbox">
                   <input 
-                    type="checkbox" 
                     v-model="selectedProvinces" 
+                    type="checkbox" 
                     :value="province.value"
                   />
                   {{ province.label }}
@@ -55,8 +55,8 @@
               <div class="cities-grid">
                 <label v-for="city in cities" :key="city.value" class="city-checkbox">
                   <input 
-                    type="checkbox" 
                     v-model="selectedCities" 
+                    type="checkbox" 
                     :value="city.value"
                   />
                   {{ city.label }}
@@ -69,8 +69,8 @@
               <div class="districts-grid">
                 <label v-for="district in districts" :key="district.value" class="district-checkbox">
                   <input 
-                    type="checkbox" 
                     v-model="selectedDistricts" 
+                    type="checkbox" 
                     :value="district.value"
                   />
                   {{ district.label }}

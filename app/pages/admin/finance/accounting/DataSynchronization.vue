@@ -10,9 +10,9 @@
       <!-- دکمه‌های عملیاتی -->
       <div class="flex flex-wrap gap-3">
         <button 
-          @click="startManualSync"
           :disabled="isSyncing"
           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg transition-colors duration-200"
+          @click="startManualSync"
         >
           <svg v-if="isSyncing" class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -24,8 +24,8 @@
         </button>
         
         <button 
-          @click="showSyncSettings = true"
           class="inline-flex items-center gap-2 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors duration-200"
+          @click="showSyncSettings = true"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
@@ -263,8 +263,8 @@
               <td class="py-3 px-4 text-gray-900">{{ sync.duration }}</td>
               <td class="py-3 px-4">
                 <button 
-                  @click="showSyncDetails(sync)"
                   class="text-blue-600 hover:text-blue-800 text-xs"
+                  @click="showSyncDetails(sync)"
                 >
                   مشاهده جزئیات
                 </button>
@@ -280,7 +280,7 @@
       <div class="bg-white rounded-xl p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-gray-900">تنظیمات همگام‌سازی</h3>
-          <button @click="showSyncSettings = false" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="showSyncSettings = false">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -351,14 +351,14 @@
           <!-- دکمه‌ها -->
           <div class="flex gap-3 pt-4">
             <button 
-              @click="saveSyncSettings"
               class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
+              @click="saveSyncSettings"
             >
               ذخیره تنظیمات
             </button>
             <button 
-              @click="showSyncSettings = false"
               class="flex-1 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition-colors duration-200"
+              @click="showSyncSettings = false"
             >
               انصراف
             </button>

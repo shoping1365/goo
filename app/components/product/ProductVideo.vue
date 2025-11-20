@@ -43,6 +43,7 @@
           :controls="props.showControls"
           :autoplay="autoplay"
           :muted="autoplay"
+          v-if="normalizedUrl"
           :loop="false"
           :poster="props.posterImage"
           preload="metadata"
@@ -53,7 +54,6 @@
           @play="onVideoPlay"
           @pause="onVideoPause"
           @ended="onVideoEnded"
-          v-if="normalizedUrl"
         >
           <source :src="normalizedUrl" type="video/mp4">
           <source :src="normalizedUrl" type="video/webm">
@@ -71,9 +71,9 @@
         <!-- Custom Controls for Direct Videos -->
         <div v-if="!props.showControls" class="custom-controls">
           <button 
-            @click="togglePlay"
             class="play-button"
             :class="{ 'playing': isPlaying }"
+            @click="togglePlay"
           >
             <svg v-if="!isPlaying" class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z"/>
@@ -94,9 +94,9 @@
       <!-- کنترل‌های اضافی -->
       <div class="video-controls mt-4">
         <button 
-          @click="toggleFullscreen" 
-          class="btn-secondary"
+          class="btn-secondary" 
           title="نمایش تمام صفحه"
+          @click="toggleFullscreen"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
@@ -106,9 +106,9 @@
         
         <button 
           v-if="!isExternalVideo"
-          @click="downloadVideo" 
-          class="btn-secondary"
+          class="btn-secondary" 
           title="دانلود ویدیو"
+          @click="downloadVideo"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -118,7 +118,7 @@
       </div>
     </div>
     <!-- Placeholder preview -->
-    <div v-else class="no-video" @click="activatePlayer" style="cursor:pointer">
+    <div v-else class="no-video" style="cursor:pointer" @click="activatePlayer">
       <img :src="props.posterImage || '/default-product.svg'" alt="Video Preview" class="w-full h-full object-cover rounded-lg">
       <p class="text-center text-gray-600 mt-2">برای پخش کلیک کنید</p>
     </div>

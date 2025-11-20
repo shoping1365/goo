@@ -33,7 +33,6 @@
           <button 
             v-for="rating in 5" 
             :key="rating"
-            @click="selectedRating = rating"
             :class="[
               'w-12 h-12 rounded-full text-white font-bold transition-all transform hover:scale-110',
               selectedRating === rating 
@@ -46,6 +45,7 @@
                              rating === 3 ? '#eab308' : 
                              rating === 4 ? '#22c55e' : '#8b5cf6'
             }"
+            @click="selectedRating = rating"
           >
             {{ rating }}
           </button>
@@ -63,13 +63,13 @@
             <button 
               v-for="option in qualityOptions" 
               :key="option.value"
-              @click="qualityRating = option.value"
               :class="[
                 'px-4 py-3 rounded-xl text-sm font-bold transition-all transform hover:scale-105',
                 qualityRating === option.value 
                   ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' 
                   : 'bg-gray-100 hover:bg-purple-100 text-gray-700 hover:text-purple-700'
               ]"
+              @click="qualityRating = option.value"
             >
               {{ option.label }}
             </button>
@@ -82,13 +82,13 @@
             <button 
               v-for="option in deliveryOptions" 
               :key="option.value"
-              @click="deliveryRating = option.value"
               :class="[
                 'px-3 py-2 rounded-xl text-sm font-bold transition-all transform hover:scale-105',
                 deliveryRating === option.value 
                   ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' 
                   : 'bg-gray-100 hover:bg-purple-100 text-gray-700 hover:text-purple-700'
               ]"
+              @click="deliveryRating = option.value"
             >
               {{ option.label }}
             </button>
@@ -109,9 +109,9 @@
 
       <!-- Submit Button -->
       <button 
-        @click="submitSurvey"
         :disabled="!selectedRating || submitting"
         class="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:from-gray-400 disabled:to-gray-500 text-white font-bold py-4 px-6 rounded-xl transition-all transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2 space-x-reverse"
+        @click="submitSurvey"
       >
         <svg v-if="submitting" class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

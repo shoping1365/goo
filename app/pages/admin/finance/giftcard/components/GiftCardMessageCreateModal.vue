@@ -5,14 +5,14 @@
         <h3 class="text-lg font-bold text-gray-900">
           {{ editingMessage ? 'ویرایش پیام' : 'ایجاد پیام جدید' }}
         </h3>
-        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">
+        <button class="text-gray-400 hover:text-gray-600" @click="$emit('close')">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
 
-      <form @submit.prevent="handleSubmit" class="space-y-6">
+      <form class="space-y-6" @submit.prevent="handleSubmit">
         <!-- عنوان پیام -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">عنوان پیام *</label>
@@ -111,27 +111,27 @@
             <div class="space-y-2">
               <div class="flex items-center">
                 <input 
-                  type="checkbox" 
-                  v-model="formData.isActive" 
                   id="isActive" 
+                  v-model="formData.isActive" 
+                  type="checkbox" 
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label for="isActive" class="mr-2 block text-sm text-gray-900">فعال</label>
               </div>
               <div class="flex items-center">
                 <input 
-                  type="checkbox" 
-                  v-model="formData.allowPersonalization" 
                   id="allowPersonalization" 
+                  v-model="formData.allowPersonalization" 
+                  type="checkbox" 
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label for="allowPersonalization" class="mr-2 block text-sm text-gray-900">اجازه شخصی‌سازی</label>
               </div>
               <div class="flex items-center">
                 <input 
-                  type="checkbox" 
-                  v-model="formData.requireApproval" 
                   id="requireApproval" 
+                  v-model="formData.requireApproval" 
+                  type="checkbox" 
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label for="requireApproval" class="mr-2 block text-sm text-gray-900">نیاز به تأیید</label>
@@ -158,8 +158,8 @@
         <div class="flex justify-end space-x-3 space-x-reverse pt-6 border-t border-gray-200">
           <button 
             type="button" 
-            @click="$emit('close')"
             class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            @click="$emit('close')"
           >
             انصراف
           </button>

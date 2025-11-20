@@ -1,9 +1,9 @@
 <template>
   <div v-if="open" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
     <div class="bg-white rounded-lg shadow-lg px-4 py-4 w-full max-w-md relative">
-      <button @click="$emit('close')" class="absolute left-4 topx-4 py-4 text-gray-400 hover:text-gray-600 text-xl">&times;</button>
+      <button class="absolute left-4 topx-4 py-4 text-gray-400 hover:text-gray-600 text-xl" @click="$emit('close')">&times;</button>
       <h2 class="text-lg font-bold mb-4 text-center">ثبت کاربر جدید</h2>
-      <form @submit.prevent="handleSubmit" class="space-y-4">
+      <form class="space-y-4" @submit.prevent="handleSubmit">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">نام و نام خانوادگی</label>
           <input
@@ -26,8 +26,8 @@
         <div class="flex justify-end gap-2 mt-6">
           <button
             type="button"
-            @click="$emit('close')"
             class="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
+            @click="$emit('close')"
           >
             انصراف
           </button>
@@ -51,7 +51,7 @@ declare const $fetch: <T = unknown>(url: string, options?: { method?: string; bo
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const props = defineProps<{
+defineProps<{
   open: boolean;
 }>();
 
@@ -77,7 +77,7 @@ async function handleSubmit() {
       mobile: '',
     };
   } catch (error) {
-    console.error('Error registering user:', error);
+    // console.error('Error registering user:', error);
   } finally {
     loading.value = false;
   }

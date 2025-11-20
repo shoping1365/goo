@@ -9,14 +9,14 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button 
-            @click="resetForm"
             class="px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            @click="resetForm"
           >
             پاک کردن فرم
           </button>
           <button 
-            @click="saveDraft"
             class="px-4 py-2 bg-yellow-600 text-white text-sm font-medium rounded-lg hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
+            @click="saveDraft"
           >
             ذخیره پیش‌نویس
           </button>
@@ -31,13 +31,13 @@
           <button
             v-for="tab in tabs"
             :key="tab.id"
-            @click="activeTab = tab.id"
             :class="[
               activeTab === tab.id
                 ? 'border-blue-500 text-blue-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
               'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'
             ]"
+            @click="activeTab = tab.id"
           >
             {{ tab.label }}
             <span v-if="tab.hasError" class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
@@ -161,9 +161,9 @@
                 class="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
               <button
-                @click="generateCode"
                 type="button"
                 class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                @click="generateCode"
               >
                 تولید کد
               </button>
@@ -420,16 +420,16 @@
       <div class="flex justify-between items-center">
         <div class="flex items-center space-x-3 space-x-reverse">
           <button
-            @click="previousTab"
             :disabled="activeTab === 'basic'"
             class="px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            @click="previousTab"
           >
             قبلی
           </button>
           <button
-            @click="nextTab"
             :disabled="activeTab === 'advanced'"
             class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            @click="nextTab"
           >
             بعدی
           </button>
@@ -437,8 +437,8 @@
         
         <div class="flex items-center space-x-3 space-x-reverse">
           <button
-            @click="validateAndCreate"
             class="px-6 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+            @click="validateAndCreate"
           >
             ایجاد کارت
           </button>

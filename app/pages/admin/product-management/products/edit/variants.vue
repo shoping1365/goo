@@ -181,7 +181,7 @@
               <input v-model.number="variantStock" type="number" class="input input-bordered w-full text-xs" min="0" placeholder="10" />
             </div>
             <div class="flex items-end">
-              <button @click.prevent="addVariant" class="bg-green-600 text-white rounded px-3 py-1 text-xs hover:bg-green-700 transition w-full">ایجاد</button>
+              <button class="bg-green-600 text-white rounded px-3 py-1 text-xs hover:bg-green-700 transition w-full" @click.prevent="addVariant">ایجاد</button>
             </div>
           </div>
         </div>
@@ -217,7 +217,7 @@
                   <button class="text-blue-500 hover:text-blue-700">ویرایش</button>
                 </td>
                 <td class="px-3 py-2 text-center">
-                  <button @click="removeVariant(v.id)" class="text-red-500 hover:text-red-700">حذف</button>
+                  <button class="text-red-500 hover:text-red-700" @click="removeVariant(v.id)">حذف</button>
                 </td>
               </tr>
             </tbody>
@@ -490,9 +490,9 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, onMounted, computed } from 'vue'
-import { useProductCreateStore } from '~/stores/productCreate'
+import { onMounted, reactive, ref } from 'vue'
 import { useNotifier } from '~/composables/useNotifier'
+import { useProductCreateStore } from '~/stores/productCreate'
 
 const sections = reactive({
   variantAttributes: false,
@@ -501,43 +501,49 @@ const sections = reactive({
   variantImages: false
 })
 
-const toggleSection = (section) => {
+const toggleSection = (section: keyof typeof sections) => {
   sections[section] = !sections[section]
 }
 
 // Store & notifier
 const store = useProductCreateStore()
 const notifier = useNotifier()
-const productId = computed(()=> store.editingProductId)
+// const productId = computed(()=> store.editingProductId)
 
 // Form state for quick-create variant
 const colorValue = ref('قرمز')
 const sizeValue = ref('S')
 const variantPrice = ref<number | null>(null)
 const variantStock = ref<number | null>(null)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const variants = ref<any[]>([])
 
 async function loadVariants(){
   if (!store.isEditMode || !store.editingProductId) { variants.value = []; return }
   try{
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const res:any = await $fetch(`/api/product-variants/${store.editingProductId}`)
     variants.value = Array.isArray(res?.data) ? res.data : []
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }catch(e:any){ console.error('loadVariants failed', e) }
 }
 
 async function addVariant(){
   if (!store.isEditMode || !store.editingProductId) return
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const requests: Promise<any>[] = []
   const priceAdj = variantPrice.value != null ? Number(variantPrice.value) : undefined
   const stockQty = variantStock.value != null ? Number(variantStock.value) : undefined
 
   if (colorValue.value) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const body:any = { name: 'color', value: colorValue.value }
     if (priceAdj !== undefined) body.price_adjustment = priceAdj
     if (stockQty !== undefined) body.stock_quantity = stockQty
     requests.push($fetch(`/api/product-variants/${store.editingProductId}`, { method:'POST', body }))
   }
   if (sizeValue.value) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const body:any = { name: 'size', value: sizeValue.value }
     if (priceAdj !== undefined) body.price_adjustment = priceAdj
     if (stockQty !== undefined) body.stock_quantity = stockQty
@@ -548,6 +554,7 @@ async function addVariant(){
     await Promise.all(requests)
     await loadVariants()
     notifier.success('تنوع(ها) با موفقیت ایجاد شد')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }catch(e:any){ console.error('addVariant failed', e) }
 }
 
@@ -557,6 +564,7 @@ async function removeVariant(id:number){
     await $fetch(`/api/product-variants/${id}`, { method:'DELETE' })
     await loadVariants()
     notifier.success('تنوع حذف شد')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }catch(e:any){ console.error('removeVariant failed', e) }
 }
 

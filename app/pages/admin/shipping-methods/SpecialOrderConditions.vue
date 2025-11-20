@@ -4,7 +4,7 @@
       <div class="card-header">
         <h3>شرایط خاص سفارش</h3>
         <div class="toggle-switch">
-          <input type="checkbox" v-model="enabled" id="specialOrderToggle" />
+          <input id="specialOrderToggle" v-model="enabled" type="checkbox" />
           <label for="specialOrderToggle"></label>
         </div>
       </div>
@@ -13,7 +13,7 @@
         <div class="form-section">
           <h4>سفارش فوری</h4>
           <label class="checkbox-label">
-            <input type="checkbox" v-model="express.enabled" />
+            <input v-model="express.enabled" type="checkbox" />
             فعال‌سازی سفارش فوری
           </label>
           <div v-if="express.enabled" class="express-options">
@@ -56,7 +56,7 @@
         <div class="form-section">
           <h4>سفارش گروهی</h4>
           <label class="checkbox-label">
-            <input type="checkbox" v-model="bulk.enabled" />
+            <input v-model="bulk.enabled" type="checkbox" />
             فعال‌سازی سفارش گروهی
           </label>
           <div v-if="bulk.enabled" class="bulk-options">
@@ -100,7 +100,7 @@
         <div class="form-section">
           <h4>سفارش تکرارشونده</h4>
           <label class="checkbox-label">
-            <input type="checkbox" v-model="recurring.enabled" />
+            <input v-model="recurring.enabled" type="checkbox" />
             فعال‌سازی سفارش تکرارشونده
           </label>
           <div v-if="recurring.enabled" class="recurring-options">
@@ -143,7 +143,7 @@
         <div class="form-section">
           <h4>سفارش هدیه</h4>
           <label class="checkbox-label">
-            <input type="checkbox" v-model="gift.enabled" />
+            <input v-model="gift.enabled" type="checkbox" />
             فعال‌سازی سفارش هدیه
           </label>
           <div v-if="gift.enabled" class="gift-options">

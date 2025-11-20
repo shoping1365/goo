@@ -45,9 +45,9 @@
                  <button
                    v-for="i in 5"
                    :key="i"
-                   @click="helpfulRating.overall = i"
                    class="text-lg transition-colors"
                    :class="i <= helpfulRating.overall ? 'text-yellow-400' : 'text-gray-300 hover:text-yellow-300'"
+                   @click="helpfulRating.overall = i"
                  >★</button>
                </div>
              </div>
@@ -84,8 +84,8 @@
                  <button
                    v-for="suggestion in strengthSuggestions"
                    :key="suggestion"
-                   @click="addStrengthSuggestion(suggestion)"
                    class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm hover:bg-green-200 transition-colors"
+                   @click="addStrengthSuggestion(suggestion)"
                  >
                    {{ suggestion }}
                  </button>
@@ -127,8 +127,8 @@
                  <button
                    v-for="suggestion in weaknessSuggestions"
                    :key="suggestion"
-                   @click="addWeaknessSuggestion(suggestion)"
                    class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm hover:bg-red-200 transition-colors"
+                   @click="addWeaknessSuggestion(suggestion)"
                  >
                    {{ suggestion }}
                  </button>
@@ -167,8 +167,8 @@
                  <button
                    v-for="suggestion in improvementSuggestions"
                    :key="suggestion"
-                   @click="addImprovementSuggestion(suggestion)"
                    class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm hover:bg-purple-200 transition-colors"
+                   @click="addImprovementSuggestion(suggestion)"
                  >
                    {{ suggestion }}
                  </button>

@@ -4,7 +4,7 @@
       <div class="card-header">
         <h3>قیمت ثابت</h3>
         <div class="toggle-switch">
-          <input type="checkbox" v-model="enabled" id="flatRateToggle" />
+          <input id="flatRateToggle" v-model="enabled" type="checkbox" />
           <label for="flatRateToggle"></label>
         </div>
       </div>

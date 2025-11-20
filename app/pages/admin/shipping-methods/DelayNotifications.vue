@@ -33,15 +33,15 @@
               </span>
           </td>
           <td>
-            <button @click="editRule(rule.id)" class="btn btn-secondary">
+            <button class="btn btn-secondary" @click="editRule(rule.id)">
               <i class="fas fa-edit"></i>
               ویرایش
             </button>
-            <button @click="toggleRule(rule.id)" class="btn" :class="rule.active ? 'btn-warning' : 'btn-success'">
+            <button class="btn" :class="rule.active ? 'btn-warning' : 'btn-success'" @click="toggleRule(rule.id)">
               <i :class="rule.active ? 'fas fa-pause' : 'fas fa-play'"></i>
               {{ rule.active ? 'غیرفعال' : 'فعال' }}
             </button>
-            <button @click="deleteRule(rule.id)" class="btn btn-danger">
+            <button class="btn btn-danger" @click="deleteRule(rule.id)">
               <i class="fas fa-trash"></i>
               حذف
             </button>
@@ -58,7 +58,7 @@
         <div class="form-row">
           <div class="form-group">
             <label>عنوان قانون:</label>
-            <input type="text" v-model="newRule.title" placeholder="مثال: تاخیر در ارسال">
+            <input v-model="newRule.title" type="text" placeholder="مثال: تاخیر در ارسال">
           </div>
           <div class="form-group">
             <label>نوع تاخیر:</label>
@@ -72,7 +72,7 @@
         <div class="form-row">
           <div class="form-group">
             <label>زمان تاخیر:</label>
-            <input type="text" v-model="newRule.delayTime" placeholder="مثال: ۲۴ ساعت">
+            <input v-model="newRule.delayTime" type="text" placeholder="مثال: ۲۴ ساعت">
           </div>
           <div class="form-group">
             <label>مخاطب:</label>
@@ -92,11 +92,11 @@
           </div>
         </div>
         <div class="form-actions">
-          <button @click="addRule" class="btn btn-success">
+          <button class="btn btn-success" @click="addRule">
             <i class="fas fa-plus"></i>
             افزودن قانون
           </button>
-          <button @click="resetNewRule" class="btn btn-secondary">
+          <button class="btn btn-secondary" @click="resetNewRule">
             <i class="fas fa-undo"></i>
             بازنشانی
           </button>

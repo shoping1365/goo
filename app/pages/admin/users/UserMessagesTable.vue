@@ -47,7 +47,10 @@
   </div>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ user: any }>();
+import type { User } from '~/types/user';
+
+defineProps<{ user: User }>();
+defineEmits(['view-all-messages', 'view-message', 'send-new-message']);
 // Mock data for messages
 const messages = [
   { id: 1, title: 'خوش آمدگویی', sender: 'سیستم', date: '1402/03/10', isRead: true },

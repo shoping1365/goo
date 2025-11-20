@@ -8,10 +8,10 @@
           <p class="mt-1 text-sm text-gray-500">راه‌اندازی و تست سناریوهای مختلف امتیازدهی</p>
         </div>
         <div class="flex space-x-3 space-x-reverse">
-          <button @click="runFullSetup" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+          <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors" @click="runFullSetup">
             راه‌اندازی کامل
           </button>
-          <button @click="runTests" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">
+          <button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors" @click="runTests">
             اجرای تست‌ها
           </button>
         </div>
@@ -46,13 +46,13 @@
             </div>
           </div>
           <div class="flex space-x-2 space-x-reverse">
-            <button v-if="step.status === 'pending'" @click="runStep(step)" class="text-blue-600 hover:text-blue-900 text-sm">
+            <button v-if="step.status === 'pending'" class="text-blue-600 hover:text-blue-900 text-sm" @click="runStep(step)">
               اجرا
             </button>
-            <button v-if="step.status === 'completed'" @click="resetStep(step)" class="text-gray-600 hover:text-gray-900 text-sm">
+            <button v-if="step.status === 'completed'" class="text-gray-600 hover:text-gray-900 text-sm" @click="resetStep(step)">
               بازنشانی
             </button>
-            <button @click="viewStepDetails(step)" class="text-purple-600 hover:text-purple-900 text-sm">
+            <button class="text-purple-600 hover:text-purple-900 text-sm" @click="viewStepDetails(step)">
               جزئیات
             </button>
           </div>
@@ -88,13 +88,13 @@
             </div>
           </div>
           <div class="flex space-x-2 space-x-reverse">
-            <button @click="startTest(test)" :disabled="test.status === 'running'" class="bg-green-600 text-white px-3 py-1 rounded-md text-sm hover:bg-green-700 disabled:opacity-50">
+            <button :disabled="test.status === 'running'" class="bg-green-600 text-white px-3 py-1 rounded-md text-sm hover:bg-green-700 disabled:opacity-50" @click="startTest(test)">
               شروع تست
             </button>
-            <button @click="stopTest(test)" :disabled="test.status !== 'running'" class="bg-red-600 text-white px-3 py-1 rounded-md text-sm hover:bg-red-700 disabled:opacity-50">
+            <button :disabled="test.status !== 'running'" class="bg-red-600 text-white px-3 py-1 rounded-md text-sm hover:bg-red-700 disabled:opacity-50" @click="stopTest(test)">
               توقف
             </button>
-            <button @click="viewTestResults(test)" class="bg-blue-600 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-700">
+            <button class="bg-blue-600 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-700" @click="viewTestResults(test)">
               نتایج
             </button>
           </div>
@@ -227,9 +227,9 @@
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button @click="viewTestDetails(result)" class="text-blue-600 hover:text-blue-900 ml-3">جزئیات</button>
-                <button @click="downloadReport(result)" class="text-green-600 hover:text-green-900 ml-3">گزارش</button>
-                <button @click="rerunTest(result)" class="text-purple-600 hover:text-purple-900">اجرای مجدد</button>
+                <button class="text-blue-600 hover:text-blue-900 ml-3" @click="viewTestDetails(result)">جزئیات</button>
+                <button class="text-green-600 hover:text-green-900 ml-3" @click="downloadReport(result)">گزارش</button>
+                <button class="text-purple-600 hover:text-purple-900" @click="rerunTest(result)">اجرای مجدد</button>
               </td>
             </tr>
           </tbody>
@@ -240,21 +240,51 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
+
+interface Step {
+  id: number;
+  name: string;
+  description: string;
+  status: string;
+  progress: number;
+}
+
+interface TestEnvironment {
+  id: number;
+  name: string;
+  description: string;
+  status: string;
+  testUsers: number;
+  duration: string;
+  successRate: number;
+}
+
+interface TestResult {
+  id: number;
+  name: string;
+  description: string;
+  scenario: string;
+  status: string;
+  executedAt: string;
+  duration: number;
+  passed: number;
+  failed: number;
+}
 
 // Props and Emits
 defineProps<{
-  scenarios?: any[]
+  scenarios?: Record<string, unknown>[]
 }>()
 
 defineEmits<{
-  runSetup: [steps: any[]]
-  runTests: [tests: any[]]
-  viewResults: [results: any]
+  runSetup: [steps: Step[]]
+  runTests: [tests: TestEnvironment[]]
+  viewResults: [results: TestResult]
 }>()
 
 // Reactive data
-const setupSteps = ref([
+const setupSteps = ref<Step[]>([
   {
     id: 1,
     name: 'بررسی پیش‌نیازها',
@@ -460,17 +490,14 @@ const getResultStatusText = (status: string) => {
 }
 
 const runFullSetup = () => {
-  console.log('راه‌اندازی کامل سیستم')
   // Run full system setup
 }
 
 const runTests = () => {
-  console.log('اجرای تست‌ها')
   // Run all tests
 }
 
-const runStep = (step: any) => {
-  console.log('اجرای مرحله:', step)
+const runStep = (step: Step) => {
   step.status = 'running'
   step.progress = 0
   
@@ -484,51 +511,41 @@ const runStep = (step: any) => {
   }, 500)
 }
 
-const resetStep = (step: any) => {
-  console.log('بازنشانی مرحله:', step)
+const resetStep = (step: Step) => {
   step.status = 'pending'
   step.progress = 0
 }
 
-const viewStepDetails = (step: any) => {
-  console.log('مشاهده جزئیات مرحله:', step)
+const viewStepDetails = (_step: Step) => {
   // View step details
 }
 
-const startTest = (test: any) => {
-  console.log('شروع تست:', test)
+const startTest = (test: TestEnvironment) => {
   test.status = 'running'
   // Start test
 }
 
-const stopTest = (test: any) => {
-  console.log('توقف تست:', test)
+const stopTest = (test: TestEnvironment) => {
   test.status = 'completed'
   // Stop test
 }
 
-const viewTestResults = (test: any) => {
-  console.log('مشاهده نتایج تست:', test)
+const viewTestResults = (_test: TestEnvironment) => {
   // View test results
 }
 
-const viewTestDetails = (result: any) => {
-  console.log('مشاهده جزئیات تست:', result)
+const viewTestDetails = (_result: TestResult) => {
   // View test details
 }
 
-const downloadReport = (result: any) => {
-  console.log('دانلود گزارش:', result)
+const downloadReport = (_result: TestResult) => {
   // Download test report
 }
 
-const rerunTest = (result: any) => {
-  console.log('اجرای مجدد تست:', result)
+const rerunTest = (_result: TestResult) => {
   // Rerun test
 }
 
 // Lifecycle
-onMounted(() => {
-  console.log('سیستم راه‌اندازی و تست بارگذاری شد')
-})
+// onMounted removed as it only contained console.log
 </script> 

@@ -126,9 +126,9 @@
               <div 
                 v-if="itemIndex < newLayer.items.length - 1"
                 class="resize-handle"
+                title="کشیدن برای تغییر اندازه"
                 @mousedown="startResize(itemIndex, $event)"
                 @touchstart="startResize(itemIndex, $event)"
-                title="کشیدن برای تغییر اندازه"
               ></div>
             </template>
           </div>
@@ -165,9 +165,9 @@
                 <div class="image-info">
                   <span class="image-name">{{ newLayer.items[activeIndex].imageName || 'عکس انتخاب شده' }}</span>
                   <button 
-                    @click="removeSelectedImage" 
-                    class="remove-image-btn"
+                    class="remove-image-btn" 
                     title="حذف عکس"
+                    @click="removeSelectedImage"
                   >
                     ✕
                   </button>
@@ -195,8 +195,8 @@
               <label class="settings-label-inline">
                 <span>عرض:</span>
                 <input 
-                  type="number" 
-                  v-model.number="newLayer.items[activeIndex].width"
+                  v-model.number="newLayer.items[activeIndex].width" 
+                  type="number"
                   min="5" 
                   max="95" 
                   step="0.1"
@@ -218,8 +218,8 @@
               <label class="settings-label-inline">
                 <span>پدینگ راست:</span>
                 <input 
-                  type="number" 
                   v-model.number="newLayer.items[activeIndex].paddingRight" 
+                  type="number" 
                   min="0" 
                   max="200" 
                   class="settings-input-small" 
@@ -230,8 +230,8 @@
               <label class="settings-label-inline">
                 <span>پدینگ چپ:</span>
                 <input 
-                  type="number" 
                   v-model.number="newLayer.items[activeIndex].paddingLeft" 
+                  type="number" 
                   min="0" 
                   max="200" 
                   class="settings-input-small" 
@@ -292,8 +292,8 @@
               <!-- دکمه تنظیم خودکار عرض‌ها -->
               <button 
                 class="btn btn-sm btn-outline reset-widths-btn" 
-                @click="resetItemWidths"
                 :disabled="isTotalWidthValid"
+                @click="resetItemWidths"
               >
                 تنظیم خودکار
               </button>
@@ -620,10 +620,10 @@ function enforceWidthBudgetInternal(changedIndex?: number) {
   })
 
   // فقط اگر مجموع بیشتر از 100% شد، کم کنیم
-  let total = Number(items.reduce((sum, item) => sum + (item?.width || 0), 0).toFixed(2))
+  const total = Number(items.reduce((sum, item) => sum + (item?.width || 0), 0).toFixed(2))
 
   if (total > WIDTH_LIMIT) {
-    let excess = Number((total - WIDTH_LIMIT).toFixed(2))
+    const excess = Number((total - WIDTH_LIMIT).toFixed(2))
     // فقط آیتمی که تغییر کرده رو کم می‌کنیم
     if (typeof changedIndex === 'number' && changedIndex >= 0 && changedIndex < count) {
       const item = items[changedIndex]

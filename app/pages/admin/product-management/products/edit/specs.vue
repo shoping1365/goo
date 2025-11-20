@@ -133,9 +133,9 @@
 
             <div class="col-span-4">
               <button 
-                @click="createAttribute"
                 :disabled="creatingAttr"
                 class="w-full inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-semibold rounded-xl text-white bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-105 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
+                @click="createAttribute"
               >
                 <svg v-if="!creatingAttr" class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -155,19 +155,19 @@
               <h4 class="text-sm font-semibold text-gray-700 mb-3">تنظیمات اضافی:</h4>
               <div class="grid grid-cols-4 gap-6">
                 <label class="flex items-center gap-2 p-3 bg-blue-50 rounded-xl border border-blue-200 cursor-pointer hover:bg-blue-100 transition-colors">
-                  <input type="checkbox" v-model="newAttr.has_filter" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2" />
+                  <input v-model="newAttr.has_filter" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2" />
                   <span class="text-sm font-medium text-blue-700">ابزار فیلتر</span>
                 </label>
                 <label class="flex items-center gap-2 p-3 bg-emerald-50 rounded-xl border border-emerald-200 cursor-pointer hover:bg-emerald-100 transition-colors">
-                  <input type="checkbox" v-model="newAttr.is_key" class="w-4 h-4 text-emerald-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-500 focus:ring-2" />
+                  <input v-model="newAttr.is_key" type="checkbox" class="w-4 h-4 text-emerald-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-500 focus:ring-2" />
                   <span class="text-sm font-medium text-emerald-700">مشخصه کلیدی</span>
                 </label>
                 <label class="flex items-center gap-2 p-3 bg-purple-50 rounded-xl border border-purple-200 cursor-pointer hover:bg-purple-100 transition-colors">
-                  <input type="checkbox" v-model="newAttr.show_on_product" class="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 focus:ring-2" />
+                  <input v-model="newAttr.show_on_product" type="checkbox" class="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 focus:ring-2" />
                   <span class="text-sm font-medium text-purple-700">نمایش روی صفحه محصول</span>
                 </label>
                 <label class="flex items-center gap-2 p-3 bg-red-50 rounded-xl border border-red-200 cursor-pointer hover:bg-red-100 transition-colors">
-                  <input type="checkbox" v-model="newAttr.is_required" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 focus:ring-2" />
+                  <input v-model="newAttr.is_required" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 focus:ring-2" />
                   <span class="text-sm font-medium text-red-700">ضروری</span>
                 </label>
               </div>
@@ -192,9 +192,9 @@
       <div class="p-8">
         <div class="text-center mb-6">
           <button 
-            @click="fetchAttributeGroups"
             :disabled="loadingGroups"
             class="inline-flex items-center px-6 py-3 border border-transparent text-sm font-semibold rounded-xl text-blue-700 bg-white border-blue-200 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
+            @click="fetchAttributeGroups"
           >
             <svg v-if="!loadingGroups" class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0L8 8m4-4v12"></path>
@@ -260,11 +260,11 @@
                       <div v-if="attr.type === 'custom_text'" class="w-full">
                         <textarea 
                           v-model="attr.valueText"
-                          @keydown="handleKeydown"
-                          @keypress="handleKeypress"
                           rows="4"
                           class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900 resize-none"
                           :placeholder="`مقدار ${attr.name}`"
+                          @keydown="handleKeydown"
+                          @keypress="handleKeypress"
                         ></textarea>
                       </div>
 
@@ -277,9 +277,9 @@
                             class="inline-flex items-center"
                           >
                             <input 
-                              type="checkbox" 
+                              v-model="attr.selectedOptionIds" 
+                              type="checkbox"
                               :value="val.id"
-                              v-model="attr.selectedOptionIds"
                               class="rounded border-gray-300 text-emerald-600 shadow-sm focus:border-emerald-300 focus:ring focus:ring-emerald-200 focus:ring-opacity-50"
                             />
                             <span class="mr-2 text-sm">{{ val.value }}</span>
@@ -311,16 +311,16 @@
                       <div class="flex flex-col gap-1">
                         <button 
                           v-if="attr.type !== 'custom_text'"
-                          @click="addNewOption(attr)"
                           class="px-3 py-2 text-sm font-medium text-emerald-700 bg-emerald-100 border border-emerald-300 rounded-lg hover:bg-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-colors"
                           title="افزودن گزینه جدید"
+                          @click="addNewOption(attr)"
                         >
                           افزودن ایتم
                         </button>
                         <button 
-                          @click="removeAttribute(attr)"
                           class="px-3 py-2 text-sm font-medium text-red-600 bg-red-100 border border-red-300 rounded-lg hover:bg-red-200 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors"
                           title="حذف ویژگی"
+                          @click="removeAttribute(attr)"
                         >
                           حذف
                         </button>
@@ -359,8 +359,9 @@ const sections = reactive({
   groupsContainer: false
 })
 
-const showFeaturesList = ref(false)
+// const showFeaturesList = ref(false)
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const api = (useNuxtApp() as any).$api
 const pStore = useProductCreateStore()
 const notifier = useNotifier()
@@ -372,6 +373,7 @@ const showGroupContainer = ref(false)
 const selectedGroupId = ref('')
 const selectedGroupName = ref('')
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { attributes: groupAttributes, loadingGroup: loadingAttrGroup, loadGroup } = useAttributeGroup()
 
 const newAttr = reactive({
@@ -528,6 +530,7 @@ async function addNewOption(attr){
   const val = prompt(`مقدار جدید برای "${attr.name}" را وارد کنید:`)
   if(!val || !val.trim()) return
   try{
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const res: any = await api(`/api/attribute-values/by-attribute/${attr.id}`, {method: 'POST', body: {value: val.trim()}})
     if(res && res.id){
       const newVal = {id: Number(res.id), value: val.trim()}
@@ -582,11 +585,13 @@ async function createAttribute(){
       is_filterable: newAttr.has_filter,
       is_active: true
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const attrRes:any = await api('/api/attributes', {method:'POST', body: payloadAttr})
     if(!attrRes || !attrRes.id){throw new Error('خطا در ایجاد ویژگی')}
 
     // 2) add to group via upsert (send full list incl new)
     const updatedList = [
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ...groupAttributes.value.map((a:any)=>({
         attribute_id: a.id,
         sort_order: a.sort_order || 0,
@@ -611,6 +616,7 @@ async function createAttribute(){
     await api(`/api/attribute-groups/${selectedGroupId.value}/attributes`, {method:'PUT', body:{attributes: updatedList}})
 
     // 3) update UI
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const attrObj:any = {
       id: attrRes.id,
       name: attrRes.name,
@@ -627,6 +633,7 @@ async function createAttribute(){
     newAttr.name=''; newAttr.display_name=''; newAttr.unit=''; newAttr.sort_order=0;
     newAttr.type='select'; newAttr.control_type='dropdown_single'; newAttr.has_filter=false; newAttr.is_key=false; newAttr.show_on_product=true; newAttr.is_required=false
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }catch(e:any){
     notifier.error(e?.error || e?.message || 'خطا در افزودن ویژگی')
     console.error(e)
@@ -636,6 +643,7 @@ async function createAttribute(){
 }
 
 // ---------- DEBUG -----------
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 if (import.meta.client && (import.meta as any).hot) {
   watchEffect(() => {
     // @ts-ignore

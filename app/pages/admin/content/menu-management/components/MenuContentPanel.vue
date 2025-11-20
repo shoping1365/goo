@@ -1,8 +1,8 @@
 <template>
   <div class="meta-box">
     <button
-      @click="$emit('toggle')"
       class="meta-box__header"
+      @click="$emit('toggle')"
     >
       <span class="meta-box__title">{{ title }}</span>
       <svg

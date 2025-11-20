@@ -81,7 +81,7 @@
 
       <!-- فرم ایجاد -->
       <div class="border-t border-gray-200 pt-4">
-        <form @submit.prevent="createTwoFactor" class="space-y-4">
+        <form class="space-y-4" @submit.prevent="createTwoFactor">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- نام کاربر -->
             <div>
@@ -181,9 +181,9 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div class="flex items-center">
                 <input
+                  id="forceEnable"
                   v-model="newTwoFactor.forceEnable"
                   type="checkbox"
-                  id="forceEnable"
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label for="forceEnable" class="mr-2 block text-sm text-gray-900">
@@ -192,9 +192,9 @@
               </div>
               <div class="flex items-center">
                 <input
+                  id="requireOnLogin"
                   v-model="newTwoFactor.requireOnLogin"
                   type="checkbox"
-                  id="requireOnLogin"
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label for="requireOnLogin" class="mr-2 block text-sm text-gray-900">
@@ -203,9 +203,9 @@
               </div>
               <div class="flex items-center">
                 <input
+                  id="sendNotification"
                   v-model="newTwoFactor.sendNotification"
                   type="checkbox"
-                  id="sendNotification"
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label for="sendNotification" class="mr-2 block text-sm text-gray-900">
@@ -228,15 +228,15 @@
             </button>
             <button
               type="button"
-              @click="resetForm"
               class="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
+              @click="resetForm"
             >
               پاک کردن فرم
             </button>
             <button
               type="button"
-              @click="showCreateForm = false"
               class="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+              @click="showCreateForm = false"
             >
               انصراف
             </button>
@@ -299,14 +299,14 @@
         <!-- دکمه‌های عملیات -->
         <div class="flex gap-2 items-end">
           <button
-            @click="applyFilters"
             class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            @click="applyFilters"
           >
             اعمال فیلتر
           </button>
           <button
-            @click="clearFilters"
             class="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
+            @click="clearFilters"
           >
             پاک کردن
           </button>
@@ -318,8 +318,8 @@
         <div class="flex items-center gap-3">
           <!-- دکمه فعال‌سازی تایید دو مرحله‌ای -->
           <button
-            @click="showSetupForm = !showSetupForm"
             class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center gap-2"
+            @click="showSetupForm = !showSetupForm"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -329,8 +329,8 @@
 
           <!-- دکمه خروجی اکسل -->
           <button
-            @click="exportToExcel"
             class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
+            @click="exportToExcel"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -355,11 +355,11 @@
             <h4 class="text-md font-medium text-gray-900 mb-3">مرحله 1: انتخاب روش احراز هویت</h4>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
               <div
-                @click="selectMethod('sms')"
                 :class="[
                   'p-3 border-2 rounded-lg cursor-pointer transition-all text-center',
                   selectedMethod === 'sms' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
                 ]"
+                @click="selectMethod('sms')"
               >
                 <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-2">
                   <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -370,11 +370,11 @@
               </div>
 
               <div
-                @click="selectMethod('email')"
                 :class="[
                   'p-3 border-2 rounded-lg cursor-pointer transition-all text-center',
                   selectedMethod === 'email' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
                 ]"
+                @click="selectMethod('email')"
               >
                 <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-2">
                   <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -385,11 +385,11 @@
               </div>
 
               <div
-                @click="selectMethod('app')"
                 :class="[
                   'p-3 border-2 rounded-lg cursor-pointer transition-all text-center',
                   selectedMethod === 'app' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
                 ]"
+                @click="selectMethod('app')"
               >
                 <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-2">
                   <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -400,11 +400,11 @@
               </div>
 
               <div
-                @click="selectMethod('backup')"
                 :class="[
                   'p-3 border-2 rounded-lg cursor-pointer transition-all text-center',
                   selectedMethod === 'backup' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
                 ]"
+                @click="selectMethod('backup')"
               >
                 <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mx-auto mb-2">
                   <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -417,12 +417,12 @@
 
             <div class="flex justify-end mt-4">
               <button
-                @click="nextStep"
                 :disabled="!selectedMethod"
                 :class="[
                   'px-4 py-2 rounded-lg transition-colors text-sm',
                   selectedMethod ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 ]"
+                @click="nextStep"
               >
                 مرحله بعد
               </button>
@@ -484,18 +484,18 @@
 
             <div class="flex justify-between mt-4">
               <button
-                @click="previousStep"
                 class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors text-sm"
+                @click="previousStep"
               >
                 مرحله قبل
               </button>
               <button
-                @click="nextStep"
                 :disabled="!canProceedToNext"
                 :class="[
                   'px-4 py-2 rounded-lg transition-colors text-sm',
                   canProceedToNext ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 ]"
+                @click="nextStep"
               >
                 مرحله بعد
               </button>
@@ -525,18 +525,18 @@
 
             <div class="flex justify-between mt-4">
               <button
-                @click="previousStep"
                 class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors text-sm"
+                @click="previousStep"
               >
                 مرحله قبل
               </button>
               <button
-                @click="activateTwoFactor"
                 :disabled="!canActivate"
                 :class="[
                   'px-4 py-2 rounded-lg transition-colors text-sm flex items-center gap-1',
                   canActivate ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 ]"
+                @click="activateTwoFactor"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -604,9 +604,9 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex items-center gap-2">
                   <button
-                    @click="viewUser(user.id)"
                     class="text-blue-600 hover:text-blue-900 transition-colors"
                     title="مشاهده جزئیات"
+                    @click="viewUser(user.id)"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -614,12 +614,12 @@
                     </svg>
                   </button>
                   <button
-                    @click="toggleTwoFactor(user.id)"
                     :class="[
                       'transition-colors',
                       user.status === 'active' ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900'
                     ]"
                     :title="user.status === 'active' ? 'غیرفعال کردن' : 'فعال کردن'"
+                    @click="toggleTwoFactor(user.id)"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -637,22 +637,22 @@
         <div class="flex items-center justify-between">
           <div class="flex-1 flex justify-between sm:hidden">
             <button
-              @click="previousPage"
               :disabled="currentPage === 1"
               :class="[
                 'relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md',
                 currentPage === 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'
               ]"
+              @click="previousPage"
             >
               قبلی
             </button>
             <button
-              @click="nextPage"
               :disabled="currentPage === totalPages"
               :class="[
                 'relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md',
                 currentPage === totalPages ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'
               ]"
+              @click="nextPage"
             >
               بعدی
             </button>
@@ -672,12 +672,12 @@
             <div>
               <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
                 <button
-                  @click="previousPage"
                   :disabled="currentPage === 1"
                   :class="[
                     'relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50',
                     currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
                   ]"
+                  @click="previousPage"
                 >
                   <span class="sr-only">قبلی</span>
                   <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
@@ -688,24 +688,24 @@
                 <button
                   v-for="page in visiblePages"
                   :key="page"
-                  @click="goToPage(page)"
                   :class="[
                     'relative inline-flex items-center px-4 py-2 border text-sm font-medium',
                     page === currentPage
                       ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
                       : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
                   ]"
+                  @click="goToPage(page)"
                 >
                   {{ page }}
                 </button>
                 
                 <button
-                  @click="nextPage"
                   :disabled="currentPage === totalPages"
                   :class="[
                     'relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50',
                     currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''
                   ]"
+                  @click="nextPage"
                 >
                   <span class="sr-only">بعدی</span>
                   <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
@@ -861,7 +861,7 @@ const visiblePages = computed(() => {
   const pages = []
   const maxVisible = 5
   let start = Math.max(1, currentPage.value - Math.floor(maxVisible / 2))
-  let end = Math.min(totalPages.value, start + maxVisible - 1)
+  const end = Math.min(totalPages.value, start + maxVisible - 1)
   
   if (end - start + 1 < maxVisible) {
     start = Math.max(1, end - maxVisible + 1)
@@ -914,9 +914,9 @@ const clearFilters = () => {
 }
 
 // توابع عملیات
-const viewUser = (userId) => {
+const viewUser = (_userId) => {
   // مشاهده جزئیات کاربر
-  console.log('مشاهده کاربر:', userId)
+  // console.log('مشاهده کاربر:', userId)
 }
 
 const toggleTwoFactor = (userId) => {
@@ -925,7 +925,7 @@ const toggleTwoFactor = (userId) => {
   if (user) {
     user.status = user.status === 'active' ? 'inactive' : 'active'
   }
-  console.log('تغییر وضعیت احراز هویت دو مرحله‌ای برای کاربر:', userId)
+  // console.log('تغییر وضعیت احراز هویت دو مرحله‌ای برای کاربر:', userId)
 }
 
 // توابع فرم ایجاد تایید دو مرحله‌ای
@@ -952,7 +952,7 @@ const createTwoFactor = async () => {
     }
 
     // شبیه‌سازی ارسال درخواست به سرور
-    console.log('ایجاد تایید دو مرحله‌ای:', newTwoFactor.value)
+    // console.log('ایجاد تایید دو مرحله‌ای:', newTwoFactor.value)
     
     // نمایش پیام موفقیت
     alert('تایید دو مرحله‌ای با موفقیت ایجاد شد!')
@@ -1051,10 +1051,10 @@ const activateTwoFactor = async () => {
     }
 
     // شبیه‌سازی فعال‌سازی
-    console.log('فعال‌سازی تایید دو مرحله‌ای:', {
+    /* console.log('فعال‌سازی تایید دو مرحله‌ای:', {
       method: selectedMethod.value,
       data: setupData.value
-    })
+    }) */
 
     // نمایش پیام موفقیت
     alert('تایید دو مرحله‌ای با موفقیت فعال شد!')
@@ -1123,7 +1123,7 @@ const exportToExcel = () => {
     link.click()
     document.body.removeChild(link)
 
-    console.log('خروجی اکسل با موفقیت ایجاد شد')
+    // console.log('خروجی اکسل با موفقیت ایجاد شد')
     alert('فایل اکسل با موفقیت دانلود شد!')
     
   } catch (error) {

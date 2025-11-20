@@ -14,8 +14,8 @@
           </h2>
         </div>
         <button 
-          @click="$emit('close')"
           class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+          @click="$emit('close')"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -24,7 +24,7 @@
       </div>
 
       <!-- Form -->
-      <form @submit.prevent="handleSubmit" class="overflow-y-auto max-h-[calc(90vh-120px)]">
+      <form class="overflow-y-auto max-h-[calc(90vh-120px)]" @submit.prevent="handleSubmit">
         <div class="p-6 space-y-6">
           <!-- Basic Information -->
           <div class="bg-gray-50 rounded-xl p-6">
@@ -120,8 +120,8 @@
                 />
                 <button
                   type="button"
-                  @click="addMarket"
                   class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  @click="addMarket"
                 >
                   افزودن
                 </button>
@@ -135,8 +135,8 @@
                   {{ market }}
                   <button
                     type="button"
-                    @click="removeMarket(index)"
                     class="mr-1 text-blue-600 hover:text-blue-800"
+                    @click="removeMarket(index)"
                   >
                     ×
                   </button>
@@ -159,8 +159,8 @@
                 />
                 <button
                   type="button"
-                  @click="addProduct"
                   class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                  @click="addProduct"
                 >
                   افزودن
                 </button>
@@ -174,8 +174,8 @@
                   {{ product }}
                   <button
                     type="button"
-                    @click="removeProduct(index)"
                     class="mr-1 text-green-600 hover:text-green-800"
+                    @click="removeProduct(index)"
                   >
                     ×
                   </button>
@@ -199,8 +199,8 @@
                   />
                   <button
                     type="button"
-                    @click="addStrength"
                     class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                    @click="addStrength"
                   >
                     +
                   </button>
@@ -214,8 +214,8 @@
                     <span class="text-sm text-green-800">{{ strength }}</span>
                     <button
                       type="button"
-                      @click="removeStrength(index)"
                       class="text-green-600 hover:text-green-800"
+                      @click="removeStrength(index)"
                     >
                       ×
                     </button>
@@ -237,8 +237,8 @@
                   />
                   <button
                     type="button"
-                    @click="addWeakness"
                     class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                    @click="addWeakness"
                   >
                     +
                   </button>
@@ -252,8 +252,8 @@
                     <span class="text-sm text-red-800">{{ weakness }}</span>
                     <button
                       type="button"
-                      @click="removeWeakness(index)"
                       class="text-red-600 hover:text-red-800"
+                      @click="removeWeakness(index)"
                     >
                       ×
                     </button>
@@ -277,8 +277,8 @@
                 />
                 <button
                   type="button"
-                  @click="addChange"
                   class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  @click="addChange"
                 >
                   افزودن
                 </button>
@@ -292,8 +292,8 @@
                   <span class="text-sm text-blue-800">{{ change }}</span>
                   <button
                     type="button"
-                    @click="removeChange(index)"
                     class="text-blue-600 hover:text-blue-800"
+                    @click="removeChange(index)"
                   >
                     ×
                   </button>
@@ -307,8 +307,8 @@
         <div class="flex items-center justify-end space-x-3 space-x-reverse p-6 border-t border-gray-200 bg-gray-50">
           <button
             type="button"
-            @click="$emit('close')"
             class="px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            @click="$emit('close')"
           >
             انصراف
           </button>

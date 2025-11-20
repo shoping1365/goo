@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="saveCompressionSettings" class="space-y-6 bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+  <form class="space-y-6 bg-white rounded-2xl shadow-lg border border-gray-200 p-6" @submit.prevent="saveCompressionSettings">
     <!-- Quality -->
     <div>
       <label class="block font-bold mb-1">کیفیت</label>
@@ -11,7 +11,7 @@
         <option value="custom">سفارشی</option>
       </select>
       <div v-if="compressionSettings.quality==='custom'" class="mt-2">
-        <input type="number" v-model.number="compressionSettings.customQuality" min="1" max="100" class="w-24 border border-gray-300 rounded-lg px-2 py-1" />
+        <input v-model.number="compressionSettings.customQuality" type="number" min="1" max="100" class="w-24 border border-gray-300 rounded-lg px-2 py-1" />
         <span class="ml-2 text-sm">%</span>
       </div>
     </div>
@@ -30,31 +30,31 @@
     <!-- Checkboxes -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <label class="flex items-center gap-2">
-        <input type="checkbox" v-model="compressionSettings.progressive" class="w-4 h-4 text-blue-600 border-gray-300 rounded" />
+        <input v-model="compressionSettings.progressive" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded" />
         <span class="text-sm">JPEG Progressive</span>
       </label>
       <label class="flex items-center gap-2">
-        <input type="checkbox" v-model="compressionSettings.removeMetadata" class="w-4 h-4 text-blue-600 border-gray-300 rounded" />
+        <input v-model="compressionSettings.removeMetadata" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded" />
         <span class="text-sm">حذف متادیتا</span>
       </label>
       <label class="flex items-center gap-2">
-        <input type="checkbox" v-model="compressionSettings.optimizeColors" class="w-4 h-4 text-blue-600 border-gray-300 rounded" />
+        <input v-model="compressionSettings.optimizeColors" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded" />
         <span class="text-sm">بهینه‌سازی رنگ</span>
       </label>
       <label class="flex items-center gap-2">
-        <input type="checkbox" v-model="compressionSettings.createBackup" class="w-4 h-4 text-blue-600 border-gray-300 rounded" />
+        <input v-model="compressionSettings.createBackup" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded" />
         <span class="text-sm">ساخت نسخه پشتیبان</span>
       </label>
       <label class="flex items-center gap-2">
-        <input type="checkbox" v-model="compressionSettings.keepOriginalDate" class="w-4 h-4 text-blue-600 border-gray-300 rounded" />
+        <input v-model="compressionSettings.keepOriginalDate" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded" />
         <span class="text-sm">حفظ تاریخ اصلی فایل</span>
       </label>
       <label class="flex items-center gap-2">
-        <input type="checkbox" v-model="compressionSettings.autoOrient" class="w-4 h-4 text-blue-600 border-gray-300 rounded" />
+        <input v-model="compressionSettings.autoOrient" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded" />
         <span class="text-sm">Auto-Orientation</span>
       </label>
       <label class="flex items-center gap-2">
-        <input type="checkbox" v-model="compressionSettings.enabled" class="w-4 h-4 text-blue-600 border-gray-300 rounded" />
+        <input v-model="compressionSettings.enabled" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded" />
         <span class="text-sm">فعال</span>
       </label>
     </div>

@@ -12,8 +12,8 @@
           
           <div class="flex items-center gap-3">
             <button 
-              @click="savePermissions"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+              @click="savePermissions"
             >
               <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -39,7 +39,7 @@
       <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
         <h2 class="text-lg font-semibold text-gray-900 mb-4">دسترسی‌ها</h2>
         <div v-for="(group, idx) in sidebarMenu" :key="group.id" class="mb-4 rounded-xl overflow-hidden border border-gray-100 bg-gray-50">
-          <button @click="toggleAccordion(idx)" class="w-full flex items-center justify-between px-6 py-4 bg-gradient-to-l from-blue-50 to-white hover:from-blue-100 transition-all focus:outline-none">
+          <button class="w-full flex items-center justify-between px-6 py-4 bg-gradient-to-l from-blue-50 to-white hover:from-blue-100 transition-all focus:outline-none" @click="toggleAccordion(idx)">
             <span class="font-bold text-blue-800 text-base flex items-center gap-2">
               {{ group.title }}
               <span v-if="getGroupPermissionStatus(group)" class="text-xs font-normal text-blue-500 mr-2">{{ getGroupPermissionStatus(group) }}</span>
@@ -61,19 +61,20 @@
                   <tr v-for="item in group.items" :key="item.id" class="hover:bg-blue-50 transition">
                     <td class="py-2 px-4 text-right font-medium">{{ item.title }}</td>
                     <td v-for="perm in defaultPermissions" :key="perm.key" class="py-2 px-2 text-center">
-                      <input type="checkbox"
+                      <input
+type="checkbox"
                         :checked="selectedPermissions.has(getPermissionName(item.id, perm.key))"
-                        @change="togglePermission(item.id, perm.key)"
                         :disabled="perm.key !== 'read' && !selectedPermissions.has(getPermissionName(item.id, 'read'))"
-                        class="accent-blue-600 w-4 h-4 rounded border-gray-300 focus:ring-2 focus:ring-blue-400 transition" />
+                        class="accent-blue-600 w-4 h-4 rounded border-gray-300 focus:ring-2 focus:ring-blue-400 transition"
+                        @change="togglePermission(item.id, perm.key)" />
                     </td>
                   </tr>
                 </tbody>
               </table>
               <!-- دکمه‌های انتخاب همه و حذف همه زیر جدول -->
               <div class="flex flex-row-reverse gap-3 items-center px-6 py-2 bg-blue-50 border-t border-blue-100 mt-0 rounded-b-xl justify-start">
-                <button @click="selectAllGroup(group)" class="px-3 py-1 rounded bg-green-100 text-green-700 font-semibold hover:bg-green-200 transition">انتخاب همه</button>
-                <button @click="deselectAllGroup(group)" class="px-3 py-1 rounded bg-red-50 text-red-600 font-semibold hover:bg-red-100 transition">حذف همه</button>
+                <button class="px-3 py-1 rounded bg-green-100 text-green-700 font-semibold hover:bg-green-200 transition" @click="selectAllGroup(group)">انتخاب همه</button>
+                <button class="px-3 py-1 rounded bg-red-50 text-red-600 font-semibold hover:bg-red-100 transition" @click="deselectAllGroup(group)">حذف همه</button>
               </div>
             </div>
           </transition>

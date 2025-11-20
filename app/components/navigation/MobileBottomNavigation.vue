@@ -3,9 +3,9 @@
   <nav v-if="mobileNavigations.length > 0" class="lg:hidden fixed bottom-0 left-0 right-0 bg-gray-100 border-t border-gray-300 z-50" dir="rtl">
     <div class="flex justify-around items-center py-2">
       <component 
-        v-for="item in mobileNavigations" 
+        :is="getTemplateComponent(item.template)" 
+        v-for="item in mobileNavigations"
         :key="item.id"
-        :is="getTemplateComponent(item.template)"
       />
     </div>
   </nav>

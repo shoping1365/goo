@@ -4,7 +4,7 @@
       <div class="card-header">
         <h3>محدودیت وزن</h3>
         <div class="toggle-switch">
-          <input type="checkbox" v-model="enabled" id="weightToggle" />
+          <input id="weightToggle" v-model="enabled" type="checkbox" />
           <label for="weightToggle"></label>
         </div>
       </div>
@@ -96,7 +96,7 @@
                           placeholder="0"
                       />
                     </div>
-                    <button @click="removeProductLimit(index)" class="remove-btn">حذف</button>
+                    <button class="remove-btn" @click="removeProductLimit(index)">حذف</button>
                   </div>
                   <div v-if="limit.productType === 'custom'" class="form-group">
                     <label>نام سفارشی</label>
@@ -108,7 +108,7 @@
                     />
                   </div>
                 </div>
-                <button @click="addProductLimit" class="add-limit-btn">+ افزودن محدودیت محصول</button>
+                <button class="add-limit-btn" @click="addProductLimit">+ افزودن محدودیت محصول</button>
               </div>
             </div>
 
@@ -137,10 +137,10 @@
                           placeholder="0"
                       />
                     </div>
-                    <button @click="removeRegionalLimit(index)" class="remove-btn">حذف</button>
+                    <button class="remove-btn" @click="removeRegionalLimit(index)">حذف</button>
                   </div>
                 </div>
-                <button @click="addRegionalLimit" class="add-limit-btn">+ افزودن محدودیت منطقه</button>
+                <button class="add-limit-btn" @click="addRegionalLimit">+ افزودن محدودیت منطقه</button>
               </div>
             </div>
           </div>
@@ -153,15 +153,15 @@
               <label>محاسبه وزن</label>
               <div class="weight-calculation">
                 <label class="radio-label">
-                  <input type="radio" v-model="weightLimits.calculationMethod" value="actual" />
+                  <input v-model="weightLimits.calculationMethod" type="radio" value="actual" />
                   وزن واقعی
                 </label>
                 <label class="radio-label">
-                  <input type="radio" v-model="weightLimits.calculationMethod" value="volumetric" />
+                  <input v-model="weightLimits.calculationMethod" type="radio" value="volumetric" />
                   وزن حجمی
                 </label>
                 <label class="radio-label">
-                  <input type="radio" v-model="weightLimits.calculationMethod" value="higher" />
+                  <input v-model="weightLimits.calculationMethod" type="radio" value="higher" />
                   بالاترین مقدار
                 </label>
               </div>
@@ -171,15 +171,15 @@
               <label>گرد کردن وزن</label>
               <div class="weight-rounding">
                 <label class="radio-label">
-                  <input type="radio" v-model="weightLimits.roundingMethod" value="none" />
+                  <input v-model="weightLimits.roundingMethod" type="radio" value="none" />
                   بدون گرد کردن
                 </label>
                 <label class="radio-label">
-                  <input type="radio" v-model="weightLimits.roundingMethod" value="up" />
+                  <input v-model="weightLimits.roundingMethod" type="radio" value="up" />
                   گرد کردن به بالا
                 </label>
                 <label class="radio-label">
-                  <input type="radio" v-model="weightLimits.roundingMethod" value="nearest" />
+                  <input v-model="weightLimits.roundingMethod" type="radio" value="nearest" />
                   گرد کردن به نزدیک‌ترین
                 </label>
               </div>

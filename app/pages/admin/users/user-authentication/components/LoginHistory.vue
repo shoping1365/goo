@@ -45,8 +45,8 @@
         </div>
         <div>
           <button
-            @click="loadHistory"
             class="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            @click="loadHistory"
           >
             جستجو
           </button>
@@ -207,8 +207,8 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <button
-                  @click="viewAttemptDetails(attempt)"
                   class="text-blue-600 hover:text-blue-900"
+                  @click="viewAttemptDetails(attempt)"
                 >
                   جزئیات
                 </button>
@@ -222,16 +222,16 @@
       <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
         <div class="flex-1 flex justify-between sm:hidden">
           <button
-            @click="previousPage"
             :disabled="currentPage === 1"
             class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+            @click="previousPage"
           >
             قبلی
           </button>
           <button
-            @click="nextPage"
             :disabled="currentPage >= totalPages"
             class="mr-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+            @click="nextPage"
           >
             بعدی
           </button>
@@ -251,29 +251,29 @@
           <div>
             <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
               <button
-                @click="previousPage"
                 :disabled="currentPage === 1"
                 class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                @click="previousPage"
               >
                 قبلی
               </button>
               <button
                 v-for="page in visiblePages"
                 :key="page"
-                @click="goToPage(page)"
                 :class="[
                   'relative inline-flex items-center px-4 py-2 border text-sm font-medium',
                   page === currentPage
                     ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
                     : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
                 ]"
+                @click="goToPage(page)"
               >
                 {{ page }}
               </button>
               <button
-                @click="nextPage"
                 :disabled="currentPage >= totalPages"
                 class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                @click="nextPage"
               >
                 بعدی
               </button>
@@ -290,8 +290,8 @@
           <div class="flex justify-between items-center mb-4">
             <h3 class="text-lg font-medium text-gray-900">جزئیات تلاش ورود</h3>
             <button
-              @click="selectedAttempt = null"
               class="text-gray-400 hover:text-gray-600"
+              @click="selectedAttempt = null"
             >
               ✕
             </button>
@@ -339,8 +339,8 @@
 
           <div class="flex justify-end">
             <button
-              @click="selectedAttempt = null"
               class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+              @click="selectedAttempt = null"
             >
               بستن
             </button>

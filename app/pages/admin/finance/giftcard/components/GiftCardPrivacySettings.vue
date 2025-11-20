@@ -16,7 +16,7 @@
           </p>
         </div>
         <div>
-          <button @click="showGdprModal = true" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+          <button class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" @click="showGdprModal = true">
             مشاهده رضایت‌ها
           </button>
         </div>
@@ -64,10 +64,10 @@
         </div>
       </div>
       <div class="mt-4 flex justify-between">
-        <button @click="clearAllCookies" class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+        <button class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" @click="clearAllCookies">
           حذف همه کوکی‌ها
         </button>
-        <button @click="saveCookieSettings" class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+        <button class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2" @click="saveCookieSettings">
           ذخیره تنظیمات
         </button>
       </div>
@@ -101,9 +101,9 @@
                 </span>
               </td>
               <td class="px-4 py-2 whitespace-nowrap">
-                <button v-if="request.status === 'pending'" @click="approveDeletion(request)" class="text-green-600 hover:underline text-xs ml-2">تأیید</button>
-                <button v-if="request.status === 'pending'" @click="rejectDeletion(request)" class="text-red-600 hover:underline text-xs">رد</button>
-                <button v-if="request.status === 'completed'" @click="viewDeletionLog(request)" class="text-blue-600 hover:underline text-xs">مشاهده لاگ</button>
+                <button v-if="request.status === 'pending'" class="text-green-600 hover:underline text-xs ml-2" @click="approveDeletion(request)">تأیید</button>
+                <button v-if="request.status === 'pending'" class="text-red-600 hover:underline text-xs" @click="rejectDeletion(request)">رد</button>
+                <button v-if="request.status === 'completed'" class="text-blue-600 hover:underline text-xs" @click="viewDeletionLog(request)">مشاهده لاگ</button>
               </td>
             </tr>
           </tbody>
@@ -134,7 +134,7 @@
         </div>
       </div>
       <div class="mt-4">
-        <button @click="showPrivacyPolicy = true" class="px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+        <button class="px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2" @click="showPrivacyPolicy = true">
           مشاهده سیاست حفظ حریم خصوصی
         </button>
       </div>

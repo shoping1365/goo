@@ -12,8 +12,8 @@
 
 
             <button 
-              @click="showSettings"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+              @click="showSettings"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
@@ -34,13 +34,13 @@
             <button
               v-for="tab in tabs"
               :key="tab.id"
-              @click="activeTab = tab.id as 'dashboard' | 'bot-detection' | 'reports' | 'settings' | 'fraud-orders'"
               :class="[
                 activeTab === tab.id
                   ? 'border-red-500 text-red-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
               'flex-1 whitespace-nowrap py-4 px-4 border-b-2 font-medium text-sm text-center'
               ]"
+              @click="activeTab = tab.id as 'dashboard' | 'bot-detection' | 'reports' | 'settings' | 'fraud-orders'"
             >
               {{ tab.name }}
             </button>
@@ -133,7 +133,7 @@
               <!-- Advanced Filters -->
               <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                  <button @click="showAdvanced = !showAdvanced" class="w-8 h-8 bg-gradient-to-r from-red-500 to-pink-600 rounded-lg flex items-center justify-center ml-3 text-white hover:bg-red-600 transition-colors">
+                  <button class="w-8 h-8 bg-gradient-to-r from-red-500 to-pink-600 rounded-lg flex items-center justify-center ml-3 text-white hover:bg-red-600 transition-colors" @click="showAdvanced = !showAdvanced">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"></path>
                     </svg>
@@ -275,7 +275,7 @@
                     class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-gradient-to-r from-red-100 to-red-200 text-red-800 border border-red-300 shadow-sm"
                   >
                     {{ getFilterLabel(key, value) }}
-                    <button @click="removeFilter(key)" class="mr-1 text-red-600 hover:text-red-800 transition-colors">
+                    <button class="mr-1 text-red-600 hover:text-red-800 transition-colors" @click="removeFilter(key)">
                       <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                       </svg>
@@ -291,8 +291,8 @@
                 <div class="flex items-center justify-between">
                   <h3 class="text-lg font-semibold text-gray-900">سفارشات تقلبی</h3>
                   <div class="flex items-center gap-2">
-                    <button @click="fetchFraudCases" class="text-sm bg-gray-100 px-3 py-1.5 rounded">بروزرسانی</button>
-                    <button @click="openRules" class="text-sm bg-blue-600 text-white px-3 py-1.5 rounded">قوانین</button>
+                    <button class="text-sm bg-gray-100 px-3 py-1.5 rounded" @click="fetchFraudCases">بروزرسانی</button>
+                    <button class="text-sm bg-blue-600 text-white px-3 py-1.5 rounded" @click="openRules">قوانین</button>
                   </div>
                 </div>
               </div>
@@ -830,7 +830,7 @@
               <div class="p-6 border-b border-gray-200">
                 <div class="flex items-center justify-between">
                   <h3 class="text-lg font-semibold text-gray-900">فیلترهای پیشرفته</h3>
-                  <button @click="resetFilters" class="text-red-600 hover:text-red-800 text-sm font-medium">
+                  <button class="text-red-600 hover:text-red-800 text-sm font-medium" @click="resetFilters">
                     پاک کردن فیلترها
                   </button>
                 </div>
@@ -952,10 +952,10 @@
                 <!-- دکمه‌های عملیات -->
                 <div class="flex items-center justify-between pt-4 border-t border-gray-200">
                   <div class="flex items-center space-x-3">
-                    <button @click="applyFilters" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors" @click="applyFilters">
                       اعمال فیلترها
                     </button>
-                    <button @click="exportFilteredData" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors" @click="exportFilteredData">
                       خروجی اکسل
                     </button>
                   </div>
@@ -1023,9 +1023,9 @@
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div class="flex items-center space-x-2">
-                          <button @click="viewFraudOrder(order)" class="text-blue-600 hover:text-blue-900">مشاهده</button>
-                          <button @click="blockCustomer(order)" class="text-red-600 hover:text-red-900">مسدود</button>
-                          <button @click="reportToAuthorities(order)" class="text-orange-600 hover:text-orange-900">گزارش</button>
+                          <button class="text-blue-600 hover:text-blue-900" @click="viewFraudOrder(order)">مشاهده</button>
+                          <button class="text-red-600 hover:text-red-900" @click="blockCustomer(order)">مسدود</button>
+                          <button class="text-orange-600 hover:text-orange-900" @click="reportToAuthorities(order)">گزارش</button>
                         </div>
                       </td>
                     </tr>
@@ -1197,7 +1197,7 @@
             <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg border border-gray-200 p-6 mb-6">
               <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center">
-                  <button @click="showReportFilters = !showReportFilters" class="w-8 h-8 bg-gradient-to-r from-red-500 to-pink-600 rounded-lg flex items-center justify-center ml-3 text-white hover:bg-red-600 transition-colors">
+                  <button class="w-8 h-8 bg-gradient-to-r from-red-500 to-pink-600 rounded-lg flex items-center justify-center ml-3 text-white hover:bg-red-600 transition-colors" @click="showReportFilters = !showReportFilters">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"></path>
                     </svg>
@@ -1292,7 +1292,7 @@
                   <!-- دکمه تولید گزارش -->
                   <div class="space-y-1">
                     <label class="block text-sm font-semibold text-gray-700 opacity-0">دکمه</label>
-                    <button @click="generateReport" class="w-full bg-gradient-to-r from-red-500 to-pink-600 text-white px-3 py-2 rounded-lg font-medium hover:from-red-600 hover:to-pink-700 transition-all duration-200 flex items-center justify-center">
+                    <button class="w-full bg-gradient-to-r from-red-500 to-pink-600 text-white px-3 py-2 rounded-lg font-medium hover:from-red-600 hover:to-pink-700 transition-all duration-200 flex items-center justify-center" @click="generateReport">
                       <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                       </svg>
@@ -1313,10 +1313,10 @@
                     <p class="text-xs text-blue-700">آخرین ۳۰ روز</p>
                   </div>
                   <div class="flex space-x-2">
-                    <button @click="downloadQuickReport('monthly', 'pdf')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors" @click="downloadQuickReport('monthly', 'pdf')">
                       PDF
                     </button>
-                    <button @click="downloadQuickReport('monthly', 'excel')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors">
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors" @click="downloadQuickReport('monthly', 'excel')">
                       Excel
                     </button>
                   </div>
@@ -1328,10 +1328,10 @@
                     <p class="text-xs text-green-700">آخرین ۹۰ روز</p>
                   </div>
                   <div class="flex space-x-2">
-                    <button @click="downloadQuickReport('quarterly', 'pdf')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors" @click="downloadQuickReport('quarterly', 'pdf')">
                       PDF
                     </button>
-                    <button @click="downloadQuickReport('quarterly', 'excel')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors">
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors" @click="downloadQuickReport('quarterly', 'excel')">
                       Excel
                     </button>
                   </div>
@@ -1343,10 +1343,10 @@
                     <p class="text-xs text-purple-700">آخرین ۳۶۵ روز</p>
                   </div>
                   <div class="flex space-x-2">
-                    <button @click="downloadQuickReport('yearly', 'pdf')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors" @click="downloadQuickReport('yearly', 'pdf')">
                       PDF
                     </button>
-                    <button @click="downloadQuickReport('yearly', 'excel')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors">
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors" @click="downloadQuickReport('yearly', 'excel')">
                       Excel
                     </button>
                   </div>
@@ -1359,7 +1359,7 @@
               <div class="p-6 border-b border-gray-200">
                 <div class="flex items-center justify-between">
                   <h3 class="text-lg font-semibold text-gray-900">تاریخچه گزارشات</h3>
-                  <button @click="refreshReportHistory" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                  <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors" @click="refreshReportHistory">
                     بروزرسانی
                   </button>
                 </div>
@@ -1481,7 +1481,7 @@
                         </tr>
                       </thead>
                       <tbody class="bg-white divide-y divide-gray-200">
-                        <tr v-for="(r, idx) in settings.rules" :key="r.key">
+                        <tr v-for="r in settings.rules" :key="r.key">
                           <td class="px-4 py-2 text-sm">{{ r.key }}</td>
                           <td class="px-4 py-2 text-sm">{{ r.description }}</td>
                           <td class="px-4 py-2 text-sm"><input v-model.number="r.weight" type="number" class="w-24 px-2 py-1 border rounded" /></td>
@@ -1514,8 +1514,8 @@
                     </div>
                     <div class="flex items-end">
                       <div class="flex gap-2">
-                        <button @click="addToWhitelist" class="px-3 py-2 bg-green-600 text-white rounded text-sm">افزودن به سفید</button>
-                        <button @click="addToBlacklist" class="px-3 py-2 bg-red-600 text-white rounded text-sm">افزودن به سیاه</button>
+                        <button class="px-3 py-2 bg-green-600 text-white rounded text-sm" @click="addToWhitelist">افزودن به سفید</button>
+                        <button class="px-3 py-2 bg-red-600 text-white rounded text-sm" @click="addToBlacklist">افزودن به سیاه</button>
                       </div>
                     </div>
                   </div>
@@ -1523,8 +1523,8 @@
               </div>
 
               <div class="mt-6 flex gap-2">
-                <button @click="saveSettings" class="px-4 py-2 bg-blue-600 text-white rounded">ذخیره تنظیمات (Placeholder)</button>
-                <button @click="reEvaluateOpen" class="px-4 py-2 bg-gray-100 rounded">بازارزیابی پرونده‌های باز</button>
+                <button class="px-4 py-2 bg-blue-600 text-white rounded" @click="saveSettings">ذخیره تنظیمات (Placeholder)</button>
+                <button class="px-4 py-2 bg-gray-100 rounded" @click="reEvaluateOpen">بازارزیابی پرونده‌های باز</button>
               </div>
             </div>
           </div>
@@ -1549,7 +1549,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+useAuth()
 
 // متغیرهای صفحه‌بندی سفارشات تقلبی (باید در ابتدا تعریف شوند)
 const currentPage = ref(1)
@@ -1704,7 +1704,7 @@ const isLoading = ref(false)
 const fetchFraudCases = async () => {
   try {
     isLoading.value = true
-    const res: any = await $fetch('/api/admin/transactions/fraud-detection', {
+    const res = await $fetch<{ total: number, data: Record<string, unknown>[] }>('/api/admin/transactions/fraud-detection', {
       query: {
         risk: riskLevelFilter.value,
         status: '',
@@ -1713,18 +1713,18 @@ const fetchFraudCases = async () => {
       }
     })
     totalCount.value = Number(res?.total || 0)
-    fraudOrders.value = (res?.data || []).map((row: any) => ({
-      id: row.id,
-      orderNumber: row.orderNumber || '-',
-      customerName: row.customerName || '-',
-      customerPhone: row.customerPhone || '-',
-      totalAmount: row.totalAmount || 0,
-      paymentMethod: row.paymentMethod || '-',
-      status: row.status || '-',
-      createdAt: row.createdAt,
+    fraudOrders.value = (res?.data || []).map((row: Record<string, unknown>) => ({
+      id: row.id as number,
+      orderNumber: (row.orderNumber as string) || '-',
+      customerName: (row.customerName as string) || '-',
+      customerPhone: (row.customerPhone as string) || '-',
+      totalAmount: (row.totalAmount as number) || 0,
+      paymentMethod: (row.paymentMethod as string) || '-',
+      status: (row.status as string) || '-',
+      createdAt: row.createdAt as string,
       fraudType: '',
-      fraudScore: row.fraudScore,
-      riskLevel: row.riskLevel,
+      fraudScore: row.fraudScore as number,
+      riskLevel: row.riskLevel as string,
       blockStatus: row.status === 'blocked' ? 'system' : row.status,
       blockedBy: null,
       items: []
@@ -1784,11 +1784,11 @@ const botTotalPages = computed(() => {
 })
 
 // بوت‌های صفحه‌بندی شده
-const paginatedBotData = computed(() => {
+/* const paginatedBotData = computed(() => {
   const start = (botCurrentPage.value - 1) * botItemsPerPage.value
   const end = start + botItemsPerPage.value
   return botData.value.slice(start, end)
-})
+}) */
 
 // متد تغییر صفحه بوت‌ها
 const handleBotPageChange = (page) => {
@@ -1976,7 +1976,7 @@ const generateReport = () => {
   }
   
   // اینجا می‌توانید منطق تولید گزارش را اضافه کنید
-  console.log('Generating report with data:', reportData)
+  // console.log('Generating report with data:', reportData)
 }
 
 const downloadQuickReport = (period, format) => {
@@ -1988,13 +1988,13 @@ const refreshReportHistory = () => {
 }
 
 // متدهای مدیریت
-const exportFraudReport = () => {
+/* const exportFraudReport = () => {
   // خروجی گزارش تشخیص تقلب
-}
+} */
 
-const refreshData = () => {
+/* const refreshData = () => {
   // بروزرسانی داده‌های تشخیص تقلب
-}
+} */
 
 const showSettings = () => {
   // نمایش تنظیمات تشخیص تقلب
@@ -2128,8 +2128,8 @@ const reportToAuthorities = (order) => {
 
 const openRules = async () => {
   try {
-    const rules: any = await $fetch('/api/admin/fraud/rules')
-    console.table(rules?.data || [])
+    const rules = await $fetch<{ data: Record<string, unknown>[] }>('/api/admin/fraud/rules')
+    // console.table(rules?.data || [])
   } catch (e) {
     // load rules failed
   }

@@ -12,13 +12,19 @@ export interface SeoOptions {
   follow?: boolean
 }
 
+interface MetaTag {
+  name?: string
+  property?: string
+  content: string
+}
+
 // تعریف useHead برای Nuxt 3
-declare const useHead: (head: any) => void
+declare const useHead: (head: { title?: string; meta?: MetaTag[] }) => void
 
 export function useSeo(opts: SeoOptions) {
   const keywordsStr = Array.isArray(opts.keywords) ? opts.keywords.join(',') : opts.keywords
 
-  const meta: any[] = []
+  const meta: MetaTag[] = []
 
   if (opts.description) meta.push({ name: 'description', content: opts.description })
   if (keywordsStr) meta.push({ name: 'keywords', content: keywordsStr })

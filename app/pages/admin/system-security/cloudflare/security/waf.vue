@@ -280,8 +280,8 @@
         <!-- دکمه افزودن قانون جدید -->
         <div class="mb-6">
           <button 
-            @click="showAddRuleModal = true"
             class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
+            @click="showAddRuleModal = true"
           >
             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -330,28 +330,28 @@
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div class="flex space-x-2 space-x-reverse">
                       <button 
-                        @click="editRule(rule)"
                         class="text-blue-600 hover:text-blue-900 transition-colors"
                         title="ویرایش"
+                        @click="editRule(rule)"
                       >
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                         </svg>
                       </button>
                       <button 
-                        @click="toggleRule(rule)"
                         :class="!rule.paused ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900'"
                         class="transition-colors"
                         :title="!rule.paused ? 'غیرفعال کردن' : 'فعال کردن'"
+                        @click="toggleRule(rule)"
                       >
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728"/>
                         </svg>
                       </button>
                       <button 
-                        @click="deleteRule(rule)"
                         class="text-red-600 hover:text-red-900 transition-colors"
                         title="حذف"
+                        @click="deleteRule(rule)"
                       >
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
@@ -395,7 +395,7 @@
               </select>
             </div>
             <div class="flex justify-end space-x-3 space-x-reverse">
-              <button type="button" @click="showAddRuleModal = false" class="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50">
+              <button type="button" class="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50" @click="showAddRuleModal = false">
                 انصراف
               </button>
               <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">

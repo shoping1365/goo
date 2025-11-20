@@ -10,8 +10,8 @@
         </div>
           <div class="flex space-x-2 space-x-reverse">
           <button
-              @click="exportData"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+              @click="exportData"
           >
             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -19,8 +19,8 @@
               خروجی Excel
           </button>
             <button 
-              @click="refreshData"
               class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200"
+              @click="refreshData"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -40,13 +40,13 @@
             <button
               v-for="tab in tabs"
               :key="tab.id"
-              @click="activeTab = tab.id"
               :class="[
                 activeTab === tab.id
                   ? 'border-red-500 text-red-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
               'flex-1 whitespace-nowrap py-4 px-4 border-b-2 font-medium text-sm text-center'
               ]"
+              @click="activeTab = tab.id"
             >
               {{ tab.name }}
             </button>
@@ -304,7 +304,7 @@
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div class="flex items-center space-x-2">
-                          <button @click="viewOrderDetails(order)" class="text-blue-600 hover:text-blue-900">
+                          <button class="text-blue-600 hover:text-blue-900" @click="viewOrderDetails(order)">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
@@ -394,7 +394,7 @@
               <!-- Advanced Filters -->
               <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                  <button @click="showAdvanced = !showAdvanced" class="w-8 h-8 bg-gradient-to-r from-red-500 to-pink-600 rounded-lg flex items-center justify-center ml-3 text-white hover:bg-red-600 transition-colors">
+                  <button class="w-8 h-8 bg-gradient-to-r from-red-500 to-pink-600 rounded-lg flex items-center justify-center ml-3 text-white hover:bg-red-600 transition-colors" @click="showAdvanced = !showAdvanced">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"></path>
                     </svg>
@@ -642,7 +642,7 @@
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div class="flex items-center space-x-2">
-                          <button @click="viewOrderDetails(order)" class="text-blue-600 hover:text-blue-900">
+                          <button class="text-blue-600 hover:text-blue-900" @click="viewOrderDetails(order)">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
@@ -800,7 +800,7 @@
             <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg border border-gray-200 px-4 py-4 mb-6">
               <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center">
-                  <button @click="showReportFilters = !showReportFilters" class="w-8 h-8 bg-gradient-to-r from-red-500 to-pink-600 rounded-lg flex items-center justify-center ml-3 text-white hover:bg-red-600 transition-colors">
+                  <button class="w-8 h-8 bg-gradient-to-r from-red-500 to-pink-600 rounded-lg flex items-center justify-center ml-3 text-white hover:bg-red-600 transition-colors" @click="showReportFilters = !showReportFilters">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"></path>
                     </svg>
@@ -895,7 +895,7 @@
                   <!-- دکمه تولید گزارش -->
                   <div class="space-y-1">
                     <label class="block text-sm font-semibold text-gray-700 opacity-0">دکمه</label>
-                    <button @click="generateReport" class="w-full bg-gradient-to-r from-red-500 to-pink-600 text-white px-3 py-2 rounded-lg font-medium hover:from-red-600 hover:to-pink-700 transition-all duration-200 flex items-center justify-center">
+                    <button class="w-full bg-gradient-to-r from-red-500 to-pink-600 text-white px-3 py-2 rounded-lg font-medium hover:from-red-600 hover:to-pink-700 transition-all duration-200 flex items-center justify-center" @click="generateReport">
                       <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                       </svg>
@@ -916,10 +916,10 @@
                     <p class="text-xs text-blue-700">آخرین ۳۰ روز</p>
             </div>
                   <div class="flex space-x-2">
-                    <button @click="downloadQuickReport('monthly', 'pdf')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors" @click="downloadQuickReport('monthly', 'pdf')">
                       PDF
                     </button>
-                    <button @click="downloadQuickReport('monthly', 'excel')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors">
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors" @click="downloadQuickReport('monthly', 'excel')">
                       Excel
                     </button>
                   </div>
@@ -931,10 +931,10 @@
                     <p class="text-xs text-green-700">آخرین ۹۰ روز</p>
                   </div>
                   <div class="flex space-x-2">
-                    <button @click="downloadQuickReport('quarterly', 'pdf')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors" @click="downloadQuickReport('quarterly', 'pdf')">
                       PDF
                 </button>
-                    <button @click="downloadQuickReport('quarterly', 'excel')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors">
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors" @click="downloadQuickReport('quarterly', 'excel')">
                       Excel
                 </button>
             </div>
@@ -946,10 +946,10 @@
                     <p class="text-xs text-purple-700">آخرین ۳۶۵ روز</p>
         </div>
                   <div class="flex space-x-2">
-                    <button @click="downloadQuickReport('yearly', 'pdf')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors" @click="downloadQuickReport('yearly', 'pdf')">
                       PDF
                     </button>
-                    <button @click="downloadQuickReport('yearly', 'excel')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors">
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors" @click="downloadQuickReport('yearly', 'excel')">
                       Excel
                     </button>
       </div>
@@ -962,7 +962,7 @@
               <div class="px-4 py-4 border-b border-gray-200">
                 <div class="flex items-center justify-between">
                   <h3 class="text-lg font-semibold text-gray-900">تاریخچه گزارشات</h3>
-                  <button @click="refreshReportHistory" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                  <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors" @click="refreshReportHistory">
                     بروزرسانی
                   </button>
                 </div>
@@ -1037,7 +1037,7 @@ definePageMeta({
   layout: 'admin-main'
 })
 
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 
 
 
@@ -1253,12 +1253,12 @@ const orders = ref([
 // متغیرهای صفحه‌بندی
 const currentPage = ref(1)
 const itemsPerPage = ref(10)
-const totalItems = ref(cancelledOrders.value.length)
+const _totalItems = ref(cancelledOrders.value.length)
 
 const totalPages = computed(() => Math.ceil(cancelledOrders.value.length / itemsPerPage.value))
 
 // computed برای گزارشات
-const reportTotalPages = computed(() => {
+const _reportTotalPages = computed(() => {
   return Math.ceil(reportHistory.value.length / reportItemsPerPage.value)
 })
 
@@ -1331,14 +1331,14 @@ const paymentMethodStats = computed(() => {
 })
 
 // متغیر قدیمی برای سازگاری
-const pagination = ref({
+const _pagination = ref({
   from: 1,
   to: 10,
   total: 45
 })
 
 // فیلتر کردن سفارشات
-const filteredOrders = computed(() => {
+const _filteredOrders = computed(() => {
   let filtered = orders.value
 
   if (searchQuery.value) {
@@ -1429,12 +1429,12 @@ const getPaymentMethodText = (method) => {
 const refreshData = async () => {
   await fetchStats()
   await fetchCancelledOrders()
-  console.log('بروزرسانی داده‌ها...')
+  // console.log('بروزرسانی داده‌ها...')
 }
 
 const exportData = () => {
   // خروجی اکسل
-  console.log('خروجی اکسل...')
+  // console.log('خروجی اکسل...')
 }
 
 // متدهای مودال
@@ -1448,19 +1448,19 @@ const closeModal = () => {
   selectedOrder.value = null
 }
 
-const editOrder = (order) => {
-  console.log('ویرایش سفارش:', order)
+const editOrder = (_order) => {
+  // console.log('ویرایش سفارش:', order)
   // اینجا می‌توانید کاربر را به صفحه ویرایش هدایت کنید
 }
 
-const viewOrder = (order) => {
+const _viewOrder = (_order) => {
   // مشاهده جزئیات سفارش
-  console.log('مشاهده سفارش:', order)
+  // console.log('مشاهده سفارش:', order)
 }
 
-const restoreOrder = (order) => {
+const _restoreOrder = (_order) => {
   // بازگردانی سفارش
-  console.log('بازگردانی سفارش:', order)
+  // console.log('بازگردانی سفارش:', order)
 }
 
 
@@ -1468,43 +1468,43 @@ const restoreOrder = (order) => {
 // متدهای صفحه‌بندی
 const handlePageChange = (page) => {
   currentPage.value = page
-  console.log('تغییر به صفحه:', page)
+  // console.log('تغییر به صفحه:', page)
   // اینجا می‌توانید داده‌های جدید را بارگذاری کنید
 }
 
 const handleItemsPerPageChange = (newItemsPerPage) => {
   itemsPerPage.value = newItemsPerPage
   currentPage.value = 1 // بازگشت به صفحه اول
-  console.log('تغییر تعداد آیتم در هر صفحه به:', newItemsPerPage)
+  // console.log('تغییر تعداد آیتم در هر صفحه به:', newItemsPerPage)
   // اینجا می‌توانید داده‌های جدید را بارگذاری کنید
 }
 
 // متدهای گزارشات
 const generateReport = () => {
-  console.log('تولید گزارش با پارامترهای:', {
-    type: reportType.value,
-    period: reportPeriod.value,
-    dateFrom: reportDateFrom.value,
-    dateTo: reportDateTo.value,
-    cancellationReason: reportCancellationReason.value,
-    paymentMethod: reportPaymentMethod.value,
-    format: reportFormat.value
-  })
+  // console.log('تولید گزارش با پارامترهای:', {
+  //   type: reportType.value,
+  //   period: reportPeriod.value,
+  //   dateFrom: reportDateFrom.value,
+  //   dateTo: reportDateTo.value,
+  //   cancellationReason: reportCancellationReason.value,
+  //   paymentMethod: reportPaymentMethod.value,
+  //   format: reportFormat.value
+  // })
 }
 
-const downloadQuickReport = (period, format) => {
-  console.log('دانلود گزارش سریع:', { period, format })
+const downloadQuickReport = (_period, _format) => {
+  // console.log('دانلود گزارش سریع:', { period, format })
 }
 
 const refreshReportHistory = () => {
-  console.log('بروزرسانی تاریخچه گزارشات')
+  // console.log('بروزرسانی تاریخچه گزارشات')
 }
 
-const handleReportPageChange = (page) => {
+const _handleReportPageChange = (page) => {
   reportCurrentPage.value = page
 }
 
-const handleReportItemsPerPageChange = (newItemsPerPage) => {
+const _handleReportItemsPerPageChange = (newItemsPerPage) => {
   reportItemsPerPage.value = newItemsPerPage
   reportCurrentPage.value = 1
 }

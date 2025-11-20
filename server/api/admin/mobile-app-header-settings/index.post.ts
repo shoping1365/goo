@@ -1,15 +1,15 @@
-import { defineEventHandler, createError, readRawBody } from 'h3'
+import { createError, defineEventHandler, readRawBody } from 'h3'
 import { fetchGo } from '../../_utils/fetchGo'
 
 interface MobileAppHeaderCreateResponse {
      success: boolean
-     data: any
+     data: unknown
      message?: string
 }
 
 export default defineEventHandler(async (event): Promise<MobileAppHeaderCreateResponse> => {
      try {
-          let body: any = {}
+          let body: unknown = {}
 
           if (event.node?.req) {
                const nodeReq = event.node.req
@@ -28,7 +28,7 @@ export default defineEventHandler(async (event): Promise<MobileAppHeaderCreateRe
                     try {
                          body = JSON.parse(raw)
                     } catch (parseErr) {
-                         console.error('❌ خطا در parse بدنه هدر موبایل:', parseErr, raw)
+                         // console.error('❌ خطا در parse بدنه هدر موبایل:', parseErr, raw)
                          throw createError({ statusCode: 400, message: 'ساخت هدر موبایل: بدنه نامعتبر است' })
                     }
                }
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event): Promise<MobileAppHeaderCreateRe
                     try {
                          body = JSON.parse(rawBody)
                     } catch (parseErr) {
-                         console.error('❌ خطا در parse بدنه هدر موبایل:', parseErr, rawBody)
+                         // console.error('❌ خطا در parse بدنه هدر موبایل:', parseErr, rawBody)
                          throw createError({ statusCode: 400, message: 'ساخت هدر موبایل: بدنه نامعتبر است' })
                     }
                } else if (rawBody && typeof rawBody === 'object') {
@@ -46,53 +46,55 @@ export default defineEventHandler(async (event): Promise<MobileAppHeaderCreateRe
                }
           }
 
-          console.log('درخواست ایجاد هدر موبایل جدید:', body)
+          // console.log('درخواست ایجاد هدر موبایل جدید:', body)
 
-          let responseData: any
+          let responseData: unknown
           try {
                responseData = await fetchGo(event, '/api/admin/mobile-app-header-settings', {
                     method: 'POST',
                     body
                })
-          } catch (fetchErr: any) {
-               console.error('❌ fetchGo ایجاد هدر موبایل شکست خورد:', {
-                    statusCode: fetchErr?.statusCode,
-                    status: fetchErr?.status,
-                    message: fetchErr?.message,
-                    data: fetchErr?.data || fetchErr?.response?._data
-               })
+          } catch (fetchErr: unknown) {
+               const err = fetchErr as Record<string, any>
+               // console.error('❌ fetchGo ایجاد هدر موبایل شکست خورد:', {
+               //      statusCode: err?.statusCode,
+               //      status: err?.status,
+               //      message: err?.message,
+               //      data: err?.data || err?.response?._data
+               // })
                throw createError({
-                    statusCode: fetchErr?.statusCode || fetchErr?.status || fetchErr?.response?.status || 500,
-                    message: fetchErr?.data?.message || fetchErr?.data?.error || fetchErr?.message || 'خطا در ایجاد هدر موبایل',
-                    data: fetchErr?.data || fetchErr?.response?._data
+                    statusCode: err?.statusCode || err?.status || err?.response?.status || 500,
+                    message: err?.data?.message || err?.data?.error || err?.message || 'خطا در ایجاد هدر موبایل',
+                    data: err?.data || err?.response?._data
                })
           }
 
-          console.log('پاسخ Go برای ایجاد هدر موبایل:', responseData)
+          // console.log('پاسخ Go برای ایجاد هدر موبایل:', responseData)
 
-          console.log('پاسخ ایجاد هدر موبایل:', responseData)
+          // console.log('پاسخ ایجاد هدر موبایل:', responseData)
 
           return {
                success: true,
-               data: responseData?.data || null
+               data: (responseData as Record<string, unknown>)?.data || null
           }
 
-     } catch (error: any) {
-          if (error?.statusCode || error?.status) {
+     } catch (error: unknown) {
+          const err = error as { statusCode?: number; status?: number; message?: string; data?: { message?: string; error?: string } }
+          if (err?.statusCode || err?.status) {
                throw createError({
-                    statusCode: error?.statusCode || error?.status,
-                    message: error?.message || error?.data?.message || error?.data?.error || 'خطا در ایجاد هدر موبایل',
-                    data: error?.data
+                    statusCode: err?.statusCode || err?.status,
+                    message: err?.message || err?.data?.message || err?.data?.error || 'خطا در ایجاد هدر موبایل',
+                    data: err?.data
                })
           }
-          console.error('خطا در ایجاد هدر موبایل:', error)
+          // console.error('خطا در ایجاد هدر موبایل:', error)
 
           // اگر خطا از سرور Go آمده باشد
-          if (error.data) {
+          if (err.data) {
                throw createError({
-                    statusCode: error.statusCode || 500,
-                    message: error.data.message || error.data.error || 'خطا در ایجاد هدر موبایل',
-                    data: error.data
+                    statusCode: err.statusCode || 500,
+                    message: err.data.message || err.data.error || 'خطا در ایجاد هدر موبایل',
+                    data: err.data
                })
           }
 

@@ -79,13 +79,13 @@
             <button
               v-for="tab in tabs"
               :key="tab.value"
-              @click="activeTab = tab.value"
               :class="[
                 'py-4 px-2 border-b-2 font-medium text-sm transition-colors',
                 activeTab === tab.value
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               ]"
+              @click="activeTab = tab.value"
             >
               <div class="flex items-center gap-2">
                 {{ tab.label }}
@@ -99,7 +99,7 @@
           <component
             :is="currentTabComponent"
             :product="product"
-            :productId="product?.id"
+            :product-id="product?.id"
           />
         </div>
       </div>
@@ -109,10 +109,10 @@
     <div class="fixed bottom-6 left-6 flex flex-col gap-3 z-40">
       <button
         v-if="product"
-        @click="addToCart"
         :disabled="!(product.in_stock ?? product.stock_quantity > 0)"
         class="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white px-4 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 group"
         :title="(product.in_stock ?? product.stock_quantity > 0) ? 'افزودن به سبد خرید' : 'ناموجود'"
+        @click="addToCart"
       >
         <svg class="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m-2.4 0L3 3m4 10v6a1 1 0 001 1h8a1 1 0 001-1v-6m-9 0V9a1 1 0 011-1h6a1 1 0 011 1v4.01"></path>
@@ -122,19 +122,21 @@
   </div>
 </template>
 
-<script setup>
-import ProductMainInfo from '../ProductMainInfo.vue'
-import ProductDescription from '../ProductDescription.vue'
-import ProductVideos from '~/components/product/ProductVideos.vue'
-import ProductSpecifications from '../ProductSpecifications.vue'
-import ProductReviews from '../ProductReviews.vue'
-import ProductFAQ from '../ProductFAQ.vue'
-import ProductRelated from '../ProductRelated.vue'
-import ProductComplements from '../ProductComplements.vue'
+<script setup lang="ts">
+// Force TS mode
 import ProductQnA from '~/components/product/ProductQnA.vue'
+import ProductVideos from '~/components/product/ProductVideos.vue'
+import ProductComplements from '../ProductComplements.vue'
+import ProductDescription from '../ProductDescription.vue'
+import ProductFAQ from '../ProductFAQ.vue'
+import ProductMainInfo from '../ProductMainInfo.vue'
+import ProductRelated from '../ProductRelated.vue'
+import ProductReviews from '../ProductReviews.vue'
+import ProductSpecifications from '../ProductSpecifications.vue'
 
+import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useCart } from '~/composables/useCart'
-import { ref, onMounted, onBeforeUnmount, computed, watch, reactive } from 'vue'
+import type { Product } from '~/types/product'
 
 definePageMeta({ layout: 'default' })
 
@@ -153,7 +155,7 @@ const identifier = computed(() => {
 })
 
 // استفاده از useAsyncData برای SSR صحیح
-const { data: product, error: fetchError, pending: loading } = await useAsyncData(
+const { data: product, error: fetchError, pending: loading } = await useAsyncData<Product>(
   `product-${identifier.value}`,
   async () => {
     if (!identifier.value) {
@@ -162,11 +164,12 @@ const { data: product, error: fetchError, pending: loading } = await useAsyncDat
     try {
       const isPreview = route.query.preview === '1' || route.query.preview === 'true'
       const apiUrl = isPreview ? `/api/products/${identifier.value}?preview=1` : `/api/products/${identifier.value}`
-      const response = await $fetch(apiUrl)
+      const response = await $fetch<Product>(apiUrl)
       if (!response) throw new Error('محصول یافت نشد')
       return response
     } catch (err) {
-      throw new Error(err.message || 'خطا در بارگذاری محصول')
+      const e = err as { message?: string }
+      throw new Error(e.message || 'خطا در بارگذاری محصول')
     }
   },
   {
@@ -265,7 +268,7 @@ const trackProductView = async (productId) => {
     // شروع ردیابی زمان برای این محصول
     viewStartTime.value = Date.now()
     currentProductId.value = productId
-  } catch (err) {
+  } catch {
     // Silent fail - بازدید ثبت نشد ولی مشکلی ایجاد نمی‌کنیم
   }
 }
@@ -286,7 +289,7 @@ const updateViewDuration = async () => {
       credentials: 'include',
       onResponseError: () => {}
     })
-  } catch (err) {
+  } catch {
     // Silent fail
   }
 }
@@ -361,7 +364,7 @@ const addToCart = async () => {
     } else {
       showToast(result?.message || 'خطا در افزودن به سبد خرید', 'error')
     }
-  } catch (e) { showToast('خطا در افزودن به سبد خرید', 'error') }
+  } catch { showToast('خطا در افزودن به سبد خرید', 'error') }
 }
 </script>
 

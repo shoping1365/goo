@@ -10,7 +10,6 @@
         <div class="flex items-center space-x-4 space-x-reverse">
           <!-- دکمه کنترل مانیتورینگ -->
           <button 
-            @click="toggleMonitoring"
             :disabled="isToggling"
             :class="[
               'inline-flex items-center px-4 py-2 border text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50',
@@ -18,6 +17,7 @@
                 ? 'border-red-300 text-red-700 bg-red-50 hover:bg-red-100 focus:ring-red-500' 
                 : 'border-green-300 text-green-700 bg-green-50 hover:bg-green-100 focus:ring-green-500'
             ]"
+            @click="toggleMonitoring"
           >
             <svg v-if="isToggling" class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -31,9 +31,9 @@
           </button>
           
           <button 
-            @click="refreshData"
             :disabled="isRefreshing"
             class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+            @click="refreshData"
           >
             <svg v-if="isRefreshing" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -362,7 +362,7 @@ definePageMeta({
 const isRefreshing = ref(false)
 const responseTimeChart = ref(null)
 const messagesChart = ref(null)
-let chartInstances = {
+const chartInstances = {
   responseTime: null,
   messages: null
 }

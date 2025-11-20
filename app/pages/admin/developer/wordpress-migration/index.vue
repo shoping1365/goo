@@ -8,8 +8,8 @@
           <p class="text-gray-600">انتقال کامل محصولات، سفارشات و کاربران از سایت وردپرس</p>
         </div>
         <button 
-          @click="refreshPage"
           class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors duration-200 flex items-center gap-2"
+          @click="refreshPage"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -72,9 +72,9 @@
 
       <div class="mt-4">
         <button 
-          @click="testConnection"
           :disabled="isTesting"
           class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+          @click="testConnection"
         >
           {{ isTesting ? 'در حال تست...' : 'تست اتصال' }}
         </button>
@@ -235,9 +235,9 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div v-for="setting in selectedItemSettings.settings" :key="setting.key" class="flex items-center">
           <input 
+            :id="setting.key" 
             v-model="migrationOptions[setting.key]" 
-            type="checkbox" 
-            :id="setting.key"
+            type="checkbox"
             class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
           />
           <label :for="setting.key" class="ml-3 text-sm font-medium text-gray-700">
@@ -286,9 +286,9 @@
               dir="ltr"
             />
             <button 
-              @click="extractMetaFromWordPress"
               :disabled="isExtractingMeta || !metaExtractionUrl.trim()"
               class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              @click="extractMetaFromWordPress"
             >
               {{ isExtractingMeta ? 'در حال استخراج...' : 'استخراج متا' }}
             </button>
@@ -386,14 +386,14 @@
           
           <div class="mt-4 flex gap-2">
             <button 
-              @click="applyExtractedMetaToMigration"
               class="bg-green-600 text-white px-3 py-2 rounded-md hover:bg-green-700 text-sm"
+              @click="applyExtractedMetaToMigration"
             >
               اعمال به تنظیمات انتقال
             </button>
             <button 
-              @click="clearExtractedMeta"
               class="bg-gray-600 text-white px-3 py-2 rounded-md hover:bg-gray-700 text-sm"
+              @click="clearExtractedMeta"
             >
               پاک کردن
             </button>
@@ -407,9 +407,9 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="flex items-center">
             <input 
+              id="extractFromYoast" 
               v-model="metaExtractionOptions.extractFromYoast" 
-              type="checkbox" 
-              id="extractFromYoast"
+              type="checkbox"
               class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
             />
             <label for="extractFromYoast" class="ml-3 text-sm font-medium text-gray-700">
@@ -419,9 +419,9 @@
           
           <div class="flex items-center">
             <input 
+              id="extractFromRankMath" 
               v-model="metaExtractionOptions.extractFromRankMath" 
-              type="checkbox" 
-              id="extractFromRankMath"
+              type="checkbox"
               class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
             />
             <label for="extractFromRankMath" class="ml-3 text-sm font-medium text-gray-700">
@@ -431,9 +431,9 @@
           
           <div class="flex items-center">
             <input 
+              id="extractFromOpenGraph" 
               v-model="metaExtractionOptions.extractFromOpenGraph" 
-              type="checkbox" 
-              id="extractFromOpenGraph"
+              type="checkbox"
               class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
             />
             <label for="extractFromOpenGraph" class="ml-3 text-sm font-medium text-gray-700">
@@ -443,9 +443,9 @@
           
           <div class="flex items-center">
             <input 
+              id="extractFromMetaTags" 
               v-model="metaExtractionOptions.extractFromMetaTags" 
-              type="checkbox" 
-              id="extractFromMetaTags"
+              type="checkbox"
               class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
             />
             <label for="extractFromMetaTags" class="ml-3 text-sm font-medium text-gray-700">
@@ -466,16 +466,16 @@
         
         <div class="flex items-center space-x-2 space-x-reverse">
           <button 
-            @click="startMigration"
             :disabled="!canStartMigration || isMigrating"
             class="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700 disabled:opacity-50 font-medium"
+            @click="startMigration"
           >
             {{ isMigrating ? 'در حال انتقال...' : 'شروع انتقال' }}
           </button>
           <button 
             v-if="isMigrating && migrationProgress.isActive"
-            @click="abortMigration"
             class="bg-red-600 text-white px-4 py-3 rounded-md hover:bg-red-700 font-medium"
+            @click="abortMigration"
           >
             توقف انتقال
           </button>
@@ -494,7 +494,8 @@
         </div>
         <div class="flex items-center space-x-2 space-x-reverse">
           <div class="flex items-center">
-            <div :class="[
+            <div
+:class="[
               'w-3 h-3 rounded-full mr-2',
               migrationProgress.isActive ? 'bg-green-500 animate-pulse' : 'bg-gray-400'
             ]"></div>
@@ -510,27 +511,31 @@
         <!-- وضعیت کلی -->
         <div class="bg-gray-50 p-6 rounded-lg">
           <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-4">
-            <div class="text-center cursor-pointer hover:bg-green-50 p-2 rounded transition-colors" 
-                 @click="showProductList('success')"
-                 :class="{ 'bg-green-100': selectedFilter === 'success' }">
+            <div
+class="text-center cursor-pointer hover:bg-green-50 p-2 rounded transition-colors" 
+                 :class="{ 'bg-green-100': selectedFilter === 'success' }"
+                 @click="showProductList('success')">
               <div class="text-2xl font-bold text-green-600">{{ migrationStats.success }}</div>
               <div class="text-sm text-green-700">موفق</div>
             </div>
-            <div class="text-center cursor-pointer hover:bg-red-50 p-2 rounded transition-colors" 
-                 @click="showProductList('failed')"
-                 :class="{ 'bg-red-100': selectedFilter === 'failed' }">
+            <div
+class="text-center cursor-pointer hover:bg-red-50 p-2 rounded transition-colors" 
+                 :class="{ 'bg-red-100': selectedFilter === 'failed' }"
+                 @click="showProductList('failed')">
               <div class="text-2xl font-bold text-red-600">{{ migrationStats.failed }}</div>
               <div class="text-sm text-red-700">ناموفق</div>
             </div>
-            <div class="text-center cursor-pointer hover:bg-yellow-50 p-2 rounded transition-colors" 
-                 @click="showProductList('skipped')"
-                 :class="{ 'bg-yellow-100': selectedFilter === 'skipped' }">
+            <div
+class="text-center cursor-pointer hover:bg-yellow-50 p-2 rounded transition-colors" 
+                 :class="{ 'bg-yellow-100': selectedFilter === 'skipped' }"
+                 @click="showProductList('skipped')">
               <div class="text-2xl font-bold text-yellow-600">{{ migrationStats.skipped }}</div>
               <div class="text-sm text-yellow-700">رد شده</div>
             </div>
-            <div class="text-center cursor-pointer hover:bg-blue-50 p-2 rounded transition-colors" 
-                 @click="showProductList('all')"
-                 :class="{ 'bg-blue-100': selectedFilter === 'all' }">
+            <div
+class="text-center cursor-pointer hover:bg-blue-50 p-2 rounded transition-colors" 
+                 :class="{ 'bg-blue-100': selectedFilter === 'all' }"
+                 @click="showProductList('all')">
               <div class="text-2xl font-bold text-blue-600">{{ migrationStats.total }}</div>
               <div class="text-sm text-blue-700">کل</div>
             </div>
@@ -543,7 +548,8 @@
               <span>{{ Math.round(getAccurateProgress()) }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-3">
-              <div class="bg-gradient-to-r from-blue-500 to-green-500 h-3 rounded-full transition-all duration-500" 
+              <div
+class="bg-gradient-to-r from-blue-500 to-green-500 h-3 rounded-full transition-all duration-500" 
                    :style="{ width: Math.round(getAccurateProgress()) + '%' }">
               </div>
             </div>
@@ -556,15 +562,17 @@
             <h3 class="text-lg font-semibold">
               {{ getFilterTitle() }} ({{ filteredProducts.length }})
             </h3>
-            <button @click="selectedFilter = null" 
-                    class="text-gray-500 hover:text-gray-700 text-sm">
+            <button
+class="text-gray-500 hover:text-gray-700 text-sm" 
+                    @click="selectedFilter = null">
               ✕ بستن
             </button>
           </div>
           
           <div class="max-h-96 overflow-y-auto">
             <div class="space-y-2">
-              <div v-for="(product, index) in filteredProducts" 
+              <div
+v-for="(product, index) in filteredProducts" 
                    :key="index"
                    class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <div class="flex-1">
@@ -572,11 +580,13 @@
                   <div class="text-sm text-gray-500">{{ product.timestamp }}</div>
                 </div>
                 <div class="flex items-center space-x-2">
-                  <span :class="getStatusBadgeClass(product.status)" 
+                  <span
+:class="getStatusBadgeClass(product.status)" 
                         class="px-2 py-1 rounded-full text-xs font-medium">
                     {{ getStatusText(product.status) }}
                   </span>
-                  <span v-if="product.error" 
+                  <span
+v-if="product.error" 
                         class="text-red-500 text-xs max-w-xs truncate" 
                         :title="product.error">
                     {{ product.error }}
@@ -591,7 +601,8 @@
         <div v-if="Object.keys(migrationStages).length > 0" class="space-y-3">
           <h4 class="font-medium text-gray-900">وضعیت مراحل:</h4>
           <div class="space-y-2">
-            <div v-for="(stage, name) in migrationStages" :key="name" 
+            <div
+v-for="(stage, name) in migrationStages" :key="name" 
                  class="flex items-center justify-between p-3 rounded-lg border" 
                  :class="getStageClass(stage.status)">
               <div class="flex items-center">
@@ -629,7 +640,7 @@
         <div class="bg-gray-50 p-6 rounded-md max-h-96 overflow-y-auto">
           <div class="text-sm font-medium text-gray-700 mb-2 flex items-center justify-between">
             <span>لاگ‌های زنده</span>
-            <button @click="clearLogs" class="text-red-600 hover:text-red-700 text-xs">پاک کردن</button>
+            <button class="text-red-600 hover:text-red-700 text-xs" @click="clearLogs">پاک کردن</button>
           </div>
           <div class="space-y-2">
             <div v-for="(log, index) in migrationLogs" :key="index" class="text-xs p-2 rounded" :class="getLogClass(log.type)">
@@ -1258,8 +1269,8 @@ const startMigration = async () => {
 
   // شروع polling برای لاگ‌های زنده
   console.log('🚀 شروع polling لاگ‌ها...')
-  let lastLogCount = 0
-  let pollingAttempts = 0
+  const lastLogCount = 0
+  const pollingAttempts = 0
   
   
   // شروع polling با تابع جداگانه

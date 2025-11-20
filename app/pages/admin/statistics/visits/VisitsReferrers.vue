@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { h } from 'vue'
+import { h } from 'vue';
 
 interface Referrer {
   source: string
@@ -41,9 +41,7 @@ interface Referrer {
   percentage: number
 }
 
-const props = defineProps<{
-  referrers: Referrer[]
-}>()
+defineProps<{ referrers: Referrer[] }>()
 
 const getSourceIcon = (source: string) => {
   const icons = {
@@ -84,4 +82,4 @@ const getProgressClass = (source: string) => {
   }
   return classes[source] || 'bg-gray-400'
 }
-</script> 
+</script>

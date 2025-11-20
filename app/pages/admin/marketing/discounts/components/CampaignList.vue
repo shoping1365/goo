@@ -5,7 +5,7 @@
         <h2 class="text-lg font-semibold text-gray-900">مدیریت کمپین‌ها</h2>
         <p class="text-gray-600 mt-1">ایجاد و مدیریت کمپین‌های تخفیف</p>
       </div>
-      <button @click="$emit('show-form', null)" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+      <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="$emit('show-form', null)">
         <span class="i-heroicons-plus ml-2"></span>
         افزودن کمپین جدید
       </button>
@@ -37,8 +37,8 @@
               <span :class="['px-2 py-1 rounded-full text-xs', getStatusClass(campaign.status)]">{{ getStatusText(campaign.status) }}</span>
             </td>
             <td class="py-2 px-3 flex gap-2">
-              <button @click="$emit('show-form', campaign)" class="text-blue-600 hover:text-blue-900">ویرایش</button>
-              <button @click="deleteCampaign(campaign.id)" class="text-red-600 hover:text-red-900">حذف</button>
+              <button class="text-blue-600 hover:text-blue-900" @click="$emit('show-form', campaign)">ویرایش</button>
+              <button class="text-red-600 hover:text-red-900" @click="deleteCampaign(campaign.id)">حذف</button>
             </td>
           </tr>
           <tr v-if="filteredCampaigns.length === 0">

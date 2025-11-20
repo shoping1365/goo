@@ -21,7 +21,7 @@ export const useSafeError = () => {
     isRetryable: safeIsRetryable,
 
     // تابع wrapper برای try-catch blocks
-    async handle<T>(promise: Promise<T>, context?: string): Promise<{ data: T | null; error: any }> {
+    async handle<T>(promise: Promise<T>, context?: string): Promise<{ data: T | null; error: unknown }> {
       try {
         const data = await promise
         return { data, error: null }
@@ -32,7 +32,7 @@ export const useSafeError = () => {
     },
 
     // تابع wrapper برای API calls
-    async apiCall<T>(apiFunction: () => Promise<T>, context?: string): Promise<{ data: T | null; error: any }> {
+    async apiCall<T>(apiFunction: () => Promise<T>, context?: string): Promise<{ data: T | null; error: unknown }> {
       try {
         const data = await apiFunction()
         return { data, error: null }
@@ -44,8 +44,9 @@ export const useSafeError = () => {
         safeLogError(error, context)
 
         // نمایش خطا به کاربر (اگر toast در دسترس باشد)
-        if (typeof window !== 'undefined' && (window as any).$toast) {
-          (window as any).$toast.error(message, {
+        const win = typeof window !== 'undefined' ? (window as unknown as { $toast?: { error: (msg: string, opts?: any) => void } }) : null
+        if (win && win.$toast) {
+          win.$toast.error(message, {
             duration: 5000
           })
         }

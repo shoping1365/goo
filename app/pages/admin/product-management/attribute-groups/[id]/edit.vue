@@ -10,21 +10,21 @@
           </div>
           <div class="flex items-center gap-x-4">
             <button
-              @click="saveAndContinue"
               class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-sm font-medium rounded-lg text-white shadow-lg"
+              @click="saveAndContinue"
             >
               ذخیره و ادامه ویرایش
             </button>
             <button
-              @click="saveAndExit"
               class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-green-700 text-sm font-medium rounded-lg text-white shadow-lg"
+              @click="saveAndExit"
             >
               ذخیره
             </button>
             <button
               v-if="isSaved"
-              @click="deleteGroup"
               class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-red-500 to-red-700 text-sm font-medium rounded-lg text-white shadow-lg"
+              @click="deleteGroup"
             >
               حذف
             </button>
@@ -64,8 +64,8 @@
             </div>
           </div>
       <button 
-        @click="$router.push('/admin/attribute-groups')"
-            class="inline-flex items-center px-3 py-1.5 border border-blue-300 text-xs font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100 shadow-sm"
+        class="inline-flex items-center px-3 py-1.5 border border-blue-300 text-xs font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100 shadow-sm"
+            @click="$router.push('/admin/attribute-groups')"
           >
             🔙 بازگشت به لیست گروه ویژگی ها
           </button>
@@ -87,8 +87,8 @@
 
             <div class="flex items-center space-x-2 space-x-reverse">
               <button
-                @click="addNewAttribute"
                 class="inline-flex items-center px-3 py-1.5 border border-purple-300 text-xs font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 shadow-sm"
+                @click="addNewAttribute"
               >
                 افزودن ویژگی به لیست
               </button>
@@ -198,16 +198,16 @@
                     <td class="px-3 py-3 whitespace-nowrap text-center">
                       <div class="flex items-center justify-center space-x-4 space-x-reverse">
                         <button
-                          @click="saveAttribute"
                           class="inline-flex items-center p-1.5 border border-transparent text-xs font-medium rounded text-green-700 bg-green-100 hover:bg-green-200 transition-colors"
                           title="ذخیره"
+                          @click="saveAttribute"
                         >
                           ✓
                         </button>
                         <button
-                          @click="cancelEdit"
                           class="inline-flex items-center p-1.5 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 hover:bg-red-200 transition-colors"
                           title="انصراف"
+                          @click="cancelEdit"
                         >
                           ✗
                         </button>
@@ -267,16 +267,16 @@
                     <td class="px-3 py-3 whitespace-nowrap text-center">
                       <div class="flex items-center justify-center space-x-4 space-x-reverse">
                         <button
-                          @click="editAttribute(attribute)"
                           class="inline-flex items-center p-1.5 border border-transparent text-xs font-medium rounded text-amber-700 bg-amber-100 hover:bg-amber-200 transition-colors"
                           title="ویرایش"
+                          @click="editAttribute(attribute)"
                         >
                           ✏️
                         </button>
                         <button
-                          @click="deleteAttribute(attribute.id)"
                           class="inline-flex items-center p-1.5 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 hover:bg-red-200 transition-colors"
                           title="حذف"
+                          @click="deleteAttribute(attribute.id)"
                         >
                           ✗
                         </button>
@@ -295,9 +295,9 @@
           :total-pages="totalPages"
           :total="attributes.length"
           :per-page="itemsPerPage"
+          class="bg-gray-50 border-t border-gray-200"
           @page-changed="goToPage"
           @per-page-changed="handlePerPageChange"
-          class="bg-gray-50 border-t border-gray-200"
         />
       </div>
     </div>
@@ -312,10 +312,11 @@
         <div class="p-6 flex-1 overflow-y-auto">
           <!-- list of attributes -->
           <ul class="mb-3 space-y-1 max-h-64 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-            <li v-for="attr in filteredModalAttributes" :key="attr.id"
-                @dblclick="addAttributeById(attr.id)"
+            <li
+v-for="attr in filteredModalAttributes" :key="attr.id"
                 class="cursor-pointer text-xs px-2 py-1 rounded hover:bg-blue-50 border border-transparent hover:border-blue-200"
-                :class="{'bg-gray-200': isAlreadySelected(attr)}">
+                :class="{'bg-gray-200': isAlreadySelected(attr)}"
+                @dblclick="addAttributeById(attr.id)">
               {{ attr.name }}
             </li>
           </ul>
@@ -324,10 +325,10 @@
         </div>
         <!-- footer -->
         <div class="px-4 py-2 bg-red-50 border-t border-red-100 rounded-b-lg flex justify-between">
-          <button @click="promptNewAttribute" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-green-700 text-sm font-medium rounded-lg text-white shadow-lg">
+          <button class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-green-700 text-sm font-medium rounded-lg text-white shadow-lg" @click="promptNewAttribute">
             ایجاد ویژگی
           </button>
-          <button @click="closeModal" :class="finishButtonClass" class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white shadow-lg">
+          <button :class="finishButtonClass" class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white shadow-lg" @click="closeModal">
             {{ finishButtonLabel }}
           </button>
         </div>

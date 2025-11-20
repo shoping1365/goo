@@ -11,10 +11,10 @@
           <div class="flex space-x-2 space-x-reverse">
             <NuxtLink v-if="hasPermission('brand.create')" to="/admin/product-management/brands/new">
               <TemplateButton
-                bgGradient="bg-gradient-to-r from-blue-400 to-blue-600"
-                textColor="text-white"
-                hoverClass="hover:from-blue-500 hover:to-blue-700 hover:shadow-lg hover:scale-105"
-                focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                bg-gradient="bg-gradient-to-r from-blue-400 to-blue-600"
+                text-color="text-white"
+                hover-class="hover:from-blue-500 hover:to-blue-700 hover:shadow-lg hover:scale-105"
+                focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 size="medium"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-2">
@@ -24,10 +24,10 @@
               </TemplateButton>
             </NuxtLink>
             <TemplateButton
-              bgGradient="bg-gradient-to-r from-green-400 to-green-600"
-              textColor="text-white"
-              hoverClass="hover:from-green-500 hover:to-green-700 hover:shadow-lg hover:scale-105"
-              focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              bg-gradient="bg-gradient-to-r from-green-400 to-green-600"
+              text-color="text-white"
+              hover-class="hover:from-green-500 hover:to-green-700 hover:shadow-lg hover:scale-105"
+              focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
               size="medium"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -36,10 +36,10 @@
               خروجی Excel
             </TemplateButton>
             <TemplateButton
-              bgGradient="bg-gradient-to-r from-gray-200 to-gray-400"
-              textColor="text-gray-800"
-              hoverClass="hover:from-gray-300 hover:to-gray-500 hover:shadow-lg hover:scale-105"
-              focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+              bg-gradient="bg-gradient-to-r from-gray-200 to-gray-400"
+              text-color="text-gray-800"
+              hover-class="hover:from-gray-300 hover:to-gray-500 hover:shadow-lg hover:scale-105"
+              focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
               size="medium"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-2">
@@ -118,7 +118,7 @@
         <div class="p-6">
       <div class="flex items-center gap-6">
         <div class="flex-1">
-              <input v-model="searchTerm" type="text" id="brand-name" class="w-full rounded-lg border border-gray-200 shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 py-3 px-6 text-gray-800 text-base transition-all duration-200" placeholder="نام برند یا نام رسمی را وارد کنید...">
+              <input id="brand-name" v-model="searchTerm" type="text" class="w-full rounded-lg border border-gray-200 shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 py-3 px-6 text-gray-800 text-base transition-all duration-200" placeholder="نام برند یا نام رسمی را وارد کنید...">
             </div>
           </div>
         </div>
@@ -179,31 +179,31 @@
                   </div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                  <span v-if="editingOrderId !== brand.id" @click="startEditOrder(brand)" class="cursor-pointer hover:underline bg-gray-100 px-2 py-1 rounded text-xs">{{ brand.order || 0 }}</span>
-                  <input v-else v-model="editingOrderValue" type="number" min="1" :max="filteredBrands.length" class="w-16 border rounded px-1 py-0.5 text-center text-xs ltr:text-left" @blur="finishEditOrder(brand)" @keyup="handleOrderInputKey($event, brand)" dir="ltr" autofocus />
+                  <span v-if="editingOrderId !== brand.id" class="cursor-pointer hover:underline bg-gray-100 px-2 py-1 rounded text-xs" @click="startEditOrder(brand)">{{ brand.order || 0 }}</span>
+                  <input v-else v-model="editingOrderValue" type="number" min="1" :max="filteredBrands.length" class="w-16 border rounded px-1 py-0.5 text-center text-xs ltr:text-left" dir="ltr" autofocus @blur="finishEditOrder(brand)" @keyup="handleOrderInputKey($event, brand)" />
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right">{{ brand.official_name || '-' }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
               <div class="flex items-center justify-center gap-2">
                 <NuxtLink v-if="hasPermission('brand.update')" :to="`/admin/product-management/brands/${brand.id}/edit`">
                   <TemplateButton
-                    textColor="text-blue-600"
-                    bgGradient="bg-blue-50"
-                    hoverClass="hover:bg-blue-100"
+                    text-color="text-blue-600"
+                    bg-gradient="bg-blue-50"
+                    hover-class="hover:bg-blue-100"
                     size="small"
-                    :borderColor="'border-0'"
+                    :border-color="'border-0'"
                   >
                     ویرایش
                   </TemplateButton>
                 </NuxtLink>
                 <TemplateButton
                   v-if="hasPermission('brand.delete')"
-                  @click="deleteBrand(brand)"
-                  textColor="text-red-600"
-                  bgGradient="bg-red-50"
-                  hoverClass="hover:bg-red-100"
+                  text-color="text-red-600"
+                  bg-gradient="bg-red-50"
+                  hover-class="hover:bg-red-100"
                   size="small"
-                  :borderColor="'border-0'"
+                  :border-color="'border-0'"
+                  @click="deleteBrand(brand)"
                 >
                   حذف
                 </TemplateButton>
@@ -224,7 +224,7 @@ declare const definePageMeta: (meta: { layout?: string; middleware?: string | st
 
 <script setup lang="ts">
 import TemplateButton from '@/components/common/TemplateButton.vue';
-import { computed, onActivated, onMounted, provide, ref } from 'vue';
+import { computed, onActivated, onMounted, ref } from 'vue';
 
 // Permission check (simple implementation without useAuth)
 const hasPermission = (permission: string) => true

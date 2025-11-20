@@ -6,7 +6,7 @@
         :class="['settings-menu-item', { active: activeKey.startsWith(item.key) }]"
         @click="handleMenuClick(item)"
       >
-        <span :class="item.icon + ' ml-2'" v-if="item.icon"></span>
+        <span v-if="item.icon" :class="item.icon + ' ml-2'"></span>
         {{ item.title }}
         <span class="mr-auto text-xs">
           {{ expanded[item.key] ? '▾' : '▸' }}
@@ -16,11 +16,12 @@
       <!-- Children (render if any) -->
       <transition name="fade">
         <div v-if="expanded[item.key] && item.children.length" class="pr-4 border-r border-gray-600">
-          <div v-for="child in item.children" :key="child.key"
+          <div
+v-for="child in item.children" :key="child.key"
             :class="['settings-menu-item child', { active: activeKey === child.key }]"
-            @click.stop="activeKey = child.key"
+            @click.stop="emit('update:activeKey', child.key)"
           >
-            <span :class="child.icon + ' ml-2'" v-if="child.icon"></span>
+            <span v-if="child.icon" :class="child.icon + ' ml-2'"></span>
             {{ child.title }}
           </div>
         </div>
@@ -30,7 +31,7 @@
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   menu: {
     type: Array,
     required: true

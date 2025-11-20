@@ -19,20 +19,6 @@ const {
 } = useNotifyRequests()
 
 const config = useRuntimeConfig()
-
-// ذخیره تنظیمات در بک‌اند
-const persistSettings = async () => {
-  const base = config.public.goApiBase
-  const payload = [
-    { key: 'notify.stock.enabled', value: String(settings.value.autoNotifyStock), category: 'notify', type: 'boolean' },
-    { key: 'notify.discount.enabled', value: String(settings.value.autoNotifyDiscount), category: 'notify', type: 'boolean' },
-    { key: 'notify.daily_limit', value: String(settings.value.dailyLimit), category: 'notify', type: 'number' },
-    { key: 'notify.auto_delay_minutes', value: String(settings.value.autoNotifyDelay), category: 'notify', type: 'number' },
-    { key: 'notify.sms.provider', value: settings.value.smsProvider, category: 'notify', type: 'string' },
-    { key: 'notify.email.provider', value: settings.value.emailProvider, category: 'notify', type: 'string' }
-  ]
-  await $fetch(`${base}/api/admin/settings`, { method: 'PUT', body: payload })
-}
 </script>
 
 <template>
@@ -46,12 +32,12 @@ const persistSettings = async () => {
             <p class="text-sm text-gray-600 mt-1">پیکربندی و مدیریت تنظیمات</p>
           </div>
           <TemplateButton
-            @click="showSettings = true"
-            bgGradient="bg-gradient-to-r from-blue-400 to-blue-600"
-            textColor="text-white"
-            hoverClass="hover:from-blue-500 hover:to-blue-700 hover:shadow-lg hover:scale-105"
-            focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            bg-gradient="bg-gradient-to-r from-blue-400 to-blue-600"
+            text-color="text-white"
+            hover-class="hover:from-blue-500 hover:to-blue-700 hover:shadow-lg hover:scale-105"
+            focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             size="medium"
+            @click="showSettings = true"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>

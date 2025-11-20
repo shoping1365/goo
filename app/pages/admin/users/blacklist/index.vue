@@ -80,7 +80,8 @@
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full" 
+                <span
+class="inline-flex px-2 py-1 text-xs font-semibold rounded-full" 
                       :class="getReasonClass(user.reason)">
                   {{ user.reason }}
                 </span>
@@ -92,7 +93,8 @@
                 {{ user.duration }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full" 
+                <span
+class="inline-flex px-2 py-1 text-xs font-semibold rounded-full" 
                       :class="getStatusClass(user.status)">
                   {{ user.status }}
                 </span>

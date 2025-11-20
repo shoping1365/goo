@@ -19,16 +19,16 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import SalesHeader from './SalesHeader.vue'
-import SalesSummaryCards from './SalesSummaryCards.vue'
-import SalesFilters from './SalesFilters.vue'
-import SalesChart from './SalesChart.vue'
-import SalesTopProducts from './SalesTopProducts.vue'
-import SalesRevenueTrends from './SalesRevenueTrends.vue'
-import SalesCustomerSegments from './SalesCustomerSegments.vue'
-import SalesTable from './SalesTable.vue'
-import SalesExport from './SalesExport.vue'
 import SalesAdvancedAnalytics from './SalesAdvancedAnalytics.vue'
+import SalesChart from './SalesChart.vue'
+import SalesCustomerSegments from './SalesCustomerSegments.vue'
+import SalesExport from './SalesExport.vue'
+import SalesFilters from './SalesFilters.vue'
+import SalesHeader from './SalesHeader.vue'
+import SalesRevenueTrends from './SalesRevenueTrends.vue'
+import SalesSummaryCards from './SalesSummaryCards.vue'
+import SalesTable from './SalesTable.vue'
+import SalesTopProducts from './SalesTopProducts.vue'
 
 // Sample/fake data for UI demo
 const stats = ref({
@@ -44,11 +44,11 @@ const chartData = ref([])
 const topProducts = ref([])
 const revenueTrends = ref([])
 const customerSegments = ref([])
-const sales = ref([])
+// const sales = ref([])
 const filteredSales = ref([])
 const advancedAnalytics = ref({})
 
-const onFilter = (filters: any) => {
+const onFilter = (_filters: unknown) => {
   // TODO: filter sales based on filters
 }
 </script>

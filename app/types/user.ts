@@ -1,0 +1,33 @@
+export interface User {
+  id: number | string;
+  ID?: number | string;
+  name: string;
+  fullName?: string;
+  username?: string;
+  email?: string;
+  mobile?: string;
+  phone?: string;
+  mobileNumber?: string;
+  mobile_number?: string;
+  landline?: string;
+  landlineNumber?: string;
+  landline_number?: string;
+  nationalCode?: string;
+  national_code?: string;
+  selectedAddress?: string;
+  selected_address?: string;
+  registered?: string;
+  registeredAt?: string;
+  registered_at?: string;
+  lastSeen?: string;
+  last_seen?: string;
+  lastSeenAt?: string;
+  last_seen_at?: string;
+  online?: boolean;
+  role?: string;
+  role_name?: string;
+  roleName?: string;
+  roles?: string[];
+  status?: string;
+  twofa?: boolean;
+}

@@ -3,7 +3,7 @@
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">
       <div class="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl border border-blue-200 p-6 animate-fade-in" dir="rtl">
         <!-- Close -->
-        <button @click="$emit('close')" class="absolute left-4 top-6 text-gray-400 hover:text-red-500 text-2xl focus:outline-none">×</button>
+        <button class="absolute left-4 top-6 text-gray-400 hover:text-red-500 text-2xl focus:outline-none" @click="$emit('close')">×</button>
         <!-- Title -->
         <h3 class="text-xl font-extrabold text-gray-800 mb-4 text-center">مدیریت واحدهای اندازه‌گیری</h3>
         <hr class="mb-4 border-blue-100"/>
@@ -24,8 +24,8 @@
                 <td class="px-3 py-2 text-center">
                   <button 
                     v-if="canDeleteUnit"
-                    @click="remove(idx)" 
-                    class="text-red-600 hover:text-red-800 text-sm"
+                    class="text-red-600 hover:text-red-800 text-sm" 
+                    @click="remove(idx)"
                   >
                     ��️
                   </button>
@@ -33,12 +33,12 @@
               </tr>
             </tbody>
           </table>
-          <button @click="addRow" class="mt-3 inline-flex items-center px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-sm rounded shadow">➕ افزودن ردیف</button>
+          <button class="mt-3 inline-flex items-center px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-sm rounded shadow" @click="addRow">➕ افزودن ردیف</button>
         </div>
 
         <div class="mt-6 flex flex-row-reverse gap-3">
-          <button @click="save" class="inline-flex items-center px-6 py-2 rounded-lg text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 shadow-md font-bold">ذخیره</button>
-          <button @click="$emit('close')" class="inline-flex items-center px-6 py-2 rounded-lg text-gray-700 bg-gray-200 hover:bg-gray-300 shadow font-bold">انصراف</button>
+          <button class="inline-flex items-center px-6 py-2 rounded-lg text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 shadow-md font-bold" @click="save">ذخیره</button>
+          <button class="inline-flex items-center px-6 py-2 rounded-lg text-gray-700 bg-gray-200 hover:bg-gray-300 shadow font-bold" @click="$emit('close')">انصراف</button>
         </div>
       </div>
     </div>

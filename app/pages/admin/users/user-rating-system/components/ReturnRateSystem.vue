@@ -8,10 +8,10 @@
           <p class="mt-1 text-sm text-gray-500">پیگیری مرجوعات و امتیازدهی بر اساس الگوی بازگشت کاربران</p>
         </div>
         <div class="flex space-x-3 space-x-reverse">
-          <button @click="analyzeReturnPatterns" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+          <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors" @click="analyzeReturnPatterns">
             تحلیل الگوها
           </button>
-          <button @click="exportReturnReport" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">
+          <button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors" @click="exportReturnReport">
             خروجی گزارش
           </button>
         </div>
@@ -64,10 +64,10 @@
       </div>
       
       <div class="mt-4 flex space-x-3 space-x-reverse">
-        <button @click="saveReturnSettings" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+        <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors" @click="saveReturnSettings">
           ذخیره تنظیمات
         </button>
-        <button @click="testReturnSystem" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors">
+        <button class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors" @click="testReturnSystem">
           تست سیستم
         </button>
       </div>
@@ -212,9 +212,9 @@
                 {{ pattern.score }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button @click="viewReturnHistory(pattern)" class="text-blue-600 hover:text-blue-900 ml-3">تاریخچه</button>
-                <button @click="analyzeUserReturns(pattern)" class="text-green-600 hover:text-green-900 ml-3">تحلیل</button>
-                <button @click="flagUser(pattern)" class="text-red-600 hover:text-red-900">علامت‌گذاری</button>
+                <button class="text-blue-600 hover:text-blue-900 ml-3" @click="viewReturnHistory(pattern)">تاریخچه</button>
+                <button class="text-green-600 hover:text-green-900 ml-3" @click="analyzeUserReturns(pattern)">تحلیل</button>
+                <button class="text-red-600 hover:text-red-900" @click="flagUser(pattern)">علامت‌گذاری</button>
               </td>
             </tr>
           </tbody>
@@ -227,13 +227,13 @@
           <span class="text-sm text-gray-700">نمایش {{ pagination.start }} تا {{ pagination.end }} از {{ pagination.total }} الگو</span>
         </div>
         <div class="flex space-x-2 space-x-reverse">
-          <button @click="previousPage" :disabled="currentPage === 1" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50">
+          <button :disabled="currentPage === 1" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50" @click="previousPage">
             قبلی
           </button>
-          <button v-for="page in visiblePages" :key="page" @click="goToPage(page)" :class="page === currentPage ? 'bg-blue-600 text-white' : 'bg-white text-gray-700'" class="px-3 py-1 border border-gray-300 rounded-md text-sm">
+          <button v-for="page in visiblePages" :key="page" :class="page === currentPage ? 'bg-blue-600 text-white' : 'bg-white text-gray-700'" class="px-3 py-1 border border-gray-300 rounded-md text-sm" @click="goToPage(page)">
             {{ page }}
           </button>
-          <button @click="nextPage" :disabled="currentPage === totalPages" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50">
+          <button :disabled="currentPage === totalPages" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50" @click="nextPage">
             بعدی
           </button>
         </div>
@@ -267,10 +267,10 @@
             </div>
           </div>
           <div class="flex space-x-2 space-x-reverse">
-            <button @click="investigateUser(user)" class="bg-red-600 text-white px-3 py-1 rounded-md text-sm hover:bg-red-700">
+            <button class="bg-red-600 text-white px-3 py-1 rounded-md text-sm hover:bg-red-700" @click="investigateUser(user)">
               بررسی
             </button>
-            <button @click="viewUserDetails(user)" class="bg-gray-600 text-white px-3 py-1 rounded-md text-sm hover:bg-gray-700">
+            <button class="bg-gray-600 text-white px-3 py-1 rounded-md text-sm hover:bg-gray-700" @click="viewUserDetails(user)">
               مشاهده جزئیات
             </button>
           </div>
@@ -281,17 +281,39 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
+
+interface ReturnPattern {
+  id: number;
+  userName: string;
+  userEmail: string;
+  userAvatar: string;
+  totalPurchases: number;
+  totalReturns: number;
+  returnRate: number;
+  lastReturn: string;
+  status: string;
+  score: number;
+  [key: string]: unknown;
+}
+
+interface HighReturnUser {
+  id: number;
+  name: string;
+  email: string;
+  avatar: string;
+  returnRate: number;
+}
 
 // Props and Emits
 defineProps<{
-  users?: any[]
+  users?: ReturnPattern[]
 }>()
 
-defineEmits<{
-  saveSettings: [settings: any]
-  analyzePatterns: [users: any[]]
-  exportReport: [data: any]
+const emit = defineEmits<{
+  saveSettings: [settings: Record<string, unknown>]
+  analyzePatterns: [users: ReturnPattern[]]
+  exportReport: [data: Record<string, unknown>]
 }>()
 
 // Reactive data
@@ -315,7 +337,7 @@ const returnSettings = ref({
 })
 
 // Sample return patterns data
-const returnPatterns = ref([
+const returnPatterns = ref<ReturnPattern[]>([
   {
     id: 1,
     userName: 'علی احمدی',
@@ -355,7 +377,7 @@ const returnPatterns = ref([
 ])
 
 // Sample high return users
-const highReturnUsers = ref([
+const highReturnUsers = ref<HighReturnUser[]>([
   {
     id: 1,
     name: 'محمد رضایی',
@@ -485,47 +507,41 @@ const getStatusText = (status: string) => {
 }
 
 const saveReturnSettings = () => {
-  console.log('ذخیره تنظیمات نرخ بازگشت:', returnSettings.value)
   // API call to save return settings
+  emit('saveSettings', returnSettings.value)
 }
 
 const testReturnSystem = () => {
-  console.log('تست سیستم نرخ بازگشت')
   // Test return system functionality
 }
 
 const analyzeReturnPatterns = () => {
-  console.log('تحلیل الگوهای بازگشت')
   // Analyze return patterns for all users
+  emit('analyzePatterns', returnPatterns.value)
 }
 
 const exportReturnReport = () => {
-  console.log('خروجی گزارش نرخ بازگشت')
   // Export return report
+  emit('exportReport', { stats: stats.value, patterns: filteredPatterns.value })
 }
 
-const viewReturnHistory = (pattern: any) => {
-  console.log('مشاهده تاریخچه بازگشت:', pattern)
+const viewReturnHistory = (_pattern: ReturnPattern) => {
   // Open return history modal
 }
 
-const analyzeUserReturns = (pattern: any) => {
-  console.log('تحلیل بازگشت کاربر:', pattern)
+const analyzeUserReturns = (_pattern: ReturnPattern) => {
   // Analyze specific user returns
 }
 
-const flagUser = (pattern: any) => {
-  console.log('علامت‌گذاری کاربر:', pattern)
+const flagUser = (_pattern: ReturnPattern) => {
   // Flag user for investigation
 }
 
-const investigateUser = (user: any) => {
-  console.log('بررسی کاربر:', user)
+const investigateUser = (_user: HighReturnUser) => {
   // Investigate high return rate user
 }
 
-const viewUserDetails = (user: any) => {
-  console.log('مشاهده جزئیات کاربر:', user)
+const viewUserDetails = (_user: HighReturnUser) => {
   // View user details
 }
 
@@ -546,7 +562,5 @@ const goToPage = (page: number) => {
 }
 
 // Lifecycle
-onMounted(() => {
-  console.log('سیستم نرخ بازگشت کالا بارگذاری شد')
-})
+// onMounted removed as it only contained console.log
 </script> 

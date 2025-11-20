@@ -1,11 +1,11 @@
 <template>
   <button 
     v-if="hasPermission(permission)"
-    @click="$emit('click', $event)"
     :class="buttonClasses"
     :disabled="disabled"
     :type="type"
     :title="title"
+    @click="$emit('click', $event)"
   >
     <slot />
   </button>

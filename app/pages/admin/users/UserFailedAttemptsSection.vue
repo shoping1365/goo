@@ -21,8 +21,8 @@
       </div>
       <p class="text-red-600 text-sm">{{ error }}</p>
       <button
-        @click="fetchFailedAttempts"
         class="mt-2 px-3 py-1 bg-red-100 text-red-600 rounded text-sm hover:bg-red-200"
+        @click="fetchFailedAttempts"
       >
         تلاش مجدد
       </button>
@@ -86,14 +86,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import ViewAllModal from '~/components/admin/modals/ViewAllModal.vue';
+import type { User } from '~/types/user';
 
-const props = defineProps<{ user: any }>();
+interface FailedAttempt {
+  id: number;
+  date: string;
+  ip: string;
+  device: string;
+  browser: string;
+  failureReason: string;
+}
+
+const props = defineProps<{ user: User }>();
 const showAllAttempts = ref(false);
 
 // Real data for failed login attempts
-const failedAttempts = ref([]);
+const failedAttempts = ref<FailedAttempt[]>([]);
 const loading = ref(false);
 const error = ref('');
 
@@ -113,23 +123,23 @@ const fetchFailedAttempts = async () => {
         page: 1,
         limit: 100
       }
-    }) as any;
+    }) as { success: boolean; data: { failedAttempts: Record<string, unknown>[] } };
 
     if (response.success) {
-      failedAttempts.value = response.data.failedAttempts.map((attempt: any) => ({
-        id: attempt.id,
-        date: formatDateTime(attempt.createdAt),
-        ip: attempt.ipAddress,
-        device: attempt.deviceType,
-        browser: attempt.browser,
-        failureReason: attempt.failureReason
+      failedAttempts.value = response.data.failedAttempts.map((attempt) => ({
+        id: attempt.id as number,
+        date: formatDateTime(attempt.createdAt as string),
+        ip: attempt.ipAddress as string,
+        device: attempt.deviceType as string,
+        browser: attempt.browser as string,
+        failureReason: attempt.failureReason as string
       }));
     } else {
       error.value = 'خطا در دریافت داده‌ها';
     }
-  } catch (err: any) {
-    console.error('خطا در دریافت تلاش‌های ناموفق:', err);
-    error.value = err.data?.message || 'خطا در دریافت تلاش‌های ناموفق';
+  } catch (err: unknown) {
+    const e = err as { data?: { message?: string } };
+    error.value = e.data?.message || 'خطا در دریافت تلاش‌های ناموفق';
   } finally {
     loading.value = false;
   }

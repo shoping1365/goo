@@ -9,15 +9,15 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button 
-            @click="testNotification"
             class="px-4 py-2 bg-yellow-600 text-white text-sm font-medium rounded-lg hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
+            @click="testNotification"
           >
             تست اطلاع‌رسانی
           </button>
           <button 
-            @click="saveSettings"
             :disabled="isSaving"
             class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            @click="saveSettings"
           >
             <span v-if="isSaving">در حال ذخیره...</span>
             <span v-else>ذخیره تنظیمات</span>
@@ -102,42 +102,42 @@
       <div class="border-b border-gray-200">
         <nav class="-mb-px flex space-x-8 space-x-reverse px-6">
           <button
-            @click="activeTab = 'email'"
             :class="{
               'border-blue-500 text-blue-600': activeTab === 'email',
               'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'email'
             }"
             class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+            @click="activeTab = 'email'"
           >
             مدیریت ایمیل‌ها
           </button>
           <button
-            @click="activeTab = 'sms'"
             :class="{
               'border-blue-500 text-blue-600': activeTab === 'sms',
               'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'sms'
             }"
             class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+            @click="activeTab = 'sms'"
           >
             مدیریت پیامک‌ها
           </button>
           <button
-            @click="activeTab = 'templates'"
             :class="{
               'border-blue-500 text-blue-600': activeTab === 'templates',
               'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'templates'
             }"
             class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+            @click="activeTab = 'templates'"
           >
             قالب‌های پیام
           </button>
           <button
-            @click="activeTab = 'settings'"
             :class="{
               'border-blue-500 text-blue-600': activeTab === 'settings',
               'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'settings'
             }"
             class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+            @click="activeTab = 'settings'"
           >
             تنظیمات ارسال
           </button>
@@ -432,8 +432,8 @@
                   <div class="flex items-center justify-between mb-2">
                     <h4 class="text-sm font-medium text-gray-900">{{ template.name }}</h4>
                     <button 
-                      @click="editTemplate(template)"
                       class="text-blue-600 hover:text-blue-800 text-sm"
+                      @click="editTemplate(template)"
                     >
                       ویرایش
                     </button>
@@ -454,8 +454,8 @@
                   <div class="flex items-center justify-between mb-2">
                     <h4 class="text-sm font-medium text-gray-900">{{ template.name }}</h4>
                     <button 
-                      @click="editTemplate(template)"
                       class="text-blue-600 hover:text-blue-800 text-sm"
+                      @click="editTemplate(template)"
                     >
                       ویرایش
                     </button>

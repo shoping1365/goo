@@ -24,7 +24,7 @@
             <div v-if="settingsOpen" class="absolute left-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg p-3 z-10">
               <div class="text-sm font-bold mb-2">تنظیم آستانه آنلاین بودن (ثانیه)</div>
               <div class="flex items-center gap-2">
-                <input type="number" min="5" step="5" v-model.number="onlineThresholdSec" class="border border-gray-200 rounded px-2 py-1 w-24" />
+                <input v-model.number="onlineThresholdSec" type="number" min="5" step="5" class="border border-gray-200 rounded px-2 py-1 w-24" />
                 <button class="px-3 py-1 border border-gray-200 rounded bg-white hover:bg-gray-50" @click="saveThreshold">ذخیره</button>
               </div>
               <div class="text-xs text-gray-500 mt-2">مبنای محاسبه وضعیت آنلاین/آفلاین در لیست کاربران</div>
@@ -48,9 +48,9 @@
           <div>
             <button
               v-if="selectedUserIds.length > 0 && hasPermission('user.delete')"
-              @click="deleteSelectedUsers"
               class="px-6 py-2 rounded-xl font-bold text-red-700 bg-red-100 border border-red-100 hover:bg-red-200 transition-colors text-base flex items-center"
               style="box-shadow: 0 2px 12px 0 rgba(239, 68, 68, 0.10);"
+              @click="deleteSelectedUsers"
             >
               حذف کاربر
             </button>
@@ -60,7 +60,7 @@
       </div>
 
       <div class="bg-white rounded-xl shadow overflow-hidden">
-        <UserTable :users="pagedUsers" :filters="filters" @select-user="openUserDetail" @selectionChanged="selectedUserIds = $event" />
+        <UserTable :users="pagedUsers" :filters="filters" @select-user="openUserDetail" @selection-changed="selectedUserIds = $event" />
         <Pagination
           class="border-t"
           :current-page="currentPage"
@@ -226,7 +226,7 @@ function computeOnline(lastSeen: string | undefined | null, thresholdSec: number
 }
 
 // نرمال‌سازی تاریخ‌های برگشتی از بک‌اند (string | object(sql.NullTime) | number)
-function normalizeDate(input: any): string | null {
+function normalizeDate(input: unknown): string | null {
   if (!input) return null;
   try {
     // اگر رشته ISO است
@@ -240,13 +240,14 @@ function normalizeDate(input: any): string | null {
       return null;
     }
     // اگر شیء شبیه sql.NullTime باشد
-    if (typeof input === 'object') {
-      if (input.Time) {
-        const d = new Date(input.Time);
+    if (typeof input === 'object' && input !== null) {
+      const obj = input as { Time?: string; seconds?: number | string };
+      if (obj.Time) {
+        const d = new Date(obj.Time);
         return Number.isNaN(d.getTime()) ? null : d.toISOString();
       }
-      if (input.seconds) {
-        const d = new Date(Number(input.seconds) * 1000);
+      if (obj.seconds) {
+        const d = new Date(Number(obj.seconds) * 1000);
         return Number.isNaN(d.getTime()) ? null : d.toISOString();
       }
     }
@@ -278,8 +279,8 @@ function saveThreshold() {
 
 // بازمحاسبه وضعیت آنلاین برای کل لیست فعلی کاربران
 function recomputeOnlineStatuses() {
-  users.value = users.value.map((u: any) => {
-    const lastSeen = u.lastSeen || u.last_seen || u.lastSeenAt || u.last_seen_at;
+  users.value = users.value.map((u: User) => {
+    const lastSeen = u.lastSeen;
     return { ...u, online: computeOnline(lastSeen, onlineThresholdSec.value) };
   });
 }
@@ -287,8 +288,7 @@ function recomputeOnlineStatuses() {
 async function fetchUsers() {
   loading.value = true;
   try {
-    const response = await $fetch<User[]>('/api/users');
-    console.log('RAW users from backend:', response);
+    const response = await $fetch<Partial<User>[]>('/api/users');
     
     // Map users to ensure required fields exist
     users.value = response.map(u => {
@@ -315,7 +315,6 @@ async function fetchUsers() {
       } as User;
     });
     
-    console.log('users after mapping:', users.value);
   } catch (error) {
     console.error('Failed to fetch users:', error);
   } finally {

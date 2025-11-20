@@ -119,11 +119,11 @@
             <!-- گزینه‌های اصلی ارسال -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <label class="flex items-center gap-2">
-                <input type="checkbox" class="checkbox" id="isFreeShipping" />
+                <input id="isFreeShipping" type="checkbox" class="checkbox" />
                 <span class="text-xs text-gray-700 font-semibold">ارسال رایگان</span>
               </label>
               <label class="flex items-center gap-2">
-                <input type="checkbox" class="checkbox" id="isSeparateShipping" />
+                <input id="isSeparateShipping" type="checkbox" class="checkbox" />
                 <span class="text-xs text-gray-700 font-semibold">ارسال به صورت جداگانه</span>
               </label>
               <label class="flex items-center gap-2">

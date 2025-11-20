@@ -1,8 +1,20 @@
 // تعریف interface برای response های API
-interface ApiResponse<T = any> {
+interface ApiResponse<T = unknown> {
   data?: T
   success?: boolean
   message?: string
+}
+
+interface TrafficStats {
+  online_users: number
+  today_requests: number
+  suspicious_requests: number
+  blocked_attacks: number
+  hourly_traffic: unknown[]
+}
+
+interface OnlineUser {
+  [key: string]: unknown
 }
 
 export const useTrafficMonitoring = () => {
@@ -19,7 +31,7 @@ export const useTrafficMonitoring = () => {
         body: sessionData
       })
     } catch (error) {
-      console.error('خطا در به‌روزرسانی سشن:', error)
+      console.warn('خطا در به‌روزرسانی سشن:', error)
     }
   }
 
@@ -38,17 +50,17 @@ export const useTrafficMonitoring = () => {
         body: requestData
       })
     } catch (error) {
-      console.error('خطا در ثبت لاگ ترافیک:', error)
+      console.warn('خطا در ثبت لاگ ترافیک:', error)
     }
   }
 
   // دریافت آمار ترافیک
   const getTrafficStats = async () => {
     try {
-      const res = await $fetch<ApiResponse<any>>('/api/admin/traffic/stats')
+      const res = await $fetch<ApiResponse<TrafficStats>>('/api/admin/traffic/stats')
       return res.data
     } catch (error) {
-      console.error('خطا در دریافت آمار ترافیک:', error)
+      console.warn('خطا در دریافت آمار ترافیک:', error)
       return {
         online_users: 0,
         today_requests: 0,
@@ -62,10 +74,10 @@ export const useTrafficMonitoring = () => {
   // دریافت کاربران آنلاین
   const getOnlineUsers = async () => {
     try {
-      const res = await $fetch<ApiResponse<any[]>>('/api/admin/traffic/online-users')
+      const res = await $fetch<ApiResponse<OnlineUser[]>>('/api/admin/traffic/online-users')
       return res.data || []
     } catch (error) {
-      console.error('خطا در دریافت کاربران آنلاین:', error)
+      console.warn('خطا در دریافت کاربران آنلاین:', error)
       return []
     }
   }
@@ -83,7 +95,7 @@ export const useTrafficMonitoring = () => {
       })
       return response
     } catch (error) {
-      console.error('خطا در مسدود کردن IP:', error)
+      console.warn('خطا در مسدود کردن IP:', error)
       throw error
     }
   }
@@ -96,7 +108,7 @@ export const useTrafficMonitoring = () => {
       })
       return response
     } catch (error) {
-      console.error('خطا در آزاد کردن IP:', error)
+      console.warn('خطا در آزاد کردن IP:', error)
       throw error
     }
   }

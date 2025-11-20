@@ -28,14 +28,14 @@
          <div class="bg-white rounded-t-lg shadow p-6 flex items-center justify-between">
            <!-- Tabs - Moved to the right -->
            <nav class="-mb-px flex gap-6 space-x-reverse" aria-label="Tabs">
-             <a href="#" @click.prevent="selectTab('info')" :class="[activeTab === 'info' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']">اطلاعات دسته</a>
-             <a href="#" @click.prevent="selectTab('display')" :class="[activeTab === 'display' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']">تنظیمات نمایش</a>
-             <a href="#" @click.prevent="selectTab('seo')" :class="[activeTab === 'seo' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']">سئو</a>
-             <a href="#" @click.prevent="selectTab('products')" :class="[activeTab === 'products' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']">محصولات</a>
-             <a href="#" @click.prevent="selectTab('images')" :class="[activeTab === 'images' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']">بنر دسته بندی</a>
-             <a href="#" @click.prevent="selectTab('message')" :class="[activeTab === 'message' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']">پیغام دسته بندی</a>
-             <a href="#" @click.prevent="selectTab('faq')" :class="[activeTab === 'faq' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']">سوالات متداول</a>
-             <a href="#" @click.prevent="selectTab('video')" :class="[activeTab === 'video' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']">ویدیو</a>
+             <a href="#" :class="[activeTab === 'info' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']" @click.prevent="selectTab('info')">اطلاعات دسته</a>
+             <a href="#" :class="[activeTab === 'display' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']" @click.prevent="selectTab('display')">تنظیمات نمایش</a>
+             <a href="#" :class="[activeTab === 'seo' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']" @click.prevent="selectTab('seo')">سئو</a>
+             <a href="#" :class="[activeTab === 'products' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']" @click.prevent="selectTab('products')">محصولات</a>
+             <a href="#" :class="[activeTab === 'images' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']" @click.prevent="selectTab('images')">بنر دسته بندی</a>
+             <a href="#" :class="[activeTab === 'message' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']" @click.prevent="selectTab('message')">پیغام دسته بندی</a>
+             <a href="#" :class="[activeTab === 'faq' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']" @click.prevent="selectTab('faq')">سوالات متداول</a>
+             <a href="#" :class="[activeTab === 'video' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300', 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm']" @click.prevent="selectTab('video')">ویدیو</a>
              <!-- Add other tabs as needed -->
            </nav>
            <!-- Back link - Moved to the left -->
@@ -81,7 +81,7 @@
              <!-- Name Field -->
              <div class="mb-8">
                <label for="category-name" class="block text-sm font-medium text-gray-700 mb-1">نام</label>
-               <input type="text" id="category-name" v-model="page.name" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-gray-50 p-2">
+               <input id="category-name" v-model="page.name" type="text" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-gray-50 p-2">
              </div>
 
              <!-- Description Field (Rich Text Editor Placeholder) -->
@@ -121,7 +121,7 @@
                  </div>
 
                  <!-- Hidden native input -->
-                 <input type="file" id="category-image-upload" @change="handleFileChange" class="hidden"/>
+                 <input id="category-image-upload" type="file" class="hidden" @change="handleFileChange"/>
                </div>
              </div>
            </div>
@@ -165,7 +165,7 @@
                <!-- Product Count Per Page -->
                <div class="flex items-center justify-start">
                  <label for="product-count-per-page" class="block text-sm font-medium text-gray-700 ml-2">تعداد محصول در هر صفحه دسته بندی</label>
-                 <input type="text" id="product-count-per-page" v-model="productCountPerPage" placeholder="20" class="w-24 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-gray-50 p-2 text-sm focus:outline-none">
+                 <input id="product-count-per-page" v-model="productCountPerPage" type="text" placeholder="20" class="w-24 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 bg-gray-50 p-2 text-sm focus:outline-none">
                </div>
              </div>
 
@@ -213,7 +213,7 @@
                    </tr>
 
                    <!-- Product Rows -->
-                   <tr v-else v-for="product in products" :key="product.id">
+                   <tr v-for="product in products" v-else :key="product.id">
                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                        <img :src="getProductThumbnail(product)" alt="تصویر محصول" class="w-12 h-12 object-cover rounded" />
                      </td>
@@ -232,7 +232,7 @@
                         <NuxtLink :to="`/admin/product-management/products/edit?id=${product.id}`" class="text-indigo-600 hover:text-indigo-900">ویرایش</NuxtLink>
                       </td>
                      <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                       <button @click="removeProduct(product.id)" class="text-red-600 hover:text-red-900">حذف</button>
+                       <button class="text-red-600 hover:text-red-900" @click="removeProduct(product.id)">حذف</button>
                      </td>
                    </tr>
                  </tbody>

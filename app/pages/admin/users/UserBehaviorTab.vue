@@ -8,5 +8,7 @@
   </div>
 </template>
 <script setup lang="ts">
-defineProps<{ user: any }>();
+import type { User } from '~/types/user';
+
+defineProps<{ user: User }>();
 </script> 

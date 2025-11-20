@@ -87,8 +87,8 @@
           <div class="flex items-center space-x-4">
             <span class="text-sm text-gray-600">{{ authStore.user?.mobile }}</span>
             <button
-              @click="handleLogout"
               class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm"
+              @click="handleLogout"
             >
               خروج
             </button>

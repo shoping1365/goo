@@ -5,7 +5,7 @@
       <div class="upload-modal">
         <div class="modal-header">
           <h3>📎 ارسال فایل</h3>
-          <button @click="closeModal" class="close-btn">
+          <button class="close-btn" @click="closeModal">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -44,8 +44,8 @@
           type="file"
           multiple
           hidden
-          @change="handleFileSelect"
           accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt"
+          @change="handleFileSelect"
         />
         
         <!-- Selected Files -->
@@ -60,8 +60,8 @@
               </div>
               <button 
                 v-if="canDeleteChatFile"
-                @click="removeFile(index)" 
-                class="remove-file-btn"
+                class="remove-file-btn" 
+                @click="removeFile(index)"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -71,8 +71,8 @@
           </div>
           
           <div class="upload-actions">
-            <button @click="clearFiles" class="clear-btn">پاک کردن همه</button>
-            <button @click="uploadFiles" class="upload-btn" :disabled="isUploading">
+            <button class="clear-btn" @click="clearFiles">پاک کردن همه</button>
+            <button class="upload-btn" :disabled="isUploading" @click="uploadFiles">
               <span v-if="!isUploading">📤 ارسال فایل‌ها</span>
               <span v-else>در حال ارسال...</span>
             </button>
@@ -87,11 +87,11 @@
 import { computed } from 'vue'
 
 
-const { user, hasPermission } = useAuth()
+const { hasPermission } = useAuth()
 
 const canDeleteChatFile = computed(() => hasPermission('chat.delete'))
 
-const props = defineProps({
+defineProps({
   show: {
     type: Boolean,
     default: false

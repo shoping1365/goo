@@ -29,8 +29,8 @@
             <span :class="['status', restriction.status]">{{ restriction.statusText }}</span>
           </td>
           <td>
-            <button @click="editRestriction(restriction)" class="btn-edit">ویرایش</button>
-            <button @click="deleteRestriction(restriction.id)" class="btn-delete">حذف</button>
+            <button class="btn-edit" @click="editRestriction(restriction)">ویرایش</button>
+            <button class="btn-delete" @click="deleteRestriction(restriction.id)">حذف</button>
           </td>
         </tr>
         </tbody>
@@ -139,7 +139,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 const countryRestrictions = ref([
   {
@@ -177,11 +177,11 @@ const stats = ref({
   partialRestrictions: 33
 })
 
-const editRestriction = (restriction) => {
+const editRestriction = (_restriction) => {
   // Edit restriction logic
 }
 
-const deleteRestriction = (id) => {
+const deleteRestriction = (_id) => {
   // Delete restriction logic
 }
 

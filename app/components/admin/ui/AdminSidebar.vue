@@ -1,5 +1,6 @@
 <template>
-  <aside :class="[
+  <aside
+:class="[
     'admin-sidebar bg-[#222d32] border-l border-gray-600 transform transition-transform duration-300 ease-in-out z-20',
     sidebarClasses
   ]">
@@ -8,7 +9,8 @@
     </div>
 
     <nav class="p-6 space-y-2 text-sm text-right">
-      <NuxtLink v-if="canShowMenu('/admin')" to="/admin" exact class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+      <NuxtLink
+v-if="canShowMenu('/admin')" to="/admin" exact class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                 active-class="bg-gray-700 font-semibold text-white">داشبورد</NuxtLink>
 
       <!-- مدیریت رسانه -->
@@ -19,11 +21,14 @@
         :initial-open="isActivePrefix('/admin/media-management')"
       >
         <div class="collapsible-sub-links-wrapper">
-          <NuxtLink v-if="canShowMenu('/admin/media-management/library')" to="/admin/media-management/library" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+          <NuxtLink
+v-if="canShowMenu('/admin/media-management/library')" to="/admin/media-management/library" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                     active-class="bg-gray-700 font-semibold text-white">کتابخانه رسانه</NuxtLink>
-          <NuxtLink v-if="canShowMenu('/admin/media-management/upload')" to="/admin/media-management/upload" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+          <NuxtLink
+v-if="canShowMenu('/admin/media-management/upload')" to="/admin/media-management/upload" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                     active-class="bg-gray-700 font-semibold text-white">افزودن رسانه جدید</NuxtLink>
-          <NuxtLink v-if="canShowMenu('/admin/media-management/image-compression')" to="/admin/media-management/image-compression" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+          <NuxtLink
+v-if="canShowMenu('/admin/media-management/image-compression')" to="/admin/media-management/image-compression" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                     active-class="bg-gray-700 font-semibold text-white">تنظیمات تصاویر</NuxtLink>
         </div>
       </CollapsibleSection>
@@ -36,17 +41,23 @@
         :initial-open="isActivePrefix('/admin/content')"
       >
         <div class="collapsible-sub-links-wrapper">
-          <NuxtLink v-if="canShowMenu('/admin/content/banners')" to="/admin/content/banners" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+          <NuxtLink
+v-if="canShowMenu('/admin/content/banners')" to="/admin/content/banners" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                     active-class="bg-gray-700 font-semibold text-white">بنرها</NuxtLink>
-          <NuxtLink v-if="canShowMenu('/admin/content/posts')" to="/admin/content/posts" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+          <NuxtLink
+v-if="canShowMenu('/admin/content/posts')" to="/admin/content/posts" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                     active-class="bg-gray-700 font-semibold text-white">نوشته‌ها</NuxtLink>
-          <NuxtLink v-if="canShowMenu('/admin/content/pages')" to="/admin/content/pages" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+          <NuxtLink
+v-if="canShowMenu('/admin/content/pages')" to="/admin/content/pages" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                     active-class="bg-gray-700 font-semibold text-white">صفحات</NuxtLink>
-          <NuxtLink v-if="canShowMenu('/admin/content/menus')" to="/admin/content/menus" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+          <NuxtLink
+v-if="canShowMenu('/admin/content/menus')" to="/admin/content/menus" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                     active-class="bg-gray-700 font-semibold text-white">منوها</NuxtLink>
-          <NuxtLink v-if="canShowMenu('/admin/content/header')" to="/admin/content/header" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+          <NuxtLink
+v-if="canShowMenu('/admin/content/header')" to="/admin/content/header" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                     active-class="bg-gray-700 font-semibold text-white">هدر</NuxtLink>
-          <NuxtLink v-if="canShowMenu('/admin/content/footer')" to="/admin/content/footer" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+          <NuxtLink
+v-if="canShowMenu('/admin/content/footer')" to="/admin/content/footer" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                     active-class="bg-gray-700 font-semibold text-white">فوتر</NuxtLink>
         </div>
       </CollapsibleSection>
@@ -59,29 +70,39 @@
         :initial-open="isActivePrefix('/admin/product-management')"
       >
         <div class="collapsible-sub-links-wrapper">
-          <NuxtLink v-if="canShowMenu('/admin/product-management/products')" to="/admin/product-management/products" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+          <NuxtLink
+v-if="canShowMenu('/admin/product-management/products')" to="/admin/product-management/products" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                     active-class="bg-gray-700 font-semibold text-white">محصولات</NuxtLink>
-          <NuxtLink v-if="canShowMenu('/admin/product-management/product-categories')" to="/admin/product-management/product-categories" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+          <NuxtLink
+v-if="canShowMenu('/admin/product-management/product-categories')" to="/admin/product-management/product-categories" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                     active-class="bg-gray-700 font-semibold text-white">دسته‌بندی‌ها</NuxtLink>
-          <NuxtLink v-if="canShowMenu('/admin/product-management/brands')" to="/admin/product-management/brands" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+          <NuxtLink
+v-if="canShowMenu('/admin/product-management/brands')" to="/admin/product-management/brands" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                     active-class="bg-gray-700 font-semibold text-white">برندها</NuxtLink>
-          <NuxtLink v-if="canShowMenu('/admin/product-management/attributes')" to="/admin/product-management/attributes" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+          <NuxtLink
+v-if="canShowMenu('/admin/product-management/attributes')" to="/admin/product-management/attributes" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                     active-class="bg-gray-700 font-semibold text-white">ویژگی‌ها</NuxtLink>
-          <NuxtLink v-if="canShowMenu('/admin/product-management/reviews')" to="/admin/product-management/reviews" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+          <NuxtLink
+v-if="canShowMenu('/admin/product-management/reviews')" to="/admin/product-management/reviews" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                     active-class="bg-gray-700 font-semibold text-white">نظرات</NuxtLink>
         </div>
       </CollapsibleSection>
 
       <!-- سایر بخش‌ها -->
-      <NuxtLink v-if="canShowMenu('/admin/users')" to="/admin/users" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+      <NuxtLink
+v-if="canShowMenu('/admin/users')" to="/admin/users" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                 active-class="bg-gray-700 font-semibold text-white">کاربران</NuxtLink>
-      <NuxtLink v-if="canShowMenu('/admin/transactions')" to="/admin/transactions" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+      <NuxtLink
+v-if="canShowMenu('/admin/transactions')" to="/admin/transactions" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                 active-class="bg-gray-700 font-semibold text-white">تراکنش‌ها</NuxtLink>
-      <NuxtLink v-if="canShowMenu('/admin/notifications')" to="/admin/notifications" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+      <NuxtLink
+v-if="canShowMenu('/admin/notifications')" to="/admin/notifications" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                 active-class="bg-gray-700 font-semibold text-white">اعلان‌ها</NuxtLink>
-      <NuxtLink v-if="canShowMenu('/admin/access-management')" to="/admin/access-management" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+      <NuxtLink
+v-if="canShowMenu('/admin/access-management')" to="/admin/access-management" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                 active-class="bg-gray-700 font-semibold text-white">مدیریت دسترسی</NuxtLink>
-      <NuxtLink v-if="canShowMenu('/admin/settings')" to="/admin/settings" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
+      <NuxtLink
+v-if="canShowMenu('/admin/settings')" to="/admin/settings" class="block px-4 py-2 rounded-md hover:bg-gray-700 text-white"
                 active-class="bg-gray-700 font-semibold text-white">تنظیمات</NuxtLink>
     </nav>
   </aside>

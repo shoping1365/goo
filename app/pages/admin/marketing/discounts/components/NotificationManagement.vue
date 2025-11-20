@@ -8,7 +8,7 @@
           <p class="text-gray-600 mt-1">مدیریت اعلان‌ها، یادآوری‌ها و زمان‌بندی ارسال پیام‌ها</p>
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
-          <button @click="showNotificationForm = true" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="showNotificationForm = true">
             <span class="i-heroicons-plus ml-2"></span>
             افزودن اعلان جدید
           </button>
@@ -69,8 +69,9 @@
     <!-- تب‌های اعلان‌ها -->
     <div class="border-b border-gray-200">
       <div class="flex border-b border-gray-200 overflow-x-auto">
-        <button v-for="tab in tabs" :key="tab.value" @click="activeTab = tab.value"
-          :class="['px-6 py-3 -mb-px font-medium text-sm focus:outline-none whitespace-nowrap', activeTab === tab.value ? 'border-b-2 border-blue-600 text-blue-700' : 'text-gray-500 hover:text-blue-600']">
+        <button
+v-for="tab in tabs" :key="tab.value" :class="['px-6 py-3 -mb-px font-medium text-sm focus:outline-none whitespace-nowrap', activeTab === tab.value ? 'border-b-2 border-blue-600 text-blue-700' : 'text-gray-500 hover:text-blue-600']"
+          @click="activeTab = tab.value">
           {{ tab.label }}
         </button>
       </div>
@@ -97,13 +98,13 @@
             </select>
           </div>
           <div class="flex items-center space-x-2 space-x-reverse">
-            <button @click="bulkAction('activate')" class="px-3 py-1 bg-green-100 text-green-700 rounded text-sm hover:bg-green-200">
+            <button class="px-3 py-1 bg-green-100 text-green-700 rounded text-sm hover:bg-green-200" @click="bulkAction('activate')">
               فعال کردن
             </button>
-            <button @click="bulkAction('pause')" class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded text-sm hover:bg-yellow-200">
+            <button class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded text-sm hover:bg-yellow-200" @click="bulkAction('pause')">
               متوقف کردن
             </button>
-            <button @click="bulkAction('delete')" class="px-3 py-1 bg-red-100 text-red-700 rounded text-sm hover:bg-red-200">
+            <button class="px-3 py-1 bg-red-100 text-red-700 rounded text-sm hover:bg-red-200" @click="bulkAction('delete')">
               حذف
             </button>
           </div>
@@ -113,7 +114,7 @@
           <div v-for="notification in filteredNotifications" :key="notification.id" class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
             <div class="flex items-center justify-between">
               <div class="flex items-center space-x-4 space-x-reverse">
-                <input type="checkbox" v-model="selectedNotifications" :value="notification.id" class="rounded border-gray-300">
+                <input v-model="selectedNotifications" type="checkbox" :value="notification.id" class="rounded border-gray-300">
                 <div class="w-10 h-10 rounded-full flex items-center justify-center" :style="{ backgroundColor: notification.color + '20', color: notification.color }">
                   <span class="i-heroicons-bell text-lg"></span>
                 </div>
@@ -126,13 +127,13 @@
                 <span :class="['px-2 py-1 rounded-full text-xs', getStatusClass(notification.status)]">
                   {{ getStatusText(notification.status) }}
                 </span>
-                <button @click="editNotification(notification)" class="text-blue-600 hover:text-blue-900">
+                <button class="text-blue-600 hover:text-blue-900" @click="editNotification(notification)">
                   <span class="i-heroicons-pencil-square"></span>
                 </button>
-                <button @click="duplicateNotification(notification)" class="text-green-600 hover:text-green-900">
+                <button class="text-green-600 hover:text-green-900" @click="duplicateNotification(notification)">
                   <span class="i-heroicons-document-duplicate"></span>
                 </button>
-                <button @click="deleteNotification(notification)" class="text-red-600 hover:text-red-900">
+                <button class="text-red-600 hover:text-red-900" @click="deleteNotification(notification)">
                   <span class="i-heroicons-trash"></span>
                 </button>
               </div>
@@ -171,10 +172,10 @@
                 </div>
               </div>
               <div class="flex items-center space-x-2 space-x-reverse">
-                <button @click="editReminder(reminder)" class="text-blue-600 hover:text-blue-900">
+                <button class="text-blue-600 hover:text-blue-900" @click="editReminder(reminder)">
                   <span class="i-heroicons-pencil-square"></span>
                 </button>
-                <button @click="deleteReminder(reminder)" class="text-red-600 hover:text-red-900">
+                <button class="text-red-600 hover:text-red-900" @click="deleteReminder(reminder)">
                   <span class="i-heroicons-trash"></span>
                 </button>
               </div>
@@ -218,8 +219,8 @@
                   <p class="text-xs text-gray-500">{{ timezone.time }}</p>
                 </div>
                 <div class="flex items-center space-x-2 space-x-reverse">
-                  <input type="time" v-model="timezone.time" class="px-2 py-1 border border-gray-300 rounded text-sm">
-                  <button @click="updateTimezone(timezone)" class="text-blue-600 hover:text-blue-900">
+                  <input v-model="timezone.time" type="time" class="px-2 py-1 border border-gray-300 rounded text-sm">
+                  <button class="text-blue-600 hover:text-blue-900" @click="updateTimezone(timezone)">
                     <span class="i-heroicons-check"></span>
                   </button>
                 </div>
@@ -242,7 +243,7 @@
                     <option value="6">6 ساعت</option>
                     <option value="24">1 روز</option>
                   </select>
-                  <button @click="updateBehavior(behavior)" class="text-blue-600 hover:text-blue-900">
+                  <button class="text-blue-600 hover:text-blue-900" @click="updateBehavior(behavior)">
                     <span class="i-heroicons-check"></span>
                   </button>
                 </div>
@@ -267,10 +268,10 @@
                 </div>
               </div>
               <div class="flex items-center space-x-2 space-x-reverse">
-                <button @click="useTemplate(template)" class="text-green-600 hover:text-green-900">
+                <button class="text-green-600 hover:text-green-900" @click="useTemplate(template)">
                   <span class="i-heroicons-plus"></span>
                 </button>
-                <button @click="editTemplate(template)" class="text-blue-600 hover:text-blue-900">
+                <button class="text-blue-600 hover:text-blue-900" @click="editTemplate(template)">
                   <span class="i-heroicons-pencil-square"></span>
                 </button>
               </div>
@@ -300,13 +301,13 @@
             <h3 class="text-lg font-semibold text-gray-900">
               {{ editingNotification ? 'ویرایش اعلان' : 'افزودن اعلان جدید' }}
             </h3>
-            <button @click="closeForm" class="text-gray-400 hover:text-gray-600">
+            <button class="text-gray-400 hover:text-gray-600" @click="closeForm">
               <span class="i-heroicons-x-mark text-xl"></span>
             </button>
           </div>
         </div>
         
-        <form @submit.prevent="handleSubmit" class="p-6 space-y-6">
+        <form class="p-6 space-y-6" @submit.prevent="handleSubmit">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">عنوان اعلان *</label>
@@ -368,10 +369,10 @@
         </form>
         
         <div class="p-6 border-t border-gray-200 flex justify-end space-x-3 space-x-reverse">
-          <button @click="closeForm" class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+          <button class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors" @click="closeForm">
             انصراف
           </button>
-          <button @click="handleSubmit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="handleSubmit">
             ذخیره
           </button>
         </div>

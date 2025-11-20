@@ -13,7 +13,8 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">نام کیف پول</label>
-            <input type="text" :value="generalSettings.walletName" 
+            <input
+type="text" :value="generalSettings.walletName" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
@@ -46,22 +47,26 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداکثر موجودی کیف پول</label>
-            <input type="number" :value="generalSettings.maxWalletBalance" 
+            <input
+type="number" :value="generalSettings.maxWalletBalance" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداقل موجودی برای برداشت</label>
-            <input type="number" :value="generalSettings.minWithdrawalBalance" 
+            <input
+type="number" :value="generalSettings.minWithdrawalBalance" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">تعداد کارت‌های مجاز</label>
-            <input type="number" :value="generalSettings.maxCardsPerUser" 
+            <input
+type="number" :value="generalSettings.maxCardsPerUser" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">مدت اعتبار کد تأیید (دقیقه)</label>
-            <input type="number" :value="generalSettings.verificationCodeExpiry" 
+            <input
+type="number" :value="generalSettings.verificationCodeExpiry" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
         </div>
@@ -84,7 +89,8 @@
               <h4 class="font-medium text-gray-900">احراز هویت دو مرحله‌ای</h4>
               <p class="text-sm text-gray-600">استفاده از کد تأیید برای ورود</p>
             </div>
-            <input type="checkbox" :checked="securitySettings.twoFactorAuth" 
+            <input
+type="checkbox" :checked="securitySettings.twoFactorAuth" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
           </div>
           
@@ -93,7 +99,8 @@
               <h4 class="font-medium text-gray-900">رمز عبور قوی</h4>
               <p class="text-sm text-gray-600">اجبار استفاده از رمز عبور پیچیده</p>
             </div>
-            <input type="checkbox" :checked="securitySettings.strongPassword" 
+            <input
+type="checkbox" :checked="securitySettings.strongPassword" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
           </div>
           
@@ -102,7 +109,8 @@
               <h4 class="font-medium text-gray-900">تأیید تراکنش‌های بزرگ</h4>
               <p class="text-sm text-gray-600">درخواست تأیید برای تراکنش‌های بالای حد مشخص</p>
             </div>
-            <input type="checkbox" :checked="securitySettings.largeTransactionVerification" 
+            <input
+type="checkbox" :checked="securitySettings.largeTransactionVerification" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
           </div>
           
@@ -111,7 +119,8 @@
               <h4 class="font-medium text-gray-900">ثبت فعالیت‌ها</h4>
               <p class="text-sm text-gray-600">ثبت تمام فعالیت‌های کاربران</p>
             </div>
-            <input type="checkbox" :checked="securitySettings.activityLogging" 
+            <input
+type="checkbox" :checked="securitySettings.activityLogging" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
           </div>
         </div>
@@ -119,22 +128,26 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حد آستانه تراکنش بزرگ (تومان)</label>
-            <input type="number" :value="securitySettings.largeTransactionThreshold" 
+            <input
+type="number" :value="securitySettings.largeTransactionThreshold" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداکثر تلاش ورود</label>
-            <input type="number" :value="securitySettings.maxLoginAttempts" 
+            <input
+type="number" :value="securitySettings.maxLoginAttempts" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">مدت قفل حساب (دقیقه)</label>
-            <input type="number" :value="securitySettings.accountLockDuration" 
+            <input
+type="number" :value="securitySettings.accountLockDuration" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">مدت اعتبار نشست (ساعت)</label>
-            <input type="number" :value="securitySettings.sessionTimeout" 
+            <input
+type="number" :value="securitySettings.sessionTimeout" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
         </div>
@@ -157,7 +170,8 @@
               <h4 class="font-medium text-gray-900">اعلان شارژ</h4>
               <p class="text-sm text-gray-600">ارسال اعلان هنگام شارژ کیف پول</p>
             </div>
-            <input type="checkbox" :checked="notificationSettings.chargeNotification" 
+            <input
+type="checkbox" :checked="notificationSettings.chargeNotification" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
           </div>
           
@@ -166,7 +180,8 @@
               <h4 class="font-medium text-gray-900">اعلان برداشت</h4>
               <p class="text-sm text-gray-600">ارسال اعلان هنگام برداشت از کیف پول</p>
             </div>
-            <input type="checkbox" :checked="notificationSettings.withdrawalNotification" 
+            <input
+type="checkbox" :checked="notificationSettings.withdrawalNotification" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
           </div>
           
@@ -175,7 +190,8 @@
               <h4 class="font-medium text-gray-900">اعلان تراکنش ناموفق</h4>
               <p class="text-sm text-gray-600">ارسال اعلان برای تراکنش‌های ناموفق</p>
             </div>
-            <input type="checkbox" :checked="notificationSettings.failedTransactionNotification" 
+            <input
+type="checkbox" :checked="notificationSettings.failedTransactionNotification" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
           </div>
           
@@ -184,7 +200,8 @@
               <h4 class="font-medium text-gray-900">اعلان موجودی کم</h4>
               <p class="text-sm text-gray-600">اعلان هنگام کاهش موجودی</p>
             </div>
-            <input type="checkbox" :checked="notificationSettings.lowBalanceNotification" 
+            <input
+type="checkbox" :checked="notificationSettings.lowBalanceNotification" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
           </div>
         </div>
@@ -192,24 +209,28 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حد آستانه موجودی کم (تومان)</label>
-            <input type="number" :value="notificationSettings.lowBalanceThreshold" 
+            <input
+type="number" :value="notificationSettings.lowBalanceThreshold" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">کانال‌های اعلان</label>
             <div class="space-y-2">
               <div class="flex items-center">
-                <input type="checkbox" :checked="notificationSettings.emailNotifications" 
+                <input
+type="checkbox" :checked="notificationSettings.emailNotifications" 
                        class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                 <label class="mr-2 text-sm text-gray-700">ایمیل</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" :checked="notificationSettings.smsNotifications" 
+                <input
+type="checkbox" :checked="notificationSettings.smsNotifications" 
                        class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                 <label class="mr-2 text-sm text-gray-700">پیامک</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" :checked="notificationSettings.pushNotifications" 
+                <input
+type="checkbox" :checked="notificationSettings.pushNotifications" 
                        class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                 <label class="mr-2 text-sm text-gray-700">اعلان مرورگر</label>
               </div>
@@ -235,7 +256,8 @@
               <h4 class="font-medium text-gray-900">حالت نگهداری</h4>
               <p class="text-sm text-gray-600">فعال کردن حالت نگهداری سیستم</p>
             </div>
-            <input type="checkbox" :checked="advancedSettings.maintenanceMode" 
+            <input
+type="checkbox" :checked="advancedSettings.maintenanceMode" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
           </div>
           
@@ -244,7 +266,8 @@
               <h4 class="font-medium text-gray-900">پشتیبان‌گیری خودکار</h4>
               <p class="text-sm text-gray-600">پشتیبان‌گیری روزانه از داده‌ها</p>
             </div>
-            <input type="checkbox" :checked="advancedSettings.autoBackup" 
+            <input
+type="checkbox" :checked="advancedSettings.autoBackup" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
           </div>
           
@@ -253,7 +276,8 @@
               <h4 class="font-medium text-gray-900">لاگ‌گیری تفصیلی</h4>
               <p class="text-sm text-gray-600">ثبت جزئیات کامل فعالیت‌ها</p>
             </div>
-            <input type="checkbox" :checked="advancedSettings.detailedLogging" 
+            <input
+type="checkbox" :checked="advancedSettings.detailedLogging" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
           </div>
           
@@ -262,7 +286,8 @@
               <h4 class="font-medium text-gray-900">تست اتصال</h4>
               <p class="text-sm text-gray-600">تست خودکار اتصالات</p>
             </div>
-            <input type="checkbox" :checked="advancedSettings.connectionTesting" 
+            <input
+type="checkbox" :checked="advancedSettings.connectionTesting" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
           </div>
         </div>
@@ -270,17 +295,20 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">فاصله پشتیبان‌گیری (ساعت)</label>
-            <input type="number" :value="advancedSettings.backupInterval" 
+            <input
+type="number" :value="advancedSettings.backupInterval" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">مدت نگهداری لاگ‌ها (روز)</label>
-            <input type="number" :value="advancedSettings.logRetentionDays" 
+            <input
+type="number" :value="advancedSettings.logRetentionDays" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">فاصله تست اتصال (دقیقه)</label>
-            <input type="number" :value="advancedSettings.connectionTestInterval" 
+            <input
+type="number" :value="advancedSettings.connectionTestInterval" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>

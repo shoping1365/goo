@@ -5,8 +5,8 @@
       <div class="flex items-center justify-between mb-6">
         <h3 class="text-lg font-semibold text-gray-900">تعریف محدودیت جدید</h3>
         <button
-          @click="$emit('close')"
           class="text-gray-400 hover:text-gray-600"
+          @click="$emit('close')"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -15,7 +15,7 @@
       </div>
 
       <!-- فرم تعریف محدودیت -->
-      <form @submit.prevent="handleSubmit" class="space-y-6">
+      <form class="space-y-6" @submit.prevent="handleSubmit">
         <!-- اطلاعات اصلی -->
         <div class="bg-gray-50 p-6 rounded-lg">
           <h4 class="text-md font-semibold text-gray-900 mb-4">اطلاعات اصلی</h4>
@@ -39,8 +39,8 @@
               <select
                 v-model="form.type"
                 required
-                @change="handleTypeChange"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                @change="handleTypeChange"
               >
                 <option value="">انتخاب کنید</option>
                 <option value="daily">روزانه</option>
@@ -157,9 +157,9 @@
               <div class="space-y-2">
                 <div class="flex items-center">
                   <input
+                    id="all-users"
                     v-model="form.targetUsers.all"
                     type="checkbox"
-                    id="all-users"
                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
                   <label for="all-users" class="mr-2 block text-sm text-gray-900">
@@ -168,9 +168,9 @@
                 </div>
                 <div class="flex items-center">
                   <input
+                    id="new-users"
                     v-model="form.targetUsers.new"
                     type="checkbox"
-                    id="new-users"
                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
                   <label for="new-users" class="mr-2 block text-sm text-gray-900">
@@ -179,9 +179,9 @@
                 </div>
                 <div class="flex items-center">
                   <input
+                    id="premium-users"
                     v-model="form.targetUsers.premium"
                     type="checkbox"
-                    id="premium-users"
                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
                   <label for="premium-users" class="mr-2 block text-sm text-gray-900">
@@ -190,9 +190,9 @@
                 </div>
                 <div class="flex items-center">
                   <input
+                    id="vip-users"
                     v-model="form.targetUsers.vip"
                     type="checkbox"
-                    id="vip-users"
                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
                   <label for="vip-users" class="mr-2 block text-sm text-gray-900">
@@ -209,9 +209,9 @@
               <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
                 <div class="flex items-center">
                   <input
+                    id="electronics"
                     v-model="form.targetCategories.electronics"
                     type="checkbox"
-                    id="electronics"
                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
                   <label for="electronics" class="mr-2 block text-sm text-gray-900">
@@ -220,9 +220,9 @@
                 </div>
                 <div class="flex items-center">
                   <input
+                    id="clothing"
                     v-model="form.targetCategories.clothing"
                     type="checkbox"
-                    id="clothing"
                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
                   <label for="clothing" class="mr-2 block text-sm text-gray-900">
@@ -231,9 +231,9 @@
                 </div>
                 <div class="flex items-center">
                   <input
+                    id="home"
                     v-model="form.targetCategories.home"
                     type="checkbox"
-                    id="home"
                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
                   <label for="home" class="mr-2 block text-sm text-gray-900">
@@ -242,9 +242,9 @@
                 </div>
                 <div class="flex items-center">
                   <input
+                    id="books"
                     v-model="form.targetCategories.books"
                     type="checkbox"
-                    id="books"
                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
                   <label for="books" class="mr-2 block text-sm text-gray-900">
@@ -253,9 +253,9 @@
                 </div>
                 <div class="flex items-center">
                   <input
+                    id="sports"
                     v-model="form.targetCategories.sports"
                     type="checkbox"
-                    id="sports"
                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
                   <label for="sports" class="mr-2 block text-sm text-gray-900">
@@ -264,9 +264,9 @@
                 </div>
                 <div class="flex items-center">
                   <input
+                    id="beauty"
                     v-model="form.targetCategories.beauty"
                     type="checkbox"
-                    id="beauty"
                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
                   <label for="beauty" class="mr-2 block text-sm text-gray-900">
@@ -339,9 +339,9 @@
           <div class="space-y-4">
             <div class="flex items-center">
               <input
+                id="cumulative"
                 v-model="form.settings.cumulative"
                 type="checkbox"
-                id="cumulative"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label for="cumulative" class="mr-2 block text-sm text-gray-900">
@@ -350,9 +350,9 @@
             </div>
             <div class="flex items-center">
               <input
+                id="rollover"
                 v-model="form.settings.rollover"
                 type="checkbox"
-                id="rollover"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label for="rollover" class="mr-2 block text-sm text-gray-900">
@@ -361,9 +361,9 @@
             </div>
             <div class="flex items-center">
               <input
+                id="auto-reset"
                 v-model="form.settings.autoReset"
                 type="checkbox"
-                id="auto-reset"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label for="auto-reset" class="mr-2 block text-sm text-gray-900">
@@ -372,9 +372,9 @@
             </div>
             <div class="flex items-center">
               <input
+                id="notifications"
                 v-model="form.settings.notifications"
                 type="checkbox"
-                id="notifications"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label for="notifications" class="mr-2 block text-sm text-gray-900">
@@ -463,8 +463,8 @@
         <div class="flex justify-end gap-3 pt-6 border-t border-gray-200">
           <button
             type="button"
-            @click="$emit('close')"
             class="px-4 py-2 bg-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            @click="$emit('close')"
           >
             انصراف
           </button>

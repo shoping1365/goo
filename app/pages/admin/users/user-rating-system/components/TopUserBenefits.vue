@@ -142,7 +142,7 @@
               <option value="platinum">پلاتینیوم</option>
               <option value="diamond">الماس</option>
             </select>
-            <button @click="exportTopUsers" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">
+            <button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors" @click="exportTopUsers">
               خروجی اکسل
             </button>
           </div>
@@ -191,8 +191,8 @@
                 {{ formatDate(user.lastBenefitUsage) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button @click="viewUserBenefits(user)" class="text-blue-600 hover:text-blue-900 mr-3">مزایا</button>
-                <button @click="editUserBenefits(user)" class="text-green-600 hover:text-green-900">ویرایش</button>
+                <button class="text-blue-600 hover:text-blue-900 mr-3" @click="viewUserBenefits(user)">مزایا</button>
+                <button class="text-green-600 hover:text-green-900" @click="editUserBenefits(user)">ویرایش</button>
               </td>
             </tr>
           </tbody>
@@ -261,7 +261,7 @@
               <option value="support">پشتیبانی</option>
               <option value="content">محتوا</option>
             </select>
-            <button @click="exportBenefitHistory" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">
+            <button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors" @click="exportBenefitHistory">
               خروجی اکسل
             </button>
           </div>
@@ -318,17 +318,39 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  avatar: string;
+  level: string;
+  score: number;
+  activeBenefits: Record<string, boolean>;
+  lastBenefitUsage: string;
+  [key: string]: unknown;
+}
+
+interface BenefitHistory {
+  id: number;
+  user: { name: string; email: string; avatar: string };
+  benefit: string;
+  details: string;
+  amount: number;
+  status: string;
+  createdAt: string;
+}
 
 // Props
-const props = defineProps<{
-  users: any[]
+defineProps<{
+  users: User[]
 }>()
 
 // Emits
 const emit = defineEmits<{
-  saveBenefits: [data: any]
-  exportData: [type: string, data: any]
+  saveBenefits: [data: Record<string, unknown>]
+  exportData: [type: string, data: Record<string, unknown>]
 }>()
 
 // Reactive data
@@ -358,7 +380,7 @@ const benefits = ref({
 })
 
 // Sample data
-const topUsers = ref([
+const topUsers = ref<User[]>([
   {
     id: 1,
     name: 'علی احمدی',
@@ -405,7 +427,7 @@ const popularBenefits = ref([
   { name: 'دسترسی زودهنگام', description: 'دسترسی به محصولات جدید قبل از عموم', usageCount: 25 }
 ])
 
-const benefitHistory = ref([
+const benefitHistory = ref<BenefitHistory[]>([
   {
     id: 1,
     user: { name: 'علی احمدی', email: 'ali@example.com', avatar: '/avatars/ali.jpg' },
@@ -534,12 +556,12 @@ const getStatusText = (status: string) => {
   }
 }
 
-const viewUserBenefits = (user: any) => {
-  console.log('مشاهده مزایای کاربر:', user)
+const viewUserBenefits = (_user: User) => {
+  // View user benefits
 }
 
-const editUserBenefits = (user: any) => {
-  console.log('ویرایش مزایای کاربر:', user)
+const editUserBenefits = (_user: User) => {
+  // Edit user benefits
 }
 
 const exportTopUsers = () => {

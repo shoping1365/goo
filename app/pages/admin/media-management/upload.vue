@@ -20,9 +20,6 @@
         <div class="bg-white rounded-2xl shadow-2xl border-2 border-blue-200 p-10 hover:shadow-2xl transition-shadow duration-300 w-full min-h-[350px]">
           <h2 class="text-lg font-semibold text-gray-900 mb-4 text-center">آپلود با کشیدن و رها کردن</h2>
           <div
-              @drop="handleDrop"
-              @dragover.prevent
-              @dragenter.prevent
               :class="[
               'border-2 border-dashed rounded-xl flex flex-col items-center justify-center p-8 text-center transition-all duration-300 shadow-inner',
               isDragOver
@@ -30,9 +27,12 @@
                 : 'border-blue-200 hover:border-blue-400 hover:shadow-md',
               'min-h-[300px]'
             ]"
+              class="mx-auto w-full max-w-full"
+              @drop="handleDrop"
+              @dragover.prevent
+              @dragenter.prevent
               @dragenter="isDragOver = true"
               @dragleave="isDragOver = false"
-              class="mx-auto w-full max-w-full"
           >
             <svg class="w-16 h-16 text-blue-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
@@ -43,19 +43,19 @@
                 ref="fileInput"
                 type="file"
                 multiple
-                @change="handleFileSelect"
                 class="hidden"
                 accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt"
+                @change="handleFileSelect"
             >
             <button
-                @click="($refs.fileInput as HTMLInputElement)?.click()"
                 class="px-6 py-2 rounded-lg font-bold bg-gradient-to-br from-cyan-200 to-green-200 text-cyan-900 border border-cyan-300 shadow-sm hover:from-cyan-300 hover:to-green-300 hover:text-cyan-950 transition-all duration-200 font-medium text-base mt-2"
+                @click="($refs.fileInput as HTMLInputElement)?.click()"
             >
               انتخاب فایل‌ها
             </button>
             <div class="flex items-center justify-center mt-6">
               <label class="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 cursor-pointer shadow-sm hover:bg-blue-100 transition-all">
-                <input type="checkbox" v-model="autoCompress" class="accent-blue-500 w-5 h-5" />
+                <input v-model="autoCompress" type="checkbox" class="accent-blue-500 w-5 h-5" />
                 <span class="font-medium">فشرده‌سازی هوشمند</span>
               </label>
             </div>
@@ -66,23 +66,23 @@
         </div>
         <div class="w-full h-auto py-4 bg-gradient-to-l from-green-200 to-blue-200 rounded-full shadow-md flex flex-wrap items-center justify-center gap-8 mt-8">
           <label class="flex items-center gap-2 text-base text-gray-700">
-            <input type="radio" v-model="selectedCategory" value="library" class="accent-green-500 w-5 h-5" />
+            <input v-model="selectedCategory" type="radio" value="library" class="accent-green-500 w-5 h-5" />
             کتابخانه
           </label>
           <label class="flex items-center gap-2 text-base text-gray-700">
-            <input type="radio" v-model="selectedCategory" value="products" class="accent-blue-500 w-5 h-5" />
+            <input v-model="selectedCategory" type="radio" value="products" class="accent-blue-500 w-5 h-5" />
             محصولات
           </label>
           <label class="flex items-center gap-2 text-base text-gray-700">
-            <input type="radio" v-model="selectedCategory" value="product-categories" class="accent-purple-500 w-5 h-5" />
+            <input v-model="selectedCategory" type="radio" value="product-categories" class="accent-purple-500 w-5 h-5" />
             دسته‌بندی محصولات
           </label>
           <label class="flex items-center gap-2 text-base text-gray-700">
-            <input type="radio" v-model="selectedCategory" value="brands" class="accent-pink-500 w-5 h-5" />
+            <input v-model="selectedCategory" type="radio" value="brands" class="accent-pink-500 w-5 h-5" />
             برندها
           </label>
           <label class="flex items-center gap-2 text-base text-gray-700">
-            <input type="radio" v-model="selectedCategory" value="banners" class="accent-yellow-500 w-5 h-5" />
+            <input v-model="selectedCategory" type="radio" value="banners" class="accent-yellow-500 w-5 h-5" />
             بنرهای تبلیغاتی
           </label>
         </div>
@@ -116,7 +116,7 @@
                   <div v-else class="w-[50px] h-[50px] bg-gray-200 flex items-center justify-center rounded border">
                     <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                   </div>
-                  <button @click="openImagePreview(file)" class="absolute left-0 top-0 bg-white bg-opacity-80 rounded-full p-1 shadow hover:bg-opacity-100 transition-all" style="z-index:2;">
+                  <button class="absolute left-0 top-0 bg-white bg-opacity-80 rounded-full p-1 shadow hover:bg-opacity-100 transition-all" style="z-index:2;" @click="openImagePreview(file)">
                     <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
@@ -129,19 +129,19 @@
             <div class="grid grid-cols-2 gap-6 mb-2">
               <div>
                 <label class="block text-gray-600 mb-1">متن جایگزین (Alt):</label>
-                <input v-model="file.alt" @input="markDirty(file)" @blur="handleSave(file)" type="text" placeholder="توضیح تصویر" class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500" :disabled="file.status !== 'completed'">
+                <input v-model="file.alt" type="text" placeholder="توضیح تصویر" class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500" :disabled="file.status !== 'completed'" @input="markDirty(file)" @blur="handleSave(file)">
               </div>
               <div>
                 <label class="block text-gray-600 mb-1">عنوان:</label>
-                <input v-model="file.title" @input="markDirty(file)" @blur="handleSave(file)" type="text" placeholder="عنوان فایل" class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500" :disabled="file.status !== 'completed'">
+                <input v-model="file.title" type="text" placeholder="عنوان فایل" class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500" :disabled="file.status !== 'completed'" @input="markDirty(file)" @blur="handleSave(file)">
               </div>
               <div class="col-span-2">
                 <label class="block text-gray-600 mb-1">توضیحات مختصر (caption):</label>
-                <input v-model="file.caption" @input="markDirty(file)" @blur="handleSave(file)" type="text" placeholder="توضیحات مختصر فایل" class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500" :disabled="file.status !== 'completed'">
+                <input v-model="file.caption" type="text" placeholder="توضیحات مختصر فایل" class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500" :disabled="file.status !== 'completed'" @input="markDirty(file)" @blur="handleSave(file)">
               </div>
               <div class="col-span-2">
                 <label class="block text-gray-600 mb-1">توضیحات:</label>
-                <textarea v-model="file.description" @input="markDirty(file)" @blur="handleSave(file)" placeholder="توضیحات فایل" rows="2" class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500" :disabled="file.status !== 'completed'"></textarea>
+                <textarea v-model="file.description" placeholder="توضیحات فایل" rows="2" class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500" :disabled="file.status !== 'completed'" @input="markDirty(file)" @blur="handleSave(file)"></textarea>
               </div>
             </div>
             <!-- Per file progress bar -->
@@ -150,12 +150,12 @@
             </div>
             <p class="text-xs text-right text-gray-600">{{ file.progress }}%</p>
             <div class="flex items-center justify-between mt-2">
-              <button @click="handleSave(file)" :class="['px-4 py-2 rounded font-bold transition-all', (saveStatus[file.id]==='saved') ? 'bg-green-400 hover:bg-green-500 text-white' : 'bg-blue-500 hover:bg-blue-600 text-white']" :disabled="file.status !== 'completed'">ذخیره اطلاعات</button>
+              <button :class="['px-4 py-2 rounded font-bold transition-all', (saveStatus[file.id]==='saved') ? 'bg-green-400 hover:bg-green-500 text-white' : 'bg-blue-500 hover:bg-blue-600 text-white']" :disabled="file.status !== 'completed'" @click="handleSave(file)">ذخیره اطلاعات</button>
               <div class="flex items-center gap-2">
                 <span v-if="file.status === 'completed'" class="text-green-600 font-bold">تکمیل شد</span>
                 <span v-else-if="file.status === 'uploading'" class="text-blue-600 font-bold">در حال آپلود...</span>
                 <span v-else-if="file.status === 'error'" class="text-red-600 font-bold">خطا: {{ file.error }}</span>
-                <button @click="removeFromQueue(file.id)" class="text-red-500 hover:text-red-700 flex items-center gap-1" title="حذف">
+                <button class="text-red-500 hover:text-red-700 flex items-center gap-1" title="حذف" @click="removeFromQueue(file.id)">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                   <span class="text-xs">حذف</span>
                 </button>
@@ -187,8 +187,8 @@
 
               <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <button
-                    @click="viewFile(file)"
                     class="bg-white text-gray-900 p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                    @click="viewFile(file)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -204,7 +204,7 @@
       </div>
 
       <div v-if="itemsToShow < filteredFiles.length" class="flex justify-center my-6">
-        <button @click="itemsToShow += 30" class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors">
+        <button class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors" @click="itemsToShow += 30">
           بارگذاری بیشتر
         </button>
       </div>

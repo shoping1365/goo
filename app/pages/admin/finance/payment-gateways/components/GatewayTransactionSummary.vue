@@ -4,8 +4,8 @@
     <div class="flex items-center justify-between">
       <h4 class="text-sm font-semibold text-gray-700">تراکنش‌های اخیر</h4>
       <button 
-        @click="showAllTransactions = !showAllTransactions"
         class="text-blue-600 hover:text-blue-700 text-xs font-medium"
+        @click="showAllTransactions = !showAllTransactions"
       >
         {{ showAllTransactions ? 'نمایش خلاصه' : 'مشاهده همه' }}
       </button>
@@ -50,8 +50,8 @@
         
         <div v-if="recentTransactions.length > 3" class="text-center">
           <button 
-            @click="showAllTransactions = true"
             class="text-xs text-blue-600 hover:text-blue-700"
+            @click="showAllTransactions = true"
           >
             +{{ recentTransactions.length - 3 }} تراکنش دیگر
           </button>
@@ -65,8 +65,8 @@
       <div class="flex items-center space-x-2 space-x-reverse">
         <select
           v-model="filters.status"
-          @change="fetchTransactions"
           class="px-2 py-1 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-blue-500"
+          @change="fetchTransactions"
         >
           <option value="">همه وضعیت‌ها</option>
           <option value="success">موفق</option>
@@ -75,9 +75,9 @@
         </select>
         
         <button
-          @click="fetchTransactions"
           :disabled="loading"
           class="px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+          @click="fetchTransactions"
         >
           <Icon 
             :name="loading ? 'heroicons:arrow-path' : 'heroicons:arrow-path'" 
@@ -124,17 +124,17 @@
         </span>
         <div class="flex items-center space-x-1 space-x-reverse">
           <button
-            @click="changePage(currentPage - 1)"
             :disabled="currentPage === 1"
             class="px-2 py-1 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50"
+            @click="changePage(currentPage - 1)"
           >
             قبلی
           </button>
           <span class="px-2 py-1">{{ currentPage }}</span>
           <button
-            @click="changePage(currentPage + 1)"
             :disabled="currentPage >= totalPages"
             class="px-2 py-1 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50"
+            @click="changePage(currentPage + 1)"
           >
             بعدی
           </button>
@@ -147,7 +147,7 @@
       <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold">جزئیات تراکنش</h3>
-          <button @click="selectedTransaction = null" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="selectedTransaction = null">
             <Icon name="heroicons:x-mark" class="w-5 h-5" />
           </button>
         </div>

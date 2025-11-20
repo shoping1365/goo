@@ -125,9 +125,11 @@
             <!-- دایره نمودار -->
             <svg class="w-48 h-48 transform -rotate-90" viewBox="0 0 100 100">
               <circle cx="50" cy="50" r="40" stroke="#e5e7eb" stroke-width="10" fill="none" />
-              <circle cx="50" cy="50" r="40" stroke="#3b82f6" stroke-width="10" fill="none" 
+              <circle
+cx="50" cy="50" r="40" stroke="#3b82f6" stroke-width="10" fill="none" 
                       stroke-dasharray="125.6" stroke-dashoffset="62.8" />
-              <circle cx="50" cy="50" r="40" stroke="#10b981" stroke-width="10" fill="none" 
+              <circle
+cx="50" cy="50" r="40" stroke="#10b981" stroke-width="10" fill="none" 
                       stroke-dasharray="125.6" stroke-dashoffset="0" />
             </svg>
             <div class="absolute inset-0 flex items-center justify-center">

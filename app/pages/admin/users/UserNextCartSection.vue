@@ -21,8 +21,8 @@
       </div>
       <p class="text-red-600 text-sm">{{ error }}</p>
       <button
-        @click="fetchNextCart"
         class="mt-2 px-3 py-1 bg-red-100 text-red-600 rounded text-sm hover:bg-red-200"
+        @click="fetchNextCart"
       >
         تلاش مجدد
       </button>
@@ -82,14 +82,31 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import ViewAllModal from '~/components/admin/modals/ViewAllModal.vue';
+import type { User } from '~/types/user';
 
-const props = defineProps<{ user: any }>();
+const props = defineProps<{ user: User }>();
 const showAll = ref(false);
 
+interface NextCartItem {
+  id: number;
+  productName: string;
+  quantity: number;
+  finalPrice: number;
+  dateAdded: string;
+  addedAt?: string; // From API
+}
+
+interface NextCartResponse {
+  success: boolean;
+  data: {
+    nextCartItems: NextCartItem[];
+  };
+}
+
 // Real data for next cart
-const nextCart = ref([]);
+const nextCart = ref<NextCartItem[]>([]);
 const loading = ref(false);
 const error = ref('');
 
@@ -104,27 +121,27 @@ const fetchNextCart = async () => {
   error.value = '';
 
   try {
-    const response = await $fetch(`/api/admin/users/${props.user.id}/next-cart`, {
+    const response = await $fetch<NextCartResponse>(`/api/admin/users/${props.user.id}/next-cart`, {
       query: {
         page: 1,
         limit: 100
       }
-    }) as any;
+    });
 
     if (response.success) {
-      nextCart.value = response.data.nextCartItems.map((item: any) => ({
-        id: item.id,
-        productName: item.productName,
-        quantity: item.quantity,
-        finalPrice: item.finalPrice,
-        dateAdded: formatDateTime(item.addedAt)
+      nextCart.value = response.data.nextCartItems.map((item) => ({
+        id: item.id as number,
+        productName: item.productName as string,
+        quantity: item.quantity as number,
+        finalPrice: item.finalPrice as number,
+        dateAdded: formatDateTime((item.addedAt as string) || '')
       }));
     } else {
       error.value = 'خطا در دریافت داده‌ها';
     }
-  } catch (err: any) {
-    console.error('خطا در دریافت سبد خرید بعدی:', err);
-    error.value = err.data?.message || 'خطا در دریافت سبد خرید بعدی';
+  } catch (err: unknown) {
+    const e = err as { data?: { message?: string } };
+    error.value = e.data?.message || 'خطا در دریافت سبد خرید بعدی';
   } finally {
     loading.value = false;
   }

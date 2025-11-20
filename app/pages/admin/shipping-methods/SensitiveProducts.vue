@@ -4,7 +4,7 @@
          <div class="card-header">
            <h3>محصولات حساس</h3>
            <div class="toggle-switch">
-             <input type="checkbox" v-model="enabled" id="sensitiveToggle" />
+             <input id="sensitiveToggle" v-model="enabled" type="checkbox" />
              <label for="sensitiveToggle"></label>
            </div>
          </div>
@@ -37,7 +37,7 @@
                        <option value="custom">سفارشی</option>
                      </select>
                    </div>
-                   <button @click="removeCategory(index)" class="remove-btn">حذف</button>
+                   <button class="remove-btn" @click="removeCategory(index)">حذف</button>
                  </div>
                  
                  <div class="form-row">
@@ -122,7 +122,7 @@
                    ></textarea>
                  </div>
                </div>
-               <button @click="addCategory" class="add-btn">+ افزودن دسته‌بندی حساس</button>
+               <button class="add-btn" @click="addCategory">+ افزودن دسته‌بندی حساس</button>
              </div>
            </div>
    
@@ -133,15 +133,15 @@
                  <label>نحوه تشخیص محصولات حساس</label>
                  <div class="detection-methods">
                    <label class="radio-label">
-                     <input type="radio" v-model="sensitive.detectionMethod" value="automatic" />
+                     <input v-model="sensitive.detectionMethod" type="radio" value="automatic" />
                      تشخیص خودکار
                    </label>
                    <label class="radio-label">
-                     <input type="radio" v-model="sensitive.detectionMethod" value="manual" />
+                     <input v-model="sensitive.detectionMethod" type="radio" value="manual" />
                      تشخیص دستی
                    </label>
                    <label class="radio-label">
-                     <input type="radio" v-model="sensitive.detectionMethod" value="both" />
+                     <input v-model="sensitive.detectionMethod" type="radio" value="both" />
                      هر دو روش
                    </label>
                  </div>

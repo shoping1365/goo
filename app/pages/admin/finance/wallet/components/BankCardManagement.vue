@@ -67,7 +67,7 @@
         <!-- وضعیت -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">وضعیت</label>
-          <select v-model="statusFilter" @change="refresh()" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <select v-model="statusFilter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" @change="refresh()">
             <option value="">همه</option>
             <option value="active">تأیید شده</option>
             <option value="pending">در انتظار تأیید</option>
@@ -79,7 +79,7 @@
         <!-- بانک -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">بانک</label>
-          <select v-model="bankFilter" @change="refresh()" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <select v-model="bankFilter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" @change="refresh()">
             <option value="">همه</option>
             <option value="melli">ملی</option>
             <option value="mellat">ملت</option>
@@ -103,7 +103,8 @@
         <!-- جستجو -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">جستجو</label>
-          <input type="text" placeholder="نام کاربر یا شماره کارت" 
+          <input
+type="text" placeholder="نام کاربر یا شماره کارت" 
                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
       </div>
@@ -190,10 +191,10 @@
               <td class="px-4 py-3">
                 <div class="flex space-x-2 space-x-reverse">
                   <button class="text-blue-600 hover:text-blue-800 text-sm">جزئیات</button>
-                  <button v-if="card.status === 'در انتظار تأیید'" @click="verifyCard(card.id)" class="text-green-600 hover:text-green-800 text-sm">تأیید</button>
-                  <button v-if="card.status === 'در انتظار تأیید'" @click="rejectCard(card.id)" class="text-red-600 hover:text-red-800 text-sm">رد</button>
-                  <button v-if="card.status === 'تأیید شده'" @click="blockCard(card.id)" class="text-red-600 hover:text-red-800 text-sm">مسدود</button>
-                  <button v-if="card.status === 'مسدود شده'" @click="unblockCard(card.id)" class="text-green-600 hover:text-green-800 text-sm">باز کردن</button>
+                  <button v-if="card.status === 'در انتظار تأیید'" class="text-green-600 hover:text-green-800 text-sm" @click="verifyCard(card.id)">تأیید</button>
+                  <button v-if="card.status === 'در انتظار تأیید'" class="text-red-600 hover:text-red-800 text-sm" @click="rejectCard(card.id)">رد</button>
+                  <button v-if="card.status === 'تأیید شده'" class="text-red-600 hover:text-red-800 text-sm" @click="blockCard(card.id)">مسدود</button>
+                  <button v-if="card.status === 'مسدود شده'" class="text-green-600 hover:text-green-800 text-sm" @click="unblockCard(card.id)">باز کردن</button>
                 </div>
               </td>
             </tr>
@@ -260,12 +261,14 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداکثر کارت برای هر کاربر</label>
-            <input type="number" :value="securitySettings.maxCardsPerUser" 
+            <input
+type="number" :value="securitySettings.maxCardsPerUser" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداقل مبلغ تراکنش</label>
-            <input type="number" :value="securitySettings.minTransactionAmount" 
+            <input
+type="number" :value="securitySettings.minTransactionAmount" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
         </div>
@@ -273,24 +276,28 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداکثر مبلغ تراکنش</label>
-            <input type="number" :value="securitySettings.maxTransactionAmount" 
+            <input
+type="number" :value="securitySettings.maxTransactionAmount" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">زمان تأیید خودکار (ساعت)</label>
-            <input type="number" :value="securitySettings.autoVerificationTime" 
+            <input
+type="number" :value="securitySettings.autoVerificationTime" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
         </div>
         
         <div class="space-y-4">
           <div class="flex items-center">
-            <input type="checkbox" :checked="securitySettings.requireCardVerification" 
+            <input
+type="checkbox" :checked="securitySettings.requireCardVerification" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
             <label class="mr-2 text-sm text-gray-700">نیاز به تأیید کارت</label>
           </div>
           <div class="flex items-center">
-            <input type="checkbox" :checked="securitySettings.enableCardBlocking" 
+            <input
+type="checkbox" :checked="securitySettings.enableCardBlocking" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
             <label class="mr-2 text-sm text-gray-700">امکان مسدود کردن کارت</label>
           </div>

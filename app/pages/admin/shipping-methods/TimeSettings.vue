@@ -4,7 +4,7 @@
       <div class="card-header">
         <h3>تنظیمات زمانی</h3>
         <div class="toggle-switch">
-          <input type="checkbox" v-model="enabled" id="timeToggle" />
+          <input id="timeToggle" v-model="enabled" type="checkbox" />
           <label for="timeToggle"></label>
         </div>
       </div>
@@ -90,8 +90,8 @@
             <div class="weekdays-grid">
               <label v-for="day in weekDays" :key="day.value" class="weekday-checkbox">
                 <input
-                    type="checkbox"
                     v-model="workingDays"
+                    type="checkbox"
                     :value="day.value"
                 />
                 <span class="weekday-label">{{ day.label }}</span>
@@ -117,7 +117,7 @@
                         <option value="limited">ساعات محدود</option>
                       </select>
                     </div>
-                    <button @click="removeDayException(index)" class="remove-btn">حذف</button>
+                    <button class="remove-btn" @click="removeDayException(index)">حذف</button>
                   </div>
                   <div v-if="exception.type === 'limited'" class="form-row">
                     <div class="form-group">
@@ -130,7 +130,7 @@
                     </div>
                   </div>
                 </div>
-                <button @click="addDayException" class="add-exception-btn">+ افزودن استثنا</button>
+                <button class="add-exception-btn" @click="addDayException">+ افزودن استثنا</button>
               </div>
             </div>
           </div>
@@ -207,7 +207,7 @@
               <label>تحویل فوری</label>
               <div class="express-options">
                 <label class="checkbox-label">
-                  <input type="checkbox" v-model="expressDelivery.enabled" />
+                  <input v-model="expressDelivery.enabled" type="checkbox" />
                   فعال‌سازی تحویل فوری
                 </label>
                 <div v-if="expressDelivery.enabled" class="express-settings">
@@ -255,7 +255,7 @@
               <label>تحویل در همان روز</label>
               <div class="same-day-delivery">
                 <label class="checkbox-label">
-                  <input type="checkbox" v-model="sameDayDelivery.enabled" />
+                  <input v-model="sameDayDelivery.enabled" type="checkbox" />
                   فعال‌سازی تحویل در همان روز
                 </label>
                 <div v-if="sameDayDelivery.enabled" class="same-day-settings">
@@ -320,10 +320,10 @@
                         <span class="currency-label">تومان</span>
                       </div>
                     </div>
-                    <button @click="removeTimeSlot(index)" class="remove-btn">حذف</button>
+                    <button class="remove-btn" @click="removeTimeSlot(index)">حذف</button>
                   </div>
                 </div>
-                <button @click="addTimeSlot" class="add-slot-btn">+ افزودن بازه زمانی</button>
+                <button class="add-slot-btn" @click="addTimeSlot">+ افزودن بازه زمانی</button>
               </div>
             </div>
 
@@ -332,8 +332,8 @@
               <div class="weekdays-grid">
                 <label v-for="day in weekDays" :key="day.value" class="weekday-checkbox">
                   <input
-                      type="checkbox"
                       v-model="specificTimeDelivery.weekdays"
+                      type="checkbox"
                       :value="day.value"
                   />
                   <span class="weekday-label">{{ day.label }}</span>

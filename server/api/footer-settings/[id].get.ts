@@ -1,17 +1,15 @@
-import { defineEventHandler, getRouterParam, parseCookies, createError } from 'h3'
 import { useRuntimeConfig } from '#imports'
+import { createError, defineEventHandler, getRouterParam, parseCookies } from 'h3'
 
 interface FooterResponse {
      success: boolean
-     data: any
+     data: unknown
 }
 
 export default defineEventHandler(async (event): Promise<FooterResponse> => {
      try {
           const id = getRouterParam(event, 'id')
           const config = useRuntimeConfig()
-
-          console.log('درخواست دریافت فوتر:', id)
 
           if (!id) {
                throw createError({
@@ -39,24 +37,23 @@ export default defineEventHandler(async (event): Promise<FooterResponse> => {
                throw new Error(`HTTP error! status: ${response.status}`)
           }
 
-          const responseData = await response.json() as any
-
-          console.log('پاسخ دریافت فوتر:', responseData)
+          const responseData = await response.json() as { data: unknown }
 
           return {
                success: true,
                data: responseData?.data || responseData
           }
 
-     } catch (error: any) {
-          console.error('خطا در دریافت فوتر:', error)
+     } catch (error: unknown) {
+          const err = error as { statusCode?: number; data?: any; message?: string; error?: string }
+          console.error('خطا در دریافت فوتر:', err)
 
           // اگر خطا از سرور Go آمده باشد
-          if (error.data) {
+          if (err.data) {
                throw createError({
-                    statusCode: error.statusCode || 500,
-                    message: error.data.message || error.data.error || 'خطا در دریافت فوتر',
-                    data: error.data
+                    statusCode: err.statusCode || 500,
+                    message: err.data.message || err.data.error || 'خطا در دریافت فوتر',
+                    data: err.data
                })
           }
 

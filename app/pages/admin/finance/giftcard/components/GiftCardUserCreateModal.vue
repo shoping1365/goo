@@ -5,8 +5,8 @@
       <div class="flex items-center justify-between mb-6">
         <h3 class="text-lg font-semibold text-gray-900">ثبت استفاده‌کننده جدید</h3>
         <button
-          @click="$emit('close')"
           class="text-gray-400 hover:text-gray-600"
+          @click="$emit('close')"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -15,7 +15,7 @@
       </div>
 
       <!-- فرم ثبت -->
-      <form @submit.prevent="handleSubmit" class="space-y-6">
+      <form class="space-y-6" @submit.prevent="handleSubmit">
         <!-- اطلاعات شخصی -->
         <div class="bg-gray-50 p-6 rounded-lg">
           <h4 class="text-md font-semibold text-gray-900 mb-4">اطلاعات شخصی</h4>
@@ -135,8 +135,8 @@
               </label>
               <select
                 v-model="form.province"
-                @change="handleProvinceChange"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                @change="handleProvinceChange"
               >
                 <option value="">انتخاب استان</option>
                 <option value="tehran">تهران</option>
@@ -259,9 +259,9 @@
           <div class="space-y-3">
             <div class="flex items-center">
               <input
+                id="sms-notifications"
                 v-model="form.notifications.sms"
                 type="checkbox"
-                id="sms-notifications"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label for="sms-notifications" class="mr-2 block text-sm text-gray-900">
@@ -270,9 +270,9 @@
             </div>
             <div class="flex items-center">
               <input
+                id="email-notifications"
                 v-model="form.notifications.email"
                 type="checkbox"
-                id="email-notifications"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label for="email-notifications" class="mr-2 block text-sm text-gray-900">
@@ -281,9 +281,9 @@
             </div>
             <div class="flex items-center">
               <input
+                id="push-notifications"
                 v-model="form.notifications.push"
                 type="checkbox"
-                id="push-notifications"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label for="push-notifications" class="mr-2 block text-sm text-gray-900">
@@ -292,9 +292,9 @@
             </div>
             <div class="flex items-center">
               <input
+                id="newsletter"
                 v-model="form.notifications.newsletter"
                 type="checkbox"
-                id="newsletter"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label for="newsletter" class="mr-2 block text-sm text-gray-900">
@@ -422,8 +422,8 @@
         <div class="flex justify-end gap-3 pt-6 border-t border-gray-200">
           <button
             type="button"
-            @click="$emit('close')"
             class="px-4 py-2 bg-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            @click="$emit('close')"
           >
             انصراف
           </button>

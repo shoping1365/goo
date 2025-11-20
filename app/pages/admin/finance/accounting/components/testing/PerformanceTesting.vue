@@ -8,8 +8,8 @@
       </div>
       <div class="flex items-center space-x-3 space-x-reverse">
         <button
-          @click="runPerformanceTest"
           class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          @click="runPerformanceTest"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -79,8 +79,8 @@
             <div>وضعیت: {{ getTestStatus(speedTest.status) }}</div>
           </div>
           <button
-            @click="runSpeedTest"
             class="mt-3 w-full px-3 py-2 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
+            @click="runSpeedTest"
           >
             اجرای تست سرعت
           </button>
@@ -100,8 +100,8 @@
             <div>وضعیت: {{ getTestStatus(loadTest.status) }}</div>
           </div>
           <button
-            @click="runLoadTest"
             class="mt-3 w-full px-3 py-2 bg-green-600 text-white text-xs rounded hover:bg-green-700"
+            @click="runLoadTest"
           >
             اجرای تست بار
           </button>
@@ -121,8 +121,8 @@
             <div>وضعیت: {{ getTestStatus(stressTest.status) }}</div>
           </div>
           <button
-            @click="runStressTest"
             class="mt-3 w-full px-3 py-2 bg-red-600 text-white text-xs rounded hover:bg-red-700"
+            @click="runStressTest"
           >
             اجرای تست استرس
           </button>

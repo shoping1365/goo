@@ -105,7 +105,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">پروفایل کاربری هوشمند</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="features.smartProfile.enabled" class="sr-only peer">
+            <input v-model="features.smartProfile.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
           </label>
         </div>
@@ -115,19 +115,19 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">ویژگی‌های پروفایل</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.smartProfile.attributes" value="demographics" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                <input v-model="features.smartProfile.attributes" type="checkbox" value="demographics" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                 <span class="mr-2 text-sm text-gray-700">اطلاعات جمعیتی</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.smartProfile.attributes" value="behavioral" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                <input v-model="features.smartProfile.attributes" type="checkbox" value="behavioral" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                 <span class="mr-2 text-sm text-gray-700">رفتار خرید</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.smartProfile.attributes" value="preferences" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                <input v-model="features.smartProfile.attributes" type="checkbox" value="preferences" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                 <span class="mr-2 text-sm text-gray-700">ترجیحات</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.smartProfile.attributes" value="contextual" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                <input v-model="features.smartProfile.attributes" type="checkbox" value="contextual" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                 <span class="mr-2 text-sm text-gray-700">زمینه‌ای</span>
               </label>
             </div>
@@ -146,7 +146,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">دقت پروفایل</label>
             <div class="flex items-center space-x-4 space-x-reverse">
-              <input type="range" v-model="features.smartProfile.accuracy" min="0" max="100" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+              <input v-model="features.smartProfile.accuracy" type="range" min="0" max="100" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
               <span class="text-sm font-medium text-gray-900 w-12">{{ features.smartProfile.accuracy }}%</span>
             </div>
           </div>
@@ -165,7 +165,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">Segmentation هوشمند</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="features.smartSegmentation.enabled" class="sr-only peer">
+            <input v-model="features.smartSegmentation.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
           </label>
         </div>
@@ -175,19 +175,19 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">معیارهای تقسیم‌بندی</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.smartSegmentation.criteria" value="value" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="features.smartSegmentation.criteria" type="checkbox" value="value" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">ارزش مشتری</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.smartSegmentation.criteria" value="loyalty" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="features.smartSegmentation.criteria" type="checkbox" value="loyalty" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">وفاداری</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.smartSegmentation.criteria" value="engagement" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="features.smartSegmentation.criteria" type="checkbox" value="engagement" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">تعامل</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.smartSegmentation.criteria" value="lifecycle" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="features.smartSegmentation.criteria" type="checkbox" value="lifecycle" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">چرخه حیات</span>
               </label>
             </div>
@@ -205,7 +205,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">تعداد Segments</label>
-            <input type="range" v-model="features.smartSegmentation.segmentCount" min="3" max="20" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="features.smartSegmentation.segmentCount" type="range" min="3" max="20" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>3</span>
               <span>{{ features.smartSegmentation.segmentCount }}</span>
@@ -228,7 +228,7 @@
           <h3 class="text-lg font-semibold text-gray-900 mr-3">Contextual Recommendations</h3>
         </div>
         <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" v-model="features.contextualRecommendations.enabled" class="sr-only peer">
+          <input v-model="features.contextualRecommendations.enabled" type="checkbox" class="sr-only peer">
           <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
         </label>
       </div>
@@ -239,19 +239,19 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">فاکتورهای زمینه‌ای</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.contextualRecommendations.factors" value="time" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="features.contextualRecommendations.factors" type="checkbox" value="time" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">زمان روز</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.contextualRecommendations.factors" value="location" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="features.contextualRecommendations.factors" type="checkbox" value="location" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">مکان</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.contextualRecommendations.factors" value="device" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="features.contextualRecommendations.factors" type="checkbox" value="device" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">دستگاه</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.contextualRecommendations.factors" value="weather" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="features.contextualRecommendations.factors" type="checkbox" value="weather" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">آب و هوا</span>
               </label>
             </div>
@@ -260,7 +260,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">وزن زمینه</label>
             <div class="flex items-center space-x-4 space-x-reverse">
-              <input type="range" v-model="features.contextualRecommendations.contextWeight" min="0" max="100" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+              <input v-model="features.contextualRecommendations.contextWeight" type="range" min="0" max="100" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
               <span class="text-sm font-medium text-gray-900 w-12">{{ features.contextualRecommendations.contextWeight }}%</span>
             </div>
           </div>
@@ -279,7 +279,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">آستانه اطمینان</label>
-            <input type="range" v-model="features.contextualRecommendations.confidenceThreshold" min="0.1" max="1" step="0.1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="features.contextualRecommendations.confidenceThreshold" type="range" min="0.1" max="1" step="0.1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>0.1</span>
               <span>{{ features.contextualRecommendations.confidenceThreshold }}</span>
@@ -303,7 +303,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">Multi-Objective Optimization</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="features.multiObjective.enabled" class="sr-only peer">
+            <input v-model="features.multiObjective.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
           </label>
         </div>
@@ -313,19 +313,19 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">اهداف بهینه‌سازی</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.multiObjective.objectives" value="revenue" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                <input v-model="features.multiObjective.objectives" type="checkbox" value="revenue" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
                 <span class="mr-2 text-sm text-gray-700">افزایش درآمد</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.multiObjective.objectives" value="engagement" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                <input v-model="features.multiObjective.objectives" type="checkbox" value="engagement" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
                 <span class="mr-2 text-sm text-gray-700">افزایش تعامل</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.multiObjective.objectives" value="satisfaction" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                <input v-model="features.multiObjective.objectives" type="checkbox" value="satisfaction" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
                 <span class="mr-2 text-sm text-gray-700">رضایت کاربر</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="features.multiObjective.objectives" value="diversity" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                <input v-model="features.multiObjective.objectives" type="checkbox" value="diversity" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
                 <span class="mr-2 text-sm text-gray-700">تنوع پیشنهادات</span>
               </label>
             </div>
@@ -346,12 +346,12 @@
             <div class="space-y-2">
               <div class="flex items-center justify-between">
                 <span class="text-sm text-gray-700">درآمد</span>
-                <input type="range" v-model="features.multiObjective.weights.revenue" min="0" max="100" class="w-24 h-2 bg-gray-200 rounded-lg">
+                <input v-model="features.multiObjective.weights.revenue" type="range" min="0" max="100" class="w-24 h-2 bg-gray-200 rounded-lg">
                 <span class="text-xs text-gray-500 w-8">{{ features.multiObjective.weights.revenue }}%</span>
               </div>
               <div class="flex items-center justify-between">
                 <span class="text-sm text-gray-700">تعامل</span>
-                <input type="range" v-model="features.multiObjective.weights.engagement" min="0" max="100" class="w-24 h-2 bg-gray-200 rounded-lg">
+                <input v-model="features.multiObjective.weights.engagement" type="range" min="0" max="100" class="w-24 h-2 bg-gray-200 rounded-lg">
                 <span class="text-xs text-gray-500 w-8">{{ features.multiObjective.weights.engagement }}%</span>
               </div>
             </div>
@@ -371,7 +371,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">Adaptive Learning</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="features.adaptiveLearning.enabled" class="sr-only peer">
+            <input v-model="features.adaptiveLearning.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-600"></div>
           </label>
         </div>
@@ -389,7 +389,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">نرخ یادگیری</label>
-            <input type="range" v-model="features.adaptiveLearning.learningRate" min="0.001" max="1" step="0.001" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="features.adaptiveLearning.learningRate" type="range" min="0.001" max="1" step="0.001" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>0.001</span>
               <span>{{ features.adaptiveLearning.learningRate }}</span>
@@ -409,7 +409,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">آستانه تغییر</label>
-            <input type="range" v-model="features.adaptiveLearning.changeThreshold" min="0.01" max="0.5" step="0.01" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="features.adaptiveLearning.changeThreshold" type="range" min="0.01" max="0.5" step="0.01" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>0.01</span>
               <span>{{ features.adaptiveLearning.changeThreshold }}</span>

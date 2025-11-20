@@ -24,12 +24,11 @@
     <div class="tab-glass sticky top-[90px] z-10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div class="relative">
-          <button v-if="showScrollLeft" @click="scrollTabs('left')" class="tab-scroll-btn absolute left-0 top-1/2 -translate-y-1/2 z-10"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button>
+          <button v-if="showScrollLeft" class="tab-scroll-btn absolute left-0 top-1/2 -translate-y-1/2 z-10" @click="scrollTabs('left')"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button>
           <nav ref="tabNav" class="flex flex-nowrap overflow-x-auto hide-scrollbar py-2 px-8" style="scroll-behavior:smooth;">
             <button
               v-for="(tab, idx) in tabs"
               :key="tab.name"
-              @click="activeTab = idx"
               :class="[
                 'tab-glass-btn flex items-center gap-2 px-7 py-2 rounded-xl font-bold text-base transition-all duration-200 whitespace-nowrap',
                 activeTab === idx
@@ -38,12 +37,13 @@
                 'min-w-[160px] sm:min-w-[180px] md:min-w-[200px]',
                 activeTab === idx ? 'backdrop-blur-md' : ''
               ]"
+              @click="activeTab = idx"
             >
               <component :is="tab.icon" class="w-6 h-6" :class="activeTab === idx ? 'text-white' : tab.color.replace('bg-', 'text-')" />
               <span>{{ tab.label }}</span>
             </button>
           </nav>
-          <button v-if="showScrollRight" @click="scrollTabs('right')" class="tab-scroll-btn absolute right-0 top-1/2 -translate-y-1/2 z-10"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button>
+          <button v-if="showScrollRight" class="tab-scroll-btn absolute right-0 top-1/2 -translate-y-1/2 z-10" @click="scrollTabs('right')"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button>
         </div>
       </div>
     </div>
@@ -67,7 +67,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
 definePageMeta({
   layout: 'admin-main',
@@ -75,59 +75,59 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 // ایمپورت همه کامپوننت‌ها
-import RequiredDocuments from './RequiredDocuments.vue'
-import EmergencySettings from './EmergencySettings.vue'
-import OrderValuePricing from './OrderValuePricing.vue'
-import ClearDescriptions from './ClearDescriptions.vue'
-import WeightLimits from './WeightLimits.vue'
-import SystemSync from './SystemSync.vue'
-import SecurityInsuranceSettings from './SecurityInsuranceSettings.vue'
 import ActualDeliveryTime from './ActualDeliveryTime.vue'
-import UsageStatistics from './UsageStatistics.vue'
-import TimeSettings from './TimeSettings.vue'
-import RegionalPricing from './RegionalPricing.vue'
+import AlternativeShippingMethods from './AlternativeShippingMethods.vue'
+import AutomaticNotifications from './AutomaticNotifications.vue'
+import BaseInfoForm from './BaseInfoForm.vue'
+import ClearDescriptions from './ClearDescriptions.vue'
+import Compensation from './Compensation.vue'
+import CompensationManagement from './CompensationManagement.vue'
+import CountryRestrictions from './CountryRestrictions.vue'
+import CoverageAreas from './CoverageAreas.vue'
+import CustomerSatisfaction from './CustomerSatisfaction.vue'
+import CustomsRegulations from './CustomsRegulations.vue'
+import DelayNotifications from './DelayNotifications.vue'
+import DistanceBasedPricing from './DistanceBasedPricing.vue'
+import EmergencySettings from './EmergencySettings.vue'
+import ExternalAPIs from './ExternalAPIs.vue'
+import FinancialReports from './FinancialReports.vue'
+import FlatRatePricing from './FlatRatePricing.vue'
+import GeographicRange from './GeographicRange.vue'
+import GroupVisibility from './GroupVisibility.vue'
+import InternationalCurrencies from './InternationalCurrencies.vue'
 import IssuesAndComplaints from './IssuesAndComplaints.vue'
-import PackagingRequirements from './PackagingRequirements.vue'
-import TimeBasedPricing from './TimeBasedPricing.vue'
+import ItemCountLimits from './ItemCountLimits.vue'
+import ItemCountPricing from './ItemCountPricing.vue'
 import MethodComparison from './MethodComparison.vue'
+import OrderSettings from './OrderSettings.vue'
+import OrderTypeLimitations from './OrderTypeLimitations.vue'
+import OrderValuePricing from './OrderValuePricing.vue'
+import PackagingRequirements from './PackagingRequirements.vue'
+import PersonalizationByHistory from './PersonalizationByHistory.vue'
+import PricingSettings from './PricingSettings.vue'
+import ProductSettings from './ProductSettings.vue'
+import ProhibitedProducts from './ProhibitedProducts.vue'
+import RegionalPricing from './RegionalPricing.vue'
+import RegionalSettings from './RegionalSettings.vue'
+import RequiredDocuments from './RequiredDocuments.vue'
+import SecurityInsuranceSettings from './SecurityInsuranceSettings.vue'
 import SelectionGuide from './SelectionGuide.vue'
+import SensitiveProducts from './SensitiveProducts.vue'
 import ShippingFAQ from './ShippingFAQ.vue'
 import ShippingMethodImages from './ShippingMethodImages.vue'
-import CountryRestrictions from './CountryRestrictions.vue'
-import CustomsRegulations from './CustomsRegulations.vue'
-import InternationalCurrencies from './InternationalCurrencies.vue'
-import CompensationManagement from './CompensationManagement.vue'
-import Compensation from './Compensation.vue'
-import DelayNotifications from './DelayNotifications.vue'
-import AlternativeShippingMethods from './AlternativeShippingMethods.vue'
-import PersonalizationByHistory from './PersonalizationByHistory.vue'
-import SuggestedShippingMethods from './SuggestedShippingMethods.vue'
-import VipDiscounts from './VipDiscounts.vue'
-import GroupVisibility from './GroupVisibility.vue'
-import AutomaticNotifications from './AutomaticNotifications.vue'
-import Webhooks from './Webhooks.vue'
-import ExternalAPIs from './ExternalAPIs.vue'
-import CustomerSatisfaction from './CustomerSatisfaction.vue'
-import FinancialReports from './FinancialReports.vue'
-import SpecialOrderConditions from './SpecialOrderConditions.vue'
-import OrderTypeLimitations from './OrderTypeLimitations.vue'
-import ItemCountLimits from './ItemCountLimits.vue'
-import SensitiveProducts from './SensitiveProducts.vue'
-import ProhibitedProducts from './ProhibitedProducts.vue'
-import ProductSettings from './ProductSettings.vue'
-import CoverageAreas from './CoverageAreas.vue'
-import GeographicRange from './GeographicRange.vue'
-import OrderSettings from './OrderSettings.vue'
-import RegionalSettings from './RegionalSettings.vue'
-import PricingSettings from './PricingSettings.vue'
 import SpecialDiscountPricing from './SpecialDiscountPricing.vue'
-import ItemCountPricing from './ItemCountPricing.vue'
-import DistanceBasedPricing from './DistanceBasedPricing.vue'
+import SpecialOrderConditions from './SpecialOrderConditions.vue'
+import SuggestedShippingMethods from './SuggestedShippingMethods.vue'
+import SystemSync from './SystemSync.vue'
+import TimeBasedPricing from './TimeBasedPricing.vue'
+import TimeSettings from './TimeSettings.vue'
+import UsageStatistics from './UsageStatistics.vue'
+import VipDiscounts from './VipDiscounts.vue'
+import Webhooks from './Webhooks.vue'
 import WeightBasedPricing from './WeightBasedPricing.vue'
-import FlatRatePricing from './FlatRatePricing.vue'
-import BaseInfoForm from './BaseInfoForm.vue'
+import WeightLimits from './WeightLimits.vue'
 
 // آیکون‌های رنگی برای هر تب
 const IconInfo = { template: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16v-4m0-4h.01"/></svg>' }

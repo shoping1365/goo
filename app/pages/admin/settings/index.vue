@@ -13,6 +13,7 @@
         v-if="activeKey === 'home'"
         :settings="settings"
         :saving="saving"
+        @update:settings="val => Object.assign(settings, val)"
         @save="saveSettings"
         @reset="resetSettings"
         @select-image="selectImage"
@@ -36,6 +37,9 @@
         :print-settings="printSettings"
         :template-settings="templateSettings"
         :saving-invoice-print="savingInvoicePrint"
+        @update:template-settings="val => Object.assign(templateSettings, val)"
+        @update:invoice-settings="val => Object.assign(invoiceSettings, val)"
+        @update:print-settings="val => Object.assign(printSettings, val)"
         @save="saveInvoicePrintSettings"
         @reset="resetInvoicePrintSettings"
       />
@@ -55,6 +59,8 @@
         @toggle-api-key="showApiKey = !showApiKey"
         @add-consuming-page="addConsumingPage"
         @remove-consuming-page="removeConsumingPage"
+        @update:open-a-i-settings="val => Object.assign(openAISettings, val)"
+        @update:section-configs="val => Object.assign(sectionConfigs, val)"
       />
       <AutomationSettings v-else-if="activeKey === 'automation'" />
       <IntegrationSettings v-else-if="activeKey === 'integration'" />
@@ -71,6 +77,7 @@
         :auth-active-tab="authActiveTab" 
         :show-jwt-secret="showJwtSecret" 
         :saving-auth="savingAuth" 
+        @update:auth-settings="val => Object.assign(authSettings, val)"
         @save="saveAuthSettings" 
         @generate-new-jwt-secret="generateNewJwtSecret" 
         @update:auth-active-tab="authActiveTab = $event" 
@@ -90,23 +97,23 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch, onMounted } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 
 // Import settings components
-import SettingsMenu from './components/SettingsMenu.vue'
-import HomeSettings from './components/HomeSettings.vue'
-import GeneralSettings from './components/GeneralSettings.vue'
-import ProductSettings from './components/ProductSettings.vue'
-import ShopSettings from './components/ShopSettings.vue'
-import InvoicePrintSettings from './components/InvoicePrintSettings.vue'
 import ApiSettings from './components/ApiSettings.vue'
-import AutomationSettings from './components/AutomationSettings.vue'
-import IntegrationSettings from './components/IntegrationSettings.vue'
-import SocialMediaSettings from './components/SocialMediaSettings.vue'
 import AuthSettings from './components/AuthSettings.vue'
-import UserSettings from './components/UserSettings.vue'
-import ReviewSettings from './components/ReviewSettings.vue'
+import AutomationSettings from './components/AutomationSettings.vue'
+import GeneralSettings from './components/GeneralSettings.vue'
+import HomeSettings from './components/HomeSettings.vue'
+import IntegrationSettings from './components/IntegrationSettings.vue'
+import InvoicePrintSettings from './components/InvoicePrintSettings.vue'
 import LoginPageSettings from './components/LoginPageSettings.vue'
+import ProductSettings from './components/ProductSettings.vue'
+import ReviewSettings from './components/ReviewSettings.vue'
+import SettingsMenu from './components/SettingsMenu.vue'
+import ShopSettings from './components/ShopSettings.vue'
+import SocialMediaSettings from './components/SocialMediaSettings.vue'
+import UserSettings from './components/UserSettings.vue'
 
 definePageMeta({
   layout: 'admin-main',
@@ -432,7 +439,7 @@ function toggleGroup(k) {
 }
 
 // توابع مدیریت تنظیمات
-function selectImage(type) {
+function selectImage(_type) {
   // اینجا می‌توانید منطق انتخاب تصویر را اضافه کنید
 }
 
@@ -529,7 +536,7 @@ const saveApiSettings = async () => {
     // داده‌های ارسالی
     
     // ارسال درخواست به API
-    const response = await $fetch('/api/admin/api-settings', {
+    await $fetch('/api/admin/api-settings', {
       method: 'PUT',
       body: apiSettingsData,
       credentials: 'include'
@@ -688,12 +695,12 @@ const fetchUsageData = async () => {
   }
 }
 
-const maskAPIKey = (apiKey) => {
-  if (!apiKey || apiKey.length <= 8) {
-    return '***'
-  }
-  return apiKey.substring(0, 4) + '...' + apiKey.substring(apiKey.length - 4)
-}
+// const maskAPIKey = (apiKey) => {
+//   if (!apiKey || apiKey.length <= 8) {
+//     return '***'
+//   }
+//   return apiKey.substring(0, 4) + '...' + apiKey.substring(apiKey.length - 4)
+// }
 
 const resetApiSettings = () => {
   // بازنشانی تنظیمات OpenAI
@@ -786,7 +793,7 @@ const saveSettings = async () => {
     // داده‌های ارسالی
     
     // ارسال یک درخواست تجمیعی
-    const response = await $fetch('/api/admin/shop-settings', {
+    await $fetch('/api/admin/shop-settings', {
       method: 'PUT',
       body: settingsData
     })
@@ -861,10 +868,10 @@ const saveInvoicePrintSettings = async () => {
       template: templateSettings
     }
     
-    console.log('داده‌های ارسالی:', invoicePrintData)
+    // console.log('داده‌های ارسالی:', invoicePrintData)
     
     // ارسال درخواست به API
-    const response = await $fetch('/api/admin/invoice-print-settings', {
+    await $fetch('/api/admin/invoice-print-settings', {
       method: 'PUT',
       body: invoicePrintData
     })
@@ -1049,7 +1056,7 @@ onMounted(async () => {
         
         // تنظیمات فاکتور و چاپ بارگذاری شد
       }
-    } catch (invoicePrintError) {
+    } catch {
       // خطا در بارگذاری تنظیمات فاکتور و چاپ
       // این خطا نباید مانع بارگذاری تنظیمات اصلی شود
     }
@@ -1115,13 +1122,13 @@ onMounted(async () => {
           try {
             // دریافت آمار استفاده OpenAI
             await fetchUsageData()
-          } catch (usageError) {
+          } catch {
             // خطا در دریافت آمار استفاده
             // این خطا نباید مانع بارگذاری تنظیمات اصلی شود
           }
         }
       }
-    } catch (apiError) {
+    } catch {
       // خطا در بارگذاری تنظیمات API
       // این خطا نباید مانع بارگذاری تنظیمات اصلی شود
     }
@@ -1136,7 +1143,7 @@ onMounted(async () => {
         sectionConfigs.image_seo.model = map['image_seo.model']
         sectionConfigs.image_seo.isEnabled = true
       }
-    } catch (e) {
+    } catch {
       // load image_seo model override failed
     }
 
@@ -1144,7 +1151,7 @@ onMounted(async () => {
     try {
       // بارگذاری تنظیمات احراز هویت
       await loadAuthSettings()
-    } catch (authError) {
+    } catch {
       // خطا در بارگذاری تنظیمات احراز هویت
       // این خطا نباید مانع بارگذاری تنظیمات اصلی شود
     }
@@ -1153,7 +1160,7 @@ onMounted(async () => {
     try {
       // بارگذاری تنظیمات صفحه ورود
       await loadLoginPageSettings()
-    } catch (loginPageError) {
+    } catch {
       // خطا در بارگذاری تنظیمات صفحه ورود
       // این خطا نباید مانع بارگذاری تنظیمات اصلی شود
     }
@@ -1161,13 +1168,13 @@ onMounted(async () => {
     // بارگذاری تنظیمات شبکه‌های اجتماعی
     try {
       await loadSocialMediaSettings()
-    } catch (socialMediaError) {
+    } catch {
       // خطا در بارگذاری تنظیمات شبکه‌های اجتماعی
       // این خطا نباید مانع بارگذاری تنظیمات اصلی شود
     }
     
     settingsLoaded = true
-  } catch (error) {
+  } catch {
     // خطا در بارگذاری تنظیمات
     settingsLoaded = true // حتی در صورت خطا، علامت‌گذاری کن
   }
@@ -1230,10 +1237,10 @@ const saveLoginPageSettings = async (payload) => {
       'auth.show_password_login': loginPageSettings.showPasswordLogin
     }
     
-    console.log('داده‌های ارسالی:', loginPageData)
+    // console.log('داده‌های ارسالی:', loginPageData)
     
     // ارسال درخواست به API
-    const response = await $fetch('/api/admin/settings', {
+    await $fetch('/api/admin/settings', {
       method: 'PUT',
       body: loginPageData
     })
@@ -1305,7 +1312,7 @@ const saveSocialMediaSettings = async (payload) => {
   try {
     savingSocialMedia.value = true
     
-    console.log('💾 Saving social media settings:', payload)
+    // console.log('💾 Saving social media settings:', payload)
     
     const sanitizedPayload = {
       ...payload,
@@ -1322,12 +1329,12 @@ const saveSocialMediaSettings = async (payload) => {
     const payloadToSave = JSON.parse(JSON.stringify(sanitizedPayload))
 
     // ارسال داده‌ها به endpoint اختصاصی شبکه‌های اجتماعی
-  const response = await $fetch(socialMediaEndpoint, {
+  await $fetch(socialMediaEndpoint, {
       method: 'PUT',
       body: payloadToSave
     })
     
-    console.log('✅ Save response:', response)
+    // console.log('✅ Save response:', response)
     
     // بروزرسانی state محلی
   Object.assign(socialMediaSettings, payloadToSave)
@@ -1468,16 +1475,16 @@ const normalizeSocialMediaResponse = (raw) => {
 // بارگذاری تنظیمات شبکه‌های اجتماعی
 const loadSocialMediaSettings = async () => {
   try {
-    console.log('🔄 Loading social media settings...')
+    // console.log('🔄 Loading social media settings...')
   const response = await $fetch(socialMediaEndpoint)
     
-    console.log('📥 Response:', response)
+    // console.log('📥 Response:', response)
 
     const normalized = normalizeSocialMediaResponse(response)
 
     if (normalized.success && normalized.data) {
       const settings = normalized.data
-      console.log('📊 Settings data:', settings)
+      // console.log('📊 Settings data:', settings)
       
       // بارگذاری تنظیمات به صورت مستقیم
       Object.keys(socialMediaSettings).forEach(key => {
@@ -1494,7 +1501,7 @@ const loadSocialMediaSettings = async () => {
             parsedLinks = rawLinks
           }
           socialMediaSettings.customLinks = Array.isArray(parsedLinks) ? parsedLinks : []
-          console.log('✅ Loaded customLinks:', socialMediaSettings.customLinks)
+          // console.log('✅ Loaded customLinks:', socialMediaSettings.customLinks)
           return
         }
 
@@ -1502,22 +1509,22 @@ const loadSocialMediaSettings = async () => {
           // تبدیل رشته boolean به boolean واقعی
           if (key.endsWith('_enabled')) {
             socialMediaSettings[key] = settings[key] === 'true' || settings[key] === true
-            console.log(`✅ Loaded ${key}:`, socialMediaSettings[key])
+            // console.log(`✅ Loaded ${key}:`, socialMediaSettings[key])
           } else {
             socialMediaSettings[key] = settings[key]
-            console.log(`✅ Loaded ${key}:`, socialMediaSettings[key])
+            // console.log(`✅ Loaded ${key}:`, socialMediaSettings[key])
           }
         } else {
-          console.log(`⚠️ Key not found in response: ${key}`)
+          // console.log(`⚠️ Key not found in response: ${key}`)
         }
       })
       
-      console.log('🎯 Final socialMediaSettings:', socialMediaSettings)
+      // console.log('🎯 Final socialMediaSettings:', socialMediaSettings)
     } else {
-      console.log('❌ Invalid response format')
+      // console.log('❌ Invalid response format')
     }
-  } catch (error) {
-    console.error('❌ خطا در بارگذاری تنظیمات شبکه‌های اجتماعی:', error)
+  } catch {
+    // console.error('❌ خطا در بارگذاری تنظیمات شبکه‌های اجتماعی:', error)
   }
 }
 
@@ -1595,7 +1602,7 @@ const loadLoginPageSettings = async () => {
       
       // تنظیمات صفحه ورود بارگذاری شد
     }
-  } catch (error) {
+  } catch {
     // خطا در بارگذاری تنظیمات صفحه ورود
     // در صورت خطا، تنظیمات پیش‌فرض حفظ می‌شوند
   }
@@ -1664,7 +1671,7 @@ const saveAuthSettings = async () => {
     // داده‌های ارسالی
     
     // ارسال تنظیمات احراز هویت
-    const response = await $fetch('/api/admin/settings/auth', {
+    await $fetch('/api/admin/settings/auth', {
       method: 'PUT',
       body: settingsData
     })
@@ -1674,7 +1681,7 @@ const saveAuthSettings = async () => {
     // نمایش پیام موفقیت
     showSuccessMessage('تنظیمات احراز هویت با موفقیت ذخیره شد')
     
-  } catch (error) {
+  } catch {
     // خطا در ذخیره تنظیمات احراز هویت
     showErrorMessage('خطا در ذخیره تنظیمات احراز هویت')
   } finally {
@@ -1729,7 +1736,7 @@ const loadAuthSettings = async () => {
       authSettings.emailVerificationEnabled = settings.email_verification_enabled || false
       authSettings.phoneVerificationEnabled = settings.phone_verification_enabled || true
     }
-  } catch (error) {
+  } catch {
     // خطا در بارگذاری تنظیمات احراز هویت
   }
 }
@@ -1774,9 +1781,9 @@ const settings = reactive({
 })
 
 // متدهای کمکی
-const getModelStatusClass = (isActive) => {
-  return isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-}
+// const getModelStatusClass = (isActive) => {
+//   return isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+// }
 
 // بروزرسانی تنظیمات بخش‌ها
 const updateSectionModels = async () => {
@@ -1797,7 +1804,7 @@ const updateSectionModels = async () => {
         ]
       }).catch(()=>{})
     }
-  } catch (e) {
+  } catch {
     // sync image_seo model failed
   }
 }

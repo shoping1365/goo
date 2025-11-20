@@ -81,22 +81,8 @@
 
         <!-- Article Content -->
         <div class="px-6 pb-6">
-          <!-- 
-            ⚠️ امنیت XSS: استفاده از v-html خطرناک است!
-            
-            این کد محتوای HTML را بدون sanitization نمایش می‌دهد که می‌تواند منجر به حملات XSS شود.
-            
-            ✅ راه حل صحیح:
-            1. قبل از استفاده از v-html، محتوا را با کتابخانه sanitization (مثل DOMPurify) پاکسازی کنید
-            2. یا از {{ }} به جای v-html استفاده کنید اگر HTML نیاز نیست
-            3. محتوای کاربر را هرگز بدون sanitization در v-html قرار ندهید
-            
-            مثال صحیح:
-            import DOMPurify from 'dompurify'
-            const sanitizedContent = computed(() => DOMPurify.sanitize(post.value?.content || ''))
-            <div v-html="sanitizedContent"></div>
-          -->
-          <div class="prose prose-lg max-w-none" v-html="post.content"></div>
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <div class="prose prose-lg max-w-none" v-html="sanitizedContent"></div>
         </div>
 
         <!-- Article Footer -->
@@ -160,7 +146,7 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string }) => void
-declare const useFetch: <T = unknown>(url: string, options?: { transform?: (data: any) => T }) => Promise<{ data: { value: T }; pending: { value: boolean }; error: { value: Error | null } }>
+declare const useFetch: <T = unknown>(url: string, options?: { transform?: (data: unknown) => T }) => Promise<{ data: { value: T }; pending: { value: boolean }; error: { value: Error | null } }>
 declare const useHead: (head: { title?: string; meta?: Array<{ name?: string; content?: string }> }) => void
 declare const useRoute: () => { params: Record<string, string>; query: Record<string, string> }
 declare const $fetch: <T = unknown>(url: string) => Promise<T>
@@ -192,6 +178,7 @@ interface Category {
 </script>
 
 <script setup lang="ts">
+import DOMPurify from 'dompurify';
 import { computed, ref } from 'vue';
 
 definePageMeta({
@@ -201,26 +188,30 @@ definePageMeta({
 const route = useRoute()
 const { category: categorySlug, slug: postSlug } = route.params
 
+const sanitizedContent = computed(() => {
+  if (!post.value?.content) return '';
+  return DOMPurify.sanitize(post.value.content);
+});
+
 // دریافت اطلاعات دسته‌بندی
-const { data: category, pending: categoryPending, error: categoryError } = await useFetch<Category | null>(`/api/post-categories?all=1`, {
-  transform: (data: any[]) => {
+const { data: category } = await useFetch<Category | null>(`/api/post-categories?all=1`, {
+  transform: (data: unknown) => {
     if (Array.isArray(data)) {
-      return data.find(cat => cat.slug === categorySlug) as Category | null
+      return (data as Category[]).find(cat => cat.slug === categorySlug) || null
     }
     return null
   }
 })
 
 // دریافت اطلاعات نوشته به صورت مستقیم
-let post = ref<Post | null>(null)
-let error = ref(null)
+const post = ref<Post | null>(null)
 try {
   // بررسی پارامتر preview از URL
   const isPreview = route.query.preview === '1' || route.query.preview === 'true'
   const apiUrl = isPreview ? `/api/posts/${postSlug}?preview=1` : `/api/posts/${postSlug}`
   
   post.value = await $fetch<Post>(apiUrl)
-} catch (e) {
+} catch (_e) {
   throw createError({ statusCode: 404, statusMessage: 'نوشته یافت نشد' })
 }
 
@@ -256,4 +247,4 @@ const formatDate = (dateString: string) => {
     day: 'numeric'
   })
 }
-</script> 
+</script>

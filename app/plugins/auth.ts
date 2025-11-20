@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/stores/auth'
 
-declare const defineNuxtPlugin: (plugin: (nuxtApp: any) => void | Promise<void>) => { provide?: Record<string, any> }
+declare const defineNuxtPlugin: (plugin: (nuxtApp: unknown) => void | Promise<void>) => { provide?: Record<string, unknown> }
 
 export default defineNuxtPlugin(() => {
   if (process.client) {

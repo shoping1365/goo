@@ -1,4 +1,4 @@
-import { ref, reactive, computed } from 'vue'
+import { computed, ref } from 'vue'
 
 export interface MenuItem {
   id?: number
@@ -48,6 +48,89 @@ export interface MenuLocation {
   description?: string
 }
 
+// Helper interface for raw data from API or other sources
+interface RawMenuItem {
+  id?: number
+  item_id?: number
+  clientId?: number
+  client_id?: number
+  menuId?: number
+  menu_id?: number
+  menuID?: number
+  menu?: number
+  title?: string
+  name?: string
+  label?: string
+  path?: string
+  url?: string
+  link?: string
+  icon?: string
+  icon_class?: string
+  iconName?: string
+  iconType?: string
+  icon_type?: string
+  itemType?: string
+  item_type?: string
+  type?: string
+  enabled?: boolean
+  is_active?: boolean
+  status?: string
+  state?: string
+  order?: number
+  sort_order?: number
+  parentId?: number
+  parent_id?: number
+  parentClientId?: number
+  parent_client_id?: number
+  depth?: number
+  level?: number
+  openInNewTab?: boolean
+  open_in_new_tab?: boolean
+  target?: string
+  badge?: string
+  badge_text?: string
+  badgeColor?: string
+  badge_color?: string
+  isMegaMenu?: boolean
+  is_mega_menu?: boolean
+  megaWidth?: string
+  mega_width?: string
+  megaColumns?: number
+  mega_columns?: number
+  description?: string
+  imageURL?: string
+  image_url?: string
+  featured?: boolean
+  showOnMobile?: boolean
+  show_on_mobile?: boolean
+  showOnDesktop?: boolean
+  show_on_desktop?: boolean
+  showOnTablet?: boolean
+  show_on_tablet?: boolean
+  children?: RawMenuItem[]
+  childrens?: RawMenuItem[]
+  childCategories?: RawMenuItem[]
+  child_categories?: RawMenuItem[]
+  nodes?: RawMenuItem[]
+  items?: RawMenuItem[]
+  menuItems?: RawMenuItem[]
+  isNew?: boolean
+  slug?: string
+  identifier?: string
+  category_id?: number
+  categoryId?: number
+  parentID?: number
+  parent?: number
+  parentCategoryId?: number
+  parent_category_id?: number
+  targetId?: number
+  target_id?: number
+  targetType?: string
+  target_type?: string
+  displayName?: string
+  [key: string]: unknown
+}
+
 export const useMenuManagement = () => {
   const menus = ref<Menu[]>([])
   const currentMenu = ref<Menu>({
@@ -67,10 +150,10 @@ export const useMenuManagement = () => {
   const isSaving = ref(false)
   
   // Content data - wrapped in computed to ensure arrays
-  const _pages = ref([])
-  const _posts = ref([])
-  const _categories = ref([])
-  const _productCategories = ref([])
+  const _pages = ref<RawMenuItem[]>([])
+  const _posts = ref<RawMenuItem[]>([])
+  const _categories = ref<RawMenuItem[]>([])
+  const _productCategories = ref<RawMenuItem[]>([])
   
   const pages = computed(() => Array.isArray(_pages.value) ? _pages.value : [])
   const posts = computed(() => Array.isArray(_posts.value) ? _posts.value : [])
@@ -98,50 +181,16 @@ export const useMenuManagement = () => {
   const registerDeletedMenuBranch = (item?: Partial<MenuItem> | null) => {
     if (!item) return
     const numericId = typeof item?.id === 'number' ? item.id : null
-    const isClientOnly = (item as any)?.isNew === true || numericId === null || numericId <= 0
+    const isClientOnly = (item as RawMenuItem)?.isNew === true || numericId === null || numericId <= 0
     if (!isClientOnly && typeof numericId === 'number') {
       markMenuItemDeleted(numericId)
     }
     if (isClientOnly) {
       return
     }
-    const children = (item as any)?.children
+    const children = (item as RawMenuItem)?.children
     if (Array.isArray(children)) {
       (children as Partial<MenuItem>[]).forEach(child => registerDeletedMenuBranch(child))
-    }
-  }
-
-  const normalizeIncomingItem = (item: Partial<MenuItem>, order: number): MenuItem => {
-    return {
-      id: undefined,
-      clientId: generateTempClientId(),
-      menuId: currentMenu.value.id,
-      order,
-      title: (item?.title ?? (item as any)?.name ?? 'بدون عنوان').toString(),
-      path: (item?.path ?? (item as any)?.url ?? '').toString(),
-      icon: item?.icon,
-      iconType: mapIconType(item?.iconType ?? (item as any)?.iconType ?? (item as any)?.icon_type),
-      enabled: item?.enabled !== false,
-      itemType: mapItemType(item?.itemType ?? (item as any)?.itemType ?? (item as any)?.item_type ?? (item as any)?.type),
-      parentId: null,
-      parentClientId: null,
-      depth: 0,
-      showOptions: false,
-      children: [],
-      expanded: false,
-      openInNewTab: item?.openInNewTab ?? false,
-      badge: item?.badge ?? '',
-      badgeColor: item?.badgeColor ?? 'red',
-      isMegaMenu: item?.isMegaMenu ?? false,
-      megaWidth: item?.megaWidth ?? 'full',
-      megaColumns: item?.megaColumns ?? 2,
-      description: item?.description ?? '',
-      imageURL: item?.imageURL ?? '',
-      featured: item?.featured ?? false,
-      showOnMobile: item?.showOnMobile ?? true,
-      showOnDesktop: item?.showOnDesktop ?? true,
-      showOnTablet: item?.showOnTablet ?? true,
-      isNew: true
     }
   }
 
@@ -173,6 +222,41 @@ export const useMenuManagement = () => {
     }
   }
 
+  const normalizeIncomingItem = (item: Partial<MenuItem>, order: number): MenuItem => {
+    const raw = item as RawMenuItem
+    return {
+      id: undefined,
+      clientId: generateTempClientId(),
+      menuId: currentMenu.value.id,
+      order,
+      title: (item?.title ?? raw?.name ?? 'بدون عنوان').toString(),
+      path: (item?.path ?? raw?.url ?? '').toString(),
+      icon: item?.icon,
+      iconType: mapIconType(item?.iconType ?? raw?.iconType ?? raw?.icon_type),
+      enabled: item?.enabled !== false,
+      itemType: mapItemType(item?.itemType ?? raw?.itemType ?? raw?.item_type ?? raw?.type),
+      parentId: null,
+      parentClientId: null,
+      depth: 0,
+      showOptions: false,
+      children: [],
+      expanded: false,
+      openInNewTab: item?.openInNewTab ?? false,
+      badge: item?.badge ?? '',
+      badgeColor: item?.badgeColor ?? 'red',
+      isMegaMenu: item?.isMegaMenu ?? false,
+      megaWidth: item?.megaWidth ?? 'full',
+      megaColumns: item?.megaColumns ?? 2,
+      description: item?.description ?? '',
+      imageURL: item?.imageURL ?? '',
+      featured: item?.featured ?? false,
+      showOnMobile: item?.showOnMobile ?? true,
+      showOnDesktop: item?.showOnDesktop ?? true,
+      showOnTablet: item?.showOnTablet ?? true,
+      isNew: true
+    }
+  }
+
   const normalizeNumericId = (value: unknown): number | null => {
     if (value === null || value === undefined) return null
     if (typeof value === 'number') {
@@ -182,7 +266,7 @@ export const useMenuManagement = () => {
     return Number.isFinite(numeric) ? numeric : null
   }
 
-  const resolveCategoryParentId = (item: any): number | null => {
+  const resolveCategoryParentId = (item: RawMenuItem): number | null => {
     const candidates = [
       item?.parentId,
       item?.parent_id,
@@ -200,7 +284,7 @@ export const useMenuManagement = () => {
     return null
   }
 
-  const getCategoryLabel = (item: any): string => {
+  const getCategoryLabel = (item: RawMenuItem): string => {
     const name = (item?.name ?? item?.title ?? '').toString().trim()
     if (name) {
       return name
@@ -245,12 +329,12 @@ export const useMenuManagement = () => {
     return `${spacer}-> ${base}`
   }
 
-  const buildHierarchicalOptions = (items: any[]): any[] => {
+  const buildHierarchicalOptions = (items: RawMenuItem[]): RawMenuItem[] => {
     if (!Array.isArray(items) || items.length === 0) {
       return []
     }
 
-    const getChildrenArray = (item: any): any[] => {
+    const getChildrenArray = (item: RawMenuItem): RawMenuItem[] => {
       const candidates = [
         item?.children,
         item?.childrens,
@@ -268,7 +352,7 @@ export const useMenuManagement = () => {
 
     const hasExplicitChildren = items.some((item) => getChildrenArray(item).length > 0)
 
-    const cloneWithMeta = (item: any, depth: number) => {
+    const cloneWithMeta = (item: RawMenuItem, depth: number) => {
       const normalizedId = normalizeNumericId(item?.id ?? item?.category_id ?? item?.categoryId)
       const label = getCategoryLabel(item)
       return {
@@ -280,8 +364,8 @@ export const useMenuManagement = () => {
     }
 
     if (hasExplicitChildren) {
-      const result: any[] = []
-      const traverse = (list: any[], depth: number) => {
+      const result: RawMenuItem[] = []
+      const traverse = (list: RawMenuItem[], depth: number) => {
         if (!Array.isArray(list)) return
         list.forEach((raw) => {
           const cloned = cloneWithMeta(raw, depth)
@@ -326,8 +410,8 @@ export const useMenuManagement = () => {
       })
     }
 
-    const result: any[] = []
-    const visited = new Set<any>()
+    const result: RawMenuItem[] = []
+    const visited = new Set<RawMenuItem>()
 
     const visit = (entry: typeof nodes[number], depth: number) => {
       if (!entry || visited.has(entry.original)) {
@@ -359,7 +443,7 @@ export const useMenuManagement = () => {
   }
 
   const normalizeMenuItem = (
-    raw: any,
+    raw: RawMenuItem,
     index: number = 0,
     parentIdOverride: number | null = null,
     menuIdOverride?: number
@@ -415,7 +499,7 @@ export const useMenuManagement = () => {
     }
   }
 
-  const flattenMenuItems = (items: any[], parentId: number | null = null, menuId?: number): MenuItem[] => {
+  const flattenMenuItems = (items: RawMenuItem[], parentId: number | null = null, menuId?: number): MenuItem[] => {
     if (!Array.isArray(items)) {
       return []
     }
@@ -471,44 +555,45 @@ export const useMenuManagement = () => {
     return rootItems
   }
 
-  const normalizeMenu = (raw: any): Menu => {
-    if (!raw) {
+  const normalizeMenu = (raw: unknown): Menu => {
+    const data = raw as RawMenuItem
+    if (!data) {
       return { id: undefined, name: '', slug: '', items: [] }
     }
 
-    console.log('🔍 Raw menu data from backend:', {
-      enabled: raw.enabled,
-      is_active: raw.is_active,
-      status: raw.status,
-      full: raw
-    })
+    // console.log('🔍 Raw menu data from backend:', {
+    //   enabled: data.enabled,
+    //   is_active: data.is_active,
+    //   status: data.status,
+    //   full: data
+    // })
 
-    const menuId = raw?.id ?? raw?.menu_id
-    const rawItems = raw?.items ?? raw?.menuItems ?? []
+    const menuId = data?.id ?? data?.menu_id
+    const rawItems = data?.items ?? data?.menuItems ?? []
     
-    console.log('📥 Raw items from backend:', JSON.parse(JSON.stringify(rawItems)))
+    // console.log('📥 Raw items from backend:', JSON.parse(JSON.stringify(rawItems)))
     
     // First flatten all items
     const flatItems = flattenMenuItems(rawItems, null, menuId)
     
-    console.log('📋 Flattened items:', flatItems.map(i => ({ 
-      id: i.id, 
-      title: i.title, 
-      enabled: i.enabled, 
-      parentId: i.parentId 
-    })))
+    // console.log('📋 Flattened items:', flatItems.map(i => ({ 
+    //   id: i.id, 
+    //   title: i.title, 
+    //   enabled: i.enabled, 
+    //   parentId: i.parentId 
+    // })))
     
     // Then build tree structure
     const treeItems = buildMenuTree(flatItems)
     
-    console.log('🌳 Built menu tree:', treeItems)
+    // console.log('🌳 Built menu tree:', treeItems)
 
     return {
-      id: raw.id ?? raw.menu_id ?? undefined,
-      name: raw.name ?? raw.title ?? '',
-      slug: raw.slug ?? raw.identifier ?? '',
-      enabled: raw.enabled !== false && raw.is_active !== false && raw.status !== 'inactive',
-      order: raw.order ?? raw.sort_order ?? undefined,
+      id: data.id ?? data.menu_id ?? undefined,
+      name: data.name ?? data.title ?? '',
+      slug: data.slug ?? data.identifier ?? '',
+      enabled: data.enabled !== false && data.is_active !== false && data.status !== 'inactive',
+      order: data.order ?? data.sort_order ?? undefined,
       items: treeItems
     }
   }
@@ -516,11 +601,11 @@ export const useMenuManagement = () => {
   const fetchMenus = async () => {
     isLoading.value = true
     try {
-      const response = await $fetch('/api/admin/menus')
-      const data = (response as any)?.data || response || []
+      const response = await $fetch<{ data: unknown[] }>('/api/admin/menus')
+      const data = response?.data || response || []
       menus.value = Array.isArray(data) ? data.map(normalizeMenu) : []
     } catch (error) {
-      console.error('Error fetching menus:', error)
+      // console.error('Error fetching menus:', error)
       throw error
     } finally {
       isLoading.value = false
@@ -530,12 +615,12 @@ export const useMenuManagement = () => {
   const fetchMenu = async (id: number) => {
     isLoading.value = true
     try {
-      const response = await $fetch(`/api/admin/menus/${id}`)
-      const data = (response as any)?.data || response || {}
+      const response = await $fetch<{ data: unknown }>(`/api/admin/menus/${id}`)
+      const data = response?.data || response || {}
       currentMenu.value = normalizeMenu(data)
       resetDeletedMenuItems()
     } catch (error) {
-      console.error('Error fetching menu:', error)
+      // console.error('Error fetching menu:', error)
       throw error
     } finally {
       isLoading.value = false
@@ -543,13 +628,13 @@ export const useMenuManagement = () => {
   }
 
   // Helper function to flatten menu items tree into array with parentId
-  const flattenMenuItemsForSave = (items: MenuItem[], parentLink: number | null = null, currentOrder = 0): any[] => {
-    const result: any[] = []
+  const flattenMenuItemsForSave = (items: MenuItem[], parentLink: number | null = null, currentOrder = 0): Record<string, unknown>[] => {
+    const result: Record<string, unknown>[] = []
     let order = currentOrder
     
     items.forEach((item) => {
       order++
-      const source = item as any
+      const source = item as RawMenuItem
       const persistedId = typeof source?.id === 'number' && source.id > 0 ? source.id : undefined
       const clientId = typeof source?.clientId === 'number' ? source.clientId : undefined
       const shouldCreate = source?.isNew || !persistedId
@@ -623,7 +708,7 @@ export const useMenuManagement = () => {
     return result
   }
 
-  const buildMenuItemPayload = (item: any, menuId: number, parentId: number | null) => {
+  const buildMenuItemPayload = (item: RawMenuItem, menuId: number, parentId: number | null) => {
     const title = item?.title ?? item?.name ?? ''
     const path = item?.path ?? item?.url ?? ''
     const badge = item?.badge ?? item?.badge_text ?? ''
@@ -677,11 +762,11 @@ export const useMenuManagement = () => {
     }
   }
 
-  const syncMenuItems = async (menuId: number | undefined, items: any[]) => {
+  const syncMenuItems = async (menuId: number | undefined, items: RawMenuItem[]) => {
     if (!menuId || !Array.isArray(items)) return
 
-    console.log(`🔄 Starting menu sync for menu #${menuId}`)
-    const syncStartTime = Date.now()
+    // console.log(`🔄 Starting menu sync for menu #${menuId}`)
+    // const syncStartTime = Date.now()
 
     const idMap = new Map<number | string, number>()
     const processedIds = new Set<number>()
@@ -692,7 +777,7 @@ export const useMenuManagement = () => {
       }
     }
 
-    const walkItems = async (itemList: any[], parentId: number | null = null) => {
+    const walkItems = async (itemList: RawMenuItem[], parentId: number | null = null) => {
       for (const item of itemList) {
         const hasNumericId = typeof item?.id === 'number'
         const persistedId = hasNumericId ? item.id : null
@@ -720,30 +805,30 @@ export const useMenuManagement = () => {
               body: payload
             })
           } catch (error) {
-            console.error('Failed to update menu item', {
-              id: currentId,
-              clientId,
-              parentClientId: item?.parentClientId,
-              payload,
-              error
-            })
+            // console.error('Failed to update menu item', {
+            //   id: currentId,
+            //   clientId,
+            //   parentClientId: item?.parentClientId,
+            //   payload,
+            //   error
+            // })
             throw error
           }
         } else {
           try {
-            const response = await $fetch('/api/admin/menu-items', {
+            const response = await $fetch<{ data: unknown }>('/api/admin/menu-items', {
               method: 'POST',
               body: payload
             })
-            const created = (response as any)?.data || response
+            const created = (response?.data || response) as RawMenuItem
             currentId = typeof created?.id === 'number' ? created.id : null
           } catch (error) {
-            console.error('Failed to create menu item', {
-              clientId,
-              parentClientId: item?.parentClientId,
-              payload,
-              error
-            })
+            // console.error('Failed to create menu item', {
+            //   clientId,
+            //   parentClientId: item?.parentClientId,
+            //   payload,
+            //   error
+            // })
             throw error
           }
         }
@@ -754,7 +839,7 @@ export const useMenuManagement = () => {
           if (typeof clientId === 'number') registerPersisted(clientId, currentId)
           item.id = currentId
           if (item && typeof item === 'object') {
-            ;(item as any).isNew = false
+            ;(item as RawMenuItem).isNew = false
           }
         }
 
@@ -766,10 +851,10 @@ export const useMenuManagement = () => {
 
     await walkItems(items)
 
-    const upsertEndTime = Date.now()
-    console.log(`✅ Upsert completed in ${upsertEndTime - syncStartTime}ms`)
+    // const upsertEndTime = Date.now()
+    // console.log(`✅ Upsert completed in ${upsertEndTime - syncStartTime}ms`)
 
-    const deleteStartTime = Date.now()
+    // const deleteStartTime = Date.now()
 
     const uniqueDeletedIds = [...new Set(deletedMenuItemIds.value)].filter(id => typeof id === 'number' && Number.isFinite(id) && id > 0)
     const deleteTargets: number[] = []
@@ -791,7 +876,7 @@ export const useMenuManagement = () => {
     }
 
     if (deleteTargets.length > 0) {
-      console.log(`🗑️ Deleting ${deleteTargets.length} menu items:`, deleteTargets)
+      // console.log(`🗑️ Deleting ${deleteTargets.length} menu items:`, deleteTargets)
       const chunkSize = 6
       for (let idx = 0; idx < deleteTargets.length; idx += chunkSize) {
         const chunk = deleteTargets.slice(idx, idx + chunkSize)
@@ -802,7 +887,7 @@ export const useMenuManagement = () => {
             }).catch(error => {
               // اگر آیتم قبلاً حذف شده (404) یا وجود نداره، نادیده بگیر
               if (error?.status === 404 || error?.statusCode === 404) {
-                console.warn(`⚠️ Item ${targetId} not found (already deleted), skipping...`)
+                // console.warn(`⚠️ Item ${targetId} not found (already deleted), skipping...`)
                 return { deleted: true, id: targetId }
               }
               throw error
@@ -812,10 +897,10 @@ export const useMenuManagement = () => {
 
         const rejected = results.find((result): result is PromiseRejectedResult => result.status === 'rejected')
         if (rejected) {
-          console.error('❌ Failed to delete menu items chunk:', {
-            chunk,
-            reason: rejected.reason
-          })
+          // console.error('❌ Failed to delete menu items chunk:', {
+          //   chunk,
+          //   reason: rejected.reason
+          // })
           throw rejected.reason
         }
       }
@@ -823,9 +908,9 @@ export const useMenuManagement = () => {
 
     resetDeletedMenuItems()
 
-    const deleteEndTime = Date.now()
-    console.log(`✅ Delete completed in ${deleteEndTime - deleteStartTime}ms`)
-    console.log(`🎉 Full sync completed in ${deleteEndTime - syncStartTime}ms`)
+    // const deleteEndTime = Date.now()
+    // console.log(`✅ Delete completed in ${deleteEndTime - deleteStartTime}ms`)
+    // console.log(`🎉 Full sync completed in ${deleteEndTime - syncStartTime}ms`)
   }
 
   const saveMenu = async (menu: Menu) => {
@@ -836,12 +921,12 @@ export const useMenuManagement = () => {
         menu.slug = generateSlug(menu.name)
       }
       
-      console.log('🔵 Original menu structure:', JSON.parse(JSON.stringify(menu.items)))
+      // console.log('🔵 Original menu structure:', JSON.parse(JSON.stringify(menu.items)))
       
       // Flatten the tree structure
       const flattenedItems = flattenMenuItemsForSave(menu.items || [])
       
-      console.log('📦 Flattened items for save:', flattenedItems)
+      // console.log('📦 Flattened items for save:', flattenedItems)
 
       // Add menuId to all items
       const itemsWithMenuId = flattenedItems.map(item => ({
@@ -857,24 +942,24 @@ export const useMenuManagement = () => {
         items: itemsWithMenuId
       }
       
-      console.log('📤 Final payload:', JSON.parse(JSON.stringify(payload)))
+      // console.log('📤 Final payload:', JSON.parse(JSON.stringify(payload)))
       
       let response
       if (menu.id) {
         // Update existing menu
-        response = await $fetch(`/api/admin/menus/${menu.id}`, {
+        response = await $fetch<{ data: unknown }>(`/api/admin/menus/${menu.id}`, {
           method: 'PUT',
           body: payload
         })
       } else {
         // Create new menu
-        response = await $fetch('/api/admin/menus', {
+        response = await $fetch<{ data: unknown }>('/api/admin/menus', {
           method: 'POST',
           body: payload
         })
       }
 
-      const responseData = (response as any)?.data || response
+      const responseData = (response?.data || response) as RawMenuItem
       let resolvedMenuId = typeof responseData?.id === 'number' ? responseData.id : menu.id
 
       // Ensure menu id is available for syncing items
@@ -882,7 +967,7 @@ export const useMenuManagement = () => {
         resolvedMenuId = currentMenu.value.id
       }
 
-      await syncMenuItems(resolvedMenuId, flattenedItems)
+      await syncMenuItems(resolvedMenuId, flattenedItems as RawMenuItem[])
 
       if (resolvedMenuId) {
         await fetchMenu(resolvedMenuId)
@@ -895,7 +980,7 @@ export const useMenuManagement = () => {
 
       return response
     } catch (error) {
-      console.error('Error saving menu:', error)
+      // console.error('Error saving menu:', error)
       throw error
     } finally {
       isSaving.value = false
@@ -916,7 +1001,7 @@ export const useMenuManagement = () => {
         currentMenu.value = { id: undefined, name: '', items: [] }
       }
     } catch (error) {
-      console.error('Error deleting menu:', error)
+      // console.error('Error deleting menu:', error)
       throw error
     }
   }
@@ -928,7 +1013,7 @@ export const useMenuManagement = () => {
         body: itemOrders
       })
     } catch (error) {
-      console.error('Error reordering menu items:', error)
+      // console.error('Error reordering menu items:', error)
       throw error
     }
   }
@@ -944,7 +1029,7 @@ export const useMenuManagement = () => {
         }
       })
     } catch (error) {
-      console.error('Error assigning menu to location:', error)
+      // console.error('Error assigning menu to location:', error)
       throw error
     }
   }
@@ -959,7 +1044,7 @@ export const useMenuManagement = () => {
         }
       })
     } catch (error) {
-      console.error('Error unassigning menu from location:', error)
+      // console.error('Error unassigning menu from location:', error)
       throw error
     }
   }
@@ -967,45 +1052,40 @@ export const useMenuManagement = () => {
   // Content API Methods
   const fetchPages = async () => {
     try {
-      const response = await $fetch('/api/admin/menu-content/pages')
-      const data = (response as any)?.data || response
-      _pages.value = Array.isArray(data) ? data : []
-    } catch (error) {
-      console.error('Error fetching pages:', error)
+      const response = await $fetch<{ data: unknown[] }>('/api/admin/menu-content/pages')
+      const data = response?.data || response
+      _pages.value = Array.isArray(data) ? (data as RawMenuItem[]) : []
+    } catch {
       _pages.value = []
     }
   }
 
   const fetchPosts = async () => {
     try {
-      const response = await $fetch('/api/admin/menu-content/posts')
-      const data = (response as any)?.data || response
-      _posts.value = Array.isArray(data) ? data : []
-    } catch (error) {
-      console.error('Error fetching posts:', error)
+      const response = await $fetch<{ data: unknown[] }>('/api/admin/menu-content/posts')
+      const data = response?.data || response
+      _posts.value = Array.isArray(data) ? (data as RawMenuItem[]) : []
+    } catch {
       _posts.value = []
     }
   }
 
   const fetchCategories = async () => {
     try {
-      const response = await $fetch('/api/admin/menu-content/categories')
-      const data = (response as any)?.data || response
-      _categories.value = buildHierarchicalOptions(Array.isArray(data) ? data : [])
-    } catch (error) {
-      console.error('Error fetching categories:', error)
+      const response = await $fetch<{ data: unknown[] }>('/api/admin/menu-content/categories')
+      const data = response?.data || response
+      _categories.value = buildHierarchicalOptions(Array.isArray(data) ? (data as RawMenuItem[]) : [])
+    } catch {
       _categories.value = []
     }
   }
 
   const fetchProductCategories = async () => {
     try {
-      const response = await $fetch('/api/admin/menu-content/product-categories')
-      console.log('Product categories fetched:', response)
-      const data = (response as any)?.data || response
-      _productCategories.value = buildHierarchicalOptions(Array.isArray(data) ? data : [])
-    } catch (error) {
-      console.error('Error fetching product categories:', error)
+      const response = await $fetch<{ data: unknown[] }>('/api/admin/menu-content/product-categories')
+      const data = response?.data || response
+      _productCategories.value = buildHierarchicalOptions(Array.isArray(data) ? (data as RawMenuItem[]) : [])
+    } catch {
       _productCategories.value = []
     }
   }
@@ -1037,34 +1117,10 @@ export const useMenuManagement = () => {
     const prepared = normalizeIncomingItem(item, nextOrder)
     const signature = computeItemSignature(prepared)
     
-    // لیست تمام signature های موجود
-    const existingSignatures = currentMenu.value.items.map(i => ({
-      title: i.title,
-      signature: computeItemSignature(i)
-    }))
-    
-    console.log('🔍 addMenuItem:', {
-      incoming: {
-        title: prepared.title,
-        itemType: prepared.itemType,
-        path: prepared.path,
-        signature
-      },
-      existing: existingSignatures,
-      currentMenuItems: currentMenu.value.items.length
-    })
-    
     if (menuContainsSignature(currentMenu.value.items, signature)) {
-      console.log('⚠️ Duplicate detected! Signature already exists:', signature)
-      console.log('📋 Existing items:', currentMenu.value.items.map(i => ({
-        title: i.title,
-        path: i.path,
-        itemType: i.itemType
-      })))
       return
     }
     
-    console.log('✅ Adding item with signature:', signature)
     currentMenu.value.items.push(prepared)
   }
 
@@ -1122,46 +1178,16 @@ export const useMenuManagement = () => {
     return removed
   }
 
-  // Helper to insert item by path
-  const insertItemByPath = (items: MenuItem[], path: number[], item: MenuItem, position: 'before' | 'after' | 'inside') => {
-    if (!path || path.length === 0) return
-    
-    if (path.length === 1) {
-      const index = position === 'after' ? path[0] + 1 : path[0]
-      items.splice(index, 0, item)
-      return
-    }
-    
-    let current = items[path[0]]
-    for (let i = 1; i < path.length - 1; i++) {
-      if (!current?.children) return
-      current = current.children[path[i]]
-    }
-    
-    const targetIndex = path[path.length - 1]
-    
-    if (position === 'inside') {
-      if (!current.children) current.children = []
-      const target = current.children[targetIndex]
-      if (!target.children) target.children = []
-      target.children.push(item)
-    } else {
-      const index = position === 'after' ? targetIndex + 1 : targetIndex
-      if (!current.children) current.children = []
-      current.children.splice(index, 0, item)
-    }
-  }
-
   // Simple drag & drop: just change depth based on horizontal movement
   const handleDropItem = (dropData: {draggedPath: number[], targetPath: number[], newDepth: number}) => {
     const { draggedPath, targetPath, newDepth } = dropData
     
-    console.log('🎯 Simple Drop:', { draggedPath, targetPath, newDepth })
+    // console.log('🎯 Simple Drop:', { draggedPath, targetPath, newDepth })
     
     // پیدا کردن آیتمی که drag شده
     const draggedItem = getItemByPath(currentMenu.value.items, draggedPath)
     if (!draggedItem) {
-      console.log('⚠️ Dragged item not found')
+      // console.log('⚠️ Dragged item not found')
       return
     }
     
@@ -1188,7 +1214,7 @@ export const useMenuManagement = () => {
     const flatItems = flattenMenuItems(currentMenu.value.items, null, currentMenu.value.id)
     currentMenu.value.items = buildMenuTree(flatItems)
     
-    console.log('✅ Drop completed, new tree:', currentMenu.value.items)
+    // console.log('✅ Drop completed, new tree:', currentMenu.value.items)
   }
 
   // Initialize content data
@@ -1203,7 +1229,7 @@ export const useMenuManagement = () => {
 
   // Refresh content data (for when new content is added)
   const refreshContent = async () => {
-    console.log('Refreshing menu content...')
+    // console.log('Refreshing menu content...')
     await initializeContent()
   }
 
@@ -1247,4 +1273,4 @@ export const useMenuManagement = () => {
     reorderItems,
     handleDropItem
   }
-} 
+}

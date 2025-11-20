@@ -8,8 +8,8 @@
       </div>
       <div class="flex items-center space-x-3 space-x-reverse">
         <button
-          @click="downloadGuide"
           class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          @click="downloadGuide"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -56,8 +56,8 @@
         <h5 class="text-md font-medium text-gray-900 mb-4">دسترسی سریع</h5>
         <div class="space-y-3">
           <button
-            @click="openVideoGuide"
             class="w-full text-right p-3 border border-gray-200 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            @click="openVideoGuide"
           >
             <div class="flex items-center justify-between">
               <span class="text-sm font-medium text-gray-900">ویدیوی آموزشی</span>
@@ -67,8 +67,8 @@
             </div>
           </button>
           <button
-            @click="openFAQ"
             class="w-full text-right p-3 border border-gray-200 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            @click="openFAQ"
           >
             <div class="flex items-center justify-between">
               <span class="text-sm font-medium text-gray-900">سوالات متداول</span>
@@ -78,8 +78,8 @@
             </div>
           </button>
           <button
-            @click="contactSupport"
             class="w-full text-right p-3 border border-gray-200 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            @click="contactSupport"
           >
             <div class="flex items-center justify-between">
               <span class="text-sm font-medium text-gray-900">تماس با پشتیبانی</span>

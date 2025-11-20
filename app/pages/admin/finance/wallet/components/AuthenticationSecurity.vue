@@ -9,46 +9,46 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button
-            @click="activeTab = 'authentication'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'authentication'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'authentication'"
           >
             احراز هویت
           </button>
           <button
-            @click="activeTab = 'security'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'security'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'security'"
           >
             امنیت
           </button>
           <button
-            @click="activeTab = 'permissions'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'permissions'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'permissions'"
           >
             دسترسی‌ها
           </button>
           <button
-            @click="activeTab = 'monitoring'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'monitoring'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'monitoring'"
           >
             نظارت
           </button>
@@ -71,7 +71,7 @@
                   <p class="text-gray-600 text-sm">فعال‌سازی احراز هویت دو مرحله‌ای برای امنیت بیشتر</p>
                 </div>
                 <label class="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" v-model="authSettings.twoFactor" class="sr-only peer">
+                  <input v-model="authSettings.twoFactor" type="checkbox" class="sr-only peer">
                   <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>
@@ -81,7 +81,7 @@
                   <p class="text-gray-600 text-sm">اجبار استفاده از رمز عبور پیچیده</p>
                 </div>
                 <label class="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" v-model="authSettings.strongPassword" class="sr-only peer">
+                  <input v-model="authSettings.strongPassword" type="checkbox" class="sr-only peer">
                   <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>
@@ -91,7 +91,7 @@
                   <p class="text-gray-600 text-sm">اجبار تغییر رمز عبور هر 90 روز</p>
                 </div>
                 <label class="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" v-model="authSettings.autoPasswordChange" class="sr-only peer">
+                  <input v-model="authSettings.autoPasswordChange" type="checkbox" class="sr-only peer">
                   <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>
@@ -113,7 +113,7 @@
                 </div>
                 <p class="text-gray-600 text-sm mb-3">احراز هویت با رمز عبور و نام کاربری</p>
                 <label class="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" v-model="authMethods.password" class="sr-only peer">
+                  <input v-model="authMethods.password" type="checkbox" class="sr-only peer">
                   <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>
@@ -128,7 +128,7 @@
                 </div>
                 <p class="text-gray-600 text-sm mb-3">ارسال کد تایید به ایمیل یا پیامک</p>
                 <label class="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" v-model="authMethods.otp" class="sr-only peer">
+                  <input v-model="authMethods.otp" type="checkbox" class="sr-only peer">
                   <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>
@@ -143,7 +143,7 @@
                 </div>
                 <p class="text-gray-600 text-sm mb-3">استفاده از کلیدهای امنیتی فیزیکی</p>
                 <label class="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" v-model="authMethods.securityKey" class="sr-only peer">
+                  <input v-model="authMethods.securityKey" type="checkbox" class="sr-only peer">
                   <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>
@@ -158,7 +158,7 @@
                 </div>
                 <p class="text-gray-600 text-sm mb-3">استفاده از اثر انگشت یا تشخیص چهره</p>
                 <label class="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" v-model="authMethods.biometric" class="sr-only peer">
+                  <input v-model="authMethods.biometric" type="checkbox" class="sr-only peer">
                   <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>
@@ -203,7 +203,7 @@
                   <p class="text-gray-600 text-sm">ارسال اعلان برای ورود از مکان‌های جدید</p>
                 </div>
                 <label class="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" v-model="securitySettings.suspiciousLoginAlert" class="sr-only peer">
+                  <input v-model="securitySettings.suspiciousLoginAlert" type="checkbox" class="sr-only peer">
                   <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>
@@ -269,7 +269,7 @@
                 <div class="flex items-center justify-between mb-2">
                   <h4 class="font-medium text-gray-900">{{ permission.name }}</h4>
                   <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" v-model="permission.enabled" class="sr-only peer">
+                    <input v-model="permission.enabled" type="checkbox" class="sr-only peer">
                     <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
                 </div>

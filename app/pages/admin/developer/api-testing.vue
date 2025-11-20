@@ -119,8 +119,8 @@
                       placeholder="Value"
                     >
                     <button 
-                      @click="removeHeader(index)"
                       class="text-red-600 hover:text-red-800"
+                      @click="removeHeader(index)"
                     >
                       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -128,8 +128,8 @@
                     </button>
                   </div>
                   <button 
-                    @click="addHeader"
                     class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                    @click="addHeader"
                   >
                     + افزودن Header
                   </button>
@@ -150,20 +150,20 @@
               <!-- Send Request -->
               <div class="flex items-center space-x-2 space-x-reverse">
                 <button 
-                  @click="sendRequest"
                   class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
+                  @click="sendRequest"
                 >
                   ارسال درخواست
                 </button>
                 <button 
-                  @click="saveRequest"
                   class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
+                  @click="saveRequest"
                 >
                   ذخیره درخواست
                 </button>
                 <button 
-                  @click="clearRequest"
                   class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
+                  @click="clearRequest"
                 >
                   پاک کردن
                 </button>
@@ -174,7 +174,8 @@
                 <div class="flex items-center justify-between mb-2">
                   <h3 class="font-medium text-gray-900">پاسخ</h3>
                   <div class="flex items-center space-x-2 space-x-reverse">
-                    <span :class="[
+                    <span
+:class="[
                       'px-2 py-1 rounded text-xs font-medium',
                       response.status >= 200 && response.status < 300 ? 'bg-green-100 text-green-800' :
                       response.status >= 400 && response.status < 500 ? 'bg-yellow-100 text-yellow-800' :
@@ -208,14 +209,14 @@
                 <p class="text-sm text-gray-500 mb-3">{{ collection.description }}</p>
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <button 
-                    @click="loadCollection(collection)"
                     class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                    @click="loadCollection(collection)"
                   >
                     بارگذاری
                   </button>
                   <button 
-                    @click="exportCollection(collection)"
                     class="text-green-600 hover:text-green-800 text-sm font-medium"
+                    @click="exportCollection(collection)"
                   >
                     صادر کردن
                   </button>
@@ -233,14 +234,14 @@
             <h2 class="text-xl font-semibold text-gray-900">مستندات API</h2>
             <div class="flex items-center space-x-2 space-x-reverse">
               <button 
-                @click="generateDocs"
                 class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                @click="generateDocs"
               >
                 تولید مستندات
               </button>
               <button 
-                @click="exportDocs"
                 class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                @click="exportDocs"
               >
                 صادر کردن
               </button>
@@ -252,7 +253,8 @@
             <div v-for="endpoint in apiEndpoints" :key="endpoint.id" class="border rounded-lg p-6">
               <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center space-x-3 space-x-reverse">
-                  <span :class="[
+                  <span
+:class="[
                     'px-3 py-1 rounded text-sm font-medium',
                     endpoint.method === 'GET' ? 'bg-green-100 text-green-800' :
                     endpoint.method === 'POST' ? 'bg-blue-100 text-blue-800' :
@@ -265,14 +267,14 @@
                 </div>
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <button 
-                    @click="testEndpoint(endpoint)"
                     class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                    @click="testEndpoint(endpoint)"
                   >
                     تست
                   </button>
                   <button 
-                    @click="editEndpoint(endpoint)"
                     class="text-gray-600 hover:text-gray-800 text-sm font-medium"
+                    @click="editEndpoint(endpoint)"
                   >
                     ویرایش
                   </button>
@@ -287,7 +289,8 @@
                   <div v-for="param in endpoint.parameters" :key="param.name" class="flex items-center space-x-4 space-x-reverse text-sm">
                     <span class="font-mono text-gray-900">{{ param.name }}</span>
                     <span class="text-gray-500">{{ param.type }}</span>
-                    <span :class="[
+                    <span
+:class="[
                       'px-2 py-1 rounded text-xs',
                       param.required ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-600'
                     ]">
@@ -367,20 +370,20 @@
               <h3 class="font-medium text-gray-900">عملکرد</h3>
               <div class="space-y-2">
                 <button 
-                  @click="startMonitoring"
                   class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="startMonitoring"
                 >
                   شروع مانیتورینگ
                 </button>
                 <button 
-                  @click="stopMonitoring"
                   class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="stopMonitoring"
                 >
                   توقف مانیتورینگ
                 </button>
                 <button 
-                  @click="exportMetrics"
                   class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="exportMetrics"
                 >
                   صادر کردن آمار
                 </button>

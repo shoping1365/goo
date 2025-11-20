@@ -31,14 +31,14 @@
               <p class="text-2xl font-bold text-red-600">{{ gateway.failureCount || 0 }}</p>
               <p class="text-xs text-gray-600">ناموفق</p>
             </div>
-            <div class="text-center cursor-pointer" @click="fetchMeliPayamakInfo(gateway.id)" title="کلیک برای به‌روزرسانی اطلاعات">
+            <div class="text-center cursor-pointer" title="کلیک برای به‌روزرسانی اطلاعات" @click="fetchMeliPayamakInfo(gateway.id)">
               <div v-if="isLoadingBalance" class="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
               <div v-else>
                 <p class="text-2xl font-bold text-blue-600">{{ meliPayamakInfo.remaining_sms || 0 }}</p>
                 <p class="text-xs text-gray-600">SMS باقی‌مانده</p>
               </div>
             </div>
-            <div class="text-center cursor-pointer" @click="fetchMeliPayamakInfo(gateway.id)" title="کلیک برای به‌روزرسانی اطلاعات">
+            <div class="text-center cursor-pointer" title="کلیک برای به‌روزرسانی اطلاعات" @click="fetchMeliPayamakInfo(gateway.id)">
               <div v-if="isLoadingBalance" class="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-green-600"></div>
               <div v-else>
                 <p class="text-2xl font-bold text-green-600">{{ formatBalance(meliPayamakInfo.credit || 0) }}</p>
@@ -57,7 +57,7 @@
               <p class="text-2xl font-bold text-red-600">{{ gateway.failureCount || 0 }}</p>
               <p class="text-xs text-gray-600">ناموفق</p>
             </div>
-            <div class="text-center cursor-pointer" @click="fetchGatewayBalance(gateway.id)" title="کلیک برای به‌روزرسانی موجودی">
+            <div class="text-center cursor-pointer" title="کلیک برای به‌روزرسانی موجودی" @click="fetchGatewayBalance(gateway.id)">
               <p class="text-2xl font-bold text-blue-600 hover:text-blue-800 transition-colors">
                 <span v-if="isLoadingBalance" class="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></span>
                 <span v-else>{{ formatBalance(gatewayBalance) }}</span>
@@ -71,23 +71,25 @@
               <span>{{ calculateSuccessRate() }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="h-2 rounded-full transition-all duration-300" 
+              <div
+class="h-2 rounded-full transition-all duration-300" 
                    :class="getSuccessRateColor(calculateSuccessRate())"
                    :style="{ width: calculateSuccessRate() + '%' }"></div>
             </div>
           </div>
         </div>
         <div class="flex flex-col md:flex-row-reverse gap-6 mt-10 items-stretch">
-          <button @click="testGateway(gateway.id)" class="w-full md:w-48 px-10 py-3 rounded-lg text-base font-bold bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-md hover:from-blue-600 hover:to-blue-800 transition flex items-center justify-center gap-2">
+          <button class="w-full md:w-48 px-10 py-3 rounded-lg text-base font-bold bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-md hover:from-blue-600 hover:to-blue-800 transition flex items-center justify-center gap-2" @click="testGateway(gateway.id)">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8a2 2 0 012-2h2" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 3h-6a2 2 0 00-2 2v3h10V5a2 2 0 00-2-2z" /></svg>
             تست اتصال
           </button>
-          <button @click="testSendSMS(gateway.id)" class="w-full md:w-48 px-10 py-3 rounded-lg text-base font-bold bg-gradient-to-r from-green-500 to-green-700 text-white shadow-md hover:from-green-600 hover:to-green-800 transition flex items-center justify-center gap-2">
+          <button class="w-full md:w-48 px-10 py-3 rounded-lg text-base font-bold bg-gradient-to-r from-green-500 to-green-700 text-white shadow-md hover:from-green-600 hover:to-green-800 transition flex items-center justify-center gap-2" @click="testSendSMS(gateway.id)">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
             تست ارسال
           </button>
-          <button @click="toggleGateway(gateway.id)" class="w-full md:w-48 px-10 py-3 rounded-lg text-base font-bold shadow-md transition flex items-center justify-center gap-2"
-                  :class="(gateway.status === 'active' || gateway.is_active) ? 'bg-gradient-to-r from-red-500 to-red-700 text-white hover:from-red-600 hover:to-red-800' : 'bg-gradient-to-r from-green-400 to-green-600 text-white hover:from-green-500 hover:to-green-700'">
+          <button
+class="w-full md:w-48 px-10 py-3 rounded-lg text-base font-bold shadow-md transition flex items-center justify-center gap-2" :class="(gateway.status === 'active' || gateway.is_active) ? 'bg-gradient-to-r from-red-500 to-red-700 text-white hover:from-red-600 hover:to-red-800' : 'bg-gradient-to-r from-green-400 to-green-600 text-white hover:from-green-500 hover:to-green-700'"
+                  @click="toggleGateway(gateway.id)">
             <svg v-if="gateway.status === 'active' || gateway.is_active" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
             {{ (gateway.status === 'active' || gateway.is_active) ? 'غیرفعال' : 'فعال' }}
@@ -99,7 +101,7 @@
             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none" /><path stroke="currentColor" stroke-width="2" fill="none" d="M4.93 4.93l2.12 2.12M2 12h3M4.93 19.07l2.12-2.12M12 22v-3M19.07 19.07l-2.12-2.12M22 12h-3M19.07 4.93l-2.12 2.12M12 2v3" /></svg>
             تنظیمات
           </NuxtLink>
-          <button @click="deleteGateway(gateway.id)" class="w-full md:w-48 px-10 py-3 rounded-lg text-base font-bold bg-gradient-to-r from-red-600 to-red-800 text-white shadow-md hover:from-red-700 hover:to-red-900 transition flex items-center justify-center gap-2">
+          <button class="w-full md:w-48 px-10 py-3 rounded-lg text-base font-bold bg-gradient-to-r from-red-600 to-red-800 text-white shadow-md hover:from-red-700 hover:to-red-900 transition flex items-center justify-center gap-2" @click="deleteGateway(gateway.id)">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
             حذف سخت
           </button>

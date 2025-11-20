@@ -9,8 +9,8 @@
       
       <!-- دکمه افزودن اتصال جدید -->
       <button 
-        @click="showAddConnectionModal = true"
         class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-200"
+        @click="showAddConnectionModal = true"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -26,8 +26,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">نوع نرم‌افزار</label>
           <select 
             v-model="connectionFilters.softwareType"
-            @change="filterConnections"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="filterConnections"
           >
             <option value="">همه انواع</option>
             <option value="helo">هلو</option>
@@ -42,8 +42,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">وضعیت</label>
           <select 
             v-model="connectionFilters.status"
-            @change="filterConnections"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="filterConnections"
           >
             <option value="">همه وضعیت‌ها</option>
             <option value="active">فعال</option>
@@ -59,15 +59,15 @@
             v-model="connectionFilters.search"
             type="text"
             placeholder="جستجو در اتصالات..."
-            @input="filterConnections"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @input="filterConnections"
           />
         </div>
         
         <div class="flex items-end">
           <button 
-            @click="clearFilters"
             class="w-full px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition-colors duration-200"
+            @click="clearFilters"
           >
             پاک کردن فیلترها
           </button>
@@ -119,28 +119,28 @@
             <td class="py-3 px-4">
               <div class="flex items-center gap-2">
                 <button 
-                  @click="testConnection(connection)"
                   class="p-1 text-blue-600 hover:text-blue-800"
                   title="تست اتصال"
+                  @click="testConnection(connection)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                   </svg>
                 </button>
                 <button 
-                  @click="editConnection(connection)"
                   class="p-1 text-yellow-600 hover:text-yellow-800"
                   title="ویرایش"
+                  @click="editConnection(connection)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                   </svg>
                 </button>
                 <button 
-                  @click="toggleConnection(connection)"
                   :class="connection.status === 'active' ? 'text-red-600 hover:text-red-800' : 'text-green-600 hover:text-green-800'"
                   class="p-1"
                   :title="connection.status === 'active' ? 'غیرفعال کردن' : 'فعال کردن'"
+                  @click="toggleConnection(connection)"
                 >
                   <svg v-if="connection.status === 'active'" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728"></path>
@@ -151,9 +151,9 @@
                 </button>
                 <button 
                   v-if="canDeleteConnection"
-                  @click="deleteConnection(connection)"
                   class="p-1 text-red-600 hover:text-red-800"
                   title="حذف"
+                  @click="deleteConnection(connection)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -171,22 +171,22 @@
       <div class="bg-white rounded-xl p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-gray-900">افزودن اتصال جدید</h3>
-          <button @click="showAddConnectionModal = false" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="showAddConnectionModal = false">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
         </div>
 
-        <form @submit.prevent="addConnection" class="space-y-4">
+        <form class="space-y-4" @submit.prevent="addConnection">
           <!-- انتخاب نرم‌افزار -->
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">نرم‌افزار حسابداری</label>
             <select 
               v-model="newConnection.softwareType"
-              @change="updateSoftwareInfo"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               required
+              @change="updateSoftwareInfo"
             >
               <option value="">انتخاب نرم‌افزار</option>
               <option value="helo">هلو</option>
@@ -233,9 +233,9 @@
                 required
               />
               <button 
-                @click="showApiKey = !showApiKey"
                 type="button"
                 class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                @click="showApiKey = !showApiKey"
               >
                 <svg v-if="showApiKey" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -318,9 +318,9 @@
               افزودن اتصال
             </button>
             <button 
-              @click="showAddConnectionModal = false"
               type="button"
               class="flex-1 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition-colors duration-200"
+              @click="showAddConnectionModal = false"
             >
               انصراف
             </button>

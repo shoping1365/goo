@@ -92,7 +92,7 @@
               <div class="detail-item">
                 <span class="label">کلید امنیتی:</span>
                 <span class="value">{{ maskSecret(webhook.secret) }}</span>
-                <button @click="toggleSecret(webhook.id)" class="btn-toggle">
+                <button class="btn-toggle" @click="toggleSecret(webhook.id)">
                   <i :class="webhook.showSecret ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
                 </button>
               </div>
@@ -104,19 +104,19 @@
           </div>
 
           <div class="webhook-actions">
-            <button @click="testWebhook(webhook.id)" class="btn btn-primary">
+            <button class="btn btn-primary" @click="testWebhook(webhook.id)">
               <i class="fas fa-play"></i>
               تست وب‌هوک
             </button>
-            <button @click="editWebhook(webhook.id)" class="btn btn-secondary">
+            <button class="btn btn-secondary" @click="editWebhook(webhook.id)">
               <i class="fas fa-edit"></i>
               ویرایش
             </button>
-            <button @click="toggleWebhook(webhook.id)" class="btn" :class="webhook.status === 'active' ? 'btn-warning' : 'btn-success'">
+            <button class="btn" :class="webhook.status === 'active' ? 'btn-warning' : 'btn-success'" @click="toggleWebhook(webhook.id)">
               <i :class="webhook.status === 'active' ? 'fas fa-pause' : 'fas fa-play'"></i>
               {{ webhook.status === 'active' ? 'غیرفعال' : 'فعال' }}
             </button>
-            <button @click="viewLogs(webhook.id)" class="btn btn-info">
+            <button class="btn btn-info" @click="viewLogs(webhook.id)">
               <i class="fas fa-list"></i>
               لاگ‌ها
             </button>
@@ -131,11 +131,11 @@
           <div class="form-row">
             <div class="form-group">
               <label>نام وب‌هوک:</label>
-              <input type="text" v-model="newWebhook.name" placeholder="مثال: اعلان سفارش">
+              <input v-model="newWebhook.name" type="text" placeholder="مثال: اعلان سفارش">
             </div>
             <div class="form-group">
               <label>URL:</label>
-              <input type="url" v-model="newWebhook.url" placeholder="https://your-domain.com/webhook">
+              <input v-model="newWebhook.url" type="url" placeholder="https://your-domain.com/webhook">
             </div>
           </div>
 
@@ -144,34 +144,34 @@
               <label>رویدادها:</label>
               <div class="events-selection">
                 <label v-for="event in availableEvents" :key="event.value" class="checkbox-item">
-                  <input type="checkbox" v-model="newWebhook.events" :value="event.value">
+                  <input v-model="newWebhook.events" type="checkbox" :value="event.value">
                   <span>{{ event.label }}</span>
                 </label>
               </div>
             </div>
             <div class="form-group">
               <label>کلید امنیتی:</label>
-              <input type="password" v-model="newWebhook.secret" placeholder="کلید امنیتی را وارد کنید">
+              <input v-model="newWebhook.secret" type="password" placeholder="کلید امنیتی را وارد کنید">
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
               <label>تایم‌اوت (ثانیه):</label>
-              <input type="number" v-model="newWebhook.timeout" min="5" max="60" placeholder="30">
+              <input v-model="newWebhook.timeout" type="number" min="5" max="60" placeholder="30">
             </div>
             <div class="form-group">
               <label>حداکثر تلاش:</label>
-              <input type="number" v-model="newWebhook.maxRetries" min="1" max="10" placeholder="3">
+              <input v-model="newWebhook.maxRetries" type="number" min="1" max="10" placeholder="3">
             </div>
           </div>
 
           <div class="form-actions">
-            <button @click="addWebhook" class="btn btn-success">
+            <button class="btn btn-success" @click="addWebhook">
               <i class="fas fa-plus"></i>
               افزودن وب‌هوک
             </button>
-            <button @click="resetNewWebhook" class="btn btn-secondary">
+            <button class="btn btn-secondary" @click="resetNewWebhook">
               <i class="fas fa-undo"></i>
               بازنشانی
             </button>
@@ -202,7 +202,7 @@
             </option>
           </select>
         </div>
-        <button @click="refreshLogs" class="btn btn-primary">
+        <button class="btn btn-primary" @click="refreshLogs">
           <i class="fas fa-sync"></i>
           بروزرسانی
         </button>
@@ -234,7 +234,7 @@
             <td>{{ log.responseTime }}ms</td>
             <td>{{ log.statusCode }}</td>
             <td>
-              <button @click="viewLogDetails(log.id)" class="btn-link">
+              <button class="btn-link" @click="viewLogDetails(log.id)">
                 مشاهده جزئیات
               </button>
             </td>
@@ -247,20 +247,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue';
 
 // Props
 interface Props {
-  shippingMethods?: any[]
+  shippingMethods?: unknown[]
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 // Emits
 const emit = defineEmits<{
-  webhookUpdated: [webhookId: string, data: any]
-  webhookAdded: [data: any]
-  webhookTested: [webhookId: string, result: any]
+  webhookUpdated: [webhookId: string, data: unknown]
+  webhookAdded: [data: unknown]
+  webhookTested: [webhookId: string, result: unknown]
 }>()
 
 // Reactive data
@@ -440,9 +440,9 @@ const testWebhook = async (webhookId: string) => {
   }
 }
 
-const editWebhook = (webhookId: string) => {
+const editWebhook = (_webhookId: string) => {
   // Implementation for editing webhook
-  console.log('Edit webhook:', webhookId)
+  // console.log('Edit webhook:', webhookId)
 }
 
 const toggleWebhook = (webhookId: string) => {
@@ -453,9 +453,9 @@ const toggleWebhook = (webhookId: string) => {
   }
 }
 
-const viewLogs = (webhookId: string) => {
+const viewLogs = (_webhookId: string) => {
   // Implementation for viewing webhook logs
-  console.log('View webhook logs:', webhookId)
+  // console.log('View webhook logs:', webhookId)
 }
 
 const addWebhook = () => {
@@ -521,14 +521,14 @@ const formatDateTime = (date: Date): string => {
   }).format(date)
 }
 
-const viewLogDetails = (logId: string) => {
+const viewLogDetails = (_logId: string) => {
   // Implementation for viewing log details
-  console.log('View log details:', logId)
+  // console.log('View log details:', logId)
 }
 
 const refreshLogs = () => {
   // Implementation for refreshing logs
-  console.log('Refreshing logs...')
+  // console.log('Refreshing logs...')
 }
 
 // Lifecycle

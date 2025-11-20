@@ -3,7 +3,7 @@
  * No hardcoded imports, fully dynamic component resolution
  */
 
-import { ref, readonly } from 'vue'
+import { readonly, ref } from 'vue'
 
 export interface WidgetDefinition {
   type: string
@@ -12,8 +12,8 @@ export interface WidgetDefinition {
   category: string
   icon: string
   componentPath: string
-  defaultConfig: Record<string, any>
-  configSchema?: Record<string, any>
+  defaultConfig: Record<string, unknown>
+  configSchema?: Record<string, unknown>
 }
 
 // Widget registry - can be extended dynamically
@@ -271,7 +271,7 @@ export const useWidgetRegistry = () => {
   /**
    * Create widget with default config
    */
-  const createWidgetConfig = (type: string, overrides: Record<string, any> = {}) => {
+  const createWidgetConfig = (type: string, overrides: Record<string, unknown> = {}) => {
     const definition = getWidgetDefinition(type)
     if (!definition) {
       throw new Error(`Widget type "${type}" not found`)
@@ -286,7 +286,7 @@ export const useWidgetRegistry = () => {
   /**
    * Validate widget config against schema
    */
-  const validateWidgetConfig = (type: string, config: Record<string, any>): boolean => {
+  const validateWidgetConfig = (type: string, config: Record<string, unknown>): boolean => {
     const definition = getWidgetDefinition(type)
     if (!definition?.configSchema) {
       return true // No schema = valid

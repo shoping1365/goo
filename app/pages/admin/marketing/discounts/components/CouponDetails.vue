@@ -5,7 +5,7 @@
       <div class="p-6 border-b border-gray-200">
         <div class="flex items-center justify-between">
           <h2 class="text-xl font-semibold text-gray-900">جزئیات کوپن</h2>
-          <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="$emit('close')">
             <span class="i-heroicons-x-mark text-xl"></span>
           </button>
         </div>
@@ -27,7 +27,7 @@
                   <label class="block text-sm font-medium text-gray-700">کد کوپن</label>
                   <div class="mt-1 flex items-center gap-2">
                     <span class="font-mono text-sm bg-gray-100 px-3 py-2 rounded-lg">{{ coupon.code }}</span>
-                    <button @click="copyCode" class="text-blue-600 hover:text-blue-800">
+                    <button class="text-blue-600 hover:text-blue-800" @click="copyCode">
                       <span class="i-heroicons-clipboard-document"></span>
                     </button>
                   </div>
@@ -151,10 +151,10 @@
 
         <!-- دکمه‌های عملیات -->
         <div class="flex items-center justify-end gap-3 mt-8 pt-6 border-t border-gray-200">
-          <button @click="editCoupon" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="editCoupon">
             ویرایش کوپن
           </button>
-          <button @click="$emit('close')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+          <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors" @click="$emit('close')">
             بستن
           </button>
         </div>

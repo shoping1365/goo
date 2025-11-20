@@ -217,7 +217,8 @@
               <div class="text-sm font-medium text-gray-900">حل خودکار خطاهای شبکه</div>
               <div class="text-xs text-gray-500">تلاش مجدد خودکار برای خطاهای شبکه</div>
             </div>
-            <input type="checkbox" :checked="autoFixSettings.networkErrors" 
+            <input
+type="checkbox" :checked="autoFixSettings.networkErrors" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
           </div>
           
@@ -226,7 +227,8 @@
               <div class="text-sm font-medium text-gray-900">بازپرداخت خودکار</div>
               <div class="text-xs text-gray-500">بازپرداخت خودکار تراکنش‌های ناموفق</div>
             </div>
-            <input type="checkbox" :checked="autoFixSettings.autoRefund" 
+            <input
+type="checkbox" :checked="autoFixSettings.autoRefund" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
           </div>
           
@@ -235,7 +237,8 @@
               <div class="text-sm font-medium text-gray-900">تأیید خودکار</div>
               <div class="text-xs text-gray-500">تأیید خودکار تراکنش‌های مشکوک</div>
             </div>
-            <input type="checkbox" :checked="autoFixSettings.autoApprove" 
+            <input
+type="checkbox" :checked="autoFixSettings.autoApprove" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
           </div>
           
@@ -244,7 +247,8 @@
               <div class="text-sm font-medium text-gray-900">اعلان خودکار</div>
               <div class="text-xs text-gray-500">ارسال اعلان برای خطاهای بحرانی</div>
             </div>
-            <input type="checkbox" :checked="autoFixSettings.autoNotification" 
+            <input
+type="checkbox" :checked="autoFixSettings.autoNotification" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
           </div>
         </div>
@@ -321,9 +325,11 @@
       
       <div class="h-64 flex items-end space-x-2 space-x-reverse overflow-x-auto">
         <div v-for="(day, index) in errorTrend" :key="index" class="flex-shrink-0 flex flex-col items-center min-w-12">
-          <div class="w-full bg-gray-200 rounded-t relative"
+          <div
+class="w-full bg-gray-200 rounded-t relative"
                :style="{ height: getChartHeight(day.errors) + 'px' }">
-            <div class="w-full bg-gradient-to-t from-red-500 to-pink-500 rounded-t transition-all duration-300 absolute bottom-0"
+            <div
+class="w-full bg-gradient-to-t from-red-500 to-pink-500 rounded-t transition-all duration-300 absolute bottom-0"
                  :style="{ height: getChartHeight(day.errors) + 'px' }"></div>
           </div>
           <span class="text-xs text-gray-500 mt-1 text-center">{{ day.date }}</span>

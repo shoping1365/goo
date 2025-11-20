@@ -8,9 +8,9 @@
           <p class="text-sm text-gray-500">لیست تمام تراکنش‌های انجام شده از طریق درگاه ملی</p>
         </div>
         <button
-          @click="loadTransactions"
           :disabled="loading"
           class="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+          @click="loadTransactions"
         >
           <Icon v-if="loading" name="ph:spinner" class="w-4 h-4 animate-spin" />
           <Icon v-else name="ph:arrow-clockwise" class="w-4 h-4" />
@@ -76,15 +76,15 @@
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
               <button
-                @click="viewTransaction(transaction)"
                 class="text-blue-600 hover:text-blue-900 mr-3"
+                @click="viewTransaction(transaction)"
               >
                 <Icon name="ph:eye" class="w-4 h-4" />
               </button>
               <button
                 v-if="transaction.status === 'success'"
-                @click="refundTransaction(transaction)"
                 class="text-red-600 hover:text-red-900"
+                @click="refundTransaction(transaction)"
               >
                 <Icon name="ph:arrow-counter-clockwise" class="w-4 h-4" />
               </button>
@@ -101,9 +101,9 @@
           </div>
           <div class="flex items-center space-x-2">
             <button
-              @click="changePage(currentPage - 1)"
               :disabled="currentPage === 1"
               class="px-3 py-1 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              @click="changePage(currentPage - 1)"
             >
               قبلی
             </button>
@@ -111,9 +111,9 @@
               صفحه {{ currentPage }} از {{ totalPages }}
             </span>
             <button
-              @click="changePage(currentPage + 1)"
               :disabled="currentPage === totalPages"
               class="px-3 py-1 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              @click="changePage(currentPage + 1)"
             >
               بعدی
             </button>
@@ -135,8 +135,8 @@
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-medium text-gray-900">جزئیات تراکنش</h3>
           <button
-            @click="showTransactionModal = false"
             class="text-gray-400 hover:text-gray-600"
+            @click="showTransactionModal = false"
           >
             <Icon name="ph:x" class="w-6 h-6" />
           </button>
@@ -190,8 +190,8 @@
         
         <div class="flex justify-end mt-6">
           <button
-            @click="showTransactionModal = false"
             class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-50 border border-gray-200 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            @click="showTransactionModal = false"
           >
             بستن
           </button>
@@ -215,15 +215,15 @@
         </p>
         <div class="flex justify-end space-x-3">
           <button
-            @click="showRefundModal = false"
             class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-50 border border-gray-200 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            @click="showRefundModal = false"
           >
             انصراف
           </button>
           <button
-            @click="confirmRefund"
             :disabled="refunding"
             class="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50"
+            @click="confirmRefund"
           >
             <Icon v-if="refunding" name="ph:spinner" class="w-4 h-4 animate-spin" />
             <span class="mr-2">{{ refunding ? 'در حال بازگشت...' : 'بازگشت وجه' }}</span>

@@ -11,23 +11,23 @@
       <div class="space-y-3">
         <div class="flex items-center justify-between">
           <span class="text-sm text-gray-700">اعلان خطاهای ارسال پیامک</span>
-          <input type="checkbox" v-model="settings.smsError" class="form-checkbox h-5 w-5 text-blue-600">
+          <input v-model="settings.smsError" type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
         </div>
         <div class="flex items-center justify-between">
           <span class="text-sm text-gray-700">اعلان پاسخ‌های جدید نظرسنجی</span>
-          <input type="checkbox" v-model="settings.newResponse" class="form-checkbox h-5 w-5 text-blue-600">
+          <input v-model="settings.newResponse" type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
         </div>
         <div class="flex items-center justify-between">
           <span class="text-sm text-gray-700">اعلان آمار روزانه</span>
-          <input type="checkbox" v-model="settings.dailyStats" class="form-checkbox h-5 w-5 text-blue-600">
+          <input v-model="settings.dailyStats" type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
         </div>
         <div class="flex items-center justify-between">
           <span class="text-sm text-gray-700">دریافت اعلان‌ها از طریق ایمیل</span>
-          <input type="checkbox" v-model="settings.email" class="form-checkbox h-5 w-5 text-blue-600">
+          <input v-model="settings.email" type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
         </div>
       </div>
       <div class="flex items-center justify-end mt-4">
-        <button @click="saveSettings" :disabled="saving" class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm flex items-center space-x-2 space-x-reverse">
+        <button :disabled="saving" class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm flex items-center space-x-2 space-x-reverse" @click="saveSettings">
           <svg v-if="saving" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>

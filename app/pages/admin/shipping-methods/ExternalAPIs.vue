@@ -68,7 +68,7 @@
               <div class="detail-item">
                 <span class="label">کلید API:</span>
                 <span class="value">{{ maskAPIKey(api.apiKey) }}</span>
-                <button @click="toggleAPIKey(api.id)" class="btn-toggle">
+                <button class="btn-toggle" @click="toggleAPIKey(api.id)">
                   <i :class="api.showKey ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
                 </button>
               </div>
@@ -84,15 +84,15 @@
               </div>
             </div>
             <div class="api-actions">
-              <button @click="testAPI(api.id)" class="btn btn-primary">
+              <button class="btn btn-primary" @click="testAPI(api.id)">
                 <i class="fas fa-play"></i>
                 تست اتصال
               </button>
-              <button @click="editAPI(api.id)" class="btn btn-secondary">
+              <button class="btn btn-secondary" @click="editAPI(api.id)">
                 <i class="fas fa-edit"></i>
                 ویرایش
               </button>
-              <button @click="toggleAPI(api.id)" class="btn" :class="api.status === 'active' ? 'btn-warning' : 'btn-success'">
+              <button class="btn" :class="api.status === 'active' ? 'btn-warning' : 'btn-success'" @click="toggleAPI(api.id)">
                 <i :class="api.status === 'active' ? 'fas fa-pause' : 'fas fa-play'"></i>
                 {{ api.status === 'active' ? 'غیرفعال' : 'فعال' }}
               </button>
@@ -124,7 +124,7 @@
               <div class="detail-item">
                 <span class="label">کلید API:</span>
                 <span class="value">{{ maskAPIKey(api.apiKey) }}</span>
-                <button @click="toggleAPIKey(api.id)" class="btn-toggle">
+                <button class="btn-toggle" @click="toggleAPIKey(api.id)">
                   <i :class="api.showKey ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
                 </button>
               </div>
@@ -140,15 +140,15 @@
               </div>
             </div>
             <div class="api-actions">
-              <button @click="testAPI(api.id)" class="btn btn-primary">
+              <button class="btn btn-primary" @click="testAPI(api.id)">
                 <i class="fas fa-play"></i>
                 تست اتصال
               </button>
-              <button @click="editAPI(api.id)" class="btn btn-secondary">
+              <button class="btn btn-secondary" @click="editAPI(api.id)">
                 <i class="fas fa-edit"></i>
                 ویرایش
               </button>
-              <button @click="toggleAPI(api.id)" class="btn" :class="api.status === 'active' ? 'btn-warning' : 'btn-success'">
+              <button class="btn" :class="api.status === 'active' ? 'btn-warning' : 'btn-success'" @click="toggleAPI(api.id)">
                 <i :class="api.status === 'active' ? 'fas fa-pause' : 'fas fa-play'"></i>
                 {{ api.status === 'active' ? 'غیرفعال' : 'فعال' }}
               </button>
@@ -164,11 +164,11 @@
           <div class="form-row">
             <div class="form-group">
               <label>نام API:</label>
-              <input type="text" v-model="newAPI.name" placeholder="مثال: Post API">
+              <input v-model="newAPI.name" type="text" placeholder="مثال: Post API">
             </div>
             <div class="form-group">
               <label>ارائه‌دهنده:</label>
-              <input type="text" v-model="newAPI.provider" placeholder="مثال: شرکت پست">
+              <input v-model="newAPI.provider" type="text" placeholder="مثال: شرکت پست">
             </div>
           </div>
           <div class="form-row">
@@ -182,25 +182,25 @@
             </div>
             <div class="form-group">
               <label>Endpoint:</label>
-              <input type="url" v-model="newAPI.endpoint" placeholder="https://api.example.com/v1">
+              <input v-model="newAPI.endpoint" type="url" placeholder="https://api.example.com/v1">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
               <label>کلید API:</label>
-              <input type="password" v-model="newAPI.apiKey" placeholder="کلید API را وارد کنید">
+              <input v-model="newAPI.apiKey" type="password" placeholder="کلید API را وارد کنید">
             </div>
             <div class="form-group">
               <label>محدودیت درخواست:</label>
-              <input type="number" v-model="newAPI.rateLimit" placeholder="1000">
+              <input v-model="newAPI.rateLimit" type="number" placeholder="1000">
             </div>
           </div>
           <div class="form-actions">
-            <button @click="addAPI" class="btn btn-success">
+            <button class="btn btn-success" @click="addAPI">
               <i class="fas fa-plus"></i>
               افزودن API
             </button>
-            <button @click="resetNewAPI" class="btn btn-secondary">
+            <button class="btn btn-secondary" @click="resetNewAPI">
               <i class="fas fa-undo"></i>
               بازنشانی
             </button>
@@ -231,7 +231,7 @@
             </option>
           </select>
         </div>
-        <button @click="refreshLogs" class="btn btn-primary">
+        <button class="btn btn-primary" @click="refreshLogs">
           <i class="fas fa-sync"></i>
           بروزرسانی
         </button>
@@ -261,7 +261,7 @@
             </td>
             <td>{{ log.responseTime }}ms</td>
             <td>
-              <button @click="viewLogDetails(log.id)" class="btn-link">
+              <button class="btn-link" @click="viewLogDetails(log.id)">
                 مشاهده جزئیات
               </button>
             </td>
@@ -274,20 +274,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue';
 
 // Props
 interface Props {
-  shippingMethods?: any[]
+  shippingMethods?: unknown[]
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 // Emits
 const emit = defineEmits<{
-  apiUpdated: [apiId: string, data: any]
-  apiAdded: [data: any]
-  apiTested: [apiId: string, result: any]
+  apiUpdated: [apiId: string, data: unknown]
+  apiAdded: [data: unknown]
+  apiTested: [apiId: string, result: unknown]
 }>()
 
 // Reactive data
@@ -463,9 +463,9 @@ const testAPI = async (apiId: string) => {
   }
 }
 
-const editAPI = (apiId: string) => {
+const editAPI = (_apiId: string) => {
   // Implementation for editing API
-  console.log('Edit API:', apiId)
+  // console.log('Edit API:', apiId)
 }
 
 const toggleAPI = (apiId: string) => {
@@ -539,14 +539,14 @@ const formatDateTime = (date: Date): string => {
   }).format(date)
 }
 
-const viewLogDetails = (logId: string) => {
+const viewLogDetails = (_logId: string) => {
   // Implementation for viewing log details
-  console.log('View log details:', logId)
+  // console.log('View log details:', logId)
 }
 
 const refreshLogs = () => {
   // Implementation for refreshing logs
-  console.log('Refreshing logs...')
+  // console.log('Refreshing logs...')
 }
 
 // Lifecycle

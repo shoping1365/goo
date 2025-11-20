@@ -28,9 +28,9 @@
             <!-- فعال/غیرفعال کردن پس زمینه -->
             <div class="flex items-center gap-3">
               <input 
-                type="checkbox" 
-                id="bgEnabled"
+                id="bgEnabled" 
                 v-model="sliderSettings.backgroundColorEnabled"
+                type="checkbox"
                 class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
               />
               <label for="bgEnabled" class="text-sm text-gray-700">فعال کردن پس زمینه</label>
@@ -41,8 +41,8 @@
               <label class="text-sm text-gray-600">رنگ پس زمینه</label>
               <div class="flex items-center gap-3">
                 <input 
-                  type="color" 
-                  v-model="sliderSettings.backgroundColor"
+                  v-model="sliderSettings.backgroundColor" 
+                  type="color"
                   class="w-12 h-10 border border-gray-300 rounded cursor-pointer"
                 />
                 <span class="text-sm text-gray-600">{{ sliderSettings.backgroundColor }}</span>
@@ -59,13 +59,13 @@
                 <button 
                   v-for="height in [400, 500, 600]" 
                   :key="height"
-                  @click="sliderSettings.height = height"
                   :class="[
                     'px-4 py-2 rounded-lg font-medium transition-colors',
                     sliderSettings.height === height 
                       ? 'bg-blue-600 text-white' 
                       : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                   ]"
+                  @click="sliderSettings.height = height"
                 >
                   {{ height }}px
                 </button>
@@ -88,9 +88,9 @@
           <div class="flex gap-2">
             <button 
               v-if="index > 0"
-              @click="moveSlide(index, 'up')" 
-              class="bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition-colors"
+              class="bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition-colors" 
               title="انتقال به بالا"
+              @click="moveSlide(index, 'up')"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
@@ -98,18 +98,18 @@
             </button>
             <button 
               v-if="index < slides.length - 1"
-              @click="moveSlide(index, 'down')" 
-              class="bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition-colors"
+              class="bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition-colors" 
               title="انتقال به پایین"
+              @click="moveSlide(index, 'down')"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
             <button 
-              @click="removeSlide(index)" 
-              class="bg-red-500 text-white p-2 rounded hover:bg-red-600 transition-colors"
+              class="bg-red-500 text-white p-2 rounded hover:bg-red-600 transition-colors" 
               title="حذف اسلاید"
+              @click="removeSlide(index)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -198,12 +198,12 @@
       </div>
 
       <!-- دکمه ذخیره -->
-      <div class="flex justify-end mt-6" v-if="slides.length > 0">
+      <div v-if="slides.length > 0" class="flex justify-end mt-6">
         <button 
           type="button" 
           class="bg-purple-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-purple-700 transition-colors"
-          @click="handleSave"
           :disabled="!isFormValid"
+          @click="handleSave"
         >
           ذخیره اسلایدر
         </button>

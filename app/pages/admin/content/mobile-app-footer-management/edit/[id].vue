@@ -20,7 +20,7 @@
     </div>
 
     <div v-else class="form-container">
-      <form @submit.prevent="updateMobileAppFooter" class="mobile-app-footer-form">
+      <form class="mobile-app-footer-form" @submit.prevent="updateMobileAppFooter">
         <!-- اطلاعات اصلی -->
         <div class="form-section">
           <h3>اطلاعات اصلی</h3>
@@ -90,7 +90,7 @@
           </div>
           <div class="form-group">
             <label class="checkbox-label">
-              <input type="checkbox" v-model="formData.isActive">
+              <input v-model="formData.isActive" type="checkbox">
               <span>فعال</span>
             </label>
           </div>

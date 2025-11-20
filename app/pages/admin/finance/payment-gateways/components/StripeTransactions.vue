@@ -4,9 +4,9 @@
       <h2 class="text-xl font-bold text-gray-800">تراکنش‌های درگاه استرایپ</h2>
       <div class="flex items-center space-x-2 space-x-reverse">
         <button
-          @click="loadTransactions"
           :disabled="loading"
           class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50"
+          @click="loadTransactions"
         >
           {{ loading ? 'در حال بارگذاری...' : 'بارگذاری مجدد' }}
         </button>
@@ -20,8 +20,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">وضعیت</label>
           <select
             v-model="filters.status"
-            @change="loadTransactions"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            @change="loadTransactions"
           >
             <option value="">همه</option>
             <option value="requires_payment_method">نیاز به روش پرداخت</option>
@@ -39,8 +39,8 @@
           <input
             v-model="filters.start_date"
             type="date"
-            @change="loadTransactions"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            @change="loadTransactions"
           />
         </div>
 
@@ -49,8 +49,8 @@
           <input
             v-model="filters.end_date"
             type="date"
-            @change="loadTransactions"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            @change="loadTransactions"
           />
         </div>
 
@@ -59,9 +59,9 @@
           <input
             v-model="filters.search"
             type="text"
-            @input="debounceSearch"
             placeholder="Payment Intent ID یا Customer ID"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            @input="debounceSearch"
           />
         </div>
       </div>
@@ -108,15 +108,15 @@
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
               <div class="flex items-center space-x-2 space-x-reverse">
                 <button
-                  @click="viewTransaction(transaction)"
                   class="text-blue-600 hover:text-blue-900"
+                  @click="viewTransaction(transaction)"
                 >
                   مشاهده
                 </button>
                 <button
                   v-if="transaction.status === 'succeeded'"
-                  @click="refundTransaction(transaction)"
                   class="text-red-600 hover:text-red-900"
+                  @click="refundTransaction(transaction)"
                 >
                   بازگشت وجه
                 </button>
@@ -139,9 +139,9 @@
       </div>
       <div class="flex items-center space-x-2 space-x-reverse">
         <button
-          @click="changePage(pagination.current_page - 1)"
           :disabled="pagination.current_page <= 1"
           class="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+          @click="changePage(pagination.current_page - 1)"
         >
           قبلی
         </button>
@@ -149,9 +149,9 @@
           صفحه {{ pagination.current_page }} از {{ pagination.total_pages }}
         </span>
         <button
-          @click="changePage(pagination.current_page + 1)"
           :disabled="pagination.current_page >= pagination.total_pages"
           class="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+          @click="changePage(pagination.current_page + 1)"
         >
           بعدی
         </button>
@@ -191,8 +191,8 @@
           </div>
           <div class="mt-6 flex justify-end">
             <button
-              @click="selectedTransaction = null"
               class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+              @click="selectedTransaction = null"
             >
               بستن
             </button>

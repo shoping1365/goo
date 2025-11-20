@@ -10,12 +10,12 @@
         <!-- فرم اطلاعات -->
         <div class="flex-1">
           <!-- اگر آدرس انتخاب شده وجود داشت، خلاصه آدرس را نمایش بده -->
-          <AddressSummary v-if="summaryAddress" :address="summaryAddress" @edit="showAddressModal=true" class="mb-6" />
+          <AddressSummary v-if="summaryAddress" :address="summaryAddress" class="mb-6" @edit="showAddressModal=true" />
 
           <!-- فرم اطلاعات در صورتی که آدرسی انتخاب نشده باشد -->
           <div v-if="!summaryAddress" class="bg-white rounded-2xl shadow px-4 py-4 mb-6">
             <h2 class="text-xl font-bold text-[#1a2341] mb-4">اطلاعات شخصی</h2>
-            <form @submit.prevent class="space-y-4">
+            <form class="space-y-4" @submit.prevent>
               <!-- اطلاعات شخصی -->
               <div class="grid grid-cols-1 md:grid-cols-2 gapx-4 py-4">
                 <div>
@@ -94,7 +94,7 @@
             </form>
           </div>
           <!-- دکمه تغییر آدرس زمانی‌که آدرسی انتخاب نشده ولی لیست آدرس‌ها وجود دارد -->
-          <button v-if="!summaryAddress && addresses.length>0" @click="showAddressModal=true" class="mb-6 text-sm text-[#e60023] font-bold hover:underline">
+          <button v-if="!summaryAddress && addresses.length>0" class="mb-6 text-sm text-[#e60023] font-bold hover:underline" @click="showAddressModal=true">
             انتخاب از آدرس‌های ذخیره‌شده
           </button>
           
@@ -115,15 +115,15 @@
                 <div class="bg-gray-50 border border-gray-200 rounded p-1 flex items-center justify-between w-full">
                   <button 
                     v-if="item.quantity > 1"
-                    @click="updateQuantity(item, item.quantity - 1)"
                     class="w-5 h-5 flex items-center justify-center rounded-full bg-red-500 text-white text-xs font-bold hover:bg-red-600"
+                    @click="updateQuantity(item, item.quantity - 1)"
                   >
                     -
                   </button>
                   <button 
                     v-else
-                    @click="removeItem(item)"
                     class="w-5 h-5 flex items-center justify-center rounded-full bg-red-500 text-white text-xs font-bold hover:bg-red-600"
+                    @click="removeItem(item)"
                   >
                     🗑️
                   </button>
@@ -133,9 +133,9 @@
                   </div>
                   
                   <button 
-                    @click="updateQuantity(item, item.quantity + 1)"
                     :disabled="item.quantity >= (item.stock_quantity || 999)"
                     class="w-5 h-5 flex items-center justify-center rounded-full bg-red-500 text-white text-xs font-bold hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    @click="updateQuantity(item, item.quantity + 1)"
                   >
                     +
                   </button>
@@ -202,9 +202,9 @@
             <!-- دکمه ثبت سفارش -->
             <button 
               type="button"
-              @click="submitOrder"
               :disabled="orderLoading"
               class="w-full py-4 rounded-xl bg-[#e60023] text-white font-bold text-lg shadow-lg hover:bg-[#c9001b] transition disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+              @click="submitOrder"
             >
               <span v-if="orderLoading">در حال پردازش...</span>
               <span v-else>ثبت و پرداخت سفارش</span>
@@ -252,7 +252,7 @@ const { user } = useAuth()
 const { 
   cartItems, 
   cartTotal, 
-  loading: cartLoading, 
+  loading: _cartLoading, 
   fetchCart, 
   clearCart,
   updateCartItem
@@ -275,8 +275,8 @@ const summaryAddress = computed(()=>{
   return addresses.value.find(a=>a.id===selectedAddressId.value) ?? null
 })
 
-function onAddressSelected(addr:any){
-  handleAddressSelection(addr.id)
+function onAddressSelected(addr: Record<string, unknown>){
+  handleAddressSelection(Number(addr.id))
 }
 
 // تابع انتخاب آدرس باید async باشد تا بتوان از await استفاده کرد
@@ -316,11 +316,11 @@ const formData = ref({
 const shippingCost = ref<number>(0)
 
 // استان / شهر - با کش
-const provinces = ref<any[]>([])
-const cities = ref<any[]>([])
+const provinces = ref<Record<string, unknown>[]>([])
+const cities = ref<Record<string, unknown>[]>([])
 const selectedProvinceId = ref<number|null>(null)
 const provincesLoaded = ref(false)
-const citiesCache = new Map<number, any[]>()
+const citiesCache = new Map<number, Record<string, unknown>[]>()
 
 async function fetchProvinces(){
   if (provincesLoaded.value) return
@@ -339,7 +339,7 @@ async function fetchCities(pid: number){
   }
   
   try {
-    const citiesData = await $fetch<any[]>(`/api/geo/provinces/${pid}/cities`)
+    const citiesData = await $fetch<Record<string, unknown>[]>(`/api/geo/provinces/${pid}/cities`)
     cities.value = citiesData
     citiesCache.set(pid, citiesData)
   } catch (error) {
@@ -449,15 +449,15 @@ onUnmounted(() => {
 async function submitOrder() {
   // جلوگیری از ارسال تکراری - باید در ابتدا چک شود
   if (orderLoading.value) {
-    console.log('در حال پردازش سفارش قبلی...')
+    // console.log('در حال پردازش سفارش قبلی...')
     return
   }
 
   // تنظیم فوری orderLoading برای جلوگیری از double-click
   orderLoading.value = true
 
-  console.log('شروع ثبت سفارش - cartItems:', cartItems.value)
-  console.log('تعداد آیتم‌های سبد خرید:', cartItems.value.length)
+  // console.log('شروع ثبت سفارش - cartItems:', cartItems.value)
+  // console.log('تعداد آیتم‌های سبد خرید:', cartItems.value.length)
 
   try {
     // اگر کاربر آدرس انتخاب نکرده و addresses خالی است، ابتدا ذخیره آدرس
@@ -528,14 +528,14 @@ async function submitOrder() {
       }))
     }
     
-    console.log('ارسال داده‌های سفارش:', orderData)
+    // console.log('ارسال داده‌های سفارش:', orderData)
     
     const res = await $fetch<{success?: boolean, data?: {orderId?: number, orderNumber?: string}, id?: number}>('/api/orders/create', {
       method: 'POST',
       body: orderData
     })
     
-    console.log('پاسخ API:', res)
+    // console.log('پاسخ API:', res)
     
     if (res && res.success && res.data) {
       // پاک‌کردن سبد خرید

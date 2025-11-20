@@ -8,8 +8,8 @@
       </div>
       <div class="flex items-center space-x-3 space-x-reverse">
         <button
-          @click="startLiveChat"
           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          @click="startLiveChat"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -56,8 +56,8 @@
         <h5 class="font-medium text-purple-900 mb-2">چت زنده</h5>
         <p class="text-sm text-purple-700 mb-3">پاسخ فوری در ساعات کاری</p>
         <button
-          @click="startLiveChat"
           class="text-lg font-bold text-purple-600 hover:text-purple-800"
+          @click="startLiveChat"
         >
           شروع چت
         </button>
@@ -67,7 +67,7 @@
     <!-- فرم ارسال تیکت -->
     <div class="bg-white rounded-lg border border-gray-200 p-6">
       <h5 class="text-md font-medium text-gray-900 mb-4">ارسال تیکت پشتیبانی</h5>
-      <form @submit.prevent="submitTicket" class="space-y-4">
+      <form class="space-y-4" @submit.prevent="submitTicket">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">نام و نام خانوادگی</label>
@@ -134,10 +134,10 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">فایل پیوست (اختیاری)</label>
           <input
             type="file"
-            @change="handleFileUpload"
             multiple
             accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.txt"
             class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="handleFileUpload"
           />
           <p class="text-xs text-gray-500 mt-1">حداکثر ۵ فایل، هر فایل حداکثر ۱۰ مگابایت</p>
         </div>
@@ -193,8 +193,8 @@
               </div>
             </div>
             <button
-              @click="viewTicket(ticket)"
               class="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              @click="viewTicket(ticket)"
             >
               مشاهده
             </button>

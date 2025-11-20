@@ -8,10 +8,10 @@
           <p class="mt-1 text-sm text-gray-500">تحلیل الگوی خرید کاربران و امتیازدهی بر اساس تداوم خرید</p>
         </div>
         <div class="flex space-x-3 space-x-reverse">
-          <button @click="analyzePurchasePatterns" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+          <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors" @click="analyzePurchasePatterns">
             تحلیل الگوها
           </button>
-          <button @click="exportContinuityReport" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">
+          <button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors" @click="exportContinuityReport">
             خروجی گزارش
           </button>
         </div>
@@ -64,10 +64,10 @@
       </div>
       
       <div class="mt-4 flex space-x-3 space-x-reverse">
-        <button @click="saveContinuitySettings" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+        <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors" @click="saveContinuitySettings">
           ذخیره تنظیمات
         </button>
-        <button @click="testContinuitySystem" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors">
+        <button class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors" @click="testContinuitySystem">
           تست سیستم
         </button>
       </div>
@@ -218,9 +218,9 @@
                 {{ pattern.score }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button @click="viewPurchaseHistory(pattern)" class="text-blue-600 hover:text-blue-900 ml-3">تاریخچه</button>
-                <button @click="sendReminder(pattern)" class="text-green-600 hover:text-green-900 ml-3">یادآوری</button>
-                <button @click="analyzeUserPattern(pattern)" class="text-purple-600 hover:text-purple-900">تحلیل</button>
+                <button class="text-blue-600 hover:text-blue-900 ml-3" @click="viewPurchaseHistory(pattern)">تاریخچه</button>
+                <button class="text-green-600 hover:text-green-900 ml-3" @click="sendReminder(pattern)">یادآوری</button>
+                <button class="text-purple-600 hover:text-purple-900" @click="analyzeUserPattern(pattern)">تحلیل</button>
               </td>
             </tr>
           </tbody>
@@ -233,13 +233,13 @@
           <span class="text-sm text-gray-700">نمایش {{ pagination.start }} تا {{ pagination.end }} از {{ pagination.total }} الگو</span>
         </div>
         <div class="flex space-x-2 space-x-reverse">
-          <button @click="previousPage" :disabled="currentPage === 1" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50">
+          <button :disabled="currentPage === 1" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50" @click="previousPage">
             قبلی
           </button>
-          <button v-for="page in visiblePages" :key="page" @click="goToPage(page)" :class="page === currentPage ? 'bg-blue-600 text-white' : 'bg-white text-gray-700'" class="px-3 py-1 border border-gray-300 rounded-md text-sm">
+          <button v-for="page in visiblePages" :key="page" :class="page === currentPage ? 'bg-blue-600 text-white' : 'bg-white text-gray-700'" class="px-3 py-1 border border-gray-300 rounded-md text-sm" @click="goToPage(page)">
             {{ page }}
           </button>
-          <button @click="nextPage" :disabled="currentPage === totalPages" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50">
+          <button :disabled="currentPage === totalPages" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50" @click="nextPage">
             بعدی
           </button>
         </div>
@@ -273,10 +273,10 @@
             </div>
           </div>
           <div class="flex space-x-2 space-x-reverse">
-            <button @click="sendInactiveReminder(user)" class="bg-blue-600 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-700">
+            <button class="bg-blue-600 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-700" @click="sendInactiveReminder(user)">
               ارسال یادآوری
             </button>
-            <button @click="viewUserDetails(user)" class="bg-gray-600 text-white px-3 py-1 rounded-md text-sm hover:bg-gray-700">
+            <button class="bg-gray-600 text-white px-3 py-1 rounded-md text-sm hover:bg-gray-700" @click="viewUserDetails(user)">
               مشاهده جزئیات
             </button>
           </div>
@@ -287,17 +287,39 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
+
+interface User {
+  id: number;
+  userName: string;
+  userEmail: string;
+  userAvatar: string;
+  lastPurchase: string;
+  pattern: string;
+  purchaseInterval: number;
+  streakLevel: number;
+  status: string;
+  score: number;
+  [key: string]: unknown;
+}
+
+interface InactiveUser {
+  id: number;
+  name: string;
+  email: string;
+  avatar: string;
+  lastPurchase: string;
+}
 
 // Props and Emits
 defineProps<{
-  users?: any[]
+  users?: User[]
 }>()
 
-defineEmits<{
-  saveSettings: [settings: any]
-  analyzePatterns: [users: any[]]
-  exportReport: [data: any]
+const emit = defineEmits<{
+  saveSettings: [settings: Record<string, unknown>]
+  analyzePatterns: [users: User[]]
+  exportReport: [data: Record<string, unknown>]
 }>()
 
 // Reactive data
@@ -321,7 +343,7 @@ const continuitySettings = ref({
 })
 
 // Sample purchase patterns data
-const purchasePatterns = ref([
+const purchasePatterns = ref<User[]>([
   {
     id: 1,
     userName: 'علی احمدی',
@@ -361,7 +383,7 @@ const purchasePatterns = ref([
 ])
 
 // Sample inactive users
-const inactiveUsers = ref([
+const inactiveUsers = ref<InactiveUser[]>([
   {
     id: 1,
     name: 'زهرا کریمی',
@@ -500,47 +522,41 @@ const getStatusText = (status: string) => {
 }
 
 const saveContinuitySettings = () => {
-  console.log('ذخیره تنظیمات تداوم خرید:', continuitySettings.value)
   // API call to save continuity settings
+  emit('saveSettings', continuitySettings.value)
 }
 
 const testContinuitySystem = () => {
-  console.log('تست سیستم تداوم خرید')
   // Test continuity system functionality
 }
 
 const analyzePurchasePatterns = () => {
-  console.log('تحلیل الگوهای خرید')
   // Analyze purchase patterns for all users
+  emit('analyzePatterns', purchasePatterns.value)
 }
 
 const exportContinuityReport = () => {
-  console.log('خروجی گزارش تداوم خرید')
   // Export continuity report
+  emit('exportReport', { stats: stats.value, patterns: filteredPatterns.value })
 }
 
-const viewPurchaseHistory = (pattern: any) => {
-  console.log('مشاهده تاریخچه خرید:', pattern)
+const viewPurchaseHistory = (_pattern: User) => {
   // Open purchase history modal
 }
 
-const sendReminder = (pattern: any) => {
-  console.log('ارسال یادآوری:', pattern)
+const sendReminder = (_pattern: User) => {
   // Send reminder to user
 }
 
-const analyzeUserPattern = (pattern: any) => {
-  console.log('تحلیل الگوی کاربر:', pattern)
+const analyzeUserPattern = (_pattern: User) => {
   // Analyze specific user pattern
 }
 
-const sendInactiveReminder = (user: any) => {
-  console.log('ارسال یادآوری به کاربر غیرفعال:', user)
+const sendInactiveReminder = (_user: InactiveUser) => {
   // Send reminder to inactive user
 }
 
-const viewUserDetails = (user: any) => {
-  console.log('مشاهده جزئیات کاربر:', user)
+const viewUserDetails = (_user: InactiveUser) => {
   // View user details
 }
 
@@ -561,7 +577,5 @@ const goToPage = (page: number) => {
 }
 
 // Lifecycle
-onMounted(() => {
-  console.log('سیستم تداوم خرید بارگذاری شد')
-})
+// onMounted removed as it only contained console.log
 </script> 

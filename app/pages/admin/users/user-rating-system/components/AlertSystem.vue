@@ -79,7 +79,7 @@
               <option value="serious">هشدار جدی</option>
               <option value="blocking">در آستانه مسدودسازی</option>
             </select>
-            <button @click="sendBulkAlerts" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors">
+            <button class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors" @click="sendBulkAlerts">
               ارسال هشدار گروهی
             </button>
           </div>
@@ -90,7 +90,7 @@
           <thead class="bg-gray-50">
             <tr>
               <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                <input type="checkbox" v-model="selectAll" @change="toggleSelectAll" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                <input v-model="selectAll" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" @change="toggleSelectAll">
               </th>
               <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">کاربر</th>
               <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">امتیاز فعلی</th>
@@ -102,7 +102,7 @@
           <tbody class="bg-white divide-y divide-gray-200">
             <tr v-for="user in filteredRiskUsers" :key="user.id" class="hover:bg-gray-50">
               <td class="px-6 py-4 whitespace-nowrap">
-                <input type="checkbox" v-model="selectedUsers" :value="user.id" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                <input v-model="selectedUsers" type="checkbox" :value="user.id" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
@@ -127,8 +127,8 @@
                 {{ formatDate(user.lastActivity) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button @click="sendAlert(user)" class="text-blue-600 hover:text-blue-900 mr-3">ارسال هشدار</button>
-                <button @click="viewUserDetails(user)" class="text-green-600 hover:text-green-900">جزئیات</button>
+                <button class="text-blue-600 hover:text-blue-900 mr-3" @click="sendAlert(user)">ارسال هشدار</button>
+                <button class="text-green-600 hover:text-green-900" @click="viewUserDetails(user)">جزئیات</button>
               </td>
             </tr>
           </tbody>
@@ -148,7 +148,7 @@
               <option value="serious">هشدارهای جدی</option>
               <option value="blocking">هشدارهای مسدودسازی</option>
             </select>
-            <button @click="exportAlertHistory" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">
+            <button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors" @click="exportAlertHistory">
               خروجی اکسل
             </button>
           </div>
@@ -196,7 +196,7 @@
                 {{ formatDate(alert.createdAt) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button @click="viewAlertDetails(alert)" class="text-blue-600 hover:text-blue-900">جزئیات</button>
+                <button class="text-blue-600 hover:text-blue-900" @click="viewAlertDetails(alert)">جزئیات</button>
               </td>
             </tr>
           </tbody>
@@ -215,8 +215,8 @@
             <div class="flex items-center justify-between mb-4">
               <h4 class="font-medium text-gray-900">{{ template.name }}</h4>
               <div class="flex space-x-2 space-x-reverse">
-                <button @click="editTemplate(template)" class="text-blue-600 hover:text-blue-900">ویرایش</button>
-                <button @click="testTemplate(template)" class="text-green-600 hover:text-green-900">تست</button>
+                <button class="text-blue-600 hover:text-blue-900" @click="editTemplate(template)">ویرایش</button>
+                <button class="text-green-600 hover:text-green-900" @click="testTemplate(template)">تست</button>
               </div>
             </div>
             <div class="space-y-2">
@@ -272,7 +272,7 @@
             </div>
           </div>
           <div class="flex justify-end mt-6">
-            <button @click="showAlertDetailsModal = false" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">بستن</button>
+            <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400" @click="showAlertDetailsModal = false">بستن</button>
           </div>
         </div>
       </div>
@@ -283,16 +283,45 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  avatar: string;
+  score: number;
+  riskLevel: string;
+  lastActivity: string;
+  [key: string]: unknown;
+}
+
+interface Alert {
+  id: number;
+  user: { name: string; email: string; avatar: string };
+  type: string;
+  score: number;
+  status: string;
+  description: string;
+  createdAt: string;
+}
+
+interface Template {
+  id: number;
+  name: string;
+  subject: string;
+  message: string;
+  channels: { email: boolean; sms: boolean; push: boolean };
+}
+
 // Props
-const props = defineProps<{
-  users: any[]
+defineProps<{
+  users: User[]
 }>()
 
 // Emits
 const emit = defineEmits<{
-  sendAlert: [data: any]
-  sendBulkAlerts: [data: any]
-  exportHistory: [data: any]
+  sendAlert: [data: Record<string, unknown>]
+  sendBulkAlerts: [data: Record<string, unknown>]
+  exportHistory: [data: Record<string, unknown>]
 }>()
 
 // Reactive data
@@ -300,9 +329,9 @@ const alertSystemEnabled = ref(true)
 const riskFilter = ref('all')
 const alertHistoryFilter = ref('all')
 const selectAll = ref(false)
-const selectedUsers = ref([])
+const selectedUsers = ref<number[]>([])
 const showAlertDetailsModal = ref(false)
-const selectedAlert = ref(null)
+const selectedAlert = ref<Alert | null>(null)
 
 const alertThresholds = ref({
   warning: -20,
@@ -318,7 +347,7 @@ const notificationSettings = ref({
 })
 
 // Sample data
-const riskUsers = ref([
+const riskUsers = ref<User[]>([
   {
     id: 1,
     name: 'علی احمدی',
@@ -348,7 +377,7 @@ const riskUsers = ref([
   }
 ])
 
-const alertHistory = ref([
+const alertHistory = ref<Alert[]>([
   {
     id: 1,
     user: { name: 'علی احمدی', email: 'ali@example.com', avatar: '/avatars/ali.jpg' },
@@ -369,7 +398,7 @@ const alertHistory = ref([
   }
 ])
 
-const alertTemplates = ref([
+const alertTemplates = ref<Template[]>([
   {
     id: 1,
     name: 'هشدار اولیه',
@@ -511,7 +540,7 @@ const toggleSelectAll = () => {
   }
 }
 
-const sendAlert = (user: any) => {
+const sendAlert = (user: User) => {
   emit('sendAlert', {
     userId: user.id,
     type: user.riskLevel,
@@ -531,12 +560,11 @@ const sendBulkAlerts = () => {
   })
 }
 
-const viewUserDetails = (user: any) => {
+const viewUserDetails = (_user: User) => {
   // Navigate to user details page
-  console.log('مشاهده جزئیات کاربر:', user)
 }
 
-const viewAlertDetails = (alert: any) => {
+const viewAlertDetails = (alert: Alert) => {
   selectedAlert.value = alert
   showAlertDetailsModal.value = true
 }
@@ -548,12 +576,12 @@ const exportAlertHistory = () => {
   })
 }
 
-const editTemplate = (template: any) => {
-  console.log('ویرایش قالب:', template)
+const editTemplate = (_template: Template) => {
+  // Edit template logic
 }
 
-const testTemplate = (template: any) => {
-  console.log('تست قالب:', template)
+const testTemplate = (_template: Template) => {
+  // Test template logic
 }
 
 // Watchers

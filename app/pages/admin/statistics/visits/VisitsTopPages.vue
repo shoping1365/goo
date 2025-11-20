@@ -5,7 +5,8 @@
     <div class="space-y-3">
       <div v-for="(page, index) in pages" :key="page.page" class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
         <div class="flex items-center gap-3">
-          <div class="flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold"
+          <div
+class="flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold"
                :class="getRankClass(index)">
             {{ index + 1 }}
           </div>
@@ -39,7 +40,7 @@ interface Page {
   percentage: number
 }
 
-const props = defineProps<{
+defineProps<{
   pages: Page[]
 }>()
 

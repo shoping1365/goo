@@ -146,16 +146,16 @@
                       </td>
                       <td class="px-4 py-2 whitespace-nowrap">
                         <div class="flex items-center gap-2">
-                          <button @click="viewSchema(schema)" class="text-blue-500 hover:text-blue-700 transition-colors text-sm">
+                          <button class="text-blue-500 hover:text-blue-700 transition-colors text-sm" @click="viewSchema(schema)">
                             مشاهده
                           </button>
-                          <button @click="editSchema(schema)" class="text-amber-500 hover:text-amber-700 transition-colors text-sm">
+                          <button class="text-amber-500 hover:text-amber-700 transition-colors text-sm" @click="editSchema(schema)">
                             ویرایش
                           </button>
-                          <button @click="testSchema(schema)" class="text-green-500 hover:text-green-700 transition-colors text-sm">
+                          <button class="text-green-500 hover:text-green-700 transition-colors text-sm" @click="testSchema(schema)">
                             تست
                           </button>
-                          <button @click="deleteSchema(schema)" class="text-red-500 hover:text-red-700 transition-colors text-sm">
+                          <button class="text-red-500 hover:text-red-700 transition-colors text-sm" @click="deleteSchema(schema)">
                             حذف
                           </button>
                         </div>
@@ -184,6 +184,7 @@
 declare const definePageMeta: (meta: { layout?: string }) => void
 declare const useHead: (head: { title?: string }) => void
 declare const navigateTo: (to: string) => Promise<void>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const useSchema: () => any
 </script>
 
@@ -204,10 +205,7 @@ const {
   loading, 
   error, 
   fetchAllTemplates,
-  activeTemplates,
-  articleTemplates,
-  productTemplates,
-  organizationTemplates
+  activeTemplates
 } = useSchema()
 
 // Computed properties
@@ -233,21 +231,20 @@ const getSchemaTypeLabel = (type: string): string => {
   return labels[type] || type
 }
 
-const getSchemaTypeCount = (type: string): number => {
-  return schemas.value.filter(s => s.type === type).length
-}
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const viewSchema = (schema: any) => {
   // نمایش اسکیمای JSON در یک modal یا صفحه جدید
   const schemaJson = JSON.stringify(schema.template, null, 2)
   alert(`اسکیمای ${schema.name}:\n\n${schemaJson}`)
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const editSchema = (schema: any) => {
   // هدایت به صفحه ویرایش اسکیما
   navigateTo(`/admin/seo/SchemaManagement/SchemaEdit?id=${schema.id}`)
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const testSchema = async (schema: any) => {
   try {
     // تست اسکیما با استفاده از Google's Rich Results Test
@@ -265,6 +262,7 @@ const testSchema = async (schema: any) => {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const deleteSchema = async (schema: any) => {
   // تأیید حذف اسکیما
   const confirmed = confirm(`آیا از حذف اسکیمای "${schema.name}" اطمینان دارید؟\n\nاین عملیات قابل بازگشت نیست.`)

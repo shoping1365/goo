@@ -122,13 +122,13 @@
               </div>
             </div>
             <div class="flex items-center space-x-2 space-x-reverse">
-              <button @click="handleTransferSession" class="px-3 py-1 text-sm text-gray-600 hover:bg-gray-200 rounded-lg transition-colors flex items-center space-x-1 space-x-reverse">
+              <button class="px-3 py-1 text-sm text-gray-600 hover:bg-gray-200 rounded-lg transition-colors flex items-center space-x-1 space-x-reverse" @click="handleTransferSession">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
                 <span>انتقال مکالمه</span>
               </button>
-              <button @click="handleCloseSession" class="px-3 py-1 text-sm text-gray-600 hover:bg-gray-200 rounded-lg transition-colors">بستن مکالمه</button>
+              <button class="px-3 py-1 text-sm text-gray-600 hover:bg-gray-200 rounded-lg transition-colors" @click="handleCloseSession">بستن مکالمه</button>
               <button class="p-1 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -170,11 +170,11 @@
         <div class="p-6 border-t border-gray-200">
           <div class="flex items-center space-x-3 space-x-reverse">
             <input 
+              id="file-input" 
               type="file" 
-              @change="handleFileSelect" 
               class="hidden" 
-              id="file-input"
               accept="image/*,video/*"
+              @change="handleFileSelect"
             >
             <label for="file-input" class="p-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -185,15 +185,15 @@
               v-model="newMessage"
               type="text" 
               placeholder="پیام خود را بنویسید..." 
-              @keyup.enter="handleSendMessage"
               class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-blue-400 focus:border-blue-400"
+              @keyup.enter="handleSendMessage"
             >
             <button class="p-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
               </svg>
             </button>
-            <button @click="handleSendMessage" class="w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center hover:bg-purple-700 transition-colors">
+            <button class="w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center hover:bg-purple-700 transition-colors" @click="handleSendMessage">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
               </svg>
@@ -296,28 +296,31 @@
 
         <!-- تب‌ها -->
         <div class="flex bg-white">
-          <button @click="handleTabChange('closed')" 
-                  :class="[
+          <button
+:class="[
                     'flex-1 px-3 py-3 text-center text-sm transition-colors',
                     currentTab === 'closed' ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50'
-                  ]">
+                  ]" 
+                  @click="handleTabChange('closed')">
             مکالمه‌های دیگر
           </button>
-          <button @click="handleTabChange('waiting')" 
-                  :class="[
+          <button
+:class="[
                     'flex-1 px-3 py-3 text-center text-sm transition-colors relative',
                     currentTab === 'waiting' ? 'bg-yellow-50 text-yellow-600 border-b-2 border-yellow-500' : 'text-gray-600 hover:bg-gray-50'
-                  ]">
+                  ]" 
+                  @click="handleTabChange('waiting')">
             <span>در انتظار پاسخ</span>
             <div v-if="waitingSessionsCount > 0" class="absolute -top-1 -right-1 w-5 h-5 bg-white border border-yellow-500 rounded-full flex items-center justify-center">
               <span class="text-xs text-yellow-600 font-medium">{{ waitingSessionsCount }}</span>
             </div>
           </button>
-          <button @click="handleTabChange('active')" 
-                  :class="[
+          <button
+:class="[
                     'flex-1 px-3 py-3 text-center text-sm transition-colors relative',
                     currentTab === 'active' ? 'bg-red-50 text-red-600 border-b-2 border-red-500' : 'text-gray-600 hover:bg-gray-50'
-                  ]">
+                  ]" 
+                  @click="handleTabChange('active')">
             <span>در حال مکالمه</span>
             <div v-if="activeSessionsCount > 0" class="absolute -top-1 -right-1 w-5 h-5 bg-white border border-red-500 rounded-full flex items-center justify-center">
               <span class="text-xs text-red-600 font-medium">{{ activeSessionsCount }}</span>
@@ -353,12 +356,13 @@
 
         <!-- لیست چت‌ها -->
         <div v-else class="overflow-y-auto" style="height: calc(100% - 280px);">
-          <div v-for="session in filteredSessions" :key="session.id" 
-               @click="handleSelectSession(session)"
+          <div
+v-for="session in filteredSessions" :key="session.id" 
                :class="[
                  'p-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors',
                  selectedSession?.id === session.id ? 'bg-blue-50 border-blue-200' : ''
-               ]">
+               ]"
+               @click="handleSelectSession(session)">
             <div class="flex items-center justify-between mb-2">
               <div class="flex items-center space-x-2 space-x-reverse">
                 <span class="text-sm text-gray-600">کاربر :</span>
@@ -393,11 +397,11 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string }) => void
-declare const useLiveChat: () => any
+declare const useLiveChat: () => Record<string, unknown>
 </script>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 definePageMeta({
   layout: 'admin-main'
@@ -411,7 +415,7 @@ const {
   isLoading,
   error,
   fetchChatSessions,
-  fetchMessages,
+  fetchMessages: _fetchMessages,
   sendMessage,
   updateSessionStatus,
   // connectWebSocket,
@@ -421,7 +425,7 @@ const {
   stopPolling,
   selectSession,
   markAsRead,
-  getRealTimeMetrics
+  // getRealTimeMetrics
 } = useLiveChat()
 
 // Local state
@@ -429,7 +433,7 @@ const currentTab = ref('active') // active, waiting, closed
 const searchQuery = ref('')
 const newMessage = ref('')
 const selectedFile = ref<File | null>(null)
-const realTimeMetrics = ref(null)
+// const realTimeMetrics = ref(null)
 
 // Computed
 const filteredSessions = computed(() => {
@@ -461,12 +465,12 @@ const waitingSessionsCount = computed(() =>
   chatSessions.value.filter(s => s.status === 'waiting').length
 )
 
-const closedSessionsCount = computed(() => 
-  chatSessions.value.filter(s => s.status === 'closed').length
+const _closedSessionsCount = computed(() => 
+  (chatSessions.value as Record<string, unknown>[]).filter(s => s.status === 'closed').length
 )
 
 // Methods
-const handleSelectSession = async (session: any) => {
+const handleSelectSession = async (session: Record<string, unknown>) => {
   await selectSession(session)
   await markAsRead(session.id)
 }
@@ -479,7 +483,7 @@ const handleSendMessage = async () => {
     newMessage.value = ''
     selectedFile.value = null
   } catch (err) {
-    console.error('Error sending message:', err)
+    // console.error('Error sending message:', err)
   }
 }
 
@@ -502,13 +506,13 @@ const handleCloseSession = async () => {
     await updateSessionStatus(selectedSession.value.id, 'closed')
     selectedSession.value = null
   } catch (err) {
-    console.error('Error closing session:', err)
+    // console.error('Error closing session:', err)
   }
 }
 
 const handleTransferSession = async () => {
   // TODO: Implement session transfer functionality
-  console.log('Transfer session functionality to be implemented')
+  // console.log('Transfer session functionality to be implemented')
 }
 
 const formatDate = (dateString: string) => {

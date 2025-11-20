@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event)
 
     // ارسال درخواست به بک‌اند Go
-    const response = await goApiFetch(event, `/api/admin/banking-info/${bankingInfoId}/unverify`, {
+    await goApiFetch(event, `/api/admin/banking-info/${bankingInfoId}/unverify`, {
       method: 'POST',
       body: {
         note: body.note || ''
@@ -41,9 +41,8 @@ export default defineEventHandler(async (event) => {
     }
 
   } catch (error: unknown) {
-    console.error('خطا در لغو تایید اطلاعات بانکی:', error)
+    // console.error('خطا در لغو تایید اطلاعات بانکی:', error)
 
-    const errorWithStatus = error as { statusCode?: number; message?: string }
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error
     }

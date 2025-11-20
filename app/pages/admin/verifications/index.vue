@@ -12,53 +12,53 @@
         <div class="flex items-center justify-between mb-4">
           <div class="flex gap-2">
             <button
-              @click="currentFilter = 'all'"
               :class="[
                 'px-4 py-2 rounded text-sm font-medium transition-colors',
                 currentFilter === 'all' 
                   ? 'bg-blue-600 text-white' 
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               ]"
+              @click="currentFilter = 'all'"
             >
               همه ({{ stats.total }})
             </button>
             <button
-              @click="currentFilter = 'pending'"
               :class="[
                 'px-4 py-2 rounded text-sm font-medium transition-colors',
                 currentFilter === 'pending' 
                   ? 'bg-yellow-600 text-white' 
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               ]"
+              @click="currentFilter = 'pending'"
             >
               در انتظار ({{ stats.pending }})
             </button>
             <button
-              @click="currentFilter = 'verified'"
               :class="[
                 'px-4 py-2 rounded text-sm font-medium transition-colors',
                 currentFilter === 'verified' 
                   ? 'bg-green-600 text-white' 
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               ]"
+              @click="currentFilter = 'verified'"
             >
               تایید شده ({{ stats.verified }})
             </button>
             <button
-              @click="currentFilter = 'rejected'"
               :class="[
                 'px-4 py-2 rounded text-sm font-medium transition-colors',
                 currentFilter === 'rejected' 
                   ? 'bg-red-600 text-white' 
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               ]"
+              @click="currentFilter = 'rejected'"
             >
               رد شده ({{ stats.rejected }})
             </button>
           </div>
           <button
-            @click="loadVerifications"
             class="px-4 py-2 bg-gray-100 rounded hover:bg-gray-200 transition-colors"
+            @click="loadVerifications"
           >
             🔄 بارگیری مجدد
           </button>
@@ -122,12 +122,12 @@
                       <img
                         :src="doc"
                         class="w-32 h-32 object-cover rounded border cursor-pointer hover:opacity-75 transition-opacity"
-                        @click="openImageModal(doc)"
                         alt="مدرک"
+                        @click="openImageModal(doc)"
                       />
                       <button
-                        @click="openImageModal(doc)"
                         class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity flex items-center justify-center"
+                        @click="openImageModal(doc)"
                       >
                         <span class="text-white opacity-0 group-hover:opacity-100">🔍 مشاهده</span>
                       </button>
@@ -146,16 +146,16 @@
               <!-- دکمه‌های عملیات -->
               <div v-if="verification.status === 'pending'" class="mr-4 flex flex-col gap-2">
                 <button
-                  @click="verifyRequest(verification.id)"
                   :disabled="actionLoading === verification.id"
                   class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:bg-gray-400 transition-colors text-sm font-medium whitespace-nowrap"
+                  @click="verifyRequest(verification.id)"
                 >
                   ✓ تایید
                 </button>
                 <button
-                  @click="openRejectModal(verification)"
                   :disabled="actionLoading === verification.id"
                   class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:bg-gray-400 transition-colors text-sm font-medium whitespace-nowrap"
+                  @click="openRejectModal(verification)"
                 >
                   ✗ رد
                 </button>
@@ -190,15 +190,15 @@
 
       <div class="flex gap-2 justify-end">
         <button
-          @click="closeRejectModal"
           class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
+          @click="closeRejectModal"
         >
           انصراف
         </button>
         <button
-          @click="confirmReject"
           :disabled="actionLoading"
           class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:bg-gray-400 transition-colors"
+          @click="confirmReject"
         >
           {{ actionLoading ? 'در حال رد...' : 'رد درخواست' }}
         </button>
@@ -214,8 +214,8 @@
   >
     <div class="relative max-w-4xl max-h-screen p-6">
       <button
-        @click="closeImageModal"
         class="absolute top-6 left-6 text-white bg-black bg-opacity-50 rounded-full w-10 h-10 flex items-center justify-center hover:bg-opacity-75 transition-opacity"
+        @click="closeImageModal"
       >
         ✕
       </button>

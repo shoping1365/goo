@@ -8,8 +8,9 @@
     <!-- منوی تب‌ها -->
     <div class="mb-8">
       <nav class="flex flex-wrap gap-2 border-b border-gray-200">
-        <button v-for="tab in tabs" :key="tab.key" @click="activeTab = tab.key"
-          :class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeTab === tab.key ? 'bg-white border-x border-t border-b-0 border-gray-200 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']">
+        <button
+v-for="tab in tabs" :key="tab.key" :class="['px-4 py-2 text-sm font-medium rounded-t-md focus:outline-none', activeTab === tab.key ? 'bg-white border-x border-t border-b-0 border-gray-200 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']"
+          @click="activeTab = tab.key">
           {{ tab.label }}
         </button>
       </nav>
@@ -179,16 +180,16 @@
 </template>
 
 <script setup>
-import CallStatistics from './call-statistics.vue'
-import OperatorStatistics from './operator-statistics.vue'
-import CustomerSatisfaction from './customer-satisfaction.vue'
 import CallArchive from './call-archive.vue'
+import CallStatistics from './call-statistics.vue'
+import CustomerSatisfaction from './customer-satisfaction.vue'
+import OperatorStatistics from './operator-statistics.vue'
 import UserArchive from './user-archive.vue'
 
 definePageMeta({ layout: 'admin-main' })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission: _hasPermission } = useAuth()
 
 const tabs = [
   { key: 'main', label: 'آمار کلی' },

@@ -4,8 +4,8 @@
     <div class="flex items-center gapx-4 py-4">
       <!-- دکمه درج عنوان -->
       <button 
-        @click="showModal = true"
         class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-gradient-to-r from-rose-400 to-pink-500 hover:from-rose-500 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 transition-all duration-200 shadow-md hover:shadow-lg"
+        @click="showModal = true"
       >
         <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
@@ -15,8 +15,8 @@
 
       <!-- دکمه AI -->
       <button 
-        @click="handleAIClick"
         class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-gradient-to-r from-blue-300 to-purple-400 hover:from-blue-400 hover:to-purple-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 transition-all duration-200 shadow-md hover:shadow-lg"
+        @click="handleAIClick"
       >
         <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
@@ -30,7 +30,7 @@
       <div class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg w-full max-w-2xl mx-4 max-h-[90vh] overflow-hidden shadow-2xl border-2 border-blue-200">
         <div class="flex items-center justify-between px-4 py-4 border-b border-gray-200">
           <h3 class="text-lg font-semibold text-gray-900">افزودن عنوان جدید</h3>
-          <button @click="closeModal" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="closeModal">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -61,16 +61,16 @@
             <div class="flex items-center justify-end space-x-3 space-x-reverse mt-6">
               <button 
                 type="button"
-                @click="addTitle"
                 :disabled="!titleForm.title.trim()"
                 class="px-4 py-2 text-sm font-medium text-green-700 bg-green-100 border border-green-300 rounded-lg hover:bg-green-200 transition-colors disabled:opacity-50"
+                @click="addTitle"
               >
                 افزودن عنوان
               </button>
               <button 
                 type="button"
-                @click="closeModal"
                 class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 transition-colors"
+                @click="closeModal"
               >
                 بستن
               </button>
@@ -95,19 +95,19 @@
                   </div>
                   <input 
                     v-else
+                    ref="editInput"
                     v-model="editingTitle"
                     type="text"
                     class="flex-1 ml-3 px-2 py-1 text-sm border border-gray-300 rounded bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     @keyup.enter="saveEdit(index)"
                     @keyup.esc="cancelEdit"
-                    ref="editInput"
                   >
                 </div>
                 <div class="flex items-center space-x-1 space-x-reverse">
                   <button 
                     v-if="editingIndex !== index"
-                    @click="startEdit(index, title)"
                     class="p-1 text-gray-400 hover:text-blue-600 transition-colors"
+                    @click="startEdit(index, title)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -115,8 +115,8 @@
                   </button>
                   <button 
                     v-else
-                    @click="saveEdit(index)"
                     class="p-1 text-gray-400 hover:text-green-600 transition-colors"
+                    @click="saveEdit(index)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -124,8 +124,8 @@
                   </button>
                   <button 
                     v-if="editingIndex !== index"
-                    @click="removeTitle(index)"
                     class="p-1 text-gray-400 hover:text-red-600 transition-colors"
+                    @click="removeTitle(index)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -133,8 +133,8 @@
                   </button>
                   <button 
                     v-else
-                    @click="cancelEdit"
                     class="p-1 text-gray-400 hover:text-red-600 transition-colors"
+                    @click="cancelEdit"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>

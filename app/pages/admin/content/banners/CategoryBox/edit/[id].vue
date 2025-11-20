@@ -9,28 +9,28 @@
           </div>
           <div class="flex items-center gap-8">
             <TemplateButton
-              @click="saveWidget"
               :disabled="isSaving"
-              bgGradient="bg-green-600"
-              textColor="text-white"
-              borderColor="border border-transparent"
-              hoverClass="hover:bg-green-700"
-              focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              bg-gradient="bg-green-600"
+              text-color="text-white"
+              border-color="border border-transparent"
+              hover-class="hover:bg-green-700"
+              focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
               size="medium"
-              customClass="flex items-center gap-2"
+              custom-class="flex items-center gap-2"
+              @click="saveWidget"
             >
               <i class="fas fa-check"></i>
               {{ isSaving ? 'در حال ذخیره...' : 'ذخیره' }}
             </TemplateButton>
             <NuxtLink to="/admin/content/banners">
               <TemplateButton
-                bgGradient="bg-gradient-to-b from-purple-400 to-purple-600"
-                textColor="text-white"
-                borderColor="border border-transparent"
-                hoverClass="hover:from-purple-500 hover:to-purple-700"
-                focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                bg-gradient="bg-gradient-to-b from-purple-400 to-purple-600"
+                text-color="text-white"
+                border-color="border border-transparent"
+                hover-class="hover:from-purple-500 hover:to-purple-700"
+                focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
                 size="medium"
-                customClass="flex items-center gap-2"
+                custom-class="flex items-center gap-2"
               >
                 <i class="fas fa-arrow-right"></i>
                 بازگشت به ابزارک‌ها
@@ -51,8 +51,8 @@
           <div class="flex items-center justify-between">
             <h2 class="text-lg font-medium text-gray-900">مدیریت دسته‌بندی‌ها</h2>
             <button
-              @click="addCategory"
               class="px-4 py-2 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+              @click="addCategory"
             >
               افزودن دسته‌بندی
             </button>
@@ -73,8 +73,8 @@
               <!-- تست: دکمه حذف در بالای هر دسته‌بندی -->
               <div class="flex justify-end mb-2">
                 <button
-                  @click="removeCategory(index)"
                   class="px-3 py-1 text-sm text-red-600 hover:text-red-800 hover:bg-red-50 rounded-md border border-red-200"
+                  @click="removeCategory(index)"
                 >
                   حذف
                 </button>
@@ -95,9 +95,9 @@
                     </div>
                   </div>
                   <button
-                    @click="openMediaModal(index)"
                     type="button"
                     class="mt-2 px-3 py-1.5 text-xs font-semibold text-white bg-emerald-500 border border-transparent rounded-md hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 shadow-md transition-all duration-200 flex items-center gap-1"
+                    @click="openMediaModal(index)"
                   >
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -125,19 +125,19 @@
                         <div class="relative">
                           <input 
                             v-model="category.searchTerm"
-                            @focus="category.showDropdown = true"
-                            @blur="hideCategoryDropdown(index)"
                             :data-category-index="index"
                             type="text"
                             placeholder="جستجو در دسته‌بندی‌ها..."
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            @focus="category.showDropdown = true"
+                            @blur="hideCategoryDropdown(index)"
                           />
                           <div v-if="category.showDropdown && filteredCategories.length > 0" class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
                             <div
                               v-for="cat in filteredCategories"
                               :key="cat.id"
-                              @click="selectCategoryForItem(index, cat)"
                               class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm border-b border-gray-100 last:border-b-0"
+                              @click="selectCategoryForItem(index, cat)"
                             >
                               <div class="flex items-center justify-between">
                                 <div>

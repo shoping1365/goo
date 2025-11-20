@@ -9,7 +9,7 @@
         <!-- Browse upload button on far left -->
         <div>
           <input ref="fileInput" type="file" multiple accept="image/*,video/*" class="hidden" @change="handleFileChange" />
-          <button @click="triggerBrowse" class="px-5 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-base flex items-center gap-2 font-semibold shadow-md transition-all duration-200">
+          <button class="px-5 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-base flex items-center gap-2 font-semibold shadow-md transition-all duration-200" @click="triggerBrowse">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
@@ -53,7 +53,7 @@
           </svg>
           انتخاب<span v-if="internalSelected.length"> ({{ internalSelected.length }})</span>
         </button>
-        <div class="flex-1 flex items-center justify-center" v-if="isUploading">
+        <div v-if="isUploading" class="flex-1 flex items-center justify-center">
           <div class="w-full max-w-sm h-2 bg-gray-200 rounded overflow-hidden mx-4 relative">
             <div class="h-full bg-blue-500 transition-all absolute right-0 top-0" :style="{ width: uploadProgress + '%' }"></div>
           </div>
@@ -72,8 +72,8 @@
         <!-- انصراف button on left -->
         <button
           class="px-8 py-3 rounded-xl font-bold flex items-center gap-2 bg-rose-300 text-rose-900 hover:bg-rose-400 shadow-md text-lg transition-all duration-200"
-          @click="$emit('update:modelValue', false)"
           :disabled="isUploading"
+          @click="$emit('update:modelValue', false)"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -85,9 +85,9 @@
         v-if="previewShow && preview" 
         v-model="previewShow" 
         :file="preview" 
+        :can-delete="canDeleteMedia" 
         @delete="onFileDeleted" 
-        @save="onFileSaved" 
-        :can-delete="canDeleteMedia"
+        @save="onFileSaved"
       />
     </div>
   </div>
@@ -148,7 +148,7 @@ watch(() => props.modelValue, (newVal) => {
   }
 })
 
-function formatFileSize(bytes:number){ const k=1024; const sizes=['B','KB','MB','GB']; let i=Math.floor(Math.log(bytes)/Math.log(k)); return (bytes/Math.pow(k,i)).toFixed(1)+' '+sizes[i] }
+function formatFileSize(bytes:number){ const k=1024; const sizes=['B','KB','MB','GB']; const i=Math.floor(Math.log(bytes)/Math.log(k)); return (bytes/Math.pow(k,i)).toFixed(1)+' '+sizes[i] }
 
 async function fetchList(){
   const catQuery = (['products','customer','product-categories','brands','banners'].includes(selectedCategory.value)) ? `?category=${selectedCategory.value}` : ''

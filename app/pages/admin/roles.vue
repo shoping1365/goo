@@ -4,8 +4,8 @@
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-gray-900">مدیریت نقش‌ها</h2>
         <button
-          @click="showNewRoleModal = true"
           class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+          @click="showNewRoleModal = true"
         >
           + نقش جدید
         </button>
@@ -49,14 +49,14 @@
 
           <div class="flex gap-2">
             <button
-              @click="editRole(role)"
               class="flex-1 px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm"
+              @click="editRole(role)"
             >
               ویرایش
             </button>
             <button
-              @click="deleteRole(role.id)"
               class="flex-1 px-3 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm"
+              @click="deleteRole(role.id)"
             >
               حذف
             </button>
@@ -72,7 +72,7 @@
     >
       <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
         <h3 class="text-lg font-bold mb-4">نقش جدید</h3>
-        <form @submit.prevent="createRole" class="space-y-4">
+        <form class="space-y-4" @submit.prevent="createRole">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">نام نقش</label>
             <input
@@ -101,8 +101,8 @@
             </button>
             <button
               type="button"
-              @click="showNewRoleModal = false"
               class="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
+              @click="showNewRoleModal = false"
             >
               لغو
             </button>
@@ -162,8 +162,9 @@ const createRole = async () => {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const editRole = (role: any) => {
-  console.log('Edit role:', role)
+  // console.log('Edit role:', role)
   // TODO: Open edit modal
 }
 

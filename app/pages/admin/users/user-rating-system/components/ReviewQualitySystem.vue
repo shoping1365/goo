@@ -8,10 +8,10 @@
           <p class="mt-1 text-sm text-gray-500">تحلیل و امتیازدهی خودکار بر اساس کیفیت نظرات کاربران</p>
         </div>
         <div class="flex space-x-3 space-x-reverse">
-          <button @click="analyzeAllReviews" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+          <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors" @click="analyzeAllReviews">
             تحلیل همه نظرات
           </button>
-          <button @click="exportQualityReport" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">
+          <button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors" @click="exportQualityReport">
             خروجی گزارش
           </button>
         </div>
@@ -56,10 +56,10 @@
       </div>
       
       <div class="mt-4 flex space-x-3 space-x-reverse">
-        <button @click="saveAISettings" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+        <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors" @click="saveAISettings">
           ذخیره تنظیمات
         </button>
-        <button @click="testAI" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors">
+        <button class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors" @click="testAI">
           تست هوش مصنوعی
         </button>
       </div>
@@ -146,9 +146,9 @@
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button @click="viewReviewDetails(review)" class="text-blue-600 hover:text-blue-900 ml-3">مشاهده</button>
-                <button @click="reanalyzeReview(review)" class="text-green-600 hover:text-green-900 ml-3">تحلیل مجدد</button>
-                <button @click="flagReview(review)" class="text-red-600 hover:text-red-900">علامت‌گذاری</button>
+                <button class="text-blue-600 hover:text-blue-900 ml-3" @click="viewReviewDetails(review)">مشاهده</button>
+                <button class="text-green-600 hover:text-green-900 ml-3" @click="reanalyzeReview(review)">تحلیل مجدد</button>
+                <button class="text-red-600 hover:text-red-900" @click="flagReview(review)">علامت‌گذاری</button>
               </td>
             </tr>
           </tbody>
@@ -161,13 +161,13 @@
           <span class="text-sm text-gray-700">نمایش {{ pagination.start }} تا {{ pagination.end }} از {{ pagination.total }} نظر</span>
         </div>
         <div class="flex space-x-2 space-x-reverse">
-          <button @click="previousPage" :disabled="currentPage === 1" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50">
+          <button :disabled="currentPage === 1" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50" @click="previousPage">
             قبلی
           </button>
-          <button v-for="page in visiblePages" :key="page" @click="goToPage(page)" :class="page === currentPage ? 'bg-blue-600 text-white' : 'bg-white text-gray-700'" class="px-3 py-1 border border-gray-300 rounded-md text-sm">
+          <button v-for="page in visiblePages" :key="page" :class="page === currentPage ? 'bg-blue-600 text-white' : 'bg-white text-gray-700'" class="px-3 py-1 border border-gray-300 rounded-md text-sm" @click="goToPage(page)">
             {{ page }}
           </button>
-          <button @click="nextPage" :disabled="currentPage === totalPages" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50">
+          <button :disabled="currentPage === totalPages" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50" @click="nextPage">
             بعدی
           </button>
         </div>
@@ -244,17 +244,51 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
+
+interface Review {
+  id: number;
+  userName: string;
+  userEmail: string;
+  userAvatar: string;
+  productName: string;
+  productCategory: string;
+  content: string;
+  hasPhoto: boolean;
+  hasVideo: boolean;
+  isFirstReview: boolean;
+  quality: string;
+  score: number;
+  status: string;
+  createdAt: string;
+}
+
+interface AISettings {
+  minReviewLength: number;
+  minWordCount: number;
+  baseTextScore: number;
+  photoBonus: number;
+  videoBonus: number;
+  firstReviewBonus: number;
+  autoAnalysis: boolean;
+}
+
+interface Stats {
+  excellentReviews: number;
+  goodReviews: number;
+  averageReviews: number;
+  poorReviews: number;
+}
 
 // Props and Emits
-defineProps<{
-  reviews?: any[]
+const props = defineProps<{
+  reviews?: Review[]
 }>()
 
-defineEmits<{
-  saveSettings: [settings: any]
-  analyzeReviews: [reviews: any[]]
-  exportReport: [data: any]
+const emit = defineEmits<{
+  saveSettings: [settings: AISettings]
+  analyzeReviews: [reviews: Review[]]
+  exportReport: [data: { reviews: Review[], stats: Stats }]
 }>()
 
 // Reactive data
@@ -265,7 +299,7 @@ const currentPage = ref(1)
 const itemsPerPage = 10
 
 // AI Settings
-const aiSettings = ref({
+const aiSettings = ref<AISettings>({
   minReviewLength: 50,
   minWordCount: 10,
   baseTextScore: 20,
@@ -276,7 +310,7 @@ const aiSettings = ref({
 })
 
 // Sample reviews data
-const reviews = ref([
+const localReviews = ref<Review[]>([
   {
     id: 1,
     userName: 'علی احمدی',
@@ -327,8 +361,10 @@ const reviews = ref([
   }
 ])
 
+const displayReviews = computed(() => props.reviews || localReviews.value)
+
 // Statistics
-const stats = ref({
+const stats = ref<Stats>({
   excellentReviews: 450,
   goodReviews: 380,
   averageReviews: 250,
@@ -361,22 +397,23 @@ const visiblePages = computed(() => {
 
 // Filtered reviews
 const filteredReviews = computed(() => {
-  let filtered = reviews.value
+  let filtered = displayReviews.value
 
   if (searchQuery.value) {
-    filtered = filtered.filter(review => 
-      review.content.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      review.userName.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      review.productName.toLowerCase().includes(searchQuery.value.toLowerCase())
+    const query = searchQuery.value.toLowerCase()
+    filtered = filtered.filter(r => 
+      r.userName.toLowerCase().includes(query) || 
+      r.productName.toLowerCase().includes(query) ||
+      r.content.toLowerCase().includes(query)
     )
   }
 
   if (filterQuality.value) {
-    filtered = filtered.filter(review => review.quality === filterQuality.value)
+    filtered = filtered.filter(r => r.quality === filterQuality.value)
   }
 
   if (filterStatus.value) {
-    filtered = filtered.filter(review => review.status === filterStatus.value)
+    filtered = filtered.filter(r => r.status === filterStatus.value)
   }
 
   return filtered
@@ -446,37 +483,33 @@ const getStatusText = (status: string) => {
 }
 
 const saveAISettings = () => {
-  console.log('ذخیره تنظیمات هوش مصنوعی:', aiSettings.value)
   // API call to save AI settings
+  emit('saveSettings', aiSettings.value)
 }
 
 const testAI = () => {
-  console.log('تست هوش مصنوعی')
   // Test AI analysis with sample review
 }
 
 const analyzeAllReviews = () => {
-  console.log('تحلیل همه نظرات')
   // API call to analyze all reviews
+  emit('analyzeReviews', localReviews.value)
 }
 
 const exportQualityReport = () => {
-  console.log('خروجی گزارش کیفیت')
   // Export quality analysis report
+  emit('exportReport', { stats: stats.value, reviews: filteredReviews.value })
 }
 
-const viewReviewDetails = (review: any) => {
-  console.log('مشاهده جزئیات نظر:', review)
-  // Open review details modal
+const viewReviewDetails = (_review: Review) => {
+  // Implement view details logic
 }
 
-const reanalyzeReview = (review: any) => {
-  console.log('تحلیل مجدد نظر:', review)
-  // Re-analyze specific review
+const reanalyzeReview = (_review: Review) => {
+  // Implement re-analyze logic
 }
 
-const flagReview = (review: any) => {
-  console.log('علامت‌گذاری نظر:', review)
+const flagReview = (review: Review) => {
   review.status = 'flagged'
   // API call to flag review
 }
@@ -498,7 +531,5 @@ const goToPage = (page: number) => {
 }
 
 // Lifecycle
-onMounted(() => {
-  console.log('سیستم کیفیت نظرات بارگذاری شد')
-})
-</script> 
+// onMounted removed as it only contained console.log
+</script>

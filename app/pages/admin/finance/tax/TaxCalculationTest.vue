@@ -9,8 +9,8 @@
       
       <!-- دکمه اجرای تست‌ها -->
       <button 
-        @click="runAllTests"
         class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200"
+        @click="runAllTests"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -85,13 +85,13 @@
           <button 
             v-for="tab in testTabs" 
             :key="tab.id"
-            @click="activeTestTab = tab.id"
             :class="[
               'py-2 px-1 border-b-2 font-medium text-sm transition-colors duration-200',
               activeTestTab === tab.id 
                 ? 'border-red-500 text-red-600' 
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             ]"
+            @click="activeTestTab = tab.id"
           >
             {{ tab.label }}
           </button>
@@ -117,8 +117,8 @@
                 {{ getTestStatusLabel(test.status) }}
               </span>
               <button 
-                @click="runTest(test)"
                 class="px-3 py-1 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200"
+                @click="runTest(test)"
               >
                 اجرا
               </button>
@@ -174,8 +174,8 @@
                 {{ getTestStatusLabel(test.status) }}
               </span>
               <button 
-                @click="runExemptionTest(test)"
                 class="px-3 py-1 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200"
+                @click="runExemptionTest(test)"
               >
                 اجرا
               </button>
@@ -225,8 +225,8 @@
                 {{ getTestStatusLabel(test.status) }}
               </span>
               <button 
-                @click="runDiscountTest(test)"
                 class="px-3 py-1 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200"
+                @click="runDiscountTest(test)"
               >
                 اجرا
               </button>
@@ -307,14 +307,14 @@
         <!-- دکمه‌های عملیاتی -->
         <div class="flex gap-3">
           <button 
-            @click="exportTestReport"
             class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
+            @click="exportTestReport"
           >
             خروجی گزارش
           </button>
           <button 
-            @click="clearTestResults"
             class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition-colors duration-200"
+            @click="clearTestResults"
           >
             پاک کردن نتایج
           </button>
@@ -479,7 +479,7 @@ const runTest = async (test: any) => {
     // شبیه‌سازی محاسبه
     const { amount, vatRate, incomeTaxRate, customsRate, minAmount } = test.input
     
-    let actualOutput: any = {}
+    const actualOutput: any = {}
     
     if (vatRate) {
       actualOutput.vatAmount = (amount * vatRate) / 100

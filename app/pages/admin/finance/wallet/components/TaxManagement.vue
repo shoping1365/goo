@@ -9,46 +9,46 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button
-            @click="activeTab = 'calculation'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'calculation'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'calculation'"
           >
             محاسبه مالیات
           </button>
           <button
-            @click="activeTab = 'rates'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'rates'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'rates'"
           >
             نرخ‌های مالیاتی
           </button>
           <button
-            @click="activeTab = 'exemptions'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'exemptions'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'exemptions'"
           >
             معافیت‌ها
           </button>
           <button
-            @click="activeTab = 'reports'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'reports'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'reports'"
           >
             گزارش‌های مالیاتی
           </button>
@@ -148,10 +148,10 @@
                     </select>
                   </div>
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="taxCalculator.hasExemptions" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <input v-model="taxCalculator.hasExemptions" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">دارای معافیت مالیاتی</label>
                   </div>
-                  <button @click="calculateTax" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                  <button class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors" @click="calculateTax">
                     محاسبه مالیات
                   </button>
                 </div>
@@ -257,7 +257,7 @@
                     <p class="text-sm text-gray-600">{{ exemption.description }}</p>
                   </div>
                   <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" v-model="exemption.active" class="sr-only peer">
+                    <input v-model="exemption.active" type="checkbox" class="sr-only peer">
                     <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
@@ -390,15 +390,15 @@
                 <h4 class="font-medium text-gray-900 mb-3">تنظیمات اضافی</h4>
                 <div class="space-y-3">
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="customTaxReport.includeDetails" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <input v-model="customTaxReport.includeDetails" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">شامل جزئیات کامل</label>
                   </div>
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="customTaxReport.includeCharts" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <input v-model="customTaxReport.includeCharts" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">شامل نمودارها</label>
                   </div>
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="customTaxReport.sendEmail" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <input v-model="customTaxReport.sendEmail" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">ارسال به ایمیل</label>
                   </div>
                   <div v-if="customTaxReport.sendEmail">

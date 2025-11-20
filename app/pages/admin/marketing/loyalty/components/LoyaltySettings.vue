@@ -3,8 +3,8 @@
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xl font-semibold text-gray-900">تنظیمات برنامه وفاداری</h2>
       <button 
-        @click="saveSettings"
         class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+        @click="saveSettings"
       >
         ذخیره تنظیمات
       </button>

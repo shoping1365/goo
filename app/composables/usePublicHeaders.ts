@@ -1,6 +1,6 @@
 // این کامپوزبل همیشه آخرین داده هدر را از سرور می‌گیرد و با SSR سازگار است. هیچ کش داخلی ندارد و برای پروژه‌های SSR مناسب است.
-import { ref, readonly } from 'vue'
-import type { Header, HeaderLayer } from '~/types/header'
+import { readonly, ref } from 'vue'
+import type { Header } from '~/types/header'
 
 interface ApiResponse<T> {
   success: boolean

@@ -24,5 +24,5 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ data: any[] }>()
+defineProps<{ data: unknown[] }>()
 </script>

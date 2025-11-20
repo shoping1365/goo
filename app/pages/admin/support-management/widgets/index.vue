@@ -7,13 +7,13 @@
           <button 
             v-for="tab in tabs" 
             :key="tab.id"
-            @click="activeTab = tab.id"
             :class="[
               'py-4 px-1 border-b-2 font-medium text-sm transition-colors',
               activeTab === tab.id 
                 ? 'border-purple-500 text-purple-600' 
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             ]"
+            @click="activeTab = tab.id"
           >
             {{ tab.title }}
           </button>
@@ -127,7 +127,8 @@
                 
                 <!-- لوگوهای پیش‌فرض -->
                 <div class="flex space-x-3 space-x-reverse">
-                  <div v-for="i in 8" :key="i" 
+                  <div
+v-for="i in 8" :key="i" 
                        :class="[
                          'w-12 h-12 rounded-full flex items-center justify-center cursor-pointer border-2',
                          i === 6 ? 'border-purple-500 bg-purple-100' : 'border-gray-200 bg-blue-100'
@@ -150,7 +151,8 @@
                   </div>
                   <div class="flex space-x-3 space-x-reverse">
                     <div v-for="(color, index) in backgroundColors" :key="index" class="flex items-center">
-                      <input type="radio" :id="`bg-${index}`" name="background" :value="color" 
+                      <input
+:id="`bg-${index}`" type="radio" name="background" :value="color" 
                              :checked="index === 0" class="mr-2">
                       <label :for="`bg-${index}`" class="cursor-pointer">
                         <div :class="`w-8 h-8 rounded-full ${color}`"></div>
@@ -167,7 +169,8 @@
                   </div>
                   <div class="flex space-x-3 space-x-reverse">
                     <div v-for="(color, index) in logoBackgroundColors" :key="index" class="flex items-center">
-                      <input type="radio" :id="`logo-bg-${index}`" name="logoBackground" :value="color" 
+                      <input
+:id="`logo-bg-${index}`" type="radio" name="logoBackground" :value="color" 
                              :checked="index === 0" class="mr-2">
                       <label :for="`logo-bg-${index}`" class="cursor-pointer">
                         <div :class="`w-8 h-8 rounded-full ${color}`"></div>
@@ -184,7 +187,8 @@
                   </div>
                   <div class="flex space-x-3 space-x-reverse">
                     <div v-for="(color, index) in accentColors" :key="index" class="flex items-center">
-                      <input type="radio" :id="`accent-${index}`" name="accent" :value="color" 
+                      <input
+:id="`accent-${index}`" type="radio" name="accent" :value="color" 
                              :checked="index === 0" class="mr-2">
                       <label :for="`accent-${index}`" class="cursor-pointer">
                         <div :class="`w-8 h-8 rounded-full ${color}`"></div>
@@ -201,7 +205,8 @@
                   </div>
                   <div class="flex space-x-3 space-x-reverse">
                     <div v-for="(color, index) in headerColors" :key="index" class="flex items-center">
-                      <input type="radio" :id="`header-${index}`" name="header" :value="color" 
+                      <input
+:id="`header-${index}`" type="radio" name="header" :value="color" 
                              :checked="index === 0" class="mr-2">
                       <label :for="`header-${index}`" class="cursor-pointer">
                         <div :class="`w-8 h-8 rounded-full ${color}`"></div>
@@ -218,7 +223,8 @@
                   <p class="text-gray-500 text-sm">تنظیم طرح پس زمینه.</p>
                 </div>
                 <div class="grid grid-cols-5 gap-2">
-                  <div v-for="i in 20" :key="i" 
+                  <div
+v-for="i in 20" :key="i" 
                        :class="[
                          'w-12 h-12 rounded border-2 cursor-pointer',
                          i === 5 ? 'border-purple-500' : 'border-gray-200'
@@ -263,11 +269,11 @@
                     <p class="text-gray-500 text-sm">{{ setting.description }}</p>
                   </div>
                   <button 
-                    @click="setting.enabled = !setting.enabled"
                     :class="[
                       'relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
                       setting.enabled ? 'bg-purple-600' : 'bg-gray-200'
                     ]"
+                    @click="setting.enabled = !setting.enabled"
                   >
                     <span 
                       :class="[
@@ -305,8 +311,8 @@
                   <label class="block text-md font-medium text-gray-900">متنی که در ابزارک گفتگو نمایش داده میشود .</label>
                   <label class="block text-sm text-gray-500">فارسی (پیش فرض)</label>
                   <input 
-                    type="text" 
-                    v-model="landingPageSettings.title"
+                    v-model="landingPageSettings.title" 
+                    type="text"
                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                     placeholder="پشتیبانی ایرانشیا"
                   >
@@ -332,8 +338,8 @@
                   <div class="space-y-3">
                     <label class="block text-md font-medium text-gray-900">متن</label>
                     <input 
-                      type="text" 
-                      v-model="landingPageSettings.startConversation.text"
+                      v-model="landingPageSettings.startConversation.text" 
+                      type="text"
                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                       placeholder="ارسال پیام برای ما"
                     >
@@ -343,8 +349,8 @@
                   <div class="space-y-3">
                     <label class="block text-md font-medium text-gray-900">توضیحات</label>
                     <input 
-                      type="text" 
-                      v-model="landingPageSettings.startConversation.description"
+                      v-model="landingPageSettings.startConversation.description" 
+                      type="text"
                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                       placeholder="ما به زودی پاسخگوی شما هستیم"
                     >
@@ -368,11 +374,11 @@
                       <p class="text-gray-500 text-sm">(فعال سازی عدم نمایش ابزارک)</p>
                     </div>
                     <button 
-                      @click="displaySettings.holidayMode = !displaySettings.holidayMode"
                       :class="[
                         'relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
                         displaySettings.holidayMode ? 'bg-purple-600' : 'bg-gray-200'
                       ]"
+                      @click="displaySettings.holidayMode = !displaySettings.holidayMode"
                     >
                       <span 
                         :class="[
@@ -390,11 +396,11 @@
                   <div class="flex items-center justify-between">
                     <h3 class="text-md font-medium text-gray-900">نمایش ابزارک فقط در این صفحات</h3>
                     <button 
-                      @click="displaySettings.showOnlyOnPages = !displaySettings.showOnlyOnPages"
                       :class="[
                         'relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
                         displaySettings.showOnlyOnPages ? 'bg-purple-600' : 'bg-gray-200'
                       ]"
+                      @click="displaySettings.showOnlyOnPages = !displaySettings.showOnlyOnPages"
                     >
                       <span 
                         :class="[
@@ -424,11 +430,11 @@
                   <div class="flex items-center justify-between">
                     <h3 class="text-md font-medium text-gray-900">عدم نمایش ابزارک در این صفحات</h3>
                     <button 
-                      @click="displaySettings.hideOnPages = !displaySettings.hideOnPages"
                       :class="[
                         'relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
                         displaySettings.hideOnPages ? 'bg-purple-600' : 'bg-gray-200'
                       ]"
+                      @click="displaySettings.hideOnPages = !displaySettings.hideOnPages"
                     >
                       <span 
                         :class="[
@@ -497,8 +503,8 @@
                   <div class="space-y-3">
                     <label class="block text-md font-medium text-gray-900">راست (پیکسل)</label>
                     <input 
-                      type="number" 
-                      v-model="positionSettings.right"
+                      v-model="positionSettings.right" 
+                      type="number"
                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                       placeholder="5"
                     >
@@ -506,8 +512,8 @@
                   <div class="space-y-3">
                     <label class="block text-md font-medium text-gray-900">پایین (پیکسل)</label>
                     <input 
-                      type="number" 
-                      v-model="positionSettings.bottom"
+                      v-model="positionSettings.bottom" 
+                      type="number"
                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                       placeholder="55"
                     >
@@ -519,11 +525,11 @@
                   <div class="flex items-center justify-between">
                     <label class="block text-md font-medium text-gray-900">نمایش ابزارک در موبایل</label>
                     <button 
-                      @click="positionSettings.showOnMobile = !positionSettings.showOnMobile"
                       :class="[
                         'relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
                         positionSettings.showOnMobile ? 'bg-purple-600' : 'bg-gray-200'
                       ]"
+                      @click="positionSettings.showOnMobile = !positionSettings.showOnMobile"
                     >
                       <span 
                         :class="[
@@ -548,7 +554,7 @@ declare const definePageMeta: (meta: { layout?: string }) => void
 </script>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue';
 
 definePageMeta({ layout: 'admin-main' })
 
@@ -563,37 +569,42 @@ const tabs = ref([
 
 const activeTab = ref('personalization')
 // وضعیت ابزارک‌ها
-const widgets = ref<any[]>([])
+const widgets = ref<Record<string, unknown>[]>([])
 async function loadWidgets() {
   try {
-    const res: any = await $fetch('/api/admin/chat/widgets')
+    const res: Record<string, unknown> = await $fetch('/api/admin/chat/widgets')
     if (res?.status === 'success') widgets.value = res.data
-  } catch (e) { console.error('loadWidgets failed', e) }
+  } catch (e) { 
+    // console.error('loadWidgets failed', e) 
+  }
 }
 
-async function saveWidget(partial: any) {
-  try {
-    if (!partial?.id) {
-      const res: any = await $fetch('/api/admin/chat/widgets', {
-        method: 'POST',
-        body: {
-          name: 'Default',
-          description: 'Chat widget',
-          is_active: true,
-          welcome_message: landingPageSettings.value.startConversation.text,
-          offline_message: landingPageSettings.value.teamIntro,
-          theme: 'light',
-          position: 'bottom-right'
-        }
-      })
-      if (res?.status === 'success' || res?.success) await loadWidgets()
-    } else {
-      const res: any = await $fetch(`/api/admin/chat/widgets/${partial.id}`, { method: 'PUT', body: partial })
-      if (res?.success) await loadWidgets()
-    }
-    alert('ذخیره شد')
-  } catch (e) { console.error('saveWidget failed', e); alert('خطا در ذخیره') }
-}
+// async function saveWidget(partial: Record<string, unknown>) {
+//   try {
+//     if (!partial?.id) {
+//       const res: Record<string, unknown> = await $fetch('/api/admin/chat/widgets', {
+//         method: 'POST',
+//         body: {
+//           name: 'Default',
+//           description: 'Chat widget',
+//           is_active: true,
+//           welcome_message: landingPageSettings.value.startConversation.text,
+//           offline_message: landingPageSettings.value.teamIntro,
+//           theme: 'light',
+//           position: 'bottom-right'
+//         }
+//       })
+//       if (res?.status === 'success' || res?.success) await loadWidgets()
+//     } else {
+//       const res: Record<string, unknown> = await $fetch(`/api/admin/chat/widgets/${partial.id}`, { method: 'PUT', body: partial })
+//       if (res?.success) await loadWidgets()
+//     }
+//     alert('ذخیره شد')
+//   } catch (e) { 
+//     // console.error('saveWidget failed', e); 
+//     alert('خطا در ذخیره') 
+//   }
+// }
 
 onMounted(async () => { await loadWidgets() })
 
@@ -692,7 +703,7 @@ const positionSettings = ref({
 })
 
 // تابع تولید طرح‌های پس زمینه
-const getPatternBackground = (index) => {
+const getPatternBackground = (index: number) => {
   const patterns = [
     'linear-gradient(45deg, #f3f4f6 25%, transparent 25%), linear-gradient(-45deg, #f3f4f6 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #f3f4f6 75%), linear-gradient(-45deg, transparent 75%, #f3f4f6 75%)',
     'radial-gradient(circle, #e5e7eb 1px, transparent 1px)',

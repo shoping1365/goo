@@ -7,14 +7,14 @@
           <h2 class="text-xl font-semibold text-gray-900">
             {{ coupon ? 'ویرایش کوپن' : 'افزودن کوپن جدید' }}
           </h2>
-          <button @click="$emit('cancel')" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="$emit('cancel')">
             <span class="i-heroicons-x-mark text-xl"></span>
           </button>
         </div>
       </div>
 
       <!-- فرم -->
-      <form @submit.prevent="handleSubmit" class="p-6 space-y-6">
+      <form class="p-6 space-y-6" @submit.prevent="handleSubmit">
         <!-- اطلاعات اصلی -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
@@ -36,7 +36,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">نوع تخفیف</label>
-            <select v-model="form.type" @change="updateDiscountValue" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <select v-model="form.type" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" @change="updateDiscountValue">
               <option value="percentage">درصدی</option>
               <option value="fixed">مبلغ ثابت</option>
               <option value="free_shipping">ارسال رایگان</option>
@@ -88,7 +88,7 @@
 
         <!-- دکمه‌ها -->
         <div class="flex items-center justify-end gap-3 pt-6 border-t border-gray-200">
-          <button type="button" @click="$emit('cancel')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+          <button type="button" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors" @click="$emit('cancel')">
             انصراف
           </button>
           <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">

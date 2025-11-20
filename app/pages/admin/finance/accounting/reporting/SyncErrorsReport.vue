@@ -8,9 +8,9 @@
       </div>
       <div class="flex items-center space-x-3 space-x-reverse">
         <button
-          @click="retryAllErrors"
           :disabled="isRetrying"
           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 disabled:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+          @click="retryAllErrors"
         >
           <svg v-if="isRetrying" class="w-4 h-4 ml-2 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -21,8 +21,8 @@
           {{ isRetrying ? 'در حال تلاش مجدد...' : 'تلاش مجدد همه خطاها' }}
         </button>
         <button
-          @click="exportErrorsReport"
           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          @click="exportErrorsReport"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -99,8 +99,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">نوع خطا</label>
           <select
             v-model="filters.errorType"
-            @change="applyFilters"
             class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="applyFilters"
           >
             <option value="">همه انواع</option>
             <option value="connection">خطای اتصال</option>
@@ -114,8 +114,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">نرم‌افزار</label>
           <select
             v-model="filters.software"
-            @change="applyFilters"
             class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="applyFilters"
           >
             <option value="">همه نرم‌افزارها</option>
             <option value="helo">هلو</option>
@@ -129,8 +129,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">وضعیت</label>
           <select
             v-model="filters.status"
-            @change="applyFilters"
             class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="applyFilters"
           >
             <option value="">همه وضعیت‌ها</option>
             <option value="open">باز</option>
@@ -143,8 +143,8 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">اولویت</label>
           <select
             v-model="filters.priority"
-            @change="applyFilters"
             class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @change="applyFilters"
           >
             <option value="">همه اولویت‌ها</option>
             <option value="high">بالا</option>
@@ -220,18 +220,18 @@
               <td class="py-3 px-4">
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <button
-                    @click="retryError(error)"
                     class="p-1 text-green-600 hover:text-green-800"
                     title="تلاش مجدد"
+                    @click="retryError(error)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
                   </button>
                   <button
-                    @click="viewErrorDetails(error)"
                     class="p-1 text-blue-600 hover:text-blue-800"
                     title="مشاهده جزئیات"
+                    @click="viewErrorDetails(error)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -239,9 +239,9 @@
                     </svg>
                   </button>
                   <button
-                    @click="ignoreError(error)"
                     class="p-1 text-yellow-600 hover:text-yellow-800"
                     title="نادیده گرفتن"
+                    @click="ignoreError(error)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728" />

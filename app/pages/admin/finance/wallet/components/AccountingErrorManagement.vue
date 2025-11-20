@@ -9,46 +9,46 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button
-            @click="activeTab = 'errors'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'errors'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'errors'"
           >
             خطاها
           </button>
           <button
-            @click="activeTab = 'reconciliation'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'reconciliation'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'reconciliation'"
           >
             تطبیق حساب
           </button>
           <button
-            @click="activeTab = 'validation'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'validation'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'validation'"
           >
             اعتبارسنجی
           </button>
           <button
-            @click="activeTab = 'reports'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'reports'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'reports'"
           >
             گزارش‌ها
           </button>
@@ -265,7 +265,7 @@
                 </div>
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" v-model="rule.active" class="sr-only peer">
+                    <input v-model="rule.active" type="checkbox" class="sr-only peer">
                     <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
                   <button class="text-blue-600 hover:text-blue-800 text-sm">ویرایش</button>
@@ -356,15 +356,15 @@
                 <h4 class="font-medium text-gray-900 mb-3">تنظیمات اضافی</h4>
                 <div class="space-y-3">
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="customReport.includeDetails" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <input v-model="customReport.includeDetails" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">شامل جزئیات کامل</label>
                   </div>
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="customReport.includeCharts" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <input v-model="customReport.includeCharts" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">شامل نمودارها</label>
                   </div>
                   <div class="flex items-center">
-                    <input type="checkbox" v-model="customReport.sendEmail" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <input v-model="customReport.sendEmail" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                     <label class="mr-2 text-sm text-gray-700">ارسال به ایمیل</label>
                   </div>
                   <div v-if="customReport.sendEmail">

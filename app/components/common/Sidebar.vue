@@ -53,10 +53,10 @@
       
       <div class="search-bar">
         <input 
-          type="text" 
+          v-model="searchQuery" 
+          type="text"
           placeholder="جست و جو در بین مکالمات"
           class="search-input"
-          v-model="searchQuery"
         />
         <div class="search-icon">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">

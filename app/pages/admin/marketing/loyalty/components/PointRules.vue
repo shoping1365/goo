@@ -3,8 +3,8 @@
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xl font-semibold text-gray-900">قوانین امتیازدهی</h2>
       <button 
-        @click="showRuleForm = true; editingRule = null"
         class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+        @click="showRuleForm = true; editingRule = null"
       >
         افزودن قانون جدید
       </button>
@@ -50,15 +50,15 @@
         
         <div class="flex justify-end space-x-2 space-x-reverse mt-4">
           <button 
-            @click="editingRule = rule; showRuleForm = true"
             class="text-blue-600 hover:text-blue-800 text-sm"
+            @click="editingRule = rule; showRuleForm = true"
           >
             ویرایش
           </button>
           <button 
-            @click="toggleRuleStatus(rule)"
             :class="rule.active ? 'text-red-600 hover:text-red-800' : 'text-green-600 hover:text-green-800'"
             class="text-sm"
+            @click="toggleRuleStatus(rule)"
           >
             {{ rule.active ? 'غیرفعال' : 'فعال' }}
           </button>
@@ -158,8 +158,8 @@
             <div class="flex justify-end space-x-3 space-x-reverse mt-6">
               <button 
                 type="button"
-                @click="showRuleForm = false"
                 class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors"
+                @click="showRuleForm = false"
               >
                 انصراف
               </button>

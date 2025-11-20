@@ -59,8 +59,8 @@
           </div>
           <div class="flex items-end">
             <button 
-              @click="clearFilters"
               class="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+              @click="clearFilters"
             >
               پاک کردن فیلترها
             </button>
@@ -105,9 +105,9 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center gap-2">
                     <button 
-                      @click="moveUp(slider.id)"
                       :disabled="slider.order === 1"
                       class="text-gray-400 hover:text-gray-600 disabled:opacity-50"
+                      @click="moveUp(slider.id)"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
@@ -115,9 +115,9 @@
                     </button>
                     <span class="text-sm font-medium text-gray-900">{{ slider.order }}</span>
                     <button 
-                      @click="moveDown(slider.id)"
                       :disabled="slider.order === sliders.length"
                       class="text-gray-400 hover:text-gray-600 disabled:opacity-50"
+                      @click="moveDown(slider.id)"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -168,13 +168,13 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div class="flex items-center gap-2">
                     <button 
-                      @click="toggleStatus(slider.id)"
                       :class="[
                         'px-3 py-1 rounded-md text-xs font-medium transition-colors',
                         slider.status === 'active' 
                           ? 'bg-red-100 text-red-800 hover:bg-red-200' 
                           : 'bg-green-100 text-green-800 hover:bg-green-200'
                       ]"
+                      @click="toggleStatus(slider.id)"
                     >
                       {{ slider.status === 'active' ? 'غیرفعال' : 'فعال' }}
                     </button>
@@ -185,14 +185,14 @@
                       ویرایش
                     </NuxtLink>
                     <button 
-                      @click="duplicateSlider(slider.id)"
                       class="px-3 py-1 bg-purple-100 text-purple-800 rounded-md text-xs font-medium hover:bg-purple-200 transition-colors"
+                      @click="duplicateSlider(slider.id)"
                     >
                       تکرار
                     </button>
                     <button 
-                      @click="deleteSlider(slider.id)"
                       class="px-3 py-1 bg-red-100 text-red-800 rounded-md text-xs font-medium hover:bg-red-200 transition-colors"
+                      @click="deleteSlider(slider.id)"
                     >
                       حذف
                     </button>

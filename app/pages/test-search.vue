@@ -26,7 +26,7 @@ import SearchBox from '~/components/common/SearchBox.vue'
 const lastSearch = ref('')
 
 const handleSearch = (query: string) => {
-  console.log('جستجو شد:', query)
+  // console.log('جستجو شد:', query)
   lastSearch.value = query
 }
 </script>

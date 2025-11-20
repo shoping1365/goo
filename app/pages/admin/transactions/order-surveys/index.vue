@@ -44,13 +44,13 @@
             <button 
               v-for="(section, index) in sidebarSections" 
               :key="index"
-              @click="activeSection = section.id"
               :class="[
                 'w-full text-right px-4 py-3 rounded-lg transition-all duration-200 flex items-center justify-between',
                 activeSection === section.id 
                   ? 'bg-blue-100 text-blue-700 border-r-4 border-blue-500' 
                   : 'text-gray-700 hover:bg-gray-100'
               ]"
+              @click="activeSection = section.id"
             >
               <span class="text-sm font-medium">{{ section.title }}</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -405,24 +405,24 @@ const orderInfo = reactive({
 
 // Event handlers
 const handleEdit = () => {
-  console.log('Edit survey')
+  // console.log('Edit survey')
 }
 
-const handleSaveDraft = (data: any) => {
-  console.log('Save draft:', data)
+const handleSaveDraft = (data: Record<string, unknown>) => {
+  // console.log('Save draft:', data)
 }
 
 const handleSubmit = () => {
-  console.log('Submit survey')
+  // console.log('Submit survey')
 }
 
-const scrollToSection = (sectionId: string) => {
+/* const scrollToSection = (sectionId: string) => {
   activeSection.value = sectionId
   const element = document.getElementById(sectionId)
   if (element) {
     element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
-}
+} */
 
 // Page metadata
 definePageMeta({

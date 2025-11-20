@@ -1,6 +1,7 @@
 <template>
   <div v-if="isVisible" class="fixed top-6 right-4 z-50">
-    <div :class="[
+    <div
+:class="[
       'px-4 py-3 rounded-lg shadow-lg max-w-sm',
       type === 'success' ? 'bg-green-500 text-white' : '',
       type === 'error' ? 'bg-red-500 text-white' : '',
@@ -9,7 +10,7 @@
     ]">
       <div class="flex items-center justify-between">
         <span class="text-sm font-medium">{{ message }}</span>
-        <button @click="close" class="ml-3 text-white hover:text-gray-200">
+        <button class="ml-3 text-white hover:text-gray-200" @click="close">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
           </svg>

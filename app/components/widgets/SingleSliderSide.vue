@@ -41,32 +41,32 @@
             <div class="slider-controls">
               <button
                 v-if="config.slides.length > 1 && config.show_navigation"
-                @click="nextSlide"
                 class="navigation-btn navigation-btn-prev"
                 aria-label="Next"
+                @click="nextSlide"
               >
                 ←
               </button>
               <button
                 v-if="config.slides.length > 1 && config.show_navigation"
-                @click="prevSlide"
                 class="navigation-btn navigation-btn-next"
                 aria-label="Prev"
+                @click="prevSlide"
               >
                 →
               </button>
 
               <div
                 v-if="config.slides.length > 1 && config.show_pagination"
-                class="navigation-dots"
                 v-show="config.slides.length > 1 && config.show_pagination"
+                class="navigation-dots"
               >
                 <button
                   v-for="(slide, index) in config.slides"
                   :key="`dot-${index}`"
-                  @click="goToSlide(index)"
                   class="dot"
                   :class="{ active: currentSlideIndex === index }"
+                  @click="goToSlide(index)"
                 ></button>
               </div>
             </div>

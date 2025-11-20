@@ -9,14 +9,14 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button 
-            @click="showCreateModal = true"
             class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            @click="showCreateModal = true"
           >
             ثبت تراکنش جدید
           </button>
           <button 
-            @click="exportTransactions"
             class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+            @click="exportTransactions"
           >
             خروجی Excel
           </button>
@@ -149,14 +149,14 @@
           class="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
         <button 
-          @click="applyFilters"
           class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          @click="applyFilters"
         >
           اعمال فیلتر
         </button>
         <button 
-          @click="clearFilters"
           class="px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+          @click="clearFilters"
         >
           پاک کردن
         </button>
@@ -222,22 +222,22 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <button 
-                  @click="viewTransactionDetails(transaction)"
                   class="text-blue-600 hover:text-blue-900 ml-3"
+                  @click="viewTransactionDetails(transaction)"
                 >
                   جزئیات
                 </button>
                 <button 
                   v-if="transaction.status === 'failed'"
-                  @click="retryTransaction(transaction)"
                   class="text-green-600 hover:text-green-900 ml-3"
+                  @click="retryTransaction(transaction)"
                 >
                   تلاش مجدد
                 </button>
                 <button 
                   v-if="transaction.status === 'successful' && transaction.type === 'usage'"
-                  @click="openRefundModal(transaction)"
                   class="text-red-600 hover:text-red-900 ml-3"
+                  @click="openRefundModal(transaction)"
                 >
                   بازپرداخت
                 </button>
@@ -251,16 +251,16 @@
       <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
         <div class="flex-1 flex justify-between sm:hidden">
           <button 
-            @click="previousPage"
             :disabled="currentPage === 1"
             class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            @click="previousPage"
           >
             قبلی
           </button>
           <button 
-            @click="nextPage"
             :disabled="currentPage === totalPages"
             class="mr-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            @click="nextPage"
           >
             بعدی
           </button>
@@ -280,9 +280,9 @@
           <div>
             <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
               <button 
-                @click="previousPage"
                 :disabled="currentPage === 1"
                 class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                @click="previousPage"
               >
                 <span class="sr-only">قبلی</span>
                 <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -292,19 +292,19 @@
               <button 
                 v-for="page in visiblePages" 
                 :key="page"
-                @click="goToPage(page)"
                 :class="{
                   'bg-blue-50 border-blue-500 text-blue-600': page === currentPage,
                   'bg-white border-gray-300 text-gray-500 hover:bg-gray-50': page !== currentPage
                 }"
                 class="relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+                @click="goToPage(page)"
               >
                 {{ page }}
               </button>
               <button 
-                @click="nextPage"
                 :disabled="currentPage === totalPages"
                 class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                @click="nextPage"
               >
                 <span class="sr-only">بعدی</span>
                 <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

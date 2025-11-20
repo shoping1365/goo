@@ -4,8 +4,8 @@
       <h3 class="text-lg font-semibold text-gray-800 mb-2">انتخاب ویدیو</h3>
       <div class="flex gap-2">
         <button 
-          @click="openFileDialog" 
-          class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors" 
+          @click="openFileDialog"
         >
           انتخاب فایل
         </button>
@@ -35,14 +35,14 @@
         
         <div class="flex space-x-2 space-x-reverse">
           <button 
-            @click="previewVideo"
             class="px-3 py-1 bg-green-500 text-white rounded text-sm hover:bg-green-600 transition-colors"
+            @click="previewVideo"
           >
             پیش‌نمایش
           </button>
           <button 
-            @click="removeVideo"
             class="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600 transition-colors"
+            @click="removeVideo"
           >
             حذف
           </button>

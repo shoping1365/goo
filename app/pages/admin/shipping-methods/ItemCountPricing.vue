@@ -4,7 +4,7 @@
       <div class="card-header">
         <h3>قیمت بر اساس تعداد آیتم</h3>
         <div class="toggle-switch">
-          <input type="checkbox" v-model="enabled" id="itemCountToggle" />
+          <input id="itemCountToggle" v-model="enabled" type="checkbox" />
           <label for="itemCountToggle"></label>
         </div>
       </div>
@@ -13,7 +13,7 @@
         <div class="table-section">
           <div class="table-header">
             <h4>بازه‌های تعداد آیتم</h4>
-            <button @click="addItemRange" class="add-btn">
+            <button class="add-btn" @click="addItemRange">
               <span>+</span> افزودن بازه
             </button>
           </div>
@@ -61,7 +61,7 @@
                 </div>
               </div>
               <div class="col actions">
-                <button @click="removeItemRange(index)" class="remove-btn">
+                <button class="remove-btn" @click="removeItemRange(index)">
                   حذف
                 </button>
               </div>

@@ -28,11 +28,11 @@
           </div>
         </div>
         <button 
-          @click="toggleBot"
           :class="[
             isActive ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600',
             'px-3 py-1 text-xs font-medium text-white rounded-lg transition-colors'
           ]"
+          @click="toggleBot"
         >
           {{ isActive ? 'غیرفعال کردن' : 'فعال کردن' }}
         </button>
@@ -46,8 +46,8 @@
         <button 
           v-for="response in quickResponses"
           :key="response.id"
-          @click="sendBotResponse(response)"
           class="p-2 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors text-right"
+          @click="sendBotResponse(response)"
         >
           {{ response.text }}
         </button>
@@ -61,11 +61,11 @@
         <div class="flex items-center justify-between">
           <span class="text-xs text-gray-600">پاسخ خودکار</span>
           <button 
-            @click="settings.autoResponse = !settings.autoResponse"
             :class="[
               settings.autoResponse ? 'bg-blue-600' : 'bg-gray-200',
               'relative inline-flex h-4 w-8 items-center rounded-full transition-colors'
             ]"
+            @click="settings.autoResponse = !settings.autoResponse"
           >
             <span 
               :class="[
@@ -78,11 +78,11 @@
         <div class="flex items-center justify-between">
           <span class="text-xs text-gray-600">تشخیص احساسات</span>
           <button 
-            @click="settings.sentimentAnalysis = !settings.sentimentAnalysis"
             :class="[
               settings.sentimentAnalysis ? 'bg-blue-600' : 'bg-gray-200',
               'relative inline-flex h-4 w-8 items-center rounded-full transition-colors'
             ]"
+            @click="settings.sentimentAnalysis = !settings.sentimentAnalysis"
           >
             <span 
               :class="[
@@ -95,11 +95,11 @@
         <div class="flex items-center justify-between">
           <span class="text-xs text-gray-600">ترجمه خودکار</span>
           <button 
-            @click="settings.autoTranslate = !settings.autoTranslate"
             :class="[
               settings.autoTranslate ? 'bg-blue-600' : 'bg-gray-200',
               'relative inline-flex h-4 w-8 items-center rounded-full transition-colors'
             ]"
+            @click="settings.autoTranslate = !settings.autoTranslate"
           >
             <span 
               :class="[
@@ -171,13 +171,13 @@ const quickResponses = ref([
 // Methods
 const toggleBot = () => {
   isActive.value = !isActive.value
-  console.log('Bot toggled:', isActive.value)
+  // console.log('Bot toggled:', isActive.value)
 }
 
-const sendBotResponse = (response: any) => {
+const sendBotResponse = (_response: unknown) => {
   if (!isActive.value) return
   
-  console.log('Bot response sent:', response.text)
+  // console.log('Bot response sent:', response.text)
 }
 
 // Auto-response logic

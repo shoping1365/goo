@@ -1,10 +1,30 @@
-import { ref, computed, onUnmounted } from 'vue'
+import { onUnmounted, ref } from 'vue'
+
+interface ChatSession {
+  id: number
+  session_id?: string
+  unread_count?: number
+  [key: string]: unknown
+}
+
+interface ChatMessage {
+  id: number
+  session_id: string | number
+  message?: string
+  file?: string
+  [key: string]: unknown
+}
+
+interface ApiError {
+  message?: string
+  [key: string]: unknown
+}
 
 export function useLiveChat() {
   // State
-  const chatSessions = ref<any[]>([])
-  const selectedSession = ref<any | null>(null)
-  const messages = ref<any[]>([])
+  const chatSessions = ref<ChatSession[]>([])
+  const selectedSession = ref<ChatSession | null>(null)
+  const messages = ref<ChatMessage[]>([])
   const isLoading = ref(false)
   const error = ref<string | null>(null)
 
@@ -14,9 +34,9 @@ export function useLiveChat() {
   const wsReconnectDelayMaxMs = 30000
 
   // Toast util - Temporarily disabled to prevent JavaScript errors
-  const notify = (msg: string, type: 'error' | 'success' | 'warning' | 'info' = 'error') => {
+  const notify = (msg: string, _type: 'error' | 'success' | 'warning' | 'info' = 'error') => {
     // Temporarily use console instead of toast to avoid vue3-toastify errors
-    console.log(`[${type.toUpperCase()}] ${msg}`)
+    // console.log(`[${type.toUpperCase()}] ${msg}`)
     // TODO: Re-enable toast notifications after fixing vue3-toastify cleanup issues
     /*
     try {
@@ -35,12 +55,13 @@ export function useLiveChat() {
     isLoading.value = true
     error.value = null
     try {
-      const response: any = await $fetch(`/api/admin/chat/sessions`, {
+      const response = await $fetch<{ data: ChatSession[] }>(`/api/admin/chat/sessions`, {
         query: { status }
       })
       chatSessions.value = response?.data || []
-    } catch (e: any) {
-      error.value = e?.message || 'خطا در دریافت لیست چت‌ها'
+    } catch (e) {
+      const err = e as ApiError
+      error.value = err?.message || 'خطا در دریافت لیست چت‌ها'
       notify(error.value)
     } finally {
       isLoading.value = false
@@ -52,10 +73,11 @@ export function useLiveChat() {
     isLoading.value = true
     error.value = null
     try {
-      const response: any = await $fetch(`/api/admin/chat/sessions/${sessionId}/messages`)
+      const response = await $fetch<{ data: ChatMessage[] }>(`/api/admin/chat/sessions/${sessionId}/messages`)
       messages.value = response?.data || []
-    } catch (e: any) {
-      error.value = e?.message || 'خطا در دریافت پیام‌ها'
+    } catch (e) {
+      const err = e as ApiError
+      error.value = err?.message || 'خطا در دریافت پیام‌ها'
       notify(error.value)
     } finally {
       isLoading.value = false
@@ -68,28 +90,29 @@ export function useLiveChat() {
       const form = new FormData()
       if (text) form.append('message', text)
       if (file) form.append('file', file)
-      const res: any = await ($fetch as any)(`/api/admin/chat/sessions/${sessionId}/messages`, {
+      const res = await $fetch<{ data: ChatMessage }>(`/api/admin/chat/sessions/${sessionId}/messages`, {
         method: 'POST',
         body: form
       })
       const newMsg = res?.data
       if (newMsg) messages.value.push(newMsg)
       return newMsg
-    } catch (e: any) {
-      error.value = e?.message || 'خطا در ارسال پیام'
+    } catch (e) {
+      const err = e as ApiError
+      error.value = err?.message || 'خطا در ارسال پیام'
       notify(error.value)
-      throw e
+      throw err
     }
   }
 
   // Update session status
   const updateSessionStatus = async (sessionId: number, status: string) => {
-    await ($fetch as any)(`/api/admin/chat/sessions/${sessionId}`, { method: 'PUT', body: { status } })
+    await $fetch(`/api/admin/chat/sessions/${sessionId}`, { method: 'PUT', body: { status } })
     await fetchChatSessions('active')
   }
 
   // Select session
-  const selectSession = async (session: any) => {
+  const selectSession = async (session: ChatSession) => {
     selectedSession.value = session
     await fetchMessages(session.id)
   }
@@ -97,10 +120,10 @@ export function useLiveChat() {
   // Mark as read
   const markAsRead = async (sessionId: number) => {
     try {
-      await ($fetch as any)(`/api/admin/chat/sessions/${sessionId}/read`, { method: 'POST' })
+      await $fetch(`/api/admin/chat/sessions/${sessionId}/read`, { method: 'POST' })
       const idx = chatSessions.value.findIndex(s => s.id === sessionId)
       if (idx !== -1) chatSessions.value[idx].unread_count = 0
-    } catch (e) {
+    } catch {
       notify('خطا در علامت‌گذاری پیام‌ها به عنوان خوانده شده')
     }
   }
@@ -108,7 +131,7 @@ export function useLiveChat() {
   // Real-time metrics
   const getRealTimeMetrics = async () => {
     try {
-      const response: any = await $fetch(`/api/admin/chat/metrics`)
+      const response = await $fetch(`/api/admin/chat/metrics`)
       return response
     } catch {
       return null
@@ -137,7 +160,7 @@ export function useLiveChat() {
         } catch { }
       }
 
-      ws.onerror = (ev: any) => {
+      ws.onerror = (ev: Event) => {
         import('~/utils/wsErrors')
           .then(({ parseWsError }) => {
             const msg = parseWsError(ev)
@@ -168,7 +191,7 @@ export function useLiveChat() {
         // در زمان قطع، Polling فعال باشد تا UI زنده بماند
         startPolling('active', 5000)
       }
-    } catch (err) {
+    } catch {
       notify('خطا در اتصال WebSocket')
       error.value = 'خطا در اتصال WebSocket'
     }
@@ -199,10 +222,10 @@ export function useLiveChat() {
     }
   }
 
-  const handleWebSocketMessage = (data: any) => {
+  const handleWebSocketMessage = (data: { type?: string; data?: ChatMessage; session_id?: string | number; session?: ChatSession }) => {
     switch (data?.type) {
       case 'new_message':
-        if (selectedSession.value && (selectedSession.value.session_id === data?.data?.session_id || selectedSession.value.id === data?.data?.session_id)) {
+        if (selectedSession.value && data.data && (selectedSession.value.session_id === data.data.session_id || selectedSession.value.id === data.data.session_id)) {
           messages.value.push(data.data)
         }
         fetchChatSessions()
@@ -212,11 +235,11 @@ export function useLiveChat() {
         break
       case 'session_update': {
         const idx = chatSessions.value.findIndex(s => s.session_id === data?.session_id || s.id === data?.session_id)
-        if (idx !== -1) chatSessions.value[idx] = data.session
+        if (idx !== -1 && data.session) chatSessions.value[idx] = data.session
         break
       }
       case 'new_session':
-        chatSessions.value.unshift(data.session)
+        if (data.session) chatSessions.value.unshift(data.session)
         break
     }
   }
@@ -245,6 +268,7 @@ export function useLiveChat() {
       }
     }, 5000)
   }
+
 
   return {
     chatSessions,

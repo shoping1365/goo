@@ -4,8 +4,8 @@
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-bold text-gray-900 font-iranyekan">پیش‌نمایش فوتر</h3>
         <button
-          @click="$emit('close')"
           class="text-gray-400 hover:text-gray-600 transition-colors font-iranyekan"
+          @click="$emit('close')"
         >
           <span class="text-xl">✕</span>
         </button>
@@ -22,9 +22,11 @@
           <!-- وضعیت -->
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2 font-iranyekan">وضعیت:</label>
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium font-iranyekan"
+            <span
+class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium font-iranyekan"
                   :class="footer.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
-              <span class="w-2 h-2 rounded-full mr-2"
+              <span
+class="w-2 h-2 rounded-full mr-2"
                     :class="footer.is_active ? 'bg-green-500' : 'bg-red-500'"></span>
               {{ footer.is_active ? 'فعال' : 'غیرفعال' }}
             </span>

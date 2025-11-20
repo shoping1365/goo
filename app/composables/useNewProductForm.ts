@@ -1,4 +1,4 @@
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 
 // shared singleton state for new product wizard
 const productForm = reactive({

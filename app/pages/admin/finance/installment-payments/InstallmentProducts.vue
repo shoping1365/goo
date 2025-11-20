@@ -8,8 +8,8 @@
           <p class="text-sm text-gray-500 mt-1">مدیریت محصولاتی که امکان خرید اقساطی دارند</p>
         </div>
         <button
-          @click="openAddProductModal"
           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+          @click="openAddProductModal"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -74,8 +74,8 @@
       
       <div class="mt-4 flex justify-end">
         <button
-          @click="applyFilters"
           class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          @click="applyFilters"
         >
           اعمال فیلتر
         </button>
@@ -133,14 +133,14 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <button
-                  @click="editProduct(product)"
                   class="text-blue-600 hover:text-blue-900 ml-3"
+                  @click="editProduct(product)"
                 >
                   ویرایش
                 </button>
                 <button
-                  @click="toggleProductStatus(product)"
                   :class="product.status === 'active' ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900'"
+                  @click="toggleProductStatus(product)"
                 >
                   {{ product.status === 'active' ? 'غیرفعال' : 'فعال' }}
                 </button>
@@ -159,7 +159,7 @@
             {{ editingProduct ? 'ویرایش محصول' : 'افزودن محصول جدید' }}
           </h3>
           
-          <form @submit.prevent="saveProduct" class="space-y-6">
+          <form class="space-y-6" @submit.prevent="saveProduct">
             <!-- اطلاعات پایه -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -227,16 +227,16 @@
                   <span class="text-gray-500">تومان</span>
                   <button
                     type="button"
-                    @click="removeInstallment(index)"
                     class="text-red-600 hover:text-red-800"
+                    @click="removeInstallment(index)"
                   >
                     حذف
                   </button>
                 </div>
                 <button
                   type="button"
-                  @click="addInstallment"
                   class="text-blue-600 hover:text-blue-800 text-sm"
+                  @click="addInstallment"
                 >
                   + افزودن گزینه اقساط
                 </button>
@@ -286,8 +286,8 @@
             <div class="flex justify-end space-x-3 space-x-reverse">
               <button
                 type="button"
-                @click="closeProductModal"
                 class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                @click="closeProductModal"
               >
                 انصراف
               </button>

@@ -12,16 +12,16 @@
           </div>
           <div class="flex items-center space-x-4">
             <button
-              @click="saveAsDraft"
               :disabled="isSaving"
               class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+              @click="saveAsDraft"
             >
               ذخیره پیش‌نویس
             </button>
             <button
-              @click="saveWidget"
               :disabled="isSaving"
               class="px-4 py-2 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+              @click="saveWidget"
             >
               {{ isSaving ? 'در حال ذخیره...' : 'ذخیره و انتشار' }}
             </button>

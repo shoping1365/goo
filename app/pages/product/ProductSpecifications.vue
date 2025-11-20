@@ -80,10 +80,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive } from 'vue'
+import { computed, reactive, ref } from 'vue';
 
 interface Props {
-  product: any
+  product: Record<string, unknown>
 }
 
 const props = defineProps<Props>()
@@ -98,11 +98,11 @@ const specifications = computed(() => {
 })
 
 const groupedSpecs = computed(() => {
-  const groups: { name: string; specs: any[] }[] = []
+  const groups: { name: string; specs: Record<string, unknown>[] }[] = []
   const groupMap = new Map()
 
-  specifications.value.forEach((spec: any) => {
-    const groupName = spec.group || 'عمومی'
+  specifications.value.forEach((spec: Record<string, unknown>) => {
+    const groupName = (spec.group as string) || 'عمومی'
     if (!groupMap.has(groupName)) {
       const group = { name: groupName, specs: [] }
       groups.push(group)
@@ -118,43 +118,43 @@ const filteredSpecs = computed(() => {
   if (!searchQuery.value) return specifications.value
   
   const query = searchQuery.value.toLowerCase()
-  return specifications.value.filter((spec: any) =>
-    spec.name?.toLowerCase().includes(query) ||
-    spec.value?.toLowerCase().includes(query)
+  return specifications.value.filter((spec: Record<string, unknown>) =>
+    (spec.name as string)?.toLowerCase().includes(query) ||
+    (spec.value as string)?.toLowerCase().includes(query)
   )
 })
 
-const filteredGroups = computed(() => {
-  if (!searchQuery.value) return groupedSpecs.value
+// const filteredGroups = computed(() => {
+//   if (!searchQuery.value) return groupedSpecs.value
 
-  const query = searchQuery.value.toLowerCase()
-  return groupedSpecs.value
-    .map(group => ({
-      ...group,
-      specs: group.specs.filter(spec =>
-        spec.name?.toLowerCase().includes(query) ||
-        spec.value?.toLowerCase().includes(query)
-      )
-    }))
-    .filter(group => group.specs.length > 0)
-})
+//   const query = searchQuery.value.toLowerCase()
+//   return groupedSpecs.value
+//     .map(group => ({
+//       ...group,
+//       specs: group.specs.filter(spec =>
+//         (spec.name as string)?.toLowerCase().includes(query) ||
+//         (spec.value as string)?.toLowerCase().includes(query)
+//       )
+//     }))
+//     .filter(group => group.specs.length > 0)
+// })
 
 // Methods
-const toggleGroup = (groupName: string) => {
-  expandedGroups[groupName] = !expandedGroups[groupName]
-}
+// const toggleGroup = (groupName: string) => {
+//   expandedGroups[groupName] = !expandedGroups[groupName]
+// }
 
-const expandAll = () => {
-  groupedSpecs.value.forEach(group => {
-    expandedGroups[group.name] = true
-  })
-}
+// const expandAll = () => {
+//   groupedSpecs.value.forEach(group => {
+//     expandedGroups[group.name] = true
+//   })
+// }
 
-const collapseAll = () => {
-  groupedSpecs.value.forEach(group => {
-    expandedGroups[group.name] = false
-  })
-}
+// const collapseAll = () => {
+//   groupedSpecs.value.forEach(group => {
+//     expandedGroups[group.name] = false
+//   })
+// }
 
 // Initialize expanded state
 groupedSpecs.value.forEach(group => {

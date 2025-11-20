@@ -1,11 +1,20 @@
 <template>
   <div class="flex flex-wrap gap-3 mb-4 items-center bg-white rounded-xl px-4 py-3 shadow-sm font-sans">
     <div class="flex-1">
-      <input v-model="filters.search" @input="onFilterChange" type="text" placeholder="جستجو (نام، ایمیل، شماره)"
-        class="input input-bordered input-lg w-full max-w-xl" />
+      <input
+        :value="filters.search"
+        type="text"
+        placeholder="جستجو (نام، ایمیل، شماره)"
+        class="input input-bordered input-lg w-full max-w-xl"
+        @input="$emit('update:filters', { ...filters, search: ($event.target as HTMLInputElement).value }); onFilterChange()"
+      />
     </div>
     <div class="flex items-center gap-2">
-      <select v-model="filters.role" @change="onFilterChange" class="input input-sm border border-gray-300 rounded-lg px-3 py-2 bg-white shadow-none focus:shadow-none font-sans text-sm font-bold">
+      <select
+        :value="filters.role"
+        class="input input-sm border border-gray-300 rounded-lg px-3 py-2 bg-white shadow-none focus:shadow-none font-sans text-sm font-bold"
+        @change="$emit('update:filters', { ...filters, role: ($event.target as HTMLSelectElement).value }); onFilterChange()"
+      >
         <option value="">همه نقش‌ها</option>
         <option value="admin">ادمین</option>
         <option value="user">کاربر</option>
@@ -17,11 +26,11 @@
   </div>
 </template>
 <script setup lang="ts">
+defineProps<{
+  filters: { search: string; role: string }
+}>()
 
-
-const props = defineProps({
-  filters: Object
-})
+defineEmits(['update:filters'])
 
 function onFilterChange() {
   // userStore.fetchUsers();

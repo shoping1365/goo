@@ -9,14 +9,14 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button 
-            @click="saveSettings"
             class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            @click="saveSettings"
           >
             ذخیره تنظیمات
           </button>
           <button 
-            @click="resetSettings"
             class="px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            @click="resetSettings"
           >
             بازنشانی
           </button>
@@ -31,12 +31,12 @@
           <button
             v-for="tab in tabs"
             :key="tab.id"
-            @click="activeTab = tab.id"
             :class="{
               'border-blue-500 text-blue-600': activeTab === tab.id,
               'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== tab.id
             }"
             class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+            @click="activeTab = tab.id"
           >
             {{ tab.name }}
           </button>

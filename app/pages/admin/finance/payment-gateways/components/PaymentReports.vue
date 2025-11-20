@@ -107,15 +107,15 @@
       </div>
       <div class="flex items-center">
         <TemplateButton 
-          @click="refreshGateways" 
-          :disabled="loadingGateways || loadingTransactions"
-          bgGradient="bg-gradient-to-r from-gray-100 to-gray-200"
-          textColor="text-gray-700"
-          borderColor="border border-gray-200"
-          hoverClass="hover:from-gray-200 hover:to-gray-300"
-          focusClass="focus:ring-2 focus:ring-gray-200 focus:ring-offset-2"
+          :disabled="loadingGateways || loadingTransactions" 
+          bg-gradient="bg-gradient-to-r from-gray-100 to-gray-200"
+          text-color="text-gray-700"
+          border-color="border border-gray-200"
+          hover-class="hover:from-gray-200 hover:to-gray-300"
+          focus-class="focus:ring-2 focus:ring-gray-200 focus:ring-offset-2"
           size="medium"
-          :customClass="(loadingGateways || loadingTransactions) ? 'opacity-50 cursor-not-allowed' : ''"
+          :custom-class="(loadingGateways || loadingTransactions) ? 'opacity-50 cursor-not-allowed' : ''"
+          @click="refreshGateways"
         >
           <svg 
             :class="['w-4 h-4 inline-block mr-1', (loadingGateways || loadingTransactions) ? 'animate-spin' : '']" 
@@ -137,8 +137,8 @@
         </select>
         <div class="ml-8"></div>
         <button
-            @click="exportReport"
             class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+            @click="exportReport"
         >
           <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -154,25 +154,25 @@
         <h4 class="text-lg font-semibold text-gray-900">نمودار تراکنش‌ها</h4>
         <div class="flex items-center">
           <TemplateButton 
-            @click="selectedChartType = 'transactions'"
-            :bgGradient="selectedChartType === 'transactions' ? 'bg-gradient-to-r from-blue-100 to-blue-200' : 'bg-gradient-to-r from-gray-100 to-gray-200'"
-            :textColor="selectedChartType === 'transactions' ? 'text-blue-700' : 'text-gray-700'"
-            :borderColor="selectedChartType === 'transactions' ? 'border border-blue-200' : 'border border-gray-200'"
-            :hoverClass="selectedChartType === 'transactions' ? 'hover:from-blue-200 hover:to-blue-300' : 'hover:from-gray-200 hover:to-gray-300'"
-            :focusClass="selectedChartType === 'transactions' ? 'focus:ring-2 focus:ring-blue-200 focus:ring-offset-2' : 'focus:ring-2 focus:ring-gray-200 focus:ring-offset-2'"
+            :bg-gradient="selectedChartType === 'transactions' ? 'bg-gradient-to-r from-blue-100 to-blue-200' : 'bg-gradient-to-r from-gray-100 to-gray-200'"
+            :text-color="selectedChartType === 'transactions' ? 'text-blue-700' : 'text-gray-700'"
+            :border-color="selectedChartType === 'transactions' ? 'border border-blue-200' : 'border border-gray-200'"
+            :hover-class="selectedChartType === 'transactions' ? 'hover:from-blue-200 hover:to-blue-300' : 'hover:from-gray-200 hover:to-gray-300'"
+            :focus-class="selectedChartType === 'transactions' ? 'focus:ring-2 focus:ring-blue-200 focus:ring-offset-2' : 'focus:ring-2 focus:ring-gray-200 focus:ring-offset-2'"
             size="medium"
+            @click="selectedChartType = 'transactions'"
           >
             تعداد تراکنش‌ها
           </TemplateButton>
           <div class="ml-4"></div>
           <TemplateButton 
-            @click="selectedChartType = 'amounts'"
-            :bgGradient="selectedChartType === 'amounts' ? 'bg-gradient-to-r from-blue-100 to-blue-200' : 'bg-gradient-to-r from-gray-100 to-gray-200'"
-            :textColor="selectedChartType === 'amounts' ? 'text-blue-700' : 'text-gray-700'"
-            :borderColor="selectedChartType === 'amounts' ? 'border border-blue-200' : 'border border-gray-200'"
-            :hoverClass="selectedChartType === 'amounts' ? 'hover:from-blue-200 hover:to-blue-300' : 'hover:from-gray-200 hover:to-gray-300'"
-            :focusClass="selectedChartType === 'amounts' ? 'focus:ring-2 focus:ring-blue-200 focus:ring-offset-2' : 'focus:ring-2 focus:ring-gray-200 focus:ring-offset-2'"
+            :bg-gradient="selectedChartType === 'amounts' ? 'bg-gradient-to-r from-blue-100 to-blue-200' : 'bg-gradient-to-r from-gray-100 to-gray-200'"
+            :text-color="selectedChartType === 'amounts' ? 'text-blue-700' : 'text-gray-700'"
+            :border-color="selectedChartType === 'amounts' ? 'border border-blue-200' : 'border border-gray-200'"
+            :hover-class="selectedChartType === 'amounts' ? 'hover:from-blue-200 hover:to-blue-300' : 'hover:from-gray-200 hover:to-gray-300'"
+            :focus-class="selectedChartType === 'amounts' ? 'focus:ring-2 focus:ring-blue-200 focus:ring-offset-2' : 'focus:ring-2 focus:ring-gray-200 focus:ring-offset-2'"
             size="medium"
+            @click="selectedChartType = 'amounts'"
           >
             مبالغ
           </TemplateButton>
@@ -206,7 +206,8 @@
                 </div>
                 <span class="mr-3 font-medium text-gray-900">{{ gateway.name }}</span>
               </div>
-              <span :class="[
+              <span
+:class="[
                 'px-2 py-1 text-xs font-semibold rounded-full',
                 gateway.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
               ]">

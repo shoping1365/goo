@@ -144,9 +144,9 @@
 
               <!-- Test Button -->
               <button 
-                @click="testConnection" 
-                :disabled="testing"
+                :disabled="testing" 
                 class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+                @click="testConnection"
               >
                 <span v-if="testing">در حال تست...</span>
                 <span v-else>تست اتصال</span>
@@ -165,7 +165,8 @@
               <!-- Status -->
               <div class="flex items-center justify-between">
                 <span class="text-sm font-medium text-gray-700">وضعیت:</span>
-                <span :class="[
+                <span
+:class="[
                   'px-2 py-1 rounded text-sm font-medium',
                   testResult.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                 ]">
@@ -209,26 +210,26 @@
         <div class="p-6">
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <button 
-              @click="quickTest('database')"
               class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+              @click="quickTest('database')"
             >
               تست دیتابیس
             </button>
             <button 
-              @click="quickTest('redis')"
               class="bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+              @click="quickTest('redis')"
             >
               تست Redis
             </button>
             <button 
-              @click="quickTest('smtp')"
               class="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+              @click="quickTest('smtp')"
             >
               تست SMTP
             </button>
             <button 
-              @click="quickTest('api')"
               class="bg-purple-500 hover:bg-purple-600 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+              @click="quickTest('api')"
             >
               تست API خارجی
             </button>
@@ -245,7 +246,8 @@
           <div class="space-y-3">
             <div v-for="test in testHistory" :key="test.id" class="flex items-center justify-between p-6 border rounded-lg">
               <div class="flex items-center space-x-4 space-x-reverse">
-                <div :class="[
+                <div
+:class="[
                   'w-3 h-3 rounded-full',
                   test.success ? 'bg-green-500' : 'bg-red-500'
                 ]"></div>
@@ -255,8 +257,8 @@
                 </div>
               </div>
               <button 
-                @click="loadTest(test)"
                 class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                @click="loadTest(test)"
               >
                 بارگذاری مجدد
               </button>
@@ -283,8 +285,8 @@
                   class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                                  <button 
-                   @click="performPing"
                    class="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                   @click="performPing"
                  >
                    Ping
                  </button>
@@ -303,8 +305,8 @@
                   class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                 <button 
-                  @click="lookupDNS"
                   class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="lookupDNS"
                 >
                   جستجو
                 </button>

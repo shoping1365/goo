@@ -34,7 +34,7 @@
           <h3 class="text-lg font-semibold text-gray-900 mr-3">تنظیمات کش</h3>
         </div>
         <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" v-model="cacheSettings.enabled" class="sr-only peer">
+          <input v-model="cacheSettings.enabled" type="checkbox" class="sr-only peer">
           <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
         </label>
       </div>
@@ -53,7 +53,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">زمان انقضا (دقیقه)</label>
-            <input type="range" v-model="cacheSettings.expiration" min="1" max="1440" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="cacheSettings.expiration" type="range" min="1" max="1440" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>1 دقیقه</span>
               <span>{{ cacheSettings.expiration }} دقیقه</span>
@@ -63,7 +63,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداکثر اندازه کش (MB)</label>
-            <input type="range" v-model="cacheSettings.maxSize" min="10" max="1000" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="cacheSettings.maxSize" type="range" min="10" max="1000" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>10MB</span>
               <span>{{ cacheSettings.maxSize }}MB</span>
@@ -87,11 +87,11 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">فشرده‌سازی</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="cacheSettings.compression.enabled" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                <input v-model="cacheSettings.compression.enabled" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                 <span class="mr-2 text-sm text-gray-700">فعال‌سازی فشرده‌سازی</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="cacheSettings.compression.gzip" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                <input v-model="cacheSettings.compression.gzip" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                 <span class="mr-2 text-sm text-gray-700">استفاده از Gzip</span>
               </label>
             </div>
@@ -130,7 +130,7 @@
           <h3 class="text-lg font-semibold text-gray-900 mr-3">تنظیمات امنیت</h3>
         </div>
         <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" v-model="securitySettings.enabled" class="sr-only peer">
+          <input v-model="securitySettings.enabled" type="checkbox" class="sr-only peer">
           <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
         </label>
       </div>
@@ -141,15 +141,15 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">رمزگذاری داده‌ها</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="securitySettings.encryption.enabled" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                <input v-model="securitySettings.encryption.enabled" type="checkbox" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
                 <span class="mr-2 text-sm text-gray-700">فعال‌سازی رمزگذاری</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="securitySettings.encryption.atRest" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                <input v-model="securitySettings.encryption.atRest" type="checkbox" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
                 <span class="mr-2 text-sm text-gray-700">رمزگذاری در حالت استراحت</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="securitySettings.encryption.inTransit" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                <input v-model="securitySettings.encryption.inTransit" type="checkbox" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
                 <span class="mr-2 text-sm text-gray-700">رمزگذاری در انتقال</span>
               </label>
             </div>
@@ -167,7 +167,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">کلید رمزگذاری</label>
             <div class="flex space-x-2 space-x-reverse">
-              <input type="password" v-model="securitySettings.encryption.key" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500" placeholder="کلید رمزگذاری">
+              <input v-model="securitySettings.encryption.key" type="password" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500" placeholder="کلید رمزگذاری">
               <button class="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">تولید</button>
             </div>
           </div>
@@ -178,15 +178,15 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">محدودیت‌های دسترسی</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="securitySettings.accessControl.ipWhitelist" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                <input v-model="securitySettings.accessControl.ipWhitelist" type="checkbox" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
                 <span class="mr-2 text-sm text-gray-700">لیست سفید IP</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="securitySettings.accessControl.rateLimit" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                <input v-model="securitySettings.accessControl.rateLimit" type="checkbox" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
                 <span class="mr-2 text-sm text-gray-700">محدودیت نرخ درخواست</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="securitySettings.accessControl.authentication" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                <input v-model="securitySettings.accessControl.authentication" type="checkbox" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
                 <span class="mr-2 text-sm text-gray-700">احراز هویت اجباری</span>
               </label>
             </div>
@@ -194,7 +194,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">محدودیت نرخ (درخواست/دقیقه)</label>
-            <input type="range" v-model="securitySettings.accessControl.rateLimitValue" min="10" max="1000" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="securitySettings.accessControl.rateLimitValue" type="range" min="10" max="1000" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>10</span>
               <span>{{ securitySettings.accessControl.rateLimitValue }}</span>
@@ -222,7 +222,7 @@
           <h3 class="text-lg font-semibold text-gray-900 mr-3">تنظیمات لاگ</h3>
         </div>
         <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" v-model="loggingSettings.enabled" class="sr-only peer">
+          <input v-model="loggingSettings.enabled" type="checkbox" class="sr-only peer">
           <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
         </label>
       </div>
@@ -252,7 +252,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداکثر اندازه فایل لاگ (MB)</label>
-            <input type="range" v-model="loggingSettings.maxFileSize" min="1" max="100" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="loggingSettings.maxFileSize" type="range" min="1" max="100" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>1MB</span>
               <span>{{ loggingSettings.maxFileSize }}MB</span>
@@ -266,19 +266,19 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">نوع‌های لاگ</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="loggingSettings.types.access" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="loggingSettings.types.access" type="checkbox" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">لاگ دسترسی</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="loggingSettings.types.error" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="loggingSettings.types.error" type="checkbox" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">لاگ خطا</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="loggingSettings.types.performance" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="loggingSettings.types.performance" type="checkbox" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">لاگ عملکرد</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="loggingSettings.types.security" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="loggingSettings.types.security" type="checkbox" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">لاگ امنیت</span>
               </label>
             </div>
@@ -326,7 +326,7 @@
           <h3 class="text-lg font-semibold text-gray-900 mr-3">تنظیمات بهینه‌سازی</h3>
         </div>
         <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" v-model="optimizationSettings.enabled" class="sr-only peer">
+          <input v-model="optimizationSettings.enabled" type="checkbox" class="sr-only peer">
           <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
         </label>
       </div>
@@ -337,15 +337,15 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">بهینه‌سازی الگوریتم</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="optimizationSettings.algorithm.parallel" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="optimizationSettings.algorithm.parallel" type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">پردازش موازی</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="optimizationSettings.algorithm.batching" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="optimizationSettings.algorithm.batching" type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">پردازش دسته‌ای</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="optimizationSettings.algorithm.caching" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="optimizationSettings.algorithm.caching" type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">کش نتایج</span>
               </label>
             </div>
@@ -353,7 +353,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">تعداد thread ها</label>
-            <input type="range" v-model="optimizationSettings.threads" min="1" max="16" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="optimizationSettings.threads" type="range" min="1" max="16" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>1</span>
               <span>{{ optimizationSettings.threads }}</span>
@@ -363,7 +363,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">اندازه batch</label>
-            <input type="range" v-model="optimizationSettings.batchSize" min="10" max="1000" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="optimizationSettings.batchSize" type="range" min="10" max="1000" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>10</span>
               <span>{{ optimizationSettings.batchSize }}</span>
@@ -377,15 +377,15 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">بهینه‌سازی پایگاه داده</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="optimizationSettings.database.indexing" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="optimizationSettings.database.indexing" type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">بهینه‌سازی ایندکس</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="optimizationSettings.database.queryOptimization" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="optimizationSettings.database.queryOptimization" type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">بهینه‌سازی کوئری</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="optimizationSettings.database.connectionPooling" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="optimizationSettings.database.connectionPooling" type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="mr-2 text-sm text-gray-700">Connection Pooling</span>
               </label>
             </div>
@@ -393,7 +393,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حداکثر اتصالات</label>
-            <input type="range" v-model="optimizationSettings.maxConnections" min="5" max="100" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <input v-model="optimizationSettings.maxConnections" type="range" min="5" max="100" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-xs text-gray-500 mt-1">
               <span>5</span>
               <span>{{ optimizationSettings.maxConnections }}</span>

@@ -41,6 +41,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useAuth } from '~/composables/useAuth';
+import type { User } from '~/types/user';
 
 // استفاده از کامپوزابل احراز هویت
 const { hasPermission } = useAuth();
@@ -52,7 +53,8 @@ const canDeleteItems = computed(() => {
 })
 
 
-const props = defineProps<{ user: any }>();
+defineProps<{ user: User }>();
+defineEmits(['view-all-cart', 'remove-item']);
 // Mock data for cart
 const total = '۳٬۵۰۰٬۰۰۰';
 const cartItems = [

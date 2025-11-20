@@ -6,7 +6,7 @@
         <h3 class="text-lg font-medium text-gray-900">امتیازدهی دستی</h3>
       </div>
       <div class="px-4 py-4">
-        <form @submit.prevent="submitManualScore" class="space-y-6">
+        <form class="space-y-6" @submit.prevent="submitManualScore">
           <!-- انتخاب کاربر -->
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">انتخاب کاربر</label>
@@ -18,7 +18,7 @@
                 class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 @input="searchUsers"
               >
-              <button type="button" @click="showUserSelector = true" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+              <button type="button" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors" @click="showUserSelector = true">
                 انتخاب کاربر
               </button>
             </div>
@@ -28,8 +28,8 @@
               <div 
                 v-for="user in searchResults" 
                 :key="user.id" 
-                @click="selectUser(user)"
                 class="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                @click="selectUser(user)"
               >
                 <div class="flex items-center">
                   <img :src="user.avatar || '/default-avatar.png'" :alt="user.name" class="w-8 h-8 rounded-full mr-3">
@@ -53,7 +53,7 @@
                     <div class="text-sm text-gray-600">امتیاز فعلی: {{ selectedUser.currentScore }}</div>
                   </div>
                 </div>
-                <button type="button" @click="selectedUser = null" class="text-red-600 hover:text-red-800">
+                <button type="button" class="text-red-600 hover:text-red-800" @click="selectedUser = null">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                   </svg>
@@ -140,7 +140,7 @@
 
           <!-- دکمه‌های عملیات -->
           <div class="flex justify-end space-x-3 space-x-reverse">
-            <button type="button" @click="resetForm" class="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors">
+            <button type="button" class="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors" @click="resetForm">
               انصراف
             </button>
             <button 
@@ -167,7 +167,7 @@
               <option value="week">هفته جاری</option>
               <option value="month">ماه جاری</option>
             </select>
-            <button @click="exportHistory" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">
+            <button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors" @click="exportHistory">
               خروجی اکسل
             </button>
           </div>
@@ -218,7 +218,7 @@
                 {{ formatDate(record.createdAt) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button @click="viewDetails(record)" class="text-blue-600 hover:text-blue-900">جزئیات</button>
+                <button class="text-blue-600 hover:text-blue-900" @click="viewDetails(record)">جزئیات</button>
               </td>
             </tr>
           </tbody>
@@ -228,10 +228,10 @@
       <!-- Pagination -->
       <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
         <div class="flex-1 flex justify-between sm:hidden">
-          <button @click="previousPage" :disabled="currentPage === 1" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50">
+          <button :disabled="currentPage === 1" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50" @click="previousPage">
             قبلی
           </button>
-          <button @click="nextPage" :disabled="currentPage === totalPages" class="mr-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50">
+          <button :disabled="currentPage === totalPages" class="mr-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50" @click="nextPage">
             بعدی
           </button>
         </div>
@@ -281,7 +281,7 @@
             </div>
           </div>
           <div class="flex justify-end mt-6">
-            <button @click="showDetailsModal = false" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">بستن</button>
+            <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400" @click="showDetailsModal = false">بستن</button>
           </div>
         </div>
       </div>
@@ -290,24 +290,43 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  avatar: string;
+  [key: string]: unknown;
+}
+
+interface ScoreRecord {
+  id: number;
+  user: { name: string; email: string; avatar: string };
+  type: string;
+  value: number;
+  reason: string;
+  description: string;
+  admin: { name: string };
+  createdAt: string;
+}
 
 // Props
 const props = defineProps<{
-  users: any[]
+  users: User[]
 }>()
 
 // Emits
 const emit = defineEmits<{
-  submitScore: [data: any]
-  exportHistory: [data: any]
+  submitScore: [data: Record<string, unknown>]
+  exportHistory: [data: Record<string, unknown>]
 }>()
 
 // Reactive data
 const searchUser = ref('')
-const selectedUser = ref(null)
+const selectedUser = ref<User | null>(null)
 const showUserSelector = ref(false)
-const searchResults = ref([])
+const searchResults = ref<User[]>([])
 const scoreType = ref('positive')
 const scoreValue = ref('')
 const scoreReason = ref('')
@@ -315,10 +334,10 @@ const scoreDescription = ref('')
 const filterPeriod = ref('all')
 const currentPage = ref(1)
 const showDetailsModal = ref(false)
-const selectedRecord = ref(null)
+const selectedRecord = ref<ScoreRecord | null>(null)
 
 // Sample history data
-const manualScoreHistory = ref([
+const manualScoreHistory = ref<ScoreRecord[]>([
   {
     id: 1,
     user: { name: 'علی احمدی', email: 'ali@example.com', avatar: '/avatars/ali.jpg' },
@@ -387,7 +406,7 @@ const searchUsers = () => {
   ).slice(0, 5)
 }
 
-const selectUser = (user: any) => {
+const selectUser = (user: User) => {
   selectedUser.value = user
   searchUser.value = user.name
   searchResults.value = []
@@ -427,7 +446,7 @@ const getScoreTypeText = (type: string) => {
 }
 
 const getReasonText = (reason: string) => {
-  const reasons = {
+  const reasons: Record<string, string> = {
     excellent_service: 'خدمات عالی',
     helpful_review: 'نظر مفید',
     referral: 'ارجاع موفق',
@@ -481,7 +500,7 @@ const exportHistory = () => {
   })
 }
 
-const viewDetails = (record: any) => {
+const viewDetails = (record: ScoreRecord) => {
   selectedRecord.value = record
   showDetailsModal.value = true
 }

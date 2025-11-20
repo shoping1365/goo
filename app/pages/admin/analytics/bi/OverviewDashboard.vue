@@ -117,13 +117,13 @@
             <button 
               v-for="period in ['7d', '30d', '90d']" 
               :key="period"
-              @click="salesPeriod = period"
               :class="[
                 salesPeriod === period 
                   ? 'bg-blue-100 text-blue-700' 
                   : 'text-gray-500 hover:text-gray-700',
                 'px-3 py-1 rounded-md text-sm font-medium transition-colors'
               ]"
+              @click="salesPeriod = period"
             >
               {{ period === '7d' ? '۷ روز' : period === '30d' ? '۳۰ روز' : '۹۰ روز' }}
             </button>

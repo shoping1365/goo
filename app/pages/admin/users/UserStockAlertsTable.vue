@@ -38,7 +38,7 @@
   </div>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ user: any }>();
+defineEmits(['view-all-stock-alerts', 'toggle-alert']);
 // Mock data for stock alerts
 const stockAlerts = [
   { id: 1, name: 'لپ‌تاپ لنوو', price: '۲۵٬۰۰۰٬۰۰۰', registeredDate: '1402/03/10', isActive: true },

@@ -16,7 +16,7 @@ export default defineEventHandler(async (event): Promise<HeaderResponse> => {
     const id = getRouterParam(event, 'id')
     const config = useRuntimeConfig()
 
-    console.log('درخواست دریافت هدر:', id)
+    // console.log('درخواست دریافت هدر:', id)
 
     // دریافت cookies از درخواست
     const cookies = parseCookies(event)
@@ -39,7 +39,7 @@ export default defineEventHandler(async (event): Promise<HeaderResponse> => {
 
     const responseData = await response.json()
 
-    console.log('پاسخ دریافت هدر:', responseData)
+    // console.log('پاسخ دریافت هدر:', responseData)
 
     return {
       success: true,
@@ -47,7 +47,7 @@ export default defineEventHandler(async (event): Promise<HeaderResponse> => {
     }
 
   } catch (error: unknown) {
-    console.error('خطا در دریافت هدر:', error)
+    // console.error('خطا در دریافت هدر:', error)
 
     // اگر خطا از سرور Go آمده باشد
     const errorWithData = error as { data?: { message?: string; error?: string }; statusCode?: number }

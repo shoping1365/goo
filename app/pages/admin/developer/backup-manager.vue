@@ -73,16 +73,18 @@
         </div>
         <div class="p-6">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <button @click="createBackup('database')" :disabled="isCreatingBackup" 
-                    class="flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+            <button
+:disabled="isCreatingBackup" class="flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" 
+                    @click="createBackup('database')">
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
               </svg>
               پشتیبان‌گیری دیتابیس
             </button>
 
-            <button @click="createBackup('files')" :disabled="isCreatingBackup"
-                    class="flex items-center justify-center px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+            <button
+:disabled="isCreatingBackup" class="flex items-center justify-center px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    @click="createBackup('files')">
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
@@ -90,8 +92,9 @@
               پشتیبان‌گیری فایل‌ها
             </button>
 
-            <button @click="createBackup('full')" :disabled="isCreatingBackup"
-                    class="flex items-center justify-center px-4 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+            <button
+:disabled="isCreatingBackup" class="flex items-center justify-center px-4 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    @click="createBackup('full')">
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 
               </svg>
@@ -122,11 +125,13 @@
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">نگهداری (روز)</label>
-                  <input v-model="config.database.retention" type="number" min="1" max="365" 
+                  <input
+v-model="config.database.retention" type="number" min="1" max="365" 
                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
                 <div class="flex items-center">
-                  <input v-model="config.database.compression" type="checkbox" id="db-compression" 
+                  <input
+id="db-compression" v-model="config.database.compression" type="checkbox" 
                          class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                   <label for="db-compression" class="mr-2 text-sm text-gray-700">فشرده‌سازی</label>
                 </div>
@@ -139,18 +144,21 @@
               <div class="space-y-4">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">مسیرهای شامل</label>
-                  <textarea v-model="config.files.includePaths" rows="3" 
+                  <textarea
+v-model="config.files.includePaths" rows="3" 
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="/uploads&#10;/public&#10;/config"></textarea>
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">مسیرهای مستثنی</label>
-                  <textarea v-model="config.files.excludePaths" rows="3" 
+                  <textarea
+v-model="config.files.excludePaths" rows="3" 
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="/uploads/temp&#10;/logs&#10;*.tmp"></textarea>
                 </div>
                 <div class="flex items-center">
-                  <input v-model="config.files.incremental" type="checkbox" id="file-incremental" 
+                  <input
+id="file-incremental" v-model="config.files.incremental" type="checkbox" 
                          class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                   <label for="file-incremental" class="mr-2 text-sm text-gray-700">پشتیبان‌گیری افزایشی</label>
                 </div>
@@ -159,8 +167,9 @@
           </div>
 
           <div class="mt-6 flex justify-end">
-            <button @click="saveConfiguration" 
-                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            <button
+class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" 
+                    @click="saveConfiguration">
               ذخیره تنظیمات
             </button>
           </div>
@@ -201,7 +210,8 @@
               <tr v-for="backup in filteredBackups" :key="backup.id" class="hover:bg-gray-50">
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                    <span
+class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                           :class="getTypeBadgeClass(backup.type)">
                       {{ getTypeLabel(backup.type) }}
                     </span>
@@ -214,19 +224,23 @@
                   {{ formatSize(backup.size) }}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                  <span
+class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                         :class="getStatusBadgeClass(backup.status)">
                     {{ getStatusLabel(backup.status) }}
                   </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div class="flex space-x-2 space-x-reverse">
-                    <button @click="downloadBackup(backup.id)" 
-                            class="text-blue-600 hover:text-blue-900">دانلود</button>
-                    <button @click="restoreBackup(backup.id)" 
-                            class="text-green-600 hover:text-green-900">بازیابی</button>
-                    <button @click="deleteBackup(backup.id)" 
-                            class="text-red-600 hover:text-red-900">حذف</button>
+                    <button
+class="text-blue-600 hover:text-blue-900" 
+                            @click="downloadBackup(backup.id)">دانلود</button>
+                    <button
+class="text-green-600 hover:text-green-900" 
+                            @click="restoreBackup(backup.id)">بازیابی</button>
+                    <button
+class="text-red-600 hover:text-red-900" 
+                            @click="deleteBackup(backup.id)">حذف</button>
                   </div>
                 </td>
               </tr>

@@ -10,7 +10,7 @@
       <h4>انتخاب گروه مشتریان</h4>
       <div class="groups-list">
         <label v-for="group in customerGroups" :key="group.id" class="group-checkbox">
-          <input type="checkbox" v-model="selectedGroups" :value="group.id">
+          <input v-model="selectedGroups" type="checkbox" :value="group.id">
           <span>{{ group.name }}</span>
         </label>
       </div>
@@ -30,7 +30,8 @@
         <tr v-for="method in shippingMethods" :key="method.id">
           <td>{{ method.name }}</td>
           <td v-for="group in customerGroups" :key="group.id">
-            <input type="checkbox"
+            <input
+type="checkbox"
                    :checked="isMethodVisibleForGroup(method.id, group.id)"
                    @change="toggleVisibility(method.id, group.id)">
           </td>
@@ -41,7 +42,7 @@
 
     <!-- Save Button -->
     <div class="actions">
-      <button @click="saveVisibility" class="btn btn-success">
+      <button class="btn btn-success" @click="saveVisibility">
         <i class="fas fa-save"></i>
         ذخیره تغییرات
       </button>

@@ -7,8 +7,8 @@
       <!-- Refresh Button and Toggle Icon - در سمت راست هدر کانتینر -->
       <div class="flex items-center gap-2">
         <button 
-          @click="refreshMonitoring"
           class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium"
+          @click="refreshMonitoring"
           @click.stop
         >
           بروزرسانی

@@ -8,8 +8,8 @@
       </div>
       <div class="flex items-center space-x-3 space-x-reverse">
         <button
-          @click="cleanupArchive"
           class="inline-flex items-center px-4 py-2 border border-red-300 shadow-sm text-sm leading-4 font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          @click="cleanupArchive"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -76,8 +76,8 @@
         </div>
         <div>
           <button
-            @click="clearFilters"
             class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            @click="clearFilters"
           >
             پاک کردن فیلترها
           </button>
@@ -92,14 +92,14 @@
           <h5 class="text-md font-medium text-gray-900">لیست نسخه‌های آرشیو شده</h5>
           <div class="flex items-center space-x-2 space-x-reverse">
             <button
-              @click="selectAll"
               class="text-sm text-blue-600 hover:text-blue-800"
+              @click="selectAll"
             >
               انتخاب همه
             </button>
             <button
-              @click="deselectAll"
               class="text-sm text-gray-600 hover:text-gray-800"
+              @click="deselectAll"
             >
               لغو انتخاب
             </button>
@@ -168,20 +168,20 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <button
-                    @click="restoreVersion(version)"
                     class="text-blue-600 hover:text-blue-900"
+                    @click="restoreVersion(version)"
                   >
                     بازیابی
                   </button>
                   <button
-                    @click="downloadVersion(version)"
                     class="text-green-600 hover:text-green-900"
+                    @click="downloadVersion(version)"
                   >
                     دانلود
                   </button>
                   <button
-                    @click="deleteVersion(version)"
                     class="text-red-600 hover:text-red-900"
+                    @click="deleteVersion(version)"
                   >
                     حذف
                   </button>
@@ -199,20 +199,20 @@
       <div class="flex items-center space-x-4 space-x-reverse">
         <span class="text-sm text-gray-600">{{ selectedVersions.length }} نسخه انتخاب شده</span>
         <button
-          @click="restoreSelected"
           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          @click="restoreSelected"
         >
           بازیابی انتخاب شده‌ها
         </button>
         <button
-          @click="downloadSelected"
           class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          @click="downloadSelected"
         >
           دانلود انتخاب شده‌ها
         </button>
         <button
-          @click="deleteSelected"
           class="inline-flex items-center px-4 py-2 border border-red-300 shadow-sm text-sm leading-4 font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          @click="deleteSelected"
         >
           حذف انتخاب شده‌ها
         </button>
@@ -276,8 +276,8 @@
       </div>
       <div class="mt-4 flex items-center justify-end">
         <button
-          @click="saveArchiveSettings"
           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          @click="saveArchiveSettings"
         >
           ذخیره تنظیمات
         </button>

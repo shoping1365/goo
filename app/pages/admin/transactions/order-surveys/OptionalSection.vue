@@ -33,12 +33,12 @@
                   type="file"
                   multiple
                   accept="image/*"
-                  @change="handleImageUpload"
                   class="hidden"
+                  @change="handleImageUpload"
               />
               <button
-                @click="() => imageInput?.click()"
-                  class="flex flex-col items-center space-y-2 space-y-reverse"
+                class="flex flex-col items-center space-y-2 space-y-reverse"
+                  @click="() => imageInput?.click()"
               >
                 <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
@@ -61,8 +61,8 @@
                     class="w-full h-20 object-cover rounded-lg"
                 />
                 <button
-                    @click="removeImage(index)"
                     class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    @click="removeImage(index)"
                 >
                   ×
                 </button>
@@ -87,12 +87,12 @@
                 ref="videoInput"
                 type="file"
                 accept="video/*"
-                @change="handleVideoUpload"
                 class="hidden"
+                @change="handleVideoUpload"
             />
             <button
-                @click="() => videoInput?.click()"
                 class="flex flex-col items-center space-y-2 space-y-reverse"
+                @click="() => videoInput?.click()"
             >
               <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
@@ -110,8 +110,8 @@
                 class="w-full rounded-lg"
             ></video>
             <button
-                @click="removeVideo"
                 class="mt-2 px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600 transition-colors"
+                @click="removeVideo"
             >
               حذف ویدیو
             </button>

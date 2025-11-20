@@ -108,8 +108,8 @@
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-lg font-medium text-gray-900">آخرین فعالیت‌ها</h3>
         <button 
-          @click="viewAllActivities"
           class="text-sm text-blue-600 hover:text-blue-700 font-medium"
+          @click="viewAllActivities"
         >
           مشاهده همه
         </button>

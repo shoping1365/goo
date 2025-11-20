@@ -19,13 +19,13 @@
             {{ alert.message }}
           </p>
           <div v-if="alert.action" class="mt-3">
-            <button @click="handleAlertAction(alert)" class="text-sm font-medium" :class="getAlertActionClass(alert.type)">
+            <button class="text-sm font-medium" :class="getAlertActionClass(alert.type)" @click="handleAlertAction(alert)">
               {{ alert.action.text }}
             </button>
           </div>
         </div>
         <div class="flex-shrink-0">
-          <button @click="removeAlert(alert.id)" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="removeAlert(alert.id)">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -55,7 +55,7 @@
           </p>
         </div>
         <div class="flex-shrink-0">
-          <button @click="removeNotification(notification.id)" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="removeNotification(notification.id)">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>

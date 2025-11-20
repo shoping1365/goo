@@ -1,7 +1,7 @@
-declare const defineEventHandler: (handler: (event: any) => any | Promise<any>) => any
-declare const getRouterParam: (event: any, name: string) => string | undefined
+declare const defineEventHandler: (handler: (event: unknown) => unknown | Promise<unknown>) => unknown
+declare const getRouterParam: (event: unknown, name: string) => string | undefined
 declare const createError: (options: { statusCode: number; statusMessage: string }) => Error
-declare const getHeader: (event: any, name: string) => string | undefined
+declare const getHeader: (event: unknown, name: string) => string | undefined
 declare const getGoApiBaseUrl: () => string
 declare const $fetch: <T = unknown>(url: string, options?: { method?: string; headers?: Record<string, string> }) => Promise<T>
 
@@ -26,10 +26,11 @@ export default defineEventHandler(async (event) => {
           })
 
           return response
-     } catch (error: any) {
+     } catch (error: unknown) {
+          const err = error as { statusCode?: number; statusMessage?: string }
           throw createError({
-               statusCode: error.statusCode || 500,
-               statusMessage: error.statusMessage || 'Failed to fetch addresses'
+               statusCode: err.statusCode || 500,
+               statusMessage: err.statusMessage || 'Failed to fetch addresses'
           })
      }
 })

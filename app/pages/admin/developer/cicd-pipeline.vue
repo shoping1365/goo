@@ -119,8 +119,8 @@
                       <option value="custom">سفارشی</option>
                     </select>
                     <button 
-                      @click="removeStage(index)"
                       class="text-red-600 hover:text-red-800"
+                      @click="removeStage(index)"
                     >
                       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -128,8 +128,8 @@
                     </button>
                   </div>
                   <button 
-                    @click="addStage"
                     class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                    @click="addStage"
                   >
                     افزودن مرحله
                   </button>
@@ -167,9 +167,9 @@
               </div>
 
               <button 
-                @click="createPipeline"
                 :disabled="!pipelineName"
                 class="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+                @click="createPipeline"
               >
                 ایجاد خط لوله
               </button>
@@ -192,14 +192,14 @@
                 <p class="text-sm text-gray-500 mb-3">{{ template.description }}</p>
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <button 
-                    @click="useTemplate(template)"
                     class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                    @click="useTemplate(template)"
                   >
                     استفاده
                   </button>
                   <button 
-                    @click="previewTemplate(template)"
                     class="text-gray-600 hover:text-gray-800 text-sm font-medium"
+                    @click="previewTemplate(template)"
                   >
                     پیش‌نمایش
                   </button>
@@ -220,7 +220,8 @@
                 <div class="flex items-center justify-between mb-2">
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <span class="font-medium text-gray-900">{{ pipeline.name }}</span>
-                    <span :class="[
+                    <span
+:class="[
                       'px-2 py-1 rounded text-xs font-medium',
                       pipeline.status === 'running' ? 'bg-blue-100 text-blue-800' :
                       pipeline.status === 'success' ? 'bg-green-100 text-green-800' :
@@ -232,22 +233,22 @@
                   </div>
                   <div class="flex items-center space-x-2 space-x-reverse">
                     <button 
-                      @click="runPipeline(pipeline)"
                       v-if="pipeline.status !== 'running'"
                       class="text-green-600 hover:text-green-800 text-sm font-medium"
+                      @click="runPipeline(pipeline)"
                     >
                       اجرا
                     </button>
                     <button 
-                      @click="stopPipeline(pipeline)"
                       v-if="pipeline.status === 'running'"
                       class="text-red-600 hover:text-red-800 text-sm font-medium"
+                      @click="stopPipeline(pipeline)"
                     >
                       توقف
                     </button>
                     <button 
-                      @click="viewPipelineDetails(pipeline)"
                       class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      @click="viewPipelineDetails(pipeline)"
                     >
                       جزئیات
                     </button>
@@ -286,7 +287,8 @@
                 <tr v-for="execution in executionHistory" :key="execution.id">
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ execution.pipeline }}</td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <span :class="[
+                    <span
+:class="[
                       'px-2 py-1 rounded text-xs font-medium',
                       execution.status === 'success' ? 'bg-green-100 text-green-800' :
                       execution.status === 'failed' ? 'bg-red-100 text-red-800' :
@@ -300,8 +302,8 @@
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ execution.duration }}</td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button 
-                      @click="viewExecutionLogs(execution)"
                       class="text-blue-600 hover:text-blue-800"
+                      @click="viewExecutionLogs(execution)"
                     >
                       لاگ‌ها
                     </button>
@@ -319,7 +321,7 @@
           <div class="p-6 border-b border-gray-200">
             <div class="flex items-center justify-between">
               <h3 class="text-lg font-semibold text-gray-900">پیکربندی خط لوله</h3>
-              <button @click="configModal.show = false" class="text-gray-400 hover:text-gray-600">
+              <button class="text-gray-400 hover:text-gray-600" @click="configModal.show = false">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>

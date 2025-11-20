@@ -95,13 +95,13 @@
             <button
               v-for="period in chartPeriods"
               :key="period.id"
-              @click="selectedChartPeriod = period.id"
               :class="[
                 'px-3 py-1 text-xs font-medium rounded-md transition-colors',
                 selectedChartPeriod === period.id
                   ? 'bg-blue-500 text-white'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               ]"
+              @click="selectedChartPeriod = period.id"
             >
               {{ period.name }}
             </button>
@@ -162,7 +162,7 @@
             </div>
             <h3 class="text-sm font-semibold text-gray-900">فیلترهای پیشرفته</h3>
           </div>
-          <button @click="showFilters = !showFilters" class="text-sm text-indigo-600 hover:text-indigo-800 transition-colors font-medium hover:bg-indigo-50 px-3 py-1 rounded-lg">
+          <button class="text-sm text-indigo-600 hover:text-indigo-800 transition-colors font-medium hover:bg-indigo-50 px-3 py-1 rounded-lg" @click="showFilters = !showFilters">
             {{ showFilters ? 'مخفی کردن' : 'نمایش' }}
           </button>
         </div>
@@ -249,8 +249,8 @@
         <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
           <div class="flex items-center space-x-2 space-x-reverse">
             <button
-              @click="clearFilters"
               class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              @click="clearFilters"
             >
               پاک کردن فیلترها
             </button>

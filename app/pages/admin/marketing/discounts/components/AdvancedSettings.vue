@@ -8,7 +8,7 @@
           <p class="text-gray-600 mt-1">تنظیمات پیشرفته، API، وب‌هوک‌ها و یکپارچه‌سازی‌های تخصصی</p>
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
-          <button @click="saveAllSettings" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+          <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors" @click="saveAllSettings">
             <span class="i-heroicons-check ml-2"></span>
             ذخیره همه تنظیمات
           </button>
@@ -19,8 +19,9 @@
     <!-- تب‌های تنظیمات -->
     <div class="border-b border-gray-200">
       <div class="flex border-b border-gray-200 overflow-x-auto">
-        <button v-for="tab in tabs" :key="tab.value" @click="activeTab = tab.value"
-          :class="['px-6 py-3 -mb-px font-medium text-sm focus:outline-none whitespace-nowrap', activeTab === tab.value ? 'border-b-2 border-blue-600 text-blue-700' : 'text-gray-500 hover:text-blue-600']">
+        <button
+v-for="tab in tabs" :key="tab.value" :class="['px-6 py-3 -mb-px font-medium text-sm focus:outline-none whitespace-nowrap', activeTab === tab.value ? 'border-b-2 border-blue-600 text-blue-700' : 'text-gray-500 hover:text-blue-600']"
+          @click="activeTab = tab.value">
           {{ tab.label }}
         </button>
       </div>
@@ -47,11 +48,11 @@
                     <p class="text-sm text-gray-500">{{ key.description }}</p>
                   </div>
                   <div class="flex items-center space-x-2 space-x-reverse">
-                    <button @click="regenerateKey(key)" class="text-blue-600 hover:text-blue-900 text-sm">
+                    <button class="text-blue-600 hover:text-blue-900 text-sm" @click="regenerateKey(key)">
                       <span class="i-heroicons-arrow-path ml-1"></span>
                       تجدید
                     </button>
-                    <button @click="deleteKey(key)" class="text-red-600 hover:text-red-900 text-sm">
+                    <button class="text-red-600 hover:text-red-900 text-sm" @click="deleteKey(key)">
                       <span class="i-heroicons-trash"></span>
                     </button>
                   </div>
@@ -59,7 +60,7 @@
                 <div class="bg-gray-50 p-3 rounded">
                   <div class="flex items-center justify-between">
                     <code class="text-sm text-gray-700 font-mono">{{ key.key }}</code>
-                    <button @click="copyToClipboard(key.key)" class="text-blue-600 hover:text-blue-900">
+                    <button class="text-blue-600 hover:text-blue-900" @click="copyToClipboard(key.key)">
                       <span class="i-heroicons-clipboard"></span>
                     </button>
                   </div>
@@ -70,7 +71,7 @@
                 </div>
               </div>
               
-              <button @click="createNewApiKey" class="w-full p-6 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-blue-500 hover:text-blue-500 transition-colors">
+              <button class="w-full p-6 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-blue-500 hover:text-blue-500 transition-colors" @click="createNewApiKey">
                 <span class="i-heroicons-plus ml-2"></span>
                 افزودن کلید API جدید
               </button>
@@ -108,7 +109,7 @@
           <div class="border border-gray-200 rounded-lg p-6">
             <div class="flex items-center justify-between mb-4">
               <h5 class="font-medium text-gray-900">وب‌هوک‌های فعال</h5>
-              <button @click="showWebhookForm = true" class="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
+              <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700" @click="showWebhookForm = true">
                 <span class="i-heroicons-plus ml-1"></span>
                 افزودن
               </button>
@@ -125,10 +126,10 @@
                     <span :class="['px-2 py-1 rounded-full text-xs', webhook.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800']">
                       {{ webhook.status === 'active' ? 'فعال' : 'غیرفعال' }}
                     </span>
-                    <button @click="editWebhook(webhook)" class="text-blue-600 hover:text-blue-900">
+                    <button class="text-blue-600 hover:text-blue-900" @click="editWebhook(webhook)">
                       <span class="i-heroicons-pencil-square"></span>
                     </button>
-                    <button @click="deleteWebhook(webhook)" class="text-red-600 hover:text-red-900">
+                    <button class="text-red-600 hover:text-red-900" @click="deleteWebhook(webhook)">
                       <span class="i-heroicons-trash"></span>
                     </button>
                   </div>
@@ -324,7 +325,7 @@
                 </div>
               </div>
               
-              <button @click="loadLogs" class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+              <button class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="loadLogs">
                 بارگذاری لاگ‌ها
               </button>
             </div>
@@ -358,13 +359,13 @@
             <h3 class="text-lg font-semibold text-gray-900">
               {{ editingWebhook ? 'ویرایش وب‌هوک' : 'افزودن وب‌هوک جدید' }}
             </h3>
-            <button @click="closeWebhookForm" class="text-gray-400 hover:text-gray-600">
+            <button class="text-gray-400 hover:text-gray-600" @click="closeWebhookForm">
               <span class="i-heroicons-x-mark text-xl"></span>
             </button>
           </div>
         </div>
         
-        <form @submit.prevent="handleWebhookSubmit" class="p-6 space-y-6">
+        <form class="p-6 space-y-6" @submit.prevent="handleWebhookSubmit">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">نام وب‌هوک *</label>
             <input v-model="webhookForm.name" type="text" required class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="نام وب‌هوک">
@@ -395,10 +396,10 @@
         </form>
         
         <div class="p-6 border-t border-gray-200 flex justify-end space-x-3 space-x-reverse">
-          <button @click="closeWebhookForm" class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+          <button class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors" @click="closeWebhookForm">
             انصراف
           </button>
-          <button @click="handleWebhookSubmit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="handleWebhookSubmit">
             ذخیره
           </button>
         </div>

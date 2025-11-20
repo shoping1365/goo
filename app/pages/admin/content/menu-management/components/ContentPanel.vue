@@ -1,11 +1,11 @@
 <template>
   <div class="meta-box">
     <button
-      @click="$emit('toggle-panel')"
       class="meta-box__header"
+      @click="$emit('toggle-panel')"
     >
       <span class="meta-box__title">{{ title }}</span>
-      <span class="meta-box__summary" v-if="localSelectedItems.length > 0">{{ localSelectedItems.length }} انتخاب شده</span>
+      <span v-if="localSelectedItems.length > 0" class="meta-box__summary">{{ localSelectedItems.length }} انتخاب شده</span>
       <svg
         class="meta-box__chevron"
         :class="{ 'meta-box__chevron--open': isOpen }"

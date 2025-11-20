@@ -71,7 +71,7 @@ export default defineEventHandler(async (event) => {
                     console.error('Error parsing log line:', parseError)
                 }
             }
-        } catch (fileError) {
+        } catch {
             console.warn('Search logs file not found, returning empty data')
         }
 

@@ -1,7 +1,7 @@
 // Template for API handlers with stream safety
 // این template برای ایجاد API handlers امن استفاده می‌شود
-import type { H3Event } from 'h3'
-import { defineEventHandler, createError, readBody } from 'h3'
+import type { H3Event } from 'h3';
+import { createError, defineEventHandler, readBody } from 'h3';
 
 declare const goApiFetch: (event: H3Event, endpoint: string, options?: { method?: string; body?: unknown }) => Promise<unknown>
 declare const isResponseStreamSafe: (event: H3Event) => boolean
@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
   try {
     // ✅ 1. بررسی وضعیت response stream
     if (!isResponseStreamSafe(event)) {
-      console.warn('Response stream already closed, skipping request processing')
+      // console.warn('Response stream already closed, skipping request processing')
       return
     }
 
@@ -40,7 +40,7 @@ export default defineEventHandler(async (event) => {
 
     return response
   } catch (error: unknown) {
-    console.error('خطا در پردازش درخواست:', error)
+    // console.error('خطا در پردازش درخواست:', error)
     
     // ✅ 5. بررسی وضعیت response stream قبل از ارسال خطا
     if (!safeHandleError(event, error)) {
@@ -48,7 +48,7 @@ export default defineEventHandler(async (event) => {
     }
     
     // ✅ 6. مدیریت خطاهای مختلف
-    const errorWithStatus = error as { statusCode?: number; message?: string }
+    // const errorWithStatus = error as { statusCode?: number; message?: string }
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error
     }

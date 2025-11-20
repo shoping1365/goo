@@ -27,8 +27,8 @@
       <div v-else-if="error" class="bg-red-50 border border-red-200 rounded-lg p-6 mb-6">
         <p class="text-red-800">{{ error }}</p>
         <button
-          @click="error = null"
           class="mt-2 text-red-600 hover:text-red-800"
+          @click="error = null"
         >
           بستن
         </button>
@@ -36,7 +36,7 @@
 
       <!-- Create Form -->
       <div v-else class="bg-white rounded-lg shadow-lg p-6">
-        <form @submit.prevent="handleSubmit" class="space-y-6">
+        <form class="space-y-6" @submit.prevent="handleSubmit">
           <!-- Basic Information -->
           <div class="border-b border-gray-200 pb-6">
             <h2 class="text-xl font-semibold text-gray-800 mb-4">اطلاعات پایه</h2>
@@ -201,8 +201,8 @@
                 <h3 class="text-lg font-medium text-gray-800">برندهای انتخاب شده</h3>
                 <button 
                   type="button"
-                  @click="addBrandItem"
                   class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  @click="addBrandItem"
                 >
                   افزودن برند
                 </button>
@@ -240,8 +240,8 @@
                   </div>
                   <button 
                     type="button"
-                    @click="removeBrandItem(index)"
                     class="text-red-600 hover:text-red-800 p-2"
+                    @click="removeBrandItem(index)"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
@@ -256,9 +256,9 @@
           <div class="flex gap-3 justify-end">
             <button
               type="button"
-              @click="saveAsDraft"
               :disabled="loading"
               class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+              @click="saveAsDraft"
             >
               {{ loading ? 'در حال ذخیره...' : 'ذخیره به عنوان پیش‌نویس' }}
             </button>

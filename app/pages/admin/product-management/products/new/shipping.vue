@@ -25,7 +25,7 @@
                 <label class="text-sm font-bold text-purple-800">وزن</label>
               </div>
               <div class="flex items-center gap-3">
-                <input type="number" v-model.number="weight" @change="persistShipping" class="flex-1 border-2 border-purple-200 rounded-lg px-4 py-3 text-gray-800 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300 bg-white" min="0" step="0.1" placeholder="0" />
+                <input v-model.number="weight" type="number" class="flex-1 border-2 border-purple-200 rounded-lg px-4 py-3 text-gray-800 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300 bg-white" min="0" step="0.1" placeholder="0" @change="persistShipping" />
                 <span class="text-sm font-medium text-purple-600 bg-purple-100 px-3 py-2 rounded-lg">کیلوگرم</span>
               </div>
             </div>
@@ -39,7 +39,7 @@
                 <label class="text-sm font-bold text-green-800">طول</label>
               </div>
               <div class="flex items-center gap-3">
-                <input type="number" v-model.number="length" @change="persistShipping" class="flex-1 border-2 border-green-200 rounded-lg px-4 py-3 text-gray-800 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 bg-white" min="0" placeholder="0" />
+                <input v-model.number="length" type="number" class="flex-1 border-2 border-green-200 rounded-lg px-4 py-3 text-gray-800 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 bg-white" min="0" placeholder="0" @change="persistShipping" />
                 <span class="text-sm font-medium text-green-600 bg-green-100 px-3 py-2 rounded-lg">سانتی‌متر</span>
               </div>
             </div>
@@ -53,7 +53,7 @@
                 <label class="text-sm font-bold text-orange-800">عرض</label>
               </div>
               <div class="flex items-center gap-3">
-                <input type="number" v-model.number="width" @change="persistShipping" class="flex-1 border-2 border-orange-200 rounded-lg px-4 py-3 text-gray-800 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-300 bg-white" min="0" placeholder="0" />
+                <input v-model.number="width" type="number" class="flex-1 border-2 border-orange-200 rounded-lg px-4 py-3 text-gray-800 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-300 bg-white" min="0" placeholder="0" @change="persistShipping" />
                 <span class="text-sm font-medium text-orange-600 bg-orange-100 px-3 py-2 rounded-lg">سانتی‌متر</span>
               </div>
             </div>
@@ -67,7 +67,7 @@
                 <label class="text-sm font-bold text-blue-800">ارتفاع</label>
               </div>
               <div class="flex items-center gap-3">
-                <input type="number" v-model.number="height" @change="persistShipping" class="flex-1 border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 bg-white" min="0" placeholder="0" />
+                <input v-model.number="height" type="number" class="flex-1 border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 bg-white" min="0" placeholder="0" @change="persistShipping" />
                 <span class="text-sm font-medium text-blue-600 bg-blue-100 px-3 py-2 rounded-lg">سانتی‌متر</span>
               </div>
             </div>
@@ -119,11 +119,11 @@
             <!-- گزینه‌های اصلی ارسال -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <label class="flex items-center gap-2">
-                <input type="checkbox" class="checkbox" id="isFreeShipping" />
+                <input id="isFreeShipping" type="checkbox" class="checkbox" />
                 <span class="text-xs text-gray-700 font-semibold">ارسال رایگان</span>
               </label>
               <label class="flex items-center gap-2">
-                <input type="checkbox" class="checkbox" id="isSeparateShipping" />
+                <input id="isSeparateShipping" type="checkbox" class="checkbox" />
                 <span class="text-xs text-gray-700 font-semibold">ارسال به صورت جداگانه</span>
               </label>
               <label class="flex items-center gap-2">
@@ -184,7 +184,7 @@
               <div class="flex flex-col gap-2">
                 <label class="text-xs text-gray-700 font-semibold">مبلغ اضافه به هزینه ارسال</label>
                 <div class="flex items-center gap-2">
-                  <input type="number" v-model.number="shipping_cost" @change="persistShipping" class="w-32 text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-white text-gray-900" min="0" placeholder="0" />
+                  <input v-model.number="shipping_cost" type="number" class="w-32 text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-white text-gray-900" min="0" placeholder="0" @change="persistShipping" />
                   <span class="text-xs text-gray-500">تومان</span>
                 </div>
               </div>
@@ -281,7 +281,7 @@
               <!-- مدت آماده‌سازی -->
               <div class="flex flex-col gap-2">
                 <label class="text-xs text-gray-700 font-semibold">مدت آماده‌سازی</label>
-                <select v-model.number="shipping_time" @change="persistShipping" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-white text-gray-900">
+                <select v-model.number="shipping_time" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-white text-gray-900" @change="persistShipping">
                   <option value="0" class="text-gray-900 bg-white py-2">آماده ارسال</option>
                   <option value="1" class="text-gray-900 bg-white py-2">1 روز کاری</option>
                   <option value="2" class="text-gray-900 bg-white py-2">2 روز کاری</option>

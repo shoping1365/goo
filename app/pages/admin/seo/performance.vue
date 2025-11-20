@@ -101,7 +101,6 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
-declare const useAuth: () => { user: any; hasPermission: (perm: string) => boolean }
 </script>
 
 <script setup lang="ts">
@@ -113,7 +112,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // داده‌های نمونه برای صفحات
 const pages = ref([

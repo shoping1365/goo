@@ -94,9 +94,9 @@
               <button 
                 v-for="period in chartPeriods" 
                 :key="period.value"
-                @click="selectedPeriod = period.value"
                 :class="selectedPeriod === period.value ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'"
                 class="px-3 py-1 rounded-lg text-sm font-medium transition-colors"
+                @click="selectedPeriod = period.value"
               >
                 {{ period.label }}
               </button>
@@ -287,8 +287,8 @@
             <button 
               v-for="report in availableReports" 
               :key="report.id"
-              @click="generateReport(report.id)"
               class="w-full flex items-center justify-between p-3 bg-white rounded-lg border hover:bg-gray-50 transition-colors"
+              @click="generateReport(report.id)"
             >
               <div class="flex items-center">
                 <svg class="w-5 h-5 text-gray-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -323,7 +323,7 @@
                 <option value="json">JSON</option>
               </select>
             </div>
-            <button @click="exportCustomData" class="w-full px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors">
+            <button class="w-full px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors" @click="exportCustomData">
               ایجاد خروجی سفارشی
             </button>
           </div>
@@ -333,15 +333,15 @@
 
     <!-- Action Buttons -->
     <div class="flex justify-between">
-      <button @click="refreshAnalytics" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+      <button class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="refreshAnalytics">
         بروزرسانی داده‌ها
       </button>
       
       <div class="flex space-x-3 space-x-reverse">
-        <button @click="scheduleReport" class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+        <button class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors" @click="scheduleReport">
           زمان‌بندی گزارش
         </button>
-        <button @click="shareAnalytics" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+        <button class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors" @click="shareAnalytics">
           اشتراک‌گذاری
         </button>
       </div>
@@ -350,7 +350,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 
 interface AnalyticsOverview {
   totalSurveys: number
@@ -557,24 +557,24 @@ const getCorrelationTextColor = (strength: number) => {
   return 'text-red-600'
 }
 
-const generateReport = (reportId: number) => {
-  console.log('Generating report:', reportId)
+const generateReport = (_reportId: number) => {
+  // console.log('Generating report:', reportId)
 }
 
 const exportCustomData = () => {
-  console.log('Exporting custom data:', customExport.value)
+  // console.log('Exporting custom data:', customExport.value)
 }
 
 const refreshAnalytics = () => {
-  console.log('Refreshing analytics data...')
+  // console.log('Refreshing analytics data...')
 }
 
 const scheduleReport = () => {
-  console.log('Scheduling report...')
+  // console.log('Scheduling report...')
 }
 
 const shareAnalytics = () => {
-  console.log('Sharing analytics...')
+  // console.log('Sharing analytics...')
 }
 
 // Expose methods for parent component

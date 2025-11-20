@@ -9,8 +9,8 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button 
-            @click="exportToExcel"
             class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+            @click="exportToExcel"
           >
             <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -18,8 +18,8 @@
             خروجی Excel
           </button>
           <button 
-            @click="refreshData"
             class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            @click="refreshData"
           >
             <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -100,9 +100,9 @@
               <th 
                 v-for="column in columns" 
                 :key="column.key"
-                @click="sortBy(column.key)"
                 class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 :class="{ 'bg-blue-50': sortKey === column.key }"
+                @click="sortBy(column.key)"
               >
                 <div class="flex items-center justify-between">
                   <span>{{ column.label }}</span>
@@ -192,9 +192,9 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <button 
-                    @click="viewCard(card)"
                     class="text-blue-600 hover:text-blue-900"
                     title="مشاهده جزئیات"
+                    @click="viewCard(card)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -203,9 +203,9 @@
                   </button>
                   
                   <button 
-                    @click="editCard(card)"
                     class="text-green-600 hover:text-green-900"
                     title="ویرایش"
+                    @click="editCard(card)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -213,9 +213,9 @@
                   </button>
                   
                   <button 
-                    @click="duplicateCard(card)"
                     class="text-purple-600 hover:text-purple-900"
                     title="کپی"
+                    @click="duplicateCard(card)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
@@ -224,9 +224,9 @@
                   
                   <button 
                     v-if="canDeleteGiftCard"
-                    @click="deleteCard(card)"
                     class="text-red-600 hover:text-red-900"
                     title="حذف"
+                    @click="deleteCard(card)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -243,16 +243,16 @@
       <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
         <div class="flex-1 flex justify-between sm:hidden">
           <button 
-            @click="previousPage"
             :disabled="currentPage === 1"
             class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            @click="previousPage"
           >
             قبلی
           </button>
           <button 
-            @click="nextPage"
             :disabled="currentPage === totalPages"
             class="mr-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            @click="nextPage"
           >
             بعدی
           </button>
@@ -272,9 +272,9 @@
           <div>
             <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
               <button 
-                @click="previousPage"
                 :disabled="currentPage === 1"
                 class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                @click="previousPage"
               >
                 <span class="sr-only">قبلی</span>
                 <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -285,21 +285,21 @@
               <button 
                 v-for="page in visiblePages" 
                 :key="page"
-                @click="goToPage(page)"
                 :class="[
                   page === currentPage 
                     ? 'z-10 bg-blue-50 border-blue-500 text-blue-600' 
                     : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50',
                   'relative inline-flex items-center px-4 py-2 border text-sm font-medium'
                 ]"
+                @click="goToPage(page)"
               >
                 {{ page }}
               </button>
               
               <button 
-                @click="nextPage"
                 :disabled="currentPage === totalPages"
                 class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                @click="nextPage"
               >
                 <span class="sr-only">بعدی</span>
                 <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -450,7 +450,7 @@ const visiblePages = computed(() => {
   const pages = []
   const maxVisible = 5
   let start = Math.max(1, currentPage.value - Math.floor(maxVisible / 2))
-  let end = Math.min(totalPages.value, start + maxVisible - 1)
+  const end = Math.min(totalPages.value, start + maxVisible - 1)
   
   if (end - start + 1 < maxVisible) {
     start = Math.max(1, end - maxVisible + 1)

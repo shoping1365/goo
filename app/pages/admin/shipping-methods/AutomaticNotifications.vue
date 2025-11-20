@@ -110,19 +110,19 @@
           </div>
 
           <div class="template-actions">
-            <button @click="editTemplate(template.id)" class="btn btn-primary">
+            <button class="btn btn-primary" @click="editTemplate(template.id)">
               <i class="fas fa-edit"></i>
               ویرایش
             </button>
-            <button @click="testTemplate(template.id)" class="btn btn-secondary">
+            <button class="btn btn-secondary" @click="testTemplate(template.id)">
               <i class="fas fa-play"></i>
               تست
             </button>
-            <button @click="toggleTemplate(template.id)" class="btn" :class="template.status === 'active' ? 'btn-warning' : 'btn-success'">
+            <button class="btn" :class="template.status === 'active' ? 'btn-warning' : 'btn-success'" @click="toggleTemplate(template.id)">
               <i :class="template.status === 'active' ? 'fas fa-pause' : 'fas fa-play'"></i>
               {{ template.status === 'active' ? 'غیرفعال' : 'فعال' }}
             </button>
-            <button @click="viewHistory(template.id)" class="btn btn-info">
+            <button class="btn btn-info" @click="viewHistory(template.id)">
               <i class="fas fa-history"></i>
               تاریخچه
             </button>
@@ -137,7 +137,7 @@
           <div class="form-row">
             <div class="form-group">
               <label>نام قالب:</label>
-              <input type="text" v-model="newTemplate.name" placeholder="مثال: اعلان ارسال سفارش">
+              <input v-model="newTemplate.name" type="text" placeholder="مثال: اعلان ارسال سفارش">
             </div>
             <div class="form-group">
               <label>نوع اعلان:</label>
@@ -155,13 +155,13 @@
           <div class="form-row">
             <div class="form-group">
               <label>موضوع:</label>
-              <input type="text" v-model="newTemplate.subject" placeholder="موضوع اعلان">
+              <input v-model="newTemplate.subject" type="text" placeholder="موضوع اعلان">
             </div>
             <div class="form-group">
               <label>کانال‌های ارسال:</label>
               <div class="channels-selection">
                 <label v-for="channel in availableChannels" :key="channel.value" class="checkbox-item">
-                  <input type="checkbox" v-model="newTemplate.channels" :value="channel.value">
+                  <input v-model="newTemplate.channels" type="checkbox" :value="channel.value">
                   <span>{{ channel.label }}</span>
                 </label>
               </div>
@@ -202,11 +202,11 @@
           </div>
 
           <div class="form-actions">
-            <button @click="addTemplate" class="btn btn-success">
+            <button class="btn btn-success" @click="addTemplate">
               <i class="fas fa-plus"></i>
               افزودن قالب
             </button>
-            <button @click="resetNewTemplate" class="btn btn-secondary">
+            <button class="btn btn-secondary" @click="resetNewTemplate">
               <i class="fas fa-undo"></i>
               بازنشانی
             </button>
@@ -259,15 +259,15 @@
           </div>
 
           <div class="rule-controls">
-            <button @click="editRule(rule.id)" class="btn btn-primary">
+            <button class="btn btn-primary" @click="editRule(rule.id)">
               <i class="fas fa-edit"></i>
               ویرایش
             </button>
-            <button @click="toggleRule(rule.id)" class="btn" :class="rule.status === 'active' ? 'btn-warning' : 'btn-success'">
+            <button class="btn" :class="rule.status === 'active' ? 'btn-warning' : 'btn-success'" @click="toggleRule(rule.id)">
               <i :class="rule.status === 'active' ? 'fas fa-pause' : 'fas fa-play'"></i>
               {{ rule.status === 'active' ? 'غیرفعال' : 'فعال' }}
             </button>
-            <button @click="deleteRule(rule.id)" class="btn btn-danger">
+            <button class="btn btn-danger" @click="deleteRule(rule.id)">
               <i class="fas fa-trash"></i>
               حذف
             </button>
@@ -298,7 +298,7 @@
             </option>
           </select>
         </div>
-        <button @click="refreshHistory" class="btn btn-primary">
+        <button class="btn btn-primary" @click="refreshHistory">
           <i class="fas fa-sync"></i>
           بروزرسانی
         </button>
@@ -328,7 +328,7 @@
                 </span>
             </td>
             <td>
-              <button @click="viewNotificationDetails(notification.id)" class="btn-link">
+              <button class="btn-link" @click="viewNotificationDetails(notification.id)">
                 مشاهده جزئیات
               </button>
             </td>
@@ -341,21 +341,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue';
 
 // Props
 interface Props {
-  shippingMethods?: any[]
+  shippingMethods?: unknown[]
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 // Emits
 const emit = defineEmits<{
-  templateUpdated: [templateId: string, data: any]
-  templateAdded: [data: any]
-  templateTested: [templateId: string, result: any]
-  ruleUpdated: [ruleId: string, data: any]
+  templateUpdated: [templateId: string, data: unknown]
+  templateAdded: [data: unknown]
+  templateTested: [templateId: string, result: unknown]
+  ruleUpdated: [ruleId: string, data: unknown]
 }>()
 
 // Reactive data
@@ -576,9 +576,9 @@ const insertVariable = (variable: string) => {
   newTemplate.body += variable
 }
 
-const editTemplate = (templateId: string) => {
+const editTemplate = (_templateId: string) => {
   // Implementation for editing template
-  console.log('Edit template:', templateId)
+  // console.log('Edit template:', templateId)
 }
 
 const testTemplate = async (templateId: string) => {
@@ -605,9 +605,9 @@ const toggleTemplate = (templateId: string) => {
   }
 }
 
-const viewHistory = (templateId: string) => {
+const viewHistory = (_templateId: string) => {
   // Implementation for viewing template history
-  console.log('View template history:', templateId)
+  // console.log('View template history:', templateId)
 }
 
 const addTemplate = () => {
@@ -639,9 +639,9 @@ const resetNewTemplate = () => {
   newTemplate.priority = 'medium'
 }
 
-const editRule = (ruleId: string) => {
+const editRule = (_ruleId: string) => {
   // Implementation for editing rule
-  console.log('Edit rule:', ruleId)
+  // console.log('Edit rule:', ruleId)
 }
 
 const toggleRule = (ruleId: string) => {
@@ -667,14 +667,14 @@ const getNotificationStatusText = (status: string): string => {
   }
 }
 
-const viewNotificationDetails = (notificationId: string) => {
+const viewNotificationDetails = (_notificationId: string) => {
   // Implementation for viewing notification details
-  console.log('View notification details:', notificationId)
+  // console.log('View notification details:', notificationId)
 }
 
 const refreshHistory = () => {
   // Implementation for refreshing history
-  console.log('Refreshing history...')
+  // console.log('Refreshing history...')
 }
 
 // Lifecycle

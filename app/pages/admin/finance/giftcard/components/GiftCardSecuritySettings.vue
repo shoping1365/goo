@@ -17,9 +17,9 @@
         </div>
         <div>
           <button
-            @click="toggleEncryption"
             :class="encryptionEnabled ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400 hover:bg-gray-500'"
             class="px-4 py-2 text-white text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2"
+            @click="toggleEncryption"
           >
             {{ encryptionEnabled ? 'غیرفعال‌سازی رمزگذاری' : 'فعال‌سازی رمزگذاری' }}
           </button>
@@ -56,8 +56,8 @@
         </div>
         <div>
           <button
-            @click="createBackup"
             class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            @click="createBackup"
           >
             ایجاد بکاپ دستی
           </button>
@@ -101,8 +101,8 @@
                   </span>
                 </td>
                 <td class="px-4 py-2 whitespace-nowrap flex gap-2">
-                  <button @click="downloadBackup(backup)" class="text-blue-600 hover:underline text-xs">دانلود</button>
-                  <button @click="restoreBackup(backup)" class="text-green-600 hover:underline text-xs">بازیابی</button>
+                  <button class="text-blue-600 hover:underline text-xs" @click="downloadBackup(backup)">دانلود</button>
+                  <button class="text-green-600 hover:underline text-xs" @click="restoreBackup(backup)">بازیابی</button>
                 </td>
               </tr>
             </tbody>
@@ -142,16 +142,16 @@
             <tr v-for="role in roles" :key="role.name">
               <td class="px-4 py-2 whitespace-nowrap font-bold">{{ role.label }}</td>
               <td class="px-4 py-2 text-center">
-                <input type="checkbox" v-model="role.permissions.read" :disabled="role.name === 'admin'" />
+                <input v-model="role.permissions.read" type="checkbox" :disabled="role.name === 'admin'" />
               </td>
               <td class="px-4 py-2 text-center">
-                <input type="checkbox" v-model="role.permissions.create" :disabled="role.name === 'admin'" />
+                <input v-model="role.permissions.create" type="checkbox" :disabled="role.name === 'admin'" />
               </td>
               <td class="px-4 py-2 text-center">
-                <input type="checkbox" v-model="role.permissions.update" :disabled="role.name === 'admin'" />
+                <input v-model="role.permissions.update" type="checkbox" :disabled="role.name === 'admin'" />
               </td>
               <td class="px-4 py-2 text-center">
-                <input type="checkbox" v-model="role.permissions.delete" :disabled="role.name === 'admin'" />
+                <input v-model="role.permissions.delete" type="checkbox" :disabled="role.name === 'admin'" />
               </td>
             </tr>
           </tbody>
@@ -174,7 +174,7 @@
           </div>
         </div>
         <div class="mt-4 flex justify-end">
-          <button @click="assignRole" class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+          <button class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2" @click="assignRole">
             تخصیص نقش
           </button>
         </div>
@@ -198,10 +198,10 @@
           </p>
         </div>
         <div class="flex gap-2">
-          <button @click="exportLogs" class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+          <button class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2" @click="exportLogs">
             خروجی لاگ‌ها
           </button>
-          <button @click="clearLogs" class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+          <button class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" @click="clearLogs">
             پاک کردن لاگ‌ها
           </button>
         </div>

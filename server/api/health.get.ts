@@ -13,11 +13,12 @@ export default defineEventHandler(async (event) => {
       }
     })
     return data
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const error = err as { status?: number; data?: { message?: string }; message?: string }
     // پروژه از فیلد message استفاده می‌کند
     throw createError({
-      statusCode: err?.status || 500,
-      message: err?.data?.message || err?.message || 'خطای نامشخص در health'
+      statusCode: error?.status || 500,
+      message: error?.data?.message || error?.message || 'خطای نامشخص در health'
     })
   }
 })

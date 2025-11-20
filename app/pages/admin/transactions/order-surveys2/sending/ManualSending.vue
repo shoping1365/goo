@@ -8,8 +8,8 @@
       </div>
       <div class="flex items-center space-x-3 space-x-reverse">
         <button 
-          @click="refreshOrders"
           class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors"
+          @click="refreshOrders"
         >
           بروزرسانی لیست
         </button>
@@ -21,8 +21,8 @@
       <h4 class="text-md font-semibold text-blue-800 mb-3">عملیات سریع</h4>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <button 
-          @click="selectAllNotSent"
           class="flex items-center justify-center space-x-2 space-x-reverse p-3 bg-white rounded-lg border border-blue-200 hover:border-blue-300 transition-colors"
+          @click="selectAllNotSent"
         >
           <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -31,8 +31,8 @@
         </button>
         
         <button 
-          @click="selectTodayOrders"
           class="flex items-center justify-center space-x-2 space-x-reverse p-3 bg-white rounded-lg border border-blue-200 hover:border-blue-300 transition-colors"
+          @click="selectTodayOrders"
         >
           <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -41,8 +41,8 @@
         </button>
         
         <button 
-          @click="selectHighValueOrders"
           class="flex items-center justify-center space-x-2 space-x-reverse p-3 bg-white rounded-lg border border-blue-200 hover:border-blue-300 transition-colors"
+          @click="selectHighValueOrders"
         >
           <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
@@ -63,8 +63,8 @@
             <span class="text-green-800 font-medium">{{ selectedOrders.length }} سفارش انتخاب شده</span>
           </div>
           <button 
-            @click="clearSelection"
             class="text-green-600 hover:text-green-800 text-sm"
+            @click="clearSelection"
           >
             پاک کردن انتخاب
           </button>
@@ -72,9 +72,9 @@
         
         <div class="flex items-center space-x-3 space-x-reverse">
           <button 
-            @click="sendBulkSMS"
             :disabled="sending"
             class="px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white rounded-lg font-medium transition-colors flex items-center space-x-2 space-x-reverse"
+            @click="sendBulkSMS"
           >
             <svg v-if="sending" class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -87,8 +87,8 @@
           </button>
           
           <button 
-            @click="previewBulkSMS"
             class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+            @click="previewBulkSMS"
           >
             پیش‌نمایش
           </button>
@@ -105,9 +105,9 @@
               <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 <input 
                   v-model="selectAll"
+                  type="checkbox"
+                  class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" 
                   @change="toggleSelectAll"
-                  type="checkbox" 
-                  class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                 >
               </th>
               <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -136,9 +136,9 @@
               <td class="px-6 py-4 whitespace-nowrap">
                 <input 
                   :checked="selectedOrders.includes(order.id)"
+                  type="checkbox"
+                  class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" 
                   @change="toggleOrderSelection(order.id)"
-                  type="checkbox" 
-                  class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                 >
               </td>
               
@@ -178,10 +178,10 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <button 
-                    @click="sendSingleSMS(order.id)"
                     :disabled="order.smsStatus === 'sent' || order.smsStatus === 'delivered'"
                     class="text-blue-600 hover:text-blue-900 disabled:text-gray-400 transition-colors"
                     title="ارسال SMS"
+                    @click="sendSingleSMS(order.id)"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
@@ -189,9 +189,9 @@
                   </button>
                   
                   <button 
-                    @click="previewSMS(order.id)"
                     class="text-green-600 hover:text-green-900 transition-colors"
                     title="پیش‌نمایش SMS"
+                    @click="previewSMS(order.id)"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -213,9 +213,9 @@
       </div>
       <div class="flex space-x-2 space-x-reverse">
         <button 
-          @click="previousPage"
           :disabled="currentPage === 1"
           class="px-3 py-1 border border-gray-300 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+          @click="previousPage"
         >
           قبلی
         </button>
@@ -223,9 +223,9 @@
           صفحه {{ currentPage }} از {{ totalPages }}
         </span>
         <button 
-          @click="nextPage"
           :disabled="currentPage >= totalPages"
           class="px-3 py-1 border border-gray-300 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+          @click="nextPage"
         >
           بعدی
         </button>
@@ -235,7 +235,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 interface Order {
   id: number
@@ -343,15 +343,15 @@ const toggleOrderSelection = (orderId: number) => {
 
 const refreshOrders = () => {
   // This would trigger a refresh of the orders list
-  console.log('Refreshing orders...')
+  // console.log('Refreshing orders...')
 }
 
-const previewSMS = (orderId: number) => {
-  console.log(`Previewing SMS for order ${orderId}`)
+const previewSMS = (_orderId: number) => {
+  // console.log(`Previewing SMS for order ${orderId}`)
 }
 
 const previewBulkSMS = () => {
-  console.log(`Previewing bulk SMS for ${props.selectedOrders.length} orders`)
+  // console.log(`Previewing bulk SMS for ${props.selectedOrders.length} orders`)
 }
 
 const previousPage = () => {
@@ -398,7 +398,7 @@ const getSMSStatusText = (status: string) => {
 }
 
 // Watch for changes in selected orders
-watch(() => props.selectedOrders, (newSelection) => {
+watch(() => props.selectedOrders, (_newSelection) => {
   // Update local state if needed
 }, { deep: true })
 </script>

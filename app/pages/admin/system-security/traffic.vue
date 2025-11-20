@@ -17,8 +17,8 @@
           </label>
         
         <button 
-          @click="exportFilteredData" 
-          class="px-4 py-2 text-green-600 bg-green-50 border-2 border-green-200 rounded-lg hover:bg-green-100 hover:border-green-300 transition-all duration-200 flex items-center shadow-sm hover:shadow-md"
+          class="px-4 py-2 text-green-600 bg-green-50 border-2 border-green-200 rounded-lg hover:bg-green-100 hover:border-green-300 transition-all duration-200 flex items-center shadow-sm hover:shadow-md" 
+          @click="exportFilteredData"
         >
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -119,8 +119,8 @@
           </label>
           <select 
             v-model="filters.adType" 
-            @change="applyFilters"
             class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all duration-200 bg-white shadow-sm hover:shadow-md"
+            @change="applyFilters"
           >
             <option value="">همه انواع</option>
             <option value="ربات">🤖 ربات</option>
@@ -138,10 +138,10 @@
           </label>
           <input 
             v-model="filters.ipAddress" 
-            @input="applyFilters"
-            type="text" 
-            placeholder="جستجو IP..."
+            type="text"
+            placeholder="جستجو IP..." 
             class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all duration-200 bg-white shadow-sm hover:shadow-md"
+            @input="applyFilters"
           />
         </div>
 
@@ -156,8 +156,8 @@
           </label>
           <select 
             v-model="filters.location" 
-            @change="applyFilters"
             class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all duration-200 bg-white shadow-sm hover:shadow-md"
+            @change="applyFilters"
           >
             <option value="">همه شهرها</option>
             <option value="تهران">🏛️ تهران</option>
@@ -181,10 +181,10 @@
           </label>
           <input 
             v-model="filters.page" 
-            @input="applyFilters"
-            type="text" 
-            placeholder="جستجو صفحه..."
+            type="text"
+            placeholder="جستجو صفحه..." 
             class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all duration-200 bg-white shadow-sm hover:shadow-md"
+            @input="applyFilters"
           />
         </div>
 
@@ -198,8 +198,8 @@
           </label>
           <select 
             v-model="filters.status" 
-            @change="applyFilters"
             class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all duration-200 bg-white shadow-sm hover:shadow-md"
+            @change="applyFilters"
           >
             <option value="">همه وضعیت‌ها</option>
             <option value="200">✅ موفق (200)</option>
@@ -219,8 +219,8 @@
           </label>
           <select 
             v-model="filters.timeRange" 
-            @change="applyFilters"
             class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all duration-200 bg-white shadow-sm hover:shadow-md"
+            @change="applyFilters"
           >
             <option value="">همه زمان‌ها</option>
             <option value="1h">⏰ آخرین 1 ساعت</option>
@@ -236,8 +236,8 @@
       <div class="flex items-center justify-end mt-8 pt-6 border-t border-gray-200">
         <button 
           v-if="filters.adType || filters.ipAddress || filters.location || filters.page || filters.status || filters.timeRange"
-          @click="clearFilters" 
-          class="px-6 py-3 text-gray-600 bg-gray-100 border-2 border-gray-200 rounded-xl hover:bg-gray-200 hover:border-gray-300 transition-all duration-200 flex items-center shadow-sm hover:shadow-md"
+          class="px-6 py-3 text-gray-600 bg-gray-100 border-2 border-gray-200 rounded-xl hover:bg-gray-200 hover:border-gray-300 transition-all duration-200 flex items-center shadow-sm hover:shadow-md" 
+          @click="clearFilters"
         >
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -288,7 +288,7 @@
                 هیچ داده‌ای یافت نشد
               </td>
             </tr>
-            <tr v-else v-for="item in getTableData()" :key="item.id" class="hover:bg-gray-50">
+            <tr v-for="item in getTableData()" v-else :key="item.id" class="hover:bg-gray-50">
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                 {{ item.ipAddress || '-' }}
               </td>
@@ -333,9 +333,9 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <button 
-                    @click="showTrafficDetails(item)" 
-                    class="text-blue-600 hover:text-blue-900 transition-colors"
+                    class="text-blue-600 hover:text-blue-900 transition-colors" 
                     title="مشاهده جزئیات"
+                    @click="showTrafficDetails(item)"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -343,9 +343,9 @@
                     </svg>
                   </button>
                   <button 
-                    @click="blockIP(item.ipAddress)" 
-                    class="text-red-600 hover:text-red-900 transition-colors"
+                    class="text-red-600 hover:text-red-900 transition-colors" 
                     title="مسدود کردن IP"
+                    @click="blockIP(item.ipAddress)"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
@@ -364,8 +364,8 @@
           <span class="text-sm text-gray-700">نمایش:</span>
           <select 
             v-model="trafficItemsPerPage" 
-            @change="handleTrafficItemsPerPageChange"
             class="border border-gray-300 rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            @change="handleTrafficItemsPerPageChange"
           >
             <option value="10">10</option>
             <option value="25">25</option>
@@ -417,7 +417,7 @@
                 هیچ کاربر آنلاینی یافت نشد
               </td>
             </tr>
-            <tr v-else v-for="user in onlineUsers" :key="(user as any).id">
+            <tr v-for="user in onlineUsers" v-else :key="(user as any).id">
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
                   <div class="flex-shrink-0 h-8 w-8">
@@ -461,9 +461,9 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <button 
-                    @click="showUserDetails(user)" 
-                    class="text-blue-600 hover:text-blue-900 transition-colors"
+                    class="text-blue-600 hover:text-blue-900 transition-colors" 
                     title="مشاهده جزئیات کاربر"
+                    @click="showUserDetails(user)"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -471,9 +471,9 @@
                     </svg>
                   </button>
                   <button 
-                    @click="blockIP((user as any).ip)" 
-                    class="text-red-600 hover:text-red-900 transition-colors"
+                    class="text-red-600 hover:text-red-900 transition-colors" 
                     title="مسدود کردن IP"
+                    @click="blockIP((user as any).ip)"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
@@ -492,8 +492,8 @@
           <span class="text-sm text-gray-700">نمایش:</span>
           <select 
             v-model="onlineUsersItemsPerPage" 
-            @change="handleOnlineUsersItemsPerPageChange"
             class="border border-gray-300 rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            @change="handleOnlineUsersItemsPerPageChange"
           >
             <option value="10">10</option>
             <option value="25">25</option>
@@ -572,8 +572,8 @@
         
         <div class="flex justify-end gap-4 mt-8 pt-6 border-t border-gray-200">
           <button 
-            @click="showBlockModal = false" 
-            class="px-6 py-3 text-gray-600 bg-gray-100 border-2 border-gray-200 rounded-xl hover:bg-gray-200 hover:border-gray-300 transition-all duration-200 flex items-center shadow-sm hover:shadow-md"
+            class="px-6 py-3 text-gray-600 bg-gray-100 border-2 border-gray-200 rounded-xl hover:bg-gray-200 hover:border-gray-300 transition-all duration-200 flex items-center shadow-sm hover:shadow-md" 
+            @click="showBlockModal = false"
           >
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -581,8 +581,8 @@
             انصراف
           </button>
           <button 
-            @click="confirmBlockIP" 
-            class="px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-200 flex items-center shadow-lg hover:shadow-xl transform hover:scale-105"
+            class="px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-200 flex items-center shadow-lg hover:shadow-xl transform hover:scale-105" 
+            @click="confirmBlockIP"
           >
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
@@ -623,8 +623,8 @@
           </div>
           <div class="flex items-center gap-3">
             <button 
-              @click="exportTrafficDetails" 
-              class="px-4 py-2 text-green-600 bg-green-50 border-2 border-green-200 rounded-lg hover:bg-green-100 hover:border-green-300 transition-all duration-200 flex items-center shadow-sm hover:shadow-md"
+              class="px-4 py-2 text-green-600 bg-green-50 border-2 border-green-200 rounded-lg hover:bg-green-100 hover:border-green-300 transition-all duration-200 flex items-center shadow-sm hover:shadow-md" 
+              @click="exportTrafficDetails"
             >
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -632,8 +632,8 @@
               خروجی اکسل
             </button>
             <button 
-              @click="showTrafficDetailsModal = false" 
-              class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-110"
+              class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-110" 
+              @click="showTrafficDetailsModal = false"
             >
               <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -669,7 +669,7 @@
                   </div>
                 </td>
               </tr>
-              <tr v-else v-for="detail in trafficDetails" :key="(detail as any).id" class="hover:bg-blue-50 transition-colors duration-200">
+              <tr v-for="detail in trafficDetails" v-else :key="(detail as any).id" class="hover:bg-blue-50 transition-colors duration-200">
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
                   <a 
                     :href="`https://check-host.net/ip-info?host=${(detail as any).ipAddress || (selectedTrafficItem as any)?.ipAddress || ''}`" 
@@ -740,8 +740,8 @@
             </div>
           </div>
           <button 
-            @click="showUserDetailsModal = false" 
-            class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-110"
+            class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-110" 
+            @click="showUserDetailsModal = false"
           >
             <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -808,7 +808,7 @@
                   </div>
                 </td>
               </tr>
-              <tr v-else v-for="detail in userDetails" :key="(detail as any).id" class="hover:bg-green-50 transition-colors duration-200">
+              <tr v-for="detail in userDetails" v-else :key="(detail as any).id" class="hover:bg-green-50 transition-colors duration-200">
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">{{ (detail as any).page }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ (detail as any).action }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ (detail as any).timestamp }}</td>

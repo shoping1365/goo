@@ -33,8 +33,8 @@
             <span :class="['status', document.status]">{{ document.statusText }}</span>
           </td>
           <td>
-            <button @click="editDocument(document)" class="btn-edit">ویرایش</button>
-            <button @click="deleteDocument(document.id)" class="btn-delete">حذف</button>
+            <button class="btn-edit" @click="editDocument(document)">ویرایش</button>
+            <button class="btn-delete" @click="deleteDocument(document.id)">حذف</button>
           </td>
         </tr>
         </tbody>
@@ -105,8 +105,8 @@
             </div>
           </div>
           <div class="template-actions">
-            <button @click="downloadTemplate(template)" class="btn-download">دانلود</button>
-            <button @click="previewTemplate(template)" class="btn-preview">پیش‌نمایش</button>
+            <button class="btn-download" @click="downloadTemplate(template)">دانلود</button>
+            <button class="btn-preview" @click="previewTemplate(template)">پیش‌نمایش</button>
           </div>
         </div>
       </div>
@@ -133,7 +133,7 @@
           <h5>مستندات مورد نیاز برای {{ getCountryName(checklist.country) }}:</h5>
           <div v-for="item in checklist.items" :key="item.id" class="checklist-item">
             <label class="checkbox-label">
-              <input type="checkbox" v-model="item.completed">
+              <input v-model="item.completed" type="checkbox">
               <span class="checkmark"></span>
               <span class="item-text">{{ item.name }}</span>
               <span :class="['requirement-badge', item.requirement]">{{ item.requirementText }}</span>
@@ -146,7 +146,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { reactive, ref } from 'vue'
 
 const documents = ref([
   {
@@ -237,16 +237,16 @@ function updateChecklist() {
   }
 }
 
-function editDocument(document) {
-  console.log('Editing document:', document)
+function editDocument(_document) {
+  // console.log('Editing document:', document)
 }
 
-function deleteDocument(id) {
-  console.log('Deleting document:', id)
+function deleteDocument(_id) {
+  // console.log('Deleting document:', id)
 }
 
 function addNewDocument() {
-  console.log('Adding new document:', newDocument)
+  // console.log('Adding new document:', newDocument)
   // Reset form
   Object.assign(newDocument, {
     name: '',
@@ -257,12 +257,12 @@ function addNewDocument() {
   })
 }
 
-function downloadTemplate(template) {
-  console.log('Downloading template:', template)
+function downloadTemplate(_template) {
+  // console.log('Downloading template:', template)
 }
 
-function previewTemplate(template) {
-  console.log('Previewing template:', template)
+function previewTemplate(_template) {
+  // console.log('Previewing template:', template)
 }
 </script>
 

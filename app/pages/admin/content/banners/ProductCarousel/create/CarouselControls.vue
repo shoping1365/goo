@@ -3,10 +3,10 @@
     <div class="controls-container">
       <!-- Autoplay Toggle -->
       <button
-        @click="$emit('toggle-autoplay')"
         class="control-button autoplay-toggle"
         :class="{ 'active': isPlaying }"
         :title="isPlaying ? 'Pause autoplay' : 'Start autoplay'"
+        @click="$emit('toggle-autoplay')"
       >
         <svg v-if="isPlaying" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6"/>
@@ -21,8 +21,8 @@
         <label class="delay-label">Delay:</label>
         <select
           :value="autoplayDelay / 1000"
-          @change="handleDelayChange"
           class="delay-select"
+          @change="handleDelayChange"
         >
           <option value="2">2s</option>
           <option value="3">3s</option>

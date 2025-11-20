@@ -1,27 +1,27 @@
-import { defineEventHandler, createError } from 'h3'
+import { defineEventHandler } from 'h3'
 import { fetchGo } from '../../_utils/fetchGo'
 
 interface MobileAppHeaderListResponse {
      success: boolean
-     data: any[]
+     data: unknown[]
      message?: string
 }
 
 export default defineEventHandler(async (event): Promise<MobileAppHeaderListResponse> => {
      try {
-          console.log('درخواست دریافت لیست هدرهای موبایل (ادمین)')
+          // console.log('درخواست دریافت لیست هدرهای موبایل (ادمین)')
 
           const responseData = await fetchGo(event, '/api/admin/mobile-app-header-settings', {
                method: 'GET'
           })
 
-          console.log('پاسخ لیست هدرهای موبایل:', responseData)
+          // console.log('پاسخ لیست هدرهای موبایل:', responseData)
 
           if (responseData && typeof responseData === 'object' && 'data' in responseData) {
-               const payload = responseData as Record<string, any>
+               const payload = responseData as Record<string, unknown>
                return {
                     success: payload.success !== false,
-                    data: payload.data || []
+                    data: (payload.data as unknown[]) || []
                }
           }
 
@@ -30,15 +30,16 @@ export default defineEventHandler(async (event): Promise<MobileAppHeaderListResp
                data: Array.isArray(responseData) ? responseData : []
           }
 
-     } catch (error: any) {
-          console.error('خطا در دریافت لیست هدرهای موبایل:', error)
+     } catch (error: unknown) {
+          const err = error as { data?: { message?: string; error?: string } }
+          // console.error('خطا در دریافت لیست هدرهای موبایل:', error)
 
           // اگر خطا از سرور Go آمده باشد
-          if (error.data) {
+          if (err.data) {
                return {
                     success: false,
                     data: [],
-                    message: error.data.message || error.data.error || 'خطا در دریافت لیست هدرهای موبایل'
+                    message: err.data.message || err.data.error || 'خطا در دریافت لیست هدرهای موبایل'
                }
           }
 

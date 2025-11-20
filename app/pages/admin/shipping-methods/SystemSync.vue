@@ -61,8 +61,8 @@
           <div class="system-header">
             <div class="system-info">
               <div class="system-logo">
-                <img :src="system.logo" :alt="system.name" v-if="system.logo">
-                <i :class="system.icon" v-else></i>
+                <img v-if="system.logo" :src="system.logo" :alt="system.name">
+                <i v-else :class="system.icon"></i>
               </div>
               <div class="system-details">
                 <h5>{{ system.name }}</h5>
@@ -97,7 +97,7 @@
               </div>
             </div>
 
-            <div class="sync-progress" v-if="system.status === 'syncing'">
+            <div v-if="system.status === 'syncing'" class="sync-progress">
               <div class="progress-bar">
                 <div class="progress-fill" :style="{ width: system.syncProgress + '%' }"></div>
               </div>
@@ -130,23 +130,23 @@
           </div>
 
           <div class="system-actions">
-            <button @click="testConnection(system.id)" class="btn btn-primary">
+            <button class="btn btn-primary" @click="testConnection(system.id)">
               <i class="fas fa-plug"></i>
               تست اتصال
             </button>
-            <button @click="startSync(system.id)" class="btn btn-success" :disabled="system.status === 'syncing'">
+            <button class="btn btn-success" :disabled="system.status === 'syncing'" @click="startSync(system.id)">
               <i class="fas fa-sync-alt"></i>
               شروع همگام‌سازی
             </button>
-            <button @click="editSystem(system.id)" class="btn btn-secondary">
+            <button class="btn btn-secondary" @click="editSystem(system.id)">
               <i class="fas fa-edit"></i>
               ویرایش
             </button>
-            <button @click="viewLogs(system.id)" class="btn btn-info">
+            <button class="btn btn-info" @click="viewLogs(system.id)">
               <i class="fas fa-list"></i>
               لاگ‌ها
             </button>
-            <button @click="toggleSystem(system.id)" class="btn" :class="system.status === 'connected' ? 'btn-warning' : 'btn-success'">
+            <button class="btn" :class="system.status === 'connected' ? 'btn-warning' : 'btn-success'" @click="toggleSystem(system.id)">
               <i :class="system.status === 'connected' ? 'fas fa-pause' : 'fas fa-play'"></i>
               {{ system.status === 'connected' ? 'قطع اتصال' : 'اتصال' }}
             </button>
@@ -161,7 +161,7 @@
           <div class="form-row">
             <div class="form-group">
               <label>نام سیستم:</label>
-              <input type="text" v-model="newSystem.name" placeholder="مثال: سیستم انبارداری">
+              <input v-model="newSystem.name" type="text" placeholder="مثال: سیستم انبارداری">
             </div>
             <div class="form-group">
               <label>نوع سیستم:</label>
@@ -178,11 +178,11 @@
           <div class="form-row">
             <div class="form-group">
               <label>URL اتصال:</label>
-              <input type="url" v-model="newSystem.connectionUrl" placeholder="https://api.example.com">
+              <input v-model="newSystem.connectionUrl" type="url" placeholder="https://api.example.com">
             </div>
             <div class="form-group">
               <label>کلید API:</label>
-              <input type="password" v-model="newSystem.apiKey" placeholder="کلید API را وارد کنید">
+              <input v-model="newSystem.apiKey" type="password" placeholder="کلید API را وارد کنید">
             </div>
           </div>
 
@@ -210,18 +210,18 @@
             <label>فیلدهای همگام:</label>
             <div class="fields-selection">
               <label v-for="field in availableFields" :key="field.value" class="checkbox-item">
-                <input type="checkbox" v-model="newSystem.syncFields" :value="field.value">
+                <input v-model="newSystem.syncFields" type="checkbox" :value="field.value">
                 <span>{{ field.label }}</span>
               </label>
             </div>
           </div>
 
           <div class="form-actions">
-            <button @click="addSystem" class="btn btn-success">
+            <button class="btn btn-success" @click="addSystem">
               <i class="fas fa-plus"></i>
               افزودن سیستم
             </button>
-            <button @click="resetNewSystem" class="btn btn-secondary">
+            <button class="btn btn-secondary" @click="resetNewSystem">
               <i class="fas fa-undo"></i>
               بازنشانی
             </button>
@@ -252,7 +252,7 @@
             </option>
           </select>
         </div>
-        <button @click="refreshLogs" class="btn btn-primary">
+        <button class="btn btn-primary" @click="refreshLogs">
           <i class="fas fa-sync"></i>
           بروزرسانی
         </button>
@@ -284,7 +284,7 @@
             <td>{{ formatNumber(log.records) }}</td>
             <td>{{ log.duration }}ms</td>
             <td>
-              <button @click="viewLogDetails(log.id)" class="btn-link">
+              <button class="btn-link" @click="viewLogDetails(log.id)">
                 مشاهده جزئیات
               </button>
             </td>
@@ -334,7 +334,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 
 // Reactive data
 const connectedSystems = ref(3)
@@ -537,28 +537,28 @@ function formatDataSize(bytes) {
   return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i]
 }
 
-function testConnection(systemId) {
-  console.log('Testing connection for system:', systemId)
+function testConnection(_systemId) {
+  // console.log('Testing connection for system:', systemId)
 }
 
-function startSync(systemId) {
-  console.log('Starting sync for system:', systemId)
+function startSync(_systemId) {
+  // console.log('Starting sync for system:', systemId)
 }
 
-function editSystem(systemId) {
-  console.log('Editing system:', systemId)
+function editSystem(_systemId) {
+  // console.log('Editing system:', systemId)
 }
 
-function viewLogs(systemId) {
-  console.log('Viewing logs for system:', systemId)
+function viewLogs(_systemId) {
+  // console.log('Viewing logs for system:', systemId)
 }
 
-function toggleSystem(systemId) {
-  console.log('Toggling system:', systemId)
+function toggleSystem(_systemId) {
+  // console.log('Toggling system:', systemId)
 }
 
 function addSystem() {
-  console.log('Adding new system:', newSystem)
+  // console.log('Adding new system:', newSystem)
 }
 
 function resetNewSystem() {
@@ -574,15 +574,15 @@ function resetNewSystem() {
 }
 
 function refreshLogs() {
-  console.log('Refreshing logs')
+  // console.log('Refreshing logs')
 }
 
-function viewLogDetails(logId) {
-  console.log('Viewing log details:', logId)
+function viewLogDetails(_logId) {
+  // console.log('Viewing log details:', logId)
 }
 
 onMounted(() => {
-  console.log('SystemSync component mounted')
+  // console.log('SystemSync component mounted')
 })
 </script>
 

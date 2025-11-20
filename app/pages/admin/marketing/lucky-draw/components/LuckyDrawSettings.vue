@@ -6,8 +6,8 @@
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-lg font-medium text-gray-900">تنظیمات گرونه شانس</h3>
           <button 
-            @click="$emit('close')"
             class="text-gray-400 hover:text-gray-600"
+            @click="$emit('close')"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -16,7 +16,7 @@
         </div>
 
         <!-- فرم تنظیمات -->
-        <form @submit.prevent="saveSettings" class="space-y-8">
+        <form class="space-y-8" @submit.prevent="saveSettings">
           <!-- تنظیمات عمومی -->
           <div class="bg-gray-50 p-6 rounded-lg">
             <h4 class="text-lg font-medium text-gray-900 mb-4">تنظیمات عمومی</h4>
@@ -71,36 +71,36 @@
             <div class="space-y-4">
               <div class="flex items-center">
                 <input 
+                  id="preventMultipleEntries"
                   v-model="settings.preventMultipleEntries"
                   type="checkbox"
-                  id="preventMultipleEntries"
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label for="preventMultipleEntries" class="mr-2 text-sm text-gray-700">جلوگیری از شرکت چندباره</label>
               </div>
               <div class="flex items-center">
                 <input 
+                  id="requireVerification"
                   v-model="settings.requireVerification"
                   type="checkbox"
-                  id="requireVerification"
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label for="requireVerification" class="mr-2 text-sm text-gray-700">نیاز به تایید شرکت</label>
               </div>
               <div class="flex items-center">
                 <input 
+                  id="logAllActions"
                   v-model="settings.logAllActions"
                   type="checkbox"
-                  id="logAllActions"
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label for="logAllActions" class="mr-2 text-sm text-gray-700">ثبت تمام عملیات</label>
               </div>
               <div class="flex items-center">
                 <input 
+                  id="captchaEnabled"
                   v-model="settings.captchaEnabled"
                   type="checkbox"
-                  id="captchaEnabled"
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label for="captchaEnabled" class="mr-2 text-sm text-gray-700">فعال‌سازی کپچا</label>
@@ -261,8 +261,8 @@
           <div class="flex justify-end space-x-3 space-x-reverse">
             <button 
               type="button"
-              @click="resetToDefaults"
               class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors"
+              @click="resetToDefaults"
             >
               بازنشانی به پیش‌فرض
             </button>

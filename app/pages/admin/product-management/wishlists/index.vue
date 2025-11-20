@@ -10,8 +10,8 @@
           </div>
           <div class="flex space-x-2 space-x-reverse">
             <button
-                @click="showFilters = !showFilters"
                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-cyan-400 to-cyan-600 hover:from-cyan-500 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+                @click="showFilters = !showFilters"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"></path>
@@ -29,8 +29,8 @@
               خروجی اکسل
             </ExportExcelButton>
             <button 
-              @click="sendWishlistEmail"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+              @click="sendWishlistEmail"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
@@ -38,8 +38,8 @@
               ارسال ایمیل تشویقی
             </button>
             <button 
-              @click="openBulkMessageModal"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+              @click="openBulkMessageModal"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h8m-5 8l-4-4h8l-4 4z"/>
@@ -71,8 +71,8 @@
                   </div>
                 </div>
                 <div class="flex justify-end space-x-2 space-x-reverse mt-6">
-                  <button @click="showBulkMessageModal = false" class="px-4 py-2 bg-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-400 transition-colors">انصراف</button>
-                  <button @click="sendBulkMessage" class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">ارسال</button>
+                  <button class="px-4 py-2 bg-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-400 transition-colors" @click="showBulkMessageModal = false">انصراف</button>
+                  <button class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors" @click="sendBulkMessage">ارسال</button>
                 </div>
               </div>
             </div>
@@ -231,14 +231,14 @@
 
           <div class="flex justify-between items-center mt-6 pt-4 border-t border-blue-100">
             <button 
-              @click="clearFilters"
               class="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              @click="clearFilters"
             >
               پاک کردن فیلترها
             </button>
             <button 
-              @click="performSearch"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+              @click="performSearch"
             >
               <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -273,9 +273,9 @@
                   <th scope="col" class="px-3 py-2 text-center text-xs font-medium text-gray-600 uppercase tracking-wider">
                     <input 
                       type="checkbox" 
-                      @change="toggleSelectAllProducts"
                       :checked="isAllProductsSelected"
                       class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      @change="toggleSelectAllProducts"
                     />
                   </th>
                   <th scope="col" class="px-3 py-2 text-center text-xs font-medium text-gray-600 uppercase tracking-wider">تصویر</th>
@@ -286,7 +286,7 @@
                   >
                     <div class="flex items-center justify-center">
                       نام محصول
-                      <span class="mr-1" v-if="currentSortColumn === 'name'">
+                      <span v-if="currentSortColumn === 'name'" class="mr-1">
                         {{ sortDirection === 'asc' ? '↑' : '↓' }}
                       </span>
                     </div>
@@ -298,7 +298,7 @@
                   >
                     <div class="flex items-center justify-center">
                       قیمت
-                      <span class="mr-1" v-if="currentSortColumn === 'price'">
+                      <span v-if="currentSortColumn === 'price'" class="mr-1">
                         {{ sortDirection === 'asc' ? '↑' : '↓' }}
                       </span>
                     </div>
@@ -311,7 +311,7 @@
                   >
                     <div class="flex items-center justify-center">
                       تعداد علاقمندان
-                      <span class="mr-1" v-if="currentSortColumn === 'wishlist_count'">
+                      <span v-if="currentSortColumn === 'wishlist_count'" class="mr-1">
                         {{ sortDirection === 'asc' ? '↑' : '↓' }}
                       </span>
                     </div>
@@ -323,7 +323,7 @@
                   >
                     <div class="flex items-center justify-center">
                       آخرین علاقمندی
-                      <span class="mr-1" v-if="currentSortColumn === 'latest_date'">
+                      <span v-if="currentSortColumn === 'latest_date'" class="mr-1">
                         {{ sortDirection === 'asc' ? '↑' : '↓' }}
                       </span>
                     </div>
@@ -335,7 +335,7 @@
                   >
                     <div class="flex items-center justify-center">
                       وضعیت موجودی
-                      <span class="mr-1" v-if="currentSortColumn === 'stock_status'">
+                      <span v-if="currentSortColumn === 'stock_status'" class="mr-1">
                         {{ sortDirection === 'asc' ? '↑' : '↓' }}
                       </span>
                     </div>
@@ -350,9 +350,9 @@
                     <!-- Checkbox -->
                     <td class="px-3 py-3 whitespace-nowrap text-center">
                       <input 
-                        type="checkbox" 
+                        v-model="selectedProductIds" 
+                        type="checkbox"
                         :value="productGroup.product.id"
-                        v-model="selectedProductIds"
                         class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                       />
                     </td>
@@ -370,8 +370,8 @@
                     <td class="px-3 py-3 whitespace-nowrap text-right">
                       <div class="flex items-center">
                         <button 
-                          @click="toggleProductExpansion(productGroup.product.id)"
                           class="mr-2 p-1 hover:bg-gray-200 rounded transition-colors"
+                          @click="toggleProductExpansion(productGroup.product.id)"
                         >
                           <span v-if="expandedProducts.includes(productGroup.product.id)" class="text-blue-600">▼</span>
                           <span v-else class="text-gray-400">◄</span>
@@ -402,14 +402,14 @@
                     <td class="px-3 py-3 whitespace-nowrap text-center">
                       <div class="flex flex-col items-center">
                       <button 
-                        @click="manageProductUsers(productGroup.product.id)"
-                          :class="[
+                        :class="[
                             'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium transition-colors cursor-pointer',
                             productGroup.users.length >= 5 ? 'bg-red-100 text-red-800 hover:bg-red-200' :
                             productGroup.users.length >= 3 ? 'bg-orange-100 text-orange-800 hover:bg-orange-200' :
                             'bg-blue-100 text-blue-800 hover:bg-blue-200'
                           ]"
                           :title="'مدیریت کاربران علاقمند - ' + getRequestLevelText(productGroup.users.length)"
+                          @click="manageProductUsers(productGroup.product.id)"
                       >
                           <span class="ml-1">
                             {{ productGroup.users.length >= 5 ? '🔥' : productGroup.users.length >= 3 ? '📈' : '💙' }}
@@ -446,23 +446,23 @@
                     <td class="px-3 py-3 whitespace-nowrap text-center">
                       <div class="flex items-center justify-center space-x-1 space-x-reverse">
                         <button 
-                          @click="viewProduct(productGroup.product.id)"
                           class="inline-flex items-center p-1.5 border border-transparent text-xs font-medium rounded text-blue-700 bg-blue-100 hover:bg-blue-200 transition-colors"
                           title="مشاهده محصول"
+                          @click="viewProduct(productGroup.product.id)"
                         >
                           👁️
                         </button>
                         <button 
-                          @click="notifyAllUsers(productGroup.product.id)"
                           class="inline-flex items-center p-1.5 border border-transparent text-xs font-medium rounded text-green-700 bg-green-100 hover:bg-green-200 transition-colors"
                           title="اطلاع‌رسانی همه"
+                          @click="notifyAllUsers(productGroup.product.id)"
                         >
                           📧
                         </button>
                         <button 
-                          @click="removeProductFromAllWishlists(productGroup.product.id)"
                           class="inline-flex items-center p-1.5 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 hover:bg-red-200 transition-colors"
                           title="حذف از همه لیست‌ها"
+                          @click="removeProductFromAllWishlists(productGroup.product.id)"
                         >
                           🗑️
                         </button>
@@ -476,7 +476,8 @@
                       <div class="bg-gray-50 rounded-lg p-6">
                         <h4 class="text-sm font-medium text-gray-900 mb-3">کاربران علاقمند ({{ productGroup.users.length }} نفر):</h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                          <div v-for="userWishlist in productGroup.users" :key="userWishlist.user.id" 
+                          <div
+v-for="userWishlist in productGroup.users" :key="userWishlist.user.id" 
                                class="bg-white rounded-md p-3 border border-gray-200 hover:border-blue-300 transition-colors">
                             <div class="flex items-center justify-between">
                               <div>
@@ -486,16 +487,16 @@
                               </div>
                               <div class="flex space-x-1 space-x-reverse">
                                 <button 
-                                  @click="sendNotification(userWishlist.user.id, productGroup.product.id)"
                                   class="p-1 text-green-600 hover:bg-green-100 rounded transition-colors"
                                   title="ارسال اعلان"
+                                  @click="sendNotification(userWishlist.user.id, productGroup.product.id)"
                                 >
                                   📧
                                 </button>
                                 <button 
-                                  @click="removeFromWishlist(userWishlist.id)"
                                   class="p-1 text-red-600 hover:bg-red-100 rounded transition-colors"
                                   title="حذف از لیست"
+                                  @click="removeFromWishlist(userWishlist.id)"
                                 >
                                   🗑️
                                 </button>
@@ -517,9 +518,9 @@
                   <th scope="col" class="px-3 py-2 text-center text-xs font-medium text-gray-600 uppercase tracking-wider">
                     <input 
                       type="checkbox" 
-                      @change="toggleSelectAll"
                       :checked="isAllSelected"
                       class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      @change="toggleSelectAll"
                     />
                   </th>
                   <th scope="col" class="px-3 py-2 text-center text-xs font-medium text-gray-600 uppercase tracking-wider">تصویر</th>
@@ -540,9 +541,9 @@
                   <!-- Checkbox -->
                   <td class="px-3 py-3 whitespace-nowrap text-center">
                     <input 
-                      type="checkbox" 
+                      v-model="selectedItems" 
+                      type="checkbox"
                       :value="wishlist.id"
-                      v-model="selectedItems"
                       class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                     />
                   </td>
@@ -614,23 +615,23 @@
                   <td class="px-3 py-3 whitespace-nowrap text-center">
                     <div class="flex items-center justify-center space-x-1 space-x-reverse">
                       <button 
-                        @click="viewProduct(wishlist.product.id)"
                         class="inline-flex items-center p-1.5 border border-transparent text-xs font-medium rounded text-blue-700 bg-blue-100 hover:bg-blue-200 transition-colors"
                         title="مشاهده محصول"
+                        @click="viewProduct(wishlist.product.id)"
                       >
                         👁️
                       </button>
                       <button 
-                        @click="sendNotification(wishlist.user.id, wishlist.product.id)"
                         class="inline-flex items-center p-1.5 border border-transparent text-xs font-medium rounded text-green-700 bg-green-100 hover:bg-green-200 transition-colors"
                         title="ارسال اعلان"
+                        @click="sendNotification(wishlist.user.id, wishlist.product.id)"
                       >
                         📧
                       </button>
                       <button 
-                        @click="removeFromWishlist(wishlist.id)"
                         class="inline-flex items-center p-1.5 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 hover:bg-red-200 transition-colors"
                         title="حذف از لیست"
+                        @click="removeFromWishlist(wishlist.id)"
                       >
                         🗑️
                       </button>
@@ -660,8 +661,8 @@
                 <span>نمایش</span>
                 <select 
                   v-model="itemsPerPage" 
-                  @change="updatePagination"
                   class="border border-gray-300 rounded px-2 py-1 text-xs bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  @change="updatePagination"
                 >
                   <option value="10">10</option>
                   <option value="25">25</option>
@@ -673,9 +674,9 @@
               
               <div class="flex items-center space-x-1 space-x-reverse">
                 <button 
-                  @click="goToPage(currentPage - 1)"
                   :disabled="currentPage <= 1"
                   class="px-2 py-1 text-xs border rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  @click="goToPage(currentPage - 1)"
                 >
                   قبلی
                 </button>
@@ -684,13 +685,13 @@
                   <template v-for="page in visiblePages" :key="page">
                     <button 
                       v-if="page !== '...'"
-                      @click="goToPage(Number(page))"
                       :class="[
                         'px-2 py-1 text-xs border rounded transition-colors',
                         currentPage === page 
                           ? 'border-blue-500 text-white bg-blue-600' 
                           : 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50'
                       ]"
+                      @click="goToPage(Number(page))"
                     >
                       {{ page }}
                     </button>
@@ -699,9 +700,9 @@
                 </div>
                 
                 <button 
-                  @click="goToPage(currentPage + 1)"
                   :disabled="currentPage >= totalPages"
                   class="px-2 py-1 text-xs border rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  @click="goToPage(currentPage + 1)"
                 >
                   بعدی
                 </button>
@@ -726,7 +727,9 @@
 declare const definePageMeta: (meta: { layout?: string }) => void
 declare const useHead: (head: { title?: string }) => void
 declare const navigateTo: (to: string) => Promise<void>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const useAsyncData: <T>(key: string, fn: () => Promise<T>, options?: { watch?: any[] }) => Promise<{ data: { value: T } }>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const $fetch: <T = any>(url: string, options?: { method?: string; body?: any; params?: any }) => Promise<T>
 </script>
 
@@ -800,8 +803,10 @@ const bulkRecipientUserIds = computed<number[]>(() => {
   if (viewMode.value === 'product') {
     const selectedSet = new Set(selectedProductIds.value)
     const userIds = new Set<number>()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     productGroups.value.forEach((group: any) => {
       if (selectedSet.has(group.product.id)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ;(group.users || []).forEach((uw: any) => {
           if (uw?.user?.id) userIds.add(uw.user.id)
         })
@@ -811,6 +816,7 @@ const bulkRecipientUserIds = computed<number[]>(() => {
   } else {
     const selectedWishlistSet = new Set(selectedItems.value)
     const userIds = new Set<number>()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     wishlists.value.forEach((w: any) => {
       if (selectedWishlistSet.has(w.id) && w?.user?.id) userIds.add(w.user.id)
     })
@@ -855,6 +861,7 @@ const sendBulkMessage = async () => {
       return
     }
     // اتصال به سرویس اعلان مرکزی
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const res: any = await $fetch('/api/admin/notifications/jobs', {
       method: 'POST',
       body: {
@@ -879,6 +886,7 @@ const sendBulkMessage = async () => {
     } else {
       notifier.success('ارسال پیام گروهی با موفقیت ثبت شد.')
     }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
     notifier.error(e?.data?.message || 'خطا در ارسال پیام گروهی')
   }
@@ -1261,8 +1269,10 @@ const filteredWishlists = computed(() => {
 // Product-centric computed properties
 const productGroups = computed(() => {
   // اگر داده‌ی سروری برای گروه محصولات داریم از آن استفاده کن
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const data = wishlistProductsData.value as { items?: any[] } | null
   if (data && Array.isArray(data.items) && data.items.length > 0) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return data.items.map((item: any) => ({
       product: {
         id: item.product?.id,
@@ -1475,16 +1485,16 @@ const toggleSelectAll = () => {
   }
 }
 
-const selectAll = () => {
-  selectedItems.value = filteredWishlists.value.map(w => w.id)
-}
+// const selectAll = () => {
+//   selectedItems.value = filteredWishlists.value.map(w => w.id)
+// }
 
-const bulkRemove = async () => {
-  const ok = await confirm({ title:'حذف گروهی', message:`آیا از حذف ${selectedItems.value.length} آیتم انتخاب شده اطمینان دارید؟`, confirmText:'حذف', cancelText:'انصراف', type:'danger' })
-  if (!ok) return
-  wishlists.value = wishlists.value.filter(w => !selectedItems.value.includes(w.id))
-  selectedItems.value = []
-}
+// const bulkRemove = async () => {
+//   const ok = await confirm({ title:'حذف گروهی', message:`آیا از حذف ${selectedItems.value.length} آیتم انتخاب شده اطمینان دارید؟`, confirmText:'حذف', cancelText:'انصراف', type:'danger' })
+//   if (!ok) return
+//   wishlists.value = wishlists.value.filter(w => !selectedItems.value.includes(w.id))
+//   selectedItems.value = []
+// }
 
 const goToPage = (page: number) => {
   if (page >= 1 && page <= totalPages.value) {
@@ -1526,7 +1536,7 @@ const viewProduct = (productId: number) => {
 }
 
 const sendNotification = (userId: number, productId: number) => {
-  console.log(`Sending notification to user ${userId} about product ${productId}`)
+  // console.log(`Sending notification to user ${userId} about product ${productId}`)
   notifier.success('اعلان ارسال شد!')
 }
 
@@ -1539,10 +1549,10 @@ const removeFromWishlist = async (wishlistId: number) => {
   }
 }
 
-const exportWishlists = () => {
-  console.log('Exporting wishlists to Excel...')
-  notifier.info('خروجی اکسل در حال تهیه است...')
-}
+// const exportWishlists = () => {
+//   console.log('Exporting wishlists to Excel...')
+//   notifier.info('خروجی اکسل در حال تهیه است...')
+// }
 
 const sendWishlistEmail = () => {
   // هدایت به سیستم ارسال پیام/اعلان موجود
@@ -1567,12 +1577,12 @@ const toggleProductExpansion = (productId: number) => {
 }
 
 const notifyAllUsers = (productId: number) => {
-  console.log(`اطلاع‌رسانی همه کاربران برای محصول ${productId}`)
+  // console.log(`اطلاع‌رسانی همه کاربران برای محصول ${productId}`)
   // Implement notification logic here
 }
 
 const removeProductFromAllWishlists = (productId: number) => {
-  console.log(`حذف محصول ${productId} از همه لیست‌ها`)
+  // console.log(`حذف محصول ${productId} از همه لیست‌ها`)
   // Implement removal logic here
   wishlists.value = wishlists.value.filter(w => w.product.id !== productId)
 }
@@ -1624,6 +1634,7 @@ const { data: wishlistProductsData } = await useAsyncData(
 // داده خروجی اکسل بر اساس نمای فعال
 const exportData = computed(() => {
   if (viewMode.value === 'product') {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return productGroups.value.map((g: any) => ({
       id: g.product.id,
       name: g.product.name,
@@ -1635,6 +1646,7 @@ const exportData = computed(() => {
       in_stock: g.product.in_stock ? 'موجود' : 'ناموجود'
     }))
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return filteredWishlists.value.map((w: any) => ({
     id: w.id,
     product_id: w.product.id,

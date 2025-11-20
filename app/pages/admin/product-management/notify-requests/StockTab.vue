@@ -35,12 +35,12 @@ const {
           <!-- دکمه‌های عملیات شرطی -->
           <div v-if="selectedStockItems.length > 0" class="flex items-center gap-2">
             <TemplateButton
-              @click="bulkDeleteStock"
-              bgGradient="bg-gradient-to-r from-red-400 to-red-600"
-              textColor="text-white"
-              hoverClass="hover:from-red-500 hover:to-red-700 hover:shadow-lg hover:scale-105"
-              focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              bg-gradient="bg-gradient-to-r from-red-400 to-red-600"
+              text-color="text-white"
+              hover-class="hover:from-red-500 hover:to-red-700 hover:shadow-lg hover:scale-105"
+              focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
               size="small"
+              @click="bulkDeleteStock"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -48,12 +48,12 @@ const {
               <span>حذف ({{ selectedStockItems.length }})</span>
             </TemplateButton>
             <TemplateButton
-              @click="bulkNotifyStock"
-              bgGradient="bg-gradient-to-r from-green-400 to-green-600"
-              textColor="text-white"
-              hoverClass="hover:from-green-500 hover:to-green-700 hover:shadow-lg hover:scale-105"
-              focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              bg-gradient="bg-gradient-to-r from-green-400 to-green-600"
+              text-color="text-white"
+              hover-class="hover:from-green-500 hover:to-green-700 hover:shadow-lg hover:scale-105"
+              focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
               size="small"
+              @click="bulkNotifyStock"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5-5-5h5z"></path>
@@ -68,10 +68,10 @@ const {
         <!-- جستجو -->
         <div class="relative">
           <input
+              v-model="stockSearchQuery"
               type="text"
               placeholder="جستجو در ایمیل و شماره تلفن..."
               class="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-right"
-              v-model="stockSearchQuery"
               @input="applyFilters"
           >
           <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -90,9 +90,9 @@ const {
             <th class="text-center py-3 px-4 text-sm font-medium text-blue-900">
               <input
                   type="checkbox"
-                  @change="toggleAllStock"
                   :checked="selectedStockItems.length === stockRequests.length && stockRequests.length > 0"
-                  class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+                  class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                  @change="toggleAllStock">
             </th>
             <th class="text-right py-3 px-4 text-sm font-medium text-blue-900" style="text-align: right;">محصول</th>
             <th class="text-right py-3 px-4 text-sm font-medium text-blue-900" style="text-align: right;">تاریخ درخواست</th>
@@ -108,9 +108,9 @@ const {
             <tr class="hover:bg-gray-50">
               <td class="py-3 px-4 text-center">
                 <input
+                    v-model="selectedStockItems"
                     type="checkbox"
                     :value="item.id"
-                    v-model="selectedStockItems"
                     class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
               </td>
               <td class="py-3 px-4 text-sm text-gray-900 text-right">
@@ -139,10 +139,10 @@ const {
               <td class="py-3 px-4">
                 <div class="flex items-center gap-2 justify-end">
                   <TemplateButton
-                    bgGradient="bg-gradient-to-r from-red-400 to-red-600"
-                    textColor="text-white"
-                    hoverClass="hover:from-red-500 hover:to-red-700 hover:shadow-lg hover:scale-105"
-                    focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                    bg-gradient="bg-gradient-to-r from-red-400 to-red-600"
+                    text-color="text-white"
+                    hover-class="hover:from-red-500 hover:to-red-700 hover:shadow-lg hover:scale-105"
+                    focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                     size="small"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -153,13 +153,13 @@ const {
                   <!-- دکمه ارسال اطلاع‌رسانی -->
                   <TemplateButton
                     v-if="!stockNotificationStates[item.id]?.success"
-                    @click="sendStockNotification(item.id)"
                     :disabled="stockNotificationStates[item.id]?.isLoading"
-                    :bgGradient="stockNotificationStates[item.id]?.isLoading ? 'bg-gradient-to-r from-gray-400 to-gray-500' : 'bg-gradient-to-r from-green-400 to-green-600'"
-                    textColor="text-white"
-                    :hoverClass="stockNotificationStates[item.id]?.isLoading ? '' : 'hover:from-green-500 hover:to-green-700 hover:shadow-lg hover:scale-105'"
-                    :focusClass="stockNotificationStates[item.id]?.isLoading ? '' : 'focus:ring-2 focus:ring-offset-2 focus:ring-green-500'"
+                    :bg-gradient="stockNotificationStates[item.id]?.isLoading ? 'bg-gradient-to-r from-gray-400 to-gray-500' : 'bg-gradient-to-r from-green-400 to-green-600'"
+                    text-color="text-white"
+                    :hover-class="stockNotificationStates[item.id]?.isLoading ? '' : 'hover:from-green-500 hover:to-green-700 hover:shadow-lg hover:scale-105'"
+                    :focus-class="stockNotificationStates[item.id]?.isLoading ? '' : 'focus:ring-2 focus:ring-offset-2 focus:ring-green-500'"
                     size="small"
+                    @click="sendStockNotification(item.id)"
                   >
                     <svg v-if="stockNotificationStates[item.id]?.isLoading" class="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">
                       <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -187,8 +187,8 @@ const {
                     <span class="text-sm font-medium">{{ stockNotificationStates[item.id]?.error }}</span>
                   </div>
                   <button
-                      @click="clearStockError(item.id)"
-                      class="text-red-500 hover:text-red-700 transition-colors">
+                      class="text-red-500 hover:text-red-700 transition-colors"
+                      @click="clearStockError(item.id)">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>

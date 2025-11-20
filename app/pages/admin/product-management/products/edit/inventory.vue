@@ -21,17 +21,17 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <label class="flex items-center gap-2">
                 <input
+                  v-model="store.inventoryForm.track_inventory"
                   type="checkbox"
                   class="checkbox"
-                  v-model="store.inventoryForm.track_inventory"
                 />
                 <span class="text-xs text-gray-700 font-semibold">ردیابی موجودی</span>
               </label>
               <label class="flex items-center gap-2">
                 <input
+                  v-model="store.inventoryForm.allow_reservation"
                   type="checkbox"
                   class="checkbox"
-                  v-model="store.inventoryForm.allow_reservation"
                 />
                 <span class="text-xs text-gray-700 font-semibold">اجازه رزرو (در صورت فعال)</span>
               </label>
@@ -41,9 +41,9 @@
               </label>
               <label class="flex items-center gap-2">
                 <input
+                  v-model="store.inventoryForm.show_stock_to_customer"
                   type="checkbox"
                   class="checkbox"
-                  v-model="store.inventoryForm.show_stock_to_customer"
                 />
                 <span class="text-xs text-gray-700 font-semibold">نمایش تعداد موجودی به مشتری</span>
               </label>
@@ -60,7 +60,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
                   <div class="md:col-span-3 flex items-center gap-2">
                     <label class="flex items-center gap-2 text-xs text-gray-700 font-semibold">
-                      <input type="checkbox" v-model="store.inventoryForm.shipping_enabled" />
+                      <input v-model="store.inventoryForm.shipping_enabled" type="checkbox" />
                       <span>ارسال از انبار پیش‌فرض</span>
                     </label>
                   </div>
@@ -81,7 +81,7 @@
                       <td class="px-3 py-2 text-right">{{ row.warehouse_name || warehouseName(row.warehouse_id) }}</td>
                       <td class="px-3 py-2 text-right">
                         <template v-if="editingId === row.warehouse_id">
-                          <input type="number" v-model.number="editBuffer.quantity" class="w-24 border-2 border-white rounded px-2 py-1 text-right" />
+                          <input v-model.number="editBuffer.quantity" type="number" class="w-24 border-2 border-white rounded px-2 py-1 text-right" />
                         </template>
                         <template v-else>
                           {{ row.quantity }}
@@ -89,7 +89,7 @@
                       </td>
                       <td class="px-3 py-2 text-right">
                         <template v-if="editingId === row.warehouse_id">
-                          <input type="number" v-model.number="editBuffer.min_qty" class="w-24 border-2 border-white rounded px-2 py-1 text-right" />
+                          <input v-model.number="editBuffer.min_qty" type="number" class="w-24 border-2 border-white rounded px-2 py-1 text-right" />
                         </template>
                         <template v-else>
                           {{ row.min_qty || 0 }}
@@ -97,7 +97,7 @@
                       </td>
                       <td class="px-3 py-2 text-right">
                         <template v-if="editingId === row.warehouse_id">
-                          <input type="number" v-model.number="editBuffer.max_qty" class="w-24 border-2 border-white rounded px-2 py-1 text-right" />
+                          <input v-model.number="editBuffer.max_qty" type="number" class="w-24 border-2 border-white rounded px-2 py-1 text-right" />
                         </template>
                         <template v-else>
                           {{ row.max_qty || 0 }}
@@ -470,9 +470,45 @@
 
 
 <script setup lang="ts">
-// @ts-nocheck
-import { reactive, ref, computed, watch } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import { useProductCreateStore } from '~/stores/productCreate'
+
+interface Warehouse {
+  id: number | string
+  code: string
+  name: string
+  city?: string
+  is_default?: boolean
+  IsDefault?: boolean
+  isDefault?: boolean
+  priority?: number
+}
+
+interface WarehouseStockRaw {
+  warehouse_id?: number
+  WarehouseID?: number
+  warehouseId?: number
+  warehouse_name?: string
+  WarehouseName?: string
+  warehouseName?: string
+  quantity?: number
+  Quantity?: number
+  reserved?: number
+  Reserved?: number
+  min_qty?: number
+  MinQty?: number
+  max_qty?: number
+  MaxQty?: number
+}
+
+interface StockRow {
+  warehouse_id: number
+  warehouse_name: string
+  quantity: number
+  reserved: number
+  min_qty: number
+  max_qty: number
+}
 
 // Store for inventory data
 const store = useProductCreateStore()
@@ -490,13 +526,15 @@ const toggleSection = (section) => {
 }
 
 // دریافت لیست انبارها برای نمایش در انتخاب‌گر (بدون await useAsyncData برای سادگی)
-const warehouses = ref([])
+const warehouses = ref<Warehouse[]>([])
 try {
-  warehouses.value = await $fetch('/api/admin/warehouses')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  warehouses.value = await $fetch<any[]>('/api/admin/warehouses')
   // اگر هیچ انباری وجود ندارد، یک انبار پیشفرض ایجاد کن
   if (warehouses.value.length === 0) {
     try {
-      const defaultWarehouse = await $fetch('/api/admin/warehouses', {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const defaultWarehouse = await $fetch<any>('/api/admin/warehouses', {
         method: 'POST',
         body: {
           code: 'DEFAULT',
@@ -507,7 +545,7 @@ try {
         }
       })
       warehouses.value = [defaultWarehouse]
-    } catch (createError) {
+    } catch {
       // حتی اگر ایجاد انبار شکست خورد، حداقل یک fallback داشته باش
       warehouses.value = [{
         id: 1,
@@ -517,19 +555,20 @@ try {
       }]
     }
   }
-} catch (e) {
+} catch {
   warehouses.value = []
 }
 
 // وضعیت قابل ویرایش برای هر انبار
-const stocks = ref([])
+const stocks = ref<StockRow[]>([])
 const tableRows = computed(() => {
   let normalized = (stocks.value || []).map((r) => ({
-    warehouse_id: r.warehouse_id || r.WarehouseID || r.warehouseId,
-    warehouse_name: r.warehouse_name || r.WarehouseName || r.warehouseName, // اضافه کردن نام انبار
-    quantity: Number(r.quantity ?? r.Quantity ?? 0),
-    min_qty: Number(r.min_qty ?? r.MinQty ?? 0),
-    max_qty: Number(r.max_qty ?? r.MaxQty ?? 0)
+    warehouse_id: r.warehouse_id,
+    warehouse_name: r.warehouse_name, // اضافه کردن نام انبار
+    quantity: Number(r.quantity ?? 0),
+    reserved: Number(r.reserved ?? 0),
+    min_qty: Number(r.min_qty ?? 0),
+    max_qty: Number(r.max_qty ?? 0)
   }))
 
   // اگر هیچ انباری وجود ندارد، حداقل انبار پیشفرض را اضافه کن
@@ -540,6 +579,7 @@ const tableRows = computed(() => {
         warehouse_id: Number(defaultWarehouse.id),
         warehouse_name: defaultWarehouse.name, // اضافه کردن نام انبار پیشفرض
         quantity: Number(store.inventoryForm?.stock_quantity || 0),
+        reserved: 0,
         min_qty: 0,
         max_qty: 0
       }]
@@ -556,17 +596,18 @@ const totalReserved = computed(() => (tableRows.value || []).reduce((a, r) => a 
 watch(totalQty, (qty) => {
   store.inventoryForm.stock_quantity = Number(qty)
 }, { immediate: true })
-async function loadStocks(productId) {
+async function loadStocks(productId: string | number) {
   try {
-    const res: any = await $fetch(`/api/product-warehouse-stocks/${productId}?_=${Date.now()}`)
-    const arr: any[] = (res && res.data ? res.data : res) || []
-    stocks.value = (Array.isArray(arr) ? arr : []).map((r: any) => ({
-      warehouse_id: r.warehouse_id || r.WarehouseID || r.warehouseId,
-      warehouse_name: r.warehouse_name || r.WarehouseName || r.warehouseName, // اضافه کردن نام انبار
-      quantity: r.quantity || r.Quantity || 0,
-      reserved: r.reserved || r.Reserved || 0,
-      min_qty: r.min_qty || r.MinQty || 0,
-      max_qty: r.max_qty || r.MaxQty || 0
+    const res = await $fetch<WarehouseStockRaw[] | { data: WarehouseStockRaw[] }>(`/api/product-warehouse-stocks/${productId}?_=${Date.now()}`)
+    const arr: WarehouseStockRaw[] = (res && 'data' in res && Array.isArray(res.data) ? res.data : (Array.isArray(res) ? res : []))
+    
+    stocks.value = arr.map((r) => ({
+      warehouse_id: Number(r.warehouse_id || r.WarehouseID || r.warehouseId || 0),
+      warehouse_name: r.warehouse_name || r.WarehouseName || r.warehouseName || '',
+      quantity: Number(r.quantity || r.Quantity || 0),
+      reserved: Number(r.reserved || r.Reserved || 0),
+      min_qty: Number(r.min_qty || r.MinQty || 0),
+      max_qty: Number(r.max_qty || r.MaxQty || 0)
     }))
   } catch (error) {
     console.error('خطا در بارگذاری موجودی انبارها:', error)
@@ -577,14 +618,14 @@ async function loadStocks(productId) {
 
 // انبار پیش‌فرض خرید
 const defaultWarehouseId = ref(null)
-const selectedWarehouseName = computed(() => {
-  const w = (warehouses.value || []).find((x) => Number(x.id) === Number(defaultWarehouseId.value || 0))
-  return w ? w.name : '—'
-})
+// const selectedWarehouseName = computed(() => {
+//   const w = (warehouses.value || []).find((x) => Number(x.id) === Number(defaultWarehouseId.value || 0))
+//   return w ? w.name : '—'
+// })
 
-function warehouseName(id) {
+function warehouseName(id: number | string) {
   // ابتدا از نام انبار موجود در stocks استفاده کن
-  const stock = stocks.value.find(s => s.warehouse_id === id)
+  const stock = stocks.value.find(s => s.warehouse_id === Number(id))
   if (stock && stock.warehouse_name) {
     return stock.warehouse_name
   }
@@ -603,11 +644,9 @@ function warehouseName(id) {
   return `انبار ${id}`
 }
 
-const showAdjust = ref(false) // deprecated
-const adjustForm = reactive({ warehouse_id: null, delta: 0, reason: '' }) // deprecated
-const editingId = ref(null)
+const editingId = ref<number | null>(null)
 const editBuffer = reactive({ quantity: 0, min_qty: 0, max_qty: 0 })
-function startEdit(row) {
+function startEdit(row: StockRow) {
   // اگر این انبار در stocks نیست، آن را اضافه کن
   const existingStockIndex = stocks.value.findIndex(s => s.warehouse_id === row.warehouse_id)
   if (existingStockIndex === -1) {
@@ -641,7 +680,7 @@ function cancelEdit() {
   }
   editingId.value = null
 }
-async function saveRow(warehouseId) {
+async function saveRow(warehouseId: number) {
   if (!store.editingProductId) return
 
   try {
@@ -649,7 +688,7 @@ async function saveRow(warehouseId) {
     const existingStockIndex = stocks.value.findIndex(s => s.warehouse_id === warehouseId)
     if (existingStockIndex === -1) {
       // پیدا کردن نام انبار از لیست انبارها
-      const warehouse = warehouses.value.find(w => w.id === warehouseId)
+      const warehouse = warehouses.value.find(w => Number(w.id) === warehouseId)
       stocks.value.push({
         warehouse_id: warehouseId,
         warehouse_name: warehouse ? warehouse.name : `انبار ${warehouseId}`, // اضافه کردن نام انبار
@@ -666,6 +705,7 @@ async function saveRow(warehouseId) {
     }
 
     const entries = [{ warehouse_id: Number(warehouseId), quantity: Number(editBuffer.quantity ?? 0), min_qty: Number(editBuffer.min_qty ?? 0), max_qty: Number(editBuffer.max_qty ?? 0) }]
+     
     await $fetch(`/api/product-warehouse-stocks/${store.editingProductId}`, { method: 'PUT', body: { entries, default_warehouse_id: defaultWarehouseId.value } })
     await loadStocks(store.editingProductId)
     // بارگذاری مجدد موجودی کلی بعد از ذخیره انبارها
@@ -681,12 +721,11 @@ async function saveRow(warehouseId) {
     editingId.value = null
   }
 }
-function openAdjustModal() {}
-async function submitAdjust() {}
 
-async function loadInventoryData(productId) {
+async function loadInventoryData(productId: string | number) {
   try {
-    const response = await $fetch(`/api/product-inventories/${productId}`)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await $fetch<any>(`/api/product-inventories/${productId}`)
     if (response) {
       store.inventoryForm.stock_quantity = response.stock_quantity || 0
       store.inventoryForm.min_stock_quantity = response.min_stock_quantity || 0
@@ -701,10 +740,11 @@ async function loadInventoryData(productId) {
         store.inventoryForm.shipping_enabled = true
       }
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در بارگذاری اطلاعات موجودی:', error)
     // اگر رکورد موجودی هنوز ایجاد نشده باشد، 404 حالت طبیعی است
-    const status = error?.status || error?.response?.status || error?.response?.statusCode
+    const err = error as { status?: number; response?: { status?: number; statusCode?: number } }
+    const status = err?.status || err?.response?.status || err?.response?.statusCode
     if (status === 404) {
       // مقداردهی پیش‌فرض برای فرم موجودی
       store.inventoryForm.stock_quantity = 0
@@ -755,7 +795,8 @@ function getDefaultWarehouseId() {
 // اگر انبار پیش‌فرض محصول از بک‌اند برگردد، انتخاب را ست کنیم؛ در غیراین‌صورت انبار پیش‌فرض سیستم یا اولین انبار
 async function loadDefaultWarehouse(productId) {
   try {
-    const inv = await $fetch(`/api/product-inventories/${productId}`)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const inv = await $fetch<any>(`/api/product-inventories/${productId}`)
     if (inv && inv.default_warehouse_id) {
       defaultWarehouseId.value = Number(inv.default_warehouse_id)
       store.inventoryForm.warehouse_id = Number(inv.default_warehouse_id)
@@ -777,13 +818,13 @@ async function loadDefaultWarehouse(productId) {
 
 // اگر موجودی کل > 0 است ولی هیچ ردیف انباری نداریم، یکبار ردیف انبار پیش‌فرض را ایجاد/همگام می‌کنیم
 const didEnsureDefaultRow = ref(false)
-async function ensureDefaultRow(productId) {
+async function ensureDefaultRow(productId: string | number) {
   try {
     // اگر defaultWarehouseId تنظیم نشده، سعی کن آن را تنظیم کن
     if (!defaultWarehouseId.value && warehouses.value.length > 0) {
       const d = getDefaultWarehouseId()
       if (d) {
-        defaultWarehouseId.value = d
+        defaultWarehouseId.value = d as any
         store.inventoryForm.warehouse_id = d
       }
     }
@@ -809,9 +850,10 @@ async function ensureDefaultRow(productId) {
       Array.isArray(stocks.value) &&
       Number(store.inventoryForm?.stock_quantity || 0) > 0 &&
       Number(defaultWarehouseId.value || 0) > 0 &&
-      !stocks.value.find(s => s.warehouse_id === defaultWarehouseId.value)
+      !stocks.value.find(s => s.warehouse_id === Number(defaultWarehouseId.value))
     ) {
       try {
+         
         await $fetch('/api/product-warehouse-stocks/adjust', {
           method: 'POST',
           body: {
@@ -872,16 +914,16 @@ select:focus {
 
 /* Option Styles */
 select option {
-  background-color: white !important;
-  color: #1f2937 !important;
+  background-color: white;
+  color: #1f2937 ;
   padding: 8px 12px;
   font-weight: normal;
 }
 
 select option:checked,
 select option:hover {
-  background-color: #f3f4f6 !important;
-  color: #1f2937 !important;
+  background-color: #f3f4f6 ;
+  color: #1f2937 ;
 }
 
 /* Animation for cards */

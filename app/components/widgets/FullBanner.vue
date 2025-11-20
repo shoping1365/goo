@@ -1,6 +1,7 @@
 <template>
   <!-- بنر تکی -->
-  <div class="full-banner relative" :class="{
+  <div
+class="full-banner relative" :class="{
     'full-width': config.banner_width === 800,
     'center-width': config.banner_width === 600
   }" :style="{ 

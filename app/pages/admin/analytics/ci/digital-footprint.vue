@@ -10,8 +10,8 @@
           </div>
           <div class="flex items-center space-x-3 space-x-reverse">
             <button 
-              @click="refreshData"
               class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200"
+              @click="refreshData"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -19,8 +19,8 @@
               به‌روزرسانی
             </button>
             <button 
-              @click="showSettings = true"
               class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200"
+              @click="showSettings = true"
             >
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
@@ -41,13 +41,13 @@
             <button
               v-for="tab in tabs"
               :key="tab.id"
-              @click="activeTab = tab.id"
               :class="[
                 activeTab === tab.id
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
                 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200'
               ]"
+              @click="activeTab = tab.id"
             >
               <div class="flex items-center space-x-2 space-x-reverse">
                 <component :is="tab.icon" class="w-5 h-5" />
@@ -112,7 +112,7 @@
               <label class="block text-sm font-medium text-gray-700 mb-2">نمایش اعلان‌ها</label>
               <div class="flex items-center space-x-4 space-x-reverse">
                 <label class="flex items-center">
-                  <input type="checkbox" v-model="showNotifications" class="ml-2">
+                  <input v-model="showNotifications" type="checkbox" class="ml-2">
                   <span class="text-sm text-gray-700">فعال</span>
                 </label>
               </div>
@@ -120,14 +120,14 @@
           </div>
           <div class="flex justify-center space-x-3 space-x-reverse mt-6">
             <button 
-              @click="saveSettings"
               class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              @click="saveSettings"
             >
               ذخیره
             </button>
             <button 
-              @click="showSettings = false"
               class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              @click="showSettings = false"
             >
               انصراف
             </button>

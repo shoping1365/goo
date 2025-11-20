@@ -1,5 +1,5 @@
-import { ref, onMounted, onUnmounted } from 'vue'
 import type { Swiper } from 'swiper/types'
+import { onUnmounted, ref } from 'vue'
 
 export function useSwiperSlider() {
      const swiperInstance = ref<Swiper | null>(null)
@@ -20,7 +20,7 @@ export function useSwiperSlider() {
 
      const onSlideChange = () => {
           if (swiperInstance.value) {
-               // Slide changed
+               // Slide changed logic can be added here
           }
      }
 

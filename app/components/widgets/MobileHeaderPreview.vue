@@ -1,6 +1,7 @@
 <template>
   <!-- هدر موبایل -->
-  <div class="mobile-header relative" :class="{
+  <div
+class="mobile-header relative" :class="{
     'full-width': config.banner_width === 800,
     'center-width': config.banner_width === 600
   }" :style="{ 

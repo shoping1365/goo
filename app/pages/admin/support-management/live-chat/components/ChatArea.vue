@@ -18,7 +18,7 @@
       </div>
 
       <!-- Messages Area -->
-      <div class="messages-area" ref="messagesContainer">
+      <div ref="messagesContainer" class="messages-area">
         <div v-for="message in messages" :key="message.id" :class="['message', message.sender === 'admin' ? 'outgoing' : 'incoming']">
           <div class="message-bubble">
             <p v-if="message.type === 'text'">{{ message.text }}</p>
@@ -63,13 +63,13 @@
           </button>
           <input 
             v-model="localNewMessage" 
-            @keypress.enter="sendMessage"
-            type="text" 
+            type="text"
             placeholder="پیام خود را بنویسید..." 
-            class="message-input"
+            class="message-input" 
+            @keypress.enter="sendMessage"
           >
           <VoiceRecorder @voice-message="handleVoiceMessage" />
-          <button @click="sendMessage" class="send-btn">ارسال</button>
+          <button class="send-btn" @click="sendMessage">ارسال</button>
         </div>
       </div>
     </div>

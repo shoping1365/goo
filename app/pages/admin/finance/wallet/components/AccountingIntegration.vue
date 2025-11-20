@@ -71,7 +71,8 @@
       </div>
       
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div v-for="software in accountingSoftware" :key="software.id" 
+        <div
+v-for="software in accountingSoftware" :key="software.id" 
              class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
           <div class="flex items-center justify-between mb-3">
             <div class="flex items-center">
@@ -113,8 +114,9 @@
             <button class="flex-1 px-3 py-2 bg-blue-100 text-blue-700 text-sm rounded-lg hover:bg-blue-200">
               تنظیمات
             </button>
-            <button @click="toggleGateway(software)" :class="software.status === 'فعال' ? 'bg-red-100 text-red-700 hover:bg-red-200' : 'bg-green-100 text-green-700 hover:bg-green-200'"
-                    class="flex-1 px-3 py-2 text-sm rounded-lg">
+            <button
+:class="software.status === 'فعال' ? 'bg-red-100 text-red-700 hover:bg-red-200' : 'bg-green-100 text-green-700 hover:bg-green-200'" class="flex-1 px-3 py-2 text-sm rounded-lg"
+                    @click="toggleGateway(software)">
               {{ software.status === 'فعال' ? 'غیرفعال' : 'فعال' }}
             </button>
           </div>
@@ -130,26 +132,31 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">آدرس سرور</label>
-            <input type="text" :value="apiSettings.serverUrl" 
+            <input
+type="text" :value="apiSettings.serverUrl" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">کلید API</label>
-            <input type="password" :value="apiSettings.apiKey" 
+            <input
+type="password" :value="apiSettings.apiKey" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">رمز عبور</label>
-            <input type="password" :value="apiSettings.password" 
+            <input
+type="password" :value="apiSettings.password" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">بازه همگام‌سازی (دقیقه)</label>
-            <input type="number" :value="apiSettings.syncInterval" 
+            <input
+type="number" :value="apiSettings.syncInterval" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div class="flex items-center">
-            <input type="checkbox" :checked="apiSettings.autoSync" 
+            <input
+type="checkbox" :checked="apiSettings.autoSync" 
                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
             <label class="mr-2 text-sm text-gray-700">همگام‌سازی خودکار</label>
           </div>
@@ -165,27 +172,32 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حساب کیف پول</label>
-            <input type="text" :value="accountSettings.walletAccount" 
+            <input
+type="text" :value="accountSettings.walletAccount" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حساب بانک</label>
-            <input type="text" :value="accountSettings.bankAccount" 
+            <input
+type="text" :value="accountSettings.bankAccount" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">حساب کارمزد</label>
-            <input type="text" :value="accountSettings.feeAccount" 
+            <input
+type="text" :value="accountSettings.feeAccount" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">مرکز هزینه</label>
-            <input type="text" :value="accountSettings.costCenter" 
+            <input
+type="text" :value="accountSettings.costCenter" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">پروژه</label>
-            <input type="text" :value="accountSettings.project" 
+            <input
+type="text" :value="accountSettings.project" 
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <button class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">

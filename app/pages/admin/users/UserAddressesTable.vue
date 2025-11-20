@@ -33,8 +33,10 @@
 </template>
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import type { User } from '~/types/user';
 
-const props = defineProps<{ user: any }>()
+const props = defineProps<{ user: User }>()
+defineEmits(['view-all-addresses']);
 
 type AddressRow = {
   id: number
@@ -45,11 +47,26 @@ type AddressRow = {
   isDefault: boolean
 }
 
+interface AddressResponse {
+  id: number;
+  label?: string;
+  province?: string;
+  city?: string;
+  street?: string;
+  postal_code?: string;
+  postalCode?: string;
+  phone?: string;
+  recipient_mobile?: string;
+  recipientMobile?: string;
+  is_default?: boolean;
+  isDefault?: boolean;
+  [key: string]: unknown;
+}
+
 const addresses = ref<AddressRow[]>([])
 
 async function loadAddresses(userId?: number | string) {
   if (!userId) return
-  console.log('Loading addresses for user:', userId)
   try {
     const response = await fetch(`/api/users/${userId}/addresses`, {
       method: 'GET',
@@ -63,9 +80,8 @@ async function loadAddresses(userId?: number | string) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     
-    const data = await response.json()
-    console.log('Address API response:', data)
-    
+    const data = (await response.json()) as AddressResponse[]
+
     if (Array.isArray(data)) {
       addresses.value = data.map(a => ({
         id: a.id,
@@ -75,13 +91,10 @@ async function loadAddresses(userId?: number | string) {
         phone: a.phone || a.recipient_mobile || a.recipientMobile,
         isDefault: !!a.is_default || !!a.isDefault
       }))
-      console.log('Mapped addresses:', addresses.value)
     } else {
       addresses.value = []
-      console.log('No addresses found - data is not an array')
     }
-  } catch (error) {
-    console.error('Error loading addresses:', error)
+  } catch {
     addresses.value = []
   }
 }

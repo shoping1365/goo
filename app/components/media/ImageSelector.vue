@@ -35,8 +35,8 @@
       <!-- Image Info -->
       <div 
         class="p-3 bg-white relative info-section"
-        @click.stop="handleSelect(image.id, $event)"
         style="cursor:pointer"
+        @click.stop="handleSelect(image.id, $event)"
       >
         <p class="text-sm font-medium text-gray-900 truncate" :title="image.name">
           {{ image.name }}

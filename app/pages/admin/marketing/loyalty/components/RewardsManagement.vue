@@ -3,8 +3,8 @@
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xl font-semibold text-gray-900">مدیریت پاداش‌ها</h2>
       <button 
-        @click="showRewardForm = true; editingReward = null"
         class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+        @click="showRewardForm = true; editingReward = null"
       >
         افزودن پاداش جدید
       </button>
@@ -54,15 +54,15 @@
         
         <div class="flex justify-end space-x-2 space-x-reverse mt-4">
           <button 
-            @click="editingReward = reward; showRewardForm = true"
             class="text-blue-600 hover:text-blue-800 text-sm"
+            @click="editingReward = reward; showRewardForm = true"
           >
             ویرایش
           </button>
           <button 
-            @click="toggleRewardStatus(reward)"
             :class="reward.active ? 'text-red-600 hover:text-red-800' : 'text-green-600 hover:text-green-800'"
             class="text-sm"
+            @click="toggleRewardStatus(reward)"
           >
             {{ reward.active ? 'غیرفعال' : 'فعال' }}
           </button>
@@ -169,8 +169,8 @@
             <div class="flex justify-end space-x-3 space-x-reverse mt-6">
               <button 
                 type="button"
-                @click="showRewardForm = false"
                 class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors"
+                @click="showRewardForm = false"
               >
                 انصراف
               </button>

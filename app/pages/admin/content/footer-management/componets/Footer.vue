@@ -7,8 +7,8 @@
       >
         <span :style="getItemStyle(item)" class="footer-item-wrapper">
           <component
-            v-if="resolveWidgetComponent(item)"
             :is="resolveWidgetComponent(item)"
+            v-if="resolveWidgetComponent(item)"
             v-bind="getWidgetProps(item)"
           />
 

@@ -16,11 +16,11 @@
               <div class="space-y-2">
                 <div v-for="file in fileTree" :key="file.path" class="space-y-1">
                   <div 
-                    @click="selectFile(file)"
                     :class="[
                       'flex items-center space-x-2 space-x-reverse p-2 rounded cursor-pointer hover:bg-gray-100',
                       selectedFile?.path === file.path ? 'bg-blue-50 border border-blue-200' : ''
                     ]"
+                    @click="selectFile(file)"
                   >
                     <svg v-if="file.type === 'folder'" class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-5l-2-2H5a2 2 0 00-2 2z"></path>
@@ -35,22 +35,22 @@
 
               <div class="space-y-2 pt-4 border-t">
                 <button 
-                  @click="createNewFile"
                   class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="createNewFile"
                 >
                   فایل جدید
                 </button>
                 <button 
-                  @click="saveFile"
                   :disabled="!selectedFile"
                   class="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="saveFile"
                 >
                   ذخیره
                 </button>
                 <button 
-                  @click="formatCode"
                   :disabled="!selectedFile"
                   class="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  @click="formatCode"
                 >
                   فرمت کد
                 </button>
@@ -114,14 +114,14 @@
             <h2 class="text-xl font-semibold text-gray-900">ترمینال</h2>
             <div class="flex items-center space-x-2 space-x-reverse">
               <button 
-                @click="clearTerminal"
                 class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                @click="clearTerminal"
               >
                 پاک کردن
               </button>
               <button 
-                @click="executeCommand"
                 class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                @click="executeCommand"
               >
                 اجرا
               </button>
@@ -142,10 +142,10 @@
               <span class="text-green-400 font-mono text-sm mr-2">$</span>
               <input
                 v-model="currentCommand"
-                @keyup.enter="executeCommand"
                 type="text"
                 class="flex-1 bg-transparent text-gray-100 font-mono text-sm focus:outline-none"
                 placeholder="دستور را وارد کنید..."
+                @keyup.enter="executeCommand"
               />
             </div>
           </div>

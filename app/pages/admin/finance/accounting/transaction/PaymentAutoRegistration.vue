@@ -8,11 +8,11 @@
       </div>
       <div class="flex items-center space-x-3 space-x-reverse">
         <button
-          @click="toggleAutoRegistration"
           :class="[
             autoRegistrationEnabled ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-600 hover:bg-gray-700',
             'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
           ]"
+          @click="toggleAutoRegistration"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path v-if="autoRegistrationEnabled" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -21,8 +21,8 @@
           {{ autoRegistrationEnabled ? 'فعال' : 'غیرفعال' }}
         </button>
         <button
-          @click="showAddForm = true"
           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          @click="showAddForm = true"
         >
           <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -162,21 +162,21 @@
               <td class="py-3 px-4">
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <button
-                    @click="editMapping(mapping)"
                     class="p-1 text-blue-600 hover:text-blue-800"
                     title="ویرایش"
+                    @click="editMapping(mapping)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                     </svg>
                   </button>
                   <button
-                    @click="toggleMapping(mapping)"
                     :class="[
                       mapping.active ? 'text-red-600 hover:text-red-800' : 'text-green-600 hover:text-green-800'
                     ]"
                     class="p-1"
                     :title="mapping.active ? 'غیرفعال کردن' : 'فعال کردن'"
+                    @click="toggleMapping(mapping)"
                   >
                     <svg v-if="mapping.active" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728" />
@@ -234,21 +234,21 @@
               <td class="py-3 px-4">
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <button
-                    @click="editRule(rule)"
                     class="p-1 text-blue-600 hover:text-blue-800"
                     title="ویرایش"
+                    @click="editRule(rule)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                     </svg>
                   </button>
                   <button
-                    @click="toggleRule(rule)"
                     :class="[
                       rule.active ? 'text-red-600 hover:text-red-800' : 'text-green-600 hover:text-green-800'
                     ]"
                     class="p-1"
                     :title="rule.active ? 'غیرفعال کردن' : 'فعال کردن'"
+                    @click="toggleRule(rule)"
                   >
                     <svg v-if="rule.active" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728" />
@@ -258,9 +258,9 @@
                     </svg>
                   </button>
                   <button
-                    @click="deleteRule(rule)"
                     class="p-1 text-red-600 hover:text-red-800"
                     title="حذف"
+                    @click="deleteRule(rule)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

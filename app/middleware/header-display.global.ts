@@ -57,11 +57,11 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
           headerDisplayState.value.isFetching = true
 
           // بارگذاری هدرها از سرور
-          const response = await $fetch('/api/header-settings') as { success: boolean; data: any[] }
+          const response = await $fetch('/api/header-settings') as { success: boolean; data: Record<string, any>[] }
 
           if (response && response.success && response.data) {
                const headers = response.data
-               const activeHeader = headers.find((header: any) => header.is_active)
+               const activeHeader = headers.find((header: Record<string, any>) => header.is_active)
 
                if (activeHeader) {
                     // استفاده از نام‌های صحیح فیلدهای دیتابیس
@@ -170,7 +170,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
                     }
                }
           }
-     } catch (error) {
+     } catch (_error) {
           // خطا در میدل‌ور نمایش هدر
 
           // در صورت خطا، هدر را نمایش بده

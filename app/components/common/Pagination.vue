@@ -17,8 +17,8 @@
             <span class="text-sm text-gray-700">نمایش:</span>
             <select 
               :value="itemsPerPage || 10"
-              @change="(event) => $emit('items-per-page-changed', parseInt((event.target as HTMLSelectElement).value))"
               class="text-sm border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              @change="(event) => $emit('items-per-page-changed', parseInt((event.target as HTMLSelectElement).value))"
             >
               <option v-for="option in itemsPerPageOptions" :key="option" :value="option">
                 {{ option }}
@@ -30,7 +30,6 @@
           <nav class="flex items-center space-x-1">
             <!-- دکمه صفحه قبل -->
             <button
-              @click="previousPage"
               :disabled="currentPage === 1"
               :class="[
                 'px-2 py-1 text-sm font-medium rounded-md border',
@@ -38,6 +37,7 @@
                   ? 'text-gray-400 border-gray-300 cursor-not-allowed bg-gray-50' 
                   : 'text-gray-700 border-gray-300 hover:bg-gray-50 hover:text-gray-900'
               ]"
+              @click="previousPage"
             >
               قبلی
             </button>
@@ -45,13 +45,13 @@
             <!-- شماره صفحات -->
             <template v-for="page in visiblePages" :key="page">
               <button
-                @click="goToPage(page)"
                 :class="[
                   'px-3 py-1 text-sm font-medium rounded-md border',
                   page === currentPage
                     ? 'text-blue-600 border-blue-600 bg-blue-50'
                     : 'text-gray-700 border-gray-300 hover:bg-gray-50 hover:text-gray-900'
                 ]"
+                @click="goToPage(page)"
               >
                 {{ page }}
               </button>
@@ -59,7 +59,6 @@
             
             <!-- دکمه صفحه بعد -->
             <button
-              @click="nextPage"
               :disabled="currentPage === totalPages"
               :class="[
                 'px-2 py-1 text-sm font-medium rounded-md border',
@@ -67,6 +66,7 @@
                   ? 'text-gray-400 border-gray-300 cursor-not-allowed bg-gray-50' 
                   : 'text-gray-700 border-gray-300 hover:bg-gray-50 hover:text-gray-900'
               ]"
+              @click="nextPage"
             >
               بعدی
             </button>
@@ -97,7 +97,7 @@ const visiblePages = computed(() => {
   const pages = []
   const maxVisible = 5
   let start = Math.max(1, props.currentPage - Math.floor(maxVisible / 2))
-  let end = Math.min(props.totalPages, start + maxVisible - 1)
+  const end = Math.min(props.totalPages, start + maxVisible - 1)
   
   if (end - start + 1 < maxVisible) {
     start = Math.max(1, end - maxVisible + 1)

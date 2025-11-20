@@ -24,15 +24,18 @@
   </div>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ user: any, open: boolean }>();
-// Tabs are removed for now, but keep imports for future use
-import UserProfileTab from './UserProfileTab.vue';
-import UserActivityTab from './UserActivityTab.vue';
-import UserOrdersTab from './UserOrdersTab.vue';
-import UserBehaviorTab from './UserBehaviorTab.vue';
-import UserAdminActionsTab from './UserAdminActionsTab.vue';
+import type { User } from '~/types/user';
 
-function handleAction(action: string) {
+defineProps<{ user: User, open: boolean }>();
+defineEmits(['close']);
+// Tabs are removed for now, but keep imports for future use
+import UserActivityTab from './UserActivityTab.vue';
+import UserAdminActionsTab from './UserAdminActionsTab.vue';
+import UserBehaviorTab from './UserBehaviorTab.vue';
+import UserOrdersTab from './UserOrdersTab.vue';
+import UserProfileTab from './UserProfileTab.vue';
+
+function handleAction(_action: string) {
   // Placeholder for admin actions (block, reset password, etc.)
 }
 </script>

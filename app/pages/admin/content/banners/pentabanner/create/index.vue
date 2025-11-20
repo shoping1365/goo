@@ -6,9 +6,9 @@
         <h1 class="text-2xl font-bold text-gray-800">ایجاد {{ widget?.title || 'ابزارک' }}</h1>
         <div class="flex items-center gap-6">
           <button
-            @click="saveWidget"
             :disabled="isSaving"
             class="bg-green-500 text-white px-6 py-2 rounded-md font-bold hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            @click="saveWidget"
           >
             <svg v-if="isSaving" class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -19,13 +19,13 @@
             {{ isSaving ? 'در حال ذخیره...' : 'ذخیره' }}
           </button>
           <TemplateButton
-            @click="$router.push('/admin/content/banners')"
-            bgGradient="bg-gradient-to-r from-purple-400 to-purple-600"
-            textColor="text-white"
-            borderColor="border border-purple-500"
-            hoverClass="hover:from-purple-500 hover:to-purple-700"
+            bg-gradient="bg-gradient-to-r from-purple-400 to-purple-600"
+            text-color="text-white"
+            border-color="border border-purple-500"
+            hover-class="hover:from-purple-500 hover:to-purple-700"
             size="medium"
             class="flex items-center gap-2"
+            @click="$router.push('/admin/content/banners')"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -65,9 +65,9 @@
             style="font-family: 'Yekan', sans-serif;"
             :class="{ 'border-red-500 focus:ring-red-500': titleError }"
             placeholder="عنوان ابزارک را وارد کنید"
+            required
             @input="validateTitle"
             @blur="validateTitle"
-            required
           />
         </div>
 
@@ -131,9 +131,9 @@
              <h3 class="text-lg font-bold text-gray-700">تنظیمات دسکتاپ</h3>
              <div class="flex items-center gap-2 border-2 border-blue-200 rounded-lg p-1 bg-blue-50">
                <input
-                 type="checkbox"
                  id="easyLoad"
                  v-model="sliderConfig.easy_load_enabled"
+                 type="checkbox"
                  class="w-4 h-4 text-blue-600 bg-blue-100 border-blue-300 rounded focus:ring-blue-500 focus:ring-2"
                />
                <label for="easyLoad" class="text-sm font-medium text-blue-700">لیزی لود</label>
@@ -170,8 +170,8 @@
              <div v-if="sliderConfig.bg_enabled">
                <label class="block mb-2 text-sm font-medium text-gray-700">رنگ پس‌زمینه</label>
                <input
-                 type="color"
                  v-model="sliderConfig.bg_color"
+                 type="color"
                  class="w-full h-8 border border-gray-300 rounded-md"
                />
              </div>
@@ -198,8 +198,8 @@
                    <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 1</label>
                    <select
                      v-model="sliderConfig.banner1_ratio"
-                     @change="updateBannerRatios('banner1')"
                      class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+                     @change="updateBannerRatios('banner1')"
                    >
                      <option :value="20">20%</option>
                      <option :value="25">25%</option>
@@ -214,8 +214,8 @@
                    <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 2</label>
                    <select
                      v-model="sliderConfig.banner2_ratio"
-                     @change="updateBannerRatios('banner2')"
                      class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+                     @change="updateBannerRatios('banner2')"
                    >
                      <option :value="15">15%</option>
                      <option :value="20">20%</option>
@@ -230,8 +230,8 @@
                    <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 3</label>
                    <select
                      v-model="sliderConfig.banner3_ratio"
-                     @change="updateBannerRatios('banner3')"
                      class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+                     @change="updateBannerRatios('banner3')"
                    >
                      <option :value="15">15%</option>
                      <option :value="20">20%</option>
@@ -246,8 +246,8 @@
                    <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 4</label>
                    <select
                      v-model="sliderConfig.banner4_ratio"
-                     @change="updateBannerRatios('banner4')"
                      class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+                     @change="updateBannerRatios('banner4')"
                    >
                      <option :value="15">15%</option>
                      <option :value="20">20%</option>
@@ -262,8 +262,8 @@
                    <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 5</label>
                    <select
                      v-model="sliderConfig.banner5_ratio"
-                     @change="updateBannerRatios('banner5')"
                      class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+                     @change="updateBannerRatios('banner5')"
                    >
                      <option :value="15">15%</option>
                      <option :value="20">20%</option>
@@ -277,8 +277,8 @@
              <div>
                <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ بالا (px)</label>
                <input
-                 type="number"
                  v-model="sliderConfig.padding_top"
+                 type="number"
                  min="0"
                  max="100"
                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
@@ -290,8 +290,8 @@
              <div>
                <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ پایین (px)</label>
                <input
-                 type="number"
                  v-model="sliderConfig.padding_bottom"
+                 type="number"
                  min="0"
                  max="100"
                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
@@ -303,8 +303,8 @@
              <div>
                <label class="block mb-2 text-sm font-medium text-gray-700">مارجین راست (px)</label>
                <input
-                 type="number"
                  v-model="sliderConfig.margin_right"
+                 type="number"
                  min="0"
                  max="100"
                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
@@ -316,8 +316,8 @@
              <div>
                <label class="block mb-2 text-sm font-medium text-gray-700">مارجین چپ (px)</label>
                <input
-                 type="number"
                  v-model="sliderConfig.margin_left"
+                 type="number"
                  min="0"
                  max="100"
                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
@@ -620,16 +620,16 @@
           </div>
           <div class="flex gap-2">
             <button
-              @click="editSlide(idx)"
               class="text-blue-500 hover:text-blue-700 p-1"
+              @click="editSlide(idx)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 11l6 6M3 17v4h4l10.293-10.293a1 1 0 00-1.414-1.414L3 17z"></path>
               </svg>
             </button>
             <button
-              @click="removeSlide(idx)"
               class="text-red-500 hover:text-red-700 p-1"
+              @click="removeSlide(idx)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -644,13 +644,13 @@
 
      <!-- Slide Modal Component -->
     <SlideModal
-      :isVisible="showSliderModal"
-      :isEditing="editingSlideIndex !== null"
-      :slideData="editingSlide"
-      :showTitle="showTitleInSlide"
-      @update:isVisible="showSliderModal = $event"
-      @update:showTitle="showTitleInSlide = $event"
-      @update:slideData="editingSlide = $event"
+      :is-visible="showSliderModal"
+      :is-editing="editingSlideIndex !== null"
+      :slide-data="editingSlide"
+      :show-title="showTitleInSlide"
+      @update:is-visible="showSliderModal = $event"
+      @update:show-title="showTitleInSlide = $event"
+      @update:slide-data="editingSlide = $event"
       @save="handleSlideSave"
       @open-media-library="openMediaLibrary"
       @remove-image="removeImage"

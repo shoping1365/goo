@@ -56,8 +56,8 @@
             <input type="checkbox" :checked="w.is_active" @change="$emit('toggleActive', w)"/>
           </td>
           <td class="px-3 py-2 flex gap-3">
-            <button @click="$emit('edit', w)" class="text-blue-600 hover:underline">ویرایش</button>
-            <button @click="$emit('remove', w)" class="text-red-600 hover:underline">حذف</button>
+            <button class="text-blue-600 hover:underline" @click="$emit('edit', w)">ویرایش</button>
+            <button class="text-red-600 hover:underline" @click="$emit('remove', w)">حذف</button>
           </td>
         </tr>
       </tbody>
@@ -67,6 +67,8 @@
 
 <script setup>
 import { computed } from 'vue'
+
+defineEmits(['toggleSelectAll', 'sort', 'toggleSelect', 'setDefault', 'toggleActive', 'edit', 'remove'])
 
 const props = defineProps({
   items: { type: Array, default: () => [] },

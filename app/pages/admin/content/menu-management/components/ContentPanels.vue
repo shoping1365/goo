@@ -2,70 +2,70 @@
   <div class="space-y-4">
       <!-- Pages Section -->
       <ContentPanel
+        v-model:search-query="localSearchPages"
+        v-model:selected-items="localSelectedPages"
         panel-name="pages"
         title="برگه‌ها"
         :is-open="openPanel === 'pages'"
-        @toggle-panel="$emit('toggle-panel', 'pages')"
-        @add-selected="emitAddSelectedPages"
         :items="pages"
-        v-model:search-query="localSearchPages"
-        v-model:selected-items="localSelectedPages"
         :filtered-items="filteredPages"
         item-label="برگه"
         select-all-text="انتخاب همه"
         deselect-all-text="حذف انتخاب همه"
         add-button-text="افزودن برگه‌های انتخاب شده"
+        @toggle-panel="$emit('toggle-panel', 'pages')"
+        @add-selected="emitAddSelectedPages"
       />
 
       <!-- Posts Section -->
       <ContentPanel
+        v-model:search-query="localSearchPosts"
+        v-model:selected-items="localSelectedPosts"
         panel-name="posts"
         title="نوشته‌ها"
         :is-open="openPanel === 'posts'"
-        @toggle-panel="$emit('toggle-panel', 'posts')"
-        @add-selected="emitAddSelectedPosts"
         :items="posts"
-        v-model:search-query="localSearchPosts"
-        v-model:selected-items="localSelectedPosts"
         :filtered-items="filteredPosts"
         item-label="نوشته"
         select-all-text="انتخاب همه"
         deselect-all-text="حذف انتخاب همه"
         add-button-text="افزودن نوشته‌های انتخاب شده"
+        @toggle-panel="$emit('toggle-panel', 'posts')"
+        @add-selected="emitAddSelectedPosts"
       />
 
       <!-- Categories Section -->
       <ContentPanel
+        v-model:search-query="localSearchCategories"
+        v-model:selected-items="localSelectedCategories"
         panel-name="categories"
         title="دسته‌بندی‌ها"
         :is-open="openPanel === 'categories'"
-        @toggle-panel="$emit('toggle-panel', 'categories')"
-        @add-selected="emitAddSelectedCategories"
         :items="categories"
-        v-model:search-query="localSearchCategories"
-        v-model:selected-items="localSelectedCategories"
         :filtered-items="filteredCategories"
         item-label="دسته‌بندی"
         select-all-text="انتخاب همه"
         deselect-all-text="حذف انتخاب همه"
         add-button-text="افزودن دسته‌بندی‌های انتخاب شده"
+        @toggle-panel="$emit('toggle-panel', 'categories')"
+        @add-selected="emitAddSelectedCategories"
       />
 
       <!-- Product Categories Section -->
       <ContentPanel
+        v-model:search-query="localSearchProductCategories"
+        v-model:selected-items="localSelectedProductCategories"
         panel-name="productCategories"
         title="دسته‌های محصولات"
         :is-open="openPanel === 'productCategories'"
-        @toggle-panel="$emit('toggle-panel', 'productCategories')"
-        @add-selected="emitAddSelectedProductCategories"
         :items="productCategories"
-        v-model:search-query="localSearchProductCategories"
-        v-model:selected-items="localSelectedProductCategories"
         :filtered-items="filteredProductCategories"
         item-label="دسته محصول"
         select-all-text="انتخاب همه"
         deselect-all-text="حذف انتخاب همه"
         add-button-text="افزودن دسته‌های انتخاب شده"
+        @toggle-panel="$emit('toggle-panel', 'productCategories')"
+        @add-selected="emitAddSelectedProductCategories"
       />
   </div>
 </template>

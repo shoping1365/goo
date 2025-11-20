@@ -9,46 +9,46 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button
-            @click="activeTab = 'overview'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'overview'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'overview'"
           >
             نمای کلی
           </button>
           <button
-            @click="activeTab = 'settings'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'settings'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'settings'"
           >
             تنظیمات
           </button>
           <button
-            @click="activeTab = 'templates'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'templates'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'templates'"
           >
             قالب‌ها
           </button>
           <button
-            @click="activeTab = 'history'"
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === 'history'
                 ? 'bg-blue-100 text-blue-700 border border-blue-200'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]"
+            @click="activeTab = 'history'"
           >
             تاریخچه
           </button>
@@ -122,9 +122,11 @@
             <h3 class="text-lg font-semibold text-gray-900 mb-4">روند اعلان‌ها (7 روز گذشته)</h3>
             <div class="h-64 flex items-end space-x-2 space-x-reverse overflow-x-auto">
               <div v-for="(day, index) in notificationTrend" :key="index" class="flex-shrink-0 flex flex-col items-center min-w-16">
-                <div class="w-full bg-gray-200 rounded-t relative"
+                <div
+class="w-full bg-gray-200 rounded-t relative"
                      :style="{ height: getChartHeight(day.count) + 'px' }">
-                  <div class="w-full bg-gradient-to-t from-blue-500 to-blue-600 rounded-t transition-all duration-300 absolute bottom-0"
+                  <div
+class="w-full bg-gradient-to-t from-blue-500 to-blue-600 rounded-t transition-all duration-300 absolute bottom-0"
                        :style="{ height: getChartHeight(day.count) + 'px' }"></div>
                 </div>
                 <span class="text-xs text-gray-500 mt-1 text-center">{{ day.date }}</span>
@@ -175,7 +177,7 @@
                       <p class="text-xs text-gray-600">ارسال اعلان‌ها از طریق ایمیل</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" v-model="notificationSettings.email.enabled" class="sr-only peer">
+                      <input v-model="notificationSettings.email.enabled" type="checkbox" class="sr-only peer">
                       <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                     </label>
                   </div>
@@ -198,7 +200,7 @@
                       <p class="text-xs text-gray-600">ارسال اعلان‌ها از طریق پیامک</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" v-model="notificationSettings.sms.enabled" class="sr-only peer">
+                      <input v-model="notificationSettings.sms.enabled" type="checkbox" class="sr-only peer">
                       <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                     </label>
                   </div>
@@ -225,7 +227,7 @@
                   <p class="text-sm text-gray-600">اعلان برای تراکنش‌های جدید</p>
                 </div>
                 <label class="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" v-model="notificationSettings.transaction.enabled" class="sr-only peer">
+                  <input v-model="notificationSettings.transaction.enabled" type="checkbox" class="sr-only peer">
                   <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>
@@ -235,7 +237,7 @@
                   <p class="text-sm text-gray-600">اعلان برای درخواست‌های برداشت</p>
                 </div>
                 <label class="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" v-model="notificationSettings.withdrawal.enabled" class="sr-only peer">
+                  <input v-model="notificationSettings.withdrawal.enabled" type="checkbox" class="sr-only peer">
                   <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>
@@ -245,13 +247,13 @@
                   <p class="text-sm text-gray-600">اعلان برای رویدادهای امنیتی</p>
                 </div>
                 <label class="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" v-model="notificationSettings.security.enabled" class="sr-only peer">
+                  <input v-model="notificationSettings.security.enabled" type="checkbox" class="sr-only peer">
                   <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>
             </div>
             <div class="mt-6">
-              <button @click="saveNotificationSettings" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+              <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors" @click="saveNotificationSettings">
                 ذخیره تنظیمات
               </button>
             </div>
@@ -289,7 +291,7 @@
                 <p class="text-xs text-gray-500 mt-1">متغیرهای قابل استفاده: &#123;&#123;user_name&#125;&#125;, &#123;&#123;amount&#125;&#125;, &#123;&#123;transaction_id&#125;&#125;, &#123;&#123;date&#125;&#125;</p>
               </div>
               <div class="md:col-span-2">
-                <button @click="createTemplate" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors" @click="createTemplate">
                   ایجاد قالب
                 </button>
               </div>
@@ -374,10 +376,10 @@
               </div>
             </div>
             <div class="mt-4 flex space-x-2 space-x-reverse">
-              <button @click="applyHistoryFilters" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+              <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" @click="applyHistoryFilters">
                 اعمال فیلتر
               </button>
-              <button @click="clearHistoryFilters" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+              <button class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors" @click="clearHistoryFilters">
                 پاک کردن
               </button>
             </div>

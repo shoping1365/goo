@@ -9,8 +9,8 @@
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
           <button
-            @click="runAllTests"
             class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            @click="runAllTests"
           >
             <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -27,13 +27,13 @@
         <button
           v-for="tab in tabs"
           :key="tab.id"
-          @click="activeTab = tab.id"
           :class="[
             activeTab === tab.id
               ? 'border-blue-500 text-blue-600'
               : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
             'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'
           ]"
+          @click="activeTab = tab.id"
         >
           {{ tab.name }}
         </button>

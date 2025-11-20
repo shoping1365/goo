@@ -8,13 +8,13 @@
           <p class="text-sm text-gray-500">مدیریت و تنظیم درگاه‌های پرداخت</p>
         </div>
         <TemplateButton
-          @click="openAddModal"
-          bgGradient="bg-gradient-to-r from-emerald-500 to-teal-600"
-          textColor="text-white"
-          borderColor="border border-emerald-500"
-          hoverClass="hover:from-emerald-600 hover:to-teal-700"
-          focusClass="focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+          bg-gradient="bg-gradient-to-r from-emerald-500 to-teal-600"
+          text-color="text-white"
+          border-color="border border-emerald-500"
+          hover-class="hover:from-emerald-600 hover:to-teal-700"
+          focus-class="focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
           size="medium"
+          @click="openAddModal"
         >
           <Icon name="heroicons:plus" class="w-4 h-4 mr-2" />
           افزودن درگاه جدید
@@ -97,7 +97,8 @@
                       getStatusClass(gateway.status)
                     ]"
                   >
-                    <div :class="[
+                    <div
+:class="[
                       'w-2 h-2 rounded-full mr-2',
                       gateway.status === 'active' ? 'bg-green-400' : 
                       gateway.status === 'inactive' ? 'bg-gray-400' : 'bg-yellow-400'
@@ -122,15 +123,15 @@
             <div class="flex flex-col space-y-2">
               <!-- Test Connection -->
               <TemplateButton
-                @click="testConnection(gateway.id)"
                 :disabled="testingConnection === gateway.id"
-                bgGradient="bg-gradient-to-r from-blue-100 to-blue-200"
-                textColor="text-blue-700"
-                borderColor="border border-blue-200"
-                hoverClass="hover:from-blue-200 hover:to-blue-300"
-                focusClass="focus:ring-2 focus:ring-blue-200 focus:ring-offset-2"
+                bg-gradient="bg-gradient-to-r from-blue-100 to-blue-200"
+                text-color="text-blue-700"
+                border-color="border border-blue-200"
+                hover-class="hover:from-blue-200 hover:to-blue-300"
+                focus-class="focus:ring-2 focus:ring-blue-200 focus:ring-offset-2"
                 size="medium"
-                :customClass="testingConnection === gateway.id ? 'opacity-50 cursor-not-allowed' : ''"
+                :custom-class="testingConnection === gateway.id ? 'opacity-50 cursor-not-allowed' : ''"
+                @click="testConnection(gateway.id)"
               >
                 <Icon
                   :name="testingConnection === gateway.id ? 'heroicons:arrow-path' : 'heroicons:signal'"
@@ -144,13 +145,13 @@
 
               <!-- Edit -->
               <TemplateButton
-                @click="editGateway(gateway)"
-                bgGradient="bg-gradient-to-r from-purple-100 to-purple-200"
-                textColor="text-purple-700"
-                borderColor="border border-purple-200"
-                hoverClass="hover:from-purple-200 hover:to-purple-300"
-                focusClass="focus:ring-2 focus:ring-purple-200 focus:ring-offset-2"
+                bg-gradient="bg-gradient-to-r from-purple-100 to-purple-200"
+                text-color="text-purple-700"
+                border-color="border border-purple-200"
+                hover-class="hover:from-purple-200 hover:to-purple-300"
+                focus-class="focus:ring-2 focus:ring-purple-200 focus:ring-offset-2"
                 size="medium"
+                @click="editGateway(gateway)"
               >
                 <Icon name="heroicons:pencil-square" class="w-4 h-4 mr-2" />
                 ویرایش
@@ -158,13 +159,13 @@
 
               <!-- Toggle Status -->
               <TemplateButton
-                @click="toggleStatus(gateway)"
-                :bgGradient="gateway.status === 'active' ? 'bg-gradient-to-r from-yellow-100 to-yellow-200' : 'bg-gradient-to-r from-green-100 to-green-200'"
-                :textColor="gateway.status === 'active' ? 'text-yellow-700' : 'text-green-700'"
-                :borderColor="gateway.status === 'active' ? 'border border-yellow-200' : 'border border-green-200'"
-                :hoverClass="gateway.status === 'active' ? 'hover:from-yellow-200 hover:to-yellow-300' : 'hover:from-green-200 hover:to-green-300'"
-                :focusClass="gateway.status === 'active' ? 'focus:ring-2 focus:ring-yellow-200 focus:ring-offset-2' : 'focus:ring-2 focus:ring-green-200 focus:ring-offset-2'"
+                :bg-gradient="gateway.status === 'active' ? 'bg-gradient-to-r from-yellow-100 to-yellow-200' : 'bg-gradient-to-r from-green-100 to-green-200'"
+                :text-color="gateway.status === 'active' ? 'text-yellow-700' : 'text-green-700'"
+                :border-color="gateway.status === 'active' ? 'border border-yellow-200' : 'border border-green-200'"
+                :hover-class="gateway.status === 'active' ? 'hover:from-yellow-200 hover:to-yellow-300' : 'hover:from-green-200 hover:to-green-300'"
+                :focus-class="gateway.status === 'active' ? 'focus:ring-2 focus:ring-yellow-200 focus:ring-offset-2' : 'focus:ring-2 focus:ring-green-200 focus:ring-offset-2'"
                 size="medium"
+                @click="toggleStatus(gateway)"
               >
                 <Icon
                   :name="gateway.status === 'active' ? 'heroicons:pause' : 'heroicons:play'"
@@ -175,13 +176,13 @@
 
               <!-- Delete -->
               <TemplateButton
-                @click="confirmDelete(gateway)"
-                bgGradient="bg-gradient-to-r from-red-100 to-red-200"
-                textColor="text-red-700"
-                borderColor="border border-red-200"
-                hoverClass="hover:from-red-200 hover:to-red-300"
-                focusClass="focus:ring-2 focus:ring-red-200 focus:ring-offset-2"
+                bg-gradient="bg-gradient-to-r from-red-100 to-red-200"
+                text-color="text-red-700"
+                border-color="border border-red-200"
+                hover-class="hover:from-red-200 hover:to-red-300"
+                focus-class="focus:ring-2 focus:ring-red-200 focus:ring-offset-2"
                 size="medium"
+                @click="confirmDelete(gateway)"
               >
                 <Icon name="heroicons:trash" class="w-4 h-4 mr-2" />
                 حذف
@@ -278,14 +279,14 @@
                 </div>
           <div class="items-center px-4 py-3">
             <TemplateButton
-              @click="closeTestResult"
-              bgGradient="bg-gradient-to-r from-gray-500 to-gray-600"
-              textColor="text-white"
-              borderColor="border border-gray-500"
-              hoverClass="hover:from-gray-600 hover:to-gray-700"
-              focusClass="focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+              bg-gradient="bg-gradient-to-r from-gray-500 to-gray-600"
+              text-color="text-white"
+              border-color="border border-gray-500"
+              hover-class="hover:from-gray-600 hover:to-gray-700"
+              focus-class="focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
               size="medium"
-              customClass="w-full"
+              custom-class="w-full"
+              @click="closeTestResult"
             >
               بستن
             </TemplateButton>
@@ -318,27 +319,27 @@
           </div>
           <div class="flex items-center space-x-3 space-x-reverse px-4 py-3">
             <TemplateButton
-              @click="closeDeleteModal"
-              bgGradient="bg-gradient-to-r from-gray-500 to-gray-600"
-              textColor="text-white"
-              borderColor="border border-gray-500"
-              hoverClass="hover:from-gray-600 hover:to-gray-700"
-              focusClass="focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+              bg-gradient="bg-gradient-to-r from-gray-500 to-gray-600"
+              text-color="text-white"
+              border-color="border border-gray-500"
+              hover-class="hover:from-gray-600 hover:to-gray-700"
+              focus-class="focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
               size="medium"
-              customClass="flex-1"
+              custom-class="flex-1"
+              @click="closeDeleteModal"
             >
               انصراف
             </TemplateButton>
             <TemplateButton
-              @click="deleteGateway"
               :disabled="deleting"
-              bgGradient="bg-gradient-to-r from-red-300 to-pink-400"
-              textColor="text-white"
-              borderColor="border border-red-300"
-              hoverClass="hover:from-red-400 hover:to-pink-500"
-              focusClass="focus:ring-2 focus:ring-red-300 focus:ring-offset-2"
+              bg-gradient="bg-gradient-to-r from-red-300 to-pink-400"
+              text-color="text-white"
+              border-color="border border-red-300"
+              hover-class="hover:from-red-400 hover:to-pink-500"
+              focus-class="focus:ring-2 focus:ring-red-300 focus:ring-offset-2"
               size="medium"
-              customClass="flex-1"
+              custom-class="flex-1"
+              @click="deleteGateway"
             >
               <Icon v-if="deleting" name="heroicons:arrow-path" class="w-4 h-4 mr-2 animate-spin" />
               {{ deleting ? 'در حال حذف...' : 'حذف' }}

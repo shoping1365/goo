@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
   try {
     const start = Date.now()
     // اگر بک‌اند مسیر اختصاصی نداشت، 501 بدهیم
-    const data: any = await $fetch(`${base}/health/query`, {
+    const data = await $fetch(`${base}/health/query`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', cookie: getHeader(event, 'cookie') || '' },
       body: { query }
@@ -28,19 +28,19 @@ export default defineEventHandler(async (event) => {
       const elapsed = Date.now() - start
       // @ts-ignore
       const { logs } = await import('../admin/system/custom-query-logs.get')
-      if (Array.isArray((logs as any))) {
-        (logs as any).push({
+      if (Array.isArray((logs as unknown[]))) {
+        (logs as unknown[]).push({
           id: Date.now(),
           executed_at: new Date().toISOString(),
           response_time_ms: elapsed,
           query,
-          result: JSON.stringify(data?.result ?? data)
+          result: JSON.stringify((data as any)?.result ?? data)
         })
       }
     } catch {}
 
     return data
-  } catch (err: any) {
+  } catch (_err: unknown) {
     throw createError({ statusCode: 501, message: 'پشتیبانی در بک‌اند موجود نیست' })
   }
 })

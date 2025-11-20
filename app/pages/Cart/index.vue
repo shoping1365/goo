@@ -39,11 +39,11 @@
                   <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="6" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="18" r="1.5"/></svg>
                 </button>
                 <div v-if="showActions" class="absolute left-0 mt-2 w-48 bg-white rounded-2xl shadow-lg p-2 text-sm z-20">
-                  <button @click="moveAllToNext" class="flex items-center justify-between w-full px-3 py-2 hover:text-[#008eb2]">
+                  <button class="flex items-center justify-between w-full px-3 py-2 hover:text-[#008eb2]" @click="moveAllToNext">
                     <span>انتقال همه به خرید بعدی</span>
                     <i class="ri-calendar-2-line"></i>
                   </button>
-                  <button @click="removeAll" class="flex items-center justify-between w-full px-3 py-2 text-red-600 hover:text-red-700">
+                  <button class="flex items-center justify-between w-full px-3 py-2 text-red-600 hover:text-red-700" @click="removeAll">
                     <span>حذف همه</span>
                     <i class="ri-delete-bin-6-line"></i>
                   </button>
@@ -91,21 +91,18 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import CartList from './CartList.vue'
-import CartSummary from './CartSummary.vue'
 import CartRecommendations from './CartRecommendations.vue'
+import CartSummary from './CartSummary.vue'
 
 // استفاده از composable سبد خرید
 const { 
   cartItems, 
-  cartCount, 
   cartTotal, 
-  loading, 
   fetchCart, 
   updateCartItem, 
   removeFromCart,
-  addToCart,
   moveCartItemToNext,
   moveCartItemToCart,
   clearCart
@@ -120,7 +117,7 @@ const showActions = ref(false)
 onMounted(async () => {
   try {
     await fetchCart()
-  } catch (error) {
+  } catch {
     // خطا در بارگذاری سبد خرید
   }
 })
@@ -155,7 +152,7 @@ async function changeQty({item, val}) {
       if (!result.success) {
         // نمایش پیام خطا
       }
-    } catch (error) {
+    } catch {
       // خطا در تغییر تعداد
     }
   }
@@ -174,8 +171,8 @@ async function removeAll() {
     if (result.success) {
       await fetchCart() // به‌روزرسانی سبد خرید
     }
-  } catch (error) {
-    console.error('خطا در حذف همه آیتم‌ها:', error)
+  } catch {
+    // console.error('خطا در حذف همه آیتم‌ها:', error)
   }
   showActions.value = false
 }

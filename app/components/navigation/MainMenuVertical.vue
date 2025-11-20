@@ -30,9 +30,9 @@
           
           <button 
             v-if="item.children && item.children.length > 0"
-            @click="toggleExpand(item.id)"
             class="expand-button"
             :class="{ rotated: expandedItems.includes(item.id) }"
+            @click="toggleExpand(item.id)"
           >
             <i class="fas fa-chevron-left expand-arrow"></i>
           </button>

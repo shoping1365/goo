@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 // props
-const props = defineProps({
+defineProps({
   title: String,
   author: String,
   date: String,

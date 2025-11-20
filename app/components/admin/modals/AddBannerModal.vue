@@ -3,24 +3,24 @@
     <!-- تب‌های انتخاب نوع -->
     <div class="flex border-b border-gray-200 mb-6">
       <button 
-        @click="activeTab = 'banner'"
         :class="[
           'px-6 py-3 font-medium text-sm border-b-2 transition-colors',
           activeTab === 'banner' 
             ? 'border-blue-500 text-blue-600' 
             : 'border-transparent text-gray-500 hover:text-gray-700'
         ]"
+        @click="activeTab = 'banner'"
       >
         بنر ساده
       </button>
       <button 
-        @click="activeTab = 'slider'"
         :class="[
           'px-6 py-3 font-medium text-sm border-b-2 transition-colors',
           activeTab === 'slider' 
             ? 'border-blue-500 text-blue-600' 
             : 'border-transparent text-gray-500 hover:text-gray-700'
         ]"
+        @click="activeTab = 'slider'"
       >
         اسلایدر
       </button>

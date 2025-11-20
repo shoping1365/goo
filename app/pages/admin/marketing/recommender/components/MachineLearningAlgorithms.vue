@@ -106,7 +106,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">Collaborative Filtering</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="algorithms.collaborative.enabled" class="sr-only peer">
+            <input v-model="algorithms.collaborative.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
           </label>
         </div>
@@ -123,13 +123,13 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">تعداد همسایه‌ها</label>
-            <input type="number" v-model="algorithms.collaborative.neighbors" min="5" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <input v-model="algorithms.collaborative.neighbors" type="number" min="5" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">وزن اهمیت</label>
             <div class="flex items-center space-x-4 space-x-reverse">
-              <input type="range" v-model="algorithms.collaborative.weight" min="0" max="100" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+              <input v-model="algorithms.collaborative.weight" type="range" min="0" max="100" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
               <span class="text-sm font-medium text-gray-900 w-12">{{ algorithms.collaborative.weight }}%</span>
             </div>
           </div>
@@ -153,7 +153,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">Content-Based Filtering</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="algorithms.contentBased.enabled" class="sr-only peer">
+            <input v-model="algorithms.contentBased.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
           </label>
         </div>
@@ -163,19 +163,19 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">ویژگی‌های محصول</label>
             <div class="space-y-2">
               <label class="flex items-center">
-                <input type="checkbox" v-model="algorithms.contentBased.features" value="category" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="algorithms.contentBased.features" type="checkbox" value="category" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">دسته‌بندی</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="algorithms.contentBased.features" value="brand" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="algorithms.contentBased.features" type="checkbox" value="brand" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">برند</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="algorithms.contentBased.features" value="price" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="algorithms.contentBased.features" type="checkbox" value="price" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">قیمت</span>
               </label>
               <label class="flex items-center">
-                <input type="checkbox" v-model="algorithms.contentBased.features" value="tags" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <input v-model="algorithms.contentBased.features" type="checkbox" value="tags" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
                 <span class="mr-2 text-sm text-gray-700">برچسب‌ها</span>
               </label>
             </div>
@@ -194,7 +194,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">وزن اهمیت</label>
             <div class="flex items-center space-x-4 space-x-reverse">
-              <input type="range" v-model="algorithms.contentBased.weight" min="0" max="100" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+              <input v-model="algorithms.contentBased.weight" type="range" min="0" max="100" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
               <span class="text-sm font-medium text-gray-900 w-12">{{ algorithms.contentBased.weight }}%</span>
             </div>
           </div>
@@ -221,7 +221,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">Matrix Factorization</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="algorithms.matrixFactorization.enabled" class="sr-only peer">
+            <input v-model="algorithms.matrixFactorization.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
           </label>
         </div>
@@ -229,23 +229,23 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">تعداد فاکتورها</label>
-            <input type="number" v-model="algorithms.matrixFactorization.factors" min="10" max="500" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+            <input v-model="algorithms.matrixFactorization.factors" type="number" min="10" max="500" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">نرخ یادگیری</label>
-            <input type="number" v-model="algorithms.matrixFactorization.learningRate" min="0.001" max="1" step="0.001" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+            <input v-model="algorithms.matrixFactorization.learningRate" type="number" min="0.001" max="1" step="0.001" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">تعداد epoch</label>
-            <input type="number" v-model="algorithms.matrixFactorization.epochs" min="10" max="1000" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+            <input v-model="algorithms.matrixFactorization.epochs" type="number" min="10" max="1000" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">وزن اهمیت</label>
             <div class="flex items-center space-x-4 space-x-reverse">
-              <input type="range" v-model="algorithms.matrixFactorization.weight" min="0" max="100" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+              <input v-model="algorithms.matrixFactorization.weight" type="range" min="0" max="100" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
               <span class="text-sm font-medium text-gray-900 w-12">{{ algorithms.matrixFactorization.weight }}%</span>
             </div>
           </div>
@@ -269,7 +269,7 @@
             <h3 class="text-lg font-semibold text-gray-900 mr-3">Deep Learning</h3>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" v-model="algorithms.deepLearning.enabled" class="sr-only peer">
+            <input v-model="algorithms.deepLearning.enabled" type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-600"></div>
           </label>
         </div>
@@ -287,18 +287,18 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">تعداد لایه‌ها</label>
-            <input type="number" v-model="algorithms.deepLearning.layers" min="2" max="10" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+            <input v-model="algorithms.deepLearning.layers" type="number" min="2" max="10" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">اندازه لایه</label>
-            <input type="number" v-model="algorithms.deepLearning.layerSize" min="32" max="512" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+            <input v-model="algorithms.deepLearning.layerSize" type="number" min="32" max="512" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">وزن اهمیت</label>
             <div class="flex items-center space-x-4 space-x-reverse">
-              <input type="range" v-model="algorithms.deepLearning.weight" min="0" max="100" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+              <input v-model="algorithms.deepLearning.weight" type="range" min="0" max="100" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
               <span class="text-sm font-medium text-gray-900 w-12">{{ algorithms.deepLearning.weight }}%</span>
             </div>
           </div>
@@ -323,7 +323,7 @@
           <h3 class="text-lg font-semibold text-gray-900 mr-3">Reinforcement Learning</h3>
         </div>
         <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" v-model="algorithms.reinforcement.enabled" class="sr-only peer">
+          <input v-model="algorithms.reinforcement.enabled" type="checkbox" class="sr-only peer">
           <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
         </label>
       </div>
@@ -342,12 +342,12 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">نرخ یادگیری</label>
-            <input type="number" v-model="algorithms.reinforcement.learningRate" min="0.001" max="1" step="0.001" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+            <input v-model="algorithms.reinforcement.learningRate" type="number" min="0.001" max="1" step="0.001" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">فاکتور تخفیف</label>
-            <input type="number" v-model="algorithms.reinforcement.discountFactor" min="0.1" max="1" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+            <input v-model="algorithms.reinforcement.discountFactor" type="number" min="0.1" max="1" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
           </div>
         </div>
         
@@ -365,7 +365,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">وزن اهمیت</label>
             <div class="flex items-center space-x-4 space-x-reverse">
-              <input type="range" v-model="algorithms.reinforcement.weight" min="0" max="100" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+              <input v-model="algorithms.reinforcement.weight" type="range" min="0" max="100" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
               <span class="text-sm font-medium text-gray-900 w-12">{{ algorithms.reinforcement.weight }}%</span>
             </div>
           </div>

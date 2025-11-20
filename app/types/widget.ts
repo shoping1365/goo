@@ -318,7 +318,7 @@ export interface CategoryItem {
   // فیلدهای اضافی برای فرم ویرایش
   searchTerm?: string;
   showDropdown?: boolean;
-  selectedCategory?: any;
+  selectedCategory?: Record<string, unknown>;
 }
 
 // Request/Response types

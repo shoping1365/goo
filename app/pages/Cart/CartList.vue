@@ -26,17 +26,17 @@
           <div class="font-bold text-lg text-[#1a2341]">{{ formatPrice((item.price || 0) * (item.qty || 1)) }}</div>
           
           <div v-if="!isNext" class="flex items-center gap-2 mt-1">
-            <button @click="$emit('change-qty', {item, val: item.qty+1})" class="qty-btn w-7 h-7 flex items-center justify-center rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-700">+</button>
+            <button class="qty-btn w-7 h-7 flex items-center justify-center rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-700" @click="$emit('change-qty', {item, val: item.qty+1})">+</button>
             <span class="w-5 text-center select-none">{{ item.qty }}</span>
-            <button v-if="item.qty > 1" @click="$emit('change-qty', {item, val: item.qty-1})" class="qty-btn w-7 h-7 flex items-center justify-center rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-700">-</button>
-            <button v-else @click="$emit('remove', item.id)" class="qty-btn w-7 h-7 flex items-center justify-center rounded-full border border-red-200 bg-white hover:bg-red-50">
+            <button v-if="item.qty > 1" class="qty-btn w-7 h-7 flex items-center justify-center rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-700" @click="$emit('change-qty', {item, val: item.qty-1})">-</button>
+            <button v-else class="qty-btn w-7 h-7 flex items-center justify-center rounded-full border border-red-200 bg-white hover:bg-red-50" @click="$emit('remove', item.id)">
               <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4a2 2 0 012 2v2H7V5a2 2 0 012-2zm0 0V3m0 0h4"/></svg>
             </button>
           </div>
           
           <div class="mt-2 text-right flex gap-2 justify-end">
-            <button v-if="!isNext" @click="$emit('move-to-next', item)" class="text-blue-500 text-xs hover:underline whitespace-nowrap">انتقال به خرید بعدی</button>
-            <button v-else @click="$emit('move-to-cart', item)" class="text-red-500 text-xs hover:underline whitespace-nowrap">انتقال به سبد خرید</button>
+            <button v-if="!isNext" class="text-blue-500 text-xs hover:underline whitespace-nowrap" @click="$emit('move-to-next', item)">انتقال به خرید بعدی</button>
+            <button v-else class="text-red-500 text-xs hover:underline whitespace-nowrap" @click="$emit('move-to-cart', item)">انتقال به سبد خرید</button>
           </div>
         </div>
       </div>
@@ -45,7 +45,8 @@
 </template>
 
 <script setup>
-const props = defineProps({ items: { type: Array, default: () => [] }, isNext: { type: Boolean, default: false } })
+defineProps({ items: { type: Array, default: () => [] }, isNext: { type: Boolean, default: false } })
+defineEmits(['change-qty', 'remove', 'move-to-next', 'move-to-cart'])
 function formatPrice(val) { return val.toLocaleString('fa-IR') + ' تومان' }
 </script>
 

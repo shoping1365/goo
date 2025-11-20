@@ -2,7 +2,7 @@
   <div class="p-6" dir="rtl">
     <!-- دکمه بازگشت -->
     <div class="flex justify-end mb-6">
-      <button @click="$router.back()" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2 space-x-reverse">
+      <button class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2 space-x-reverse" @click="$router.back()">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
         </svg>
@@ -54,7 +54,7 @@
         
         <!-- دکمه ویرایش جزئیات -->
         <div class="flex justify-end mt-6">
-          <button @click="saveBasicInfo" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+          <button class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors" @click="saveBasicInfo">
             ویرایش
           </button>
         </div>
@@ -207,7 +207,7 @@
         
         <!-- دکمه‌های عملیات -->
         <div class="flex justify-end space-x-4 space-x-reverse mt-6">
-          <button @click="saveAnswer" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+          <button class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors" @click="saveAnswer">
             ویرایش
           </button>
         </div>
@@ -216,7 +216,7 @@
 
     <!-- دکمه افزودن در پایین -->
     <div class="fixed bottom-6 left-6">
-      <button @click="addNewQuestion" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2 space-x-reverse shadow-lg">
+      <button class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2 space-x-reverse shadow-lg" @click="addNewQuestion">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
         </svg>
@@ -258,11 +258,11 @@ onMounted(() => {
 
 // تابع ذخیره اطلاعات پایه
 function saveBasicInfo() {
-  console.log('اطلاعات پایه ذخیره شد:', {
-    title: questionData.value.title,
-    siteTitle: questionData.value.siteTitle,
-    isActive: questionData.value.isActive
-  })
+  // console.log('اطلاعات پایه ذخیره شد:', {
+  //   title: questionData.value.title,
+  //   siteTitle: questionData.value.siteTitle,
+  //   isActive: questionData.value.isActive
+  // })
   
   // نمایش پیام موفقیت
   alert('اطلاعات پایه با موفقیت ذخیره شد!')
@@ -270,10 +270,10 @@ function saveBasicInfo() {
 
 // تابع ذخیره پاسخ
 function saveAnswer() {
-  console.log('پاسخ ذخیره شد:', {
-    question: questionData.value.question,
-    answer: questionData.value.answer
-  })
+  // console.log('پاسخ ذخیره شد:', {
+  //   question: questionData.value.question,
+  //   answer: questionData.value.answer
+  // })
   
   // نمایش پیام موفقیت
   alert('پاسخ با موفقیت ذخیره شد!')

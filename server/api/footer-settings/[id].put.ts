@@ -1,5 +1,5 @@
-import { defineEventHandler, getRouterParam, readBody, parseCookies, createError } from 'h3'
 import { useRuntimeConfig } from '#imports'
+import { createError, defineEventHandler, getRouterParam, parseCookies, readBody } from 'h3'
 
 interface FooterPayload {
      Title: string
@@ -8,12 +8,12 @@ interface FooterPayload {
      SpecificPages?: string
      ExcludedPages?: string
      IsActive: boolean
-     Layers?: any[]
+     Layers?: unknown[]
 }
 
 interface FooterResponse {
      success: boolean
-     data?: any
+     data?: unknown
      message?: string
 }
 
@@ -22,8 +22,6 @@ export default defineEventHandler(async (event): Promise<FooterResponse> => {
           const id = getRouterParam(event, 'id')
           const config = useRuntimeConfig()
           const body = await readBody(event) as FooterPayload
-
-          console.log('درخواست ویرایش فوتر:', id, body)
 
           if (!id) {
                throw createError({
@@ -79,22 +77,21 @@ export default defineEventHandler(async (event): Promise<FooterResponse> => {
 
           const responseData = await response.json()
 
-          console.log('پاسخ ویرایش فوتر:', responseData)
-
           return {
                success: true,
                data: responseData?.data || responseData,
                message: 'فوتر با موفقیت ویرایش شد'
           }
 
-     } catch (error: any) {
-          console.error('خطا در ویرایش فوتر:', error)
+     } catch (error: unknown) {
+          const err = error as { statusCode?: number; data?: any; message?: string; error?: string }
+          console.error('خطا در ویرایش فوتر:', err)
 
-          if (error.data) {
+          if (err.data) {
                throw createError({
-                    statusCode: error.statusCode || 500,
-                    message: error.data.message || error.data.error || 'خطا در ویرایش فوتر',
-                    data: error.data
+                    statusCode: err.statusCode || 500,
+                    message: err.data.message || err.data.error || 'خطا در ویرایش فوتر',
+                    data: err.data
                })
           }
 

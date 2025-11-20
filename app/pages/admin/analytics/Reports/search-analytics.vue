@@ -202,8 +202,8 @@ onMounted(() => {
         </div>
         <div class="flex gap-3">
           <button
-            @click="exportToCSV"
             class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
+            @click="exportToCSV"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
@@ -234,9 +234,9 @@ onMounted(() => {
           class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
         />
         <button
-          @click="fetchSearchAnalytics"
           :disabled="isLoading"
           class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+          @click="fetchSearchAnalytics"
         >
           {{ isLoading ? 'در حال بارگذاری...' : 'اعمال فیلتر' }}
         </button>
@@ -307,46 +307,46 @@ onMounted(() => {
       <div class="border-b border-gray-200">
         <nav class="flex -mb-px">
           <button
-            @click="activeTab = 'overview'"
             :class="[
               'px-6 py-4 text-sm font-medium border-b-2 transition-colors',
               activeTab === 'overview'
                 ? 'border-blue-600 text-blue-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             ]"
+            @click="activeTab = 'overview'"
           >
             نمای کلی
           </button>
           <button
-            @click="activeTab = 'logs'"
             :class="[
               'px-6 py-4 text-sm font-medium border-b-2 transition-colors',
               activeTab === 'logs'
                 ? 'border-blue-600 text-blue-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             ]"
+            @click="activeTab = 'logs'"
           >
             لاگ‌های جستجو
           </button>
           <button
-            @click="activeTab = 'popular'"
             :class="[
               'px-6 py-4 text-sm font-medium border-b-2 transition-colors',
               activeTab === 'popular'
                 ? 'border-blue-600 text-blue-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             ]"
+            @click="activeTab = 'popular'"
           >
             جستجوهای محبوب
           </button>
           <button
-            @click="activeTab = 'failed'"
             :class="[
               'px-6 py-4 text-sm font-medium border-b-2 transition-colors',
               activeTab === 'failed'
                 ? 'border-blue-600 text-blue-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             ]"
+            @click="activeTab = 'failed'"
           >
             جستجوهای ناموفق
           </button>
@@ -456,16 +456,16 @@ onMounted(() => {
           </div>
           <div class="flex gap-2">
             <button
-              @click="currentPage--"
               :disabled="currentPage === 1"
               class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+              @click="currentPage--"
             >
               قبلی
             </button>
             <button
-              @click="currentPage++"
               :disabled="currentPage === totalPages"
               class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+              @click="currentPage++"
             >
               بعدی
             </button>

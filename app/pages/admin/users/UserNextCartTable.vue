@@ -39,7 +39,10 @@
   </div>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ user: any }>();
+import type { User } from '~/types/user';
+
+defineProps<{ user: User }>();
+defineEmits(['view-all-next-cart', 'move-to-cart']);
 // Mock data for next cart
 const total = '۲٬۰۰۰٬۰۰۰';
 const nextCartItems = [

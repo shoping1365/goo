@@ -321,16 +321,16 @@
             </p>
             <ul class="text-xs text-blue-700 space-y-1">
               <li>• فیلدهای JSON باید در فرمت معتبر JSON باشند</li>
-              <li>• می‌توانید از متغیرهای پویا مانند <code class="bg-blue-100 px-1 rounded" v-pre>{{title}}</code> استفاده کنید</li>
-              <li>• مثال: <code class="bg-blue-100 px-1 rounded" v-pre>{"customField": "{{title}}", "nested": {"key": "{{author}}"}}</code></li>
+              <li>• می‌توانید از متغیرهای پویا مانند <code v-pre class="bg-blue-100 px-1 rounded">{{title}}</code> استفاده کنید</li>
+              <li>• مثال: <code v-pre class="bg-blue-100 px-1 rounded">{"customField": "{{title}}", "nested": {"key": "{{author}}"}}</code></li>
             </ul>
           </div>
           
           <div class="mt-4 flex justify-end gap-2">
-            <button v-if="isEditing" @click="cancelEdit" class="px-4 py-2 bg-gray-500 text-white rounded-md text-sm font-medium hover:bg-gray-600">
+            <button v-if="isEditing" class="px-4 py-2 bg-gray-500 text-white rounded-md text-sm font-medium hover:bg-gray-600" @click="cancelEdit">
               انصراف
             </button>
-            <button @click="isEditing ? updateCustomField() : addCustomField()" class="px-4 py-2 bg-purple-600 text-white rounded-md text-sm font-medium hover:bg-purple-700">
+            <button class="px-4 py-2 bg-purple-600 text-white rounded-md text-sm font-medium hover:bg-purple-700" @click="isEditing ? updateCustomField() : addCustomField()">
               {{ isEditing ? 'بروزرسانی فیلد' : 'افزودن فیلد' }}
             </button>
           </div>
@@ -352,10 +352,10 @@
                 </div>
               </div>
               <div class="flex gap-2">
-                <button @click="editCustomField(index)" class="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600">
+                <button class="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600" @click="editCustomField(index)">
                   ویرایش
                 </button>
-                <button @click="removeCustomField(index)" class="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600">
+                <button class="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600" @click="removeCustomField(index)">
                   حذف
                 </button>
               </div>
@@ -370,7 +370,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
           <div>
             <h3 class="font-medium text-yellow-800 mb-2">متغیرهای عمومی:</h3>
-            <ul class="space-y-1 text-yellow-700" v-pre>
+            <ul v-pre class="space-y-1 text-yellow-700">
               <li><code class="bg-yellow-100 px-1 rounded">{{title}}</code> - عنوان محتوا</li>
               <li><code class="bg-yellow-100 px-1 rounded">{{excerpt}}</code> - خلاصه محتوا</li>
               <li><code class="bg-yellow-100 px-1 rounded">{{content}}</code> - متن کامل محتوا</li>
@@ -380,7 +380,7 @@
           </div>
           <div>
             <h3 class="font-medium text-yellow-800 mb-2">متغیرهای مقاله:</h3>
-            <ul class="space-y-1 text-yellow-700" v-pre>
+            <ul v-pre class="space-y-1 text-yellow-700">
               <li><code class="bg-yellow-100 px-1 rounded">{{author}}</code> - نویسنده</li>
               <li><code class="bg-yellow-100 px-1 rounded">{{published_at}}</code> - تاریخ انتشار</li>
               <li><code class="bg-yellow-100 px-1 rounded">{{updated_at}}</code> - تاریخ بروزرسانی</li>
@@ -394,7 +394,7 @@
       <!-- دکمه‌ها -->
       <div class="flex justify-end gap-3 pt-4 border-t">
         <NuxtLink to="../SchemaManagement" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">بازگشت</NuxtLink>
-        <button type="submit" @click="handleSubmit" class="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700">ثبت تغییرات</button>
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700" @click="handleSubmit">ثبت تغییرات</button>
       </div>
     </div>
   </div>
@@ -402,11 +402,12 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string }) => void
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const useSchema: () => any
 </script>
 
 <script setup lang="ts">
-import { reactive, onMounted, computed, ref, watch } from 'vue'
+import { reactive, onMounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 // تعریف layout برای استفاده از سایدبار ادمین
@@ -540,22 +541,22 @@ function getFieldValue(fieldName: string): string {
 }
 
 // بررسی اعتبار فیلد
-function isValidField(field: {key: string, label: string, value: string, section?: string}): boolean {
-  if (field.key.trim() === '' || field.label.trim() === '') {
-    return false
-  }
-  
-  // بررسی اعتبار JSON برای بخش JSON
-  if (field.section === 'json' && field.value.trim() !== '') {
-    try {
-      JSON.parse(field.value)
-    } catch (e) {
-      return false
-    }
-  }
-  
-  return true
-}
+// function isValidField(field: {key: string, label: string, value: string, section?: string}): boolean {
+//   if (field.key.trim() === '' || field.label.trim() === '') {
+//     return false
+//   }
+//   
+//   // بررسی اعتبار JSON برای بخش JSON
+//   if (field.section === 'json' && field.value.trim() !== '') {
+//     try {
+//       JSON.parse(field.value)
+//     } catch (e) {
+//       return false
+//     }
+//   }
+//   
+//   return true
+// }
 
 // دریافت برچسب بخش
 function getSectionLabel(section: string): string {
@@ -677,7 +678,7 @@ onMounted(async () => {
   if (schemaId) {
     try {
       // دریافت اطلاعات اسکیما از فایل JSON
-      console.log('Loading schema with ID:', schemaId)
+      // console.log('Loading schema with ID:', schemaId)
       const { fetchTemplateById } = useSchema()
       const schemaData = await fetchTemplateById(schemaId as string)
       
@@ -708,7 +709,7 @@ onMounted(async () => {
           form.ogSiteName = schemaData.openGraph.site_name || form.ogSiteName
         }
         
-        console.log('Schema loaded successfully:', schemaData)
+        // console.log('Schema loaded successfully:', schemaData)
       } else {
         console.warn('Schema not found:', schemaId)
         alert('اسکیما مورد نظر یافت نشد!')
@@ -718,7 +719,7 @@ onMounted(async () => {
       alert('خطا در بارگذاری اسکیما!')
     }
   } else {
-    console.log('No schema ID provided, using default form')
+    // console.log('No schema ID provided, using default form')
   }
 })
 
@@ -737,8 +738,8 @@ function handleSubmit() {
   }
   
   // اینجا باید ذخیره‌سازی واقعی انجام شود (مثلاً API)
-  console.log('Saving schema:', schemaData)
-  console.log('Custom fields to save:', customFields)
+  // console.log('Saving schema:', schemaData)
+  // console.log('Custom fields to save:', customFields)
   
   // نمایش پیام موفقیت
   alert('تغییرات اسکیما با موفقیت ثبت شد!')

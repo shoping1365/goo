@@ -1,7 +1,8 @@
-import eslintPluginVue from 'eslint-plugin-vue'
-import eslintConfigPrettier from 'eslint-config-prettier'
 import tseslint from '@typescript-eslint/eslint-plugin'
 import tsparser from '@typescript-eslint/parser'
+import eslintConfigPrettier from 'eslint-config-prettier'
+import vueParser from 'vue-eslint-parser'
+import eslintPluginVue from 'eslint-plugin-vue'
 
 export default [
     {
@@ -24,13 +25,40 @@ export default [
     },
     ...eslintPluginVue.configs['flat/recommended'],
     {
-        files: ['**/*.{js,ts,vue}'],
+        files: ['**/*.{js,ts}'],
         languageOptions: {
             parser: tsparser,
             parserOptions: {
                 ecmaVersion: 'latest',
+                sourceType: 'module'
+            }
+        },
+        plugins: {
+            '@typescript-eslint': tseslint
+        },
+        rules: {
+            // TypeScript rules
+            '@typescript-eslint/no-unused-vars': ['warn', {
+                'argsIgnorePattern': '^_',
+                'varsIgnorePattern': '^_'
+            }],
+            '@typescript-eslint/no-explicit-any': 'warn',
+
+            // General rules
+            'no-console': ['warn', { allow: ['warn', 'error'] }],
+            'no-debugger': 'warn',
+            'no-unused-vars': 'off', // Use TypeScript version instead
+        }
+    },
+    {
+        files: ['**/*.vue'],
+        languageOptions: {
+            parser: vueParser,
+            parserOptions: {
+                parser: tsparser,
+                ecmaVersion: 'latest',
                 sourceType: 'module',
-                parser: '@typescript-eslint/parser'
+                extraFileExtensions: ['.vue']
             }
         },
         plugins: {
@@ -44,14 +72,7 @@ export default [
             'vue/require-prop-types': 'off',
             'vue/no-setup-props-destructure': 'off',
             'vue/no-v-text-v-html-on-component': 'warn',
-            'vue/html-self-closing': ['error', {
-                'html': {
-                    'void': 'always',
-                    'normal': 'never',
-                    'component': 'always'
-                }
-            }],
-
+            
             // TypeScript rules
             '@typescript-eslint/no-unused-vars': ['warn', {
                 'argsIgnorePattern': '^_',
@@ -63,8 +84,6 @@ export default [
             'no-console': ['warn', { allow: ['warn', 'error'] }],
             'no-debugger': 'warn',
             'no-unused-vars': 'off', // Use TypeScript version instead
-            'prefer-const': 'warn',
-            'no-var': 'error'
         }
     },
     eslintConfigPrettier

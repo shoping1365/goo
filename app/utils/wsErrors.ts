@@ -54,8 +54,9 @@ export function parseWsClose(event: CloseEvent): WsCloseInfo {
   return { code, reason: event.reason || base, wasClean: event.wasClean, userMessage }
 }
 
-export function parseWsError(error: Event | any): string {
+export function parseWsError(error: Event | unknown): string {
   // Browsers often hide details; provide a generic message
-  const message = typeof error?.message === 'string' ? error.message : ''
+  const err = error as Record<string, unknown>
+  const message = typeof err?.message === 'string' ? err.message : ''
   return message || 'خطا در اتصال وب‌سوکت. لطفاً اتصال اینترنت خود را بررسی کنید.'
 }

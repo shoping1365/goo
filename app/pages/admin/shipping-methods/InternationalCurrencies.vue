@@ -29,8 +29,8 @@
             <span :class="['status', currency.status]">{{ currency.statusText }}</span>
           </td>
           <td>
-            <button @click="editCurrency(currency)" class="btn-edit">ویرایش</button>
-            <button @click="deleteCurrency(currency.id)" class="btn-delete">حذف</button>
+            <button class="btn-edit" @click="editCurrency(currency)">ویرایش</button>
+            <button class="btn-delete" @click="deleteCurrency(currency.id)">حذف</button>
           </td>
         </tr>
         </tbody>
@@ -79,7 +79,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 
 const currencies = ref([
   {
@@ -118,11 +118,11 @@ const newCurrency = reactive({
   status: 'active'
 })
 
-const editCurrency = (currency) => {
+const editCurrency = (_currency) => {
   // Edit currency logic
 }
 
-const deleteCurrency = (id) => {
+const deleteCurrency = (_id) => {
   // Delete currency logic
 }
 

@@ -17,9 +17,8 @@ export default defineEventHandler(async (event) => {
 
     return response
   } catch (error: unknown) {
-    console.error('خطا در دریافت لاگ‌های امنیتی چت:', error)
+    // console.error('خطا در دریافت لاگ‌های امنیتی چت:', error)
 
-    const errorWithStatus = error as { statusCode?: number; message?: string }
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error
     }

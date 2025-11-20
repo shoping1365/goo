@@ -10,7 +10,7 @@
           <!-- Header -->
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold text-gray-900">تنظیمات هوش تجاری</h3>
-            <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">
+            <button class="text-gray-400 hover:text-gray-600" @click="$emit('close')">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
               </svg>
@@ -23,13 +23,13 @@
               <button
                 v-for="tab in tabs"
                 :key="tab.id"
-                @click="activeTab = tab.id"
                 :class="[
                   activeTab === tab.id
                     ? 'border-blue-500 text-blue-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
                   'whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors'
                 ]"
+                @click="activeTab = tab.id"
               >
                 {{ tab.title }}
               </button>
@@ -90,7 +90,7 @@
                         <p class="text-sm text-gray-500">هشدار در صورت افت بیش از ۲۰٪ نرخ تبدیل</p>
                       </div>
                       <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" v-model="settings.alerts.conversionDrop" class="sr-only peer">
+                        <input v-model="settings.alerts.conversionDrop" type="checkbox" class="sr-only peer">
                         <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                       </label>
                     </div>
@@ -101,7 +101,7 @@
                         <p class="text-sm text-gray-500">هشدار برای کالاهایی که موجودی آن‌ها کمتر از ۱۰ عدد است</p>
                       </div>
                       <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" v-model="settings.alerts.lowStock" class="sr-only peer">
+                        <input v-model="settings.alerts.lowStock" type="checkbox" class="sr-only peer">
                         <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                       </label>
                     </div>
@@ -112,7 +112,7 @@
                         <p class="text-sm text-gray-500">هشدار در صورت افزایش بیش از ۱۰٪ نرخ ریزش مشتریان</p>
                       </div>
                       <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" v-model="settings.alerts.churnIncrease" class="sr-only peer">
+                        <input v-model="settings.alerts.churnIncrease" type="checkbox" class="sr-only peer">
                         <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                       </label>
                     </div>
@@ -123,15 +123,15 @@
                   <h4 class="text-md font-medium text-gray-900 mb-4">کانال‌های اطلاع‌رسانی</h4>
                   <div class="space-y-3">
                     <label class="flex items-center">
-                      <input type="checkbox" v-model="settings.notifications.email" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                      <input v-model="settings.notifications.email" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                       <span class="mr-2 text-sm text-gray-700">ایمیل</span>
                     </label>
                     <label class="flex items-center">
-                      <input type="checkbox" v-model="settings.notifications.sms" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                      <input v-model="settings.notifications.sms" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                       <span class="mr-2 text-sm text-gray-700">پیامک</span>
                     </label>
                     <label class="flex items-center">
-                      <input type="checkbox" v-model="settings.notifications.push" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                      <input v-model="settings.notifications.push" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                       <span class="mr-2 text-sm text-gray-700">اعلان مرورگر</span>
                     </label>
                   </div>
@@ -152,7 +152,7 @@
                           <p class="text-sm text-gray-500">{{ report.description }}</p>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer">
-                          <input type="checkbox" v-model="report.enabled" class="sr-only peer">
+                          <input v-model="report.enabled" type="checkbox" class="sr-only peer">
                           <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                         </label>
                       </div>
@@ -169,13 +169,13 @@
                         
                         <div>
                           <label class="block text-sm font-medium text-gray-700 mb-1">زمان ارسال</label>
-                          <input type="time" v-model="report.time" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                          <input v-model="report.time" type="time" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         </div>
                       </div>
                       
                       <div class="mt-3">
                         <label class="block text-sm font-medium text-gray-700 mb-1">گیرندگان</label>
-                        <input type="email" v-model="report.recipients" placeholder="ایمیل‌ها را با کاما جدا کنید" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <input v-model="report.recipients" type="email" placeholder="ایمیل‌ها را با کاما جدا کنید" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                       </div>
                     </div>
                   </div>
@@ -246,10 +246,10 @@
 
         <!-- Footer -->
         <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-          <button @click="saveSettings" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mr-3 sm:w-auto sm:text-sm">
+          <button class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mr-3 sm:w-auto sm:text-sm" @click="saveSettings">
             ذخیره تنظیمات
           </button>
-          <button @click="$emit('close')" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:mr-3 sm:w-auto sm:text-sm">
+          <button class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:mr-3 sm:w-auto sm:text-sm" @click="$emit('close')">
             انصراف
           </button>
         </div>

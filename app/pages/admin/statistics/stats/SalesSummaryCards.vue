@@ -10,8 +10,8 @@
   </div>
 </template>
 <script setup lang="ts">
-import SalesSummaryCard from './SalesSummaryCard.vue'
-const props = defineProps<{ stats: any }>()
+import SalesSummaryCard from './SalesSummaryCard.vue';
+defineProps<{ stats: unknown }>()
 
 const formatCurrency = (value: number) => {
   return new Intl.NumberFormat('fa-IR').format(value) + ' تومان'

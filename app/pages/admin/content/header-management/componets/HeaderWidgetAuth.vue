@@ -17,13 +17,13 @@
     <!-- اگر لاگین است -->
     <div v-else class="relative w-full">
       <button 
-        @click="toggleMenu"
         class="flex items-center justify-center p-2 rounded-lg transition-colors w-full h-full auth-button"
         :class="{
           'justify-start': props.align === 'left',
           'justify-center': props.align === 'center', 
           'justify-end': props.align === 'right'
         }"
+        @click="toggleMenu"
       >
         <span class="text-xl">👤</span>
       </button>
@@ -64,8 +64,8 @@
         
         <hr class="my-2 border-gray-200">
         <button 
-          @click="handleLogout" 
-          class="w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded text-right transition-colors"
+          class="w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded text-right transition-colors" 
+          @click="handleLogout"
         >
           🚪 خروج
         </button>

@@ -2,6 +2,7 @@
   <div>
     <div class="bg-white rounded-lg shadow px-4 py-4 mb-6">
       <h1 class="text-2xl font-bold text-gray-800">{{ categoryData?.name }}</h1>
+      <!-- eslint-disable-next-line vue/no-v-html -->
       <div v-if="categoryData?.description" class="mt-4 text-gray-700 leading-relaxed" v-html="categoryData.description"></div>
     </div>
     <div class="bg-gray-50 rounded-lg shadow px-4 py-4">
@@ -19,15 +20,15 @@
             <div class="w-full h-[300px] overflow-hidden rounded-t-lg flex items-center justify-center bg-gray-100">
               <img
                 :src="productThumbnail(p)"
-                @error="onImgError($event)"
                 alt="img"
                 class="object-cover w-full h-full transition-transform duration-200 group-hover:scale-105"
+                @error="onImgError($event)"
               />
             </div>
             <!-- Info -->
             <div class="p-3 text-right space-y-1">
               <h3 class="text-sm font-semibold text-gray-800 line-clamp-2 min-h-[3rem]">{{ p.name }}</h3>
-              <p class="text-emerald-600 font-bold" v-if="displayPrice(p)">{{ displayPrice(p) }} <span class="text-xs">تومان</span></p>
+              <p v-if="displayPrice(p)" class="text-emerald-600 font-bold">{{ displayPrice(p) }} <span class="text-xs">تومان</span></p>
               <p v-else class="text-gray-500 text-xs">قیمت ثبت نشده</p>
             </div>
           </NuxtLink>
@@ -40,7 +41,7 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string }) => void
-declare const useFetch: <T = unknown>(url: string, options?: { transform?: (data: any) => T }) => Promise<{ data: { value: T }; pending: { value: boolean }; error: { value: Error | null } }>
+declare const useFetch: <T = unknown>(url: string, options?: { transform?: (data: unknown) => T }) => Promise<{ data: { value: T }; pending: { value: boolean }; error: { value: Error | null } }>
 declare const useHead: (head: { title?: string; meta?: Array<{ name?: string; content?: string }> }) => void
 declare const useRoute: () => { params: Record<string, string>; query: Record<string, string> }
 declare const createError: (options: { statusCode: number; statusMessage: string }) => Error
@@ -84,22 +85,22 @@ watchEffect(() => {
   })
 })
 
-const products = ref<any[]>([])
+const products = ref<Record<string, unknown>[]>([])
 const loading = ref(true)
 try {
   const { data } = await useFetch('/api/products')
-  const all = (data.value || []) as any[]
+  const all = (data.value || []) as Record<string, unknown>[]
   products.value = all.filter(p => {
-    const pid = p.category_id != null ? String(p.category_id) : (p.category ? String(p.category.id) : '')
+    const pid = p.category_id != null ? String(p.category_id) : (p.category ? String((p.category as Record<string, unknown>).id) : '')
     if (categoryData.value && pid === String(categoryData.value.id)) return true
-    if (categoryData.value && p.category && p.category.slug === categoryData.value.slug) return true
+    if (categoryData.value && p.category && (p.category as Record<string, unknown>).slug === categoryData.value.slug) return true
     return false
   })
 } finally {
   loading.value = false
 }
 
-function productThumbnail(p:any){
+function productThumbnail(p: Record<string, unknown>){
   const toVariant = (url:string)=>{
     if(!url) return ''
     const idx = url.lastIndexOf('.')
@@ -109,18 +110,18 @@ function productThumbnail(p:any){
     const candidates = [`${base}_small${ext}`, `${base}_thumbnail${ext}`]
     return candidates[0]
   }
-  if (p.image) return toVariant(p.image)
-  if (Array.isArray(p.images) && p.images.length) return toVariant(p.images[0].image_url || p.images[0].url)
+  if (p.image) return toVariant(p.image as string)
+  if (Array.isArray(p.images) && p.images.length) return toVariant((p.images[0] as Record<string, unknown>).image_url as string || (p.images[0] as Record<string, unknown>).url as string)
   return '/statics/images/default-image_100.png'
 }
 
-function onImgError(e:any){
-  e.target.src = '/statics/images/default-image_100.png'
+function onImgError(e: Event){
+  (e.target as HTMLImageElement).src = '/statics/images/default-image_100.png'
 }
 
-function displayPrice(p:any){
-  const price = p.sale_price && p.sale_price>0 ? p.sale_price : p.price
-  return price && price>0 ? price.toLocaleString('fa-IR') : ''
+function displayPrice(p: Record<string, unknown>){
+  const price = p.sale_price && (p.sale_price as number)>0 ? p.sale_price : p.price
+  return price && (price as number)>0 ? (price as number).toLocaleString('fa-IR') : ''
 }
 
 definePageMeta({ layout: 'default' })

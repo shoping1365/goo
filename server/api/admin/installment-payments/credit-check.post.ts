@@ -47,7 +47,7 @@ export default defineEventHandler(async (event) => {
 
     // دریافت داده‌های درخواست
     const body = await readBody(event) as CreditCheckBody
-    const { nationalId, mobile, amount, installmentCount, productId } = body
+        const { nationalId, mobile, amount, installmentCount } = body
 
     // اعتبارسنجی داده‌های ورودی
     if (!nationalId || !mobile || !amount || !installmentCount) {
@@ -111,7 +111,7 @@ export default defineEventHandler(async (event) => {
 
     // محاسبه امتیاز اعتباری
     let creditScore = 500 // امتیاز پایه
-    let recommendations: string[] = []
+    // const recommendations: string[] = []
 
     if (customer) {
       // محاسبه سن

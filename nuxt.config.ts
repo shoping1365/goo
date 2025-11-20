@@ -2,6 +2,7 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineNuxtConfig } from 'nuxt/config'
 // @ts-ignore - Tailwind v4 Vite plugin
 import tailwindcss from '@tailwindcss/vite'
+import checker from 'vite-plugin-checker'
 
 const resolveApiBase = () => {
   const raw = process.env.NUXT_PUBLIC_GO_API_BASE || process.env.NUXT_PUBLIC_API_BASE
@@ -68,14 +69,14 @@ export default defineNuxtConfig({
 
   // جلوگیری از manifest و payload extraction در dev
   features: {
-    devLogs: false
+    devLogs: true
   },
 
 
 
   typescript: {
     typeCheck: false,
-    strict: false
+    strict: true
   },
 
   app: {
@@ -278,10 +279,22 @@ export default defineNuxtConfig({
       }
     },
     plugins: [
-      tailwindcss()
+      tailwindcss(),
+      checker({
+        typescript: false,
+        vueTsc: false,
+        overlay: {
+          initialIsOpen: false
+        },
+        terminal: true,
+        eslint: {
+          lintCommand: 'eslint .',
+          useFlatConfig: true
+        }
+      })
     ],
     // تنظیمات برای رفع مشکل dependency scanning
     clearScreen: false,
-    logLevel: 'warn'
+    logLevel: 'info'
   }
 })

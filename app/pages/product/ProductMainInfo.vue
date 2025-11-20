@@ -18,8 +18,8 @@
         <!-- Navigation Arrows -->
         <button 
           v-if="availableImages && availableImages.length > 1"
-          @click.stop="previousImage"
           class="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-blue-500 hover:bg-blue-600 rounded-full p-2 transition-all"
+          @click.stop="previousImage"
         >
           <svg class="w-4 h-4 text-white" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -28,8 +28,8 @@
         
         <button 
           v-if="availableImages && availableImages.length > 1"
-          @click.stop="nextImage"
           class="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-blue-500 hover:bg-blue-600 rounded-full p-2 transition-all"
+          @click.stop="nextImage"
         >
           <svg class="w-4 h-4 text-white" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -40,8 +40,8 @@
         <div class="absolute top-6 right-4 z-20 flex space-x-2 space-x-reverse">
           <!-- آیکون قلب برای علاقه‌مندی -->
           <button 
-            @click="toggleFavorite"
             class="w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-gray-50 transition-colors"
+            @click="toggleFavorite"
           >
             <svg 
               class="w-5 h-5" 
@@ -55,8 +55,8 @@
           </button>
           <!-- آیکون لیست برای اضافه کردن به لیست -->
           <button 
-            @click="addToList"
             class="w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-gray-50 transition-colors"
+            @click="addToList"
           >
             <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -86,7 +86,8 @@
         </div>
 
         <div class="absolute bottom-4 right-4 flex flex-col items-end gap-1">
-          <span v-if="!product.call_for_price" :class="[
+          <span
+v-if="!product.call_for_price" :class="[
             'px-3 py-1 rounded-full text-sm font-medium',
             isInStock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
           ]">
@@ -99,13 +100,14 @@
         <button
           v-for="(image, index) in availableImages.slice(0, Math.max(1, availableImages.length - 3))"
           :key="index"
-          @click="index === 0 ? openImageModal() : setMainImage(index)"
           :class="[
             'w-12 h-12 rounded-lg border-2 overflow-hidden transition-all cursor-pointer relative',
             currentImageIndex === index ? 'border-blue-500' : 'border-gray-200 hover:border-gray-300'
           ]"
+          @click="index === 0 ? openImageModal() : setMainImage(index)"
         >
-          <img :src="image" :class="[
+          <img
+:src="image" :class="[
             'w-full h-full object-cover transition-all',
             index === 0 ? 'blur-sm' : ''
           ]" />
@@ -178,9 +180,9 @@
           {{ shippingLabel }}
         </div>
         <button
-          @click="$emit('add-to-cart')"
           :disabled="!isInStock && !canPreorder"
           class="w-full py-3 px-6 rounded-lg font-semibold transition-all duration-200 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white"
+          @click="$emit('add-to-cart')"
         >
           {{ addToCartLabel }}
         </button>
@@ -265,7 +267,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits(['add-to-cart'])
+defineEmits(['add-to-cart'])
 
 const currentImageIndex = ref(0)
 // برچسب «ارسال از انبار پیش‌فرض»
@@ -283,21 +285,21 @@ const shippingLabel = computed(() => {
 onMounted(async () => {
   try {
     // از کوئری id در صفحه پدر استفاده می‌شود؛ اگر نبود از props.product.id استفاده کن
-    const id = (props.product as any)?.id
+    const id = (props.product as Record<string, unknown>)?.id
     if (!id) return
-    const inv: any = await ($fetch as any)(`/api/product-inventories/${id}`)
+    const inv = await $fetch<Record<string, unknown>>(`/api/product-inventories/${id}`)
     // در حال حاضر shipping_enabled را از UI ادمین می‌گیریم؛ اگر نبود، فرض را false می‌گذاریم
     shippingEnabled.value = !!inv?.shipping_enabled || false
     const wid = Number(inv?.default_warehouse_id || 0)
     if (wid > 0) {
       try {
         // از API عمومی موجودی انبارها استفاده می‌کنیم تا نیازی به مسیر ادمین نباشد
-        const stocksResponse: any = await ($fetch as any)(`/api/product-warehouse-stocks`, {
+        const stocksResponse = await $fetch<Record<string, unknown> | { data: Record<string, unknown>[] }>(`/api/product-warehouse-stocks`, {
           params: { product_id: id }
         })
-        const entries = Array.isArray(stocksResponse?.data) ? stocksResponse.data : stocksResponse
-        const w = (entries || []).find((x: any) => Number(x.warehouse_id) === wid)
-        defaultWarehouseName.value = w?.warehouse_name || ''
+        const entries = (Array.isArray((stocksResponse as { data: unknown[] })?.data) ? (stocksResponse as { data: unknown[] }).data : stocksResponse) as Record<string, unknown>[]
+        const w = (entries || []).find((x: Record<string, unknown>) => Number(x.warehouse_id) === wid)
+        defaultWarehouseName.value = (w?.warehouse_name as string) || ''
       } catch (error) {
         console.error('خطا در دریافت نام انبار پیش‌فرض:', error)
         defaultWarehouseName.value = ''
@@ -310,8 +312,8 @@ onMounted(async () => {
     if (isAuthenticated.value) {
       try {
         const wishlistResponse = await $fetch('/api/wishlist', { credentials: 'include' })
-        if ((wishlistResponse as any).success) {
-          const isInWishlist = (wishlistResponse as any).data.some((item: any) => item.id === props.product.id)
+        if ((wishlistResponse as Record<string, unknown>).success) {
+          const isInWishlist = ((wishlistResponse as Record<string, unknown>).data as Record<string, unknown>[]).some((item: Record<string, unknown>) => item.id === props.product.id)
           isFavorite.value = isInWishlist
         }
       } catch (error) {
@@ -334,16 +336,16 @@ const availableImages = computed(() => {
     if (typeof first === 'string') {
       // Array of plain URLs (string)
       return (props.product.images as unknown as string[]).map(url => toLargeImage(url))
-    } else if (first && (first as any).url) {
+    } else if (first && (first as Record<string, unknown>).url) {
       // Array of objects having url field (Media schema)
-      return (props.product.images as any[]).map(i => toLargeImage(i.url || i.image_url))
+      return (props.product.images as Record<string, unknown>[]).map(i => toLargeImage((i.url || i.image_url) as string))
     } else {
       // Array of objects with image_url
-      return (props.product.images as any[]).map(i => toLargeImage(i.image_url || i.url))
+      return (props.product.images as Record<string, unknown>[]).map(i => toLargeImage((i.image_url || i.url) as string))
     }
   }
   if (props.product.Images && props.product.Images.length > 0) {
-    return props.product.Images.map(img => toLargeImage((img as any).image_url || (img as any).url))
+    return props.product.Images.map(img => toLargeImage(((img as Record<string, unknown>).image_url || (img as Record<string, unknown>).url) as string))
   }
   return []
 })
@@ -354,12 +356,12 @@ const mainImage = computed(() => {
     if (typeof first === 'string') {
       return toLargeImage(props.product.images[currentImageIndex.value] as unknown as string)
     }
-    const itm: any = props.product.images[currentImageIndex.value]
-    return toLargeImage(itm.url || itm.image_url)
+    const itm = props.product.images[currentImageIndex.value] as Record<string, unknown>
+    return toLargeImage((itm.url || itm.image_url) as string)
   }
   if (props.product.Images && props.product.Images.length > 0) {
-    const itm: any = props.product.Images[currentImageIndex.value]
-    return toLargeImage(itm.image_url || itm.url)
+    const itm = props.product.Images[currentImageIndex.value] as Record<string, unknown>
+    return toLargeImage((itm.image_url || itm.url) as string)
   }
   // Fallback to main_image or image
   if (props.product.main_image) {
@@ -374,15 +376,15 @@ const mainImage = computed(() => {
 // محاسبه فعال بودن بازه زمانی فروش ویژه
 const isSaleScheduleActive = computed<boolean>(() => {
   try {
-    const start = (props.product as any).sale_start_at
-    const end = (props.product as any).sale_end_at
+    const start = (props.product as Record<string, unknown>).sale_start_at
+    const end = (props.product as Record<string, unknown>).sale_end_at
     const now = Date.now()
     if (start) {
-      const st = new Date(start).getTime()
+      const st = new Date(start as string).getTime()
       if (now < st) return false
     }
     if (end) {
-      const ed = new Date(end).getTime()
+      const ed = new Date(end as string).getTime()
       if (now > ed) return false
     }
     return true
@@ -392,10 +394,10 @@ const isSaleScheduleActive = computed<boolean>(() => {
 // انتخاب بهترین قیمت از special_offers اگر فعال باشد
 const currentPrice = computed<number>(() => {
   // 1) اگر فروش ویژه زمان‌بندی شده فعال است و special_offers وجود دارد، پله اول را در نظر بگیر
-  if (isSaleScheduleActive.value && Array.isArray((props.product as any).special_offers) && (props.product as any).special_offers.length > 0) {
-    const sorted = [...(props.product as any).special_offers].sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0))
+  if (isSaleScheduleActive.value && Array.isArray((props.product as Record<string, unknown>).special_offers) && (props.product as Record<string, unknown>).special_offers.length > 0) {
+    const sorted = [...((props.product as Record<string, unknown>).special_offers as Record<string, unknown>[])].sort((a: Record<string, unknown>, b: Record<string, unknown>) => ((a.sort_order as number) || 0) - ((b.sort_order as number) || 0))
     const first = sorted[0]
-    if (first && first.price > 0) return first.price
+    if (first && (first.price as number) > 0) return first.price as number
   }
   // 2) در غیر این صورت از sale_price یا discount_price استفاده کن
   const sale = props.product.sale_price || props.product.discount_price
@@ -445,13 +447,13 @@ const isInStock = computed(() => {
 
 // نبود موجودی وقتی رهگیری موجودی فعال است
 const isOutOfStock = computed<boolean>(() => {
-  const qty = Number((props.product as any)?.stock_quantity ?? 0)
-  const inFlag = (props.product as any)?.in_stock === true
+  const qty = Number((props.product as Record<string, unknown>)?.stock_quantity ?? 0)
+  const inFlag = (props.product as Record<string, unknown>)?.in_stock === true
   if (props.product.track_inventory === true) {
     return !(inFlag || qty > 0)
   }
   // حتی اگر رهگیری موجودی غیرفعال باشد، اگر یکی از شاخص‌ها عدم موجودی را نشان دهد، ناموجود تلقی کن
-  if (qty <= 0 || (props.product as any)?.in_stock === false) return true
+  if (qty <= 0 || (props.product as Record<string, unknown>)?.in_stock === false) return true
   return false
 })
 
@@ -478,7 +480,7 @@ const unitLabelText = computed<string>(() => {
 const { user, isAuthenticated } = useAuth()
 const isVip = computed<boolean>(() => {
   try {
-    return (user as any)?.value?.role?.toString?.().toLowerCase() === 'vip'
+    return (user.value as Record<string, unknown>)?.role?.toString?.().toLowerCase() === 'vip'
   } catch {
     return false
   }
@@ -540,9 +542,9 @@ async function toggleFavorite() {
         credentials: 'include'
       })
       
-      if ((response as any).success) {
+      if ((response as Record<string, unknown>).success) {
         isFavorite.value = false
-        console.log('محصول از لیست علاقه‌مندی‌ها حذف شد:', props.product.id)
+        // console.log('محصول از لیست علاقه‌مندی‌ها حذف شد:', props.product.id)
       }
     } else {
       // افزودن به لیست علاقه‌مندی‌ها
@@ -552,9 +554,9 @@ async function toggleFavorite() {
         body: { product_id: props.product.id }
       })
       
-      if ((response as any).success) {
+      if ((response as Record<string, unknown>).success) {
         isFavorite.value = true
-        console.log('محصول به لیست علاقه‌مندی‌ها اضافه شد:', props.product.id)
+        // console.log('محصول به لیست علاقه‌مندی‌ها اضافه شد:', props.product.id)
       }
     }
   } catch (error) {
@@ -563,7 +565,7 @@ async function toggleFavorite() {
 }
 
 function addToList() {
-  console.log('محصول به لیست اضافه شد:', props.product.id)
+  // console.log('محصول به لیست اضافه شد:', props.product.id)
   // TODO: نمایش مودال انتخاب لیست یا ارسال درخواست به سرور
 }
 

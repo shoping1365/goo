@@ -7,13 +7,13 @@
           <button
             v-for="tab in tabs"
             :key="tab.id"
-            @click="activeTab = tab.id"
             :class="[
               activeTab === tab.id
                 ? 'border-blue-500 text-blue-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
               'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors'
             ]"
+            @click="activeTab = tab.id"
           >
             {{ tab.name }}
           </button>
@@ -32,8 +32,8 @@
                 <p class="text-purple-100">نمایش ساعات کاری و مکالمات هر اپراتور، اعمال تنظیمات، افزودن و حذف اپراتورها در این بخش انجام می‌شود.</p>
               </div>
               <button 
-                @click="showInviteModal = true"
                 class="bg-white text-purple-600 px-6 py-3 rounded-lg font-medium hover:bg-purple-50 transition-colors"
+                @click="showInviteModal = true"
               >
                 دعوت اپراتور جدید
               </button>
@@ -170,8 +170,8 @@
                 <div 
                   v-for="operator in filteredOperators" 
                   :key="operator.id"
-                  @click="toggleOperatorAssignment(operator.id)"
                   class="text-center cursor-pointer group"
+                  @click="toggleOperatorAssignment(operator.id)"
                 >
                   <div class="relative inline-block">
                     <div class="w-16 h-16 rounded-full border-2 border-orange-400 flex items-center justify-center mx-auto mb-2 group-hover:border-orange-500 transition-colors">
@@ -197,14 +197,14 @@
             <!-- دکمه‌های عملیات -->
             <div class="flex justify-between items-center mt-8">
               <button 
-                @click="saveOperatorAssignment"
                 class="bg-purple-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-purple-700 transition-colors"
+                @click="saveOperatorAssignment"
               >
                 ذخیره
               </button>
               <button 
-                @click="cancelOperatorAssignment"
                 class="text-gray-600 hover:text-gray-800 font-medium"
+                @click="cancelOperatorAssignment"
               >
                 انصراف
               </button>
@@ -261,9 +261,9 @@
                           <!-- دکمه اضافه کردن -->
                           <button 
                             v-if="index === linkAssignment.operators.length - 1"
-                            @click="addOperatorField"
                             class="w-10 h-10 bg-green-500 text-white rounded-lg flex items-center justify-center hover:bg-green-600 transition-colors"
                             title="افزودن اپراتور"
+                            @click="addOperatorField"
                           >
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -273,9 +273,9 @@
                           <!-- دکمه حذف -->
                           <button 
                             v-if="linkAssignment.operators.length > 1"
-                            @click="removeOperatorField(index)"
                             class="w-10 h-10 bg-gray-500 text-white rounded-lg flex items-center justify-center hover:bg-gray-600 transition-colors"
                             title="حذف اپراتور"
+                            @click="removeOperatorField(index)"
                           >
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -301,8 +301,8 @@
               <!-- دکمه ذخیره -->
               <div class="flex justify-end mt-8">
                 <button 
-                  @click="saveLinkAssignment"
                   class="bg-purple-800 text-white px-8 py-3 rounded-lg font-medium hover:bg-purple-900 transition-colors"
+                  @click="saveLinkAssignment"
                 >
                   ذخیره
                 </button>
@@ -319,7 +319,7 @@
         <!-- هدر مودال -->
         <div class="flex justify-between items-center p-6 border-b border-gray-200">
           <h2 class="text-xl font-bold text-gray-900">دعوت اپراتور جدید</h2>
-          <button @click="showInviteModal = false" class="text-gray-400 hover:text-gray-600">
+          <button class="text-gray-400 hover:text-gray-600" @click="showInviteModal = false">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -380,7 +380,7 @@
             <div class="mt-6">
               <label class="block text-sm font-medium text-gray-700 mb-2">اپراتور به این وب‌سایتها دسترسی داشته باشد:</label>
               <div class="flex items-center space-x-2 space-x-reverse">
-                <input type="checkbox" v-model="newOperator.websiteAccess" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                <input v-model="newOperator.websiteAccess" type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                 <span class="text-sm text-gray-700">iranxia.net</span>
               </div>
             </div>
@@ -399,7 +399,7 @@
               <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-md hover:bg-purple-700 transition-colors">
                 دعوت اپراتور
               </button>
-              <button type="button" @click="showInviteModal = false" class="text-gray-600 hover:text-gray-800">
+              <button type="button" class="text-gray-600 hover:text-gray-800" @click="showInviteModal = false">
                 انصراف
               </button>
             </div>
@@ -415,7 +415,7 @@ declare const definePageMeta: (meta: { layout?: string }) => void
 </script>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue';
 
 definePageMeta({ layout: 'admin-main' })
 
@@ -445,12 +445,12 @@ const newOperator = ref({
 })
 
 // لیست اپراتورها از API
-const operators = ref<any[]>([])
+const operators = ref<Record<string, unknown>[]>([])
 async function loadAvailableOperators() {
   try {
-    const res: any = await $fetch('/api/admin/chat/operators/available')
+    const res: Record<string, unknown> = await $fetch('/api/admin/chat/operators/available')
     if (res?.status === 'success' && Array.isArray(res.data)) {
-      operators.value = res.data.map((op: any) => ({
+      operators.value = (res.data as Record<string, unknown>[]).map((op: Record<string, unknown>) => ({
         id: op.id,
         name: op.user?.name || op.user?.username || `اپراتور ${op.id}`,
         email: op.user?.email || '-',
@@ -459,7 +459,7 @@ async function loadAvailableOperators() {
       }))
     }
   } catch (e) {
-    console.error('loadAvailableOperators failed', e)
+    // console.error('loadAvailableOperators failed', e)
   }
 }
 
@@ -476,12 +476,12 @@ const filteredOperators = computed(() => {
 })
 
 // بررسی اینکه آیا اپراتور انتخاب شده است
-function isOperatorAssigned(operatorId) {
+function isOperatorAssigned(operatorId: number | string) {
   return selectedOperators.value.includes(operatorId)
 }
 
 // تغییر وضعیت تخصیص اپراتور
-function toggleOperatorAssignment(operatorId) {
+function toggleOperatorAssignment(operatorId: number | string) {
   const index = selectedOperators.value.indexOf(operatorId)
   if (index > -1) {
     selectedOperators.value.splice(index, 1)
@@ -492,7 +492,7 @@ function toggleOperatorAssignment(operatorId) {
 
 // ذخیره تخصیص اپراتور
 function saveOperatorAssignment() {
-  console.log('اپراتورهای انتخاب شده:', selectedOperators.value)
+  // console.log('اپراتورهای انتخاب شده:', selectedOperators.value)
   // اینجا منطق ذخیره تخصیص پیاده‌سازی می‌شود
   alert('تخصیص اپراتور با موفقیت ذخیره شد!')
 }
@@ -517,7 +517,7 @@ function addOperatorField() {
 }
 
 // حذف فیلد اپراتور
-function removeOperatorField(index) {
+function removeOperatorField(index: number) {
   if (linkAssignment.value.operators.length > 1) {
     linkAssignment.value.operators.splice(index, 1)
   }
@@ -525,7 +525,7 @@ function removeOperatorField(index) {
 
 // ذخیره تخصیص لینک
 function saveLinkAssignment() {
-  console.log('تخصیص لینک:', linkAssignment.value)
+  // console.log('تخصیص لینک:', linkAssignment.value)
   // اینجا منطق ذخیره تخصیص لینک پیاده‌سازی می‌شود
   alert('تخصیص لینک با موفقیت ذخیره شد!')
 }
@@ -542,7 +542,7 @@ async function inviteOperator() {
       max_concurrent_chats: 5,
       auto_accept: true,
     }
-    const res: any = await $fetch('/api/admin/chat/operators/invite', { method: 'POST', body: payload })
+    const res: Record<string, unknown> = await $fetch('/api/admin/chat/operators/invite', { method: 'POST', body: payload })
     if (res?.success) {
       await loadAvailableOperators()
       alert('اپراتور با موفقیت دعوت شد')

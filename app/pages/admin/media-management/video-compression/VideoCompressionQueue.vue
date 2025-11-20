@@ -27,15 +27,15 @@
         </select>
         <button 
           v-if="queueStatus.inProgress === 0 && queueStatus.total > 0" 
-          @click="processPendingJobs"
           class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg text-sm font-medium"
+          @click="processPendingJobs"
           @click.stop
         >
           شروع پردازش
         </button>
         <button 
-          @click="fetchCompressionJobs"
           class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium"
+          @click="fetchCompressionJobs"
           @click.stop
         >
           بروزرسانی
@@ -74,29 +74,29 @@
       <div class="flex flex-wrap gap-3 mb-6">
         <button
           v-if="selectedQueue.length > 0"
-          @click="cancelSelectedJobs"
           class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium"
+          @click="cancelSelectedJobs"
         >
           لغو انتخاب شده‌ها
         </button>
         <button
           v-if="selectedQueue.length > 0"
-          @click="pauseSelectedJobs"
           class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium"
+          @click="pauseSelectedJobs"
         >
           توقف انتخاب شده‌ها
         </button>
         <button
           v-if="hasManualCompressibleJobs"
-          @click="manualCompressSelectedJobs"
           class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium"
+          @click="manualCompressSelectedJobs"
         >
           فشرده‌سازی دستی
         </button>
         <button 
           v-if="queueStatus.completed > 0" 
-          @click="clearCompleted"
           class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium"
+          @click="clearCompleted"
         >
           پاک کردن تکمیل شده‌ها
         </button>
@@ -118,8 +118,8 @@
                 <input
                   v-model="selectAllQueue"
                   type="checkbox"
-                  @change="toggleSelectAllQueue"
                   class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  @change="toggleSelectAllQueue"
                 >
               </th>
               <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">ویدیو</th>
@@ -180,9 +180,9 @@
                 <div class="flex space-x-2 space-x-reverse">
                   <button 
                     v-if="job.status === 'processing'"
-                    @click="pauseJob(job.id)"
                     class="text-yellow-600 hover:text-yellow-800"
                     title="توقف"
+                    @click="pauseJob(job.id)"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -190,9 +190,9 @@
                   </button>
                   <button 
                     v-if="job.status === 'processing' || job.status === 'pending'"
-                    @click="cancelJob(job.id)"
                     class="text-red-600 hover:text-red-800"
                     title="لغو"
+                    @click="cancelJob(job.id)"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>

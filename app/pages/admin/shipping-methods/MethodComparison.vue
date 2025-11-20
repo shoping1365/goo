@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const shippingMethods = ref([
   { id: 1, name: 'ارسال سریع' },
@@ -52,7 +52,7 @@ const comparisonFeatures = ref([
   { id: 4, name: 'پوشش' }
 ])
 
-const getFeatureValue = (methodId, featureId) => {
+const getFeatureValue = (_methodId, _featureId) => {
   // Get feature value logic
   return 'متوسط'
 }

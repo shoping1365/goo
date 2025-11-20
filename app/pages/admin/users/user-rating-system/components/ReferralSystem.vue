@@ -8,10 +8,10 @@
           <p class="mt-1 text-sm text-gray-500">مدیریت ارجاعات کاربران و امتیازدهی بر اساس کیفیت ارجاع</p>
         </div>
         <div class="flex space-x-3 space-x-reverse">
-          <button @click="generateReferralCodes" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+          <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors" @click="generateReferralCodes">
             تولید کد ارجاع
           </button>
-          <button @click="exportReferralReport" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">
+          <button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors" @click="exportReferralReport">
             خروجی گزارش
           </button>
         </div>
@@ -64,10 +64,10 @@
       </div>
       
       <div class="mt-4 flex space-x-3 space-x-reverse">
-        <button @click="saveReferralSettings" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+        <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors" @click="saveReferralSettings">
           ذخیره تنظیمات
         </button>
-        <button @click="testReferralSystem" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors">
+        <button class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors" @click="testReferralSystem">
           تست سیستم
         </button>
       </div>
@@ -221,9 +221,9 @@
                 {{ referral.score }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button @click="viewReferralDetails(referral)" class="text-blue-600 hover:text-blue-900 ml-3">مشاهده</button>
-                <button @click="editReferral(referral)" class="text-green-600 hover:text-green-900 ml-3">ویرایش</button>
-                <button @click="cancelReferral(referral)" class="text-red-600 hover:text-red-900">لغو</button>
+                <button class="text-blue-600 hover:text-blue-900 ml-3" @click="viewReferralDetails(referral)">مشاهده</button>
+                <button class="text-green-600 hover:text-green-900 ml-3" @click="editReferral(referral)">ویرایش</button>
+                <button class="text-red-600 hover:text-red-900" @click="cancelReferral(referral)">لغو</button>
               </td>
             </tr>
           </tbody>
@@ -236,13 +236,13 @@
           <span class="text-sm text-gray-700">نمایش {{ pagination.start }} تا {{ pagination.end }} از {{ pagination.total }} ارجاع</span>
         </div>
         <div class="flex space-x-2 space-x-reverse">
-          <button @click="previousPage" :disabled="currentPage === 1" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50">
+          <button :disabled="currentPage === 1" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50" @click="previousPage">
             قبلی
           </button>
-          <button v-for="page in visiblePages" :key="page" @click="goToPage(page)" :class="page === currentPage ? 'bg-blue-600 text-white' : 'bg-white text-gray-700'" class="px-3 py-1 border border-gray-300 rounded-md text-sm">
+          <button v-for="page in visiblePages" :key="page" :class="page === currentPage ? 'bg-blue-600 text-white' : 'bg-white text-gray-700'" class="px-3 py-1 border border-gray-300 rounded-md text-sm" @click="goToPage(page)">
             {{ page }}
           </button>
-          <button @click="nextPage" :disabled="currentPage === totalPages" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50">
+          <button :disabled="currentPage === totalPages" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50" @click="nextPage">
             بعدی
           </button>
         </div>
@@ -284,9 +284,9 @@
           </div>
           
           <div class="mt-4 flex space-x-2 space-x-reverse">
-            <button @click="copyCode(code.code)" class="text-blue-600 hover:text-blue-900 text-sm">کپی</button>
-            <button @click="regenerateCode(code.id)" class="text-green-600 hover:text-green-900 text-sm">تولید مجدد</button>
-            <button @click="deactivateCode(code.id)" class="text-red-600 hover:text-red-900 text-sm">غیرفعال</button>
+            <button class="text-blue-600 hover:text-blue-900 text-sm" @click="copyCode(code.code)">کپی</button>
+            <button class="text-green-600 hover:text-green-900 text-sm" @click="regenerateCode(code.id)">تولید مجدد</button>
+            <button class="text-red-600 hover:text-red-900 text-sm" @click="deactivateCode(code.id)">غیرفعال</button>
           </div>
         </div>
       </div>
@@ -295,17 +295,45 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
+
+interface Referral {
+  id: number;
+  referrerName: string;
+  referrerEmail: string;
+  referrerAvatar: string;
+  referredName: string;
+  referredEmail: string;
+  referredAvatar: string;
+  referralCode: string;
+  codeType: string;
+  createdAt: string;
+  status: string;
+  quality: string;
+  score: number;
+  [key: string]: unknown;
+}
+
+interface ReferralCode {
+  id: number;
+  userName: string;
+  userEmail: string;
+  userAvatar: string;
+  code: string;
+  status: string;
+  usageCount: number;
+  expiryDate: string;
+}
 
 // Props and Emits
-defineProps<{
-  referrals?: any[]
+const props = defineProps<{
+  referrals?: Referral[]
 }>()
 
-defineEmits<{
-  saveSettings: [settings: any]
-  generateCodes: [users: any[]]
-  exportReport: [data: any]
+const emit = defineEmits<{
+  saveSettings: [settings: Record<string, unknown>]
+  generateCodes: [users: Record<string, unknown>[]]
+  exportReport: [data: Record<string, unknown>]
 }>()
 
 // Reactive data
@@ -329,7 +357,7 @@ const referralSettings = ref({
 })
 
 // Sample referrals data
-const referrals = ref([
+const localReferrals = ref<Referral[]>([
   {
     id: 1,
     referrerName: 'علی احمدی',
@@ -363,7 +391,7 @@ const referrals = ref([
 ])
 
 // Sample referral codes
-const referralCodes = ref([
+const referralCodes = ref<ReferralCode[]>([
   {
     id: 1,
     userName: 'علی احمدی',
@@ -420,7 +448,7 @@ const visiblePages = computed(() => {
 
 // Filtered referrals
 const filteredReferrals = computed(() => {
-  let filtered = referrals.value
+  let filtered = props.referrals || localReferrals.value
 
   if (searchQuery.value) {
     filtered = filtered.filter(referral => 
@@ -535,53 +563,45 @@ const getCodeStatusText = (status: string) => {
 }
 
 const saveReferralSettings = () => {
-  console.log('ذخیره تنظیمات ارجاع:', referralSettings.value)
   // API call to save referral settings
+  emit('saveSettings', referralSettings.value)
 }
 
 const testReferralSystem = () => {
-  console.log('تست سیستم ارجاع')
   // Test referral system functionality
 }
 
 const generateReferralCodes = () => {
-  console.log('تولید کدهای ارجاع')
   // Generate referral codes for users
+  emit('generateCodes', [])
 }
 
 const exportReferralReport = () => {
-  console.log('خروجی گزارش ارجاع')
   // Export referral report
 }
 
-const viewReferralDetails = (referral: any) => {
-  console.log('مشاهده جزئیات ارجاع:', referral)
+const viewReferralDetails = (_referral: Referral) => {
   // Open referral details modal
 }
 
-const editReferral = (referral: any) => {
-  console.log('ویرایش ارجاع:', referral)
+const editReferral = (_referral: Referral) => {
   // Edit referral details
 }
 
-const cancelReferral = (referral: any) => {
-  console.log('لغو ارجاع:', referral)
+const cancelReferral = (referral: Referral) => {
   referral.status = 'cancelled'
   // API call to cancel referral
 }
 
 const copyCode = (code: string) => {
   navigator.clipboard.writeText(code)
-  console.log('کد کپی شد:', code)
 }
 
-const regenerateCode = (codeId: number) => {
-  console.log('تولید مجدد کد:', codeId)
+const regenerateCode = (_codeId: number) => {
   // Regenerate referral code
 }
 
-const deactivateCode = (codeId: number) => {
-  console.log('غیرفعال کردن کد:', codeId)
+const deactivateCode = (_codeId: number) => {
   // Deactivate referral code
 }
 
@@ -602,7 +622,5 @@ const goToPage = (page: number) => {
 }
 
 // Lifecycle
-onMounted(() => {
-  console.log('سیستم ارجاع پیشرفته بارگذاری شد')
-})
+// onMounted removed as it only contained console.log
 </script> 

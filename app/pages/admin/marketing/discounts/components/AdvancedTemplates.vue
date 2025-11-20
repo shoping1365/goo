@@ -8,7 +8,7 @@
           <p class="text-gray-600 mt-1">ایجاد و مدیریت قالب‌های پیشرفته با قابلیت‌های شخصی‌سازی کامل</p>
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
-          <button @click="showTemplateForm = true" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="showTemplateForm = true">
             <span class="i-heroicons-plus ml-2"></span>
             ایجاد قالب جدید
           </button>
@@ -69,8 +69,9 @@
     <!-- تب‌های قالب‌ها -->
     <div class="border-b border-gray-200">
       <div class="flex border-b border-gray-200 overflow-x-auto">
-        <button v-for="tab in tabs" :key="tab.value" @click="activeTab = tab.value"
-          :class="['px-6 py-3 -mb-px font-medium text-sm focus:outline-none whitespace-nowrap', activeTab === tab.value ? 'border-b-2 border-blue-600 text-blue-700' : 'text-gray-500 hover:text-blue-600']">
+        <button
+v-for="tab in tabs" :key="tab.value" :class="['px-6 py-3 -mb-px font-medium text-sm focus:outline-none whitespace-nowrap', activeTab === tab.value ? 'border-b-2 border-blue-600 text-blue-700' : 'text-gray-500 hover:text-blue-600']"
+          @click="activeTab = tab.value">
           {{ tab.label }}
         </button>
       </div>
@@ -97,11 +98,11 @@
             </select>
           </div>
           <div class="flex items-center space-x-2 space-x-reverse">
-            <button @click="bulkAction('export')" class="px-3 py-1 bg-green-100 text-green-700 rounded text-sm hover:bg-green-200">
+            <button class="px-3 py-1 bg-green-100 text-green-700 rounded text-sm hover:bg-green-200" @click="bulkAction('export')">
               <span class="i-heroicons-arrow-down-tray ml-1"></span>
               صادرات
             </button>
-            <button @click="bulkAction('duplicate')" class="px-3 py-1 bg-blue-100 text-blue-700 rounded text-sm hover:bg-blue-200">
+            <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded text-sm hover:bg-blue-200" @click="bulkAction('duplicate')">
               <span class="i-heroicons-document-duplicate ml-1"></span>
               تکثیر
             </button>
@@ -121,16 +122,16 @@
                 </div>
               </div>
               <div class="flex items-center space-x-2 space-x-reverse">
-                <button @click="previewTemplate(template)" class="text-blue-600 hover:text-blue-900">
+                <button class="text-blue-600 hover:text-blue-900" @click="previewTemplate(template)">
                   <span class="i-heroicons-eye"></span>
                 </button>
-                <button @click="editTemplate(template)" class="text-green-600 hover:text-green-900">
+                <button class="text-green-600 hover:text-green-900" @click="editTemplate(template)">
                   <span class="i-heroicons-pencil-square"></span>
                 </button>
-                <button @click="duplicateTemplate(template)" class="text-purple-600 hover:text-purple-900">
+                <button class="text-purple-600 hover:text-purple-900" @click="duplicateTemplate(template)">
                   <span class="i-heroicons-document-duplicate"></span>
                 </button>
-                <button @click="deleteTemplate(template)" class="text-red-600 hover:text-red-900">
+                <button class="text-red-600 hover:text-red-900" @click="deleteTemplate(template)">
                   <span class="i-heroicons-trash"></span>
                 </button>
               </div>
@@ -196,7 +197,7 @@
                     <option value="css">CSS</option>
                     <option value="javascript">JavaScript</option>
                   </select>
-                  <button @click="formatCode" class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200">
+                  <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200" @click="formatCode">
                     <span class="i-heroicons-code-bracket ml-1"></span>
                     فرمت
                   </button>
@@ -228,7 +229,7 @@
               const sanitizedPreviewContent = computed(() => DOMPurify.sanitize(previewContent.value))
               <div v-html="sanitizedPreviewContent"></div>
             -->
-            <div v-if="previewContent" v-html="previewContent" class="text-sm"></div>
+            <div v-if="previewContent" class="text-sm" v-html="previewContent"></div>
             <div v-else class="text-gray-400 text-center py-8">پیش‌نمایش قالب</div>
           </div>
         </div>
@@ -265,7 +266,7 @@
                 <span class="text-gray-500">استفاده:</span>
                 <span class="font-medium">{{ template.usageCount }}</span>
               </div>
-              <button @click="useReadyMadeTemplate(template)" class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+              <button class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="useReadyMadeTemplate(template)">
                 استفاده از قالب
               </button>
             </div>
@@ -356,13 +357,13 @@
             <h3 class="text-lg font-semibold text-gray-900">
               {{ editingTemplate ? 'ویرایش قالب' : 'ایجاد قالب جدید' }}
             </h3>
-            <button @click="closeForm" class="text-gray-400 hover:text-gray-600">
+            <button class="text-gray-400 hover:text-gray-600" @click="closeForm">
               <span class="i-heroicons-x-mark text-xl"></span>
             </button>
           </div>
         </div>
         
-        <form @submit.prevent="handleSubmit" class="p-6 space-y-6">
+        <form class="p-6 space-y-6" @submit.prevent="handleSubmit">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">نام قالب *</label>
@@ -422,10 +423,10 @@
         </form>
         
         <div class="p-6 border-t border-gray-200 flex justify-end space-x-3 space-x-reverse">
-          <button @click="closeForm" class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+          <button class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors" @click="closeForm">
             انصراف
           </button>
-          <button @click="handleSubmit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="handleSubmit">
             ذخیره
           </button>
         </div>

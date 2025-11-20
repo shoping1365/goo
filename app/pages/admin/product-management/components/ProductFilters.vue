@@ -13,8 +13,8 @@
         </div>
         <button 
           v-if="hasActiveFilters"
-          @click="clearAllFilters"
           class="text-xs text-red-600 hover:text-red-800 font-medium transition-colors"
+          @click="clearAllFilters"
         >
           پاک کردن همه فیلترها
         </button>
@@ -59,7 +59,7 @@
             placeholder="انتخاب یا جستجوی دسته‌بندی..."
             label-key="name"
             value-key="id"
-            @update:modelValue="onFilterChange"
+            @update:model-value="onFilterChange"
           />
         </div>
 
@@ -72,7 +72,7 @@
             placeholder="انتخاب یا جستجوی برند..."
             label-key="name"
             value-key="id"
-            @update:modelValue="onFilterChange"
+            @update:model-value="onFilterChange"
           />
         </div>
 
@@ -113,27 +113,27 @@
           
           <span v-if="filters.productName" class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-md">
             نام: {{ filters.productName }}
-            <button @click="clearFilter('productName')" class="mr-1 text-blue-600 hover:text-blue-800">×</button>
+            <button class="mr-1 text-blue-600 hover:text-blue-800" @click="clearFilter('productName')">×</button>
           </span>
           
           <span v-if="filters.categoryId" class="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 text-xs rounded-md">
             دسته: {{ getCategoryName(filters.categoryId) }}
-            <button @click="clearFilter('categoryId')" class="mr-1 text-green-600 hover:text-green-800">×</button>
+            <button class="mr-1 text-green-600 hover:text-green-800" @click="clearFilter('categoryId')">×</button>
           </span>
           
           <span v-if="filters.brandId" class="inline-flex items-center px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-md">
             برند: {{ getBrandName(filters.brandId) }}
-            <button @click="clearFilter('brandId')" class="mr-1 text-purple-600 hover:text-purple-800">×</button>
+            <button class="mr-1 text-purple-600 hover:text-purple-800" @click="clearFilter('brandId')">×</button>
           </span>
           
           <span v-if="filters.published" class="inline-flex items-center px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-md">
             وضعیت: {{ filters.published === 'true' ? 'منتشر شده' : 'پیش‌نویس' }}
-            <button @click="clearFilter('published')" class="mr-1 text-yellow-600 hover:text-yellow-800">×</button>
+            <button class="mr-1 text-yellow-600 hover:text-yellow-800" @click="clearFilter('published')">×</button>
           </span>
           
           <span v-if="filters.stockStatus" class="inline-flex items-center px-2 py-1 bg-red-100 text-red-800 text-xs rounded-md">
             موجودی: {{ getStockStatusLabel(filters.stockStatus) }}
-            <button @click="clearFilter('stockStatus')" class="mr-1 text-red-600 hover:text-red-800">×</button>
+            <button class="mr-1 text-red-600 hover:text-red-800" @click="clearFilter('stockStatus')">×</button>
           </span>
         </div>
       </div>

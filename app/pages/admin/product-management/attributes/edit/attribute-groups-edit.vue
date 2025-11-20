@@ -10,20 +10,20 @@
           </div>
           <div class="flex flex-row-reverse gap-6">
             <button 
-              @click="deleteGroup"
               class="inline-flex items-center px-3 py-1.5 border border-red-300 text-xs font-medium rounded-md text-white bg-red-600 hover:bg-red-700 shadow-sm"
+              @click="deleteGroup"
             >
               حذف
             </button>
             <button 
-              @click="saveAndContinue"
               class="inline-flex items-center px-3 py-1.5 border border-yellow-300 text-xs font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 shadow-sm"
+              @click="saveAndContinue"
             >
               ذخیره و ادامه ویرایش
             </button>
             <button 
-              @click="saveAndExit"
               class="inline-flex items-center px-3 py-1.5 border border-green-300 text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700 shadow-sm"
+              @click="saveAndExit"
             >
               ذخیره
             </button>
@@ -35,8 +35,8 @@
     <!-- Back Button -->
     <div class="w-full px-4 py-2">
       <button 
-        @click="$router.push('/admin/attribute-groups')"
         class="inline-flex items-center px-3 py-1.5 border border-blue-300 text-xs font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100 shadow-sm"
+        @click="$router.push('/admin/attribute-groups')"
       >
         🔙 بازگشت به لیست گروه مشخصه ها
       </button>
@@ -75,8 +75,8 @@
             
             <div class="flex items-center space-x-2 space-x-reverse">
               <button 
-                @click="addNewAttribute"
                 class="inline-flex items-center px-3 py-1.5 border border-green-300 text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700 shadow-sm"
+                @click="addNewAttribute"
               >
                 افزودن ویژگی جدید
               </button>
@@ -188,16 +188,16 @@
                     <td class="px-3 py-3 whitespace-nowrap text-center">
                       <div class="flex items-center justify-center space-x-1 space-x-reverse">
                         <button 
-                          @click="saveAttribute"
                           class="inline-flex items-center p-1.5 border border-transparent text-xs font-medium rounded text-green-700 bg-green-100 hover:bg-green-200 transition-colors"
                           title="ذخیره"
+                          @click="saveAttribute"
                         >
                           ✓
                         </button>
                         <button 
-                          @click="cancelEdit"
                           class="inline-flex items-center p-1.5 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 hover:bg-red-200 transition-colors"
                           title="انصراف"
+                          @click="cancelEdit"
                         >
                           ✗
                         </button>
@@ -257,16 +257,16 @@
                     <td class="px-3 py-3 whitespace-nowrap text-center">
                       <div class="flex items-center justify-center space-x-1 space-x-reverse">
                         <button 
-                          @click="editAttribute(attribute)"
                           class="inline-flex items-center p-1.5 border border-transparent text-xs font-medium rounded text-amber-700 bg-amber-100 hover:bg-amber-200 transition-colors"
                           title="ویرایش"
+                          @click="editAttribute(attribute)"
                         >
                           ✏️
                         </button>
                         <button 
-                          @click="deleteAttribute(attribute.id)"
                           class="inline-flex items-center p-1.5 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 hover:bg-red-200 transition-colors"
                           title="حذف"
+                          @click="deleteAttribute(attribute.id)"
                         >
                           ✗
                         </button>
@@ -296,8 +296,8 @@
                 <span>نمایش</span>
                 <select 
                   v-model="itemsPerPage" 
-                  @change="updatePagination"
                   class="border border-gray-300 rounded px-2 py-1 text-xs bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  @change="updatePagination"
                 >
                   <option value="5">5</option>
                   <option value="10">10</option>
@@ -309,7 +309,6 @@
               
               <div class="flex items-center space-x-1 space-x-reverse">
                 <button 
-                  @click="goToPage(currentPage - 1)"
                   :disabled="currentPage <= 1"
                   :class="[
                     'px-2 py-1 text-xs border rounded transition-colors',
@@ -317,6 +316,7 @@
                       ? 'border-gray-300 text-gray-400 bg-gray-100 cursor-not-allowed' 
                       : 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50'
                   ]"
+                  @click="goToPage(currentPage - 1)"
                 >
                   قبلی
                 </button>
@@ -325,13 +325,13 @@
                   <template v-for="page in visiblePages" :key="page">
                     <button 
                       v-if="page !== '...'"
-                      @click="goToPage(Number(page))"
                       :class="[
                         'px-2 py-1 text-xs border rounded transition-colors',
                         currentPage === page 
                           ? 'border-blue-500 text-white bg-blue-600' 
                           : 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50'
                       ]"
+                      @click="goToPage(Number(page))"
                     >
                       {{ page }}
                     </button>
@@ -340,7 +340,6 @@
                 </div>
                 
                 <button 
-                  @click="goToPage(currentPage + 1)"
                   :disabled="currentPage >= totalPages"
                   :class="[
                     'px-2 py-1 text-xs border rounded transition-colors',
@@ -348,6 +347,7 @@
                       ? 'border-gray-300 text-gray-400 bg-gray-100 cursor-not-allowed' 
                       : 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50'
                   ]"
+                  @click="goToPage(currentPage + 1)"
                 >
                   بعدی
                 </button>
@@ -507,7 +507,6 @@ const saveAttribute = () => {
 }
 
 const cancelEdit = () => {
-  console.log('Edit canceled')
   editingAttributeId.value = null
   editingAttribute.value = null
 }

@@ -8,8 +8,8 @@
           <p class="text-gray-600">مدیریت ریدایرکت‌های گروه {{ groupName }}</p>
         </div>
         <button 
-          @click="router.push('/admin/seo/redirects')"
           class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+          @click="router.push('/admin/seo/redirects')"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -117,15 +117,15 @@
                 <div class="flex gap-2">
                   <button 
                     v-if="hasPermission('seo.update')"
-                    @click="toggleRedirect(redirect)"
                     :class="redirect.status === 'active' ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900'"
+                    @click="toggleRedirect(redirect)"
                   >
                     {{ redirect.status === 'active' ? 'غیرفعال' : 'فعال' }}
                   </button>
                   <button 
                     v-if="canDeleteRedirect"
-                    @click="deleteRedirect(redirect)"
                     class="text-red-600 hover:text-red-900"
+                    @click="deleteRedirect(redirect)"
                   >
                     حذف
                   </button>
@@ -152,8 +152,11 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const useAuth: () => { user: any; hasPermission: (perm: string) => boolean }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const useRouter: () => any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const useRoute: () => any
 </script>
 
@@ -264,6 +267,7 @@ const updateStats = () => {
 const loadRedirects = async () => {
   try {
     const offset = (currentPage.value - 1) * itemsPerPage.value
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response: any = await $fetch('/api/admin/seo/redirects', {
       query: {
         limit: itemsPerPage.value,
@@ -293,6 +297,7 @@ const handleItemsPerPageChange = (perPage: number) => {
   loadRedirects()
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const toggleRedirect = async (redirect: any) => {
   try {
     // TODO: Implement toggle endpoint
@@ -302,6 +307,7 @@ const toggleRedirect = async (redirect: any) => {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const deleteRedirect = async (redirect: any) => {
   if (confirm('آیا از حذف این تغییر مسیر اطمینان دارید؟')) {
     try {

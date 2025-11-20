@@ -9,8 +9,8 @@
       
       <!-- دکمه ذخیره تنظیمات -->
       <button 
-        @click="saveSettings"
         class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-200"
+        @click="saveSettings"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -26,13 +26,13 @@
           <button 
             v-for="tab in tabs" 
             :key="tab.id"
-            @click="activeTab = tab.id"
             :class="[
               'py-2 px-1 border-b-2 font-medium text-sm transition-colors duration-200',
               activeTab === tab.id 
                 ? 'border-green-500 text-green-600' 
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             ]"
+            @click="activeTab = tab.id"
           >
             {{ tab.label }}
           </button>
@@ -249,15 +249,15 @@
                   class="flex-1 px-3 py-2 border border-green-300 rounded-lg text-sm"
                 />
                 <button 
-                  @click="removeBracket(index)"
                   class="px-3 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200"
+                  @click="removeBracket(index)"
                 >
                   حذف
                 </button>
               </div>
               <button 
-                @click="addBracket"
                 class="w-full px-3 py-2 bg-green-100 text-green-600 rounded-lg hover:bg-green-200"
+                @click="addBracket"
               >
                 افزودن طبقه جدید
               </button>
@@ -330,8 +330,8 @@
                 </div>
                 <div class="flex items-end">
                   <button 
-                    @click="removeExemptionRule(index)"
                     class="w-full px-3 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200"
+                    @click="removeExemptionRule(index)"
                   >
                     حذف
                   </button>
@@ -339,8 +339,8 @@
               </div>
             </div>
             <button 
-              @click="addExemptionRule"
               class="w-full px-4 py-2 bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200"
+              @click="addExemptionRule"
             >
               افزودن قانون معافیت جدید
             </button>
@@ -386,8 +386,8 @@
                 </div>
                 <div class="flex items-end">
                   <button 
-                    @click="removeDiscountRule(index)"
                     class="w-full px-3 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200"
+                    @click="removeDiscountRule(index)"
                   >
                     حذف
                   </button>
@@ -395,8 +395,8 @@
               </div>
             </div>
             <button 
-              @click="addDiscountRule"
               class="w-full px-4 py-2 bg-orange-100 text-orange-700 rounded-lg hover:bg-orange-200"
+              @click="addDiscountRule"
             >
               افزودن قانون تخفیف جدید
             </button>
@@ -446,8 +446,8 @@
             </div>
             <div class="flex items-end">
               <button 
-                @click="testCalculation"
                 class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+                @click="testCalculation"
               >
                 تست محاسبه
               </button>

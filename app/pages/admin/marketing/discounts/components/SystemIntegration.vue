@@ -9,7 +9,7 @@
           </p>
         </div>
         <div class="flex items-center space-x-3 space-x-reverse">
-          <button @click="showIntegrationForm = true" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="showIntegrationForm = true">
             <span class="i-heroicons-plus ml-2"></span>
             افزودن یکپارچه‌سازی
           </button>
@@ -102,13 +102,13 @@
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
               <div class="flex items-center space-x-2 space-x-reverse">
-                <button @click="editIntegration(integration)" class="text-blue-600 hover:text-blue-900">
+                <button class="text-blue-600 hover:text-blue-900" @click="editIntegration(integration)">
                   <span class="i-heroicons-pencil-square"></span>
                 </button>
-                <button @click="syncIntegration(integration)" class="text-green-600 hover:text-green-900">
+                <button class="text-green-600 hover:text-green-900" @click="syncIntegration(integration)">
                   <span class="i-heroicons-arrow-path"></span>
                 </button>
-                <button @click="deleteIntegration(integration)" class="text-red-600 hover:text-red-900">
+                <button class="text-red-600 hover:text-red-900" @click="deleteIntegration(integration)">
                   <span class="i-heroicons-trash"></span>
                 </button>
               </div>
@@ -135,12 +135,12 @@
             <h3 class="text-lg font-semibold text-gray-900">
               {{ editingIntegration ? 'ویرایش یکپارچه‌سازی' : 'افزودن یکپارچه‌سازی جدید' }}
             </h3>
-            <button @click="closeForm" class="text-gray-400 hover:text-gray-600">
+            <button class="text-gray-400 hover:text-gray-600" @click="closeForm">
               <span class="i-heroicons-x-mark text-xl"></span>
             </button>
           </div>
         </div>
-        <form @submit.prevent="handleSubmit" class="p-6 space-y-6">
+        <form class="p-6 space-y-6" @submit.prevent="handleSubmit">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">نام سرویس *</label>
@@ -175,10 +175,10 @@
           </div>
         </form>
         <div class="p-6 border-t border-gray-200 flex justify-end space-x-3 space-x-reverse">
-          <button @click="closeForm" class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+          <button class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors" @click="closeForm">
             انصراف
           </button>
-          <button @click="handleSubmit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" @click="handleSubmit">
             ذخیره
           </button>
         </div>

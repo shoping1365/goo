@@ -147,13 +147,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue';
 
 // Props
 interface Props {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   warehouse: any
 }
-const props = defineProps<Props>()
+defineProps<Props>()
 
 // داده‌های نمونه موجودی
 const items = ref([

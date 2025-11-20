@@ -5,6 +5,12 @@ interface SendOTPResponse {
   expires_in: number
 }
 
+interface ApiError {
+  data?: {
+    error?: string
+  }
+}
+
 export const useOTP = () => {
   const loading = ref(false)
   const error = ref('')
@@ -35,8 +41,9 @@ export const useOTP = () => {
       }, 1000)
 
       return true
-    } catch (err: any) {
-      error.value = err.data?.error || 'ارسال OTP ناموفق بود'
+    } catch (err) {
+      const apiError = err as ApiError
+      error.value = apiError.data?.error || 'ارسال OTP ناموفق بود'
       return false
     } finally {
       loading.value = false

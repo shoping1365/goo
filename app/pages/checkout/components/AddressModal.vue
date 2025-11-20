@@ -5,7 +5,7 @@
       <div class="bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden rounded-2xl shadow-lg p-6" dir="rtl">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-xl font-bold">آدرس‌های شما</h2>
-          <button @click="emit('close')" class="text-gray-600 hover:text-gray-800 text-xl font-bold">×</button>
+          <button class="text-gray-600 hover:text-gray-800 text-xl font-bold" @click="emit('close')">×</button>
         </div>
 
         <!-- حالت فهرست -->
@@ -26,26 +26,26 @@
                 <p v-if="addr.phone" class="text-sm text-gray-800 mt-1 text-right w-full">تلفن ثابت: {{ addr.phone }}</p>
               </div>
               <div class="flex items-center gap-3 mt-3 w-full">
-                <button v-if="!addr.is_default" @click="makeDefault(addr.id)" class="text-xs text-gray-500 hover:text-teal-600">پیش‌فرض کن</button>
+                <button v-if="!addr.is_default" class="text-xs text-gray-500 hover:text-teal-600" @click="makeDefault(addr.id)">پیش‌فرض کن</button>
               </div>
               <div class="flex items-center gap-3 mt-3 w-full">
-                <button @click="selectAddress(addr)" class="text-sm text-[#e60023] font-bold hover:underline">انتخاب</button>
+                <button class="text-sm text-[#e60023] font-bold hover:underline" @click="selectAddress(addr)">انتخاب</button>
               </div>
               <div class="flex items-center gap-3 mt-2 w-full">
-                <button @click="editAddress(addr)" class="text-xs text-gray-500 hover:text-gray-700 underline">ویرایش</button>
-                <button @click="confirmDelete(addr.id)" class="text-xs text-red-500 hover:text-red-700 underline">حذف</button>
+                <button class="text-xs text-gray-500 hover:text-gray-700 underline" @click="editAddress(addr)">ویرایش</button>
+                <button class="text-xs text-red-500 hover:text-red-700 underline" @click="confirmDelete(addr.id)">حذف</button>
               </div>
             </div>
           </div>
 
-          <button @click="mode='add'; resetForm();" class="mt-6 w-full flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 rounded-xl py-3 hover:bg-gray-50 text-sm font-bold text-gray-600">
+          <button class="mt-6 w-full flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 rounded-xl py-3 hover:bg-gray-50 text-sm font-bold text-gray-600" @click="mode='add'; resetForm();">
             + افزودن آدرس جدید
           </button>
         </template>
 
         <!-- حالت افزودن / ویرایش -->
         <template v-else>
-          <form @submit.prevent="saveAddress" class="space-y-4">
+          <form class="space-y-4" @submit.prevent="saveAddress">
             <h3 class="text-lg font-bold mb-4 pb-2 border-b border-gray-200">{{ mode==='add' ? 'افزودن آدرس جدید' : 'ویرایش آدرس' }}</h3>
 
             <div>
@@ -85,7 +85,7 @@
               <input v-model="form.postal_code" class="w-full input-base" placeholder="کد پستی ۱۰ رقمی" />
             </div>
             <div class="flex items-center gap-2">
-              <input type="checkbox" v-model="form.is_default" id="is_default" />
+              <input id="is_default" v-model="form.is_default" type="checkbox" />
               <label for="is_default" class="text-sm">تنظیم به عنوان آدرس پیش‌فرض</label>
             </div>
 
@@ -97,7 +97,7 @@
                 </span>
                 <span v-else>{{ mode==='add' ? 'ذخیره آدرس' : 'ذخیره تغییرات' }}</span>
               </button>
-              <button type="button" @click="cancelForm" class="flex-1 py-3 rounded-xl border-2 border-gray-300 text-sm font-medium hover:bg-gray-50 transition-colors">انصراف</button>
+              <button type="button" class="flex-1 py-3 rounded-xl border-2 border-gray-300 text-sm font-medium hover:bg-gray-50 transition-colors" @click="cancelForm">انصراف</button>
             </div>
           </form>
         </template>
@@ -109,6 +109,31 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, watch } from 'vue';
 import { useAddresses } from '~/composables/useAddresses';
+
+interface Address {
+  id: number
+  recipient_name: string
+  recipient_mobile: string
+  phone?: string
+  full_address: string
+  postal_code?: string
+  province_id?: number
+  city_id?: number
+  province?: string
+  city?: string
+  is_default: boolean
+}
+
+interface Province {
+  id: number
+  name: string
+}
+
+interface City {
+  id: number
+  name: string
+  province_id: number
+}
 
 // Props
 interface Props {
@@ -125,38 +150,38 @@ const saving = ref(false)
 const citiesLoading = ref(false)
 
 // فرم آدرس
-const form = reactive<any>({
-  id: null,
+const form = reactive<Partial<Address>>({
+  id: undefined,
   recipient_name: '',
   recipient_mobile: '',
   phone: '',
   full_address: '',
   postal_code: '',
-  province_id: null,
-  city_id: null,
+  province_id: undefined,
+  city_id: undefined,
   is_default: false
 })
 
 function resetForm(){
-  Object.assign(form,{ id:null, recipient_name:'', recipient_mobile:'', phone:'', full_address:'', postal_code:'', province_id:null, city_id:null, is_default:false })
+  Object.assign(form,{ id:undefined, recipient_name:'', recipient_mobile:'', phone:'', full_address:'', postal_code:'', province_id:undefined, city_id:undefined, is_default:false })
   selectedProvinceId.value = null
   cities.value = []
 }
 
 // استان و شهر - با کش
-const provinces = ref<any[]>([])
-const cities = ref<any[]>([])
+const provinces = ref<Province[]>([])
+const cities = ref<City[]>([])
 const selectedProvinceId = ref<number|null>(null)
 const provincesLoaded = ref(false)
-const citiesCache = new Map<number, any[]>()
+const citiesCache = new Map<number, City[]>()
 
 // فراخوانی استان‌ها فقط یک بار
 async function fetchProvinces(){
   if (provincesLoaded.value) return
   try {
-    provinces.value = await $fetch('/api/geo/provinces')
+    provinces.value = await $fetch<Province[]>('/api/geo/provinces')
     provincesLoaded.value = true
-  } catch (error) {
+  } catch {
     // خطا در دریافت استان‌ها
   }
 }
@@ -170,10 +195,10 @@ async function fetchCities(pid: number){
   
   citiesLoading.value = true
   try {
-    const citiesData = await $fetch<unknown[]>(`/api/geo/provinces/${pid}/cities`)
+    const citiesData = await $fetch<City[]>(`/api/geo/provinces/${pid}/cities`)
     cities.value = Array.isArray(citiesData) ? citiesData : []
     citiesCache.set(pid, Array.isArray(citiesData) ? citiesData : [])
-  } catch (error) {
+  } catch {
     // خطا در دریافت شهرها
     cities.value = []
   } finally {
@@ -198,27 +223,31 @@ watch(selectedProvinceId, (val) => {
 })
 
 // --- اکشن‌ها ---
-function cardClass(addr: any){
+function cardClass(addr: Address){
   return addr.is_default ? 'border-teal-500 border-2' : 'border-gray-200'
 }
 
-function selectAddress(addr: any){
+function selectAddress(addr: Address){
   emit('select', addr)
   emit('close')
 }
 
-function editAddress(addr: any){
+function editAddress(addr: Address){
   mode.value = 'edit'
   Object.assign(form, JSON.parse(JSON.stringify(addr)))
   selectedProvinceId.value = addr.province_id ?? null
   // اگر آدرس دارای نام استان و شهر است، آن‌ها را در فرم قرار بده
   if (addr.province && !provinces.value.find(p => p.name === addr.province)) {
     // اگر استان در لیست موجود نیست، اضافه کن
-    provinces.value.push({ id: addr.province_id, name: addr.province })
+    if (addr.province_id) {
+      provinces.value.push({ id: addr.province_id, name: addr.province })
+    }
   }
   if (addr.city && !cities.value.find(c => c.name === addr.city)) {
     // اگر شهر در لیست موجود نیست، اضافه کن
-    cities.value.push({ id: addr.city_id, name: addr.city })
+    if (addr.city_id && addr.province_id) {
+      cities.value.push({ id: addr.city_id, name: addr.city, province_id: addr.province_id })
+    }
   }
   if(addr.province_id) fetchCities(addr.province_id)
 }
@@ -247,7 +276,7 @@ async function saveAddress(){
     emit('addresses-changed')
     mode.value = 'list'
     resetForm()
-  } catch (error) {
+  } catch {
     // خطا در ذخیره آدرس
     alert('خطا در ذخیره آدرس. لطفاً دوباره تلاش کنید.')
   } finally {
@@ -265,7 +294,7 @@ async function confirmDelete(id: number){
     try {
       await deleteAddress(id)
       emit('addresses-changed')
-    } catch (error) {
+    } catch {
       // خطا در حذف آدرس
       alert('خطا در حذف آدرس. لطفاً دوباره تلاش کنید.')
     }
@@ -276,7 +305,7 @@ async function makeDefault(id: number){
   try {
     await setDefaultAddress(id)
     emit('addresses-changed')
-  } catch (error) {
+  } catch {
     // خطا در تنظیم آدرس پیش‌فرض
     alert('خطا در تنظیم آدرس پیش‌فرض. لطفاً دوباره تلاش کنید.')
   }

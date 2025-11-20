@@ -8,8 +8,8 @@
       </div>
       
       <button 
-        @click="showForm = !showForm"
         class="bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-2 rounded-xl hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center gap-2"
+        @click="showForm = !showForm"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -22,7 +22,7 @@
     <div v-show="showForm" class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
       <h3 class="text-lg font-bold text-gray-900 mb-4">اطلاعات ورودی کالا</h3>
       
-      <form @submit.prevent="submitInbound" class="space-y-4">
+      <form class="space-y-4" @submit.prevent="submitInbound">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- شماره فاکتور -->
           <div>
@@ -119,10 +119,10 @@
                 >
               </div>
               <button 
-                @click="removeItem(index)"
                 type="button"
                 class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                 title="حذف کالا"
+                @click="removeItem(index)"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -132,9 +132,9 @@
           </div>
           
           <button 
-            @click="addItem"
             type="button"
             class="mt-3 text-green-600 hover:text-green-700 font-medium flex items-center gap-2"
+            @click="addItem"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -168,8 +168,8 @@
           
           <button 
             type="button"
-            @click="resetForm"
             class="bg-gray-500 text-white px-6 py-3 rounded-xl hover:bg-gray-600 transition-all duration-200"
+            @click="resetForm"
           >
             پاک کردن
           </button>
@@ -254,9 +254,10 @@ const notifier = useNotifier()
 
 // Props
 interface Props {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   warehouse: any
 }
-const props = defineProps<Props>()
+defineProps<Props>()
 
 // نمایش فرم
 const showForm = ref(false)
@@ -315,7 +316,6 @@ const removeItem = (index: number) => {
 
 const submitInbound = () => {
   // اینجا منطق ثبت ورودی قرار می‌گیرد
-  console.log('فرم ورودی:', form.value)
   notifier.success('ورودی کالا با موفقیت ثبت شد!')
   resetForm()
   showForm.value = false

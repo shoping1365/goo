@@ -44,7 +44,8 @@
               <span>+{{ salesStats.weeklyGrowth }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full transition-all duration-300"
+              <div
+class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full transition-all duration-300"
                    :style="{ width: salesStats.weeklyGrowth + '%' }"></div>
             </div>
           </div>
@@ -67,10 +68,12 @@
           </div>
           
           <div class="space-y-3">
-            <div v-for="category in salesByCategory" :key="category.name" 
+            <div
+v-for="category in salesByCategory" :key="category.name" 
                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
               <div class="flex items-center space-x-3 space-x-reverse">
-                <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm"
+                <div
+class="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm"
                      :class="category.color">
                   {{ category.icon }}
                 </div>
@@ -139,7 +142,8 @@
               <span>{{ behaviorStats.monthlyPattern }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full transition-all duration-300"
+              <div
+class="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full transition-all duration-300"
                    :style="{ width: behaviorStats.monthlyPattern + '%' }"></div>
             </div>
           </div>
@@ -162,7 +166,8 @@
           </div>
           
           <div class="space-y-3">
-            <div v-for="hour in peakHours" :key="hour.time" 
+            <div
+v-for="hour in peakHours" :key="hour.time" 
                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
               <div class="flex items-center space-x-3 space-x-reverse">
                 <div class="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs">
@@ -230,7 +235,8 @@
               <span>{{ forecastStats.accuracy }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-300"
+              <div
+class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-300"
                    :style="{ width: forecastStats.accuracy + '%' }"></div>
             </div>
           </div>
@@ -253,10 +259,12 @@
           </div>
           
           <div class="space-y-3">
-            <div v-for="trend in futureTrends" :key="trend.name" 
+            <div
+v-for="trend in futureTrends" :key="trend.name" 
                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
               <div class="flex items-center space-x-3 space-x-reverse">
-                <div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs"
+                <div
+class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs"
                      :class="trend.color">
                   {{ trend.direction === 'up' ? '↗' : '↘' }}
                 </div>
@@ -327,7 +335,8 @@
               <span>+{{ comparisonStats.monthlyGrowth }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full transition-all duration-300"
+              <div
+class="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full transition-all duration-300"
                    :style="{ width: Math.min(comparisonStats.monthlyGrowth, 100) + '%' }"></div>
             </div>
           </div>
@@ -350,10 +359,12 @@
           </div>
           
           <div class="space-y-3">
-            <div v-for="category in categoryComparison" :key="category.name" 
+            <div
+v-for="category in categoryComparison" :key="category.name" 
                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
               <div class="flex items-center space-x-3 space-x-reverse">
-                <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm"
+                <div
+class="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm"
                      :class="category.color">
                   {{ category.icon }}
                 </div>
@@ -412,9 +423,11 @@
           <h4 class="text-sm font-medium text-gray-900 mb-3">روند فروش (12 ماه گذشته)</h4>
           <div class="flex items-end space-x-2 space-x-reverse h-32 overflow-x-auto">
             <div v-for="(month, index) in interactiveTrend" :key="index" class="flex-shrink-0 flex flex-col items-center min-w-12">
-              <div class="w-full bg-gray-200 rounded-t relative"
+              <div
+class="w-full bg-gray-200 rounded-t relative"
                    :style="{ height: getChartHeight(month.sales) + 'px' }">
-                <div class="w-full bg-gradient-to-t from-blue-500 to-purple-500 rounded-t transition-all duration-300 absolute bottom-0"
+                <div
+class="w-full bg-gradient-to-t from-blue-500 to-purple-500 rounded-t transition-all duration-300 absolute bottom-0"
                      :style="{ height: getChartHeight(month.sales) + 'px' }"></div>
               </div>
               <span class="text-xs text-gray-500 mt-1 text-center">{{ month.label }}</span>

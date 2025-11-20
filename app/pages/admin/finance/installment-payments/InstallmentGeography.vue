@@ -15,7 +15,7 @@
           <option value="90">90 روز گذشته</option>
           <option value="365">یک سال گذشته</option>
         </select>
-        <button @click="refreshData" class="text-blue-600 hover:text-blue-800">
+        <button class="text-blue-600 hover:text-blue-800" @click="refreshData">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
@@ -108,7 +108,7 @@
           </div>
 
           <div class="mt-3 flex items-center justify-between">
-            <button @click="viewProvinceDetails(province)" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+            <button class="text-blue-600 hover:text-blue-800 text-sm font-medium" @click="viewProvinceDetails(province)">
               جزئیات استان
             </button>
             <div class="flex items-center" :class="province.trend > 0 ? 'text-green-600' : province.trend < 0 ? 'text-red-600' : 'text-gray-600'">
@@ -162,7 +162,7 @@
               <span class="text-gray-600">سهم از استان:</span>
               <span class="font-medium">{{ city.provincePercentage }}%</span>
             </div>
-            <button @click="viewCityDetails(city)" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+            <button class="text-blue-600 hover:text-blue-800 text-sm font-medium" @click="viewCityDetails(city)">
               جزئیات
             </button>
           </div>

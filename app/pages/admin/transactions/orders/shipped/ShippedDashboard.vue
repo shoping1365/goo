@@ -220,13 +220,13 @@
               <button
                 v-for="period in chartPeriods"
                 :key="period.id"
-                @click="selectedPeriod = period.id"
                 :class="[
                   'px-3 py-1 text-xs font-medium rounded-md transition-colors',
                   selectedPeriod === period.id
                     ? 'bg-green-500 text-white'
                     : 'bg-white text-gray-600 hover:bg-gray-50'
                 ]"
+                @click="selectedPeriod = period.id"
               >
                 {{ period.name }}
               </button>
@@ -337,8 +337,8 @@
           <div class="flex items-center space-x-2 space-x-reverse">
             <div class="relative">
               <input
-                type="text"
                 v-model="searchTerm"
+                type="text"
                 placeholder="جستجو در سفارشات..."
                 class="w-48 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
               />
@@ -392,13 +392,13 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex items-center space-x-2">
-                  <button @click="viewOrderDetails(order)" class="text-blue-600 hover:text-blue-900">
+                  <button class="text-blue-600 hover:text-blue-900" @click="viewOrderDetails(order)">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                     </svg>
                   </button>
-                  <button @click="trackOrder(order)" class="text-green-600 hover:text-green-900">پیگیری</button>
+                  <button class="text-green-600 hover:text-green-900" @click="trackOrder(order)">پیگیری</button>
                 </div>
               </td>
             </tr>
@@ -517,12 +517,6 @@ const filteredRecentOrders = computed(() => {
 
 const totalPages = computed(() => Math.ceil(filteredRecentOrders.value.length / itemsPerPage.value))
 
-const paginatedOrders = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value
-  const end = start + itemsPerPage.value
-  return filteredRecentOrders.value.slice(start, end)
-})
-
 // متدهای مودال
 const viewOrderDetails = (order) => {
   selectedOrder.value = order
@@ -534,14 +528,12 @@ const closeModal = () => {
   selectedOrder.value = null
 }
 
-const editOrder = (order) => {
-  console.log('ویرایش سفارش:', order)
+const editOrder = (_order) => {
   // اینجا می‌توانید کاربر را به صفحه ویرایش هدایت کنید
 }
 
 // متدهای عملیاتی
-const trackOrder = (order) => {
-  console.log('پیگیری سفارش:', order)
+const trackOrder = (_order) => {
   // اینجا می‌توانید کاربر را به صفحه پیگیری هدایت کنید
 }
 

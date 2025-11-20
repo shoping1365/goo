@@ -8,12 +8,12 @@
           <p class="text-gray-600 mt-1">مدیریت دسته‌بندی‌های صفحات سایت</p>
         </div>
         <TemplateButton
-          @click="showAddModal = true"
-          bgGradient="bg-gradient-to-r from-blue-400 to-blue-600"
-          textColor="text-white"
-          hoverClass="hover:from-blue-500 hover:to-blue-700 hover:shadow-lg hover:scale-105"
-          focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          bg-gradient="bg-gradient-to-r from-blue-400 to-blue-600"
+          text-color="text-white"
+          hover-class="hover:from-blue-500 hover:to-blue-700 hover:shadow-lg hover:scale-105"
+          focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           size="medium"
+          @click="showAddModal = true"
         >
           افزودن دسته‌بندی جدید
         </TemplateButton>
@@ -131,33 +131,33 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex space-x-2 space-x-reverse">
                   <TemplateButton
-                    @click="editCategory(category)"
-                    textColor="text-blue-600"
-                    bgGradient="bg-blue-50"
-                    hoverClass="hover:bg-blue-100"
+                    text-color="text-blue-600"
+                    bg-gradient="bg-blue-50"
+                    hover-class="hover:bg-blue-100"
                     size="small"
-                    :borderColor="'border-0'"
+                    :border-color="'border-0'"
+                    @click="editCategory(category)"
                   >
                     ویرایش
                   </TemplateButton>
                   <TemplateButton
-                    @click="toggleCategoryStatus(category.id)"
-                    :textColor="category.isActive ? 'text-red-600' : 'text-green-600'"
-                    :bgGradient="category.isActive ? 'bg-red-50' : 'bg-green-50'"
-                    :hoverClass="category.isActive ? 'hover:bg-red-100' : 'hover:bg-green-100'"
+                    :text-color="category.isActive ? 'text-red-600' : 'text-green-600'"
+                    :bg-gradient="category.isActive ? 'bg-red-50' : 'bg-green-50'"
+                    :hover-class="category.isActive ? 'hover:bg-red-100' : 'hover:bg-green-100'"
                     size="small"
-                    :borderColor="'border-0'"
+                    :border-color="'border-0'"
+                    @click="toggleCategoryStatus(category.id)"
                   >
                     {{ category.isActive ? 'غیرفعال' : 'فعال' }}
                   </TemplateButton>
                   <TemplateButton
                     v-if="canDeletePageCategory"
-                    @click="deleteCategory(category.id)"
-                    textColor="text-red-600"
-                    bgGradient="bg-red-50"
-                    hoverClass="hover:bg-red-100"
+                    text-color="text-red-600"
+                    bg-gradient="bg-red-50"
+                    hover-class="hover:bg-red-100"
                     size="small"
-                    :borderColor="'border-0'"
+                    :border-color="'border-0'"
+                    @click="deleteCategory(category.id)"
                   >
                     حذف
                   </TemplateButton>
@@ -176,7 +176,7 @@
           <h3 class="text-lg font-medium text-gray-900 mb-4">
             {{ showEditModal ? 'ویرایش دسته‌بندی' : 'افزودن دسته‌بندی جدید' }}
           </h3>
-          <form @submit.prevent="saveCategory" class="space-y-4">
+          <form class="space-y-4" @submit.prevent="saveCategory">
             <div>
               <label for="categoryName" class="block text-sm font-medium text-gray-700 mb-1">نام دسته‌بندی *</label>
               <input
@@ -222,21 +222,21 @@
             <div class="flex justify-end space-x-3 space-x-reverse">
               <TemplateButton
                 type="button"
-                @click="closeModal"
-                bgGradient="bg-gradient-to-r from-gray-200 to-gray-400"
-                textColor="text-gray-800"
-                hoverClass="hover:from-gray-300 hover:to-gray-500 hover:shadow-lg hover:scale-105"
-                focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+                bg-gradient="bg-gradient-to-r from-gray-200 to-gray-400"
+                text-color="text-gray-800"
+                hover-class="hover:from-gray-300 hover:to-gray-500 hover:shadow-lg hover:scale-105"
+                focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
                 size="medium"
+                @click="closeModal"
               >
                 انصراف
               </TemplateButton>
               <TemplateButton
                 type="submit"
-                bgGradient="bg-gradient-to-r from-blue-400 to-blue-600"
-                textColor="text-white"
-                hoverClass="hover:from-blue-500 hover:to-blue-700 hover:shadow-lg hover:scale-105"
-                focusClass="focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                bg-gradient="bg-gradient-to-r from-blue-400 to-blue-600"
+                text-color="text-white"
+                hover-class="hover:from-blue-500 hover:to-blue-700 hover:shadow-lg hover:scale-105"
+                focus-class="focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 size="medium"
               >
                 {{ showEditModal ? 'ویرایش' : 'افزودن' }}

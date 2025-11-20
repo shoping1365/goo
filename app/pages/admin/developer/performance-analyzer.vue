@@ -75,7 +75,8 @@
           </div>
           <div class="p-6">
             <div class="h-64 flex items-end justify-between space-x-1">
-              <div v-for="(value, index) in responseTimeHistory" :key="index" 
+              <div
+v-for="(value, index) in responseTimeHistory" :key="index" 
                    class="flex-1 bg-blue-500 rounded-t" 
                    :style="{ height: `${(value / 1000) * 100}%` }">
               </div>
@@ -95,7 +96,8 @@
           </div>
           <div class="p-6">
             <div class="h-64 flex items-end justify-between space-x-1">
-              <div v-for="(value, index) in cpuUsageHistory" :key="index" 
+              <div
+v-for="(value, index) in cpuUsageHistory" :key="index" 
                    class="flex-1 bg-green-500 rounded-t" 
                    :style="{ height: `${value}%` }">
               </div>
@@ -120,17 +122,20 @@
             <div>
               <h3 class="text-md font-medium text-gray-900 mb-4">گلوگاه‌های عملکرد</h3>
               <div class="space-y-3">
-                <div v-for="bottleneck in bottlenecks" :key="bottleneck.id" 
+                <div
+v-for="bottleneck in bottlenecks" :key="bottleneck.id" 
                      class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
                   <div class="flex items-center">
-                    <div class="w-3 h-3 rounded-full mr-3" 
+                    <div
+class="w-3 h-3 rounded-full mr-3" 
                          :class="getBottleneckColor(bottleneck.severity)"></div>
                     <div>
                       <p class="font-medium text-gray-900">{{ bottleneck.name }}</p>
                       <p class="text-sm text-gray-600">{{ bottleneck.description }}</p>
                     </div>
                   </div>
-                  <span class="text-sm font-medium" 
+                  <span
+class="text-sm font-medium" 
                         :class="getBottleneckTextColor(bottleneck.severity)">
                     {{ bottleneck.impact }}
                   </span>
@@ -142,7 +147,8 @@
             <div>
               <h3 class="text-md font-medium text-gray-900 mb-4">پیشنهادات بهینه‌سازی</h3>
               <div class="space-y-3">
-                <div v-for="suggestion in optimizationSuggestions" :key="suggestion.id" 
+                <div
+v-for="suggestion in optimizationSuggestions" :key="suggestion.id" 
                      class="p-3 border border-gray-200 rounded-lg">
                   <div class="flex items-start justify-between">
                     <div class="flex-1">
@@ -154,8 +160,9 @@
                         <span>پیچیدگی: {{ suggestion.complexity }}</span>
                       </div>
                     </div>
-                    <button @click="applyOptimization(suggestion.id)" 
-                            class="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition-colors">
+                    <button
+class="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition-colors" 
+                            @click="applyOptimization(suggestion.id)">
                       اعمال
                     </button>
                   </div>
@@ -193,7 +200,8 @@
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex items-center">
                       <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
-                        <div class="h-2 rounded-full" 
+                        <div
+class="h-2 rounded-full" 
                              :class="getPerformanceColor(file.performance)"
                              :style="{ width: `${file.performance}%` }"></div>
                       </div>
@@ -207,8 +215,9 @@
                     {{ file.executionTime }}ms
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button @click="optimizeFile(file.name)" 
-                            class="text-blue-600 hover:text-blue-900">بهینه‌سازی</button>
+                    <button
+class="text-blue-600 hover:text-blue-900" 
+                            @click="optimizeFile(file.name)">بهینه‌سازی</button>
                   </td>
                 </tr>
               </tbody>
@@ -228,7 +237,8 @@
             <div>
               <h3 class="text-md font-medium text-gray-900 mb-4">کوئری‌های کند</h3>
               <div class="space-y-3">
-                <div v-for="query in slowQueries" :key="query.id" 
+                <div
+v-for="query in slowQueries" :key="query.id" 
                      class="p-3 border border-gray-200 rounded-lg">
                   <div class="flex items-start justify-between mb-2">
                     <span class="text-sm font-medium text-gray-900">{{ query.table }}</span>
@@ -237,8 +247,9 @@
                   <p class="text-xs text-gray-600 font-mono mb-2">{{ query.sql }}</p>
                   <div class="flex items-center justify-between">
                     <span class="text-xs text-gray-500">تعداد اجرا: {{ query.executionCount }}</span>
-                    <button @click="optimizeQuery(query.id)" 
-                            class="text-xs text-blue-600 hover:text-blue-800">بهینه‌سازی</button>
+                    <button
+class="text-xs text-blue-600 hover:text-blue-800" 
+                            @click="optimizeQuery(query.id)">بهینه‌سازی</button>
                   </div>
                 </div>
               </div>
@@ -248,7 +259,8 @@
             <div>
               <h3 class="text-md font-medium text-gray-900 mb-4">تحلیل ایندکس‌ها</h3>
               <div class="space-y-3">
-                <div v-for="index in indexAnalysis" :key="index.id" 
+                <div
+v-for="index in indexAnalysis" :key="index.id" 
                      class="p-3 border border-gray-200 rounded-lg">
                   <div class="flex items-start justify-between mb-2">
                     <div>
@@ -263,8 +275,9 @@
                   <p class="text-xs text-gray-600 mb-2">{{ index.description }}</p>
                   <div class="flex items-center justify-between">
                     <span class="text-xs text-gray-500">تأثیر: {{ index.impact }}</span>
-                    <button v-if="index.status === 'missing'" @click="createIndex(index.id)" 
-                            class="text-xs text-green-600 hover:text-green-800">ایجاد</button>
+                    <button
+v-if="index.status === 'missing'" class="text-xs text-green-600 hover:text-green-800" 
+                            @click="createIndex(index.id)">ایجاد</button>
                   </div>
                 </div>
               </div>
@@ -278,12 +291,14 @@
         <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
           <h2 class="text-lg font-semibold text-gray-900">گزارش عملکرد</h2>
           <div class="flex space-x-2 space-x-reverse">
-            <button @click="generateReport" 
-                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            <button
+class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" 
+                    @click="generateReport">
               تولید گزارش
             </button>
-            <button @click="exportReport" 
-                    class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+            <button
+class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors" 
+                    @click="exportReport">
               صادر کردن
             </button>
           </div>
@@ -298,7 +313,8 @@
                   <span class="text-sm text-gray-600">{{ metric.name }}</span>
                   <div class="flex items-center">
                     <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
-                      <div class="h-2 rounded-full" 
+                      <div
+class="h-2 rounded-full" 
                            :class="getMetricColorClass(metric.value)"
                            :style="{ width: `${metric.value}%` }"></div>
                     </div>
@@ -312,7 +328,8 @@
             <div>
               <h3 class="text-md font-medium text-gray-900 mb-4">توصیه‌های کلی</h3>
               <div class="space-y-3">
-                <div v-for="recommendation in recommendations" :key="recommendation.id" 
+                <div
+v-for="recommendation in recommendations" :key="recommendation.id" 
                      class="flex items-start">
                   <div class="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3"></div>
                   <div>

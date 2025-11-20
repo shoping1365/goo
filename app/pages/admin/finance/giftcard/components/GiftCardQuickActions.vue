@@ -11,8 +11,8 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       <!-- ایجاد کارت جدید -->
       <button 
-        @click="$emit('create-card')"
         class="group relative bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl p-6 text-white hover:from-purple-600 hover:to-pink-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+        @click="$emit('create-card')"
       >
         <div class="flex items-center justify-between">
           <div>
@@ -29,8 +29,8 @@
 
       <!-- ایجاد گروهی -->
       <button 
-        @click="$emit('bulk-create')"
         class="group relative bg-gradient-to-r from-blue-500 to-cyan-600 rounded-xl p-6 text-white hover:from-blue-600 hover:to-cyan-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+        @click="$emit('bulk-create')"
       >
         <div class="flex items-center justify-between">
           <div>
@@ -47,8 +47,8 @@
 
       <!-- خروجی گزارش -->
       <button 
-        @click="$emit('export-data')"
         class="group relative bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl p-6 text-white hover:from-green-600 hover:to-emerald-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+        @click="$emit('export-data')"
       >
         <div class="flex items-center justify-between">
           <div>
@@ -65,8 +65,8 @@
 
       <!-- تنظیمات -->
       <button 
-        @click="showSettings = true"
         class="group relative bg-gradient-to-r from-orange-500 to-red-600 rounded-xl p-6 text-white hover:from-orange-600 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+        @click="showSettings = true"
       >
         <div class="flex items-center justify-between">
           <div>

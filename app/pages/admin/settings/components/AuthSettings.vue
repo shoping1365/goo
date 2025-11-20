@@ -9,37 +9,37 @@
     <div class="border-b border-gray-200 mb-6">
       <nav class="-mb-px flex space-x-8" aria-label="Tabs">
         <button
-          @click="$emit('update:auth-active-tab', 'login-register')"
           :class="[
             'whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm',
             authActiveTab === 'login-register'
               ? 'border-blue-500 text-blue-600'
               : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
           ]"
+          @click="$emit('update:auth-active-tab', 'login-register')"
         >
           <i class="i-heroicons-user-plus ml-2"></i>
           ورود و ثبت‌نام
         </button>
         <button
-          @click="$emit('update:auth-active-tab', 'security')"
           :class="[
             'whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm',
             authActiveTab === 'security'
               ? 'border-blue-500 text-blue-600'
               : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
           ]"
+          @click="$emit('update:auth-active-tab', 'security')"
         >
           <i class="i-heroicons-shield-exclamation ml-2"></i>
           امنیت و محدودیت‌ها
         </button>
         <button
-          @click="$emit('update:auth-active-tab', 'jwt')"
           :class="[
             'whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm',
             authActiveTab === 'jwt'
               ? 'border-blue-500 text-blue-600'
               : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
           ]"
+          @click="$emit('update:auth-active-tab', 'jwt')"
         >
           <i class="i-heroicons-key ml-2"></i>
           تنظیمات JWT
@@ -64,7 +64,7 @@
             </label>
             <div class="flex items-center">
               <input
-                v-model="authSettings.unifiedAuthEnabled"
+                v-model="localAuthSettings.unifiedAuthEnabled"
                 type="checkbox"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
@@ -80,7 +80,7 @@
             </label>
             <div class="flex items-center">
               <input
-                v-model="authSettings.autoRegisterEnabled"
+                v-model="localAuthSettings.autoRegisterEnabled"
                 type="checkbox"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
@@ -95,7 +95,7 @@
               روش احراز هویت پیش‌فرض
             </label>
             <select
-              v-model="authSettings.defaultAuthMethod"
+              v-model="localAuthSettings.defaultAuthMethod"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="otp">کد تایید (OTP)</option>
@@ -110,7 +110,7 @@
               نقش پیش‌فرض کاربران جدید
             </label>
             <select
-              v-model="authSettings.defaultUserRole"
+              v-model="localAuthSettings.defaultUserRole"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="user">کاربر عادی</option>
@@ -137,7 +137,7 @@
             </label>
             <div class="flex items-center">
               <input
-                v-model="authSettings.mobileAuthEnabled"
+                v-model="localAuthSettings.mobileAuthEnabled"
                 type="checkbox"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
@@ -152,7 +152,7 @@
               طول کد تایید
             </label>
             <select
-              v-model="authSettings.otpLength"
+              v-model="localAuthSettings.otpLength"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="4">4 رقم</option>
@@ -168,7 +168,7 @@
               مدت اعتبار کد تایید (دقیقه)
             </label>
             <input
-              v-model="authSettings.otpExpiryMinutes"
+              v-model="localAuthSettings.otpExpiryMinutes"
               type="number"
               min="1"
               max="60"
@@ -183,7 +183,7 @@
               حداکثر تلاش برای کد تایید
             </label>
             <input
-              v-model="authSettings.maxOtpAttempts"
+              v-model="localAuthSettings.maxOtpAttempts"
               type="number"
               min="1"
               max="10"
@@ -198,7 +198,7 @@
               فاصله ارسال مجدد (ثانیه)
             </label>
             <input
-              v-model="authSettings.otpResendCooldown"
+              v-model="localAuthSettings.otpResendCooldown"
               type="number"
               min="30"
               max="300"
@@ -213,7 +213,7 @@
               کد پترن SMS
             </label>
             <input
-              v-model="authSettings.otpPatternCode"
+              v-model="localAuthSettings.otpPatternCode"
               type="text"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholder="مثال: t2cfmnyo0c"
@@ -238,7 +238,7 @@
             </label>
             <div class="flex items-center">
               <input
-                v-model="authSettings.usernameAuthEnabled"
+                v-model="localAuthSettings.usernameAuthEnabled"
                 type="checkbox"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
@@ -253,7 +253,7 @@
               حداقل طول پسورد
             </label>
             <input
-              v-model="authSettings.minPasswordLength"
+              v-model="localAuthSettings.minPasswordLength"
               type="number"
               min="6"
               max="20"
@@ -268,7 +268,7 @@
               حداکثر تلاش ورود
             </label>
             <input
-              v-model="authSettings.maxLoginAttempts"
+              v-model="localAuthSettings.maxLoginAttempts"
               type="number"
               min="3"
               max="10"
@@ -283,7 +283,7 @@
               مدت قفل حساب (دقیقه)
             </label>
             <input
-              v-model="authSettings.accountLockoutMinutes"
+              v-model="localAuthSettings.accountLockoutMinutes"
               type="number"
               min="5"
               max="1440"
@@ -298,7 +298,7 @@
               مدت اعتبار پسورد (روز)
             </label>
             <input
-              v-model="authSettings.passwordExpiryDays"
+              v-model="localAuthSettings.passwordExpiryDays"
               type="number"
               min="30"
               max="365"
@@ -327,7 +327,7 @@
             </label>
             <div class="flex items-center">
               <input
-                v-model="authSettings.twoFactorEnabled"
+                v-model="localAuthSettings.twoFactorEnabled"
                 type="checkbox"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
@@ -343,7 +343,7 @@
             </label>
             <div class="flex items-center">
               <input
-                v-model="authSettings.suspiciousActivityDetection"
+                v-model="localAuthSettings.suspiciousActivityDetection"
                 type="checkbox"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
@@ -358,7 +358,7 @@
               تایم‌اوت نشست (دقیقه)
             </label>
             <input
-              v-model="authSettings.sessionTimeoutMinutes"
+              v-model="localAuthSettings.sessionTimeoutMinutes"
               type="number"
               min="5"
               max="1440"
@@ -373,7 +373,7 @@
               نگهداری تاریخچه ورود (روز)
             </label>
             <input
-              v-model="authSettings.loginHistoryRetentionDays"
+              v-model="localAuthSettings.loginHistoryRetentionDays"
               type="number"
               min="30"
               max="730"
@@ -388,7 +388,7 @@
               مسدود کردن خودکار پس از ورود ناموفق
             </label>
             <input
-              v-model="authSettings.autoBlockFailedLogins"
+              v-model="localAuthSettings.autoBlockFailedLogins"
               type="number"
               min="5"
               max="50"
@@ -403,7 +403,7 @@
               مدت مسدود بودن (ساعت)
             </label>
             <input
-              v-model="authSettings.autoBlockDurationHours"
+              v-model="localAuthSettings.autoBlockDurationHours"
               type="number"
               min="1"
               max="168"
@@ -429,7 +429,7 @@
             </label>
             <div class="flex items-center">
               <input
-                v-model="authSettings.emailVerificationEnabled"
+                v-model="localAuthSettings.emailVerificationEnabled"
                 type="checkbox"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
@@ -445,7 +445,7 @@
             </label>
             <div class="flex items-center">
               <input
-                v-model="authSettings.phoneVerificationEnabled"
+                v-model="localAuthSettings.phoneVerificationEnabled"
                 type="checkbox"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
@@ -484,16 +484,16 @@
             </label>
             <div class="relative">
               <input
-                v-model="authSettings.jwtSecret"
+                v-model="localAuthSettings.jwtSecret"
                 :type="showJwtSecret ? 'text' : 'password'"
                 class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="کلید مخفی JWT"
                 readonly
               />
               <button
-                @click="$emit('toggle-jwt-secret')"
                 type="button"
                 class="absolute inset-y-0 right-0 pr-3 flex items-center"
+                @click="$emit('toggle-jwt-secret')"
               >
                 <i :class="showJwtSecret ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'" class="text-gray-400 hover:text-gray-600"></i>
               </button>
@@ -507,9 +507,9 @@
               تولید کلید جدید
             </label>
             <button
-              @click="$emit('generate-new-jwt-secret')"
               type="button"
               class="w-full px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+              @click="$emit('generate-new-jwt-secret')"
             >
               <i class="i-heroicons-arrow-path mr-2"></i>
               تولید کلید جدید
@@ -533,7 +533,7 @@
               مدت اعتبار توکن (ساعت)
             </label>
             <input
-              v-model="authSettings.jwtExpiryHours"
+              v-model="localAuthSettings.jwtExpiryHours"
               type="number"
               min="1"
               max="720"
@@ -548,7 +548,7 @@
               مدت اعتبار توکن تازه‌سازی (روز)
             </label>
             <input
-              v-model="authSettings.refreshTokenExpiryDays"
+              v-model="localAuthSettings.refreshTokenExpiryDays"
               type="number"
               min="1"
               max="365"
@@ -573,7 +573,7 @@
               حداکثر نشست‌های همزمان
             </label>
             <input
-              v-model="authSettings.maxConcurrentSessions"
+              v-model="localAuthSettings.maxConcurrentSessions"
               type="number"
               min="1"
               max="20"
@@ -588,7 +588,7 @@
               تایم‌اوت نشست (دقیقه)
             </label>
             <input
-              v-model="authSettings.sessionTimeoutMinutes"
+              v-model="localAuthSettings.sessionTimeoutMinutes"
               type="number"
               min="5"
               max="1440"
@@ -603,9 +603,9 @@
     <!-- دکمه ذخیره -->
     <div class="mt-8 flex justify-end">
       <button
-        @click="$emit('save')"
         :disabled="savingAuth"
         class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors flex items-center"
+        @click="$emit('save')"
       >
         <i v-if="savingAuth" class="i-heroicons-arrow-path animate-spin mr-2"></i>
         <i v-else class="i-heroicons-check mr-2"></i>
@@ -616,8 +616,10 @@
 </template>
 
 <script setup>
+import { ref, watch } from 'vue'
+
 // تعریف Props
-defineProps({
+const props = defineProps({
   authSettings: {
     type: Object,
     required: true
@@ -637,10 +639,21 @@ defineProps({
 })
 
 // تعریف Emits
-defineEmits([
+const emit = defineEmits([
   'save',
   'generate-new-jwt-secret',
   'update:auth-active-tab',
-  'toggle-jwt-secret'
+  'toggle-jwt-secret',
+  'update:authSettings'
 ])
+
+const localAuthSettings = ref({ ...props.authSettings })
+
+watch(() => props.authSettings, (newVal) => {
+  localAuthSettings.value = { ...newVal }
+}, { deep: true })
+
+watch(localAuthSettings, (newVal) => {
+  emit('update:authSettings', newVal)
+}, { deep: true })
 </script>

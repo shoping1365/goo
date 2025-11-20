@@ -5,12 +5,12 @@ export default defineNuxtPlugin(() => {
      if (!import.meta.client) return
 
      // ذخیره console.log اصلی
-     const originalConsoleLog = console.log
-     const originalConsoleError = console.error
-     const originalConsoleWarn = console.warn
+     const originalConsoleLog = globalThis.console.log
+     const originalConsoleError = globalThis.console.error
+     const originalConsoleWarn = globalThis.console.warn
 
      // تابع امن برای پردازش object ها
-     const safeStringify = (obj: any, maxDepth = 3): string => {
+     const safeStringify = (obj: unknown, maxDepth = 3): string => {
           try {
                if (obj === null || obj === undefined) {
                     return String(obj)
@@ -32,28 +32,28 @@ export default defineNuxtPlugin(() => {
                if (typeof obj === 'object') {
                     if (maxDepth <= 0) return '[Object]'
                     const keys = Object.keys(obj).slice(0, 5)
-                    const pairs = keys.map(key => `${key}: ${safeStringify(obj[key], maxDepth - 1)}`)
+                    const pairs = keys.map(key => `${key}: ${safeStringify((obj as Record<string, unknown>)[key], maxDepth - 1)}`)
                     return `{${pairs.join(', ')}${Object.keys(obj).length > 5 ? '...' : ''}}`
                }
 
                return String(obj)
-          } catch (error) {
+          } catch {
                return '[Circular or complex object]'
           }
      }
 
      // جایگزینی console.log با نسخه امن
-     console.log = (...args: any[]) => {
+     globalThis.console.log = (...args: unknown[]) => {
           try {
                const safeArgs = args.map(arg => safeStringify(arg))
                originalConsoleLog(...safeArgs)
-          } catch (error) {
-               originalConsoleLog('[Console log error]', error)
+          } catch {
+               // originalConsoleLog('[Console log error]', error)
           }
      }
 
      // جایگزینی console.error با نسخه امن
-     console.error = (...args: any[]) => {
+     console.error = (...args: unknown[]) => {
           try {
                const safeArgs = args.map(arg => safeStringify(arg))
                originalConsoleError(...safeArgs)
@@ -63,7 +63,7 @@ export default defineNuxtPlugin(() => {
      }
 
      // جایگزینی console.warn با نسخه امن
-     console.warn = (...args: any[]) => {
+     console.warn = (...args: unknown[]) => {
           try {
                const safeArgs = args.map(arg => safeStringify(arg))
                originalConsoleWarn(...safeArgs)

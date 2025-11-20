@@ -3,7 +3,7 @@ import { fetchGo } from '../../_utils/fetchGo'
 
 interface FooterGetResponse {
   success: boolean
-  data?: any
+  data?: unknown
   message?: string
 }
 
@@ -18,18 +18,18 @@ export default defineEventHandler(async (event): Promise<FooterGetResponse> => {
       }
     }
 
-    console.log('Fetching admin footer by id:', id)
+    // console.log('Fetching admin footer by id:', id)
 
     const responseData = await fetchGo(event, `/api/admin/footer-settings/${id}`, {
       method: 'GET'
     })
 
-    console.log('Admin footer fetched successfully.', {
-      hasData: Boolean(responseData)
-    })
+    // console.log('Admin footer fetched successfully.', {
+    //   hasData: Boolean(responseData)
+    // })
 
     if (responseData && typeof responseData === 'object' && 'data' in responseData) {
-      const payload = responseData as Record<string, any>
+      const payload = responseData as { success?: boolean; data?: unknown }
       return {
         success: payload.success !== false,
         data: payload.data
@@ -40,16 +40,17 @@ export default defineEventHandler(async (event): Promise<FooterGetResponse> => {
       success: true,
       data: responseData
     }
-  } catch (error: any) {
-    console.error('Unexpected error while fetching admin footer:', {
-      statusCode: error?.statusCode,
-      status: error?.status,
-      message: error?.message,
-      data: error?.data
-    })
+  } catch (error: unknown) {
+    const err = error as { data?: { message?: string; error?: string }; message?: string }
+    // console.error('Unexpected error while fetching admin footer:', {
+    //   statusCode: err?.statusCode,
+    //   status: err?.status,
+    //   message: err?.message,
+    //   data: err?.data
+    // })
     return {
       success: false,
-      message: error?.data?.message || error?.data?.error || error?.message || 'خطا در دریافت فوتر'
+      message: err?.data?.message || err?.data?.error || err?.message || 'خطا در دریافت فوتر'
     }
   }
 })

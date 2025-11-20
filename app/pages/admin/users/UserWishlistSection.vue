@@ -21,8 +21,8 @@
       </div>
       <p class="text-red-600 text-sm">{{ error }}</p>
       <button
-        @click="fetchWishlist"
         class="mt-2 px-3 py-1 bg-red-100 text-red-600 rounded text-sm hover:bg-red-200"
+        @click="fetchWishlist"
       >
         تلاش مجدد
       </button>
@@ -78,14 +78,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import ViewAllModal from '~/components/admin/modals/ViewAllModal.vue';
+import type { User } from '~/types/user';
 
-const props = defineProps<{ user: any }>();
+const props = defineProps<{ user: User }>();
 const showAll = ref(false);
 
+interface WishlistItem {
+  id: number;
+  productName: string;
+  productPrice: number;
+  dateAdded: string;
+}
+
+interface WishlistResponse {
+  success: boolean;
+  data: {
+    wishlistItems: { id: number; productName: string; productPrice: number; createdAt: string }[];
+  };
+}
+
 // Real data for wishlist
-const wishlist = ref([]);
+const wishlist = ref<WishlistItem[]>([]);
 const loading = ref(false);
 const error = ref('');
 
@@ -100,15 +115,15 @@ const fetchWishlist = async () => {
   error.value = '';
 
   try {
-    const response = await $fetch(`/api/admin/users/${props.user.id}/wishlist`, {
+    const response = await $fetch<WishlistResponse>(`/api/admin/users/${props.user.id}/wishlist`, {
       query: {
         page: 1,
         limit: 100
       }
-    }) as any;
+    });
 
     if (response.success) {
-      wishlist.value = response.data.wishlistItems.map((item: any) => ({
+      wishlist.value = response.data.wishlistItems.map((item) => ({
         id: item.id,
         productName: item.productName,
         productPrice: item.productPrice,
@@ -117,9 +132,10 @@ const fetchWishlist = async () => {
     } else {
       error.value = 'خطا در دریافت داده‌ها';
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const e = err as { data?: { message?: string } };
     console.error('خطا در دریافت لیست علاقه‌مندی‌ها:', err);
-    error.value = err.data?.message || 'خطا در دریافت لیست علاقه‌مندی‌ها';
+    error.value = e.data?.message || 'خطا در دریافت لیست علاقه‌مندی‌ها';
   } finally {
     loading.value = false;
   }

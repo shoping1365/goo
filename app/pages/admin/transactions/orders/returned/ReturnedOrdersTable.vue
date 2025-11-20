@@ -12,7 +12,7 @@
           <h3 class="text-sm font-semibold text-gray-900">سفارشات مرجوع شده</h3>
         </div>
         <div class="flex items-center space-x-2 space-x-reverse">
-          <button @click="exportOrders" class="text-red-600 hover:text-red-800 text-sm font-medium">
+          <button class="text-red-600 hover:text-red-800 text-sm font-medium" @click="exportOrders">
             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
             </svg>
@@ -59,7 +59,7 @@
         </select>
 
         <!-- پاک کردن فیلترها -->
-        <button @click="clearFilters" class="px-3 py-2 text-sm text-gray-600 hover:text-gray-800">
+        <button class="px-3 py-2 text-sm text-gray-600 hover:text-gray-800" @click="clearFilters">
           پاک کردن فیلترها
         </button>
       </div>
@@ -106,13 +106,13 @@
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
               <div class="flex items-center space-x-2">
-                <button @click="viewOrderDetails(order)" class="text-blue-600 hover:text-blue-900">
+                <button class="text-blue-600 hover:text-blue-900" @click="viewOrderDetails(order)">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                   </svg>
                 </button>
-                <button @click="processReturn(order)" class="text-green-600 hover:text-green-900">پردازش</button>
+                <button class="text-green-600 hover:text-green-900" @click="processReturn(order)">پردازش</button>
               </div>
             </td>
           </tr>
@@ -215,18 +215,17 @@ const closeModal = () => {
   selectedOrder.value = null
 }
 
-const editOrder = (order) => {
-  console.log('ویرایش سفارش:', order)
+const editOrder = (_order) => {
   // اینجا می‌توانید کاربر را به صفحه ویرایش هدایت کنید
 }
 
 // متدهای عملیاتی
 const exportOrders = () => {
-  console.log('خروجی Excel سفارشات مرجوع شده...')
+  // Export logic
 }
 
-const processReturn = (order) => {
-  console.log('پردازش مرجوع:', order)
+const processReturn = (_order) => {
+  // Process return logic
 }
 
 const clearFilters = () => {

@@ -32,7 +32,7 @@
                 </div>
                 نام ویژگی
               </label>
-              <input type="text" v-model="variantName" class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900 transition-all duration-200" placeholder="مثال: رنگ" />
+              <input v-model="variantName" type="text" class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900 transition-all duration-200" placeholder="مثال: رنگ" />
             </div>
             
             <div class="space-y-3">
@@ -53,7 +53,7 @@
             </div>
             
             <div class="flex items-end">
-              <button @click.prevent="addVariant" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-lg px-6 py-3 font-semibold hover:from-emerald-700 hover:to-teal-700 transition-all duration-200 shadow-md hover:shadow-lg">
+              <button class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-lg px-6 py-3 font-semibold hover:from-emerald-700 hover:to-teal-700 transition-all duration-200 shadow-md hover:shadow-lg" @click.prevent="addVariant">
                 <svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
@@ -91,7 +91,7 @@
                   <button class="text-blue-500 hover:text-blue-700">ویرایش</button>
                 </td>
                 <td class="px-3 py-2 text-center">
-                  <button @click="removeVariant(v.id)" class="text-red-500 hover:text-red-700">حذف</button>
+                  <button class="text-red-500 hover:text-red-700" @click="removeVariant(v.id)">حذف</button>
                 </td>
               </tr>
             </tbody>
