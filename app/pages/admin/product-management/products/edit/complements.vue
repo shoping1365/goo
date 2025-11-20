@@ -249,9 +249,37 @@ v-model="q"
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
-import ImagePreviewModal from '~/components/media/ImagePreviewModal.vue'
-// import { useProductCreateStore } from '~/stores/productCreate'
+import { onMounted, reactive, ref, watch } from 'vue';
+import ImagePreviewModal from '~/components/media/ImagePreviewModal.vue';
+import { useProductCreateStore } from '~/stores/productCreate';
+
+interface ComplementProduct {
+  id: number | string;
+  name?: string;
+  image_url?: string;
+  image?: string;
+  main_image?: string;
+  thumbnail?: string;
+  priority?: number;
+  price?: number;
+  sku?: string;
+  slug?: string;
+  category?: string | { name: string };
+  images?: { image_url: string; thumbnail?: string }[];
+  [key: string]: unknown;
+}
+
+interface PreviewImage {
+  url: string;
+  name: string;
+}
+
+interface Category {
+  id: number | string;
+  name: string;
+  [key: string]: unknown;
+}
+
 const sections = reactive({
   relatedProducts: false,
   relatedSettings: false
@@ -261,14 +289,11 @@ const toggleSection = (section: keyof typeof sections) => {
   sections[section] = !sections[section]
 }
 
-// const store = useProductCreateStore()
+const store = useProductCreateStore()
 const q = ref('')
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const results = ref<any[]>([])
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const selected = ref<any[]>([])
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const categories = ref<any[]>([])
+const results = ref<ComplementProduct[]>([])
+const selected = ref<ComplementProduct[]>([])
+const categories = ref<Category[]>([])
 const selectedCategory = ref<string | number | ''>('')
 
 function toThumbnail(url?: string | null){
@@ -286,11 +311,9 @@ async function searchProducts(){
       limit: '10',
     })
     if (selectedCategory.value) params.set('category_id', String(selectedCategory.value))
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const res = await $fetch(`/api/products?${params.toString()}`) as any
-    const arr = Array.isArray(res) ? res : []
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    results.value = arr.map((p: any) => {
+    const res = await $fetch<ComplementProduct[] | { data: ComplementProduct[] }>(`/api/products?${params.toString()}`)
+    const arr = Array.isArray(res) ? res : ('data' in res ? res.data : [])
+    results.value = arr.map((p) => {
       const firstImage = (p?.images && p.images.length > 0 && p.images[0]?.image_url) || p.image || p.main_image || p.thumbnail
       const thumb = toThumbnail(firstImage as string)
       return {
@@ -304,7 +327,7 @@ async function searchProducts(){
         thumbnail: thumb || firstImage,
       }
     })
-  } catch(e){ results.value = [] }
+  } catch{ results.value = [] }
 }
 
 async function addRelated(productId){
@@ -312,7 +335,7 @@ async function addRelated(productId){
   try {
     await $fetch(`/api/product-complements/${store.editingProductId}`, { method:'POST', body:{ complement_product_id: productId } })
     await refreshSelected()
-  } catch(e){ }
+  } catch{ }
 }
 
 async function removeRelated(productId){
@@ -320,23 +343,23 @@ async function removeRelated(productId){
   try {
     await $fetch(`/api/product-complements/${store.editingProductId}/${productId}`, { method:'DELETE' })
     await refreshSelected()
-  } catch(e){ }
+  } catch{ }
 }
 
 async function refreshSelected(){
   try {
-    const res = await $fetch<any>(`/api/product-complements/${store.editingProductId}`)
-    const data = (res as any)?.data ?? res
+    const res = await $fetch<{ data: ComplementProduct[] } | ComplementProduct[]>(`/api/product-complements/${store.editingProductId}`)
+    const data = (res && 'data' in res) ? res.data : res
     const arr = Array.isArray(data) ? data : []
-    selected.value = arr.map((it: any) => {
+    selected.value = arr.map((it) => {
       const base = it.image_url || it.image || it.main_image || it.thumbnail
       const thumb = toThumbnail(base)
       return { ...it, thumbnail: thumb || base }
     })
-  } catch(e){ selected.value = [] }
+  } catch{ selected.value = [] }
 }
 
-function onPriorityInput(item: any, evt: Event){
+function onPriorityInput(item: ComplementProduct, evt: Event){
   const val = Number((evt.target as HTMLInputElement).value || 1)
   item.priority = val
   // ذخیره فوری اولویت در بک‌اند بدون تغییر استایل
@@ -351,13 +374,13 @@ function onPriorityInput(item: any, evt: Event){
 
 // Preview modal state
 const showPreview = ref(false)
-const previewImage = ref<any>(null)
-function getOriginalUrl(obj:any){
+const previewImage = ref<PreviewImage | null>(null)
+function getOriginalUrl(obj: ComplementProduct){
   if(!obj) return null
   if(obj.images && obj.images[0]?.image_url) return obj.images[0].image_url
   return obj.image_url || obj.image || obj.main_image || obj.thumbnail || null
 }
-function openPreview(obj:any){
+function openPreview(obj: ComplementProduct){
   const url = getOriginalUrl(obj)
   if(!url) return
   previewImage.value = { url, name: obj?.name || '' }
@@ -366,8 +389,7 @@ function openPreview(obj:any){
 
 onMounted(async () => {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const res = await $fetch<any>('/api/admin/product-categories?all=1')
+    const res = await $fetch<Category[]>('/api/admin/product-categories?all=1')
     categories.value = Array.isArray(res) ? res : []
   } catch { categories.value = [] }
   // اگر محصول در حالت ویرایش است، مکمل‌ها را لود کن

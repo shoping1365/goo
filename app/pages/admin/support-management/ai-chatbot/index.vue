@@ -63,12 +63,48 @@ import StatsCards from './components/StatsCards.vue'
 definePageMeta({ layout: 'admin-main' })
 
 // متغیرهای reactive
+interface Bot {
+  id: number | string;
+  name: string;
+  description?: string;
+  type: string;
+  icon: string;
+  status: string;
+  todayConversations: number;
+  accuracy: number;
+  lastUpdate: string;
+  is_active?: boolean;
+  updated_at?: string;
+  created_at?: string;
+  [key: string]: unknown;
+}
+
+interface BotForm {
+  name: string;
+  description: string;
+  type: string;
+  icon: string;
+  aiModel: string;
+  temperature: number;
+  maxTokens: number;
+  personality: string;
+  baseKnowledge: string;
+  autoRespond: boolean;
+  escalateToHuman: boolean;
+  learnFromConversations: boolean;
+  multiLanguage: boolean;
+  workStartTime: string;
+  workEndTime: string;
+  timezone: string;
+  isActive: boolean;
+}
+
 const showCreateBotModal = ref(false)
 const isEditingBot = ref(false)
-const currentBot = ref<{ id?: number }>({})
+const currentBot = ref<Partial<Bot>>({})
 
 // فرم بات
-const botForm = ref({
+const botForm = ref<BotForm>({
   name: '',
   description: '',
   type: '',
@@ -89,21 +125,21 @@ const botForm = ref({
 })
 
 // لیست ربات‌ها از API
-const chatbots = ref<Record<string, unknown>[]>([])
+const chatbots = ref<Bot[]>([])
 async function loadBots() {
   try {
-    const res = await $fetch<Record<string, unknown>>('/api/admin/chat/ai-bots')
+    const res = await $fetch<{ status: string; data: Record<string, unknown>[] }>('/api/admin/chat/ai-bots')
     if (res?.status === 'success') {
-      chatbots.value = ((res.data as Record<string, unknown>[]) || []).map((b: Record<string, unknown>) => ({
-        id: b.id,
-        name: b.name,
-        description: b.description,
+      chatbots.value = ((res.data) || []).map((b) => ({
+        id: b.id as number | string,
+        name: b.name as string,
+        description: b.description as string,
         type: 'AI',
         icon: '🤖',
         status: b.is_active ? 'active' : 'inactive',
         todayConversations: 0,
         accuracy: 0,
-        lastUpdate: new Date(b.updated_at || b.created_at).toLocaleDateString('fa-IR')
+        lastUpdate: new Date((b.updated_at || b.created_at) as string).toLocaleDateString('fa-IR')
       }))
     }
   } catch (e) { console.error('loadBots failed', e) }
@@ -112,9 +148,10 @@ async function loadBots() {
 // آمار کلی
 const totalBots = computed(() => chatbots.value.length)
 const activeBots = computed(() => chatbots.value.filter(bot => bot.status === 'active').length)
-const totalConversations = computed(() => chatbots.value.reduce((sum, bot) => sum + bot.todayConversations, 0))
+const totalConversations = computed(() => chatbots.value.reduce((sum, bot) => sum + (bot.todayConversations || 0), 0))
 const satisfactionRate = computed(() => {
-  const avgAccuracy = chatbots.value.reduce((sum, bot) => sum + bot.accuracy, 0) / chatbots.value.length
+  if (chatbots.value.length === 0) return 0
+  const avgAccuracy = chatbots.value.reduce((sum, bot) => sum + (bot.accuracy || 0), 0) / chatbots.value.length
   return Math.round(avgAccuracy)
 })
 
@@ -126,12 +163,12 @@ function openCreateBotModal() {
   showCreateBotModal.value = true
 }
 
-function editBot(bot) {
+function editBot(bot: Bot) {
   isEditingBot.value = true
   currentBot.value = { ...bot }
   botForm.value = {
     name: bot.name,
-    description: bot.description,
+    description: bot.description || '',
     type: bot.type,
     icon: bot.icon,
     aiModel: 'gpt-3.5-turbo',
@@ -151,11 +188,11 @@ function editBot(bot) {
   showCreateBotModal.value = true
 }
 
-function testBot(bot) {
+function testBot(bot: Bot) {
   alert(`تست بات "${bot.name}" در حال آماده‌سازی است...`)
 }
 
-function viewAnalytics(bot) {
+function viewAnalytics(bot: Bot) {
   alert(`آمار بات "${bot.name}" در حال آماده‌سازی است...`)
 }
 
@@ -195,7 +232,7 @@ function resetBotForm() {
   }
 }
 
-function saveBot(formData: Record<string, unknown>) {
+function saveBot(formData: BotForm) {
   if (!formData.name.trim()) { alert('لطفاً نام بات را وارد کنید'); return }
   if (!formData.type) { alert('لطفاً نوع بات را انتخاب کنید'); return }
 
@@ -223,4 +260,4 @@ function saveBot(formData: Record<string, unknown>) {
 }
 
 onMounted(() => { loadBots() })
-</script> 
+</script>

@@ -48,7 +48,7 @@ defineProps<{ user: User }>()
 defineEmits(['view-all-transactions'])
 
 const balance = ref<number>(0)
-interface Transaction {
+interface WalletTransaction {
   id: number
   type: string
   date: string
@@ -56,7 +56,7 @@ interface Transaction {
   description: string
   status: string
 }
-const transactions = ref<Transaction[]>([])
+const transactions = ref<WalletTransaction[]>([])
 
 function toDateString(d?: string | Date | null) {
   if (!d) return '-'

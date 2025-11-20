@@ -33,6 +33,6 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // اسکلت اولیه، بعداً دیتا و عملکرد اضافه می‌شود
 </script> 

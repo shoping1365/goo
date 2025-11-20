@@ -462,202 +462,201 @@
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- نمودارهای تحلیلی -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            <!-- نمودار روند فروش سالانه -->
-            <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
-              <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold text-gray-900">روند فروش سالانه</h3>
-                <select v-model="selectedYear" class="text-sm border border-gray-300 rounded-md px-3 py-1">
-                  <option value="2024">2024</option>
-                  <option value="2023">2023</option>
-                  <option value="2022">2022</option>
-                </select>
-              </div>
-              
-              <!-- نمودار بهبود یافته -->
-              <div class="relative h-64">
-                <!-- خطوط راهنما -->
-                <div class="absolute inset-0 flex flex-col justify-between text-xs text-gray-400">
-                  <div class="border-b border-gray-100 pb-1">{{ formatPrice(maxYearlyValue) }}</div>
-                  <div class="border-b border-gray-100 pb-1">{{ formatPrice(maxYearlyValue * 0.75) }}</div>
-                  <div class="border-b border-gray-100 pb-1">{{ formatPrice(maxYearlyValue * 0.5) }}</div>
-                  <div class="border-b border-gray-100 pb-1">{{ formatPrice(maxYearlyValue * 0.25) }}</div>
-                  <div class="pb-1">0</div>
+            <!-- نمودارهای تحلیلی -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <!-- نمودار روند فروش سالانه -->
+              <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="text-lg font-semibold text-gray-900">روند فروش سالانه</h3>
+                  <select v-model="selectedYear" class="text-sm border border-gray-300 rounded-md px-3 py-1">
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                  </select>
                 </div>
                 
-                <!-- ستون‌های نمودار -->
-                <div class="absolute inset-0 flex items-end justify-between space-x-1 space-x-reverse pr-16">
-                  <div
-                    v-for="(month, index) in yearlySalesData"
-                    :key="index"
-                    class="flex-1 flex flex-col items-center relative group"
-                  >
-                    <!-- ستون -->
+                <!-- نمودار بهبود یافته -->
+                <div class="relative h-64">
+                  <!-- خطوط راهنما -->
+                  <div class="absolute inset-0 flex flex-col justify-between text-xs text-gray-400">
+                    <div class="border-b border-gray-100 pb-1">{{ formatPrice(maxYearlyValue) }}</div>
+                    <div class="border-b border-gray-100 pb-1">{{ formatPrice(maxYearlyValue * 0.75) }}</div>
+                    <div class="border-b border-gray-100 pb-1">{{ formatPrice(maxYearlyValue * 0.5) }}</div>
+                    <div class="border-b border-gray-100 pb-1">{{ formatPrice(maxYearlyValue * 0.25) }}</div>
+                    <div class="pb-1">0</div>
+                  </div>
+                  
+                  <!-- ستون‌های نمودار -->
+                  <div class="absolute inset-0 flex items-end justify-between space-x-1 space-x-reverse pr-16">
                     <div
-                      class="w-full bg-gradient-to-t from-indigo-500 to-indigo-400 rounded-t transition-all duration-200 hover:from-indigo-600 hover:to-indigo-500"
-                      :style="{ height: `${(month.value / maxYearlyValue) * 240}px` }"
-                    ></div>
-                    
-                    <!-- نام ماه -->
-                    <div class="text-xs text-gray-600 mt-2 text-center">{{ month.name }}</div>
-                    
-                    <!-- مقدار در tooltip -->
-                    <div class="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
-                      {{ formatPrice(month.value) }}
-                    </div>
-                </div>
-              </div>
-            </div>
-
-              <!-- راهنمای نمودار -->
-              <div class="mt-4 text-xs text-gray-500 text-center">
-                مقادیر در tooltip نمایش داده می‌شوند
-              </div>
-            </div>
-
-            <!-- نمودار مقایسه وضعیت‌ها -->
-            <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
-              <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold text-gray-900">مقایسه وضعیت سفارشات</h3>
-                <span class="text-sm text-gray-500">آخرین 30 روز</span>
-              </div>
-              <div class="space-y-4">
-                <div
-                  v-for="status in orderStatusComparison"
-                  :key="status.name"
-                  class="flex items-center justify-between"
-                >
-                  <div class="flex items-center">
-                    <div class="w-4 h-4 rounded-full ml-3" :style="{ backgroundColor: status.color }"></div>
-                    <span class="text-sm text-gray-700">{{ status.name }}</span>
-                </div>
-                  <div class="flex items-center space-x-3 space-x-reverse">
-                    <div class="w-32 bg-gray-200 rounded-full h-3">
+                      v-for="(month, index) in yearlySalesData"
+                      :key="index"
+                      class="flex-1 flex flex-col items-center relative group"
+                    >
+                      <!-- ستون -->
                       <div
-                        class="h-3 rounded-full"
-                        :style="{ width: `${Math.min(Math.max(status.percentage, 0), 100)}%`, backgroundColor: status.color }"
+                        class="w-full bg-gradient-to-t from-indigo-500 to-indigo-400 rounded-t transition-all duration-200 hover:from-indigo-600 hover:to-indigo-500"
+                        :style="{ height: `${(month.value / maxYearlyValue) * 240}px` }"
                       ></div>
+                      
+                      <!-- نام ماه -->
+                      <div class="text-xs text-gray-600 mt-2 text-center">{{ month.name }}</div>
+                      
+                      <!-- مقدار در tooltip -->
+                      <div class="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
+                        {{ formatPrice(month.value) }}
+                      </div>
+                  </div>
+                </div>
+              </div>
+
+                <!-- راهنمای نمودار -->
+                <div class="mt-4 text-xs text-gray-500 text-center">
+                  مقادیر در tooltip نمایش داده می‌شوند
+                </div>
+              </div>
+
+              <!-- نمودار مقایسه وضعیت‌ها -->
+              <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="text-lg font-semibold text-gray-900">مقایسه وضعیت سفارشات</h3>
+                  <span class="text-sm text-gray-500">آخرین 30 روز</span>
+                </div>
+                <div class="space-y-4">
+                  <div
+                    v-for="status in orderStatusComparison"
+                    :key="status.name"
+                    class="flex items-center justify-between"
+                  >
+                    <div class="flex items-center">
+                      <div class="w-4 h-4 rounded-full ml-3" :style="{ backgroundColor: status.color }"></div>
+                      <span class="text-sm text-gray-700">{{ status.name }}</span>
+                  </div>
+                    <div class="flex items-center space-x-3 space-x-reverse">
+                      <div class="w-32 bg-gray-200 rounded-full h-3">
+                        <div
+                          class="h-3 rounded-full"
+                          :style="{ width: `${Math.min(Math.max(status.percentage, 0), 100)}%`, backgroundColor: status.color }"
+                        ></div>
+                      </div>
+                      <span class="text-sm font-medium text-gray-900 w-16 text-left">{{ Math.round(Math.max(status.percentage, 0)) }}%</span>
                     </div>
-                    <span class="text-sm font-medium text-gray-900 w-16 text-left">{{ Math.round(Math.max(status.percentage, 0)) }}%</span>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- تحلیل‌های پیشرفته -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            <!-- تحلیل جغرافیایی -->
-            <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
-              <div class="flex items-center justify-between mb-3">
-                <h4 class="text-sm font-semibold text-gray-900">تحلیل جغرافیایی</h4>
-                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <!-- تحلیل‌های پیشرفته -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+              <!-- تحلیل جغرافیایی -->
+              <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-3">
+                  <h4 class="text-sm font-semibold text-gray-900">تحلیل جغرافیایی</h4>
+                  <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                 </svg>
-              </div>
-              <div class="space-y-2">
-                <div
-                  v-for="geo in geoAnalysis.slice(0, 4)"
-                  :key="geo.cityName"
-                  class="flex items-center justify-between text-xs"
-                >
-                  <span class="text-gray-600">{{ geo.cityName }}</span>
-                  <span class="font-medium">{{ geo.percentage.toFixed(1) }}%</span>
+                </div>
+                <div class="space-y-2">
+                  <div
+                    v-for="geo in geoAnalysis.slice(0, 4)"
+                    :key="geo.cityName"
+                    class="flex items-center justify-between text-xs"
+                  >
+                    <span class="text-gray-600">{{ geo.cityName }}</span>
+                    <span class="font-medium">{{ geo.percentage.toFixed(1) }}%</span>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- تحلیل زمانی -->
-            <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
-              <div class="flex items-center justify-between mb-3">
-                <h4 class="text-sm font-semibold text-gray-900">تحلیل زمانی</h4>
-                <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <!-- تحلیل زمانی -->
+              <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-3">
+                  <h4 class="text-sm font-semibold text-gray-900">تحلیل زمانی</h4>
+                  <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
+                </div>
+                <div class="space-y-2">
+                  <div class="flex items-center justify-between text-xs">
+                    <span class="text-gray-600">ساعات اوج</span>
+                    <span class="font-medium">{{ timeAnalysis.peakHour }}</span>
+                  </div>
+                  <div class="flex items-center justify-between text-xs">
+                    <span class="text-gray-600">روزهای پرفروش</span>
+                    <span class="font-medium">{{ timeAnalysis.busiestDay }}</span>
+                  </div>
+                  <div class="flex items-center justify-between text-xs">
+                    <span class="text-gray-600">فصل پرفروش</span>
+                    <span class="font-medium">{{ timeAnalysis.busiestSeason }}</span>
+                  </div>
+                  <div class="flex items-center justify-between text-xs">
+                    <span class="text-gray-600">متوسط زمان خرید</span>
+                    <span class="font-medium">{{ Math.round(timeAnalysis.avgPurchaseTime) }} دقیقه</span>
+                  </div>
+                </div>
               </div>
-              <div class="space-y-2">
-                <div class="flex items-center justify-between text-xs">
-                  <span class="text-gray-600">ساعات اوج</span>
-                  <span class="font-medium">{{ timeAnalysis.peakHour }}</span>
-                </div>
-                <div class="flex items-center justify-between text-xs">
-                  <span class="text-gray-600">روزهای پرفروش</span>
-                  <span class="font-medium">{{ timeAnalysis.busiestDay }}</span>
-                </div>
-                <div class="flex items-center justify-between text-xs">
-                  <span class="text-gray-600">فصل پرفروش</span>
-                  <span class="font-medium">{{ timeAnalysis.busiestSeason }}</span>
-                </div>
-                <div class="flex items-center justify-between text-xs">
-                  <span class="text-gray-600">متوسط زمان خرید</span>
-                  <span class="font-medium">{{ Math.round(timeAnalysis.avgPurchaseTime) }} دقیقه</span>
-                </div>
-              </div>
-            </div>
 
-            <!-- تحلیل مشتریان -->
-            <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
-              <div class="flex items-center justify-between mb-3">
-                <h4 class="text-sm font-semibold text-gray-900">تحلیل مشتریان</h4>
-                <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <!-- تحلیل مشتریان -->
+              <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-3">
+                  <h4 class="text-sm font-semibold text-gray-900">تحلیل مشتریان</h4>
+                  <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                 </svg>
+                </div>
+                <div class="space-y-2">
+                  <div class="flex items-center justify-between text-xs">
+                    <span class="text-gray-600">مشتریان جدید</span>
+                    <span class="font-medium">{{ customerAnalysis.newCustomers }}</span>
+                  </div>
+                  <div class="flex items-center justify-between text-xs">
+                    <span class="text-gray-600">مشتریان وفادار</span>
+                    <span class="font-medium">{{ customerAnalysis.returnCustomers }}</span>
+                  </div>
+                  <div class="flex items-center justify-between text-xs">
+                    <span class="text-gray-600">متوسط ارزش سفارش</span>
+                    <span class="font-medium">{{ formatPrice(customerAnalysis.avgOrderValue) }}</span>
+                  </div>
+                  <div class="flex items-center justify-between text-xs">
+                    <span class="text-gray-600">متوسط سن</span>
+                    <span class="font-medium">{{ customerAnalysis.avgAge }} سال</span>
+                  </div>
+                </div>
               </div>
-              <div class="space-y-2">
-                <div class="flex items-center justify-between text-xs">
-                  <span class="text-gray-600">مشتریان جدید</span>
-                  <span class="font-medium">{{ customerAnalysis.newCustomers }}</span>
-                </div>
-                <div class="flex items-center justify-between text-xs">
-                  <span class="text-gray-600">مشتریان وفادار</span>
-                  <span class="font-medium">{{ customerAnalysis.returnCustomers }}</span>
-                </div>
-                <div class="flex items-center justify-between text-xs">
-                  <span class="text-gray-600">متوسط ارزش سفارش</span>
-                  <span class="font-medium">{{ formatPrice(customerAnalysis.avgOrderValue) }}</span>
-                </div>
-                <div class="flex items-center justify-between text-xs">
-                  <span class="text-gray-600">متوسط سن</span>
-                  <span class="font-medium">{{ customerAnalysis.avgAge }} سال</span>
-                </div>
-              </div>
-            </div>
 
-            <!-- تحلیل محصولات -->
-            <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
-              <div class="flex items-center justify-between mb-3">
-                <h4 class="text-sm font-semibold text-gray-900">تحلیل محصولات</h4>
-                <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <!-- تحلیل محصولات -->
+              <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-3">
+                  <h4 class="text-sm font-semibold text-gray-900">تحلیل محصولات</h4>
+                  <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                 </svg>
-              </div>
-              <div class="space-y-2">
-                <div
-                  v-for="product in productAnalysis.slice(0, 4)"
-                  :key="product.categoryName"
-                  class="flex items-center justify-between text-xs"
-                >
-                  <span class="text-gray-600">{{ product.categoryName }}</span>
-                  <span class="font-medium">{{ product.percentage.toFixed(1) }}%</span>
+                </div>
+                <div class="space-y-2">
+                  <div
+                    v-for="product in productAnalysis.slice(0, 4)"
+                    :key="product.categoryName"
+                    class="flex items-center justify-between text-xs"
+                  >
+                    <span class="text-gray-600">{{ product.categoryName }}</span>
+                    <span class="font-medium">{{ product.percentage.toFixed(1) }}%</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- فیلترهای پیشرفته -->
-          <div class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden mb-6">
-            <div class="bg-gradient-to-r from-indigo-50 to-purple-50 px-4 py-3 border-b border-gray-200">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                  <div class="w-6 h-6 bg-indigo-500 rounded-md flex items-center justify-center ml-2">
-                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"></path>
+            <!-- فیلترهای پیشرفته -->
+            <div class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden mb-6">
+              <div class="bg-gradient-to-r from-indigo-50 to-purple-50 px-4 py-3 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <div class="w-6 h-6 bg-indigo-500 rounded-md flex items-center justify-center ml-2">
+                      <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"></path>
                     </svg>
-              </div>
+                </div>
                   <h3 class="text-sm font-semibold text-gray-900">فیلترهای پیشرفته گزارشات</h3>
                 </div>
                 <button class="text-sm text-indigo-600 hover:text-indigo-800 transition-colors font-medium hover:bg-indigo-50 px-3 py-1 rounded-lg" @click="showReportFilters = !showReportFilters">
@@ -815,8 +814,8 @@
                     <option value="geographic">گزارش جغرافیایی</option>
                     <option value="temporal">گزارش زمانی</option>
                   </select>
-            </div>
-          </div>
+                </div>
+              </div>
 
               <!-- دکمه‌های عملیات -->
               <div class="mt-6 flex justify-between items-center">
@@ -995,6 +994,7 @@
         </div>
       </div>
     </div>
+    </div>
 
     <!-- Order Detail Modal -->
     <OrderDetailModal 
@@ -1043,6 +1043,35 @@ import OrderFilters from './OrderFilters.vue'
 import OrderTable from './OrderTable.vue'
 import QuickActionsModal from './QuickActionsModal.vue'
 import OrderAccountingIntegration from './components/OrderAccountingIntegration.vue'
+
+interface Order {
+  id: number
+  orderNumber: string
+  customerName: string
+  customerPhone?: string
+  trackingCode?: string
+  status: string
+  createdAt: string
+  totalAmount: number
+  [key: string]: unknown
+}
+
+interface AnalyticsData {
+  comprehensiveStats: {
+    totalOrders: number
+    totalRevenue: number
+    conversionRate: number
+    avgOrderValue: number
+  }
+  yearlySalesData: Record<string, unknown>[]
+  orderStatusComparison: Record<string, unknown>[]
+  paymentMethodStats: Record<string, unknown>[]
+  detailedReports: Record<string, unknown>[]
+  productAnalysis: Record<string, unknown>[]
+   customerAnalysis: Record<string, unknown>
+  timeAnalysis: Record<string, unknown>
+  geoAnalysis: Record<string, unknown>[]
+}
 
 definePageMeta({
   layout: 'admin-main',
@@ -1285,12 +1314,12 @@ const handleReportPageChange = (page) => {
 }
 
 // دریافت تحلیل کامل سفارشات از API
-const fetchOrdersAnalytics = async () => {
+const fetchAnalytics = async () => {
   try {
-    const response = await $fetch('/api/admin/orders/real-reports') as Record<string, unknown>
+    const response = await $fetch('/api/admin/orders/real-reports') as { success: boolean, data: AnalyticsData }
     
     if (response && response.success && response.data) {
-      const data = response.data
+      const data: AnalyticsData = response.data
       
       // به‌روزرسانی آمار جامع
       comprehensiveStats.value = {
@@ -1304,24 +1333,24 @@ const fetchOrdersAnalytics = async () => {
       yearlySalesData.value = data.yearlySalesData || []
       
       // به‌روزرسانی آمار وضعیت‌ها
-      orderStatusComparison.value = (data.orderStatusComparison || []).map(item => ({
-        name: getStatusText(item.status),
-        percentage: item.percentage,
-        color: getStatusColor(item.status)
+      orderStatusComparison.value = (data.orderStatusComparison || []).map((item: Record<string, unknown>) => ({
+        name: getStatusText(item.status as string),
+        percentage: item.percentage as number,
+        color: getStatusColor(item.status as string)
       }))
       
       // به‌روزرسانی آمار روش‌های پرداخت
       paymentMethodStats.value = data.paymentMethodStats || []
       
       // به‌روزرسانی گزارشات تفصیلی
-      detailedReports.value = (data.detailedReports || []).map((report, index) => ({
+      detailedReports.value = (data.detailedReports || []).map((report: Record<string, unknown>, index: number) => ({
         id: index + 1,
-        period: report.period,
-        orderCount: report.orderCount,
-        totalRevenue: report.totalRevenue,
-        avgOrderValue: report.avgOrderValue,
-        conversionRate: report.conversionRate,
-        change: report.change
+        period: report.period as string,
+        orderCount: report.orderCount as number,
+        totalRevenue: report.totalRevenue as number,
+        avgOrderValue: report.avgOrderValue as number,
+        conversionRate: report.conversionRate as number,
+        change: report.change as number
       }))
     }
   } catch (error) {
@@ -1332,29 +1361,29 @@ const fetchOrdersAnalytics = async () => {
 // دریافت تحلیل پیشرفته سفارشات از API
 const fetchAdvancedAnalytics = async () => {
   try {
-    const response = await $fetch('/api/admin/orders/advanced-analytics') as Record<string, unknown>
+    const response = await $fetch('/api/admin/orders/advanced-analytics') as { success: boolean, data: AnalyticsData }
     
     if (response && response.success && response.data) {
-      const data = response.data
+      const data: AnalyticsData = response.data
       
       // به‌روزرسانی تحلیل محصولات
       productAnalysis.value = data.productAnalysis || []
       
       // به‌روزرسانی تحلیل مشتریان
       customerAnalysis.value = {
-        newCustomers: data.customerAnalysis?.newCustomers || 0,
-        returnCustomers: data.customerAnalysis?.returnCustomers || 0,
-        avgOrderValue: data.customerAnalysis?.avgOrderValue || 0,
-        avgAge: data.customerAnalysis?.avgAge || 0
+        newCustomers: (data.customerAnalysis?.newCustomers as number) || 0,
+        returnCustomers: (data.customerAnalysis?.returnCustomers as number) || 0,
+        avgOrderValue: (data.customerAnalysis?.avgOrderValue as number) || 0,
+        avgAge: (data.customerAnalysis?.avgAge as number) || 0
       }
       
       // به‌روزرسانی تحلیل زمانی
       timeAnalysis.value = {
-        peakHour: data.timeAnalysis?.peakHour || '',
-        busiestDay: data.timeAnalysis?.busiestDay || '',
-        busiestMonth: data.timeAnalysis?.busiestMonth || '',
-        busiestSeason: data.timeAnalysis?.busiestSeason || '',
-        avgPurchaseTime: data.timeAnalysis?.avgPurchaseTime || 0
+        peakHour: (data.timeAnalysis?.peakHour as string) || '',
+        busiestDay: (data.timeAnalysis?.busiestDay as string) || '',
+        busiestMonth: (data.timeAnalysis?.busiestMonth as string) || '',
+        busiestSeason: (data.timeAnalysis?.busiestSeason as string) || '',
+        avgPurchaseTime: (data.timeAnalysis?.avgPurchaseTime as number) || 0
       }
       
       // به‌روزرسانی تحلیل جغرافیایی
@@ -1465,7 +1494,7 @@ const activeTab = ref('list')
 // Watch برای تغییر سال و بارگذاری مجدد گزارشات
 watch(selectedYear, (newYear) => {
   if (activeTab.value === 'reports') {
-    fetchOrdersAnalytics()
+    fetchAnalytics()
     fetchAdvancedAnalytics()
   }
 })
@@ -1473,7 +1502,7 @@ watch(selectedYear, (newYear) => {
 // Watch برای تغییر تب و بارگذاری گزارشات
 watch(activeTab, (newTab) => {
   if (newTab === 'reports') {
-    fetchOrdersAnalytics()
+    fetchAnalytics()
     fetchAdvancedAnalytics()
   }
 })
@@ -1488,10 +1517,10 @@ const {
 )
 
 // مقداردهی لیست سفارشات فقط از API
-const sampleOrders = ref<Record<string, unknown>[]>([])
+const sampleOrders = ref<Order[]>([])
 watch(() => ordersData.value, (newData) => {
   if (newData) {
-    sampleOrders.value = newData as Record<string, unknown>[]
+    sampleOrders.value = newData as unknown as Order[]
     currentPage.value = 1
   }
 }, { immediate: true })
@@ -1515,7 +1544,7 @@ async function loadOrders() {
 
     if (newOrders.length) {
       // افزودن به ابتدای آرایه (جدیدترین بالا)
-      sampleOrders.value = [...newOrders, ...sampleOrders.value]
+      sampleOrders.value = [...(newOrders as unknown as Order[]), ...sampleOrders.value]
       successMessage.value = `${newOrders.length} سفارش جدید اضافه شد`
     } else {
       successMessage.value = 'سفارش جدیدی وجود ندارد'
@@ -1804,4 +1833,4 @@ watch([filters, searchTerm], () => {
 
 <style scoped>
 /* Additional styles if needed */
-</style> 
+</style>

@@ -497,7 +497,7 @@ const fetchReviews = async () => {
     lazy: true,
     key: `product-reviews-${props.product.id}-${selectedRating.value}`,
   })
-  reviews.value = (data.value as Record<string, unknown>)?.reviews as { rating: number }[] || []
+  reviews.value = (data.value as Record<string, unknown>)?.reviews as Review[] || []
   loading.value = false
 }
 

@@ -61,7 +61,7 @@ export const getSafeErrorMessage = (error: unknown): string => {
   }
 
   // Try to find matching error message
-  const errorMessage = err?.message || (error && typeof error.toString === 'function' ? error.toString() : '') || 'خطای نامشخصی رخ داد'
+  const errorMessage = (err?.message as string) || (error && typeof error === 'object' && error !== null && 'toString' in error ? String(error) : '') || 'خطای نامشخصی رخ داد'
 
   for (const [key, value] of Object.entries(errorMessageMap)) {
     if (errorMessage.includes(key)) {

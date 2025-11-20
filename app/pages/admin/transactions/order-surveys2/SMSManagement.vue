@@ -248,7 +248,27 @@ const updateSelectedOrders = (orders: number[]) => {
   selectedOrders.value = orders
 }
 
-const updateAutoSettings = (settings: Record<string, unknown>) => {
+interface AutoSettings {
+  enabled: boolean;
+  delayDays: number;
+  dailyLimit: number;
+  allowedHours: {
+    start: string;
+    end: string;
+  };
+  allowedDays: number[];
+  timezone: string;
+  rules: {
+    id: number;
+    name: string;
+    condition: string;
+    delay: number;
+    priority: string;
+    enabled: boolean;
+  }[];
+}
+
+const updateAutoSettings = (settings: AutoSettings) => {
   Object.assign(autoSettings, settings)
 }
 

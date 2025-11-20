@@ -493,7 +493,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { useProductCreateStore } from '~/stores/productCreate'
 
 const store = useProductCreateStore()
@@ -524,6 +524,7 @@ const shipping_time = ref<number | null>(null)
 // Persist helper
 async function persistShipping() {
   if (!store.isEditMode || !store.editingProductId) return
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const payload: any = {}
   if (weight.value != null) payload.weight = Number(weight.value)
   if (length.value != null) payload.length = Number(length.value)
@@ -534,7 +535,7 @@ async function persistShipping() {
   if (Object.keys(payload).length === 0) return
   try {
     await store.saveShippingData(store.editingProductId, payload)
-  } catch (e) {
+  } catch (e: unknown) {
     console.error('save shipping failed', e)
   }
 }

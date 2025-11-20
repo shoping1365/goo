@@ -22,5 +22,12 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ data: Record<string, unknown>[] }>()
+interface ProductRanking {
+  rank: number;
+  product: string;
+  totalOrders: number;
+  averageRating: number;
+  responseRate: string;
+}
+defineProps<{ data: ProductRanking[] }>()
 </script>

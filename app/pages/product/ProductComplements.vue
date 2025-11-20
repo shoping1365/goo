@@ -72,6 +72,12 @@ interface Product {
   rating?: number
   sku?: string
   slug?: string
+  images?: (string | { image_url: string })[]
+  image_url?: string
+  image?: string
+  track_inventory?: boolean
+  stock_quantity?: number
+  allow_preorder?: boolean
 }
 
 interface Props {
@@ -103,9 +109,20 @@ function toThumbnail(url: string): string {
   return baseName + '_thumbnail' + originalExt
 }
 
-function imageUrl(p: Record<string, unknown>): string {
-  const base = (p?.images && Array.isArray(p.images) && (p.images[0] as Record<string, unknown>)?.image_url) || p?.image_url || p?.image || p?.main_image || ''
-  return toThumbnail(base as string)
+function imageUrl(p: Product): string {
+  let base = ''
+  if (p.images && Array.isArray(p.images) && p.images.length > 0) {
+     const first = p.images[0]
+     if (typeof first === 'object' && 'image_url' in first) {
+        base = first.image_url
+     } else if (typeof first === 'string') {
+        base = first
+     }
+  }
+  if (!base) {
+    base = p.image_url || p.image || p.main_image || ''
+  }
+  return toThumbnail(base)
 }
 
 const formatPrice = (price: number): string => {
@@ -137,15 +154,15 @@ async function remove(productId:number){
 
 function cartItem(productId:number){
   const { cartItems } = useCart()
-  return cartItems.value.find((i: Record<string, unknown>)=> i.product_id === productId)
+  return cartItems.value.find((i: any)=> i.product_id === productId)
 }
 
 // موجود بودن برای خرید در کارت مکمل
-function isAvailable(p: Record<string, unknown>){
-  const price = Number(p?.price || 0)
-  const track = p?.track_inventory === true
-  const stock = Number(p?.stock_quantity ?? 0)
-  const preorder = p?.allow_preorder === true
+function isAvailable(p: Product){
+  const price = Number(p.price || 0)
+  const track = p.track_inventory === true
+  const stock = Number(p.stock_quantity ?? 0)
+  const preorder = p.allow_preorder === true
   // قانون: اگر قیمت 0 باشد یا (رهگیری موجودی فعال و موجودی 0 و پیش‌خرید غیرفعال)، ناموجود
   if (price <= 0) return false
   if (track && stock <= 0 && !preorder) return false

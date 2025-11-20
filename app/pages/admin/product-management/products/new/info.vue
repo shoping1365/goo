@@ -1078,11 +1078,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, ref, watch } from 'vue'
-import RichTextEditor from '~/components/common/RichTextEditor.vue'
-import { useProductCreateStore } from '~/stores/productCreate'
+import { computed, inject, ref, watch, type Ref } from 'vue';
+import RichTextEditor from '~/components/common/RichTextEditor.vue';
+import { useProductCreateStore } from '~/stores/productCreate';
 
 const store = useProductCreateStore()
+
+interface Category {
+  id: number | string;
+  name: string;
+  parent_id?: number | string | null;
+}
+
+interface Brand {
+  id: number | string;
+  name: string;
+}
 
 // دریافت تنظیمات بخش‌ها از کامپوننت والد
 const sectionSettings = inject('sectionSettings', {
@@ -1097,21 +1108,18 @@ const sectionSettings = inject('sectionSettings', {
 // Use store state and actions directly
 const sections = store.sections
 const productForm = store.productForm
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const brands = inject<any>('brands', ref([]))
+const brands = inject<Ref<Brand[]>>('brands', ref([]))
 const tinyApiKey = store.tinyApiKey
-const categories = computed(() => store.categories)
+const categories = computed(() => store.categories as Category[])
 
 // دسته‌بندی‌های اصلی (parent_id == null)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const mainCategories = computed(() => categories.value.filter((c:any) => !c.parent_id))
+const mainCategories = computed(() => categories.value.filter(c => !c.parent_id))
 
 // زیردسته‌ها بر اساس انتخاب دسته اصلی
 const subCategories = computed(() => {
   const pid = productForm.category_id
   if (!pid) return []
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return categories.value.filter((c:any) => c.parent_id == pid)
+  return categories.value.filter(c => c.parent_id == pid)
 })
 
 // ریست زیردسته در صورت تغییر دسته اصلی

@@ -278,6 +278,8 @@ interface Message {
   fileSize?: number
   fileName?: string
   duration?: string
+  imageUrl?: string
+  caption?: string
 }
 
 definePageMeta({
@@ -446,7 +448,7 @@ const startNewChat = () => {
 const sendMessage = () => {
   if (!messageText.value.trim() || !selectedChat.value) return
 
-  const newMessage = {
+  const newMessage: Message = {
     id: Date.now(),
     type: 'text',
     text: messageText.value,

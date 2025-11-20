@@ -470,7 +470,7 @@
 </template>
 
 
-<script setup>
+<script setup lang="ts">
 import { reactive } from 'vue'
 import { useProductCreateStore } from '~/stores/productCreate'
 
@@ -483,7 +483,7 @@ const sections = reactive({
   inventoryPlanning: false
 })
 
-const toggleSection = (section) => {
+const toggleSection = (section: keyof typeof sections) => {
   sections[section] = !sections[section]
 }
 </script>

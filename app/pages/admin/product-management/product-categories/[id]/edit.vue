@@ -355,6 +355,8 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
    
  // Category Message reactive variable
  const categoryMessage = ref('');
+ 
+ const tinyApiKey = ref('');
    
  const parentId = ref<string | number>('');
    
@@ -629,4 +631,4 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
    
  <style scoped>
  /* Add any specific styles here */
- </style> 
+ </style>

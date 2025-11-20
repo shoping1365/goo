@@ -115,8 +115,18 @@
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 
+interface FAQ {
+  id?: number
+  question: string
+  answer: string
+}
+
+interface Product {
+  faqs?: FAQ[]
+}
+
 interface Props {
-  product: Record<string, unknown>
+  product: Product
 }
 
 const props = defineProps<Props>()
@@ -126,7 +136,7 @@ const expandedFaqs = reactive<Record<number, boolean>>({})
 
 // Computed
 const faqs = computed(() => {
-  return props.product?.faqs || []
+  return props.product.faqs || []
 })
 
 // Methods
@@ -135,13 +145,13 @@ const toggleFaq = (index: number) => {
 }
 
 const expandAll = () => {
-  faqs.value.forEach((_: unknown, index: number) => {
+  faqs.value.forEach((_, index) => {
     expandedFaqs[index] = true
   })
 }
 
 const collapseAll = () => {
-  faqs.value.forEach((_: unknown, index: number) => {
+  faqs.value.forEach((_, index) => {
     expandedFaqs[index] = false
   })
 }

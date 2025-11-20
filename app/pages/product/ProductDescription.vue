@@ -165,8 +165,16 @@
 </template>
 
 <script setup lang="ts">
+interface Product {
+  description?: string
+  strengths?: string[]
+  weaknesses?: string[]
+  usage_guide?: string
+  features?: string[]
+}
+
 interface Props {
-  product: Record<string, unknown>
+  product: Product
 }
 
 defineProps<Props>()

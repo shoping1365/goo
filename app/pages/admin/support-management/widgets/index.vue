@@ -558,6 +558,18 @@ import { onMounted, ref } from 'vue';
 
 definePageMeta({ layout: 'admin-main' })
 
+interface Widget {
+  id: number | string;
+  name: string;
+  description?: string;
+  is_active: boolean;
+  welcome_message?: string;
+  offline_message?: string;
+  theme?: string;
+  position?: string;
+  [key: string]: unknown;
+}
+
 // تب‌های ناوبری
 const tabs = ref([
   { id: 'personalization', title: 'شخصی سازی' },
@@ -569,10 +581,10 @@ const tabs = ref([
 
 const activeTab = ref('personalization')
 // وضعیت ابزارک‌ها
-const widgets = ref<Record<string, unknown>[]>([])
+const widgets = ref<Widget[]>([])
 async function loadWidgets() {
   try {
-    const res: Record<string, unknown> = await $fetch('/api/admin/chat/widgets')
+    const res = await $fetch<{ status: string; data: Widget[] }>('/api/admin/chat/widgets')
     if (res?.status === 'success') widgets.value = res.data
   } catch (e) { 
     // console.error('loadWidgets failed', e) 
@@ -728,4 +740,4 @@ const getPatternBackground = (index: number) => {
   
   return patterns[index - 1] || '#f3f4f6'
 }
-</script> 
+</script>

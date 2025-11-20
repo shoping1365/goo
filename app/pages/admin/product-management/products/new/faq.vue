@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import RichTextEditor from '~/components/common/RichTextEditor.vue'
 import { useConfirmDialog } from '~/composables/useConfirmDialog'
 

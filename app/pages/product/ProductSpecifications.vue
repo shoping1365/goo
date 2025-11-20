@@ -82,8 +82,21 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 
+interface Specification {
+  id?: number | string
+  name: string
+  value: string
+  unit?: string
+  group?: string
+}
+
+interface Product {
+  specifications?: Specification[]
+  [key: string]: unknown
+}
+
 interface Props {
-  product: Record<string, unknown>
+  product: Product
 }
 
 const props = defineProps<Props>()
@@ -93,16 +106,16 @@ const searchQuery = ref('')
 const expandedGroups = reactive<Record<string, boolean>>({})
 
 // Computed
-const specifications = computed(() => {
+const specifications = computed<Specification[]>(() => {
   return props.product?.specifications || []
 })
 
 const groupedSpecs = computed(() => {
-  const groups: { name: string; specs: Record<string, unknown>[] }[] = []
+  const groups: { name: string; specs: Specification[] }[] = []
   const groupMap = new Map()
 
-  specifications.value.forEach((spec: Record<string, unknown>) => {
-    const groupName = (spec.group as string) || 'عمومی'
+  specifications.value.forEach((spec: Specification) => {
+    const groupName = spec.group || 'عمومی'
     if (!groupMap.has(groupName)) {
       const group = { name: groupName, specs: [] }
       groups.push(group)
@@ -118,9 +131,9 @@ const filteredSpecs = computed(() => {
   if (!searchQuery.value) return specifications.value
   
   const query = searchQuery.value.toLowerCase()
-  return specifications.value.filter((spec: Record<string, unknown>) =>
-    (spec.name as string)?.toLowerCase().includes(query) ||
-    (spec.value as string)?.toLowerCase().includes(query)
+  return specifications.value.filter((spec: Specification) =>
+    spec.name?.toLowerCase().includes(query) ||
+    spec.value?.toLowerCase().includes(query)
   )
 })
 

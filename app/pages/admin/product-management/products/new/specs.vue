@@ -354,6 +354,34 @@ import { useConfirmDialog } from '~/composables/useConfirmDialog'
 import { useNotifier } from '~/composables/useNotifier'
 import { useProductCreateStore } from '~/stores/productCreate'
 
+interface AttributeValue {
+  id: number
+  value: string
+}
+
+interface Attribute {
+  id: number
+  name: string
+  display_name?: string
+  unit?: string
+  type: string
+  controlType?: string
+  isRequired?: boolean
+  values?: AttributeValue[]
+  selectedOptionId?: number | string
+  selectedOptionIds?: number[]
+  valueText?: string
+  sort_order?: number
+  has_filter?: boolean
+  is_key?: boolean
+  show_on_product?: boolean
+}
+
+interface AttributeGroup {
+  id: number
+  name: string
+}
+
 const sections = reactive({
   technicalSpecs: true,
   groupsContainer: false
@@ -367,7 +395,7 @@ const pStore = useProductCreateStore()
 const notifier = useNotifier()
 const { confirm } = useConfirmDialog()
 
-const attributeGroups = ref([])
+const attributeGroups = ref<AttributeGroup[]>([])
 const loadingGroups = ref(false)
 const showGroupContainer = ref(false)
 const selectedGroupId = ref('')
@@ -485,7 +513,7 @@ async function fetchAttributeGroups() {
   }
 }
 
-const toggleSection = (section) => {
+const toggleSection = (section: keyof typeof sections) => {
   sections[section] = !sections[section]
 }
 
@@ -504,7 +532,7 @@ function handleKeypress(e: KeyboardEvent) {
   }
 }
 
-async function selectGroup(g){
+async function selectGroup(g: AttributeGroup){
   selectedGroupId.value = g.id
   selectedGroupName.value = g.name
   await loadGroup(g.id)
@@ -525,7 +553,7 @@ async function selectGroup(g){
   }
 }
 
-async function addNewOption(attr){
+async function addNewOption(attr: Attribute){
   if(attr.type==='custom_text') return
   const val = prompt(`مقدار جدید برای "${attr.name}" را وارد کنید:`)
   if(!val || !val.trim()) return
@@ -548,7 +576,7 @@ async function addNewOption(attr){
   }
 }
 
-async function removeAttribute(attr){
+async function removeAttribute(attr: Attribute){
   const ok = await confirm({
     title: 'تأیید حذف',
     message: `با حذف این ویژگی، از گروه ویژگی «${selectedGroupName.value}» نیز حذف خواهد شد. آیا مطمئن هستید؟`,
@@ -633,9 +661,10 @@ async function createAttribute(){
     newAttr.name=''; newAttr.display_name=''; newAttr.unit=''; newAttr.sort_order=0;
     newAttr.type='select'; newAttr.control_type='dropdown_single'; newAttr.has_filter=false; newAttr.is_key=false; newAttr.show_on_product=true; newAttr.is_required=false
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  }catch(e:any){
-    notifier.error(e?.error || e?.message || 'خطا در افزودن ویژگی')
+  }catch(e: unknown){
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const err = e as any
+    notifier.error(err?.error || err?.message || 'خطا در افزودن ویژگی')
     console.error(e)
   }finally{
     creatingAttr.value=false

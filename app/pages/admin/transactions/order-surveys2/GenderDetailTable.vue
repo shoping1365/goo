@@ -24,5 +24,13 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ data: unknown[] }>()
+interface GenderDetail {
+  gender: string;
+  totalOrders: number;
+  sentSMS: number;
+  responses: number;
+  responseRate: string;
+  averageRating: number;
+}
+defineProps<{ data: GenderDetail[] }>()
 </script>

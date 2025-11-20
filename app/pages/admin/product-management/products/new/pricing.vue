@@ -315,8 +315,7 @@
               <input v-model.number="store.pricingForm.sale_price" type="number" min="0" class="w-full border-2 border-purple-200 rounded-lg px-3 py-2" />
             </div>
           </div>
-          <div v-if="store.pricingForm.sale_start_jalali || store.pricingForm.sale_end_jalali" class="mt-2">
-            </div>
+
 
           <!-- طرح‌های فروش ویژه مرحله‌ای (قیمت/تعداد) -->
           <div class="mt-6 border-t pt-4">
@@ -687,8 +686,7 @@ type="button"
 </template>
 
 
-<script setup>
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+<script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useProductCreateStore } from '~/stores/productCreate'
 
@@ -797,17 +795,21 @@ async function runPriceAnalysis() {
       return
     }
     loading.value = true
-    const res = await $fetch('/api/admin/price-analysis', {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const res = await $fetch<any>('/api/admin/price-analysis', {
       method: 'POST',
       body: { q: keyword.value.trim(), limit: Number(limit.value) || 10 }
     })
     const rows = Array.isArray(res?.data) ? res.data : (res?.results || [])
-    results.value = rows.map((r) => ({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    results.value = rows.map((r: any) => ({
       ...r,
       priceFormatted: r?.price ? `${formatToman(r.price)} تومان` : '-'
     }))
-  } catch (err) {
-    errorMsg.value = err?.data?.message || err?.message || 'خطا در تحلیل قیمت'
+  } catch (err: unknown) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const e = err as any
+    errorMsg.value = e?.data?.message || e?.message || 'خطا در تحلیل قیمت'
   } finally {
     loading.value = false
   }
@@ -830,12 +832,14 @@ watch(() => [store.productForm.name, store.productForm.englishName], () => {
 }, { immediate: true })
 
 // Helper function to update pricing field
-const updatePricingField = (field, event) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const updatePricingField = (field: string, event: any) => {
   const raw = event.target.value
   const newValue = parseNumber(raw)
   
   // Update the store value first
-  store.pricingForm[field] = newValue
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (store.pricingForm as any)[field] = newValue
   
   // Format the input field if it's not a number type
   if (event.target.type !== 'number') {
@@ -947,7 +951,7 @@ watch(() => [
   if (props.isEditMode && props.productId) {
     try {
       await store.savePricingData(props.productId)
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('خطا در ذخیره خودکار قیمت:', error)
     }
   }

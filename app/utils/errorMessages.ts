@@ -9,7 +9,7 @@ export const errorMessages: Record<string, ErrorMapper> = {
     if (typeof d?.details === 'string' && d.details.trim().length > 0) {
       return d.details
     }
-    return d?.message || 'اطلاعات وارد شده معتبر نیست.'
+    return (d?.message as string) || 'اطلاعات وارد شده معتبر نیست.'
   },
   REQUIRED_FIELD: (d) => `فیلد ${d?.fieldName || 'مطلوب'} الزامی است.`,
   INVALID_FORMAT: (d) => `فرمت ${d?.fieldName || 'ورودی'} صحیح نیست.`,

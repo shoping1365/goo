@@ -138,7 +138,7 @@ v-if="notification.show" :class="[
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import Pagination from '~/components/admin/common/Pagination.vue';
 import BulkEditProductTable from '~/pages/admin/product-management/components/BulkEditProductTable.vue';
 import ColumnSettingsModal from '~/pages/admin/product-management/components/ColumnSettingsModal.vue';
@@ -285,10 +285,10 @@ async function fetchProducts() {
     
     // درخواست محصولات با pagination سرور
     const url = `/api/admin/products?${params.toString()}`
-    const response = await $fetch(url)
+    const response = await $fetch<{ data: unknown[], total: number, total_pages: number } | unknown[]>(url)
     
     // بررسی فرمت پاسخ - دقیقاً مثل ProductTable
-    if (response && response.data && Array.isArray(response.data)) {
+    if (response && 'data' in response && Array.isArray(response.data)) {
       products.value = response.data
       totalProducts.value = response.total || 0
       totalPages.value = response.total_pages || Math.ceil(totalProducts.value / itemsPerPage.value)
@@ -302,7 +302,7 @@ async function fetchProducts() {
       totalProducts.value = 0
       totalPages.value = 1
     }
-  } catch (error) {
+  } catch {
     showNotification('error', 'خطا در بارگذاری محصولات')
     products.value = []
     totalProducts.value = 0
@@ -321,7 +321,7 @@ async function saveChanges() {
     await fetchProducts()
     showNotification('success', `${changedCount} محصول با موفقیت ذخیره شد`)
     Object.assign(stats, { selected: 0, changed: 0, saved: changedCount, errors: 0 })
-  } catch (error) {
+  } catch {
     showNotification('error', 'خطا در ذخیره تغییرات. لطفاً دوباره تلاش کنید.')
     stats.errors = 1
   } finally {
@@ -345,7 +345,7 @@ onMounted(async () => {
   try {
     await loadColumnSettings()
     await fetchProducts()
-  } catch (error) {
+  } catch {
     // حتی در صورت خطا، سعی کن محصولات را بارگذاری کن
     await fetchProducts()
   }

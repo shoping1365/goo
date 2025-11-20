@@ -11,7 +11,18 @@
 </template>
 <script setup lang="ts">
 import SalesSummaryCard from './SalesSummaryCard.vue';
-defineProps<{ stats: unknown }>()
+
+interface SalesStats {
+  totalRevenue: number;
+  todayRevenue: number;
+  weekRevenue: number;
+  monthRevenue: number;
+  totalOrders: number;
+  avgOrderValue: number;
+  conversionRate: number;
+}
+
+defineProps<{ stats: SalesStats }>()
 
 const formatCurrency = (value: number) => {
   return new Intl.NumberFormat('fa-IR').format(value) + ' تومان'

@@ -396,8 +396,48 @@ v-for="session in filteredSessions" :key="session.id"
 </template>
 
 <script lang="ts">
+import type { Ref } from 'vue'
+
+interface ChatSession {
+  id: string | number;
+  customer_id?: string;
+  customer_name?: string;
+  customer_phone?: string;
+  url?: string;
+  status: 'active' | 'waiting' | 'closed';
+  last_message?: string;
+  unread_count?: number;
+  created_at?: string;
+  updated_at?: string;
+  [key: string]: unknown;
+}
+
+interface Message {
+  id: string | number;
+  session_id: string | number;
+  sender_type: 'customer' | 'operator' | 'system';
+  message: string;
+  created_at: string;
+  is_read?: boolean;
+  [key: string]: unknown;
+}
+
 declare const definePageMeta: (meta: { layout?: string }) => void
-declare const useLiveChat: () => Record<string, unknown>
+declare const useLiveChat: () => {
+  chatSessions: Ref<ChatSession[]>;
+  selectedSession: Ref<ChatSession | null>;
+  messages: Ref<Message[]>;
+  isLoading: Ref<boolean>;
+  error: Ref<string | null>;
+  fetchChatSessions: (status?: string) => Promise<void>;
+  fetchMessages: (sessionId: string | number) => Promise<void>;
+  sendMessage: (sessionId: string | number, message: string, file?: File | null) => Promise<void>;
+  updateSessionStatus: (sessionId: string | number, status: string) => Promise<void>;
+  startPolling: () => void;
+  stopPolling: () => void;
+  selectSession: (session: ChatSession) => Promise<void>;
+  markAsRead: (sessionId: string | number) => Promise<void>;
+}
 </script>
 
 <script setup lang="ts">
@@ -449,7 +489,7 @@ const filteredSessions = computed(() => {
     filtered = filtered.filter(session => 
       session.customer_name?.toLowerCase().includes(query) ||
       session.customer_phone?.includes(query) ||
-      session.customer_id?.includes(query) ||
+      (session.customer_id && String(session.customer_id).includes(query)) ||
       session.last_message?.toLowerCase().includes(query)
     )
   }
@@ -466,11 +506,11 @@ const waitingSessionsCount = computed(() =>
 )
 
 const _closedSessionsCount = computed(() => 
-  (chatSessions.value as Record<string, unknown>[]).filter(s => s.status === 'closed').length
+  chatSessions.value.filter(s => s.status === 'closed').length
 )
 
 // Methods
-const handleSelectSession = async (session: Record<string, unknown>) => {
+const handleSelectSession = async (session: ChatSession) => {
   await selectSession(session)
   await markAsRead(session.id)
 }
@@ -478,12 +518,14 @@ const handleSelectSession = async (session: Record<string, unknown>) => {
 const handleSendMessage = async () => {
   if (!newMessage.value.trim() && !selectedFile.value) return
   
-  try {
-    await sendMessage(selectedSession.value.id, newMessage.value, selectedFile.value)
-    newMessage.value = ''
-    selectedFile.value = null
-  } catch (err) {
-    // console.error('Error sending message:', err)
+  if (selectedSession.value) {
+    try {
+      await sendMessage(selectedSession.value.id, newMessage.value, selectedFile.value)
+      newMessage.value = ''
+      selectedFile.value = null
+    } catch (err) {
+      // console.error('Error sending message:', err)
+    }
   }
 }
 

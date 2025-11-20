@@ -309,6 +309,19 @@ declare const navigateTo: (to: string) => Promise<void>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import AccountAgeSystem from './components/AccountAgeSystem.vue';
+
+interface RatedUser {
+  id: number | string;
+  name: string;
+  email?: string;
+  avatar?: string;
+  score: number;
+  level: string;
+  lastActivity: string;
+  status?: string;
+  currentScore: number;
+}
+
 import AlertSystem from './components/AlertSystem.vue';
 import AutoScoringSystem from './components/AutoScoringSystem.vue';
 import ManualScoring from './components/ManualScoring.vue';
@@ -335,7 +348,7 @@ const toggleSidebar = () => {
 }
 
 // Sample users data with updated structure
-const users = ref([
+const users = ref<RatedUser[]>([
   {
     id: 1,
     name: 'علی احمدی',
@@ -507,16 +520,16 @@ const systemSettings = ref({
 })
 
 // Event handlers
-const handleViewUserDetails = (user: Record<string, unknown>) => {
+const handleViewUserDetails = (user: RatedUser) => {
   // Navigate to user details page
   navigateTo(`/admin/users/${user.id}`)
 }
 
-const handleEditUser = (user: Record<string, unknown>) => {
+const handleEditUser = (user: RatedUser) => {
   // Open edit user modal
 }
 
-const handleToggleUserStatus = (user: Record<string, unknown>) => {
+const handleToggleUserStatus = (user: RatedUser) => {
   user.status = user.status === 'blocked' ? 'active' : 'blocked'
   // API call to update user status
 }

@@ -108,21 +108,7 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, ref, watch } from 'vue';
-import { useAddresses } from '~/composables/useAddresses';
-
-interface Address {
-  id: number
-  recipient_name: string
-  recipient_mobile: string
-  phone?: string
-  full_address: string
-  postal_code?: string
-  province_id?: number
-  city_id?: number
-  province?: string
-  city?: string
-  is_default: boolean
-}
+import { useAddresses, type Address } from '~/composables/useAddresses';
 
 interface Province {
   id: number

@@ -8,7 +8,7 @@
 
 import { ref } from 'vue'
 
-interface Address {
+export interface Address {
   id: number
   full_address?: string
   street?: string

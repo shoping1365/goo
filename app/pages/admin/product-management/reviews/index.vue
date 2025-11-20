@@ -476,7 +476,7 @@
                         </svg>
                       </div>
                       <div class="flex-1">
-                        <div class="text-xs text-gray-500">موبایل</div>
+                        <div class="text-xs text-emerald-600 mb-1">موبایل</div>
                         <div class="text-sm font-medium text-gray-900">{{ selectedReview.customer.phone || 'نامشخص' }}</div>
                       </div>
                     </div>
@@ -809,6 +809,7 @@ definePageMeta({
 })
 
 // Provide ConfirmDialog ref for this page
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const confirmDialogRef = ref<any>(null)
 provide('confirmDialogRef', confirmDialogRef)
 
@@ -987,7 +988,7 @@ const loadReviews = async () => {
       }
     }))
     updateStats()
-  } catch (error) {
+  } catch (error: unknown) {
     // Failed to load reviews
     reviews.value = []
   }
@@ -1086,7 +1087,7 @@ const approveReview = async (reviewId: string) => {
     
     updateStats()
     // نظر تایید شد
-  } catch (error) {
+  } catch (error: unknown) {
     // خطا در تایید نظر
     useNotifier().error('خطا در تایید نظر. لطفاً دوباره تلاش کنید.')
   }
@@ -1109,7 +1110,7 @@ const rejectReview = async (reviewId: string) => {
     
     updateStats()
     // نظر رد شد
-  } catch (error) {
+  } catch (error: unknown) {
     // خطا در رد نظر
     useNotifier().error('خطا در رد نظر. لطفاً دوباره تلاش کنید.')
   }
@@ -1132,7 +1133,7 @@ const deleteReview = async (reviewId: string) => {
     reviews.value = reviews.value.filter(r => r.id !== reviewId)
     selectedReviews.value = selectedReviews.value.filter(id => id !== reviewId)
     // نظر حذف شد
-  } catch (error) {
+  } catch (error: unknown) {
     // خطا در حذف نظر
     useNotifier().error('خطا در حذف نظر. لطفاً دوباره تلاش کنید.')
   }
@@ -1270,7 +1271,7 @@ const submitReply = async () => {
     
     // نمایش پیام موفقیت
   useNotifier().success('پاسخ شما با موفقیت ارسال شد و برای مشتری نمایش داده خواهد شد.')
-  } catch (error) {
+  } catch (error: unknown) {
     // خطا در ارسال پاسخ
   useNotifier().error('خطا در ارسال پاسخ. لطفاً دوباره تلاش کنید.')
   }
@@ -1309,7 +1310,7 @@ const submitInlineAnswer = async () => {
     
     // نمایش پیام موفقیت
   useNotifier().success('پاسخ شما با موفقیت ارسال شد و برای مشتری نمایش داده خواهد شد.')
-  } catch (error) {
+  } catch (error: unknown) {
     // خطا در ارسال پاسخ
   useNotifier().error('خطا در ارسال پاسخ. لطفاً دوباره تلاش کنید.')
   }

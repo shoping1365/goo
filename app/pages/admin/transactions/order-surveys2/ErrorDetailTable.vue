@@ -28,5 +28,14 @@
    </template>
    
    <script setup lang="ts">
-   defineProps<{ data: Record<string, unknown>[] }>()
+   interface ErrorDetail {
+     orderNumber: string | number;
+     customerName: string;
+     phoneNumber: string;
+     errorType: string;
+     errorDate: string;
+     retryCount: number;
+     status: string;
+   }
+   defineProps<{ data: ErrorDetail[] }>()
    </script>

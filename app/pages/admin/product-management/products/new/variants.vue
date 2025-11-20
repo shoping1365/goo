@@ -504,9 +504,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
-import { useProductCreateStore } from '~/stores/productCreate'
+import { computed, onMounted, ref } from 'vue'
 import { useNotifier } from '~/composables/useNotifier'
+import { useProductCreateStore } from '~/stores/productCreate'
+
+interface Variant {
+  id: number
+  name: string
+  value: string
+  price_adjustment?: number
+  stock_quantity?: number
+}
 
 const store = useProductCreateStore()
 const notifier = useNotifier()
@@ -517,16 +525,17 @@ const variantName = ref('')
 const variantValue = ref('')
 const variantPrice = ref<number | null>(null)
 const variantStock = ref<number | null>(null)
-const variants = ref<any[]>([])
+const variants = ref<Variant[]>([])
 
 const productId = computed(()=> store.editingProductId)
 
 async function loadVariants(){
   if (!store.isEditMode || !store.editingProductId) { variants.value = []; return }
   try{
-    const res:any = await $fetch(`/api/product-variants/${store.editingProductId}`)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const res = await $fetch<any>(`/api/product-variants/${store.editingProductId}`)
     variants.value = Array.isArray(res?.data) ? res.data : []
-  }catch(e:any){
+  }catch(e: unknown){
     // silent error to avoid double toasts
     console.error('loadVariants failed', e)
   }
@@ -534,7 +543,7 @@ async function loadVariants(){
 
 async function addVariant(){
   if (!store.isEditMode || !store.editingProductId) return
-  const body:any = { name: variantName.value, value: variantValue.value }
+  const body: Partial<Variant> = { name: variantName.value, value: variantValue.value }
   if (variantPrice.value != null) body.price_adjustment = Number(variantPrice.value)
   if (variantStock.value != null) body.stock_quantity = Number(variantStock.value)
   try {
@@ -545,7 +554,7 @@ async function addVariant(){
     variantPrice.value = null
     variantStock.value = null
     notifier.success('تنوع با موفقیت اضافه شد')
-  } catch(e){ /* ignore */ }
+  } catch { /* ignore */ }
 }
 
 async function removeVariant(id:number){
@@ -554,7 +563,7 @@ async function removeVariant(id:number){
     await $fetch(`/api/product-variants/${id}`, { method:'DELETE' })
     await loadVariants()
     notifier.success('تنوع حذف شد')
-  }catch(e:any){ console.error('removeVariant failed', e) }
+  }catch(e: unknown){ console.error('removeVariant failed', e) }
 }
 
 onMounted(()=>{ loadVariants() })

@@ -315,17 +315,27 @@ const formData = ref({
 // هزینه ارسال
 const shippingCost = ref<number>(0)
 
+interface Province {
+  id: number
+  name: string
+}
+
+interface City {
+  id: number
+  name: string
+}
+
 // استان / شهر - با کش
-const provinces = ref<Record<string, unknown>[]>([])
-const cities = ref<Record<string, unknown>[]>([])
+const provinces = ref<Province[]>([])
+const cities = ref<City[]>([])
 const selectedProvinceId = ref<number|null>(null)
 const provincesLoaded = ref(false)
-const citiesCache = new Map<number, Record<string, unknown>[]>()
+const citiesCache = new Map<number, City[]>()
 
 async function fetchProvinces(){
   if (provincesLoaded.value) return
   try {
-    provinces.value = await $fetch('/api/geo/provinces')
+    provinces.value = await $fetch<Province[]>('/api/geo/provinces')
     provincesLoaded.value = true
   } catch (error) {
     console.error('خطا در دریافت استان‌ها:', error)
@@ -339,7 +349,7 @@ async function fetchCities(pid: number){
   }
   
   try {
-    const citiesData = await $fetch<Record<string, unknown>[]>(`/api/geo/provinces/${pid}/cities`)
+    const citiesData = await $fetch<City[]>(`/api/geo/provinces/${pid}/cities`)
     cities.value = citiesData
     citiesCache.set(pid, citiesData)
   } catch (error) {

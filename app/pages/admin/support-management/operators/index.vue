@@ -419,6 +419,26 @@ import { computed, onMounted, ref } from 'vue';
 
 definePageMeta({ layout: 'admin-main' })
 
+interface Operator {
+  id: number | string;
+  name: string;
+  email: string;
+  acceptedCount: number;
+  totalHours: string;
+  [key: string]: unknown;
+}
+
+interface NewOperator {
+  title: string;
+  email: string;
+  password: string;
+  fullName: string;
+  phone: string;
+  confirmPassword: string;
+  websiteAccess: boolean;
+  accessLevel: string;
+}
+
 // تب‌های موجود
 const tabs = [
   { id: 'operators-list', name: 'لیست اپراتورها' },
@@ -433,7 +453,7 @@ const activeTab = ref('operators-list')
 const showInviteModal = ref(false)
 
 // داده‌های اپراتور جدید
-const newOperator = ref({
+const newOperator = ref<NewOperator>({
   title: '',
   email: '',
   password: '',
@@ -445,18 +465,21 @@ const newOperator = ref({
 })
 
 // لیست اپراتورها از API
-const operators = ref<Record<string, unknown>[]>([])
+const operators = ref<Operator[]>([])
 async function loadAvailableOperators() {
   try {
-    const res: Record<string, unknown> = await $fetch('/api/admin/chat/operators/available')
+    const res = await $fetch<{ status: string; data: Record<string, unknown>[] }>('/api/admin/chat/operators/available')
     if (res?.status === 'success' && Array.isArray(res.data)) {
-      operators.value = (res.data as Record<string, unknown>[]).map((op: Record<string, unknown>) => ({
-        id: op.id,
-        name: op.user?.name || op.user?.username || `اپراتور ${op.id}`,
-        email: op.user?.email || '-',
-        acceptedCount: op.current_chats || 0,
-        totalHours: '۰:۰۰',
-      }))
+      operators.value = (res.data).map((op) => {
+        const user = op.user as Record<string, unknown> | undefined
+        return {
+          id: op.id as number | string,
+          name: (user?.name as string) || (user?.username as string) || `اپراتور ${op.id}`,
+          email: (user?.email as string) || '-',
+          acceptedCount: (op.current_chats as number) || 0,
+          totalHours: '۰:۰۰',
+        }
+      })
     }
   } catch (e) {
     // console.error('loadAvailableOperators failed', e)
@@ -465,7 +488,7 @@ async function loadAvailableOperators() {
 
 // متغیرهای تخصیص اپراتور
 const operatorSearch = ref('')
-const selectedOperators = ref([])
+const selectedOperators = ref<(number | string)[]>([])
 
 // فیلتر کردن اپراتورها بر اساس جستجو
 const filteredOperators = computed(() => {
@@ -542,7 +565,7 @@ async function inviteOperator() {
       max_concurrent_chats: 5,
       auto_accept: true,
     }
-    const res: Record<string, unknown> = await $fetch('/api/admin/chat/operators/invite', { method: 'POST', body: payload })
+    const res = await $fetch<{ success: boolean; message?: string }>('/api/admin/chat/operators/invite', { method: 'POST', body: payload })
     if (res?.success) {
       await loadAvailableOperators()
       alert('اپراتور با موفقیت دعوت شد')
@@ -569,4 +592,4 @@ async function inviteOperator() {
 onMounted(() => {
   loadAvailableOperators()
 })
-</script> 
+</script>

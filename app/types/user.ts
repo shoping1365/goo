@@ -25,6 +25,10 @@ export interface User {
   last_seen_at?: string;
   online?: boolean;
   role?: string;
+  role_id?: number;
+  user_role?: {
+    name: string;
+  };
   role_name?: string;
   roleName?: string;
   roles?: string[];

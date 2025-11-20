@@ -224,7 +224,7 @@ declare const definePageMeta: (meta: { layout?: string; middleware?: string | st
 
 <script setup lang="ts">
 import TemplateButton from '@/components/common/TemplateButton.vue';
-import { computed, onActivated, onMounted, ref } from 'vue';
+import { computed, onActivated, onMounted, provide, ref } from 'vue';
 
 // Permission check (simple implementation without useAuth)
 const hasPermission = (permission: string) => true

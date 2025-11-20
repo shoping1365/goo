@@ -138,6 +138,15 @@ import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useCart } from '~/composables/useCart'
 import type { Product } from '~/types/product'
 
+// Explicitly declare Nuxt auto-imports to satisfy TS
+declare const definePageMeta: (meta: Record<string, unknown>) => void
+declare const useRoute: () => { params: Record<string, string>; query: Record<string, string> }
+declare const useAsyncData: <T>(key: string, handler: () => Promise<T>, options?: Record<string, unknown>) => Promise<{ data: { value: T }; error: { value: Error | null }; pending: { value: boolean } }>
+declare const useRuntimeConfig: () => { public: { siteUrl: string } }
+declare const useHead: (meta: () => Record<string, unknown>) => void
+declare const navigateTo: (to: string) => Promise<void>
+declare const $fetch: <T>(url: string) => Promise<T>
+
 definePageMeta({ layout: 'default' })
 
 const route = useRoute()

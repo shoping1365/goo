@@ -218,6 +218,7 @@ interface ProductImage {
   product_id: number
   image_url: string
   sort_order: number
+  url?: string
 }
 
 interface Product {
@@ -237,7 +238,7 @@ interface Product {
   show_discount_percent?: boolean
   image?: string
   Images?: ProductImage[]
-  images?: string[]
+  images?: (string | ProductImage | { url?: string; image_url?: string })[]
   main_image?: string
   in_stock?: boolean
   stock_quantity: number
@@ -285,7 +286,7 @@ const shippingLabel = computed(() => {
 onMounted(async () => {
   try {
     // از کوئری id در صفحه پدر استفاده می‌شود؛ اگر نبود از props.product.id استفاده کن
-    const id = (props.product as Record<string, unknown>)?.id
+    const id = props.product.id
     if (!id) return
     const inv = await $fetch<Record<string, unknown>>(`/api/product-inventories/${id}`)
     // در حال حاضر shipping_enabled را از UI ادمین می‌گیریم؛ اگر نبود، فرض را false می‌گذاریم
@@ -335,17 +336,17 @@ const availableImages = computed(() => {
     const first = props.product.images[0]
     if (typeof first === 'string') {
       // Array of plain URLs (string)
-      return (props.product.images as unknown as string[]).map(url => toLargeImage(url))
-    } else if (first && (first as Record<string, unknown>).url) {
+      return (props.product.images as string[]).map(url => toLargeImage(url))
+    } else if (first && (first as { url?: string }).url) {
       // Array of objects having url field (Media schema)
-      return (props.product.images as Record<string, unknown>[]).map(i => toLargeImage((i.url || i.image_url) as string))
+      return (props.product.images as { url?: string; image_url?: string }[]).map(i => toLargeImage((i.url || i.image_url) || ''))
     } else {
       // Array of objects with image_url
-      return (props.product.images as Record<string, unknown>[]).map(i => toLargeImage((i.image_url || i.url) as string))
+      return (props.product.images as { url?: string; image_url?: string }[]).map(i => toLargeImage((i.image_url || i.url) || ''))
     }
   }
   if (props.product.Images && props.product.Images.length > 0) {
-    return props.product.Images.map(img => toLargeImage(((img as Record<string, unknown>).image_url || (img as Record<string, unknown>).url) as string))
+    return props.product.Images.map(img => toLargeImage((img.image_url || img.url) || ''))
   }
   return []
 })
@@ -354,14 +355,14 @@ const mainImage = computed(() => {
   if (props.product.images && props.product.images.length > 0) {
     const first = props.product.images[0]
     if (typeof first === 'string') {
-      return toLargeImage(props.product.images[currentImageIndex.value] as unknown as string)
+      return toLargeImage(props.product.images[currentImageIndex.value] as string)
     }
-    const itm = props.product.images[currentImageIndex.value] as Record<string, unknown>
-    return toLargeImage((itm.url || itm.image_url) as string)
+    const itm = props.product.images[currentImageIndex.value] as { url?: string; image_url?: string }
+    return toLargeImage((itm.url || itm.image_url) || '')
   }
   if (props.product.Images && props.product.Images.length > 0) {
-    const itm = props.product.Images[currentImageIndex.value] as Record<string, unknown>
-    return toLargeImage((itm.image_url || itm.url) as string)
+    const itm = props.product.Images[currentImageIndex.value]
+    return toLargeImage((itm.image_url || itm.url) || '')
   }
   // Fallback to main_image or image
   if (props.product.main_image) {
@@ -376,15 +377,15 @@ const mainImage = computed(() => {
 // محاسبه فعال بودن بازه زمانی فروش ویژه
 const isSaleScheduleActive = computed<boolean>(() => {
   try {
-    const start = (props.product as Record<string, unknown>).sale_start_at
-    const end = (props.product as Record<string, unknown>).sale_end_at
+    const start = props.product.sale_start_at
+    const end = props.product.sale_end_at
     const now = Date.now()
     if (start) {
-      const st = new Date(start as string).getTime()
+      const st = new Date(start).getTime()
       if (now < st) return false
     }
     if (end) {
-      const ed = new Date(end as string).getTime()
+      const ed = new Date(end).getTime()
       if (now > ed) return false
     }
     return true
@@ -394,10 +395,10 @@ const isSaleScheduleActive = computed<boolean>(() => {
 // انتخاب بهترین قیمت از special_offers اگر فعال باشد
 const currentPrice = computed<number>(() => {
   // 1) اگر فروش ویژه زمان‌بندی شده فعال است و special_offers وجود دارد، پله اول را در نظر بگیر
-  if (isSaleScheduleActive.value && Array.isArray((props.product as Record<string, unknown>).special_offers) && (props.product as Record<string, unknown>).special_offers.length > 0) {
-    const sorted = [...((props.product as Record<string, unknown>).special_offers as Record<string, unknown>[])].sort((a: Record<string, unknown>, b: Record<string, unknown>) => ((a.sort_order as number) || 0) - ((b.sort_order as number) || 0))
+  if (isSaleScheduleActive.value && Array.isArray(props.product.special_offers) && props.product.special_offers.length > 0) {
+    const sorted = [...props.product.special_offers].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
     const first = sorted[0]
-    if (first && (first.price as number) > 0) return first.price as number
+    if (first && first.price > 0) return first.price
   }
   // 2) در غیر این صورت از sale_price یا discount_price استفاده کن
   const sale = props.product.sale_price || props.product.discount_price
@@ -447,13 +448,13 @@ const isInStock = computed(() => {
 
 // نبود موجودی وقتی رهگیری موجودی فعال است
 const isOutOfStock = computed<boolean>(() => {
-  const qty = Number((props.product as Record<string, unknown>)?.stock_quantity ?? 0)
-  const inFlag = (props.product as Record<string, unknown>)?.in_stock === true
+  const qty = Number(props.product.stock_quantity ?? 0)
+  const inFlag = props.product.in_stock === true
   if (props.product.track_inventory === true) {
     return !(inFlag || qty > 0)
   }
   // حتی اگر رهگیری موجودی غیرفعال باشد، اگر یکی از شاخص‌ها عدم موجودی را نشان دهد، ناموجود تلقی کن
-  if (qty <= 0 || (props.product as Record<string, unknown>)?.in_stock === false) return true
+  if (qty <= 0 || props.product.in_stock === false) return true
   return false
 })
 

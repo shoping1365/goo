@@ -1,4 +1,4 @@
-    <template>
+<template>
         <div>
           <!-- Header and Action Buttons -->
           <div class="flex justify-between items-center mb-6 bg-white rounded-lg shadow p-6">
@@ -465,6 +465,8 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
       
     // Category Message reactive variable
     const categoryMessage = ref('');
+    
+    const tinyApiKey = ref('');
       
     const parentId = ref<string | number>('')
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -604,7 +606,7 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
     }
 
     // Handle parent category selection change
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     // function handleParentCategoryChange(category: any) {
     //   selectedParentCategory.value = category
     //   parentId.value = category ? category.id : ''
@@ -651,4 +653,4 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
       
     <style scoped>
     /* Add any specific styles here */
-    </style> 
+    </style>
