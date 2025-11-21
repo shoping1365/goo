@@ -22,8 +22,8 @@ require (
 	github.com/prometheus/client_golang v1.23.2
 	github.com/redis/go-redis/v9 v9.10.0
 	github.com/shirou/gopsutil/v3 v3.24.5
-	golang.org/x/crypto v0.44.0
-	golang.org/x/net v0.46.0
+	golang.org/x/crypto v0.45.0
+	golang.org/x/net v0.47.0
 	golang.org/x/text v0.31.0
 	gopkg.in/vansante/go-ffprobe.v2 v2.2.1
 	gorm.io/datatypes v1.2.5
