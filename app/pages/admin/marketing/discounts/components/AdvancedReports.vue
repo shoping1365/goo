@@ -629,34 +629,46 @@ const getStatusText = (status: string): string => {
 
 const updateReport = () => {
   // پیاده‌سازی به‌روزرسانی گزارش بر اساس فیلترها
-  console.log('به‌روزرسانی گزارش با فیلترها:', reportFilters)
+
 }
 
 const exportReport = () => {
   // پیاده‌سازی صادرات گزارش
-  console.log('صادرات گزارش با فرمت:', reportFilters.format)
+
 }
 
 const scheduleReport = () => {
   showScheduleForm.value = true
 }
 
-const useReportTemplate = (template: any) => {
+interface ReportTemplate {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
+}
+
+interface ReportSchedule {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
+}
+
+const useReportTemplate = (_template: ReportTemplate) => {
   // پیاده‌سازی استفاده از قالب گزارش
-  console.log('استفاده از قالب گزارش:', template)
+
 }
 
 const generateCustomReport = () => {
   // پیاده‌سازی تولید گزارش سفارشی
-  console.log('تولید گزارش سفارشی با فیلترها:', customFilters)
+
 }
 
-const editSchedule = (schedule: any) => {
+const editSchedule = (_schedule: ReportSchedule) => {
   // پیاده‌سازی ویرایش برنامه‌ریزی
-  console.log('ویرایش برنامه‌ریزی:', schedule)
+
 }
 
-const deleteSchedule = (schedule: any) => {
+const deleteSchedule = (schedule: ReportSchedule) => {
   if (confirm(`آیا از حذف برنامه‌ریزی "${schedule.name}" اطمینان دارید؟`)) {
     const index = scheduledReports.value.findIndex(s => s.id === schedule.id)
     if (index !== -1) {

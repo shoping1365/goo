@@ -20,20 +20,20 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 
-const props = defineProps({
+defineProps({
   modelValue: {
     type: [Boolean, Number],
     default: false
   },
   image: {
-    type: Object as PropType<Record<string, any> | null>,
+    type: Object as PropType<Record<string, unknown> | null>,
     required: false,
     default: null
   }
 })
 const emit = defineEmits(['update:modelValue', 'close'])
 
-function formatFileSize(bytes:number){
+const _formatFileSize = (bytes:number) => {
   if(!bytes) return '0B'
   const k=1024, sizes=['B','KB','MB','GB']
   const i=Math.floor(Math.log(bytes)/Math.log(k))

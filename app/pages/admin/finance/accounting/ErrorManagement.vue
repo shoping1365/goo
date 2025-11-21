@@ -118,12 +118,10 @@ const runErrorDiagnosis = async () => {
   try {
     isDiagnosing.value = true
     // TODO: اجرای تشخیص خطاها
-    console.log('تشخیص خطاها شروع شد')
-    
+
     // شبیه‌سازی تشخیص
     await new Promise(resolve => setTimeout(resolve, 3000))
-    
-    console.log('تشخیص خطاها تکمیل شد')
+
   } catch (error) {
     console.error('خطا در تشخیص:', error)
   } finally {
@@ -134,7 +132,7 @@ const runErrorDiagnosis = async () => {
 // پاک کردن همه خطاها
 const clearAllErrors = () => {
   // TODO: پاک کردن همه خطاها
-  console.log('پاک کردن همه خطاها')
+
 }
 </script>
 

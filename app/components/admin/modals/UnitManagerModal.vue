@@ -1,6 +1,6 @@
 <template>
   <transition name="fade-scale">
-    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">
+    <div v-if="show" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">
       <div class="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl border border-blue-200 p-6 animate-fade-in" dir="rtl">
         <!-- Close -->
         <button class="absolute left-4 top-6 text-gray-400 hover:text-red-500 text-2xl focus:outline-none" @click="$emit('close')">×</button>
@@ -50,6 +50,10 @@ import { ref, computed } from 'vue'
 
 
 const props = defineProps({
+  show: {
+    type: Boolean,
+    default: true
+  },
   modelValue: { type: Array, default: () => [] }
 })
 const emit = defineEmits(['close', 'saved'])

@@ -285,7 +285,7 @@ import { useAuth } from '~/composables/useAuth';
 // تعریف definePageMeta، useHead و navigateTo برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 declare const useHead: (head: { title?: string }) => void
-declare const navigateTo: (to: string) => Promise<void>
+// navigateTo is not used in this component
 
 const router = useRouter()
 
@@ -296,7 +296,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission: _hasPermission } = useAuth()
 
 // Page title
 useHead({
@@ -323,7 +323,7 @@ const form = ref({
     description: string
     searchTerm: string
     showDropdown: boolean
-    selectedCategory: any
+    selectedCategory: Category | null
   }>
 })
 
@@ -368,14 +368,14 @@ const removeCategoryItem = (index: number) => {
 }
 
 // Select category for specific item
-const selectCategoryForItem = (index: number, category: any) => {
+const selectCategoryForItem = (index: number, category: Category) => {
   const item = form.value.categories[index]
   item.selectedCategory = category
   item.name = category.name
   item.link = category.slug || category.name
   item.searchTerm = category.name
   item.showDropdown = false
-  console.log('دسته‌بندی انتخاب شد:', category)
+
 }
 
 // Hide category dropdown with delay
@@ -388,20 +388,25 @@ const hideCategoryDropdown = (index: number) => {
 // Load categories on mount
 onMounted(async () => {
   try {
-    const response = await $fetch('/api/admin/product-categories?all=1')
-    let raw = []
+    interface CategoriesResponse {
+      data?: Category[]
+      [key: string]: unknown
+    }
+
+    const response = await $fetch<Category[] | CategoriesResponse>('/api/admin/product-categories?all=1')
+    let raw: Category[] = []
     if (Array.isArray(response)) {
       raw = response
-    } else if (Array.isArray((response as any)?.data)) {
-      raw = (response as any).data
+    } else if (Array.isArray((response as CategoriesResponse)?.data)) {
+      raw = (response as CategoriesResponse).data as Category[]
     } else {
       raw = []
     }
     
     // Add parent_name for display
-    raw.forEach((cat: any) => {
+    raw.forEach((cat: Category) => {
       if (cat.parent_id) {
-        const parent = raw.find((c: any) => c.id === cat.parent_id)
+        const parent = raw.find((c: Category) => c.id === cat.parent_id)
         cat.parent_name = parent ? parent.name : '-'
       } else {
         cat.parent_name = '-'
@@ -433,7 +438,7 @@ const handleSubmit = async () => {
     
     // Redirect to management page
     await router.push('/admin/content/banners/Categories')
-  } catch (error) {
+  } catch (_error) {
     // Error creating widget
     alert('خطا در ایجاد ابزارک')
   }
@@ -444,7 +449,7 @@ const saveAsDraft = async () => {
     // Save as draft logic
     // Saving as draft
     alert('پیش‌نویس ذخیره شد')
-  } catch (error) {
+  } catch (_error) {
     // Error saving draft
     alert('خطا در ذخیره پیش‌نویس')
   }

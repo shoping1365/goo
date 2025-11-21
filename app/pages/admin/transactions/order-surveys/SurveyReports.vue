@@ -483,7 +483,6 @@ const exportReport = () => {
   }
   
   // Implement export functionality
-  // console.log('Exporting report in', exportFormat.value, 'format')
 }
 </script>
 

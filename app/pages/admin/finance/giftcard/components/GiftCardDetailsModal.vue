@@ -199,12 +199,17 @@
 import { computed } from 'vue'
 
 // Props
+interface GiftCard {
+  id?: number | string
+  [key: string]: unknown
+}
+
 const props = defineProps<{
-  giftCard: any
+  giftCard: GiftCard
 }>()
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   close: []
 }>()
 
@@ -301,7 +306,7 @@ const resendGiftCard = async () => {
   if (confirm(`آیا می‌خواهید گیفت کارت ${giftCard.value.code} مجدداً ارسال شود؟`)) {
     try {
       // در نسخه واقعی: ارسال به API
-      console.log('Resending gift card:', giftCard.value.id)
+
       alert('گیفت کارت با موفقیت ارسال شد')
     } catch (error) {
       console.error('خطا در ارسال مجدد:', error)

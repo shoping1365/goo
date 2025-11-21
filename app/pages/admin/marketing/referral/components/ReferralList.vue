@@ -132,7 +132,7 @@
 import { ref, computed } from 'vue'
 
 // تعریف emit events
-const emit = defineEmits(['show-referral-details', 'edit-referral'])
+const _emit = defineEmits(['show-referral-details', 'edit-referral'])
 
 // ارجاعات
 const referrals = ref([

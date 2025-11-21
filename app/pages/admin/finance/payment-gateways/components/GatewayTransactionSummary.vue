@@ -225,7 +225,7 @@ const filters = ref({
 const fetchTransactions = async () => {
   try {
     loading.value = true
-    const response: any = await $fetch('/api/payments/admin/transactions', {
+    const response = await $fetch('/api/payments/admin/transactions', {
       query: {
         gateway_id: props.gatewayId,
         page: currentPage.value,

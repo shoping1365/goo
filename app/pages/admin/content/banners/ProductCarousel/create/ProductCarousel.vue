@@ -140,7 +140,7 @@ const autoplayTimer = ref<NodeJS.Timeout | null>(null)
 const touchStartX = ref(0)
 const touchStartY = ref(0)
 const isDragging = ref(false)
-const dragStartX = ref(0)
+const _dragStartX = ref(0)
 const dragOffset = ref(0)
 const selectedProduct = ref<Product | null>(null)
 const showProductOverlay = ref(false)
@@ -207,7 +207,7 @@ const toggleAutoplay = () => {
   emit('autoplay-toggle', isPlaying.value)
 }
 
-const changeAutoplayDelay = (delay: number) => {
+const changeAutoplayDelay = (_delay: number) => {
   if (isPlaying.value) {
     stopAutoplay()
     startAutoplay()
@@ -283,9 +283,9 @@ const closeProductOverlay = () => {
   selectedProduct.value = null
 }
 
-const addToCart = (product: Product) => {
+const addToCart = (_product: Product) => {
   // اینجا منطق افزودن به سبد خرید را پیاده‌سازی کنید
-  console.log('افزودن به سبد خرید:', product)
+
   closeProductOverlay()
 }
 
@@ -322,7 +322,7 @@ watch(() => props.autoplay, (newValue) => {
   }
 })
 
-watch(() => props.autoplayDelay, (newValue) => {
+watch(() => props.autoplayDelay, (_newValue) => {
   if (isPlaying.value) {
     stopAutoplay()
     startAutoplay()

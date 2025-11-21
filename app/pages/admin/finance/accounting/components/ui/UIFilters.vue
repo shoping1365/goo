@@ -416,8 +416,20 @@ const clearAllFilters = () => {
   activeFilters.value = []
 }
 
-const addFilter = (filterType: any) => {
-  console.log('اضافه کردن فیلتر:', filterType)
+interface FilterType {
+  id: number | string
+  name?: string
+  [key: string]: unknown
+}
+
+interface Preset {
+  id: number | string
+  name?: string
+  [key: string]: unknown
+}
+
+const addFilter = (_filterType: FilterType) => {
+
 }
 
 const resetCustomFilter = () => {
@@ -431,23 +443,23 @@ const resetCustomFilter = () => {
 }
 
 const createCustomFilter = () => {
-  console.log('ایجاد فیلتر سفارشی:', customFilter.value)
+
 }
 
 const saveFilterPreset = () => {
-  console.log('ذخیره فیلتر پیش‌فرض')
+
 }
 
-const applyPreset = (preset: any) => {
-  console.log('اعمال فیلتر پیش‌فرض:', preset)
+const applyPreset = (_preset: Preset) => {
+
 }
 
-const editPreset = (preset: any) => {
-  console.log('ویرایش فیلتر پیش‌فرض:', preset)
+const editPreset = (_preset: Preset) => {
+
 }
 
-const deletePreset = (preset: any) => {
-  console.log('حذف فیلتر پیش‌فرض:', preset)
+const deletePreset = (_preset: Preset) => {
+
 }
 </script>
 

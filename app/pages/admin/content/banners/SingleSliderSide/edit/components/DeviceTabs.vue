@@ -108,7 +108,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پخش خودکار</label>
             <select
-              v-model="props.sliderConfig.autoplay_enabled"
+              v-model="autoplayEnabled"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">فعال</option>
@@ -120,7 +120,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">تاخیر پخش خودکار (ثانیه)</label>
             <select
-              v-model="props.sliderConfig.autoplay_delay"
+              v-model.number="autoplayDelay"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="3">3 ثانیه</option>
@@ -135,7 +135,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">حلقه اسلایدر</label>
             <select
-              v-model="props.sliderConfig.loop_enabled"
+              v-model="loopEnabled"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">فعال</option>
@@ -147,7 +147,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">نمایش دکمه‌های ناوبری</label>
             <select
-              v-model="props.sliderConfig.show_navigation"
+              v-model="showNavigation"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">نمایش</option>
@@ -159,7 +159,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">نمایش نقطه‌های ناوبری</label>
             <select
-              v-model="props.sliderConfig.show_pagination"
+              v-model="showPagination"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">نمایش</option>
@@ -171,7 +171,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">عرض اسلایدر در موبایل</label>
             <select
-              v-model="props.sliderConfig.mobile_slider_width"
+              v-model.number="mobileSliderWidth"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="100">کوچک (100px)</option>
@@ -371,15 +371,48 @@ const emit = defineEmits<{
   'update:sliderConfig': [value: SliderConfig]
 }>()
 
-// Proxy for sliderConfig to avoid mutating props
-const localSliderConfig = computed({
-  get: () => new Proxy(props.sliderConfig, {
-    set(obj, prop, value) {
-      emit('update:sliderConfig', { ...obj, [prop]: value })
-      return true
-    }
-  }),
-  set: (val) => emit('update:sliderConfig', val)
+// Helper function to emit config updates
+const updateConfig = (field: string, value: unknown) => {
+  emit('update:sliderConfig', {
+    ...props.sliderConfig,
+    [field]: value
+  })
+}
+
+// Computed properties for config fields using emit instead of direct mutation
+const autoplayEnabled = computed({
+  get: () => props.sliderConfig?.autoplay_enabled ?? false,
+  set: (val: boolean) => updateConfig('autoplay_enabled', val)
+})
+
+const autoplayDelay = computed({
+  get: () => props.sliderConfig?.autoplay_delay ?? 5,
+  set: (val: number) => updateConfig('autoplay_delay', val)
+})
+
+const loopEnabled = computed({
+  get: () => props.sliderConfig?.loop_enabled ?? false,
+  set: (val: boolean) => updateConfig('loop_enabled', val)
+})
+
+const showNavigation = computed({
+  get: () => props.sliderConfig?.show_navigation ?? false,
+  set: (val: boolean) => updateConfig('show_navigation', val)
+})
+
+const showPagination = computed({
+  get: () => props.sliderConfig?.show_pagination ?? false,
+  set: (val: boolean) => updateConfig('show_pagination', val)
+})
+
+const mobileSliderWidth = computed({
+  get: () => props.sliderConfig?.mobile_slider_width ?? 300,
+  set: (val: number) => updateConfig('mobile_slider_width', val)
+})
+
+const mobileSliderHeight = computed({
+  get: () => props.sliderConfig?.mobile_height ?? 150,
+  set: (val: number | string) => updateConfig('mobile_height', val)
 })
 
 // Tab state
@@ -388,13 +421,5 @@ const activeTab = ref<'desktop' | 'mobile'>('desktop')
 // Expose activeTab for parent component
 defineExpose({
   activeTab
-})
-
-// Computed values with default fallbacks
-const mobileSliderHeight = computed({
-  get: () => localSliderConfig.value.mobile_height,
-  set: val => {
-    localSliderConfig.value.mobile_height = val
-  }
 })
 </script>

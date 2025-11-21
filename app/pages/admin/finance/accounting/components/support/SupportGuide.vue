@@ -179,25 +179,25 @@ const connectionSteps = ref([
 // دانلود راهنما
 const downloadGuide = () => {
   // TODO: دانلود فایل راهنما
-  console.log('دانلود راهنما')
+
 }
 
 // باز کردن ویدیوی آموزشی
 const openVideoGuide = () => {
   // TODO: باز کردن ویدیوی آموزشی
-  console.log('باز کردن ویدیوی آموزشی')
+
 }
 
 // باز کردن سوالات متداول
 const openFAQ = () => {
   // TODO: باز کردن سوالات متداول
-  console.log('باز کردن سوالات متداول')
+
 }
 
 // تماس با پشتیبانی
 const contactSupport = () => {
   // TODO: تماس با پشتیبانی
-  console.log('تماس با پشتیبانی')
+
 }
 </script>
 

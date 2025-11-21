@@ -321,7 +321,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, onUnmounted, reactive, ref } from 'vue';
 
 definePageMeta({
   layout: 'admin-main',
@@ -329,7 +329,7 @@ definePageMeta({
 });
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // Reactive data
 const logs = ref([])
@@ -479,7 +479,7 @@ function updateStats() {
 
 function applyFilters() {
   // Filters are applied automatically via computed property
-  console.log('Filters applied')
+
 }
 
 function clearFilters() {

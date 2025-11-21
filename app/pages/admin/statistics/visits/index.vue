@@ -185,7 +185,6 @@ const advancedAnalytics = ref({
 })
 
 const onFilter = (filters: Record<string, unknown>) => {
-  // console.log('Filtering with:', filters)
   // TODO: implement actual filtering logic
 }
 

@@ -416,11 +416,9 @@ const analyzeError = (errorId: number) => {
 }
 
 const viewDetails = (_smsId: number) => {
-  // console.log(`Viewing details for SMS ${smsId}`)
 }
 
 const exportErrorReport = () => {
-  // console.log('Exporting error report...')
 }
 
 const canRetry = (sms: FailedSMS) => {

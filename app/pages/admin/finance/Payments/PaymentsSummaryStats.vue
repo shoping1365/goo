@@ -266,7 +266,7 @@ const totalPaymentMethods = computed(() => {
 })
 
 // محاسبه کل تراکنش‌های پرداخت
-const totalPaymentTransactions = computed(() => 
+const _totalPaymentTransactions = computed(() =>
   paymentStatus.value.reduce((sum, item) => sum + item.count, 0)
 )
 

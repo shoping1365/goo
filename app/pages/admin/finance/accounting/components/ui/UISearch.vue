@@ -371,32 +371,50 @@ const popularSearches = ref([
 
 // عملیات
 const handleSearch = () => {
-  console.log('جستجو:', searchQuery.value)
+
 }
 
-const selectSuggestion = (suggestion: any) => {
-  searchQuery.value = suggestion.title
+interface Suggestion {
+  id?: number | string
+  title?: string
+  [key: string]: unknown
+}
+
+interface SearchItem {
+  id?: number | string
+  query?: string
+  [key: string]: unknown
+}
+
+interface PopularSearch {
+  id?: number | string
+  query?: string
+  [key: string]: unknown
+}
+
+const selectSuggestion = (suggestion: Suggestion) => {
+  searchQuery.value = suggestion.title || ''
   showSuggestions.value = false
-  console.log('انتخاب پیشنهاد:', suggestion)
+
 }
 
-const repeatSearch = (item: any) => {
-  searchQuery.value = item.query
-  console.log('تکرار جستجو:', item)
+const repeatSearch = (item: SearchItem) => {
+  searchQuery.value = item.query || ''
+
 }
 
 const removeFromHistory = (id: number) => {
   searchHistory.value = searchHistory.value.filter(item => item.id !== id)
 }
 
-const selectPopularSearch = (popular: any) => {
-  searchQuery.value = popular.query
-  console.log('انتخاب جستجوی محبوب:', popular)
+const selectPopularSearch = (popular: PopularSearch) => {
+  searchQuery.value = popular.query || ''
+
 }
 
 const clearSearchHistory = () => {
   searchHistory.value = []
-  console.log('پاک کردن تاریخچه جستجو')
+
 }
 </script>
 

@@ -283,10 +283,10 @@ definePageMeta({
 })
 
 // Loading state
-const isLoading = ref(false)
+const _isLoading = ref(false)
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission } = useAuth()
 
 // Computed برای چک کردن پرمیژن حذف
 const canDeletePage = computed(() => hasPermission('page.delete'))
@@ -369,26 +369,22 @@ const visiblePages = computed(() => {
 // اعمال فیلترها
 const applyFilters = () => {
   // اینجا کد فیلتر کردن صفحات قرار می‌گیرد
-  console.log('فیلترها اعمال شدند:', filters.value)
 }
 
 // ویرایش صفحه
-const editPage = (pageId: number) => {
+const editPage = (_pageId: number) => {
   // اینجا کد انتقال به صفحه ویرایش قرار می‌گیرد
-  console.log('ویرایش صفحه:', pageId)
 }
 
 // پیش‌نمایش صفحه
-const previewPage = (pageId: number) => {
+const previewPage = (_pageId: number) => {
   // اینجا کد باز کردن پیش‌نمایش قرار می‌گیرد
-  console.log('پیش‌نمایش صفحه:', pageId)
 }
 
 // حذف صفحه
-const deletePage = (pageId: number) => {
+const deletePage = (_pageId: number) => {
   if (confirm('آیا از حذف این صفحه اطمینان دارید؟')) {
     // اینجا کد حذف صفحه قرار می‌گیرد
-    console.log('حذف صفحه:', pageId)
   }
 }
 
@@ -446,6 +442,5 @@ const formatDate = (dateString: string) => {
 // SSR hydration fix
 onMounted(() => {
   // این کد فقط در سمت کلاینت اجرا می‌شود
-  console.log('Page mounted')
 })
 </script> 

@@ -252,6 +252,7 @@
                     const sanitizedPreviewContent = computed(() => DOMPurify.sanitize(previewContent.value))
                     <div v-html="sanitizedPreviewContent"></div>
                   -->
+                  <!-- eslint-disable-next-line vue/no-v-html -->
                   <div class="text-sm text-gray-900 leading-relaxed" v-html="previewContent"></div>
                 </div>
               </div>
@@ -323,7 +324,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 
 // Props
 interface Template {
@@ -481,8 +482,8 @@ const saveTemplate = async () => {
     editedTemplate.variables = usedVariables
     
     emit('saved', { ...editedTemplate })
-  } catch (error) {
-    console.error('خطا در ذخیره قالب:', error)
+  } catch (_error) {
+    // console.error('خطا در ذخیره قالب:', error)
     alert('خطا در ذخیره قالب')
   } finally {
     isSaving.value = false

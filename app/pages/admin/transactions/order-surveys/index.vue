@@ -405,15 +405,12 @@ const orderInfo = reactive({
 
 // Event handlers
 const handleEdit = () => {
-  // console.log('Edit survey')
 }
 
 const handleSaveDraft = (data: Record<string, unknown>) => {
-  // console.log('Save draft:', data)
 }
 
 const handleSubmit = () => {
-  // console.log('Submit survey')
 }
 
 /* const scrollToSection = (sectionId: string) => {

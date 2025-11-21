@@ -340,17 +340,17 @@ const rateFAQ = (faqId: number, type: 'helpful' | 'not_helpful') => {
       faq.notHelpfulVotes++
     }
   }
-  console.log(`رای ${type} برای سوال ${faqId}`)
+
 }
 
 // گزارش مشکل
-const reportFAQ = (faqId: number) => {
-  console.log(`گزارش مشکل برای سوال ${faqId}`)
+const reportFAQ = (_faqId: number) => {
+
 }
 
 // پیشنهاد سوال
 const suggestQuestion = () => {
-  console.log('پیشنهاد سوال جدید')
+
 }
 </script>
 

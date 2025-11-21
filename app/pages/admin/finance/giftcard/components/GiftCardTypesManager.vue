@@ -230,7 +230,15 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { computed, ref } from "vue"
+
+// تعریف interface (Rule 67 - Interface Organization and Reusability)
+interface GiftCardType {
+  id?: number | string
+  [key: string]: unknown
+}
+
 // تعریف متغیرهای reactive
 const searchQuery = ref('')
 const statusFilter = ref('')
@@ -422,9 +430,9 @@ const editType = (type) => {
 }
 
 // تابع مشاهده جزئیات نوع
-const viewTypeDetails = (type) => {
+const viewTypeDetails = (_type: GiftCardType) => {
   // اینجا می‌توانید مودال جزئیات را باز کنید
-  console.log('View type details:', type)
+
 }
 
 // تابع حذف نوع

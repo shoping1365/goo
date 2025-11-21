@@ -452,14 +452,25 @@
 import { computed, onMounted, reactive, ref } from 'vue';
 
 // Props
+interface InitialData {
+  [key: string]: unknown
+}
+
 const props = defineProps<{
-  initialData?: any
+  initialData?: InitialData
 }>()
+
+interface GiftCardData {
+  id?: number | string
+  code?: string
+  amount?: number
+  [key: string]: unknown
+}
 
 // Emits
 const emit = defineEmits<{
-  'create-card': [cardData: any]
-  'save-draft': [cardData: any]
+  'create-card': [cardData: GiftCardData]
+  'save-draft': [cardData: GiftCardData]
 }>()
 
 // Reactive data
@@ -626,7 +637,6 @@ const validateAndCreate = () => {
       createdAt: new Date().toISOString()
     }
     emit('create-card', cardData)
-    console.log('کارت جدید ایجاد شد:', cardData)
   } else {
     // رفتن به اولین تب با خطا
     if (errors.type || errors.amount || errors.quantity || errors.expiryDate) {
@@ -645,7 +655,6 @@ const saveDraft = () => {
     createdAt: new Date().toISOString()
   }
   emit('save-draft', cardData)
-  console.log('پیش‌نویس ذخیره شد:', cardData)
 }
 
 const resetForm = () => {
@@ -691,8 +700,6 @@ onMounted(() => {
     defaultExpiry.setDate(defaultExpiry.getDate() + 30)
     form.expiryDate = defaultExpiry.toISOString().split('T')[0]
   }
-  
-  console.log('Gift card create form component mounted')
 })
 </script>
 

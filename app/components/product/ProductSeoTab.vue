@@ -51,12 +51,8 @@ const { checkSlugUnique: checkSlugUniqueAPI, generateUniqueSlug: generateUniqueS
 
 // Debug: بررسی inject (فقط در development)
 if (process.env.NODE_ENV === 'development') {
-  // console.log('ProductStore injected:', !!productStore)
   if (productStore) {
-    // console.log('✅ ProductStore successfully injected with data:', {
-    //   editingProductId: productStore.editingProductId,
-    //   productForm: productStore.productForm
-    // })
+    // ProductStore successfully injected
   } else {
     // console.warn('⚠️ productStore inject نشده است!')
   }
@@ -68,16 +64,11 @@ if (productStore?.productForm?.slug && !slug.value) {
 }
 if (productStore?.productForm?.url) {
   storedUrl.value = productStore.productForm.url
-  // console.log('✅ Initial URL from ProductStore:', productStore.productForm.url)
 }
 
 // Watch برای به‌روزرسانی از productStore
 watch(() => productStore?.productForm, (newForm) => {
   if (newForm) {
-    if (process.env.NODE_ENV === 'development') {
-      // console.log('ProductForm updated:', newForm)
-    }
-    
     // Update slug if not manually changed
     if (newForm.slug && !slugTouched.value) {
       slug.value = newForm.slug
@@ -86,7 +77,6 @@ watch(() => productStore?.productForm, (newForm) => {
     // Update URL
     if (newForm.url) {
       storedUrl.value = newForm.url
-      // console.log('✅ URL updated from ProductForm:', newForm.url)
     }
   }
 }, { deep: true, immediate: true })
@@ -98,7 +88,6 @@ const isLoadingProduct = ref(false)
 const loadProductData = async () => {
   // اگر store موجود است و URL هم دارد، نیازی به API نیست
   if (productStore?.productForm?.sku && productStore?.productForm?.url) {
-    // console.log('✅ ProductStore has URL, no need for API:', productStore.productForm.url)
     return
   }
   
@@ -118,20 +107,17 @@ const loadProductData = async () => {
   
   isLoadingProduct.value = true
   try {
-    // console.log('📡 Loading product data from API for ID:', productId)
     const response = await $fetch<Record<string, unknown>>(`/api/admin/products/${productId}`)
     productData.value = response
-    // console.log('✅ Product data loaded:', response)
     
     // اگر URL در response موجود است، آن را تنظیم کن
     if (response?.url) {
       storedUrl.value = (response.url as string)
-      // console.log('✅ URL updated from API:', response.url)
     } else {
       // console.warn('⚠️ No URL found in API response:', response)
     }
-  } catch (error) {
-    // console.error('❌ Error loading product data:', error)
+  } catch (_error) {
+    // console.error('❌ Error loading product data:', _error)
   } finally {
     isLoadingProduct.value = false
   }
@@ -141,17 +127,13 @@ const loadProductData = async () => {
 onMounted(() => {
   // اگر productStore موجود نیست یا URL ندارد، از API استفاده کن
   if (!productStore || !productStore.productForm?.url) {
-    // console.log('🔄 ProductStore not available or URL missing, loading from API...')
     loadProductData()
-  } else {
-    // console.log('✅ ProductStore available with URL:', productStore.productForm.url)
   }
 })
 
 // Watch برای به‌روزرسانی وقتی productData لود شد
 watch(() => productData.value, (newData) => {
   if (newData) {
-    // console.log('🔄 ProductData loaded, updating URL:', newData)
     // اگر slug در productData موجود است، آن را تنظیم کن
     const data = newData as { slug?: string; url?: string }
     if (data.slug && !slug.value) {
@@ -167,11 +149,9 @@ watch(() => productData.value, (newData) => {
 // Watch برای به‌روزرسانی وقتی productStore تغییر کرد
 watch(() => productStore, (newStore) => {
   if (newStore && newStore.productForm) {
-    // console.log('🔄 ProductStore updated:', newStore.productForm)
     // اگر URL در store موجود است، آن را تنظیم کن
     if (newStore.productForm.url) {
       storedUrl.value = newStore.productForm.url
-      // console.log('✅ URL updated from ProductStore:', newStore.productForm.url)
     }
   }
 }, { immediate: true })
@@ -184,20 +164,6 @@ const isGeneratingSlug = ref(false)
 
 // Debug: بررسی وضعیت productStore
 if (process.env.NODE_ENV === 'development') {
-  // console.log('Product URL Debug:', {
-  //   productSku: productStore?.productForm?.sku,
-  //   productId: productStore?.editingProductId,
-  //   routeId: route.params.id,
-  //   queryId: route.query.id,
-  //   englishName: productStore?.productForm?.englishName,
-  //   currentSlug: slug.value,
-  //   storedUrl: storedUrl.value,
-  //   productStore: !!productStore,
-  //   productForm: productStore?.productForm,
-  //   routeParams: route.params,
-  //   routeQuery: route.query
-  // })
-  
   if (!productStore) {
     // console.warn('⚠️ هیچ SKU یا ID محصولی یافت نشد!', { 
     //   productStore: false, 
@@ -206,12 +172,6 @@ if (process.env.NODE_ENV === 'development') {
     //   routeParams: route.params,
     //   routeQuery: route.query,
     //   productForm: undefined 
-    // })
-  } else {
-    // console.log('✅ ProductStore available with data:', {
-    //   editingProductId: productStore.editingProductId,
-    //   sku: productStore.productForm?.sku,
-    //   url: productStore.productForm?.url
     // })
   }
 }
@@ -225,9 +185,6 @@ if (process.env.NODE_ENV === 'development') {
 //   return '[id]'
 // })
 
-if (process.env.NODE_ENV === 'development') {
-  // console.log('🔄 Using fallback ID:', fallbackId)
-}
 // const { showSuccess, showError, showWarning, showInfo } = useToast()
 
 // Try to get title provided by parent via provide('pageTitle')
@@ -437,20 +394,6 @@ const productUrl = computed(() => {
       
       // Debug: نمایش اطلاعات دریافتی
       if (process.env.NODE_ENV === 'development') {
-        // console.log('Product URL Debug:', {
-        //   productSku: productStore?.productForm?.sku,
-        //   productId: productStore?.editingProductId,
-        //   routeId: route.params.id,
-        //   queryId: route.query.id,
-        //   englishName: productStore?.productForm?.englishName,
-        //   currentSlug: slug.value,
-        //   storedUrl: storedUrl.value,
-        //   productStore: !!productStore,
-        //   productForm: productStore?.productForm,
-        //   routeParams: route.params,
-        //   routeQuery: route.query
-        // })
-        
         if (!productStore) {
           // console.warn('⚠️ هیچ SKU یا ID محصولی یافت نشد!', { 
           //   productStore: false, 
@@ -459,12 +402,6 @@ const productUrl = computed(() => {
           //   routeParams: route.params,
           //   routeQuery: route.query,
           //   productForm: undefined 
-          // })
-        } else {
-          // console.log('✅ ProductStore available with data:', {
-          //   editingProductId: productStore.editingProductId,
-          //   sku: productStore.productForm?.sku,
-          //   url: productStore.productForm?.url
           // })
         }
       }
@@ -500,7 +437,7 @@ const productUrl = computed(() => {
       }
       // اگر هیچ‌کدام موجود نیست، از route ID استفاده کن
       const fallbackId = route.params.id || '[id]'
-      console.log('🔄 Using fallback ID:', fallbackId)
+
       if (finalSlug) {
         return baseUrl + `/product/sku-${fallbackId}/${finalSlug}`
       } else {
@@ -525,21 +462,16 @@ const canonicalFromSlug = computed(() => {
   }
   // در غیر این صورت، از URL محاسبه شده استفاده کن
   const computedUrl = productUrl.value
-  if (process.env.NODE_ENV === 'development') {
-    // console.log('🔄 Canonical URL computed:', { storedUrl: storedUrl.value, computedUrl })
-  }
   return computedUrl
 })
 
 // Watch برای به‌روزرسانی canonical URL وقتی slug تغییر کرد
 watch([slug, storedUrl], ([newSlug, newStoredUrl]) => {
+  // اگر slug یا storedUrl تغییر کرده باشد، canonicalUrl را آپدیت کن
   if (process.env.NODE_ENV === 'development') {
-    // اگر slug یا storedUrl تغییر کرده باشد، canonicalUrl را آپدیت کن
     if (slug.value !== newSlug || storedUrl.value !== newStoredUrl) {
-      // console.log('🔄 Slug or storedUrl changed:', { newSlug, newStoredUrl })
+      // Slug or storedUrl changed
     }
-    
-    // console.log('✅ Canonical URL updated:', canonicalUrl.value)
   }
 }, { immediate: true })
 

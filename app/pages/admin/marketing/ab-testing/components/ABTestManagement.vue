@@ -209,7 +209,7 @@ const { hasPermission } = useAuth()
 const canDeleteTest = computed(() => hasPermission('ab-test.delete'))
 
 // Events
-const emit = defineEmits(['create-test', 'edit-test', 'view-results', 'duplicate-test', 'delete-test'])
+const _emit = defineEmits(['create-test', 'edit-test', 'view-results', 'duplicate-test', 'delete-test'])
 
 // فیلترها
 const searchQuery = ref('')
@@ -303,8 +303,14 @@ const clearFilters = () => {
   filterResult.value = ''
 }
 
+interface Test {
+  id?: number | string
+  status?: string
+  [key: string]: unknown
+}
+
 // فعال/غیرفعال کردن تست
-const toggleTestStatus = (test: any) => {
+const toggleTestStatus = (test: Test) => {
   test.status = test.status === 'active' ? 'inactive' : 'active'
 }
 

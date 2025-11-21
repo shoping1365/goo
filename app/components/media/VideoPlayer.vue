@@ -61,7 +61,7 @@
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   src: {
     type: String,
     required: true

@@ -146,13 +146,13 @@ const fetchCategories = async () => {
   
   loading.value = true
   try {
-    const response = await $fetch('/api/admin/product-categories?all=1')
-    const raw = (response as any).data || []
+    const response = await $fetch<{ data?: Category[] }>('/api/admin/product-categories?all=1')
+    const raw = response.data || []
     
     // Add parent_name for display
-    raw.forEach((cat: any) => {
+    raw.forEach((cat: Category) => {
       if (cat.parent_id) {
-        const parent = raw.find((c: any) => c.id === cat.parent_id)
+        const parent = raw.find((c: Category) => c.id === cat.parent_id)
         cat.parent_name = parent ? parent.name : '-'
       } else {
         cat.parent_name = '-'

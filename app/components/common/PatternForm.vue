@@ -334,8 +334,7 @@ const form = ref<PatternForm>({
 
 // Methods
 const savePattern = () => {
-  console.log('🔍 savePattern فراخوانی شد', form.value)
-  
+
   // تعیین نام درگاه بر اساس ID
   const gatewayNames: { [key: number]: string } = {
     1: 'IPPanel',
@@ -349,8 +348,7 @@ const savePattern = () => {
     gatewayName: gatewayNames[form.value.gatewayId] || 'IPPanel',
     message_template: form.value.content // تبدیل content به message_template
   }
-  
-  console.log('📤 ارسال داده‌ها:', formData)
+
   emit('save', formData)
 }
 

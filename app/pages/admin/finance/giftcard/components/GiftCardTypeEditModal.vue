@@ -306,7 +306,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, watch } from 'vue'
 
 // تعریف interface برای نوع گیفت کارت
 interface GiftCardType {
@@ -389,7 +389,7 @@ const formatPrice = (price: number): string => {
   }).format(price)
 }
 
-const loadExistingCardsStats = async (typeId: string) => {
+const loadExistingCardsStats = async (_typeId: string) => {
   try {
     // شبیه‌سازی API call
     await new Promise(resolve => setTimeout(resolve, 1000))
@@ -418,7 +418,7 @@ const handleSubmit = async () => {
       ...props.type,
       name: form.value.name,
       description: form.value.description,
-      category: form.value.category as any,
+      category: form.value.category as 'fixed' | 'variable' | 'thematic' | 'corporate' | 'discount',
       minAmount: form.value.minAmount ? Number(form.value.minAmount) : undefined,
       maxAmount: form.value.maxAmount ? Number(form.value.maxAmount) : undefined,
       fixedAmount: form.value.fixedAmount ? Number(form.value.fixedAmount) : undefined,

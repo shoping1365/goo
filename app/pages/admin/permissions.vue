@@ -149,7 +149,7 @@ const roleHasPermission = (roleId: string, permId: string): boolean => {
   return rolePermissions.value.get(roleId)?.has(permId) ?? false
 }
 
-const togglePermission = (roleId: string, permId: string, event: any) => {
+const togglePermission = (roleId: string, permId: string, event: Event) => {
   const perms = rolePermissions.value.get(roleId)
   if (perms) {
     if (event.target.checked) {

@@ -430,13 +430,13 @@ const getStatusTextClass = (status: string) => {
 // تست تنظیمات امنیتی
 const testSecuritySettings = () => {
   // TODO: تست تنظیمات امنیتی
-  console.log('تست تنظیمات امنیتی')
+
 }
 
 // ذخیره تنظیمات امنیتی
 const saveSecuritySettings = () => {
   // TODO: ذخیره تنظیمات امنیتی
-  console.log('ذخیره تنظیمات امنیتی:', securitySettings.value)
+
 }
 </script>
 

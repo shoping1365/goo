@@ -324,17 +324,24 @@ const { hasPermission } = useAuth()
 // Computed برای چک کردن پرمیژن حذف
 const canDeleteGiftCard = computed(() => hasPermission('giftcard.delete'))
 
+interface GiftCard {
+  id?: number | string
+  code?: string
+  amount?: number
+  [key: string]: unknown
+}
+
 // Props
 const props = defineProps<{
-  giftCards: any[]
+  giftCards: GiftCard[]
 }>()
 
 // Emits
 const emit = defineEmits<{
-  'view-card': [card: any]
-  'edit-card': [card: any]
-  'duplicate-card': [card: any]
-  'delete-card': [card: any]
+  'view-card': [card: GiftCard]
+  'edit-card': [card: GiftCard]
+  'duplicate-card': [card: GiftCard]
+  'delete-card': [card: GiftCard]
 }>()
 
 // Reactive data
@@ -490,31 +497,35 @@ const goToPage = (page: number) => {
   currentPage.value = page
 }
 
-const viewCard = (card: any) => {
+interface GiftCard {
+  id?: number | string
+  code?: string
+  [key: string]: unknown
+}
+
+const viewCard = (card: GiftCard) => {
   emit('view-card', card)
 }
 
-const editCard = (card: any) => {
+const editCard = (card: GiftCard) => {
   emit('edit-card', card)
 }
 
-const duplicateCard = (card: any) => {
+const duplicateCard = (card: GiftCard) => {
   emit('duplicate-card', card)
 }
 
-const deleteCard = (card: any) => {
+const deleteCard = (card: GiftCard) => {
   if (confirm(`آیا از حذف کارت ${card.code} اطمینان دارید؟`)) {
     emit('delete-card', card)
   }
 }
 
 const refreshData = () => {
-  console.log('به‌روزرسانی داده‌های جدول')
   // اینجا می‌توانید API call برای به‌روزرسانی داده‌ها اضافه کنید
 }
 
 const exportToExcel = () => {
-  console.log('خروجی Excel')
   // اینجا می‌توانید منطق خروجی Excel اضافه کنید
 }
 
@@ -586,7 +597,6 @@ const getStatusLabel = (status: string) => {
 
 // Lifecycle
 onMounted(() => {
-  console.log('Gift card sortable table component mounted')
 })
 </script>
 

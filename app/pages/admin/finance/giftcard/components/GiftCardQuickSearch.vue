@@ -163,14 +163,25 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 
 // Props
+interface GiftCard {
+  id?: number | string
+  code?: string
+  recipientName?: string
+  recipientEmail?: string
+  buyerName?: string
+  recipientPhone?: string
+  status?: string
+  [key: string]: unknown
+}
+
 const props = defineProps<{
-  giftCards: any[]
+  giftCards: GiftCard[]
 }>()
 
 // Emits
 const emit = defineEmits<{
-  'view-details': [card: any]
-  'edit-card': [card: any]
+  'view-details': [card: GiftCard]
+  'edit-card': [card: GiftCard]
   'show-advanced-search': []
 }>()
 
@@ -315,7 +326,7 @@ const handleSearch = () => {
 const performSearch = () => {
   showSuggestions.value = false
   showQuickResults.value = true
-  console.log('جستجو انجام شد:', { query: searchQuery.value, type: searchType.value, status: statusFilter.value })
+
 }
 
 const handleSearchTypeChange = () => {
@@ -330,8 +341,13 @@ const handleStatusFilterChange = () => {
   }
 }
 
-const selectSuggestion = (suggestion: any) => {
-  searchQuery.value = suggestion.displayText
+interface Suggestion {
+  displayText?: string
+  [key: string]: unknown
+}
+
+const selectSuggestion = (suggestion: Suggestion) => {
+  searchQuery.value = suggestion.displayText || ''
   showSuggestions.value = false
   performSearch()
 }
@@ -348,11 +364,11 @@ const showAdvancedSearch = () => {
   emit('show-advanced-search')
 }
 
-const viewCardDetails = (card: any) => {
+const viewCardDetails = (card: GiftCard) => {
   emit('view-details', card)
 }
 
-const editCard = (card: any) => {
+const editCard = (card: GiftCard) => {
   emit('edit-card', card)
 }
 
@@ -401,7 +417,7 @@ const handleClickOutside = (event: Event) => {
 // Lifecycle
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
-  console.log('Gift card quick search component mounted')
+
 })
 
 onUnmounted(() => {

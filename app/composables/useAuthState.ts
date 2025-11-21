@@ -111,14 +111,7 @@ export const useAuthState = () => {
         user.value = res.user
         isAuthenticated.value = true
         isAdmin.value = calculateIsAdmin(res.user)
-
-        // console.log('✅ User authenticated:', {
-        //   id: res.user.id,
-        //   username: res.user.username,
-        //   role: res.user.role
-        // })
       } else {
-        // console.log('❌ User not authenticated')
         clearAuthState()
       }
     } catch {

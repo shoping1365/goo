@@ -38,14 +38,14 @@ v-if="showToast"
 </template>
 
 <script setup lang="ts">
-import { ref, provide, computed, onMounted, watch } from 'vue'
-import FooterSettingsSidebar from '../create/FooterSettingsSidebar.vue'
-import PageHeader from '../create/PageHeader.vue'
+import { computed, onMounted, provide, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import FooterPreview from '../create/FooterPreview.vue'
+import FooterSettingsForm from '../create/FooterSettingsForm.vue'
+import FooterSettingsSidebar from '../create/FooterSettingsSidebar.vue'
 import FormContainer from '../create/FormContainer.vue'
 import ItemsSelectionModal from '../create/ItemsSelectionModal.vue'
-import FooterSettingsForm from '../create/FooterSettingsForm.vue'
-import { useRoute, useRouter } from 'vue-router'
+import PageHeader from '../create/PageHeader.vue'
 
 // @ts-ignore
 definePageMeta({
@@ -69,8 +69,8 @@ const footerData = ref({
 })
 
 // Debug: watch تغییرات footerData
-watch(footerData, (newVal) => {
-  console.log('🔄 footerData در صفحه ویرایش تغییر کرد:', newVal)
+watch(footerData, () => {
+  // footerData changed
 }, { deep: true })
 
 const layerData = ref({
@@ -87,9 +87,9 @@ const showItemsModal = ref(false)
 const showLayerSettings = ref(false)
 
 // آرایه لایه‌های ایجاد شده
-const createdLayers = ref<any[]>([])
+const createdLayers = ref<Record<string, unknown>[]>([])
 
-const newLayer = ref<any>({
+const newLayer = ref<Record<string, unknown>>({
   name: '',
   width: 100,
   height: 50,
@@ -154,7 +154,7 @@ const showToastMessage = (message: string, type: 'success' | 'error' = 'success'
 }
 
 // توابع مورد نیاز کامپوننت‌های فرزند
-const editLayer = (layer: any) => {
+const editLayer = (layer: Record<string, unknown>) => {
   // کپی کردن تنظیمات لایه به newLayer برای ویرایش
   Object.assign(newLayer.value, layer)
   showLayerSettings.value = true
@@ -258,13 +258,14 @@ const cancelLayerEdit = () => {
   }
 }
 
-const getSelectedItemsText = (items: any[]) => {
+const getSelectedItemsText = (items: unknown[]) => {
   if (!items || items.length === 0) return 'هیچ آیتمی انتخاب نشده'
   
   const itemNames = items.map(item => {
     if (typeof item === 'string') return item
-    if (item.name) return item.name
-    if (item.id) return item.id
+    const it = item as { name?: string, id?: string }
+    if (it.name) return it.name
+    if (it.id) return it.id
     return 'آیتم ناشناس'
   })
   
@@ -279,19 +280,20 @@ const closeItemsModal = () => {
   showItemsModal.value = false
 }
 
-const addItemToLayer = (item: any) => {
+const addItemToLayer = (item: Record<string, unknown>) => {
   if (!newLayer.value.items) {
     newLayer.value.items = []
   }
   
   // بررسی اینکه آیا آیتم قبلاً اضافه شده یا نه
-  const exists = newLayer.value.items.some(existingItem => 
+  const items = newLayer.value.items as unknown[]
+  const exists = items.some(existingItem => 
     (typeof existingItem === 'string' && existingItem === item.id) ||
-    (typeof existingItem === 'object' && existingItem.id === item.id)
+    (typeof existingItem === 'object' && (existingItem as Record<string, unknown>).id === item.id)
   )
   
   if (!exists) {
-    newLayer.value.items.push(item)
+    items.push(item)
     showToastMessage(`${item.name} به لایه اضافه شد`, 'success')
   } else {
     showToastMessage('این آیتم قبلاً در لایه موجود است', 'error')
@@ -342,38 +344,20 @@ const isItemSelected = (itemId: string): boolean => {
 
 const loadFooter = async () => {
   try {
-    console.log('🔄 شروع بارگذاری فوتر...')
-    console.log('📝 footerId:', footerId)
-    
     if (!footerId || footerId === 'create') {
-      console.log('❌ footerId نامعتبر است')
       return
     }
 
-    console.log('🌐 درخواست API به:', `/api/admin/footer-settings/${footerId}`)
     const response = await fetch(`/api/admin/footer-settings/${footerId}`)
-    
-    console.log('📡 Response status:', response.status)
-    console.log('📡 Response headers:', Object.fromEntries(response.headers.entries()))
     
     if (!response.ok) {
       throw new Error(`خطای HTTP: ${response.status}`)
     }
 
     const data = await response.json()
-    console.log('📦 Response data:', data)
     
     if (data.success && data.data) {
       const footer = data.data
-      console.log('✅ فوتر دریافت شد:', footer)
-      console.log('🔍 ساختار داده‌های backend:', {
-        name: footer.name,
-        description: footer.description,
-        page_selection: footer.page_selection,
-        is_active: footer.is_active,
-        layers_count: footer.layers?.length || 0,
-        keys: Object.keys(footer)
-      })
       
       // تبدیل داده‌ها از backend به frontend
       footerData.value = {
@@ -384,16 +368,13 @@ const loadFooter = async () => {
         excludedPages: footer.excluded_pages || '',
         isActive: footer.is_active !== undefined ? footer.is_active : true
       }
-      
-      console.log('🔄 footerData به‌روزرسانی شد:', footerData.value)
 
       // تبدیل لایه‌ها
       const layers = footer.layers || []
       if (layers && Array.isArray(layers)) {
-        console.log('🔧 لایه‌ها دریافت شدند:', layers)
-        createdLayers.value = layers.map((layer: any) => {
+        createdLayers.value = layers.map((layer: Record<string, unknown>) => {
           // Parse styleSettings از JSONB
-          let styleSettings: any = { border: {}, shadow: {}, layout: {} }
+          let styleSettings: Record<string, unknown> = { border: {}, shadow: {}, layout: {} }
           if (layer.styleSettings) {
             try {
               styleSettings = typeof layer.styleSettings === 'string' 
@@ -404,6 +385,10 @@ const loadFooter = async () => {
             }
           }
           
+          const ssBorder = styleSettings.border as Record<string, unknown> || {}
+          const ssShadow = styleSettings.shadow as Record<string, unknown> || {}
+          const ssLayout = styleSettings.layout as Record<string, unknown> || {}
+
           return {
             id: layer.id || `temp_${Date.now()}`,
             name: layer.name || '',
@@ -411,30 +396,30 @@ const loadFooter = async () => {
             height: layer.height || 50,
             rowCount: layer.row_count || 1,
             color: layer.color || '#ffffff',
-            opacity: (layer.opacity || 1.0) * 100,
+            opacity: ((layer.opacity as number) || 1.0) * 100,
             
             // Border از styleSettings
-            enableBorder: styleSettings.border?.enabled || false,
-            borderPosition: styleSettings.border?.position || 'all',
-            borderColor: styleSettings.border?.color || '#e5e7eb',
-            borderWidth: styleSettings.border?.width || 1,
-            borderStyle: styleSettings.border?.style || 'solid',
+            enableBorder: ssBorder.enabled || false,
+            borderPosition: ssBorder.position || 'all',
+            borderColor: ssBorder.color || '#e5e7eb',
+            borderWidth: ssBorder.width || 1,
+            borderStyle: ssBorder.style || 'solid',
             
             // Shadow از styleSettings
-            enableShadow: styleSettings.shadow?.enabled || false,
-            shadowIntensity: styleSettings.shadow?.intensity || 'md',
-            shadowDirection: styleSettings.shadow?.direction || 'top',
+            enableShadow: ssShadow.enabled || false,
+            shadowIntensity: ssShadow.intensity || 'md',
+            shadowDirection: ssShadow.direction || 'top',
             
             // Layout از styleSettings
-            direction: styleSettings.layout?.direction || 'rtl',
-            mobileResponsive: styleSettings.layout?.mobileResponsive !== undefined ? styleSettings.layout.mobileResponsive : true,
-            tabletResponsive: styleSettings.layout?.tabletResponsive !== undefined ? styleSettings.layout.tabletResponsive : true,
+            direction: ssLayout.direction || 'rtl',
+            mobileResponsive: ssLayout.mobileResponsive !== undefined ? ssLayout.mobileResponsive : true,
+            tabletResponsive: ssLayout.tabletResponsive !== undefined ? ssLayout.tabletResponsive : true,
             
             // Separator (قدیمی - از فیلدهای مستقیم)
             showSeparator: layer.showSeparator || false,
             separatorType: layer.separatorType || 'solid',
             separatorColor: layer.separatorColor || '#e9ecef',
-            separatorOpacity: (layer.separatorOpacity || 0.2) * 100,
+            separatorOpacity: ((layer.separatorOpacity as number) || 0.2) * 100,
             separatorWidth: layer.separatorWidth || 1,
             
             items: layer.items ? (typeof layer.items === 'string' ? JSON.parse(layer.items) : layer.items) : [],
@@ -443,30 +428,25 @@ const loadFooter = async () => {
             boxWidths: layer.box_widths ? (typeof layer.box_widths === 'string' ? JSON.parse(layer.box_widths) : layer.box_widths) : undefined
           }
         })
-        console.log('✅ لایه‌ها به‌روزرسانی شدند:', createdLayers.value)
-      } else {
-        console.log('ℹ️ هیچ لایه‌ای یافت نشد. فیلدهای موجود:', Object.keys(footer))
-        console.log('🔍 footer.layers:', footer.layers)
-        console.log('🔍 footer.Layers:', footer.Layers)
       }
     } else {
-      console.log('❌ داده‌های نامعتبر:', data)
       throw new Error(data.message || 'خطا در دریافت اطلاعات فوتر')
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('💥 خطا در بارگذاری فوتر:', err)
+    const error = err as { message?: string, stack?: string }
     console.error('💥 Error details:', {
-      message: err.message,
-      stack: err.stack
+      message: error.message,
+      stack: error.stack
     })
-    showToastMessage(err.message || 'خطا در بارگذاری اطلاعات فوتر', 'error')
+    showToastMessage(error.message || 'خطا در بارگذاری اطلاعات فوتر', 'error')
   }
 }
 
 const saveFooter = async () => {
   try {
     // ساخت payload با snake_case
-    const footerPayload: any = {
+    const footerPayload: Record<string, unknown> = {
       name: footerData.value.name,
       description: footerData.value.description,
       page_selection: footerData.value.pageSelection,
@@ -495,17 +475,17 @@ const saveFooter = async () => {
           }
         }
         
-        const l: any = {
+        const l: Record<string, unknown> = {
           name: layer.name,
           width: layer.width,
           height: layer.height,
           row_count: layer.rowCount,
           color: layer.color,
-          opacity: layer.opacity / 100.0,
+          opacity: (layer.opacity as number) / 100.0,
           showSeparator: layer.showSeparator,
           separatorType: layer.separatorType,
           separatorColor: layer.separatorColor,
-          separatorOpacity: layer.separatorOpacity / 100.0,
+          separatorOpacity: (layer.separatorOpacity as number) / 100.0,
           separatorWidth: layer.separatorWidth,
           items: JSON.stringify(layer.items),
           styleSettings: JSON.stringify(styleSettings),
@@ -518,8 +498,6 @@ const saveFooter = async () => {
         return l
       })
     }
-
-    console.log('Payload for update:', footerPayload)
 
     const response = await fetch(`/api/admin/footer-settings/${footerId}`, {
       method: 'PUT',
@@ -544,9 +522,10 @@ const saveFooter = async () => {
     } else {
       throw new Error(result.message || 'خطا در ویرایش فوتر')
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('خطا در ذخیره فوتر:', err)
-    showToastMessage(err.message || 'خطا در ذخیره فوتر', 'error')
+    const error = err as { message?: string }
+    showToastMessage(error.message || 'خطا در ذخیره فوتر', 'error')
   }
 }
 
@@ -583,14 +562,8 @@ provide('isItemSelected', isItemSelected)
 
 // Lifecycle
 onMounted(() => {
-  console.log('🚀 صفحه ویرایش فوتر بارگذاری شد')
-  console.log('📝 footerId در onMounted:', footerId)
-  
   if (footerId && footerId !== 'create') {
-    console.log('✅ شروع بارگذاری فوتر...')
     loadFooter()
-  } else {
-    console.log('❌ footerId نامعتبر برای بارگذاری')
   }
 })
 </script>

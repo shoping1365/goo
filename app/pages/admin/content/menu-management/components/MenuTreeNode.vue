@@ -67,7 +67,7 @@ const emit = defineEmits<{
   'drag-over': [payload: { item: MenuItem, to: number[], depth: number }]
 }>()
 
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission } = useAuth()
 
 const canDeleteMenuItem = computed(() => hasPermission('menu.delete'))
 
@@ -75,10 +75,10 @@ function handleDragStart(e) {
   e.dataTransfer.effectAllowed = 'move'
   emit('drag-start', { item: props.item, from: getPath(), depth: props.depth })
 }
-function handleDrop(e) {
+function handleDrop(_e: Event) {
   emit('drop', { item: props.item, to: getPath(), depth: props.depth })
 }
-function handleDragOver(e) {
+function handleDragOver(_e: Event) {
   emit('drag-over', { item: props.item, to: getPath(), depth: props.depth })
 }
 function getPath() {

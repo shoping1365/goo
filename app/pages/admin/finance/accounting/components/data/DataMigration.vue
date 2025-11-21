@@ -348,21 +348,27 @@ const getHistoryColor = (status: string) => {
   return colors[status] || 'bg-gray-500'
 }
 
+interface Project {
+  id: number | string
+  name?: string
+  [key: string]: unknown
+}
+
 // عملیات
 const startMigration = () => {
-  console.log('شروع انتقال')
+
 }
 
-const viewProject = (project: any) => {
-  console.log('مشاهده پروژه:', project)
+const viewProject = (_project: Project) => {
+
 }
 
-const editProject = (project: any) => {
-  console.log('ویرایش پروژه:', project)
+const editProject = (_project: Project) => {
+
 }
 
-const deleteProject = (project: any) => {
-  console.log('حذف پروژه:', project)
+const deleteProject = (_project: Project) => {
+
 }
 </script>
 

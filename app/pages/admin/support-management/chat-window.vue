@@ -191,13 +191,11 @@ const showNotification = (message, type = 'info') => {
 
 // Event handlers for Sidebar
 const handleCategoryChange = (category) => {
-  // console.log('دسته‌بندی تغییر کرد:', category)
   showNotification(`دسته‌بندی به ${category} تغییر کرد`, 'info')
 }
 const _handleCategoryChange = handleCategoryChange
 
 const handleSearchChange = (_query) => {
-  // console.log('جستجو تغییر کرد:', query)
 }
 const _handleSearchChange = handleSearchChange
 

@@ -271,10 +271,10 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission: _hasPermission } = useAuth()
 
 // Props
-const props = defineProps<{
+defineProps<{
   isOpen: boolean
 }>()
 
@@ -344,7 +344,7 @@ const automatedReports = ref([
 
 // Methods
 const saveSettings = () => {
-  console.log('Saving BI settings:', settings.value)
+
   // Implementation for saving settings
   emit('close')
 }

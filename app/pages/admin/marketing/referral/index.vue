@@ -75,9 +75,15 @@ const showReferralForm = ref(false)
 const selectedReferral = ref(null)
 const editingReferral = ref(null)
 
+interface Referral {
+  id?: number
+  code?: string
+  userName?: string
+  [key: string]: unknown
+}
+
 // مدیریت ذخیره ارجاع
-function handleReferralSave(referral: any) {
-  console.log('ارجاع ذخیره شد:', referral)
+function handleReferralSave(referral: Referral) {
   showReferralForm.value = false
   editingReferral.value = null
   // TODO: فراخوانی API برای ذخیره ارجاع

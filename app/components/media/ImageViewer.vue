@@ -112,7 +112,7 @@ interface Props {
   isVideo?: boolean
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 const isOpen = ref(false)
 const isZoomed = ref(false)

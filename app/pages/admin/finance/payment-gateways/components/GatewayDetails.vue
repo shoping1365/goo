@@ -372,7 +372,7 @@ interface Pagination {
 }
 
 // Props
-const props = defineProps<{
+const _props = defineProps<{
   gateway: PaymentGateway
 }>()
 
@@ -545,7 +545,7 @@ const refreshData = async () => {
   try {
     // TODO: فراخوانی API برای به‌روزرسانی داده‌ها
     await new Promise(resolve => setTimeout(resolve, 1000))
-    console.log('داده‌ها به‌روزرسانی شد')
+
   } catch (error) {
     console.error('خطا در به‌روزرسانی داده‌ها:', error)
   } finally {
@@ -556,7 +556,7 @@ const refreshData = async () => {
 const loadTransactions = async () => {
   try {
     // TODO: فراخوانی API برای بارگذاری تراکنش‌ها
-    console.log('بارگذاری تراکنش‌ها...')
+
   } catch (error) {
     console.error('خطا در بارگذاری تراکنش‌ها:', error)
   }
@@ -565,7 +565,7 @@ const loadTransactions = async () => {
 const loadLogs = async () => {
   try {
     // TODO: فراخوانی API برای بارگذاری لاگ‌ها
-    console.log('بارگذاری لاگ‌ها...')
+
   } catch (error) {
     console.error('خطا در بارگذاری لاگ‌ها:', error)
   }
@@ -574,7 +574,7 @@ const loadLogs = async () => {
 const exportTransactions = () => {
   try {
     // TODO: خروجی تراکنش‌ها
-    console.log('خروجی تراکنش‌ها...')
+
   } catch (error) {
     console.error('خطا در خروجی تراکنش‌ها:', error)
   }
@@ -584,16 +584,16 @@ const clearLogs = async () => {
   if (confirm('آیا مطمئن هستید که می‌خواهید تمام لاگ‌ها را پاک کنید؟')) {
     try {
       // TODO: پاک کردن لاگ‌ها
-      console.log('پاک کردن لاگ‌ها...')
+
     } catch (error) {
       console.error('خطا در پاک کردن لاگ‌ها:', error)
     }
   }
 }
 
-const viewTransaction = (transaction: Transaction) => {
+const viewTransaction = (_transaction: Transaction) => {
   // TODO: نمایش جزئیات تراکنش
-  console.log('مشاهده تراکنش:', transaction)
+
 }
 
 const previousPage = () => {

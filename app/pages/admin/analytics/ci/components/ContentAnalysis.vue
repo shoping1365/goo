@@ -113,7 +113,9 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gapx-4 py-4">
         <div v-for="type in contentTypes" :key="type.name" class="text-center">
           <div class="w-16 h-16 mx-auto mb-3 rounded-full flex items-center justify-center" :style="{ backgroundColor: type.color + '20' }">
-            <component :is="type.icon" class="w-8 h-8" :style="{ color: type.color }" />
+            <svg class="w-8 h-8" :style="{ color: type.color }" fill="currentColor" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" />
+            </svg>
           </div>
           <h4 class="text-sm font-medium text-gray-900 mb-2">{{ type.name }}</h4>
           <div class="space-y-2">
@@ -161,7 +163,7 @@
       </div>
       
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gapx-4 py-4">
-        <div v-for="content in filteredContent" :key="content.id" class="bg-gray-50 rounded-lg px-4 py-4 border border-gray-200">
+        <div v-for="contentItem in filteredContent" :key="contentItem.id" class="bg-gray-50 rounded-lg px-4 py-4 border border-gray-200">
           <div class="flex items-start space-x-3 space-x-reverse mb-3">
             <div class="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0">
               <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -299,7 +301,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // متغیرهای reactive
 const selectedContentType = ref('all')
 const contentSearch = ref('')
@@ -318,10 +320,10 @@ const contentData = ref({
 
 // انواع محتوا
 const contentTypes = ref([
-  { name: 'وبلاگ', count: 156, views: 234567, engagement: 4.8, growth: 20.5, color: '#3B82F6', icon: 'BlogIcon' },
-  { name: 'ویدیو', count: 45, views: 123456, engagement: 5.2, growth: 35.7, color: '#EF4444', icon: 'VideoIcon' },
-  { name: 'پادکست', count: 23, views: 67890, engagement: 3.9, growth: 12.3, color: '#8B5CF6', icon: 'PodcastIcon' },
-  { name: 'اینفوگرافیک', count: 10, views: 30876, engagement: 4.1, growth: 8.9, color: '#10B981', icon: 'InfographicIcon' }
+  { name: 'وبلاگ', count: 156, views: 234567, engagement: 4.8, growth: 20.5, color: '#3B82F6' },
+  { name: 'ویدیو', count: 45, views: 123456, engagement: 5.2, growth: 35.7, color: '#EF4444' },
+  { name: 'پادکست', count: 23, views: 67890, engagement: 3.9, growth: 12.3, color: '#8B5CF6' },
+  { name: 'اینفوگرافیک', count: 10, views: 30876, engagement: 4.1, growth: 8.9, color: '#10B981' }
 ])
 
 // محتوای برتر
@@ -417,50 +419,17 @@ const getPerformanceText = (performance) => {
 }
 
 const refreshContentData = () => {
-  console.log('Refreshing content data...')
+
   // منطق به‌روزرسانی داده‌های محتوا
 }
 
 const createContent = () => {
-  console.log('Creating new content...')
+
   // منطق ایجاد محتوای جدید
 }
 
-const implementRecommendation = (recommendationId) => {
-  console.log('Implementing recommendation:', recommendationId)
+const implementRecommendation = (_recommendationId: number | string) => {
   // منطق پیاده‌سازی توصیه
+  // TODO: پیاده‌سازی منطق توصیه
 }
-
-// آیکون‌های انواع محتوا
-const BlogIcon = defineComponent({
-  template: `
-    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-    </svg>
-  `
-})
-
-const VideoIcon = defineComponent({
-  template: `
-    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-    </svg>
-  `
-})
-
-const PodcastIcon = defineComponent({
-  template: `
-    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
-    </svg>
-  `
-})
-
-const InfographicIcon = defineComponent({
-  template: `
-    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-    </svg>
-  `
-})
 </script>

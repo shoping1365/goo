@@ -518,7 +518,34 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { computed, ref } from "vue"
+
+// تعریف interface ها (Rule 67 - Interface Organization and Reusability)
+interface Pricing {
+  id?: number | string
+  status?: string
+  [key: string]: unknown
+}
+
+interface Discount {
+  id?: number | string
+  status?: string
+  [key: string]: unknown
+}
+
+interface Commission {
+  id?: number | string
+  status?: string
+  [key: string]: unknown
+}
+
+interface Occasion {
+  id?: number | string
+  status?: string
+  [key: string]: unknown
+}
+
 // تعریف متغیرهای reactive
 const activeTab = ref('pricing')
 const showNewPricingModal = ref(false)
@@ -760,35 +787,35 @@ const formatDate = (date) => {
 }
 
 // توابع عملیات
-const editPricing = (pricing) => {
-  console.log('Edit pricing:', pricing)
+const editPricing = (_pricing: Pricing) => {
+
   // اینجا کد ویرایش قیمت را اضافه کنید
 }
 
-const togglePricingStatus = (pricing) => {
+const togglePricingStatus = (pricing: Pricing) => {
   pricing.status = pricing.status === 'active' ? 'inactive' : 'active'
 }
 
-const editDiscount = (discount) => {
-  console.log('Edit discount:', discount)
+const editDiscount = (_discount: Discount) => {
+
   // اینجا کد ویرایش تخفیف را اضافه کنید
 }
 
-const toggleDiscountStatus = (discount) => {
+const toggleDiscountStatus = (discount: Discount) => {
   discount.status = discount.status === 'active' ? 'inactive' : 'active'
 }
 
-const editCommission = (commission) => {
-  console.log('Edit commission:', commission)
+const editCommission = (_commission: Commission) => {
+
   // اینجا کد ویرایش کارمزد را اضافه کنید
 }
 
-const toggleCommissionStatus = (commission) => {
+const toggleCommissionStatus = (commission: Commission) => {
   commission.status = commission.status === 'active' ? 'inactive' : 'active'
 }
 
-const editOccasion = (occasion) => {
-  console.log('Edit occasion:', occasion)
+const editOccasion = (_occasion: Occasion) => {
+
   // اینجا کد ویرایش مناسبت را اضافه کنید
 }
 
@@ -797,7 +824,7 @@ const toggleOccasionStatus = (occasion) => {
 }
 
 const exportPricing = () => {
-  console.log('Exporting pricing data')
+
   alert('گزارش قیمت‌گذاری در حال دانلود است')
 }
 

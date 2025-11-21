@@ -15,12 +15,23 @@ export default defineNuxtPlugin((nuxtApp) => {
   }
   nuxtApp.vueApp.use(Vue3Toastify, options)
     // expose toast function
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ; (nuxtApp as any).$toast = toast
+    interface NuxtAppWithToast {
+      $toast?: typeof toast
+      vueApp: {
+        config: {
+          globalProperties: Record<string, unknown>
+        }
+      }
+      provide: (key: string, value: unknown) => void
+      [key: string]: unknown
+    }
+    interface WindowWithToast extends Window {
+      $toast?: typeof toast
+    }
+    ; (nuxtApp as NuxtAppWithToast).$toast = toast
     ; (nuxtApp.vueApp.config.globalProperties as Record<string, unknown>).$toast = toast
   nuxtApp.provide('toast', toast)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  if (typeof window !== 'undefined') (window as any).$toast = toast
+  if (typeof window !== 'undefined') (window as WindowWithToast).$toast = toast
 
   // Ensure Persian font and centered text inside toasts
   if (typeof window !== 'undefined') {

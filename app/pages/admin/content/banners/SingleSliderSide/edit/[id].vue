@@ -265,12 +265,12 @@
                 <label class="block mb-2 text-sm font-medium text-gray-700">عرض دقیق وسط (px)</label>
                 <input
                   type="number"
-                  :value="(sliderConfig as any).center_width !== undefined ? (sliderConfig as any).center_width : ''"
+                  :value="(sliderConfig as SliderConfig & { center_width?: number }).center_width !== undefined ? (sliderConfig as SliderConfig & { center_width?: number }).center_width : ''"
                   min="200"
                   max="2000"
                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                   placeholder="1000"
-                  @input="(e: any) => (sliderConfig as any).center_width = e.target.value === '' ? undefined : Number(e.target.value)"
+                  @input="(e: Event) => { const target = e.target as HTMLInputElement; const config = sliderConfig as SliderConfig & { center_width?: number }; config.center_width = target.value === '' ? undefined : Number(target.value) }"
                 />
               </div>
 
@@ -284,7 +284,7 @@
                   max="100"
                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                   placeholder="0"
-                  @input="(e: any) => sliderConfig.padding_top = e.target.value === '' ? undefined : Number(e.target.value)"
+                  @input="(e: Event) => { const target = e.target as HTMLInputElement; sliderConfig.padding_top = target.value === '' ? undefined : Number(target.value) }"
                 />
               </div>
 
@@ -602,8 +602,14 @@ import SlideModal from '~/components/common/SlideModal.vue'
 import TemplateButton from '~/components/common/TemplateButton.vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
 import { useWidget } from '~/composables/useWidget'
-import type { SlideItem, SliderConfig, Widget } from '~/types/widget'
+import type { SlideItem, SliderConfig, Widget, WidgetType, WidgetStatus, WidgetPage } from '~/types/widget'
 import { WIDGET_TYPE_LABELS } from '~/types/widget'
+
+interface MediaFile {
+  url: string
+  id?: number
+  name?: string
+}
 import DeviceTabs from './components/DeviceTabs.vue'
 
 // تعریف definePageMeta و useHead برای Nuxt 3
@@ -619,17 +625,17 @@ const router = useRouter()
 const widgetId = parseInt(route.params.id as string)
 
 // Composables
-const { fetchWidget, updateWidget, loading, error, clearError, widget: fetchedWidget } = useWidget()
+const { fetchWidget, updateWidget, loading: _loading, error: _error, clearError, widget: fetchedWidget } = useWidget()
 
 // Props
 interface Props {
   widget?: Widget
 }
 
-const props = defineProps<Props>()
+const _props = defineProps<Props>()
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   updated: [widget: Widget]
 }>()
 
@@ -682,7 +688,6 @@ const formData = ref({
 // Initialize form data when widget is available
 const initializeFormData = () => {
   if (fetchedWidget.value) {
-    console.log('Widget data:', fetchedWidget.value) // Debug log
     formData.value = {
       title: fetchedWidget.value.title || '',
       description: fetchedWidget.value.description || '',
@@ -690,7 +695,6 @@ const initializeFormData = () => {
       status: fetchedWidget.value.status || 'active',
       page: fetchedWidget.value.page || 'home'
     }
-    console.log('Form data initialized:', formData.value) // Debug log
   }
 }
 
@@ -702,10 +706,10 @@ watch(fetchedWidget, (newWidget) => {
 }, { immediate: true })
 
 // Computed properties for reactive form data
-const widgetTitle = computed(() => fetchedWidget.value?.title || '')
-const widgetType = computed(() => fetchedWidget.value?.type || 'single-slider-side')
-const widgetStatus = computed(() => fetchedWidget.value?.status || 'active')
-const widgetPage = computed(() => fetchedWidget.value?.page || 'home')
+const _widgetTitle = computed(() => fetchedWidget.value?.title || '')
+const _widgetType = computed(() => fetchedWidget.value?.type || 'single-slider-side')
+const _widgetStatus = computed(() => fetchedWidget.value?.status || 'active')
+const _widgetPage = computed(() => fetchedWidget.value?.page || 'home')
 
 // Slider config
 const sliderConfig = ref<SliderConfig>({
@@ -821,7 +825,13 @@ const openMediaLibrary = () => {
   showMediaLibrary.value = true
 }
 
-const onSelectFromLibrary = (files: any[]) => {
+interface MediaFile {
+  url: string
+  id?: number
+  name?: string
+}
+
+const onSelectFromLibrary = (files: MediaFile[]) => {
   if (files && files.length > 0) {
     const file = files[0]
     editingSlide.value.image = file.url
@@ -904,9 +914,9 @@ const saveWidget = async () => {
     const widgetData = {
       title: formData.value.title,
       description: formData.value.description,
-      type: formData.value.type as any, // Type casting for compatibility
-      status: formData.value.status as any, // Type casting for compatibility
-      page: formData.value.page as any, // Type casting for compatibility
+      type: formData.value.type as WidgetType,
+      status: formData.value.status as WidgetStatus,
+      page: formData.value.page as WidgetPage,
       config: configToSave
     }
     

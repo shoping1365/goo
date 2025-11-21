@@ -127,8 +127,9 @@ const loadMobileAppFooters = async () => {
     const response = await $fetch<{ data?: unknown[] }>('/api/admin/mobile-app-footer-settings')
     const data = response.data
     mobileAppFooters.value = data || []
-  } catch (err: any) {
-    error.value = err.data?.message || 'خطا در بارگذاری فوترهای موبایل و اپلیکیشن'
+  } catch (err: unknown) {
+    const errorData = err && typeof err === 'object' && 'data' in err ? (err as { data?: { message?: string } }).data : null
+    error.value = errorData?.message || 'خطا در بارگذاری فوترهای موبایل و اپلیکیشن'
     console.error('Error loading mobile app footers:', err)
   } finally {
     loading.value = false
@@ -139,11 +140,17 @@ const addNewMobileAppFooter = () => {
   router.push('/admin/content/mobile-app-footer-management/create')
 }
 
-const editMobileAppFooter = (footer: any) => {
+interface MobileAppFooter {
+  id: number | string
+  name?: string
+  [key: string]: unknown
+}
+
+const editMobileAppFooter = (footer: MobileAppFooter) => {
   router.push(`/admin/content/mobile-app-footer-management/edit/${footer.id}`)
 }
 
-const previewMobileAppFooter = (footer: any) => {
+const previewMobileAppFooter = (footer: MobileAppFooter) => {
   previewFooter.value = footer
   showPreview.value = true
 }
@@ -153,7 +160,7 @@ const closePreview = () => {
   previewFooter.value = null
 }
 
-const deleteMobileAppFooter = async (footer: any) => {
+const deleteMobileAppFooter = async (footer: MobileAppFooter) => {
   if (!confirm(`آیا مطمئن هستید که می‌خواهید فوتر "${footer.name}" را حذف کنید؟`)) {
     return
   }
@@ -164,14 +171,15 @@ const deleteMobileAppFooter = async (footer: any) => {
     })
     
     // حذف از لیست محلی
-    const index = mobileAppFooters.value.findIndex((f: any) => f.id === footer.id)
+    const index = mobileAppFooters.value.findIndex((f: MobileAppFooter) => f.id === footer.id)
     if (index > -1) {
       mobileAppFooters.value.splice(index, 1)
     }
     
     alert('فوتر موبایل و اپلیکیشن با موفقیت حذف شد')
-  } catch (err: any) {
-    alert(err.data?.message || 'خطا در حذف فوتر موبایل و اپلیکیشن')
+  } catch (err: unknown) {
+    const errorData = err && typeof err === 'object' && 'data' in err ? (err as { data?: { message?: string } }).data : null
+    alert(errorData?.message || 'خطا در حذف فوتر موبایل و اپلیکیشن')
     console.error('Error deleting mobile app footer:', err)
   }
 }

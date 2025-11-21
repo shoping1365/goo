@@ -453,12 +453,10 @@ const refreshMetrics = async () => {
   try {
     isRefreshing.value = true
     // TODO: بروزرسانی متریک‌ها از سرور
-    console.log('بروزرسانی متریک‌های عملکرد')
-    
+
     // شبیه‌سازی بروزرسانی
     await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    console.log('متریک‌های عملکرد بروزرسانی شد')
+
   } catch (error) {
     console.error('خطا در بروزرسانی متریک‌ها:', error)
   } finally {
@@ -469,31 +467,41 @@ const refreshMetrics = async () => {
 // صادر کردن گزارش عملکرد
 const exportPerformanceReport = () => {
   // TODO: صادر کردن گزارش عملکرد
-  console.log('صادر کردن گزارش عملکرد')
+
+}
+
+interface Software {
+  id?: number | string
+  [key: string]: unknown
+}
+
+interface Alert {
+  id?: number | string
+  [key: string]: unknown
 }
 
 // تست عملکرد
-const testPerformance = (software: any) => {
+const testPerformance = (_software: Software) => {
   // TODO: تست عملکرد نرم‌افزار
-  console.log('تست عملکرد:', software)
+
 }
 
 // مشاهده جزئیات عملکرد
-const viewPerformanceDetails = (software: any) => {
+const viewPerformanceDetails = (_software: Software) => {
   // TODO: مشاهده جزئیات عملکرد
-  console.log('مشاهده جزئیات عملکرد:', software)
+
 }
 
 // بهینه‌سازی عملکرد
-const optimizePerformance = (software: any) => {
+const optimizePerformance = (_software: Software) => {
   // TODO: بهینه‌سازی عملکرد
-  console.log('بهینه‌سازی عملکرد:', software)
+
 }
 
 // حذف هشدار
-const dismissAlert = (alert: any) => {
+const dismissAlert = (alert: Alert) => {
   // TODO: حذف هشدار
-  console.log('حذف هشدار:', alert)
+
   const index = performanceAlerts.value.findIndex(a => a.id === alert.id)
   if (index > -1) {
     performanceAlerts.value.splice(index, 1)

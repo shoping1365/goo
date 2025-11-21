@@ -32,6 +32,32 @@
 // @ts-ignore
 const { images, selectedImages, isCompressing, scanImages, selectAllImages, handleImageSelect, openCompareModal } = useImageCompression()
 
+interface ImageItem {
+  id: number
+  name: string
+  url: string
+  thumbnail?: string
+  dimensions?: string
+  size: number
+}
+
+interface CompressionResult {
+  id: number
+  name: string
+  thumbnail?: string
+  dimensions?: string
+  originalSize: number
+  compressedSize: number
+  reduction: number
+  status: string
+  originalUrl: string
+  compressedUrl: string
+}
+
+const _emit = defineEmits<{
+  compress: []
+}>()
+
 function containerClass(id:number){
   return selectedImages.includes(id) ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
 }
@@ -45,9 +71,9 @@ function formatFileSize(bytes:number){
   return `${val.toFixed( idx===0 ?0:1)} ${sizes[idx]}`
 }
 
-function openPreview(img:any){
+function openPreview(img: ImageItem){
   // در این نسخه فقط مقایسه ساده نمایش می‌دهیم
-  openCompareModal({
+  const result: CompressionResult = {
     id: img.id,
     name: img.name,
     thumbnail: img.thumbnail||img.url,
@@ -58,6 +84,7 @@ function openPreview(img:any){
     status: 'success',
     originalUrl: img.url,
     compressedUrl: img.url,
-  } as any)
+  }
+  openCompareModal(result)
 }
 </script> 

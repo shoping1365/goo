@@ -231,15 +231,20 @@ const getSchemaTypeLabel = (type: string): string => {
   return labels[type] || type
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const viewSchema = (schema: any) => {
-  // نمایش اسکیمای JSON در یک modal یا صفحه جدید
-  const schemaJson = JSON.stringify(schema.template, null, 2)
-  alert(`اسکیمای ${schema.name}:\n\n${schemaJson}`)
+interface Schema {
+  id?: number | string
+  name?: string
+  template?: Record<string, unknown>
+  [key: string]: unknown
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const editSchema = (schema: any) => {
+const viewSchema = (schema: Schema) => {
+  // نمایش اسکیمای JSON در یک modal یا صفحه جدید
+  const schemaJson = JSON.stringify(schema.template, null, 2)
+  alert(`اسکیمای ${schema.name || 'نامشخص'}:\n\n${schemaJson}`)
+}
+
+const editSchema = (schema: Schema) => {
   // هدایت به صفحه ویرایش اسکیما
   navigateTo(`/admin/seo/SchemaManagement/SchemaEdit?id=${schema.id}`)
 }

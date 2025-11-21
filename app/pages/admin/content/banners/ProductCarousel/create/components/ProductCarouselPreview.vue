@@ -140,8 +140,10 @@ interface Props {
 
 const props = defineProps<Props>()
 
+import type { Product } from '~/types/product'
+
 // State
-const products = ref<any[]>([])
+const products = ref<Product[]>([])
 const isLoading = ref(false)
 
 // محاسبه محصولات نمایشی
@@ -167,8 +169,14 @@ const fetchProducts = async () => {
 
     const response = await $fetch(`/api/products/public?${query}`)
     
+    interface ProductResponse {
+      data?: {
+        products?: Product[]
+      } | Product[]
+    }
+    
     if (response && typeof response === 'object' && 'data' in response) {
-      const data = (response as any).data
+      const data = (response as ProductResponse).data
       if (Array.isArray(data.products)) {
         products.value = data.products
       } else if (Array.isArray(data)) {
@@ -199,8 +207,14 @@ const fetchGeneralProducts = async () => {
 
     const response = await $fetch(`/api/products/public?${query}`)
     
+    interface ProductResponse {
+      data?: {
+        products?: Product[]
+      } | Product[]
+    }
+    
     if (response && typeof response === 'object' && 'data' in response) {
-      const data = (response as any).data
+      const data = (response as ProductResponse).data
       if (Array.isArray(data.products)) {
         products.value = data.products
       } else if (Array.isArray(data)) {

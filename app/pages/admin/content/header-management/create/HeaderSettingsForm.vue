@@ -87,11 +87,20 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref, watch } from 'vue'
+import { inject, ref } from 'vue'
 import type { Ref } from 'vue'
 
+interface HeaderData {
+  name?: string
+  description?: string
+  pageSelection?: string
+  specificPages?: string
+  excludedPages?: string
+  isActive?: boolean
+  [key: string]: unknown
+}
 
-const headerData = inject<Ref<any>>('headerData', ref({
+const headerData = inject<Ref<HeaderData>>('headerData', ref({
   name: '',
   description: '',
   pageSelection: 'all',

@@ -51,10 +51,6 @@
   </div>
 </template>
 
-<script lang="ts">
-declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
-</script>
-
 <script setup lang="ts">
 import { ref } from 'vue'
 // ایمپورت تمام کامپوننت‌ها
@@ -79,9 +75,12 @@ const showMemberForm = ref(false)
 const selectedMember = ref(null)
 const editingMember = ref(null)
 
+interface Member {
+  [key: string]: unknown
+}
+
 // مدیریت ذخیره عضو
-function handleMemberSave(member: any) {
-  console.log('عضو ذخیره شد:', member)
+function handleMemberSave(_member: Member) {
   showMemberForm.value = false
   editingMember.value = null
   // TODO: فراخوانی API برای ذخیره عضو

@@ -488,7 +488,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 // تب‌های گزارش
 const reportTabs = [
@@ -626,20 +626,20 @@ const getExemptionOffset = (index: number): number => {
 // بروزرسانی گزارش‌ها
 const updateReports = () => {
   // TODO: بروزرسانی گزارش‌ها بر اساس فیلترها
-  console.log('گزارش‌ها بروزرسانی شد:', reportFilters.value)
+
 }
 
 // بروزرسانی گزارش تفصیلی
 const updateDetailedReport = () => {
   // TODO: بروزرسانی گزارش تفصیلی بر اساس فیلترها
-  console.log('گزارش تفصیلی بروزرسانی شد:', detailedFilters.value)
+
 }
 
 // تولید تمام گزارش‌ها
 const generateAllReports = async () => {
   try {
     // TODO: تولید تمام گزارش‌ها
-    console.log('تمام گزارش‌ها تولید شدند')
+
   } catch (error) {
     console.error('خطا در تولید گزارش‌ها:', error)
   }
@@ -648,7 +648,7 @@ const generateAllReports = async () => {
 // خروجی گزارش‌ها
 const exportReports = () => {
   // TODO: خروجی Excel
-  console.log('گزارش‌ها به Excel صادر شد')
+
 }
 
 // بارگذاری اولیه

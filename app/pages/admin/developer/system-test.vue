@@ -205,7 +205,7 @@ class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue';
 
 definePageMeta({
   layout: 'admin-main',
@@ -213,7 +213,7 @@ definePageMeta({
 });
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 const apiConnections = ref([])
 const databaseStatus = ref([])
@@ -233,7 +233,7 @@ const fetchApiStatus = async () => {
   try {
     const response = await fetch('/api/admin/system/api-status')
     apiConnections.value = await response.json()
-  } catch (e) { apiConnections.value = [] }
+  } catch { apiConnections.value = [] }
   loading.value.api = false
 }
 const fetchDatabaseStatus = async () => {
@@ -241,7 +241,7 @@ const fetchDatabaseStatus = async () => {
   try {
     const response = await fetch('/api/admin/system/database-status')
     databaseStatus.value = await response.json()
-  } catch (e) { databaseStatus.value = [] }
+  } catch { databaseStatus.value = [] }
   loading.value.database = false
 }
 const fetchServerStatus = async () => {
@@ -249,7 +249,7 @@ const fetchServerStatus = async () => {
   try {
     const response = await fetch('/api/admin/system/server-status')
     serverStatus.value = await response.json()
-  } catch (e) { serverStatus.value = [] }
+  } catch { serverStatus.value = [] }
   loading.value.server = false
 }
 const fetchLogs = async () => {
@@ -257,7 +257,7 @@ const fetchLogs = async () => {
   try {
     const response = await fetch('/api/admin/system/logs')
     logs.value = await response.json()
-  } catch (e) { logs.value = [] }
+  } catch { logs.value = [] }
   loading.value.logs = false
 }
 

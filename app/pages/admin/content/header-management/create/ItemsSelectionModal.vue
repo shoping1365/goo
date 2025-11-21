@@ -9,7 +9,7 @@
       <div class="modal-body">
         <div class="items-grid">
           <div 
-            v-for="item in availableItems" 
+            v-for="item in (availableItems as { id: string, name: string }[])" 
             :key="item.id"
             class="item-card"
             :class="{ 'selected': isItemSelected(item.id) }"
@@ -97,13 +97,19 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue'
-import { ref } from 'vue'
 import type { Ref } from 'vue'
+import { inject, ref } from 'vue'
+
+interface AvailableItem {
+  id: string
+  name: string
+  path: string
+  icon: string
+}
 
 // Inject data and functions from parent
 const showItemsModal = inject<Ref<boolean>>('showItemsModal', ref(false))
-const availableItems = inject<any[]>('availableItems', [])
+const availableItems = inject<AvailableItem[]>('availableItems', [])
 const closeItemsModal = inject<() => void>('closeItemsModal', () => {})
 const toggleItem = inject<(id: string) => void>('toggleItem', () => {})
 const isItemSelected = inject<(id: string) => boolean>('isItemSelected', () => false)
@@ -499,4 +505,4 @@ const isItemSelected = inject<(id: string) => boolean>('isItemSelected', () => f
   border-radius: 8px;
   min-height: 60px;
 }
-</style> 
+</style>

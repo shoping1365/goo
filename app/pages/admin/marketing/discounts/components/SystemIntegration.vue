@@ -191,7 +191,11 @@
 import { ref, reactive, onMounted } from 'vue'
 
 const showIntegrationForm = ref(false)
-const editingIntegration = ref<any>(null)
+interface Integration {
+  id?: number | string
+  [key: string]: unknown
+}
+const editingIntegration = ref<Integration | null>(null)
 const stats = ref({
   activeIntegrations: 3,
   connectedServices: 5,
@@ -284,18 +288,24 @@ const formatDateTime = (date: string): string => {
   }).format(new Date(date))
 }
 
-const editIntegration = (integration: any) => {
+interface Integration {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
+}
+
+const editIntegration = (integration: Integration) => {
   editingIntegration.value = integration
   Object.assign(form, integration)
   showIntegrationForm.value = true
 }
 
-const syncIntegration = async (integration: any) => {
+const syncIntegration = async (integration: Integration) => {
   // TODO: فراخوانی API برای همگام‌سازی
-  alert(`همگام‌سازی با سرویس ${integration.name}`)
+  alert(`همگام‌سازی با سرویس ${integration.name || 'نامشخص'}`)
 }
 
-const deleteIntegration = async (integration: any) => {
+const deleteIntegration = async (integration: Integration) => {
   if (confirm(`آیا از حذف یکپارچه‌سازی "${integration.name}" اطمینان دارید؟`)) {
     try {
       // TODO: فراخوانی API برای حذف

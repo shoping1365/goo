@@ -283,7 +283,7 @@ import { useRouter } from 'vue-router';
 // تعریف definePageMeta، useHead و navigateTo برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 declare const useHead: (head: { title?: string }) => void
-declare const navigateTo: (to: string) => Promise<void>
+// navigateTo is not used in this component
 
 const router = useRouter()
 // Types
@@ -381,8 +381,6 @@ const handleSubmit = async () => {
     //   body: form.value
     // })
 
-    console.log('Creating brands slider widget:', form.value)
-
     // Redirect to management page
     await router.push('/admin/content/banners/BrandsSlider')
   } catch (err) {
@@ -408,7 +406,6 @@ const saveAsDraft = async () => {
     //   body: { ...form.value, status: 'draft' }
     // })
 
-    console.log('Saving as draft:', form.value)
     alert('پیش‌نویس ذخیره شد')
   } catch (err) {
     console.error('Error saving draft:', err)

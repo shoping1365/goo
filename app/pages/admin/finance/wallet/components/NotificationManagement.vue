@@ -651,15 +651,15 @@ const getNotificationTypeClass = (type: string) => {
 
 // توابع عملیاتی
 const saveNotificationSettings = () => {
-  console.log('تنظیمات اعلان‌ها ذخیره شد:', notificationSettings.value)
+
 }
 
 const createTemplate = () => {
-  console.log('قالب جدید ایجاد شد:', newTemplate.value)
+
 }
 
 const applyHistoryFilters = () => {
-  console.log('فیلترهای تاریخچه اعمال شدند')
+
 }
 
 const clearHistoryFilters = () => {

@@ -429,39 +429,45 @@ const getKeyStatusLabel = (status: string) => {
   return labels[status] || status
 }
 
+interface ApiKey {
+  id?: number | string
+  showKey?: boolean
+  [key: string]: unknown
+}
+
 // تغییر نمایش کلید
-const toggleKeyVisibility = (key: any) => {
+const toggleKeyVisibility = (key: ApiKey) => {
   key.showKey = !key.showKey
 }
 
 // بروزرسانی کلیدهای API
 const refreshApiKeys = () => {
   // TODO: بروزرسانی کلیدهای API
-  console.log('بروزرسانی کلیدهای API')
+
 }
 
 // تولید مجدد کلید
-const regenerateKey = (key: any) => {
+const regenerateKey = (_key: ApiKey) => {
   // TODO: تولید مجدد کلید
-  console.log('تولید مجدد کلید:', key)
+
 }
 
 // ویرایش کلید
-const editKey = (key: any) => {
+const editKey = (_key: ApiKey) => {
   // TODO: ویرایش کلید
-  console.log('ویرایش کلید:', key)
+
 }
 
 // لغو کلید
-const revokeKey = (key: any) => {
+const revokeKey = (_key: ApiKey) => {
   // TODO: لغو کلید
-  console.log('لغو کلید:', key)
+
 }
 
 // ایجاد کلید جدید
 const createApiKey = () => {
   // TODO: ایجاد کلید جدید
-  console.log('ایجاد کلید جدید:', newKey.value)
+
   showCreateModal.value = false
   
   // پاک کردن فرم

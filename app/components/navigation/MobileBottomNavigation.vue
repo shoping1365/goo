@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+// import { useRoute } from 'vue-router' // Currently unused
 import Home from '~/pages/admin/content/mobile-app-navigation-management/template/Home.vue'
 import Categories from '~/pages/admin/content/mobile-app-navigation-management/template/Categories.vue'
 import Cart from '~/pages/admin/content/mobile-app-navigation-management/template/Cart.vue'
@@ -21,7 +21,7 @@ import Contact from '~/pages/admin/content/mobile-app-navigation-management/temp
 import Login from '~/pages/admin/content/mobile-app-navigation-management/template/Login.vue'
 import DarkMode from '~/pages/admin/content/mobile-app-navigation-management/template/DarkMode.vue'
 
-const route = useRoute()
+// const route = useRoute() // Currently unused
 const mobileNavigations = ref([])
 const loading = ref(false)
 
@@ -56,15 +56,32 @@ const loadMobileNavigations = async () => {
   loading.value = true
   
   try {
-    const data = await $fetch('/api/mobile-app-navigation-settings') as any
+    interface NavigationResponse {
+      success: boolean
+      data?: Array<{
+        navigation_items?: string
+        [key: string]: unknown
+      }>
+    }
+    
+    interface NavigationItem {
+      id?: string | number
+      type?: string
+      label?: string
+      icon?: string
+      link?: string
+      [key: string]: unknown
+    }
+    
+    const data = await $fetch<NavigationResponse>('/api/mobile-app-navigation-settings')
     
     // استخراج آیتم‌های ناوبری از اولین ناوبری فعال
     if (data.success && data.data && data.data.length > 0) {
       const firstNavigation = data.data[0]
       if (firstNavigation.navigation_items) {
         try {
-          const items = JSON.parse(firstNavigation.navigation_items)
-          mobileNavigations.value = items.map((item: any, index: number) => {
+          const items = JSON.parse(firstNavigation.navigation_items) as Array<NavigationItem | string>
+          mobileNavigations.value = items.map((item: NavigationItem | string, index: number) => {
             // اگر item یک string است (مثل "home", "cart")
             if (typeof item === 'string') {
               return {

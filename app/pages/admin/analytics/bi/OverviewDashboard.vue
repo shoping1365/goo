@@ -237,7 +237,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission: _hasPermission } = useAuth()
 
 // Reactive data
 const salesPeriod = ref('30d')
@@ -311,7 +311,7 @@ const getActivityBadgeClass = (type: string): string => {
 // Lifecycle
 onMounted(() => {
   // Initialize real-time data updates
-  console.log('Overview dashboard mounted')
+
 })
 </script> 
 

@@ -42,7 +42,7 @@
 <script setup lang="ts">
 // احراز هویت - غیرفعال شده
 const logout = async () => {
-  console.log('logout disabled')
+
 }
 </script> 
 

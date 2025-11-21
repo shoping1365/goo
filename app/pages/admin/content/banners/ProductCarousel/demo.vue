@@ -298,7 +298,9 @@ const logEvent = (type: string, message: string) => {
   }
 }
 
-const handleProductClick = (product: any) => {
+import type { Product } from '~/types/product'
+
+const handleProductClick = (product: Product) => {
   logEvent('product-click', `Clicked on product: ${product.name}`)
 }
 

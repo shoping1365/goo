@@ -322,7 +322,7 @@ const pauseJob = async (jobId: number): Promise<void> => {
       headers: {
         'Content-Type': 'application/json'
       }
-    }) as ApiResponse<any>
+    }) as ApiResponse<unknown>
     
     if (response.success) {
       await fetchCompressionJobs()
@@ -339,7 +339,7 @@ const cancelJob = async (jobId: number): Promise<void> => {
       headers: {
         'Content-Type': 'application/json'
       }
-    }) as ApiResponse<any>
+    }) as ApiResponse<unknown>
     
     if (response.success) {
       await fetchCompressionJobs()
@@ -432,10 +432,9 @@ const processPendingJobs = async (): Promise<void> => {
       headers: {
         'Content-Type': 'application/json'
       }
-    }) as ApiResponse<any>
+    }) as ApiResponse<unknown>
     
     if (response.success) {
-      console.log('پردازش jobهای pending شروع شد')
       // بروزرسانی لیست بعد از 2 ثانیه
       setTimeout(() => {
         fetchCompressionJobs()

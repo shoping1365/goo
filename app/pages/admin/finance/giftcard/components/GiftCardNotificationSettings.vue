@@ -675,8 +675,7 @@ const availableRoles = [
 // Methods
 const saveSettings = async () => {
   try {
-    console.log('تنظیمات در حال ذخیره...', settings)
-    
+
     // اینجا API call برای ذخیره تنظیمات اضافه می‌شود
     // await $fetch('/api/admin/giftcard/notification-settings', {
     //   method: 'POST',
@@ -694,19 +693,17 @@ const saveSettings = async () => {
 const resetSettings = () => {
   if (confirm('آیا مطمئن هستید که می‌خواهید تنظیمات را به حالت پیش‌فرض بازگردانید؟')) {
     Object.assign(settings, JSON.parse(JSON.stringify(defaultSettings)))
-    console.log('تنظیمات به حالت پیش‌فرض بازگردانده شد')
+
   }
 }
 
 const loadSettings = async () => {
   try {
-    console.log('در حال بارگذاری تنظیمات...')
-    
+
     // اینجا API call برای دریافت تنظیمات اضافه می‌شود
     // const response = await $fetch('/api/admin/giftcard/notification-settings')
     // Object.assign(settings, response)
-    
-    console.log('تنظیمات بارگذاری شد')
+
   } catch (error) {
     console.error('خطا در بارگذاری تنظیمات:', error)
   }
@@ -715,7 +712,7 @@ const loadSettings = async () => {
 // Lifecycle
 onMounted(() => {
   loadSettings()
-  console.log('Gift card notification settings component mounted')
+
 })
 </script>
 

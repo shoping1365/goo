@@ -165,11 +165,11 @@ const emit = defineEmits<{
 const isFavorite = ref(false)
 
 // Computed
-const hasDiscount = computed(() => {
+const _hasDiscount = computed(() => {
   return props.product.discount && props.product.discount > 0
 })
 
-const discountPercentage = computed(() => {
+const _discountPercentage = computed(() => {
   return props.product.discount || 0
 })
 

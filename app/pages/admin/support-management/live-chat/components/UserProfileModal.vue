@@ -193,17 +193,14 @@ const formatTime = (timestamp: Date): string => {
 }
 
 const blockUser = () => {
-  // console.log('Blocking user:', props.user?.name)
   // Implementation for blocking user
 }
 
 const exportChat = () => {
-  // console.log('Exporting chat for user:', props.user?.name)
   // Implementation for exporting chat
 }
 
 const createTicket = () => {
-  // console.log('Creating ticket for user:', props.user?.name)
   // Implementation for creating ticket
 }
 </script>

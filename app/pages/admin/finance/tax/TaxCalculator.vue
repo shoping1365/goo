@@ -370,7 +370,7 @@ const taxRates = ref({
 })
 
 // معافیت‌ها
-const exemptions = ref([
+const _exemptions = ref([
   { type: 'food', percentage: 100 },
   { type: 'digital_education', percentage: 50 },
   { type: 'medical', percentage: 25 }
@@ -493,7 +493,7 @@ const calculateTax = () => {
 const saveCalculation = async () => {
   try {
     // TODO: ارسال درخواست به API
-    console.log('محاسبه ذخیره شد:', calculationResult.value)
+
   } catch (error) {
     console.error('خطا در ذخیره محاسبه:', error)
   }
@@ -502,7 +502,7 @@ const saveCalculation = async () => {
 // خروجی PDF
 const exportCalculation = () => {
   // TODO: تولید PDF
-  console.log('خروجی PDF تولید شد')
+
 }
 
 // ریست محاسبه

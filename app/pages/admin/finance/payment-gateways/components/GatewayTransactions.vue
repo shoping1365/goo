@@ -329,8 +329,12 @@ interface PaymentGateway {
   is_test_mode: boolean
 }
 
+interface Transaction {
+  [key: string]: unknown
+}
+
 // تراکنش‌های واقعی از API
-const allTransactions = ref<any[]>([])
+const allTransactions = ref<Transaction[]>([])
 const loadingTransactions = ref(false)
 
 // درگاه‌های واقعی از API - دقیقاً همان API داشبورد
@@ -359,14 +363,12 @@ const stats = computed(() => {
 const fetchActualGateways = async () => {
   try {
     loadingGateways.value = true
-    const response: any = await $fetch('/api/payment-gateways')
+    const response = await $fetch('/api/payment-gateways') as { data?: unknown[] }
     actualGateways.value = response.data || []
-    
-    console.log('🔍 درگاه‌های دریافت شده از API:', actualGateways.value)
-    
+
     // اگر API در دسترس نباشد، از داده‌های نمونه استفاده کن
     if (!actualGateways.value.length) {
-      console.log('⚠️ API در دسترس نیست، استفاده از داده‌های نمونه')
+
       actualGateways.value = [
         {
           id: 1,
@@ -418,7 +420,7 @@ const activeRealGateways = computed(() => {
 const fetchAllTransactions = async () => {
   try {
     loadingTransactions.value = true
-    const response: any = await $fetch('/api/payments/admin/transactions', {
+    const response = await $fetch('/api/payments/admin/transactions', {
       query: {
         limit: 100 // دریافت 100 تراکنش اخیر
       }
@@ -498,20 +500,24 @@ const recentTransactions = computed(() => {
   return allTransactions.value.slice(0, 10) // 10 تراکنش اخیر
 })
 
+interface Transaction {
+  [key: string]: unknown
+}
+
 // توابع عملیات
-const viewTransaction = (transaction: any) => {
+const viewTransaction = (_transaction: Transaction) => {
   // نمایش جزئیات تراکنش
-  console.log('جزئیات تراکنش:', transaction)
+
 }
 
 const viewAllTransactions = () => {
   // هدایت به صفحه همه تراکنش‌ها
-  console.log('مشاهده همه تراکنش‌ها')
+
 }
 
 const exportTransactions = () => {
   // منطق خروجی اکسل
-  console.log('خروجی اکسل تراکنش‌ها')
+
   alert('خروجی اکسل در حال آماده‌سازی...')
 }
 
@@ -572,7 +578,7 @@ onUnmounted(() => {
 })
 
 // تابع بروزرسانی درگاه‌ها
-const refreshGateways = () => {
+const _refreshGateways = () => {
   fetchActualGateways()
   fetchAllTransactions()
 }

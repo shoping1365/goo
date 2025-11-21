@@ -259,7 +259,7 @@
 import { computed, ref } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission } = useAuth()
 const canDeleteArchive = computed(() => hasPermission('data-archive.delete'))
 
 // آمار آرشیو
@@ -361,24 +361,30 @@ const getArchiveTypeText = (type: string) => {
   return texts[type] || type
 }
 
+interface Archive {
+  id: number | string
+  name?: string
+  [key: string]: unknown
+}
+
 // عملیات
 const createArchive = () => {
-  console.log('ایجاد آرشیو')
+
 }
 
-const restoreArchive = (archive: any) => {
-  console.log('بازیابی آرشیو:', archive)
+const restoreArchive = (_archive: Archive) => {
+
 }
 
-const downloadArchive = (archive: any) => {
-  console.log('دانلود آرشیو:', archive)
+const downloadArchive = (_archive: Archive) => {
+
 }
 
-const deleteArchive = (archive: any) => {
-  console.log('حذف آرشیو:', archive)
+const deleteArchive = (_archive: Archive) => {
+
 }
 
-const bulkDelete = () => {
+const _bulkDelete = () => {
   if (!canDeleteArchive.value) {
     alert('شما مجوز حذف آرشیو را ندارید.');
     return;

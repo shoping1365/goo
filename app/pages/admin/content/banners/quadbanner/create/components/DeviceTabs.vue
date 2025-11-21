@@ -300,9 +300,15 @@
 // Vue composables
 import { computed, ref } from 'vue'
 
+// Banner Config interface
+interface BannerConfig {
+  mobile_height?: number
+  [key: string]: unknown
+}
+
 // Props
 interface Props {
-  bannerConfig: any
+  bannerConfig: BannerConfig
   currentPreviewBanner: number
   openAddBannerModal: () => void
   editBanner: (index: number) => void
@@ -313,6 +319,18 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const emit = defineEmits<{
+  'update:bannerConfig': [config: BannerConfig]
+}>()
+
+// Helper function to emit config updates
+const updateConfig = (field: string, value: unknown) => {
+  emit('update:bannerConfig', {
+    ...props.bannerConfig,
+    [field]: value
+  })
+}
+
 // Tab state
 const activeTab = ref<'desktop' | 'mobile'>('desktop')
 
@@ -321,25 +339,9 @@ defineExpose({
   activeTab
 })
 
-// Computed values with default fallbacks
-const localBannerConfig = computed({
-  get: () => new Proxy(props.bannerConfig, {
-    set(target, key, value) {
-      target[key] = value
-      return true
-    }
-  }),
-  set: (val) => {
-    Object.assign(props.bannerConfig, val)
-  }
-})
-
+// Computed values with default fallbacks - using emit instead of direct mutation
 const mobileBannerHeight = computed({
-  get: () => localBannerConfig.value.mobile_height,
-  set: val => {
-    if (localBannerConfig.value) {
-      localBannerConfig.value.mobile_height = val
-    }
-  }
+  get: () => props.bannerConfig?.mobile_height ?? 150,
+  set: (val: number) => updateConfig('mobile_height', val)
 })
 </script>

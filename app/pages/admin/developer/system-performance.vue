@@ -375,7 +375,6 @@ export default {
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useAuth } from '~/composables/useAuth'
 
 definePageMeta({
   layout: 'admin-main',
@@ -383,7 +382,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // وضعیت سیستم
 const systemStats = ref({

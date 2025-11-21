@@ -31,7 +31,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // کامپوننت کارت آماری با استایل‌های پیش‌فرض زیبا
 // props:
 // - title: عنوان کارت
@@ -42,6 +42,10 @@
 // <TemplateCard title="کل فایل‌ها" :value="totalFiles" variant="blue" @click="filterByType('all')">
 //   <template #icon>...</template>
 // </TemplateCard>
+
+defineEmits<{
+  'click': []
+}>()
 
 const props = defineProps({
   title: { type: String, required: true },

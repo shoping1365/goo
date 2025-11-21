@@ -43,7 +43,7 @@
           <div class="flex items-center gap-2 border-2 border-blue-200 rounded-lg p-1 bg-blue-50">
             <input
               id="easyLoadMobile"
-              v-model="props.bannerConfig.easy_load_enabled"
+              v-model="easyLoadEnabled"
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-blue-100 border-blue-300 rounded focus:ring-blue-500 focus:ring-2"
             />
@@ -56,7 +56,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پس‌زمینه فعال</label>
             <select
-              v-model="props.bannerConfig.bg_enabled"
+              v-model="bgEnabled"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">فعال</option>
@@ -68,7 +68,7 @@
           <div v-if="props.bannerConfig.bg_enabled">
             <label class="block mb-2 text-sm font-medium text-gray-700">عریض پس‌زمینه</label>
             <select
-              v-model="props.bannerConfig.wide_bg"
+              v-model="wideBg"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">بله</option>
@@ -80,7 +80,7 @@
           <div v-if="props.bannerConfig.bg_enabled">
             <label class="block mb-2 text-sm font-medium text-gray-700">رنگ پس‌زمینه</label>
             <input
-              v-model="props.bannerConfig.bg_color"
+              v-model="bgColor"
               type="color"
               class="w-full h-10 border border-gray-300 rounded-md"
             />
@@ -90,7 +90,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ بالا (px)</label>
             <input
-              v-model="props.bannerConfig.padding_top"
+              v-model.number="paddingTop"
               type="number"
               min="0"
               max="100"
@@ -103,7 +103,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ پایین (px)</label>
             <input
-              v-model="props.bannerConfig.padding_bottom"
+              v-model.number="paddingBottom"
               type="number"
               min="0"
               max="100"
@@ -116,7 +116,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین راست (px)</label>
             <input
-              v-model="props.bannerConfig.margin_right"
+              v-model.number="marginRight"
               type="number"
               min="0"
               max="100"
@@ -129,7 +129,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین چپ (px)</label>
             <input
-              v-model="props.bannerConfig.margin_left"
+              v-model.number="marginLeft"
               type="number"
               min="0"
               max="100"
@@ -144,7 +144,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">عرض بنر (پیکسل)</label>
             <select
-              v-model="props.bannerConfig.mobile_banner_width"
+              v-model.number="mobileBannerWidth"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="400">400px</option>
@@ -158,7 +158,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">ارتفاع بنر (پیکسل)</label>
             <select
-              v-model="props.bannerConfig.mobile_height"
+              v-model.number="mobileBannerHeight"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="100">100px</option>
@@ -340,9 +340,30 @@
 // Vue composables
 import { ref, computed, watch } from 'vue'
 
+// Banner Config interface
+interface BannerConfig {
+  easy_load_enabled?: boolean
+  bg_enabled?: boolean
+  wide_bg?: boolean
+  bg_color?: string
+  padding_top?: number
+  padding_bottom?: number
+  margin_right?: number
+  margin_left?: number
+  mobile_banner_width?: number
+  mobile_height?: number
+  show_title?: boolean
+  show_description?: boolean
+  show_navigation?: boolean
+  show_pagination?: boolean
+  banners?: unknown[]
+  mobile_banners?: unknown[]
+  [key: string]: unknown
+}
+
 // Props
 interface Props {
-  bannerConfig: any
+  bannerConfig: BannerConfig
   currentPreviewBanner: number
   openAddBannerModal: () => void
   editBanner: (index: number) => void
@@ -359,6 +380,7 @@ const props = withDefaults(defineProps<Props>(), {
 // Emits
 const emit = defineEmits<{
   'update:activeTab': [value: 'desktop' | 'mobile']
+  'update:bannerConfig': [config: BannerConfig]
 }>()
 
 // Tab state - synced with parent
@@ -380,11 +402,10 @@ defineExpose({
 })
 
 // Collections split per device
-const desktopBanners = computed(() => (props.bannerConfig?.banners ?? []))
 const mobileBanners = computed(() => (props.bannerConfig?.mobile_banners ?? []))
 
 // Helper functions for image handling
-const getMobileImageUrl = (banner) => {
+const getMobileImageUrl = (banner: { mobile_image?: string; image?: string }): string => {
   // این تابع فقط برای پیش‌نمایش موبایل استفاده میشه
   // اگر عکس موبایل وجود دارد، استفاده کن
   if (banner.mobile_image) {
@@ -392,20 +413,69 @@ const getMobileImageUrl = (banner) => {
   }
   
   // در غیر این صورت از عکس دسکتاپ استفاده کن
-  return banner.image
+  return banner.image || ''
 }
 
 const getMobileImageClass = () => {
   return 'object-cover'
 }
 
-// Computed values with default fallbacks
+// Helper function to emit config updates
+const updateConfig = (field: string, value: unknown) => {
+  emit('update:bannerConfig', {
+    ...props.bannerConfig,
+    [field]: value
+  })
+}
+
+// Computed values with default fallbacks - using emit instead of direct mutation
+const easyLoadEnabled = computed({
+  get: () => props.bannerConfig?.easy_load_enabled ?? false,
+  set: (val: boolean) => updateConfig('easy_load_enabled', val)
+})
+
+const bgEnabled = computed({
+  get: () => props.bannerConfig?.bg_enabled ?? false,
+  set: (val: boolean) => updateConfig('bg_enabled', val)
+})
+
+const wideBg = computed({
+  get: () => props.bannerConfig?.wide_bg ?? false,
+  set: (val: boolean) => updateConfig('wide_bg', val)
+})
+
+const bgColor = computed({
+  get: () => props.bannerConfig?.bg_color ?? '#ffffff',
+  set: (val: string) => updateConfig('bg_color', val)
+})
+
+const paddingTop = computed({
+  get: () => props.bannerConfig?.padding_top ?? 0,
+  set: (val: number) => updateConfig('padding_top', val)
+})
+
+const paddingBottom = computed({
+  get: () => props.bannerConfig?.padding_bottom ?? 0,
+  set: (val: number) => updateConfig('padding_bottom', val)
+})
+
+const marginRight = computed({
+  get: () => props.bannerConfig?.margin_right ?? 0,
+  set: (val: number) => updateConfig('margin_right', val)
+})
+
+const marginLeft = computed({
+  get: () => props.bannerConfig?.margin_left ?? 0,
+  set: (val: number) => updateConfig('margin_left', val)
+})
+
+const mobileBannerWidth = computed({
+  get: () => props.bannerConfig?.mobile_banner_width ?? 400,
+  set: (val: number) => updateConfig('mobile_banner_width', val)
+})
+
 const mobileBannerHeight = computed({
-  get: () => props.bannerConfig.mobile_height,
-  set: val => {
-    if (props.bannerConfig) {
-      props.bannerConfig.mobile_height = val
-    }
-  }
+  get: () => props.bannerConfig?.mobile_height ?? 150,
+  set: (val: number) => updateConfig('mobile_height', val)
 })
 </script>

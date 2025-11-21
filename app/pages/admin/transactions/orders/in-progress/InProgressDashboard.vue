@@ -525,7 +525,6 @@ const closeModal = () => {
 }
 
 const editOrder = (_order) => {
-  // console.log('ویرایش سفارش:', order)
   // اینجا می‌توانید کاربر را به صفحه ویرایش هدایت کنید
 }
 </script> 

@@ -246,7 +246,7 @@ const loadTransactions = async () => {
       transactions.value = response.data.transactions
       pagination.value = response.data.pagination
     }
-  } catch (error) {
+  } catch (_error) {
     $toast.error('خطا در بارگذاری تراکنش‌ها')
   } finally {
     loading.value = false
@@ -295,7 +295,7 @@ const refundTransaction = async (transaction) => {
     } else {
       $toast.error(response.message || 'خطا در بازگشت وجه')
     }
-  } catch (error) {
+  } catch (_error) {
     $toast.error('خطا در بازگشت وجه')
   }
 }

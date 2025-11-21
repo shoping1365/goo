@@ -152,12 +152,23 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare const useAuth: () => { user: any; hasPermission: (perm: string) => boolean }
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare const useRouter: () => any
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare const useRoute: () => any
+interface User {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
+}
+interface Router {
+  push: (path: string) => void
+  [key: string]: unknown
+}
+declare const useAuth: () => { user: User | null; hasPermission: (perm: string) => boolean }
+interface Route {
+  params: Record<string, string>
+  query: Record<string, string>
+  [key: string]: unknown
+}
+declare const useRouter: () => Router
+declare const useRoute: () => Route
 </script>
 
 <script setup lang="ts">
@@ -267,8 +278,15 @@ const updateStats = () => {
 const loadRedirects = async () => {
   try {
     const offset = (currentPage.value - 1) * itemsPerPage.value
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const response: any = await $fetch('/api/admin/seo/redirects', {
+    interface RedirectsResponse {
+      data?: Array<{
+        id?: number | string
+        [key: string]: unknown
+      }>
+      total?: number
+      [key: string]: unknown
+    }
+    const response = await $fetch<RedirectsResponse>('/api/admin/seo/redirects', {
       query: {
         limit: itemsPerPage.value,
         offset: offset,

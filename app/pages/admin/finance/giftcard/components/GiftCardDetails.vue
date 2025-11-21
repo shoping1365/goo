@@ -347,13 +347,18 @@
 import { computed } from 'vue'
 
 // Props
+interface GiftCard {
+  id?: number | string
+  [key: string]: unknown
+}
+
 const props = defineProps<{
-  card: any
+  card: GiftCard
 }>()
 
 // Emits
 const emit = defineEmits<{
-  'edit-card': [card: any]
+  'edit-card': [card: GiftCard]
 }>()
 
 // Computed properties
@@ -361,7 +366,7 @@ const card = computed(() => props.card)
 
 // Methods
 const printCard = () => {
-  console.log('چاپ کارت:', card.value.code)
+
   // اینجا می‌توانید منطق چاپ اضافه کنید
 }
 

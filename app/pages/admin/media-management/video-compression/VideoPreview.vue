@@ -200,7 +200,7 @@ async function onPreviewButtonClick() {
 }
 
 // تابع باز کردن URL در تب جدید
-function openPreviewUrl(url: string, title: string) {
+function openPreviewUrl(url: string, _title: string) {
   window.open(url, '_blank', 'noopener,noreferrer')
 }
 

@@ -33,7 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   change: [index: number]
 }>()
 

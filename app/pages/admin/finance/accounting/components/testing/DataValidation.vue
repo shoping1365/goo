@@ -372,25 +372,36 @@ const getSeverityText = (severity: string) => {
 }
 
 // عملیات
+interface Rule {
+  id: number | string
+  enabled?: boolean
+  [key: string]: unknown
+}
+
+interface ErrorItem {
+  id: number | string
+  [key: string]: unknown
+}
+
 const runValidation = () => {
-  console.log('اجرای اعتبارسنجی')
+
 }
 
-const editRule = (rule: any) => {
-  console.log('ویرایش قانون:', rule)
+const editRule = (_rule: Rule) => {
+
 }
 
-const toggleRule = (rule: any) => {
+const toggleRule = (rule: Rule) => {
   rule.enabled = !rule.enabled
-  console.log('تغییر وضعیت قانون:', rule)
+
 }
 
-const fixError = (error: any) => {
-  console.log('اصلاح خطا:', error)
+const fixError = (_error: ErrorItem) => {
+
 }
 
-const ignoreError = (error: any) => {
-  console.log('نادیده گرفتن خطا:', error)
+const ignoreError = (_error: ErrorItem) => {
+
 }
 </script>
 

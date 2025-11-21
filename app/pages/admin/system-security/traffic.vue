@@ -417,17 +417,17 @@
                 هیچ کاربر آنلاینی یافت نشد
               </td>
             </tr>
-            <tr v-for="user in onlineUsers" v-else :key="(user as any).id">
+            <tr v-for="user in onlineUsers" v-else :key="user.id || Math.random()">
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
                   <div class="flex-shrink-0 h-8 w-8">
                     <div class="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center">
-                      <span class="text-sm font-medium text-gray-700">{{ (user as any).name.charAt(0) }}</span>
+                      <span class="text-sm font-medium text-gray-700">{{ user.name?.charAt(0) || '?' }}</span>
                     </div>
                   </div>
                   <div class="mr-3">
-                    <div class="text-sm font-medium text-gray-900">{{ (user as any).name }}</div>
-                    <div class="text-sm text-gray-500">{{ (user as any).ip }}</div>
+                    <div class="text-sm font-medium text-gray-900">{{ user.name || 'نامشخص' }}</div>
+                    <div class="text-sm text-gray-500">{{ user.ip || 'نامشخص' }}</div>
                   </div>
                 </div>
               </td>
@@ -924,7 +924,7 @@ const isOnlineUsersLoading = ref(false) // مخصوص جدول کاربران آ
 const trafficItemsPerPage = ref(10)
 const onlineUsersItemsPerPage = ref(10)
 
-const onlineUsers = ref([])
+const onlineUsers = ref<OnlineUser[]>([])
 const blockedIPsCount = ref(2)
 const showBlockModal = ref(false)
 const blockIPData = ref({

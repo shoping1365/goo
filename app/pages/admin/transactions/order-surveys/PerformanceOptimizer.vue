@@ -669,21 +669,17 @@ const removeServer = (serverId: number) => {
 }
 
 const runPerformanceTest = () => {
-  // console.log('Running performance test...')
 }
 
 const clearCache = () => {
   if (confirm('آیا از پاک کردن تمام کش‌ها اطمینان دارید؟')) {
-    // console.log('Clearing all caches...')
   }
 }
 
 const optimizePerformance = () => {
-  // console.log('Running automatic performance optimization...')
 }
 
 const saveSettings = () => {
-  // console.log('Saving performance settings...')
 }
 
 // Expose methods for parent component

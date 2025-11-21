@@ -18,6 +18,7 @@
           const sanitizedCopyrightHtml = computed(() => DOMPurify.sanitize(copyrightHtml.value))
           <div v-html="sanitizedCopyrightHtml"></div>
         -->
+        <!-- eslint-disable-next-line vue/no-v-html -->
         <div class="copyright-html" v-html="copyrightHtml"></div>
         
         <!-- لینک‌های اضافی -->

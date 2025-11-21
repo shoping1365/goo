@@ -103,11 +103,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
+import type { CategoryItem } from '~/types/widget'
 
 interface Props {
   modelValue: number | null
-  categories: any[]
+  categories: CategoryItem[]
   placeholder?: string
 }
 

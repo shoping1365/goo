@@ -42,14 +42,26 @@
 </template>
 
 <script setup lang="ts">
-import type { Product } from '~/types/product'
+// import type { Product } from '~/types/product' // Currently unused, using ProductData instead
+
+interface ProductData {
+  id: number | string
+  name?: string
+  title?: string
+  price?: number
+  final_price?: number
+  discount?: number
+  image?: string
+  thumbnail?: string
+  [key: string]: unknown
+}
 
 const props = defineProps<{
-  product: any
+  product: ProductData
 }>()
 
 const emit = defineEmits<{
-  (e: 'add-to-cart', product: any): void
+  (e: 'add-to-cart', product: ProductData): void
 }>()
 
 const formatPrice = (price: number) => {
@@ -59,7 +71,7 @@ const formatPrice = (price: number) => {
   }).format(price)
 }
 
-const calculateOriginalPrice = (price: number, discount: number) => {
+const _calculateOriginalPrice = (price: number, discount: number) => {
   return Math.round(price / (1 - discount / 100))
 }
 

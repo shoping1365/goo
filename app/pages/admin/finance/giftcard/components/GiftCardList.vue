@@ -299,16 +299,23 @@ const { hasPermission } = useAuth()
 // Computed برای چک کردن پرمیژن حذف
 const canDeleteGiftCard = computed(() => hasPermission('giftcard.delete'))
 
+interface GiftCard {
+  id?: number | string
+  code?: string
+  amount?: number
+  [key: string]: unknown
+}
+
 // Props
 const props = defineProps<{
-  giftCards: any[]
+  giftCards: GiftCard[]
 }>()
 
 // Emits
 const emit = defineEmits<{
-  'edit-card': [giftCard: any]
-  'delete-card': [giftCard: any]
-  'view-details': [giftCard: any]
+  'edit-card': [giftCard: GiftCard]
+  'delete-card': [giftCard: GiftCard]
+  'view-details': [giftCard: GiftCard]
 }>()
 
 // Reactive data
@@ -515,11 +522,17 @@ const copyCode = async (code: string) => {
   }
 }
 
-const resendGiftCard = async (giftCard: any) => {
+interface GiftCard {
+  id?: number | string
+  code?: string
+  status?: string
+  [key: string]: unknown
+}
+
+const resendGiftCard = async (giftCard: GiftCard) => {
   if (confirm(`آیا می‌خواهید گیفت کارت ${giftCard.code} مجدداً ارسال شود؟`)) {
     try {
       // در نسخه واقعی: ارسال به API
-      console.log('Resending gift card:', giftCard.id)
       alert('گیفت کارت با موفقیت ارسال شد')
     } catch (error) {
       console.error('خطا در ارسال مجدد:', error)
@@ -528,11 +541,10 @@ const resendGiftCard = async (giftCard: any) => {
   }
 }
 
-const activateGiftCard = async (giftCard: any) => {
+const activateGiftCard = async (giftCard: GiftCard) => {
   if (confirm(`آیا می‌خواهید گیفت کارت ${giftCard.code} فعال شود؟`)) {
     try {
       // در نسخه واقعی: ارسال به API
-      console.log('Activating gift card:', giftCard.id)
       giftCard.status = 'active'
       alert('گیفت کارت فعال شد')
     } catch (error) {
@@ -542,11 +554,10 @@ const activateGiftCard = async (giftCard: any) => {
   }
 }
 
-const deactivateGiftCard = async (giftCard: any) => {
+const deactivateGiftCard = async (giftCard: GiftCard) => {
   if (confirm(`آیا می‌خواهید گیفت کارت ${giftCard.code} غیرفعال شود؟`)) {
     try {
       // در نسخه واقعی: ارسال به API
-      console.log('Deactivating gift card:', giftCard.id)
       giftCard.status = 'inactive'
       alert('گیفت کارت غیرفعال شد')
     } catch (error) {
@@ -556,7 +567,7 @@ const deactivateGiftCard = async (giftCard: any) => {
   }
 }
 
-const confirmDelete = (giftCard: any) => {
+const confirmDelete = (giftCard: GiftCard) => {
   if (confirm(`آیا از حذف گیفت کارت ${giftCard.code} مطمئن هستید؟ این عملیات غیرقابل بازگشت است.`)) {
     emit('delete-card', giftCard)
   }
@@ -581,7 +592,6 @@ const goToPage = (page: number) => {
 // Lifecycle
 onMounted(() => {
   // تنظیمات اولیه
-  console.log('Gift card list mounted')
 })
 </script>
 

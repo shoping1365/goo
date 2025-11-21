@@ -623,31 +623,36 @@ const getStatusLabel = (status: string) => {
 // تست هشدارها
 const testAlerts = () => {
   // TODO: تست هشدارها
-  console.log('تست هشدارها')
+
 }
 
 // ذخیره تنظیمات هشدار
 const saveAlertSettings = () => {
   // TODO: ذخیره تنظیمات هشدار
-  console.log('ذخیره تنظیمات هشدار:', alertSettings.value)
+
+}
+
+interface Alert {
+  id?: number | string
+  [key: string]: unknown
 }
 
 // تأیید هشدار
-const acknowledgeAlert = (alert: any) => {
+const acknowledgeAlert = (_alert: Alert) => {
   // TODO: تأیید هشدار
-  console.log('تأیید هشدار:', alert)
+
 }
 
 // رد هشدار
-const dismissAlert = (alert: any) => {
+const dismissAlert = (_alert: Alert) => {
   // TODO: رد هشدار
-  console.log('رد هشدار:', alert)
+
 }
 
 // مشاهده جزئیات هشدار
-const viewAlertDetails = (alert: any) => {
+const viewAlertDetails = (_alert: Alert) => {
   // TODO: نمایش جزئیات هشدار
-  console.log('جزئیات هشدار:', alert)
+
 }
 </script>
 

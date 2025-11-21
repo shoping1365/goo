@@ -7,7 +7,7 @@
         'w-12 h-12 rounded-lg border-2 overflow-hidden transition-all cursor-pointer relative group',
         currentIndex === index ? 'border-blue-500' : 'border-gray-200 hover:border-gray-300'
       ]"
-      @click="index === 0 ? $emit('modal-click') : $emit('thumbnail-click', index)"
+      @click="index === 0 ? emit('modal-click') : emit('thumbnail-click', index)"
     >
       <img
         :src="image"
@@ -49,7 +49,10 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits(['thumbnail-click', 'modal-click'])
+const emit = defineEmits<{
+  'thumbnail-click': [index: number]
+  'modal-click': []
+}>()
 
 const { isAdmin } = useAdmin()
 

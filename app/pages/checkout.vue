@@ -459,15 +459,11 @@ onUnmounted(() => {
 async function submitOrder() {
   // جلوگیری از ارسال تکراری - باید در ابتدا چک شود
   if (orderLoading.value) {
-    // console.log('در حال پردازش سفارش قبلی...')
     return
   }
 
   // تنظیم فوری orderLoading برای جلوگیری از double-click
   orderLoading.value = true
-
-  // console.log('شروع ثبت سفارش - cartItems:', cartItems.value)
-  // console.log('تعداد آیتم‌های سبد خرید:', cartItems.value.length)
 
   try {
     // اگر کاربر آدرس انتخاب نکرده و addresses خالی است، ابتدا ذخیره آدرس
@@ -538,14 +534,10 @@ async function submitOrder() {
       }))
     }
     
-    // console.log('ارسال داده‌های سفارش:', orderData)
-    
     const res = await $fetch<{success?: boolean, data?: {orderId?: number, orderNumber?: string}, id?: number}>('/api/orders/create', {
       method: 'POST',
       body: orderData
     })
-    
-    // console.log('پاسخ API:', res)
     
     if (res && res.success && res.data) {
       // پاک‌کردن سبد خرید

@@ -217,7 +217,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 
 // انتخاب نسخه
 const selectedTargetVersion = ref('')
@@ -307,16 +307,16 @@ const getChangeTypeClass = (type: string) => {
 
 // عملیات
 const createBackupBeforeRollback = () => {
-  console.log('ایجاد نسخه پشتیبان قبل از بازگشت')
+
 }
 
 const previewRollback = () => {
-  console.log('پیش‌نمایش بازگشت به نسخه:', selectedTargetVersion.value)
+
 }
 
 const confirmRollback = () => {
-  console.log('تایید بازگشت به نسخه:', selectedTargetVersion.value)
-  console.log('دلیل:', rollbackReason.value)
+
+
 }
 
 const cancelRollback = () => {

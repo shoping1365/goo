@@ -302,7 +302,6 @@ const fetchInProgressOrders = async () => {
     }
     
     inProgressOrders.value = orders
-    // console.log('Orders loaded:', orders.length)
   } catch {
     error.value = 'خطا در دریافت داده‌های سفارشات'
     // console.error('Error fetching in-progress orders:', err)
@@ -402,8 +401,6 @@ watch(selectedOrders, (newSelection) => {
 const executeBulkAction = () => {
   if (!bulkAction.value) return
   
-  // console.log('عملیات گروهی:', bulkAction.value, 'بر روی سفارشات:', selectedOrders.value)
-  
   // اینجا می‌توانید منطق عملیات گروهی را پیاده‌سازی کنید
   bulkAction.value = ''
   selectedOrders.value = []
@@ -421,21 +418,17 @@ const closeModal = () => {
 }
 
 const editOrder = (_order) => {
-  // console.log('ویرایش سفارش:', order)
   // اینجا می‌توانید کاربر را به صفحه ویرایش هدایت کنید
 }
 
 // متدهای عملیات
 const _viewOrder = (_order) => {
-  // console.log('مشاهده سفارش:', order)
 }
 
 const processOrder = (_order) => {
-  // console.log('پردازش سفارش:', order)
 }
 
 const downloadReceipt = (_order) => {
-  // console.log('دانلود رسید:', order)
 }
 
 // متدهای صفحه‌بندی

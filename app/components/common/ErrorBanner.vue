@@ -34,15 +34,26 @@ function dismiss(){
   emit('dismiss')
 }
 
+interface WindowWithError extends Window {
+  __lastError?: {
+    title?: string
+    message?: string
+    meta?: string
+    [key: string]: unknown
+  }
+}
+
 function copyDetails(){
-  const payload = (window as any).__lastError || { title: bannerTitle.value || props.title, message: bannerMessage.value || props.message, meta: meta.value }
+  const windowWithError = window as WindowWithError
+  const payload = windowWithError.__lastError || { title: bannerTitle.value || props.title, message: bannerMessage.value || props.message, meta: meta.value }
   const text = JSON.stringify(payload, null, 2)
   navigator.clipboard?.writeText(text).catch(()=>{})
 }
 
-function onLastError(ev: any){
+function onLastError(ev: Event){
   try {
-    const d = ev?.detail || {}
+    const customEvent = ev as CustomEvent
+    const d = customEvent?.detail || {}
     // صف موقت در sessionStorage برای گزارش‌های بعدی
     const qKey = '__error_queue__'
     const qRaw = sessionStorage.getItem(qKey)
@@ -58,7 +69,7 @@ function onLastError(ev: any){
 }
 
 onMounted(()=>{
-  window.addEventListener('app:last-error', onLastError as any)
+  window.addEventListener('app:last-error', onLastError)
   window.addEventListener('offline', ()=>{
     visible.value = true
     bannerTitle.value = 'عدم دسترسی به اینترنت'
@@ -71,7 +82,7 @@ onMounted(()=>{
   })
 })
 onUnmounted(()=>{
-  window.removeEventListener('app:last-error', onLastError as any)
+  window.removeEventListener('app:last-error', onLastError)
 })
 </script>
 

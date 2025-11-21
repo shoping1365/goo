@@ -111,7 +111,7 @@
     <!-- تنظیمات بنر -->
     <DeviceTabs
       ref="deviceTabsRef"
-      :banner-config="bannerConfig"
+      v-model:banner-config="bannerConfig"
       :current-preview-banner="currentPreviewBanner"
       :open-add-banner-modal="openAddBannerModal"
       :edit-banner="editBanner"
@@ -188,6 +188,21 @@
               </select>
             </div>
 
+            <!-- عرض مرکز -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">عرض مرکز (پیکسل)</label>
+              <input
+                v-model.number="bannerConfig.center_width"
+                type="number"
+                min="400"
+                max="1400"
+                step="50"
+                class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+                placeholder="1000"
+              />
+              <p class="text-xs text-gray-500 mt-1">عرض بنر در وسط صفحه (400-1400 پیکسل)</p>
+            </div>
+
             <!-- نسبت بنر 1 -->
             <div>
               <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 1</label>
@@ -256,13 +271,13 @@
             <div>
               <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ بالا (px)</label>
               <input
-                :value="bannerConfig.padding_top === undefined ? '' : bannerConfig.padding_top"
                 type="number"
+                :value="bannerConfig.padding_top !== undefined ? bannerConfig.padding_top : ''"
                 min="0"
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e) => bannerConfig.padding_top = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+                @input="(e: Event) => bannerConfig.padding_top = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
               />
             </div>
 
@@ -270,13 +285,13 @@
             <div>
               <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ پایین (px)</label>
               <input
-                :value="bannerConfig.padding_bottom === undefined ? '' : bannerConfig.padding_bottom"
                 type="number"
+                :value="bannerConfig.padding_bottom !== undefined ? bannerConfig.padding_bottom : ''"
                 min="0"
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e) => bannerConfig.padding_bottom = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+                @input="(e: Event) => bannerConfig.padding_bottom = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
               />
             </div>
 
@@ -284,13 +299,13 @@
             <div>
               <label class="block mb-2 text-sm font-medium text-gray-700">مارجین راست (px)</label>
               <input
-                :value="bannerConfig.margin_right === undefined ? '' : bannerConfig.margin_right"
                 type="number"
+                :value="bannerConfig.margin_right !== undefined ? bannerConfig.margin_right : ''"
                 min="0"
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e) => bannerConfig.margin_right = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+                @input="(e: Event) => bannerConfig.margin_right = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
               />
             </div>
 
@@ -298,19 +313,19 @@
             <div>
               <label class="block mb-2 text-sm font-medium text-gray-700">مارجین چپ (px)</label>
               <input
-                :value="bannerConfig.margin_left === undefined ? '' : bannerConfig.margin_left"
                 type="number"
+                :value="bannerConfig.margin_left !== undefined ? bannerConfig.margin_left : ''"
                 min="0"
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e) => bannerConfig.margin_left = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+                @input="(e: Event) => bannerConfig.margin_left = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
               />
             </div>
           </div>
         </div>
       </template>
-
+      
       <!-- محتوای تب موبایل -->
       <template #mobile-content>
         <div class="bg-white rounded-xl shadow p-8 mt-6 mx-4">
@@ -335,13 +350,13 @@
             <div>
               <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ بالا موبایل (px)</label>
               <input
-                :value="bannerConfig.mobile_padding_top === undefined ? '' : bannerConfig.mobile_padding_top"
                 type="number"
+                :value="bannerConfig.mobile_padding_top !== undefined ? bannerConfig.mobile_padding_top : ''"
                 min="0"
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e) => bannerConfig.mobile_padding_top = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+                @input="(e: Event) => bannerConfig.mobile_padding_top = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
               />
             </div>
 
@@ -349,13 +364,13 @@
             <div>
               <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ پایین موبایل (px)</label>
               <input
-                :value="bannerConfig.mobile_padding_bottom === undefined ? '' : bannerConfig.mobile_padding_bottom"
                 type="number"
+                :value="bannerConfig.mobile_padding_bottom !== undefined ? bannerConfig.mobile_padding_bottom : ''"
                 min="0"
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e) => bannerConfig.mobile_padding_bottom = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+                @input="(e: Event) => bannerConfig.mobile_padding_bottom = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
               />
             </div>
           </div>
@@ -363,10 +378,10 @@
       </template>
     </DeviceTabs>
 
-    <!-- پیش‌نمایش زنده -->
+    <!-- پیش‌نمایش زنده دسکتاپ -->
     <div v-if="deviceTabsRef?.activeTab === 'desktop'" class="bg-white rounded-xl shadow p-8 mt-6 mx-4">
       <h3 class="text-lg font-bold text-gray-700 mb-6">پیش‌نمایش زنده</h3>
-      
+       
       <!-- پیش‌نمایش بنرهای چهارتایی -->
       <div class="bg-gray-50 rounded-lg p-6 border-2 border-dashed border-gray-300">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -554,7 +569,7 @@
     </div>
 
     <!-- نمایش و مدیریت بنرها -->
-    <div v-if="deviceTabsRef?.activeTab === 'desktop'" class="bg-white rounded-xl shadow p-8 mt-6 mx-4">
+    <div class="bg-white rounded-xl shadow p-8 mt-6 mx-4">
       <div class="flex justify-between items-center mb-6">
         <h3 class="text-lg font-bold text-gray-700">بنرها</h3>
         <button
@@ -629,8 +644,6 @@
       @confirm="onSelectFromLibrary"
     />
 
-    <!-- Page content will be added here -->
-
     <!-- فاصله انتهای صفحه -->
     <div class="pb-16"></div>
   </div>
@@ -638,15 +651,22 @@
 
 <script setup lang="ts">
 import BannerModal from '@/components/common/BannerModal.vue'
-import { computed, onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import TemplateButton from '~/components/common/TemplateButton.vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
 import { useToast } from '~/composables/useToast'
 import { useWidget } from '~/composables/useWidget'
-import type { BannerConfig, BannerItem, Widget } from '~/types/widget'
+import type { BannerConfig, BannerItem, Widget, WidgetPage, WidgetStatus, WidgetType } from '~/types/widget'
 import { WIDGET_TYPE_LABELS } from '~/types/widget'
 import DeviceTabs from './components/DeviceTabs.vue'
+
+interface MediaFile {
+  id?: number | string
+  url: string
+  name?: string
+  [key: string]: unknown
+}
 
 // تعریف definePageMeta و useHead برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
@@ -655,12 +675,11 @@ declare const useHead: (head: { title?: string }) => void
 definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 useHead({ title: 'ایجاد بنر چهارتایی - پنل ادمین' })
 
-// Route params
-const route = useRoute()
-const widgetId = parseInt(route.params.id as string)
+// Router
+const router = useRouter()
 
 // Composables
-const { fetchWidget, createWidget, updateWidget, loading, error, clearError, widget: fetchedWidget } = useWidget()
+const { createWidget, clearError } = useWidget()
 const { showSuccess, showError } = useToast()
 
 // Props
@@ -668,10 +687,10 @@ interface Props {
   widget?: Widget
 }
 
-const props = defineProps<Props>()
+const _props = defineProps<Props>()
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   updated: [widget: Widget]
 }>()
 
@@ -680,8 +699,8 @@ const isSaving = ref(false)
 const showBannerModal = ref(false)
 const showMediaLibrary = ref(false)
 const editingBannerIndex = ref<number | null>(null)
-const currentPreviewBanner = ref(0)
 const deviceTabsRef = ref()
+const currentPreviewBanner = ref(0)
 
 // Error states
 const titleError = ref<string>('')
@@ -721,34 +740,6 @@ const formData = ref({
   page: 'home'
 })
 
-// Initialize form data when widget is available
-const initializeFormData = () => {
-  if (fetchedWidget.value) {
-    console.log('Widget data:', fetchedWidget.value) // Debug log
-    formData.value = {
-      title: fetchedWidget.value.title || '',
-      description: fetchedWidget.value.description || '',
-      type: fetchedWidget.value.type || 'quad-banner',
-      status: fetchedWidget.value.status || 'active',
-      page: fetchedWidget.value.page || 'home'
-    }
-    console.log('Form data initialized:', formData.value) // Debug log
-  }
-}
-
-// Watch for widget changes
-watch(fetchedWidget, (newWidget) => {
-  if (newWidget) {
-    initializeFormData()
-  }
-}, { immediate: true })
-
-// Computed properties for reactive form data
-const widgetTitle = computed(() => fetchedWidget.value?.title || '')
-const widgetType = computed(() => fetchedWidget.value?.type || 'quad-banner')
-const widgetStatus = computed(() => fetchedWidget.value?.status || 'active')
-const widgetPage = computed(() => fetchedWidget.value?.page || 'home')
-
 // Banner config
 const bannerConfig = ref<BannerConfig>({
   wide_bg: false,
@@ -757,6 +748,7 @@ const bannerConfig = ref<BannerConfig>({
   banners: [],
   bg_enabled: false,
   banner_width: 800,
+  center_width: 1000,
   banner1_ratio: 25,
   banner2_ratio: 25,
   banner3_ratio: 25,
@@ -786,7 +778,7 @@ const openAddBannerModal = () => {
     order: bannerConfig.value.banners.length + 1,
     status: 'active'
   }
-  showTitleInBanner.value = true // Reset to default
+  showTitleInBanner.value = true
   showBannerModal.value = true
 }
 
@@ -801,14 +793,12 @@ const editBanner = (index: number) => {
     order: banner.order || index + 1,
     status: banner.status || 'active'
   }
-  // Set showTitleInBanner based on existing banner data or default to true
   showTitleInBanner.value = banner.showTitle !== undefined ? banner.showTitle : true
   showBannerModal.value = true
 }
 
 const removeBanner = (index: number) => {
   bannerConfig.value.banners.splice(index, 1)
-  // Re-order remaining banners
   bannerConfig.value.banners.forEach((banner, idx) => {
     banner.order = idx + 1
   })
@@ -827,10 +817,8 @@ const handleBannerSave = (bannerData: BannerItem, showTitle: boolean) => {
   }
 
   if (editingBannerIndex.value !== null) {
-    // ویرایش بنر موجود
     bannerConfig.value.banners[editingBannerIndex.value] = banner
   } else {
-    // افزودن بنر جدید
     bannerConfig.value.banners.push(banner)
   }
 
@@ -843,12 +831,10 @@ const openMediaLibrary = () => {
   showMediaLibrary.value = true
 }
 
-const onSelectFromLibrary = (files: any[]) => {
+const onSelectFromLibrary = (files: MediaFile[]) => {
   if (files && files.length > 0) {
     const file = files[0]
     editingBanner.value.image = file.url
-    // Clear any previous image error
-    // Note: This will be handled by the child component's reactive system
   }
   showMediaLibrary.value = false
 }
@@ -864,7 +850,6 @@ const updateBannerRatios = (changedBanner: 'banner1' | 'banner2' | 'banner3' | '
   const remaining = 100 - changedValue
   
   if (remaining < 0) {
-    // اگر مقدار انتخاب شده بیشتر از 100 است، آن را به 100 محدود کن
     bannerConfig.value[`${changedBanner}_ratio`] = 100
     bannerConfig.value.banner1_ratio = 0
     bannerConfig.value.banner2_ratio = 0
@@ -873,7 +858,6 @@ const updateBannerRatios = (changedBanner: 'banner1' | 'banner2' | 'banner3' | '
     return
   }
   
-  // نسبت‌های باقیمانده را بین سه بنر دیگر تقسیم کن
   const otherBanners = ['banner1', 'banner2', 'banner3', 'banner4'].filter(b => b !== changedBanner)
   
   if (otherBanners.length === 3) {
@@ -884,16 +868,14 @@ const updateBannerRatios = (changedBanner: 'banner1' | 'banner2' | 'banner3' | '
     const totalCurrent = currentA + currentB + currentC
     
     if (totalCurrent > 0) {
-      // نسبت‌ها را بر اساس نسبت فعلی تقسیم کن
       const ratioA = currentA / totalCurrent
       const ratioB = currentB / totalCurrent
-      const ratioC = currentC / totalCurrent
+      const _ratioC = currentC / totalCurrent
       
       bannerConfig.value[`${bannerA}_ratio`] = Math.round(remaining * ratioA)
       bannerConfig.value[`${bannerB}_ratio`] = Math.round(remaining * ratioB)
       bannerConfig.value[`${bannerC}_ratio`] = remaining - bannerConfig.value[`${bannerA}_ratio`] - bannerConfig.value[`${bannerB}_ratio`]
     } else {
-      // اگر هر سه صفر هستند، به طور مساوی تقسیم کن
       const equalShare = Math.floor(remaining / 3)
       bannerConfig.value[`${bannerA}_ratio`] = equalShare
       bannerConfig.value[`${bannerB}_ratio`] = equalShare
@@ -904,12 +886,9 @@ const updateBannerRatios = (changedBanner: 'banner1' | 'banner2' | 'banner3' | '
 
 // Save widget function
 const saveWidget = async () => {
-  // Validate title field
   validateTitle()
 
-  // Check if there are validation errors
   if (titleError.value) {
-    // Scroll to the title field
     const titleInput = document.querySelector('input[placeholder="عنوان ابزارک را وارد کنید"]') as HTMLInputElement
     if (titleInput) {
       titleInput.focus()
@@ -921,66 +900,38 @@ const saveWidget = async () => {
   try {
     isSaving.value = true
 
-    // Prepare widget data for creation
     const configToSave = { ...bannerConfig.value }
-    // اطمینان از ذخیره همه فیلدهای پدینگ و مارجین
     configToSave.padding_top = bannerConfig.value.padding_top
     configToSave.padding_bottom = bannerConfig.value.padding_bottom
     configToSave.margin_left = bannerConfig.value.margin_left
     configToSave.margin_right = bannerConfig.value.margin_right
-    // اطمینان از ذخیره فیلدهای پدینگ و مارجین موبایل
     configToSave.mobile_padding_top = bannerConfig.value.mobile_padding_top
     configToSave.mobile_padding_bottom = bannerConfig.value.mobile_padding_bottom
+
     const widgetData = {
       title: formData.value.title,
       description: formData.value.description,
-      type: formData.value.type as any, // Type casting for compatibility
-      status: formData.value.status as any, // Type casting for compatibility
-      page: formData.value.page as any, // Type casting for compatibility
+      type: formData.value.type as WidgetType,
+      status: formData.value.status as WidgetStatus,
+      page: formData.value.page as WidgetPage,
       config: configToSave
     }
-    
-    // Create new widget
+
     const createdWidget = await createWidget(widgetData)
-    
+
     if (createdWidget) {
       showSuccess('ابزارک با موفقیت ایجاد شد!')
+      await router.push(`/admin/content/banners/quadbanner/edit/${createdWidget.id}`)
     }
-    
-  } catch (error) {
-    console.error('خطا در ذخیره ابزارک:', error)
+  } catch (_error) {
+    showError('خطا در ذخیره ابزارک')
   } finally {
     isSaving.value = false
   }
 }
 
-// Initialize config from widget
+// Initialize config
 onMounted(async () => {
   clearError()
-  if (widgetId) {
-    await fetchWidget(widgetId)
-  }
-  initializeFormData()
-  
-  // Only copy specific config fields, don't overwrite defaults
-  if (fetchedWidget.value?.config) {
-    const config = fetchedWidget.value.config as BannerConfig
-    if (config.banners) bannerConfig.value.banners = config.banners
-    if (config.height) bannerConfig.value.height = config.height
-    if (config.banner_width) bannerConfig.value.banner_width = config.banner_width
-    if (config.bg_enabled !== undefined) bannerConfig.value.bg_enabled = config.bg_enabled
-    if (config.bg_color) bannerConfig.value.bg_color = config.bg_color
-    if (config.wide_bg !== undefined) bannerConfig.value.wide_bg = config.wide_bg
-    if (config.easy_load_enabled !== undefined) bannerConfig.value.easy_load_enabled = config.easy_load_enabled
-    // در مقداردهی اولیه config فقط اگر مقدار وجود داشت مقداردهی کن
-    if (config.padding_top !== undefined && config.padding_top > 0) bannerConfig.value.padding_top = config.padding_top
-    if (config.padding_bottom !== undefined && config.padding_bottom > 0) bannerConfig.value.padding_bottom = config.padding_bottom
-    if (config.margin_left !== undefined && config.margin_left > 0) bannerConfig.value.margin_left = config.margin_left
-    if (config.margin_right !== undefined && config.margin_right > 0) bannerConfig.value.margin_right = config.margin_right
-    // Mobile specific settings
-    if (config.mobile_vertical_display !== undefined) bannerConfig.value.mobile_vertical_display = config.mobile_vertical_display
-    if (config.mobile_padding_top !== undefined) bannerConfig.value.mobile_padding_top = config.mobile_padding_top
-    if (config.mobile_padding_bottom !== undefined) bannerConfig.value.mobile_padding_bottom = config.mobile_padding_bottom
-  }
 })
 </script>

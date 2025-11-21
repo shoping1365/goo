@@ -61,18 +61,19 @@ const showToast = (type: 'success' | 'error', title: string, message: string) =>
   showNotification.value = true
 }
 
+interface Gateway {
+  [key: string]: unknown
+}
+
 // تابع ذخیره درگاه جدید
-const handleSave = async (newGateway: any) => {
+const handleSave = async (newGateway: Gateway) => {
   try {
-    console.log('ارسال درگاه جدید:', newGateway)
-    
-    const response: any = await $fetch('/api/payment-gateways', {
+
+    const response = await $fetch('/api/payment-gateways', {
       method: 'POST',
       body: newGateway
     })
-    
-    console.log('Response از backend:', response)
-    
+
     // بررسی response از backend
     if (response.success || response.message) {
       showToast('success', 'موفقیت', response.message || 'درگاه پرداخت با موفقیت ایجاد شد')

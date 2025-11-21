@@ -67,15 +67,25 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-const accountCodes = ref([
+
+interface AccountCode {
+  id?: number | string | null
+  code?: string
+  name?: string
+  type?: string
+  description?: string
+  [key: string]: unknown
+}
+
+const accountCodes = ref<AccountCode[]>([
   { id: 1, code: '4001', name: 'فروش کالا', type: 'فروش', description: 'کد فروش کالا' },
   { id: 2, code: '5001', name: 'خرید کالا', type: 'خرید', description: 'کد خرید کالا' },
   { id: 3, code: '2201', name: 'مالیات بر ارزش افزوده', type: 'مالیاتی', description: 'کد مالیات بر ارزش افزوده' }
 ])
 const showAddModal = ref(false)
 const showEditModal = ref(false)
-const form = ref({ id: null, code: '', name: '', type: '', description: '' })
-const editCode = (code: any) => {
+const form = ref<AccountCode>({ id: null, code: '', name: '', type: '', description: '' })
+const editCode = (code: AccountCode) => {
   form.value = { ...code }
   showEditModal.value = true
 }
@@ -88,7 +98,7 @@ const updateCode = () => {
   if (idx !== -1) accountCodes.value[idx] = { ...form.value }
   closeModal()
 }
-const deleteCode = (code: any) => {
+const deleteCode = (code: AccountCode) => {
   if (confirm('آیا از حذف این کد اطمینان دارید؟'))
     accountCodes.value = accountCodes.value.filter(a => a.id !== code.id)
 }

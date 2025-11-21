@@ -558,23 +558,18 @@ const getCorrelationTextColor = (strength: number) => {
 }
 
 const generateReport = (_reportId: number) => {
-  // console.log('Generating report:', reportId)
 }
 
 const exportCustomData = () => {
-  // console.log('Exporting custom data:', customExport.value)
 }
 
 const refreshAnalytics = () => {
-  // console.log('Refreshing analytics data...')
 }
 
 const scheduleReport = () => {
-  // console.log('Scheduling report...')
 }
 
 const shareAnalytics = () => {
-  // console.log('Sharing analytics...')
 }
 
 // Expose methods for parent component

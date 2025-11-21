@@ -25,4 +25,8 @@ export interface Product {
   call_for_price?: boolean
   isSpecial?: boolean
   isFavorite?: boolean
-} 
+  show_stock_to_customer?: boolean
+  track_inventory?: boolean
+  vip_only?: boolean
+  hide_price_until_login?: boolean
+}

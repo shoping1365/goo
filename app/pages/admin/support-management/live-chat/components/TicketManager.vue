@@ -405,12 +405,10 @@ const selectTicket = (ticket: Ticket) => {
 
 const assignTicket = (ticket: Ticket) => {
   ticket.assignedTo = 'شما'
-  // console.log('Ticket assigned:', ticket.id)
 }
 
 const updateTicketStatus = (ticket: Ticket, status: string) => {
   ticket.status = status
-  // console.log('Ticket status updated:', ticket.id, status)
 }
 
 const createTicket = () => {
@@ -433,8 +431,6 @@ const createTicket = () => {
   tickets.value.unshift(ticket)
   showNewTicketModal.value = false
   newTicket.value = { title: '', category: '', priority: 'medium', description: '' }
-  
-  // console.log('New ticket created:', ticket)
 }
 
 const getPriorityColor = (priority: string): string => {

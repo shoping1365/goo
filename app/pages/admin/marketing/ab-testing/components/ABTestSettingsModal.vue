@@ -288,7 +288,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 // Props
-const props = defineProps<{
+const _props = defineProps<{
   isOpen: boolean
 }>()
 

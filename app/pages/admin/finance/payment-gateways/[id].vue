@@ -70,7 +70,11 @@ const route = useRoute()
 // متغیرهای reactive
 const loading = ref(true)
 const error = ref('')
-const gateway = ref<any>(null)
+interface Gateway {
+  [key: string]: unknown
+}
+
+const gateway = ref<Gateway | null>(null)
 
 // متغیرهای reactive برای notification
 const showNotification = ref(false)
@@ -113,7 +117,13 @@ const loadGateway = async () => {
     const apiUrl = `/api/payment-gateways/${gatewayId}`
     
     // استفاده از $fetch ساده و سریع
-    const response: any = await $fetch(apiUrl, {
+    interface GatewayResponse {
+      id?: number | string
+      name?: string
+      type?: string
+      [key: string]: unknown
+    }
+    const response = await $fetch<GatewayResponse>(apiUrl, {
       timeout: 5000
     })
     
@@ -122,19 +132,20 @@ const loadGateway = async () => {
     } else {
       error.value = 'درگاه پرداخت یافت نشد'
     }
-  } catch (err: any) {
-    error.value = err.message || 'خطا در بارگذاری اطلاعات درگاه'
+  } catch (err: unknown) {
+    const errorObj = err as { message?: string; [key: string]: unknown }
+    error.value = errorObj.message || 'خطا در بارگذاری اطلاعات درگاه'
   } finally {
     loading.value = false
   }
 }
 
 // تابع ذخیره تغییرات
-const handleSave = async (updatedGateway: any) => {
+const handleSave = async (updatedGateway: Gateway) => {
   try {
     const apiUrl = `/api/payment-gateways/${gatewayId}`
-    
-    const response: any = await $fetch(apiUrl, {
+
+    const response = await $fetch(apiUrl, {
       method: 'PUT',
       body: updatedGateway
     })
@@ -147,7 +158,7 @@ const handleSave = async (updatedGateway: any) => {
     } else {
       showToast('error', 'خطا', 'خطا در بروزرسانی درگاه پرداخت')
     }
-  } catch (err: any) {
+  } catch (_err: unknown) {
     showToast('error', 'خطا', 'خطا در بروزرسانی درگاه پرداخت')
   }
 }

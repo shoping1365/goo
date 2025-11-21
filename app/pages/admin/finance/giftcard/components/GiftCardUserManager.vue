@@ -547,7 +547,26 @@ class="w-5 h-5"
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+// تعریف interface ها (Rule 67 - Interface Organization and Reusability)
+interface User {
+  status?: string
+  [key: string]: unknown
+}
+
+interface Usage {
+  [key: string]: unknown
+}
+
+interface Card {
+  [key: string]: unknown
+}
+
+interface Restriction {
+  status?: string
+  [key: string]: unknown
+}
+
 // تعریف متغیرهای reactive
 const activeTab = ref('users')
 const showNewUserModal = ref(false)
@@ -803,42 +822,42 @@ const formatDate = (date) => {
 }
 
 // توابع عملیات
-const viewUserDetails = (user) => {
-  console.log('View user details:', user)
+const viewUserDetails = (_user: User) => {
+
   // اینجا کد نمایش جزئیات کاربر را اضافه کنید
 }
 
-const editUser = (user) => {
-  console.log('Edit user:', user)
+const editUser = (_user: User) => {
+
   // اینجا کد ویرایش کاربر را اضافه کنید
 }
 
-const toggleUserStatus = (user) => {
+const toggleUserStatus = (user: User) => {
   user.status = user.status === 'active' ? 'inactive' : 'active'
 }
 
-const viewUsageDetails = (usage) => {
-  console.log('View usage details:', usage)
+const viewUsageDetails = (_usage: Usage) => {
+
   // اینجا کد نمایش جزئیات استفاده را اضافه کنید
 }
 
-const retryUsage = (usage) => {
-  console.log('Retry usage:', usage)
+const retryUsage = (_usage: Usage) => {
+
   alert('تلاش مجدد برای استفاده از کارت انجام شد')
 }
 
-const viewCardDetails = (card) => {
-  console.log('View card details:', card)
+const viewCardDetails = (_card: Card) => {
+
   // اینجا کد نمایش جزئیات کارت را اضافه کنید
 }
 
-const extendCard = (card) => {
-  console.log('Extend card:', card)
+const extendCard = (_card: Card) => {
+
   alert('کارت با موفقیت تمدید شد')
 }
 
-const editRestriction = (restriction) => {
-  console.log('Edit restriction:', restriction)
+const editRestriction = (_restriction: Restriction) => {
+
   // اینجا کد ویرایش محدودیت را اضافه کنید
 }
 
@@ -847,7 +866,7 @@ const toggleRestrictionStatus = (restriction) => {
 }
 
 const exportUsers = () => {
-  console.log('Exporting users data')
+
   alert('گزارش استفاده‌کنندگان در حال دانلود است')
 }
 

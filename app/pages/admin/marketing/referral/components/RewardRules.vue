@@ -254,8 +254,20 @@ function formatDate(dateString: string) {
   return date.toLocaleDateString('fa-IR')
 }
 
+interface RewardRule {
+  id: number
+  name: string
+  description: string
+  rewardType: string
+  rewardValue: number
+  minPurchaseAmount: number
+  maxRewardAmount: number
+  validUntil: string
+  active: boolean
+}
+
 // تغییر وضعیت قانون
-function toggleRuleStatus(rule: any) {
+function toggleRuleStatus(rule: RewardRule) {
   rule.active = !rule.active
   // TODO: فراخوانی API برای تغییر وضعیت
 }

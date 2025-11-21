@@ -228,7 +228,6 @@ const _smsStatusData = ref({
 // Methods
 const sendSingleSMS = async (_orderId: number) => {
   try {
-    // console.log(`Sending SMS for order ${orderId}`)
     // API call implementation
   } catch {
     // console.error('Error sending SMS:', error)
@@ -237,7 +236,6 @@ const sendSingleSMS = async (_orderId: number) => {
 
 const sendBulkSMS = async (_orderIds: number[]) => {
   try {
-    // console.log(`Sending bulk SMS to ${orderIds.length} orders`)
     // API call implementation
   } catch {
     // console.error('Error sending bulk SMS:', error)
@@ -273,41 +271,32 @@ const updateAutoSettings = (settings: AutoSettings) => {
 }
 
 const testSchedule = () => {
-  // console.log('Testing automatic schedule...')
 }
 
 const resendFailedSMS = async (_smsId: number) => {
   try {
-    // console.log(`Resending failed SMS ${smsId}`)
     // API call implementation
   } catch {
-    // console.error('Error resending SMS:', error)
   }
 }
 
 const retryAllFailed = async () => {
   try {
-    // console.log('Retrying all failed SMS...')
     // API call implementation
   } catch {
-    // console.error('Error retrying all failed SMS:', error)
   }
 }
 
 const analyzeError = (_errorId: number) => {
-  // console.log(`Analyzing error ${errorId}`)
 }
 
 const saveTemplate = (_template: Record<string, unknown>) => {
-  // console.log('Saving template:', template)
 }
 
 const deleteTemplate = (_templateId: number) => {
-  // console.log('Deleting template:', templateId)
 }
 
 const testTemplate = (_templateId: number) => {
-  // console.log('Testing template:', templateId)
 }
 
 const showSMSStatus = () => {

@@ -363,12 +363,10 @@ const testAllConnections = async () => {
   try {
     isTesting.value = true
     // TODO: تست همه اتصالات
-    console.log('تست همه اتصالات شروع شد')
-    
+
     // شبیه‌سازی تست
     await new Promise(resolve => setTimeout(resolve, 3000))
-    
-    console.log('تست همه اتصالات تکمیل شد')
+
   } catch (error) {
     console.error('خطا در تست اتصالات:', error)
   } finally {
@@ -379,25 +377,30 @@ const testAllConnections = async () => {
 // صادر کردن گزارش وضعیت
 const exportStatusReport = () => {
   // TODO: صادر کردن گزارش وضعیت
-  console.log('صادر کردن گزارش وضعیت اتصال')
+
+}
+
+interface Connection {
+  id?: number | string
+  [key: string]: unknown
 }
 
 // تست اتصال
-const testConnection = (connection: any) => {
+const testConnection = (_connection: Connection) => {
   // TODO: تست اتصال خاص
-  console.log('تست اتصال:', connection)
+
 }
 
 // مشاهده جزئیات اتصال
-const viewConnectionDetails = (connection: any) => {
+const viewConnectionDetails = (_connection: Connection) => {
   // TODO: مشاهده جزئیات اتصال
-  console.log('مشاهده جزئیات اتصال:', connection)
+
 }
 
 // اتصال مجدد
-const reconnectConnection = (connection: any) => {
+const reconnectConnection = (_connection: Connection) => {
   // TODO: اتصال مجدد
-  console.log('اتصال مجدد:', connection)
+
 }
 </script>
 

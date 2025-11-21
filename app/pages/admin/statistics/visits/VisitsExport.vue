@@ -158,22 +158,18 @@ const avgDuration = computed(() => {
 })
 
 const exportExcel = () => {
-  // console.log('Exporting to Excel...')
   // TODO: Implement Excel export
 }
 
 const exportPDF = () => {
-  // console.log('Exporting to PDF...')
   // TODO: Implement PDF export
 }
 
 const exportCSV = () => {
-  // console.log('Exporting to CSV...')
   // TODO: Implement CSV export
 }
 
 const emailReport = () => {
-  // console.log('Sending email report...')
   // TODO: Implement email functionality
 }
 </script> 

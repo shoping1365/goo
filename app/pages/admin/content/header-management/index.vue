@@ -50,7 +50,7 @@
             <button 
               class="btn btn-secondary btn-sm" 
               title="پیش‌نمایش"
-              @click="previewHeader(header)"
+              @click="_previewHeader(header)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -87,9 +87,8 @@ import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useHeaders } from '~/composables/useHeaders';
 
-// تعریف definePageMeta و navigateTo برای Nuxt 3
+// تعریف definePageMeta برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
-declare const navigateTo: (to: string) => Promise<void>
 
 definePageMeta({
   layout: 'admin-main'
@@ -120,9 +119,9 @@ function formatDate(dateString: string | undefined): string {
 }
 
 // پیش‌نمایش هدر
-function previewHeader(header: any) {
+function _previewHeader(_header: Record<string, unknown>) {
   // اینجا می‌توانید modal پیش‌نمایش اضافه کنید
-  console.log('پیش‌نمایش هدر:', header)
+
 }
 
 // ویرایش هدر
@@ -137,7 +136,7 @@ function addNewHeader() {
 }
 
 // فعال/غیرفعال کردن هدر
-async function handleToggleStatus(headerId: number | undefined) {
+async function _handleToggleStatus(headerId: number | undefined) {
   if (!headerId) {
     alert('شناسه هدر نامعتبر است')
     return

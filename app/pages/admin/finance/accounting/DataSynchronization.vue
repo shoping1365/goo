@@ -453,12 +453,9 @@ const startManualSync = async () => {
   try {
     isSyncing.value = true
     // TODO: شروع همگام‌سازی دستی
-    console.log('همگام‌سازی دستی شروع شد')
     
     // شبیه‌سازی همگام‌سازی
     await new Promise(resolve => setTimeout(resolve, 3000))
-    
-    console.log('همگام‌سازی دستی تکمیل شد')
   } catch (error) {
     console.error('خطا در همگام‌سازی:', error)
   } finally {
@@ -470,17 +467,21 @@ const startManualSync = async () => {
 const saveSyncSettings = async () => {
   try {
     // TODO: ذخیره تنظیمات
-    console.log('تنظیمات همگام‌سازی ذخیره شد:', syncSettings.value)
     showSyncSettings.value = false
   } catch (error) {
     console.error('خطا در ذخیره تنظیمات:', error)
   }
 }
 
+interface Sync {
+  id?: number | string
+  status?: string
+  [key: string]: unknown
+}
+
 // نمایش جزئیات همگام‌سازی
-const showSyncDetails = (sync: any) => {
+const showSyncDetails = (_sync: Sync) => {
   // TODO: نمایش جزئیات همگام‌سازی
-  console.log('جزئیات همگام‌سازی:', sync)
 }
 
 // بارگذاری اولیه

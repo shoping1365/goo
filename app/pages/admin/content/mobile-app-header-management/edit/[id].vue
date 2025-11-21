@@ -416,12 +416,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useRouter, useRoute } from 'nuxt/app'
-import ClassicTemplate from '../templates/classic-template.vue'
-import BannerTemplate from '../templates/banner-template.vue'
-import MinimalTemplate from '../templates/minimal-template.vue'
+import { useRoute, useRouter } from 'nuxt/app'
+import { onMounted, ref } from 'vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
+import BannerTemplate from '../templates/banner-template.vue'
+import ClassicTemplate from '../templates/classic-template.vue'
+import MinimalTemplate from '../templates/minimal-template.vue'
 
 // @ts-ignore
 definePageMeta({
@@ -466,11 +466,9 @@ const loadMobileAppHeader = async () => {
   error.value = ''
   
   try {
-    const response = await $fetch(`/api/admin/mobile-app-header-settings/${route.params.id}`) as any
-    console.log('API response:', response) // Debug log
+    const response = await $fetch<Record<string, unknown>>(`/api/admin/mobile-app-header-settings/${route.params.id}`)
     
-    const data = response.data || response // Handle both response formats
-    console.log('Extracted data:', data) // Debug log
+    const data = (response.data || response) as Record<string, unknown> // Handle both response formats
     
     mobileAppHeader.value = data
     formData.value = {
@@ -499,49 +497,35 @@ const loadMobileAppHeader = async () => {
       formData.value.bottom_image_alt = ''
     }
     
-    console.log('Form data set:', formData.value) // Debug log
-    console.log('عکس‌های بارگذاری شده:', {
-      top_image_url: formData.value.top_image_url,
-      top_image_alt: formData.value.top_image_alt,
-      bottom_image_url: formData.value.bottom_image_url,
-      bottom_image_alt: formData.value.bottom_image_alt
-    }) // Debug log
     // تشخیص نمونه بر اساس نام و توضیحات
     detectTemplate(data)
-  } catch (err: any) {
-    error.value = err.data?.message || 'خطا در بارگذاری هدر موبایل و اپلیکیشن'
+  } catch (err: unknown) {
+    const message = (err as { data?: { message?: string } })?.data?.message || 'خطا در بارگذاری هدر موبایل و اپلیکیشن'
+    error.value = message
     console.error('Error loading mobile app header:', err)
   } finally {
     loading.value = false
   }
 }
 
-const detectTemplate = (data: any) => {
-  const name = data.name?.toLowerCase() || ''
-  const description = data.description?.toLowerCase() || ''
-  
-  console.log('Detecting template for:', { name, description }) // Debug log
+const detectTemplate = (data: Record<string, unknown>) => {
+  const name = (data.name as string)?.toLowerCase() || ''
+  const description = (data.description as string)?.toLowerCase() || ''
   
   if (name.includes('کلاسیک') || description.includes('کلاسیک')) {
     selectedTemplate.value = 'template1'
-    console.log('Selected template1 (کلاسیک)')
   } else if (name.includes('بنر') || description.includes('بنر')) {
     selectedTemplate.value = 'template2'
-    console.log('Selected template2 (بنر)')
   } else if (name.includes('مینیمال') || description.includes('مینیمال')) {
     selectedTemplate.value = 'template3'
-    console.log('Selected template3 (مینیمال)')
   } else {
     // پیش‌فرض: نمونه کلاسیک
     selectedTemplate.value = 'template1'
-    console.log('Selected template1 (پیش‌فرض)')
   }
 }
 
 const selectTemplate = (templateId: string) => {
   selectedTemplate.value = templateId
-  
-  console.log('Template selected:', templateId) // Debug log
   
   if (templateId === 'template1') {
     formData.value.name = 'هدر کلاسیک موبایل'
@@ -556,40 +540,30 @@ const selectTemplate = (templateId: string) => {
     formData.value.description = 'هدر مینیمال با باکس جستجو و لوگو در سمت چپ'
     formData.value.platform = 'mobile'
   }
-  
-  console.log('Form data updated:', formData.value) // Debug log
 }
 
 // مدیریت انتخاب تصویر از مودال
-const handleImageSelect = (image: any) => {
-  console.log('عکس انتخاب شد:', image) // Debug log
+const handleImageSelect = (image: { url: string; alt?: string }) => {
   uploadedImage.value = image
   showMediaModal.value = false
   showPositionOptions.value = true
-  console.log('showPositionOptions تنظیم شد:', showPositionOptions.value) // Debug log
 }
 
 // تنظیم موقعیت عکس
 const setImagePosition = (position: string) => {
   if (!uploadedImage.value) return
   
-  console.log('تنظیم موقعیت عکس:', position, uploadedImage.value) // Debug log
-  
   if (position === 'top') {
     formData.value.top_image_url = uploadedImage.value.url
     formData.value.top_image_alt = uploadedImage.value.alt || 'عکس بالای هدر'
-    console.log('عکس بالای هدر تنظیم شد:', formData.value.top_image_url) // Debug log
   } else if (position === 'bottom') {
     formData.value.bottom_image_url = uploadedImage.value.url
     formData.value.bottom_image_alt = uploadedImage.value.alt || 'عکس پایین هدر'
-    console.log('عکس پایین هدر تنظیم شد:', formData.value.bottom_image_url) // Debug log
   }
   
   // ریست کردن حالت‌ها
   uploadedImage.value = null
   showPositionOptions.value = false
-  
-  console.log('formData بعد از تنظیم عکس:', formData.value) // Debug log
 }
 
 // لغو آپلود
@@ -618,37 +592,20 @@ const formatFileSize = (bytes: number) => {
   return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
 }
 
-// تست: اضافه کردن عکس تست
-const addTestImage = () => {
-  console.log('قبل از تغییر:', formData.value.top_image_url)
-  formData.value.top_image_url = 'https://via.placeholder.com/300x100/ff0000/ffffff?text=Test+Top+Image'
-  formData.value.top_image_alt = 'عکس تست بالای هدر'
-  console.log('بعد از تغییر:', formData.value.top_image_url)
-  console.log('formData کامل:', formData.value)
-  
-  // تست reactive بودن
-  setTimeout(() => {
-    console.log('بعد از 1 ثانیه:', formData.value.top_image_url)
-  }, 1000)
-}
-
 const updateMobileAppHeader = async () => {
   updating.value = true
   
   try {
-    console.log('ارسال داده‌ها برای به‌روزرسانی:', formData.value) // Debug log
-    
-    const data = await $fetch(`/api/admin/mobile-app-header-settings/${route.params.id}`, {
+    await $fetch(`/api/admin/mobile-app-header-settings/${route.params.id}`, {
       method: 'PUT',
       body: formData.value
     })
     
-    console.log('پاسخ به‌روزرسانی:', data) // Debug log
-    
     alert('هدر موبایل و اپلیکیشن با موفقیت به‌روزرسانی شد')
     router.push('/admin/content/mobile-app-header-management')
-  } catch (err: any) {
-    alert(err.data?.message || 'خطا در به‌روزرسانی هدر موبایل و اپلیکیشن')
+  } catch (err: unknown) {
+    const message = (err as { data?: { message?: string } })?.data?.message || 'خطا در به‌روزرسانی هدر موبایل و اپلیکیشن'
+    alert(message)
     console.error('Error updating mobile app header:', err)
   } finally {
     updating.value = false

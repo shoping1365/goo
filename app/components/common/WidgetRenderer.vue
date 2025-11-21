@@ -6,10 +6,11 @@
         v-bind="widgetProps"
         :key="`${widget.id}-${widget.updated_at}`"
         :widget="widget"
+        :widget-type="widget.type"
       />
       <template #fallback>
         <div class="widget-loading p-6">
-          <div class="animate-pulse bg-gray-200 rounded h-32"></div>
+          <WidgetLoading />
         </div>
       </template>
     </Suspense>
@@ -17,8 +18,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineComponent, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import type { Widget } from '~/types/widget'
+import WidgetNotFound from '~/components/common/WidgetNotFound.vue'
+import WidgetLoading from '~/components/common/WidgetLoading.vue'
+import WidgetError from '~/components/common/WidgetError.vue'
 
 // Props
 interface Props {
@@ -29,7 +33,11 @@ const props = defineProps<Props>()
 
 // Dynamic component loading with async/await
 const dynamicComponent = computed(() => {
-  const componentMap: Record<string, () => Promise<any>> = {
+  interface ComponentModule {
+    default: unknown
+  }
+  
+  const componentMap: Record<string, () => Promise<ComponentModule>> = {
     'main-slider-side-banner': () => import('~/components/widgets/MainSliderSideBanner.vue'),
     'single-slider-side': () => import('~/components/widgets/SingleSliderSide.vue'),
 
@@ -50,24 +58,26 @@ const dynamicComponent = computed(() => {
   const componentLoader = componentMap[props.widget.type]
   
   if (!componentLoader) {
-    return defineComponent({
-      template: `<div class="text-red-500 p-6 border border-red-300 rounded">
-        <h3 class="font-bold">Widget نادیده</h3>
-        <p>نوع ویجت "${props.widget.type}" پیدا نشد.</p>
-      </div>`
-    })
+    return WidgetNotFound
+  }
+  
+  // Create error component wrapper that receives widget-type prop
+  const ErrorComponentWrapper = {
+    props: {
+      widgetType: {
+        type: String,
+        default: 'unknown'
+      }
+    },
+    setup(props: { widgetType: string }) {
+      return () => h(WidgetError, { widgetType: props.widgetType })
+    }
   }
   
   return defineAsyncComponent({
     loader: componentLoader,
-    loadingComponent: defineComponent({
-      template: '<div class="animate-pulse bg-gray-200 rounded h-32"></div>'
-    }),
-    errorComponent: defineComponent({
-      template: `<div class="text-red-500 p-6 border border-red-300 rounded">
-        Failed to load widget: ${props.widget.type}
-      </div>`
-    }),
+    loadingComponent: WidgetLoading,
+    errorComponent: ErrorComponentWrapper,
     delay: 0,
     timeout: 0 // حذف کامل timeout
   })
@@ -75,7 +85,13 @@ const dynamicComponent = computed(() => {
 
 // Dynamic container classes based on widget config
 const containerClasses = computed(() => {
-  const config = props.widget.config as any
+  interface WidgetConfig {
+    bg_enabled?: boolean
+    bg_color?: string
+    [key: string]: unknown
+  }
+  
+  const config = props.widget.config as WidgetConfig | null | undefined
   const classes = ['widget-container']
   
   // Add background color only if bg_enabled is true
@@ -87,7 +103,7 @@ const containerClasses = computed(() => {
 })
 
 // Methods
-const refreshWidget = () => {
+const _refreshWidget = () => {
   // Force component re-render by changing the key
   // Component will re-render automatically due to key change
 }
@@ -108,7 +124,7 @@ const widgetProps = computed(() => {
   if (typeof props.widget.config === 'string') {
     try {
       baseProps.config = JSON.parse(props.widget.config)
-    } catch (e) {
+    } catch (_e) {
       // Failed to parse widget config
     }
   }
@@ -118,7 +134,13 @@ const widgetProps = computed(() => {
 
 // Dynamic background color for v-bind
 const widgetBgColor = computed(() => {
-  const config = widgetProps.value.config as any
+  interface WidgetConfig {
+    bg_enabled?: boolean
+    bg_color?: string
+    [key: string]: unknown
+  }
+  
+  const config = widgetProps.value.config as WidgetConfig | null | undefined
   // Only return background color if bg_enabled is true
   if (config?.bg_enabled === true && config?.bg_color) {
     return config.bg_color

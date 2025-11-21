@@ -33,14 +33,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, computed, onMounted } from 'vue'
+import { computed, onMounted, provide, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import HeaderSettingsSidebar from './HeaderSettingsSidebar.vue'
-import PageHeader from './PageHeader.vue'
-import HeaderPreview from './HeaderPreview.vue'
 import FormContainer from './FormContainer.vue'
-import ItemsSelectionModal from './ItemsSelectionModal.vue'
+import HeaderPreview from './HeaderPreview.vue'
 import HeaderSettingsForm from './HeaderSettingsForm.vue'
+import HeaderSettingsSidebar from './HeaderSettingsSidebar.vue'
+import ItemsSelectionModal from './ItemsSelectionModal.vue'
+import PageHeader from './PageHeader.vue'
 
 // @ts-ignore
 definePageMeta({
@@ -59,7 +59,7 @@ interface HeaderLayerItem {
   paddingLeft?: number
   imageUrl?: string
   imageName?: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 interface HeaderLayer {
@@ -91,7 +91,7 @@ interface HeaderLayer {
   paddingLeft: number
   paddingTop: number
   paddingBottom: number
-  styleSettings?: Record<string, any>
+  styleSettings?: Record<string, unknown>
   boxWidths?: number[]
   createdAt?: string
   updatedAt?: string
@@ -185,7 +185,7 @@ function createBaseLayer(): HeaderLayer {
   }
 }
 
-function parseBoolean(value: any, fallback = false): boolean {
+function parseBoolean(value: unknown, fallback = false): boolean {
   if (typeof value === 'boolean') return value
   if (typeof value === 'number') return value === 1
   if (typeof value === 'string') {
@@ -196,21 +196,21 @@ function parseBoolean(value: any, fallback = false): boolean {
   return fallback
 }
 
-function parseJSON<T = any>(value: any): T | null {
+function parseJSON<T = unknown>(value: unknown): T | null {
   if (!value) return null
   if (typeof value === 'object') return value as T
   if (typeof value === 'string') {
     try {
       return JSON.parse(value) as T
-    } catch (error) {
-      console.warn('parseJSON failed:', error)
+    } catch {
+      // console.warn('parseJSON failed:', error)
       return null
     }
   }
   return null
 }
 
-function normalizePercent(raw: any, fallback = 100): number {
+function normalizePercent(raw: unknown, fallback = 100): number {
   if (raw === undefined || raw === null || raw === '') return fallback
   const numeric = Number(raw)
   if (Number.isNaN(numeric)) return fallback
@@ -220,22 +220,22 @@ function normalizePercent(raw: any, fallback = 100): number {
   return Math.round(numeric)
 }
 
-function parseStyleSettings(layer: any) {
+function parseStyleSettings(layer: Record<string, unknown>) {
   return (
     parseJSON(layer?.styleSettings) ||
     parseJSON(layer?.style_settings) ||
     layer?.styleSettings ||
     layer?.style_settings ||
     {}
-  ) as Record<string, any>
+  ) as Record<string, unknown>
 }
 
-function normalizeItems(rawItems: any): HeaderLayerItem[] {
+function normalizeItems(rawItems: unknown): HeaderLayerItem[] {
   if (Array.isArray(rawItems)) {
     return rawItems.map(item => (typeof item === 'object' ? { ...item } : { id: item }))
   }
   if (typeof rawItems === 'string' && rawItems.trim() !== '') {
-    const parsed = parseJSON(rawItems)
+    const parsed = parseJSON<unknown[]>(rawItems)
     if (Array.isArray(parsed)) {
       return parsed.map(item => (typeof item === 'object' ? { ...item } : { id: item }))
     }
@@ -243,19 +243,19 @@ function normalizeItems(rawItems: any): HeaderLayerItem[] {
   return []
 }
 
-function normalizeLayer(rawLayer: any): HeaderLayer {
+function normalizeLayer(rawLayer: Record<string, unknown>): HeaderLayer {
   const styleSettings = parseStyleSettings(rawLayer)
-  const borderSettings = styleSettings.border || {}
-  const shadowSettings = styleSettings.shadow || {}
-  const layoutSettings = styleSettings.layout || {}
+  const borderSettings = (styleSettings.border || {}) as Record<string, unknown>
+  const shadowSettings = (styleSettings.shadow || {}) as Record<string, unknown>
+  const layoutSettings = (styleSettings.layout || {}) as Record<string, unknown>
 
   const normalized: HeaderLayer = {
-    id: rawLayer.id,
-    name: rawLayer.name || '',
+    id: rawLayer.id as string | number | undefined,
+    name: (rawLayer.name as string) || '',
     width: Number(rawLayer.width ?? layoutSettings.width ?? 100),
     height: Number(rawLayer.height ?? layoutSettings.height ?? 60),
     rowCount: Number(rawLayer.rowCount ?? rawLayer.row_count ?? layoutSettings.rowCount ?? 1),
-    color: rawLayer.color || layoutSettings.backgroundColor || '#ffffff',
+    color: (rawLayer.color || layoutSettings.backgroundColor || '#ffffff') as string,
     opacity: normalizePercent(rawLayer.opacity ?? rawLayer.opacity_percentage, 100),
     enableBorder: parseBoolean(
       rawLayer.enableBorder ?? 
@@ -264,10 +264,10 @@ function normalizeLayer(rawLayer: any): HeaderLayer {
       borderSettings.enabled, 
       false
     ),
-    borderPosition: rawLayer.borderPosition ?? rawLayer.border_position ?? borderSettings.position ?? 'all',
-    borderColor: rawLayer.borderColor ?? rawLayer.border_color ?? borderSettings.color ?? '#e5e7eb',
+    borderPosition: (rawLayer.borderPosition ?? rawLayer.border_position ?? borderSettings.position ?? 'all') as string,
+    borderColor: (rawLayer.borderColor ?? rawLayer.border_color ?? borderSettings.color ?? '#e5e7eb') as string,
     borderWidth: Number(rawLayer.borderWidth ?? rawLayer.border_width ?? borderSettings.width ?? 1),
-    borderStyle: rawLayer.borderStyle ?? rawLayer.border_style ?? borderSettings.style ?? 'solid',
+    borderStyle: (rawLayer.borderStyle ?? rawLayer.border_style ?? borderSettings.style ?? 'solid') as string,
     enableShadow: parseBoolean(
       rawLayer.enableShadow ??
         rawLayer.enable_shadow ??
@@ -276,15 +276,15 @@ function normalizeLayer(rawLayer: any): HeaderLayer {
         shadowSettings.enabled,
       false
     ),
-    shadowIntensity: rawLayer.shadowIntensity ?? rawLayer.shadow_intensity ?? shadowSettings.intensity ?? 'md',
-    shadowDirection: rawLayer.shadowDirection ?? rawLayer.shadow_direction ?? shadowSettings.direction ?? 'top',
+    shadowIntensity: (rawLayer.shadowIntensity ?? rawLayer.shadow_intensity ?? shadowSettings.intensity ?? 'md') as string,
+    shadowDirection: (rawLayer.shadowDirection ?? rawLayer.shadow_direction ?? shadowSettings.direction ?? 'top') as string,
     showSeparator: parseBoolean(rawLayer.showSeparator ?? rawLayer.show_separator ?? rawLayer.separatorEnabled ?? layoutSettings.showSeparator, false),
-    separatorType: rawLayer.separatorType ?? rawLayer.separator_type ?? layoutSettings.separatorType ?? 'solid',
-    separatorColor: rawLayer.separatorColor ?? rawLayer.separator_color ?? layoutSettings.separatorColor ?? '#e9ecef',
+    separatorType: (rawLayer.separatorType ?? rawLayer.separator_type ?? layoutSettings.separatorType ?? 'solid') as string,
+    separatorColor: (rawLayer.separatorColor ?? rawLayer.separator_color ?? layoutSettings.separatorColor ?? '#e9ecef') as string,
     separatorOpacity: normalizePercent(rawLayer.separatorOpacity ?? rawLayer.separator_opacity ?? layoutSettings.separatorOpacity, 100),
     separatorWidth: Number(rawLayer.separatorWidth ?? rawLayer.separator_width ?? layoutSettings.separatorWidth ?? 1),
     items: normalizeItems(rawLayer.items),
-    direction: rawLayer.direction ?? layoutSettings.direction ?? 'rtl',
+    direction: (rawLayer.direction ?? layoutSettings.direction ?? 'rtl') as string,
     mobileResponsive: parseBoolean(rawLayer.mobileResponsive ?? rawLayer.mobile_responsive ?? layoutSettings.mobileResponsive, true),
     tabletResponsive: parseBoolean(rawLayer.tabletResponsive ?? rawLayer.tablet_responsive ?? layoutSettings.tabletResponsive, true),
     paddingRight: Number(rawLayer.paddingRight ?? rawLayer.padding_right ?? layoutSettings.paddingRight ?? 0),
@@ -295,10 +295,10 @@ function normalizeLayer(rawLayer: any): HeaderLayer {
     boxWidths: Array.isArray(rawLayer.boxWidths)
       ? [...rawLayer.boxWidths]
       : typeof rawLayer.boxWidths === 'string'
-        ? parseJSON(rawLayer.boxWidths) || undefined
+        ? parseJSON<number[]>(rawLayer.boxWidths) || undefined
         : undefined,
-    createdAt: rawLayer.createdAt ?? rawLayer.created_at,
-    updatedAt: rawLayer.updatedAt ?? rawLayer.updated_at
+    createdAt: (rawLayer.createdAt ?? rawLayer.created_at) as string | undefined,
+    updatedAt: (rawLayer.updatedAt ?? rawLayer.updated_at) as string | undefined
   }
 
   // ❌ حذف شد: distributeItemWidths - کاربر باید دستی تنظیم کنه
@@ -321,7 +321,7 @@ function buildStyleSettings(layer: HeaderLayer) {
   }
 }
 
-function distributeItemWidths(items: HeaderLayerItem[]) {
+function _distributeItemWidths(items: HeaderLayerItem[]) {
   // ❌ این تابع دیگه استفاده نمیشه - برای سازگاری نگه داشته شده
   // کاربر باید دستی عرض هر آیتم رو تنظیم کنه
   if (!items.length) return
@@ -348,7 +348,7 @@ function loadLayersFromSession() {
   try {
     const parsed = JSON.parse(saved)
     if (Array.isArray(parsed)) {
-      createdLayers.value = parsed.map(normalizeLayer)
+      createdLayers.value = parsed.map((l: Record<string, unknown>) => normalizeLayer(l))
     }
   } catch (error) {
     console.warn('Failed to parse session header layers:', error)
@@ -385,7 +385,7 @@ async function loadExistingHeader() {
     }
 
     if (Array.isArray(existingHeader.layers)) {
-      createdLayers.value = existingHeader.layers.map(normalizeLayer)
+      createdLayers.value = existingHeader.layers.map((l: Record<string, unknown>) => normalizeLayer(l))
     } else {
       createdLayers.value = []
     }
@@ -512,7 +512,46 @@ async function saveHeader() {
     return
   }
 
-  const headerPayload: any = {
+  interface HeaderPayload {
+    name: string
+    description: string
+    page_selection: string
+    specific_pages: string
+    excluded_pages: string
+    is_active: boolean
+    layers: LayerPayload[]
+  }
+
+  interface LayerPayload {
+    name: string
+    width: number
+    height: number
+    row_count: number
+    color: string
+    opacity: number
+    direction: string
+    padding_right: number
+    padding_left: number
+    padding_top: number
+    padding_bottom: number
+    mobile_responsive: boolean
+    tablet_responsive: boolean
+    items: string
+    style_settings: string
+    enable_border: boolean
+    border_position: string
+    border_color: string
+    border_width: number
+    border_style: string
+    enable_shadow: boolean
+    shadow_intensity: string
+    shadow_direction: string
+    boxWidths?: string
+    id?: string | number
+    [key: string]: unknown
+  }
+
+  const headerPayload: HeaderPayload = {
     name: headerData.value.name,
     description: headerData.value.description,
     page_selection: headerData.value.pageSelection,
@@ -521,7 +560,7 @@ async function saveHeader() {
     is_active: headerData.value.isActive,
     layers: createdLayers.value.map(layer => {
       const styleSettings = buildStyleSettings(layer)
-      const payload: any = {
+      const payload: LayerPayload = {
         name: layer.name,
         width: layer.width,
         height: layer.height,
@@ -559,8 +598,13 @@ async function saveHeader() {
     })
   }
 
+  interface ApiResponse {
+    success?: boolean
+    [key: string]: unknown
+  }
+
   try {
-    let result: any
+    let result: ApiResponse
     if (isEditing.value) {
       const headerId = parseInt(route.query.id as string, 10)
       const res = await fetch(`/api/admin/header-settings/${headerId}`, {
@@ -597,7 +641,7 @@ async function saveHeader() {
     } else {
       showToastMessage('ذخیره هدر با خطا مواجه شد.', 'error')
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('saveHeader error:', error)
     showToastMessage(`ذخیره هدر با خطا مواجه شد: ${error?.message || error}`, 'error')
   }

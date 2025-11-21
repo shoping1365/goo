@@ -678,7 +678,6 @@ onMounted(async () => {
   if (schemaId) {
     try {
       // دریافت اطلاعات اسکیما از فایل JSON
-      // console.log('Loading schema with ID:', schemaId)
       const { fetchTemplateById } = useSchema()
       const schemaData = await fetchTemplateById(schemaId as string)
       
@@ -708,8 +707,6 @@ onMounted(async () => {
           form.ogType = schemaData.openGraph.type || form.ogType
           form.ogSiteName = schemaData.openGraph.site_name || form.ogSiteName
         }
-        
-        // console.log('Schema loaded successfully:', schemaData)
       } else {
         console.warn('Schema not found:', schemaId)
         alert('اسکیما مورد نظر یافت نشد!')
@@ -718,8 +715,6 @@ onMounted(async () => {
       console.error('Error loading schema:', error)
       alert('خطا در بارگذاری اسکیما!')
     }
-  } else {
-    // console.log('No schema ID provided, using default form')
   }
 })
 
@@ -738,8 +733,6 @@ function handleSubmit() {
   }
   
   // اینجا باید ذخیره‌سازی واقعی انجام شود (مثلاً API)
-  // console.log('Saving schema:', schemaData)
-  // console.log('Custom fields to save:', customFields)
   
   // نمایش پیام موفقیت
   alert('تغییرات اسکیما با موفقیت ثبت شد!')

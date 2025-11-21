@@ -62,7 +62,7 @@ class="w-2 h-2 rounded-full mr-2"
                   const sanitizedContent = computed(() => DOMPurify.sanitize(truncateContent(footer.content, 150)))
                   <div v-html="sanitizedContent"></div>
                 -->
-                <div class="text-gray-700 text-sm leading-relaxed font-iranyekan mb-4" v-html="truncateContent(footer.content, 150)"></div>
+                <div class="text-gray-700 text-sm leading-relaxed font-iranyekan mb-4">{{ truncateContent(footer.content, 150) }}</div>
                 
                 <div class="text-xs text-gray-400 font-iranyekan">
                   ایجاد شده در: {{ formatDate(footer.created_at) }}

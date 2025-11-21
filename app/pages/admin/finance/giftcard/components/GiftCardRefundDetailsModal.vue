@@ -228,7 +228,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['close'])
+const _emit = defineEmits(['close'])
 
 // تابع دریافت متن وضعیت
 const getStatusText = (status) => {
@@ -433,7 +433,7 @@ const exportRefund = () => {
 const approveRefund = () => {
   if (confirm(`آیا از تایید بازپرداخت #${props.refund.id} به مبلغ ${formatCurrency(props.refund.amount)} اطمینان دارید؟`)) {
     // اینجا کد تایید بازپرداخت را اضافه کنید
-    console.log('Approving refund:', props.refund)
+
     alert('بازپرداخت با موفقیت تایید شد')
   }
 }
@@ -443,7 +443,7 @@ const rejectRefund = () => {
   const rejectionReason = prompt('دلیل رد بازپرداخت را وارد کنید:')
   if (rejectionReason) {
     // اینجا کد رد بازپرداخت را اضافه کنید
-    console.log('Rejecting refund:', props.refund, 'Reason:', rejectionReason)
+
     alert('بازپرداخت رد شد')
   }
 }

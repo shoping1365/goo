@@ -192,7 +192,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { } from 'vue'
 
 interface Props {
   analytics: {
@@ -203,7 +203,7 @@ interface Props {
   }
 }
 
-const props = defineProps<Props>()
+const _props = defineProps<Props>()
 
 // آمار درگاه‌ها
 const gatewayStats = [

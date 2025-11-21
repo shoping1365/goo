@@ -230,7 +230,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['close'])
+const _emit = defineEmits(['close'])
 
 // تابع دریافت متن نوع تراکنش
 const getTransactionTypeText = (type) => {
@@ -472,7 +472,7 @@ const exportTransaction = () => {
 const refundTransaction = () => {
   if (confirm(`آیا از بازپرداخت تراکنش #${props.transaction.id} به مبلغ ${formatCurrency(props.transaction.amount)} اطمینان دارید؟`)) {
     // اینجا کد بازپرداخت را اضافه کنید
-    console.log('Refunding transaction:', props.transaction)
+
     alert('درخواست بازپرداخت ثبت شد و در حال پردازش است')
   }
 }

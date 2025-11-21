@@ -420,7 +420,6 @@ export const useProductCreateStore = defineStore('productCreate', () => {
       productForm.meta_description = (product.meta_description as string) || ''
       productForm.url = (product.url as string) || ''
       productForm.brand_id = (product.brand_id as string | number) ? String(product.brand_id) : ''
-      // console.log('✅ URL loaded in store:', product.url)
       // اگر دستهبندی والد وجود داشته باشد، آن را بعنوان دسته اصلی و خود دسته محصول را بعنوان فرعی تنظیم میکنیم
       const category = product.category as { parent_id?: number; id?: number } | undefined
       if (category && category.parent_id) {

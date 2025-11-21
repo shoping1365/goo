@@ -47,7 +47,7 @@ const props = withDefaults(defineProps<Props>(), {
 // Emits
 import { computed } from 'vue';
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   prev: []
   next: []
 }>()

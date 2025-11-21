@@ -18,9 +18,9 @@
           <li v-if="location.phones && location.phones.length" class="footer-widget__item">
             <span class="footer-widget__label">تلفن:</span>
             <span class="footer-widget__value footer-widget__phones">
-              <template v-for="(phone, phoneIndex) in location.phones.filter(p => p && p.trim())" :key="`${locIndex}-phone-${phoneIndex}`">
+              <template v-for="(phoneItem, phoneIndex) in location.phones.filter(p => p && p.trim())" :key="`${locIndex}-phone-${phoneIndex}`">
                 <span v-if="phoneIndex > 0" class="footer-widget__phones-separator">-</span>
-                <a :href="`tel:${phone}`" class="footer-widget__link footer-widget__phone">{{ phone }}</a>
+                <a :href="`tel:${phoneItem}`" class="footer-widget__link footer-widget__phone">{{ phoneItem }}</a>
               </template>
             </span>
           </li>
@@ -41,9 +41,9 @@
       <li v-if="viewModel.allPhones.length" class="footer-widget__item">
         <span class="footer-widget__label">تلفن:</span>
         <span class="footer-widget__value footer-widget__phones">
-          <template v-for="(phone, index) in viewModel.allPhones" :key="`phone-${index}`">
+          <template v-for="(phoneItem, index) in viewModel.allPhones" :key="`phone-${index}`">
             <span v-if="index > 0" class="footer-widget__phones-separator">-</span>
-            <a :href="`tel:${phone}`" class="footer-widget__link footer-widget__phone">{{ phone }}</a>
+            <a :href="`tel:${phoneItem}`" class="footer-widget__link footer-widget__phone">{{ phoneItem }}</a>
           </template>
         </span>
       </li>

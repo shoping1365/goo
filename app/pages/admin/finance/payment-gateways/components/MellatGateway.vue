@@ -275,8 +275,16 @@ const form = reactive<FormData>({
 // بارگذاری تنظیمات درگاه
 const loadGatewaySettings = async () => {
   try {
-    const response = await $fetch('/api/admin/payment-gateways/mellat') as any
-    if (response.success) {
+    interface MellatGatewayResponse {
+      success?: boolean
+      data?: {
+        id?: number | string
+        [key: string]: unknown
+      }
+      [key: string]: unknown
+    }
+    const response = await $fetch<MellatGatewayResponse>('/api/admin/payment-gateways/mellat')
+    if (response.success && response.data) {
       gateway.value = response.data
       form.merchantId = gateway.value.merchant_id || ''
       form.publicKey = gateway.value.public_key || ''
@@ -304,14 +312,14 @@ const saveSettings = async () => {
         is_test_mode: form.isTestMode,
         is_active: form.isActive
       }
-    }) as any
+    }) as { success?: boolean; [key: string]: unknown }
 
     if (response.success) {
       // نمایش پیام موفقیت
       alert('تنظیمات ملت با موفقیت ذخیره شد')
       await loadGatewaySettings() // بارگذاری مجدد
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در ذخیره تنظیمات ملت:', error)
     alert(error.data?.message || 'خطا در ذخیره تنظیمات')
   } finally {
@@ -333,16 +341,16 @@ const testConnection = async () => {
         private_key: form.privateKey,
         is_test_mode: form.isTestMode
       }
-    }) as any
+    }) as { success?: boolean; [key: string]: unknown }
 
     testResult.value = {
       success: response.success,
       message: response.message || (response.success ? 'اتصال موفقیت‌آمیز' : 'اتصال ناموفق')
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     testResult.value = {
       success: false,
-      message: error.data?.message || 'خطا در تست اتصال'
+      message: (error as { data?: { message?: string } }).data?.message || 'خطا در تست اتصال'
     }
   } finally {
     testing.value = false

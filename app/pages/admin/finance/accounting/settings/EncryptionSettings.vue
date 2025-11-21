@@ -424,7 +424,7 @@ const encryptionStatus = ref([
 // بروزرسانی قدرت رمزگذاری
 const updateEncryptionStrength = () => {
   // TODO: بروزرسانی قدرت رمزگذاری بر اساس الگوریتم
-  console.log('بروزرسانی قدرت رمزگذاری')
+
 }
 
 // رنگ وضعیت
@@ -460,13 +460,13 @@ const getStatusTextClass = (status: string) => {
 // تست رمزگذاری
 const testEncryption = () => {
   // TODO: تست رمزگذاری
-  console.log('تست رمزگذاری')
+
 }
 
 // ذخیره تنظیمات رمزگذاری
 const saveEncryptionSettings = () => {
   // TODO: ذخیره تنظیمات رمزگذاری
-  console.log('ذخیره تنظیمات رمزگذاری:', encryptionSettings.value)
+
 }
 </script>
 

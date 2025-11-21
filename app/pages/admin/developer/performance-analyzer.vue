@@ -353,7 +353,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // Reactive data
 const performanceStats = ref({
@@ -552,28 +552,28 @@ const formatSize = (bytes) => {
   return `${size.toFixed(1)} ${sizes[i]}`
 }
 
-const applyOptimization = (id) => {
-  console.log('Applying optimization:', id)
+const applyOptimization = (_id) => {
+
 }
 
-const optimizeFile = (fileName) => {
-  console.log('Optimizing file:', fileName)
+const optimizeFile = (_fileName) => {
+
 }
 
-const optimizeQuery = (id) => {
-  console.log('Optimizing query:', id)
+const optimizeQuery = (_id) => {
+
 }
 
-const createIndex = (id) => {
-  console.log('Creating index:', id)
+const createIndex = (_id) => {
+
 }
 
 const generateReport = () => {
-  console.log('Generating performance report...')
+
 }
 
 const exportReport = () => {
-  console.log('Exporting performance report...')
+
 }
 
 // Auto-refresh performance stats

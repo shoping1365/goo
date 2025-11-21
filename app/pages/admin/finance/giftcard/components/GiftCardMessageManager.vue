@@ -547,16 +547,30 @@ const getStatusClasses = (status: string) => {
   return classesMap[status] || 'bg-gray-100 text-gray-800'
 }
 
-const editMessage = (message: any) => {
+interface Message {
+  id?: number | string
+  title?: string
+  isActive?: boolean
+  status?: string
+  [key: string]: unknown
+}
+
+interface Template {
+  id?: number | string
+  template?: string
+  [key: string]: unknown
+}
+
+const editMessage = (message: Message) => {
   editingMessage.value = message
   showCreateModal.value = true
 }
 
-const toggleMessageStatus = async (message: any) => {
+const toggleMessageStatus = async (message: Message) => {
   try {
     message.isActive = !message.isActive
     // در نسخه واقعی: ارسال به API
-    console.log('Toggling message status:', message.id, message.isActive)
+
     alert(`پیام ${message.isActive ? 'فعال' : 'غیرفعال'} شد`)
   } catch (error) {
     console.error('خطا در تغییر وضعیت پیام:', error)
@@ -564,12 +578,12 @@ const toggleMessageStatus = async (message: any) => {
   }
 }
 
-const approveMessage = async (message: any) => {
+const approveMessage = async (message: Message) => {
   if (confirm(`آیا می‌خواهید پیام "${message.title}" تأیید شود؟`)) {
     try {
       message.status = 'active'
       // در نسخه واقعی: ارسال به API
-      console.log('Approving message:', message.id)
+
       alert('پیام تأیید شد')
     } catch (error) {
       console.error('خطا در تأیید پیام:', error)
@@ -578,7 +592,7 @@ const approveMessage = async (message: any) => {
   }
 }
 
-const deleteMessage = async (message: any) => {
+const deleteMessage = async (message: Message) => {
   if (confirm(`آیا از حذف پیام "${message.title}" مطمئن هستید؟`)) {
     try {
       const index = customMessages.value.findIndex(m => m.id === message.id)
@@ -586,7 +600,7 @@ const deleteMessage = async (message: any) => {
         customMessages.value.splice(index, 1)
       }
       // در نسخه واقعی: ارسال به API
-      console.log('Deleting message:', message.id)
+
       alert('پیام حذف شد')
     } catch (error) {
       console.error('خطا در حذف پیام:', error)
@@ -595,7 +609,7 @@ const deleteMessage = async (message: any) => {
   }
 }
 
-const useTemplate = (template: any) => {
+const useTemplate = (template: Template) => {
   editingMessage.value = {
     title: '',
     content: template.template,
@@ -626,7 +640,7 @@ const clearBannedWords = () => {
 const saveSettings = async () => {
   try {
     // در نسخه واقعی: ارسال به API
-    console.log('Saving settings:', settings.value)
+
     alert('تنظیمات با موفقیت ذخیره شد')
   } catch (error) {
     console.error('خطا در ذخیره تنظیمات:', error)
@@ -639,12 +653,12 @@ const closeModal = () => {
   editingMessage.value = null
 }
 
-const handleMessageCreated = (message: any) => {
+const handleMessageCreated = (message: Message) => {
   customMessages.value.unshift(message)
   closeModal()
 }
 
-const handleMessageUpdated = (message: any) => {
+const handleMessageUpdated = (message: Message) => {
   const index = customMessages.value.findIndex(m => m.id === message.id)
   if (index > -1) {
     customMessages.value[index] = message
@@ -655,7 +669,7 @@ const handleMessageUpdated = (message: any) => {
 // Lifecycle
 onMounted(() => {
   // بارگذاری تنظیمات از API
-  console.log('Message manager mounted')
+
 })
 </script>
 

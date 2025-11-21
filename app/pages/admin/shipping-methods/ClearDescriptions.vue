@@ -164,15 +164,12 @@ function getDescription(methodId, type) {
 }
 
 function editDescription(_description) {
-  // console.log('Editing description:', description)
 }
 
 function deleteDescription(_id) {
-  // console.log('Deleting description:', id)
 }
 
 function addNewDescription() {
-  // console.log('Adding new description:', newDescription)
   // Reset form
   Object.assign(newDescription, {
     shippingMethod: '',

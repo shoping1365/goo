@@ -541,16 +541,16 @@ const getLevelText = (level: string): string => {
 
 // توابع عملیات
 const refreshLogs = () => {
-  console.log('بروزرسانی لاگ‌ها')
+
 }
 
 const exportLogs = () => {
-  console.log('خروجی لاگ‌ها')
+
 }
 
-const clearLogs = () => {
+const _clearLogs = () => {
   if (confirm('آیا از پاک کردن همه لاگ‌ها اطمینان دارید؟')) {
-    console.log('پاک کردن لاگ‌ها')
+
   }
 }
 
@@ -562,7 +562,11 @@ const clearAllFilters = () => {
   filters.value.search = ''
 }
 
-const viewLogDetails = (log: any) => {
+interface Log {
+  [key: string]: unknown
+}
+
+const viewLogDetails = (log: Log) => {
   selectedLog.value = log
 }
 

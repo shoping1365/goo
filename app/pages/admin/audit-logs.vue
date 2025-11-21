@@ -144,8 +144,11 @@ const fetchLogs = async () => {
   try {
     const response = await api.get<AuditLog[]>('/api/admin/audit-logs')
     logs.value = response
-  } catch (err: any) {
-    error.value = err.error || 'خطا در دریافت لاگ‌ها'
+  } catch (err: unknown) {
+    const errorMessage = (err && typeof err === 'object' && 'error' in err)
+      ? (err as { error?: string }).error || 'خطا در دریافت لاگ‌ها'
+      : 'خطا در دریافت لاگ‌ها'
+    error.value = errorMessage
   } finally {
     loading.value = false
   }

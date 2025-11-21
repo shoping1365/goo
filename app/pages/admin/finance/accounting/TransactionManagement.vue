@@ -106,13 +106,13 @@ const activeTab = ref('invoices')
 // بروزرسانی داده‌ها
 const refreshData = () => {
   // TODO: بروزرسانی داده‌ها از سرور
-  console.log('بروزرسانی داده‌های مدیریت تراکنش‌ها')
+
 }
 
 // ذخیره تنظیمات
 const saveSettings = () => {
   // TODO: ذخیره تنظیمات در سرور
-  console.log('ذخیره تنظیمات مدیریت تراکنش‌ها')
+
 }
 </script>
 

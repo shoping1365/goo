@@ -9,7 +9,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
           </svg>
           <NuxtLink 
-            v-if="product.category" 
+            v-if="product.category && typeof product.category === 'object'" 
             :to="`/product-category/${product.category.slug}`"
             class="hover:text-blue-600 transition-colors truncate"
           >
@@ -134,7 +134,7 @@ import ProductRelated from '../ProductRelated.vue'
 import ProductReviews from '../ProductReviews.vue'
 import ProductSpecifications from '../ProductSpecifications.vue'
 
-import { computed, onBeforeUnmount, onMounted, reactive, ref, watch, type Ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, reactive, ref, watch, type Component, type Ref } from 'vue'
 import { useCart } from '~/composables/useCart'
 import type { Product } from '~/types/product'
 
@@ -246,7 +246,7 @@ const tabs = [
   { label: 'محصولات مکمل', value: 'complements' }
 ]
 
-const tabComponents = {
+const tabComponents: Record<string, Component> = {
   description: ProductDescription,
   videos: ProductVideos,
   reviews: ProductReviews,

@@ -464,3 +464,85 @@ type MenuRepositoryInterface interface {
 		Slug string `json:"slug"`
 	}, error)
 }
+
+// ==================== Order Repository ====================
+
+// OrderRepositoryInterface اینترفیس repository برای سفارش‌ها
+type OrderRepositoryInterface interface {
+	// CreateOrder ایجاد سفارش جدید
+	CreateOrder(order *models.Order) error
+
+	// GetOrderByID دریافت سفارش بر اساس ID
+	GetOrderByID(orderID uint) (*models.Order, error)
+
+	// GetOrderByOrderNumber دریافت سفارش بر اساس شماره سفارش
+	GetOrderByOrderNumber(orderNumber string) (*models.Order, error)
+
+	// GetUserOrders دریافت سفارش‌های یک کاربر
+	GetUserOrders(userID uint) ([]models.Order, error)
+
+	// UpdateOrder به‌روزرسانی سفارش
+	UpdateOrder(order *models.Order) error
+
+	// UpdateOrderStatus به‌روزرسانی وضعیت سفارش
+	UpdateOrderStatus(orderID uint, status string) error
+
+	// UpdatePaymentStatus به‌روزرسانی وضعیت پرداخت
+	UpdatePaymentStatus(orderID uint, status string) error
+
+	// CancelOrder لغو سفارش
+	CancelOrder(orderID uint) error
+
+	// ReleaseExpiredReservations آزادسازی رزروهای منقضی شده
+	ReleaseExpiredReservations() error
+
+	// GetPendingOrders دریافت سفارش‌های در انتظار
+	GetPendingOrders() ([]models.Order, error)
+
+	// GetExpiredReservations دریافت رزروهای منقضی شده
+	GetExpiredReservations() ([]models.InventoryReservation, error)
+}
+
+// ==================== Inventory Repository ====================
+
+// InventoryRepositoryInterface اینترفیس repository برای موجودی
+type InventoryRepositoryInterface interface {
+	// GetInventoryByProductID دریافت موجودی یک محصول
+	GetInventoryByProductID(productID uint) (*models.ProductInventory, error)
+
+	// CreateOrUpdateInventory ایجاد یا به‌روزرسانی موجودی محصول
+	CreateOrUpdateInventory(inventory *models.ProductInventory) error
+
+	// CheckAvailability بررسی موجودی محصول
+	CheckAvailability(productID uint, quantity int) (bool, error)
+
+	// ReserveInventory رزرو موجودی برای سفارش
+	ReserveInventory(productID, orderID, quantity uint, reservedUntil time.Time) (*models.InventoryReservation, error)
+
+	// ReleaseReservation آزادسازی رزرو موجودی
+	ReleaseReservation(reservationID uint) error
+
+	// ReleaseExpiredReservations آزادسازی رزروهای منقضی شده
+	ReleaseExpiredReservations() error
+
+	// GetLowStockProducts دریافت محصولات با موجودی کم
+	GetLowStockProducts() ([]models.ProductInventory, error)
+
+	// GetOutOfStockProducts دریافت محصولات ناموجود
+	GetOutOfStockProducts() ([]models.ProductInventory, error)
+
+	// GetInventorySettings دریافت تنظیمات موجودی
+	GetInventorySettings() (*models.InventorySettings, error)
+
+	// UpdateInventorySettings به‌روزرسانی تنظیمات موجودی
+	UpdateInventorySettings(settings *models.InventorySettings) error
+
+	// CheckAndReserveInventory بررسی موجودی و رزرو برای سفارش
+	CheckAndReserveInventory(order *models.Order) error
+
+	// ProcessOrderReservation پردازش رزرو سفارش (تبدیل به فروش)
+	ProcessOrderReservation(orderID uint) error
+
+	// CancelOrderReservation لغو رزرو سفارش
+	CancelOrderReservation(orderID uint) error
+}

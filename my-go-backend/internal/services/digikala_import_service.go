@@ -279,3 +279,13 @@ func (s *DigikalaImportService) findCategoryTitle(categories []DigikalaCategory,
 	}
 	return ""
 }
+
+// SetBaseURL تنظیم آدرس پایه API (برای تست)
+func (s *DigikalaImportService) SetBaseURL(url string) {
+	s.baseURL = url
+}
+
+// SetHTTPClient تنظیم کلاینت HTTP (برای تست)
+func (s *DigikalaImportService) SetHTTPClient(client *http.Client) {
+	s.httpClient = client
+}

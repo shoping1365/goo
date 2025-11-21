@@ -41,11 +41,11 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
+defineProps({
   member: { type: Object, required: true }
 })
 
-const emit = defineEmits(['close', 'edit'])
+defineEmits(['close', 'edit'])
 
 function getLevelColor(level) {
   const colors = {

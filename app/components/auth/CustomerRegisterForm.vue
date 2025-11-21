@@ -12,7 +12,7 @@ const step = ref(1);
 const message = ref('');
 const error = ref('');
 
-async function sendOtp() {
+const _sendOtp = async () => {
   error.value = '';
   message.value = '';
   const res = await fetch('/api/auth/send-otp', {
@@ -29,7 +29,7 @@ async function sendOtp() {
   }
 }
 
-async function handleSubmit() {
+const _handleSubmit = async () => {
   error.value = '';
   message.value = '';
   // First, verify OTP

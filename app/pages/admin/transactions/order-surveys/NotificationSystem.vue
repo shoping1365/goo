@@ -469,24 +469,19 @@
    }
    
    const editTemplate = (_template: NotificationTemplate) => {
-     // console.log('Editing template:', template)
    }
    
    const previewTemplate = (_template: NotificationTemplate) => {
-     // console.log('Previewing template:', template)
    }
    
    const testNotifications = () => {
-     // console.log('Testing notifications...')
    }
    
    const saveSettings = () => {
-     // console.log('Saving notification settings...')
    }
    
    const resetSettings = () => {
      if (confirm('آیا از بازنشانی تنظیمات اطلاع‌رسانی اطمینان دارید؟')) {
-       // console.log('Resetting notification settings')
      }
    }
    

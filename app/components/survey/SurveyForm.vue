@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import ModernSurvey from './templates/ModernSurvey.vue'
 import ElegantSurvey from './templates/ElegantSurvey.vue'
 import ColorfulSurvey from './templates/ColorfulSurvey.vue'
@@ -28,7 +28,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
-  submit: [data: any]
+  submit: [data: Record<string, unknown>]
 }>()
 
 const currentTemplate = computed(() => {
@@ -42,7 +42,7 @@ const currentTemplate = computed(() => {
   }
 })
 
-const handleSubmit = (data: any) => {
+const handleSubmit = (data: Record<string, unknown>) => {
   emit('submit', {
     orderId: props.order.id,
     ...data

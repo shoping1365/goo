@@ -328,9 +328,9 @@ definePageMeta({
 })
 
 // دسترسی حذف منطقه مالیاتی فقط برای توسعه‌دهنده
-const { user } = useAuth()
+const { user: _user } = useAuth()
 const canDeleteTaxRegion = computed(() => {
-  // const roles = user.value?.roles || []
+  // const roles = _user.value?.roles || []
   // return roles.includes('developer')
   return true // احراز هویت غیرفعال شده است
 })
@@ -426,8 +426,14 @@ const regionForm = ref({
   description: ''
 })
 
+interface Region {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
+}
+
 // انتخاب منطقه
-const selectRegion = (region: any) => {
+const selectRegion = (region: Region) => {
   selectedRegion.value = region
 }
 
@@ -468,21 +474,21 @@ const formatCurrency = (amount: number): string => {
 }
 
 // ویرایش منطقه
-const editRegion = (region: any) => {
+const editRegion = (region: Region) => {
   editingRegion.value = region
   regionForm.value = {
     name: region.name,
     taxRate: region.taxRate,
     postalCodeFrom: '',
     postalCodeTo: '',
-    cities: region.cities.map((c: any) => c.name).join(', '),
+    cities: Array.isArray(region.cities) ? region.cities.map((c: { name?: string }) => c.name || '').join(', ') : '',
     description: ''
   }
   showAddRegionModal.value = true
 }
 
 // تغییر وضعیت منطقه
-const toggleRegionStatus = async (region: any) => {
+const toggleRegionStatus = async (region: Region) => {
   try {
     // TODO: ارسال درخواست به API
     region.status = region.status === 'active' ? 'inactive' : 'active'
@@ -492,7 +498,7 @@ const toggleRegionStatus = async (region: any) => {
 }
 
 // حذف منطقه
-const deleteRegion = async (region: any) => {
+const deleteRegion = async (region: Region) => {
   if (confirm('آیا از حذف این منطقه اطمینان دارید؟')) {
     try {
       // TODO: ارسال درخواست به API

@@ -380,8 +380,6 @@ const updateOrder = async (id: number, event: Event) => {
   // } catch (err) {
   //   console.error('خطا در بروزرسانی ترتیب:', err)
   // }
-
-  // console.log('Updating order for category:', id, 'to:', newOrder)
 }
 
 const toggleStatus = async (id: number) => {
@@ -402,8 +400,6 @@ const toggleStatus = async (id: number) => {
   // } catch (err) {
   //   console.error('خطا در تغییر وضعیت:', err)
   // }
-
-  // console.log('Toggling status for category:', id)
 }
 
 const duplicateCategory = async (id: number) => {
@@ -433,8 +429,6 @@ const duplicateCategory = async (id: number) => {
   // } catch (err) {
   //   console.error('خطا در کپی کردن:', err)
   // }
-
-  // console.log('Duplicating category:', id)
 }
 
 const confirmDelete = async (id: number) => {
@@ -452,8 +446,6 @@ const confirmDelete = async (id: number) => {
     // } catch (err) {
   //   console.error('خطا در حذف:', err)
   // }
-
-  // console.log('Deleting category:', id)
   }
 }
 

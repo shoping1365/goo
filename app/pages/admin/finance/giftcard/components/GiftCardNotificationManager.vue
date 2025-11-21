@@ -576,7 +576,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { Switch } from '@headlessui/vue'
 
 // کامپوننت‌های مورد نیاز
@@ -739,13 +739,7 @@ const saveSettings = async () => {
   try {
     // شبیه‌سازی API call
     await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    console.log('تنظیمات اطلاع‌رسانی ذخیره شد:', {
-      emailSettings,
-      smsSettings,
-      generalSettings
-    })
-    
+
     alert('تنظیمات با موفقیت ذخیره شد')
   } catch (error) {
     console.error('خطا در ذخیره تنظیمات:', error)
@@ -757,17 +751,23 @@ const saveSettings = async () => {
 
 const testNotification = () => {
   if (confirm('آیا می‌خواهید یک اطلاع‌رسانی تست ارسال شود؟')) {
-    console.log('ارسال اطلاع‌رسانی تست...')
+
     alert('اطلاع‌رسانی تست ارسال شد')
   }
 }
 
-const editTemplate = (template: any) => {
+interface Template {
+  id?: number | string
+  type?: string
+  [key: string]: unknown
+}
+
+const editTemplate = (template: Template) => {
   selectedTemplate.value = template
   showTemplateModal.value = true
 }
 
-const handleTemplateSaved = (template: any) => {
+const handleTemplateSaved = (template: Template) => {
   // به‌روزرسانی قالب در لیست
   if (template.type === 'email') {
     const index = emailTemplates.value.findIndex(t => t.id === template.id)
@@ -827,7 +827,7 @@ const getSmsStatusLabel = (status: string) => {
 
 // Lifecycle
 onMounted(() => {
-  console.log('Gift card notification manager component mounted')
+
 })
 </script>
 

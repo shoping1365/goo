@@ -433,14 +433,19 @@ import GiftCardAdvancedSearch from './GiftCardAdvancedSearch.vue'
 import GiftCardSavedFilters from './GiftCardSavedFilters.vue'
 
 // Props
+interface GiftCard {
+  id?: number | string
+  [key: string]: unknown
+}
+
 const props = defineProps<{
-  giftCards: any[]
+  giftCards: GiftCard[]
 }>()
 
 // Emits
 const emit = defineEmits<{
-  'view-details': [card: any]
-  'edit-card': [card: any]
+  'view-details': [card: GiftCard]
+  'edit-card': [card: GiftCard]
 }>()
 
 // Reactive data
@@ -488,21 +493,25 @@ const paginatedResults = computed(() => {
   return searchResults.value.slice(start, end)
 })
 
+interface Filters {
+  [key: string]: unknown
+}
+
 // Methods
-const handleViewDetails = (card: any) => {
+const handleViewDetails = (card: GiftCard) => {
   emit('view-details', card)
 }
 
-const handleEditCard = (card: any) => {
+const handleEditCard = (card: GiftCard) => {
   emit('edit-card', card)
 }
 
-const handleApplyFilter = (filters: any) => {
+const handleApplyFilter = (filters: Filters) => {
   currentFilters.value = filters
   applyFilters(filters)
 }
 
-const applyFilters = (filters: any) => {
+const applyFilters = (_filters: Filters) => {
   // اینجا منطق اعمال فیلترها اضافه می‌شود
   searchResults.value = [...props.giftCards] // فعلاً همه کارت‌ها
   updateSearchStats()
@@ -544,19 +553,19 @@ const clearSelection = () => {
 }
 
 const bulkExport = () => {
-  console.log('خروجی Excel برای کارت‌های انتخاب شده:', selectedCards.value)
+
 }
 
 const bulkSendEmail = () => {
-  console.log('ارسال ایمیل برای کارت‌های انتخاب شده:', selectedCards.value)
+
 }
 
 const bulkSendSMS = () => {
-  console.log('ارسال پیامک برای کارت‌های انتخاب شده:', selectedCards.value)
+
 }
 
 const bulkUpdateStatus = () => {
-  console.log('تغییر وضعیت کارت‌های انتخاب شده:', selectedCards.value)
+
 }
 
 const previousPage = () => {
@@ -657,7 +666,7 @@ watch(searchResults, () => {
 onMounted(() => {
   searchResults.value = [...props.giftCards]
   updateSearchStats()
-  console.log('Gift card search and filter component mounted')
+
 })
 </script>
 

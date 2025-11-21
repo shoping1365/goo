@@ -91,11 +91,7 @@ const fetchPost = async () => {
     const isPreview = route.query.preview === '1' || route.query.preview === 'true'
     const apiUrl = isPreview ? `/api/posts/${slug}?preview=1` : `/api/posts/${slug}`
     
-    // console.log('🔍 Fetching post from:', apiUrl)
-    // console.log('🔍 Slug:', slug)
-    
     post.value = await $fetch<Post>(apiUrl)
-    // console.log('✅ Post fetched successfully:', post.value)
     error.value = null
   } catch (e: unknown) {
     // console.error('❌ Error fetching post:', e)

@@ -532,22 +532,18 @@ const formatPrice = (price) => {
 
 const generateReport = () => {
   // تولید گزارش
-  // console.log('تولید گزارش...')
 }
 
 const exportData = () => {
   // خروجی اکسل
-  // console.log('خروجی اکسل...')
 }
 
 const printReport = () => {
   // چاپ گزارش
-  // console.log('چاپ گزارش...')
 }
 
 const refreshStats = () => {
   // به‌روزرسانی آمار
-  // console.log('به‌روزرسانی آمار...')
 }
 
 // نظارت بر تغییرات

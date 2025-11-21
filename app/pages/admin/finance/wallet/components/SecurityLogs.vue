@@ -448,7 +448,7 @@ import { ref, computed } from 'vue'
 const activeTab = ref('overview')
 
 // آمار امنیتی
-const securityStats = ref({
+const _securityStats = ref({
   status: 'عالی',
   lastCheck: '2 ساعت پیش',
   activeAlerts: 3,
@@ -677,7 +677,7 @@ const getAlertStatusClass = (status: string) => {
 // توابع عملیاتی
 const applyLogFilters = () => {
   // اعمال فیلترها
-  console.log('فیلترها اعمال شدند')
+
 }
 
 const clearLogFilters = () => {
@@ -691,6 +691,6 @@ const clearLogFilters = () => {
 
 const exportLogs = () => {
   // خروجی لاگ‌ها
-  console.log('لاگ‌ها صادر شدند')
+
 }
 </script> 

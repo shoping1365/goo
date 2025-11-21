@@ -442,7 +442,6 @@ const selectChat = (chat: Chat) => {
 
 const startNewChat = () => {
   // TODO: Implement new chat modal
-  // console.log('Start new chat')
 }
 
 const sendMessage = () => {
@@ -553,20 +552,17 @@ const handleFileSelect = (event: Event) => {
   if (!file) return
 
   // TODO: Upload file and add to messages
-  // console.log('Selected file:', file)
 }
 
 const startVoiceRecording = () => {
   isRecording.value = true
   // TODO: Implement voice recording
-  // console.log('Start recording')
 }
 
 const stopVoiceRecording = () => {
   if (isRecording.value) {
     isRecording.value = false
     // TODO: Stop recording and send
-    // console.log('Stop recording')
   }
 }
 
@@ -574,7 +570,6 @@ const cancelVoiceRecording = () => {
   if (isRecording.value) {
     isRecording.value = false
     // TODO: Cancel recording
-    // console.log('Cancel recording')
   }
 }
 

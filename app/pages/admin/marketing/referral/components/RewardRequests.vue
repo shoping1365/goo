@@ -237,26 +237,36 @@ function formatDate(dateString: string) {
   return date.toLocaleDateString('fa-IR')
 }
 
+interface RewardRequest {
+  id: number
+  userName: string
+  userEmail: string
+  userAvatar: string
+  rewardType: string
+  rewardAmount: number
+  requestDate: string
+  status: string
+  rejectionReason?: string
+}
+
 // تایید درخواست
-function approveRequest(request: any) {
+function approveRequest(request: RewardRequest) {
   request.status = 'approved'
   // TODO: فراخوانی API برای تایید درخواست
-  console.log('درخواست تایید شد:', request.id)
 }
 
 // رد درخواست
-function rejectRequest(request: any) {
+function rejectRequest(request: RewardRequest) {
   const reason = prompt('دلیل رد درخواست:')
   if (reason) {
     request.status = 'rejected'
     request.rejectionReason = reason
     // TODO: فراخوانی API برای رد درخواست
-    console.log('درخواست رد شد:', request.id)
   }
 }
 
 // نمایش جزئیات درخواست
-function showRequestDetails(request: any) {
+function showRequestDetails(request: RewardRequest) {
   selectedRequest.value = request
   showDetails.value = true
 }

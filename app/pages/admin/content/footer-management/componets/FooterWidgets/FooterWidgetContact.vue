@@ -16,12 +16,12 @@
               <p v-if="location.address" class="text-sm mb-2">{{ location.address }}</p>
               <div v-if="location.phones.length" class="footer-location-phones">
                 <div
-                  v-for="phone in location.phones"
-                  :key="`${location.id}-phone-${phone}`"
+                  v-for="phoneNumber in location.phones"
+                  :key="`${location.id}-phone-${phoneNumber}`"
                   class="footer-phone-row"
                 >
                   <span class="footer-phone-icon">📞</span>
-                  <a :href="`tel:${phone}`" class="phone-link">{{ phone }}</a>
+                  <a :href="`tel:${phoneNumber}`" class="phone-link">{{ phoneNumber }}</a>
                 </div>
               </div>
               <div v-if="location.email" class="footer-location-email">
@@ -48,10 +48,10 @@
         <div v-if="allPhones.length" class="flex items-start space-x-2 space-x-reverse footer-widget-text">
           <span class="text-lg">📞</span>
           <span class="text-sm phone-line">
-            <template v-for="(phone, index) in allPhones" :key="`fallback-phone-${index}`">
+            <template v-for="(phoneNumber, index) in allPhones" :key="`fallback-phone-${index}`">
               <span v-if="index > 0" class="phone-separator">-</span>
-              <a :href="`tel:${phone}`" class="hover:opacity-80 transition-colors phone-link">
-                {{ phone }}
+              <a :href="`tel:${phoneNumber}`" class="hover:opacity-80 transition-colors phone-link">
+                {{ phoneNumber }}
               </a>
             </template>
           </span>
@@ -157,7 +157,7 @@ const shouldShowGeneralSection = computed(() => {
   return Boolean(props.address || props.secondaryAddress || allPhones.value.length > 0 || props.email)
 })
 
-const hasContactInfo = computed(() => hasLocationEntries.value || shouldShowGeneralSection.value)
+const _hasContactInfo = computed(() => hasLocationEntries.value || shouldShowGeneralSection.value)
 
 const containerStyle = computed(() => ({
   display: 'flex',

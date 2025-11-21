@@ -186,6 +186,7 @@ v-for="tab in tabs" :key="tab.value" :class="['px-6 py-3 -mb-px font-medium text
               const sanitizedPreviewContent = computed(() => DOMPurify.sanitize(previewContent.value))
               <div v-html="sanitizedPreviewContent"></div>
             -->
+              <!-- eslint-disable-next-line vue/no-v-html -->
             <div v-if="previewContent" class="text-sm text-gray-700" v-html="previewContent"></div>
             <div v-else class="text-gray-400 text-center py-8">قالبی انتخاب نشده است</div>
           </div>
@@ -291,7 +292,12 @@ import { reactive, ref } from 'vue'
 
 const activeTab = ref('templates')
 const showTemplateForm = ref(false)
-const editingTemplate = ref<any>(null)
+interface Template {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
+}
+const editingTemplate = ref<Template | null>(null)
 const selectedTemplate = ref('')
 const previewType = ref('email')
 const previewContent = ref('')
@@ -366,21 +372,21 @@ const formatDate = (date: string): string => {
   return new Intl.DateTimeFormat('fa-IR').format(new Date(date))
 }
 
-const editTemplate = (template: any) => {
+const editTemplate = (template: Template) => {
   editingTemplate.value = template
   Object.assign(form, template)
   showTemplateForm.value = true
 }
 
-const deleteTemplate = async (template: any) => {
+const deleteTemplate = async (template: Template) => {
   if (confirm(`آیا از حذف قالب "${template.name}" اطمینان دارید؟`)) {
     try {
       const index = templates.value.findIndex(t => t.id === template.id)
       if (index !== -1) {
         templates.value.splice(index, 1)
       }
-    } catch (error) {
-      console.error('خطا در حذف قالب:', error)
+    } catch (_error) {
+      console.error('خطا در حذف قالب:', _error)
     }
   }
 }

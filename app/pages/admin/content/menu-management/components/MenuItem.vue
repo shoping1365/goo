@@ -156,7 +156,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits([
+const _emit = defineEmits([
   'toggle-expanded',
   'drop-item',
   'remove-item',
@@ -168,7 +168,7 @@ const emit = defineEmits([
   'open-image-selector',
 ])
 
-const dragIndent = ref(null)
+const _dragIndent = ref(null)
 const isDragging = ref(false)
 
 const currentPath = computed(() => [...props.parentPath, props.index])
@@ -200,7 +200,7 @@ const getItemIcon = (item) => {
     if (parsed.type === 'image') {
       return null
     }
-  } catch (e) {
+  } catch (_e) {
     return item.icon
   }
   return null
@@ -213,7 +213,7 @@ const getItemImage = (item) => {
     if (parsed.type === 'image') {
       return parsed
     }
-  } catch (e) {}
+  } catch (_e) {}
   return null
 }
 

@@ -48,7 +48,7 @@
           <div class="flex items-center gap-2 border-2 border-blue-200 rounded-lg p-1 bg-blue-50">
             <input
               id="easyLoadMobile"
-              v-model="props.sliderConfig.easy_load_enabled"
+              v-model="easyLoadEnabled"
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-blue-100 border-blue-300 rounded focus:ring-blue-500 focus:ring-2"
             />
@@ -62,12 +62,12 @@
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ بالا (px)</label>
             <input
               type="number"
-              :value="props.sliderConfig.mobile_padding_top !== undefined ? props.sliderConfig.mobile_padding_top : ''"
+              :value="mobilePaddingTop || ''"
               min="0"
               max="100"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
               placeholder="0"
-              @input="e => props.sliderConfig.mobile_padding_top = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+              @input="e => mobilePaddingTop = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             />
           </div>
 
@@ -76,12 +76,12 @@
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ پایین (px)</label>
             <input
               type="number"
-              :value="props.sliderConfig.mobile_padding_bottom !== undefined ? props.sliderConfig.mobile_padding_bottom : ''"
+              :value="mobilePaddingBottom || ''"
               min="0"
               max="100"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
               placeholder="0"
-              @input="e => props.sliderConfig.mobile_padding_bottom = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+              @input="e => mobilePaddingBottom = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             />
           </div>
 
@@ -90,12 +90,12 @@
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین راست (px)</label>
             <input
               type="number"
-              :value="props.sliderConfig.mobile_margin_right !== undefined ? props.sliderConfig.mobile_margin_right : ''"
+              :value="mobileMarginRight || ''"
               min="0"
               max="100"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
               placeholder="0"
-              @input="e => props.sliderConfig.mobile_margin_right = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+              @input="e => mobileMarginRight = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             />
           </div>
 
@@ -104,12 +104,12 @@
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین چپ (px)</label>
             <input
               type="number"
-              :value="props.sliderConfig.mobile_margin_left !== undefined ? props.sliderConfig.mobile_margin_left : ''"
+              :value="mobileMarginLeft || ''"
               min="0"
               max="100"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
               placeholder="0"
-              @input="e => props.sliderConfig.mobile_margin_left = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+              @input="e => mobileMarginLeft = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             />
           </div>
 
@@ -117,7 +117,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پخش خودکار</label>
             <select
-              v-model="props.sliderConfig.mobile_autoplay_enabled"
+              v-model="mobileAutoplayEnabled"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">فعال</option>
@@ -129,7 +129,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">تاخیر پخش خودکار (ثانیه)</label>
             <select
-              v-model="props.sliderConfig.mobile_autoplay_delay"
+              v-model.number="mobileAutoplayDelay"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="3">3 ثانیه</option>
@@ -144,7 +144,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">حلقه اسلایدر</label>
             <select
-              v-model="props.sliderConfig.mobile_loop_enabled"
+              v-model="mobileLoopEnabled"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">فعال</option>
@@ -156,7 +156,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">نمایش دکمه‌های ناوبری</label>
             <select
-              v-model="props.sliderConfig.mobile_show_navigation"
+              v-model="mobileShowNavigation"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">نمایش</option>
@@ -168,7 +168,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">نمایش نقطه‌های ناوبری</label>
             <select
-              v-model="props.sliderConfig.mobile_show_pagination"
+              v-model="mobileShowPagination"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">نمایش</option>
@@ -180,7 +180,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پس‌زمینه فعال</label>
             <select
-              v-model="props.sliderConfig.bg_enabled"
+              v-model="bgEnabled"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">فعال</option>
@@ -192,7 +192,7 @@
           <div v-if="props.sliderConfig.bg_enabled">
             <label class="block mb-2 text-sm font-medium text-gray-700">عریض پس‌زمینه</label>
             <select
-              v-model="props.sliderConfig.wide_bg"
+              v-model="wideBg"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">بله</option>
@@ -204,7 +204,7 @@
                     <div v-if="props.sliderConfig.bg_enabled">
                     <label class="block mb-2 text-sm font-medium text-gray-700">رنگ پس‌زمینه</label>
                     <input
-                    v-model="props.sliderConfig.bg_color"
+                    v-model="bgColor"
                     type="color"
                     class="w-full h-10 border border-gray-300 rounded-md"
                     />
@@ -214,7 +214,7 @@
                     <div>
                       <label class="block mb-2 text-sm font-medium text-gray-700">عرض اسلایدر در موبایل</label>
                       <select
-                        v-model="props.sliderConfig.mobile_slider_width"
+                        v-model="mobileSliderWidth"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                       >
                         <option :value="'auto'">اتوماتیک</option>
@@ -228,7 +228,7 @@
                     <div>
                       <label class="block mb-2 text-sm font-medium text-gray-700">عرض بنر در موبایل</label>
                       <select
-                        v-model="props.sliderConfig.mobile_banner_width"
+                        v-model="mobileBannerWidth"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-purple-400"
                       >
                         <option :value="'auto'">اتوماتیک</option>
@@ -547,8 +547,38 @@
           import { ref, computed, onMounted } from 'vue'
 
           // Props
+          // Slider Config interface
+          interface SliderConfig {
+            easy_load_enabled?: boolean
+            mobile_padding_top?: number
+            mobile_padding_bottom?: number
+            mobile_margin_right?: number
+            mobile_margin_left?: number
+            mobile_autoplay_enabled?: boolean
+            mobile_autoplay_delay?: number
+            mobile_loop_enabled?: boolean
+            mobile_show_navigation?: boolean
+            mobile_show_pagination?: boolean
+            bg_enabled?: boolean
+            wide_bg?: boolean
+            bg_color?: string
+            mobile_slider_width?: string | number
+            mobile_banner_width?: string | number
+            mobile_height?: number
+            mobile_banner_height?: number
+            show_title?: boolean
+            show_description?: boolean
+            show_navigation?: boolean
+            show_pagination?: boolean
+            slides?: unknown[]
+            side_banners?: unknown[]
+            mobile_slides?: unknown[]
+            mobile_side_banners?: unknown[]
+            [key: string]: unknown
+          }
+
           interface Props {
-          sliderConfig: any
+          sliderConfig: SliderConfig
           currentPreviewSlide: number
           isMobileEnabled: boolean
           openAddSliderModal: () => void
@@ -564,8 +594,19 @@
           }
 
           const props = defineProps<Props>()
-
-          const emit = defineEmits<{ (e: 'change-device', value: 'desktop' | 'mobile'): void }>()
+          
+          const emit = defineEmits<{
+            'update:sliderConfig': [config: SliderConfig]
+            'change-device': [value: 'desktop' | 'mobile']
+          }>()
+          
+          // Helper function to emit config updates
+          const updateConfig = (field: string, value: unknown) => {
+            emit('update:sliderConfig', {
+              ...props.sliderConfig,
+              [field]: value
+            })
+          }
 
           // Tab state
           const activeTab = ref<'desktop' | 'mobile'>('desktop')
@@ -590,11 +631,85 @@
           })
 
           // Collections split per device
-          const desktopSlides = computed(() => (props.sliderConfig?.slides ?? []))
-          const desktopBanners = computed(() => (props.sliderConfig?.side_banners ?? []))
           // آرایه‌های جداگانه برای موبایل
           const mobileSlides = computed(() => (props.sliderConfig?.mobile_slides ?? []))
           const mobileBanners = computed(() => (props.sliderConfig?.mobile_side_banners ?? []))
+          
+          // Computed properties for config fields using emit instead of direct mutation
+          const easyLoadEnabled = computed({
+            get: () => props.sliderConfig?.easy_load_enabled ?? false,
+            set: (val: boolean) => updateConfig('easy_load_enabled', val)
+          })
+          
+          const mobilePaddingTop = computed({
+            get: () => props.sliderConfig?.mobile_padding_top ?? 0,
+            set: (val: number | undefined) => updateConfig('mobile_padding_top', val)
+          })
+          
+          const mobilePaddingBottom = computed({
+            get: () => props.sliderConfig?.mobile_padding_bottom ?? 0,
+            set: (val: number | undefined) => updateConfig('mobile_padding_bottom', val)
+          })
+          
+          const mobileMarginRight = computed({
+            get: () => props.sliderConfig?.mobile_margin_right ?? 0,
+            set: (val: number | undefined) => updateConfig('mobile_margin_right', val)
+          })
+          
+          const mobileMarginLeft = computed({
+            get: () => props.sliderConfig?.mobile_margin_left ?? 0,
+            set: (val: number | undefined) => updateConfig('mobile_margin_left', val)
+          })
+          
+          const mobileAutoplayEnabled = computed({
+            get: () => props.sliderConfig?.mobile_autoplay_enabled ?? false,
+            set: (val: boolean) => updateConfig('mobile_autoplay_enabled', val)
+          })
+          
+          const mobileAutoplayDelay = computed({
+            get: () => props.sliderConfig?.mobile_autoplay_delay ?? 5,
+            set: (val: number) => updateConfig('mobile_autoplay_delay', val)
+          })
+          
+          const mobileLoopEnabled = computed({
+            get: () => props.sliderConfig?.mobile_loop_enabled ?? false,
+            set: (val: boolean) => updateConfig('mobile_loop_enabled', val)
+          })
+          
+          const mobileShowNavigation = computed({
+            get: () => props.sliderConfig?.mobile_show_navigation ?? false,
+            set: (val: boolean) => updateConfig('mobile_show_navigation', val)
+          })
+          
+          const mobileShowPagination = computed({
+            get: () => props.sliderConfig?.mobile_show_pagination ?? false,
+            set: (val: boolean) => updateConfig('mobile_show_pagination', val)
+          })
+          
+          const bgEnabled = computed({
+            get: () => props.sliderConfig?.bg_enabled ?? false,
+            set: (val: boolean) => updateConfig('bg_enabled', val)
+          })
+          
+          const wideBg = computed({
+            get: () => props.sliderConfig?.wide_bg ?? false,
+            set: (val: boolean) => updateConfig('wide_bg', val)
+          })
+          
+          const bgColor = computed({
+            get: () => props.sliderConfig?.bg_color ?? '#ffffff',
+            set: (val: string) => updateConfig('bg_color', val)
+          })
+          
+          const mobileSliderWidth = computed({
+            get: () => props.sliderConfig?.mobile_slider_width ?? 'auto',
+            set: (val: string | number) => updateConfig('mobile_slider_width', val)
+          })
+          
+          const mobileBannerWidth = computed({
+            get: () => props.sliderConfig?.mobile_banner_width ?? 'auto',
+            set: (val: string | number) => updateConfig('mobile_banner_width', val)
+          })
 
           const activeMobileSlideIndex = computed(() => {
             const count = mobileSlides.value.length
@@ -605,22 +720,14 @@
             return raw < 0 ? raw + count : raw
           })
 
-          // Computed values with default fallbacks
+          // Computed values with default fallbacks - using emit instead of direct mutation
           const mobileSliderHeight = computed({
-            get: () => props.sliderConfig.mobile_height,
-            set: val => {
-              if (props.sliderConfig) {
-                props.sliderConfig.mobile_height = val
-              }
-            }
+            get: () => props.sliderConfig?.mobile_height ?? 150,
+            set: (val: number | string) => updateConfig('mobile_height', val)
           })
 
           const mobileBannerHeight = computed({
-            get: () => props.sliderConfig.mobile_banner_height,
-            set: val => {
-              if (props.sliderConfig) {
-                props.sliderConfig.mobile_banner_height = val
-              }
-            }
+            get: () => props.sliderConfig?.mobile_banner_height ?? 80,
+            set: (val: number | string) => updateConfig('mobile_banner_height', val)
           })
           </script>

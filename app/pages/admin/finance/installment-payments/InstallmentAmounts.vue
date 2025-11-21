@@ -162,7 +162,7 @@ import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 // تعریف navigateTo برای Nuxt 3
-declare const navigateTo: (to: string) => Promise<void>
+declare const _navigateTo: (to: string) => Promise<void>
 
 const router = useRouter()
 

@@ -477,7 +477,6 @@ const getReportStatusLabel = (status: string) => {
 const generateReport = async () => {
   try {
     // TODO: تولید گزارش
-    console.log('تولید گزارش شروع شد')
   } catch (error) {
     console.error('خطا در تولید گزارش:', error)
   }
@@ -486,38 +485,39 @@ const generateReport = async () => {
 // صادر کردن گزارش
 const exportReport = () => {
   // TODO: صادر کردن گزارش
-  console.log('صادر کردن گزارش')
 }
 
 // ذخیره تنظیمات گزارش
 const saveReportSettings = async () => {
   try {
     // TODO: ذخیره تنظیمات
-    console.log('تنظیمات گزارش ذخیره شد:', reportSettings.value)
     showReportSettings.value = false
   } catch (error) {
     console.error('خطا در ذخیره تنظیمات:', error)
   }
 }
 
+interface Report {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
+}
+
 // دانلود گزارش
-const downloadReport = (report: any) => {
+const downloadReport = (_report: Report) => {
   // TODO: دانلود گزارش
-  console.log('دانلود گزارش:', report)
 }
 
 // مشاهده گزارش
-const viewReport = (report: any) => {
+const viewReport = (_report: Report) => {
   // TODO: مشاهده گزارش
-  console.log('مشاهده گزارش:', report)
 }
 
 // حذف گزارش
-const deleteReport = async (report: any) => {
+const deleteReport = async (_report: Report) => {
   if (confirm('آیا از حذف این گزارش اطمینان دارید؟')) {
     try {
       // TODO: حذف گزارش
-      console.log('گزارش حذف شد:', report)
     } catch (error) {
       console.error('خطا در حذف گزارش:', error)
     }
@@ -541,7 +541,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission: _hasPermission } = useAuth()
 </script>
 
 <!--

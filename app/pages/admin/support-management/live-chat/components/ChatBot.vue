@@ -171,13 +171,10 @@ const quickResponses = ref([
 // Methods
 const toggleBot = () => {
   isActive.value = !isActive.value
-  // console.log('Bot toggled:', isActive.value)
 }
 
 const sendBotResponse = (_response: unknown) => {
   if (!isActive.value) return
-  
-  // console.log('Bot response sent:', response.text)
 }
 
 // Auto-response logic

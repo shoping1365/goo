@@ -249,8 +249,20 @@ function copyToClipboard(code: string) {
   })
 }
 
+interface ReferralCode {
+  id: number
+  code: string
+  userName: string
+  userEmail: string
+  userAvatar: string
+  usageCount: number
+  successfulReferrals: number
+  createdAt: string
+  active: boolean
+}
+
 // تغییر وضعیت کد
-function toggleCodeStatus(code: any) {
+function toggleCodeStatus(code: ReferralCode) {
   code.active = !code.active
   // TODO: فراخوانی API برای تغییر وضعیت
 }

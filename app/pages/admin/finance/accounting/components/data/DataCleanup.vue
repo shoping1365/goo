@@ -339,17 +339,23 @@ const getHistoryColor = (status: string) => {
   return colors[status] || 'bg-gray-500'
 }
 
+interface DataType {
+  id: number | string
+  name?: string
+  [key: string]: unknown
+}
+
 // عملیات
 const runCleanup = () => {
-  console.log('اجرای پاکسازی')
+
 }
 
-const previewData = (dataType: any) => {
-  console.log('پیش‌نمایش داده:', dataType)
+const previewData = (_dataType: DataType) => {
+
 }
 
-const cleanupDataType = (dataType: any) => {
-  console.log('پاکسازی نوع داده:', dataType)
+const cleanupDataType = (_dataType: DataType) => {
+
 }
 </script>
 

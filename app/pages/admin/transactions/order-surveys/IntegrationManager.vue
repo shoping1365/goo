@@ -618,41 +618,32 @@ const formatTime = (timestamp: Date) => {
 }
 
 const configureService = (_service: IntegrationService) => {
-  // console.log('Configuring service:', service.name)
 }
 
 const testService = (_service: IntegrationService) => {
-  // console.log('Testing service:', service.name)
 }
 
 const syncData = (_service: IntegrationService) => {
-  // console.log('Syncing data with:', service.name)
 }
 
 const regenerateKey = (_keyId: number) => {
   if (confirm('آیا از تجدید کلید API اطمینان دارید؟')) {
-    // console.log('Regenerating API key:', keyId)
   }
 }
 
 const testWebhook = (_webhookId: number) => {
-  // console.log('Testing webhook:', webhookId)
 }
 
 const editWebhook = (_webhookId: number) => {
-  // console.log('Editing webhook:', webhookId)
 }
 
 const refreshIntegrations = () => {
-  // console.log('Refreshing integrations...')
 }
 
 const exportIntegrations = () => {
-  // console.log('Exporting integration settings...')
 }
 
 const saveSettings = () => {
-  // console.log('Saving integration settings...')
 }
 
 // Expose methods for parent component

@@ -35,7 +35,7 @@
           </svg>
         </button>
       </div>
-      
+
       <div class="flex flex-col h-[calc(100%-4rem)]">
         <div ref="messagesContainer" class="flex-1 overflow-y-auto p-6 space-y-3">
           <div v-if="messages.length === 0 && connectionStatus === 'connected'" class="text-center py-8">
@@ -47,7 +47,7 @@
             <h4 class="text-lg font-semibold text-gray-900 mb-2">{{ isAdmin ? 'Admin Chat' : 'سلام! 👋' }}</h4>
             <p class="text-sm text-gray-600 mb-4">{{ isAdmin ? 'چت با کاربران' : 'چطور می‌تونیم کمکتون کنیم؟' }}</p>
           </div>
-          
+
           <!-- Connection Status Messages -->
           <div v-if="connectionStatus === 'connecting'" class="text-center py-4">
             <div class="inline-flex items-center gap-2 text-gray-500">
@@ -55,7 +55,7 @@
               <span>در حال اتصال به سرور چت...</span>
             </div>
           </div>
-          
+
           <div v-if="connectionStatus === 'disconnected'" class="text-center py-4">
             <div class="inline-flex items-center gap-2 text-red-500">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -65,7 +65,7 @@
             </div>
             <p v-if="lastWsError" class="text-xs text-gray-500 mt-2">{{ lastWsError }}</p>
           </div>
-          
+
           <!-- Rate Limit Warning -->
           <div v-if="rateLimitExceeded" class="text-center py-2">
             <div class="inline-flex items-center gap-2 text-orange-600 bg-orange-50 px-3 py-2 rounded-lg">
@@ -75,7 +75,7 @@
               <span>نرخ ارسال پیام بیش از حد مجاز است. لطفاً کمی صبر کنید.</span>
             </div>
           </div>
-          
+
           <!-- Security Warning -->
           <div v-if="securityWarning" class="text-center py-2">
             <div class="inline-flex items-center gap-2 px-3 py-2 rounded-lg" :class="isBlocked ? 'text-red-700 bg-red-100' : 'text-amber-700 bg-amber-100'">
@@ -85,7 +85,7 @@
               <span>{{ securityWarning }}</span>
             </div>
           </div>
-          
+
           <!-- Blocked Warning -->
           <div v-if="isBlocked" class="text-center py-4">
             <div class="inline-flex flex-col items-center gap-3 text-red-700 bg-red-50 px-4 py-3 rounded-lg">
@@ -98,7 +98,7 @@
               </div>
             </div>
           </div>
-          
+
           <div v-for="message in messages" :key="message.id" class="flex" :class="message.sender === 'user' ? 'justify-end' : 'justify-start'">
             <div class="max-w-[80%]">
               <div :class="[message.sender === 'user' ? 'bg-blue-500 text-white rounded-2xl rounded-br-md' : 'bg-gray-100 text-gray-900 rounded-2xl rounded-bl-md','px-4 py-3 shadow-sm']">
@@ -111,18 +111,18 @@
             </div>
           </div>
         </div>
-        
+
         <div class="p-6 border-t border-gray-200/50 bg-gray-50/50">
           <div class="flex items-end gap-3">
             <div class="flex-1 relative">
-              <textarea 
-                v-model="newMessage" 
+              <textarea
                 ref="messageInput"
+                v-model="newMessage"
                 placeholder="پیام خود را بنویسید..."
-                class="w-full px-4 py-3 border rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none bg-white" 
-                :class="securityWarning ? 'border-red-300' : 'border-gray-300'" 
+                class="w-full px-4 py-3 border rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none bg-white"
+                :class="securityWarning ? 'border-red-300' : 'border-gray-300'"
                 rows="1"
-                :disabled="connectionStatus !== 'connected' || rateLimitExceeded || isBlocked || securityCooldown" 
+                :disabled="connectionStatus !== 'connected' || rateLimitExceeded || isBlocked || securityCooldown"
                 maxlength="1000"
                 @keydown.enter.prevent="sendMessage"
                 @input="validateInput"
@@ -137,9 +137,9 @@
                 </span>
               </div>
             </div>
-            <button 
-              :disabled="!newMessage.trim() || connectionStatus !== 'connected' || rateLimitExceeded" 
-              class="px-4 py-3 bg-blue-500 text-white rounded-2xl hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl flex-shrink-0" 
+            <button
+              :disabled="!newMessage.trim() || connectionStatus !== 'connected' || rateLimitExceeded"
+              class="px-4 py-3 bg-blue-500 text-white rounded-2xl hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl flex-shrink-0"
               @click="sendMessage"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -161,16 +161,24 @@ import { generateSecurityReport, logSecurityEvent, validateTextMessage } from '~
 import { parseWsClose, parseWsError } from '~/utils/wsErrors'
 
 const route = useRoute()
-const user = ref(null)
+
+const user = ref<unknown>(null)
 const isAuthenticated = computed(() => false)
-
 const isAdmin = computed(() => route.path.startsWith('/admin'))
-
 const isVisible = ref(false)
 const newMessage = ref('')
 const onlineAgents = ref(0)
 const unreadCount = ref(0)
-const messages = ref<any[]>([])
+
+interface ChatMessage {
+  id: number
+  sender: 'user' | 'agent'
+  content: string
+  timestamp: Date
+  status?: string
+}
+
+const messages = ref<ChatMessage[]>([])
 const messageInput = ref<HTMLTextAreaElement>()
 const messagesContainer = ref<HTMLElement>()
 
@@ -188,123 +196,128 @@ const securityWarning = ref('')
 const isBlocked = ref(false)
 const securityCooldown = ref(false)
 
+interface WebSocketMessage {
+  type: string
+  sender?: string
+  content?: string
+  timestamp?: string | number
+  message?: string
+  data?: {
+    id?: number | string
+    sender_type?: string
+    message?: string
+    created_at?: string | number
+  }
+  onlineAgents?: number
+}
+
 // Get WebSocket URL from environment
 const getWebSocketUrl = () => {
   const config = useRuntimeConfig()
   const wsBase = config.public.wsBase as string | undefined
-  
+
   // If wsBase is not provided, use current host
   if (!wsBase) {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
     return `${protocol}//${window.location.host}/api/chat/ws`
   }
-  
+
   // If wsBase is already a full URL, use it
   if (typeof wsBase === 'string' && (wsBase.startsWith('ws://') || wsBase.startsWith('wss://'))) {
     return `${wsBase}/api/chat/ws`
   }
-  
+
   // Otherwise, construct from current protocol and host
   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
   const host = wsBase || window.location.host
   return `${protocol}//${host}/api/chat/ws`
 }
 
-// Get authentication token
-const getAuthToken = () => {
-  // کوکی HttpOnly به صورت خودکار توسط مرورگر ارسال می‌شود، نیازی به توکن سمت کلاینت نیست
-  // اگر برای WebSocket نیاز به پارامتر داریم، آن را از کوکی refresh/session استخراج نمی‌کنیم
-  return undefined
-}
-
-  // Connect to WebSocket
-  const connectWebSocket = () => {
+// Connect to WebSocket
+const connectWebSocket = () => {
   if (ws.value?.readyState === WebSocket.OPEN) {
     return
   }
-
   connectionStatus.value = 'connecting'
   lastWsError.value = ''
-  
-    try {
+
+  try {
     const wsUrl = getWebSocketUrl()
     const url = wsUrl
-    
+
     ws.value = new WebSocket(url)
-    
+
     ws.value.onopen = () => {
-      console.log('WebSocket connected')
       connectionStatus.value = 'connected'
       reconnectAttempts.value = 0
       rateLimitExceeded.value = false
       lastWsError.value = ''
     }
-    
-      ws.value.onmessage = (event) => {
+
+    ws.value.onmessage = (event) => {
       try {
-        const data = JSON.parse(event.data)
+        const data = JSON.parse(event.data) as WebSocketMessage
         handleWebSocketMessage(data)
       } catch (error) {
         console.error('Error parsing WebSocket message:', error)
       }
     }
-    
+
     ws.value.onclose = (event) => {
-      console.log('WebSocket disconnected:', event.code, event.reason)
       connectionStatus.value = 'disconnected'
       const info = parseWsClose(event)
       lastWsError.value = `${info.userMessage}`
-      
+
       // Auto-reconnect logic
       if (reconnectAttempts.value < maxReconnectAttempts && !event.wasClean) {
         reconnectAttempts.value++
         const delay = Math.min(1000 * Math.pow(2, reconnectAttempts.value), 30000) // Exponential backoff, max 30s
-        
+
         reconnectInterval.value = setTimeout(() => {
-          console.log(`Attempting to reconnect (${reconnectAttempts.value}/${maxReconnectAttempts})`)
           connectWebSocket()
         }, delay)
       }
     }
-    
+
     ws.value.onerror = (error) => {
       console.error('WebSocket error:', error)
       connectionStatus.value = 'disconnected'
-      lastWsError.value = parseWsError(error as any)
+      lastWsError.value = parseWsError(error as unknown)
     }
-    
   } catch (error) {
     console.error('Error creating WebSocket connection:', error)
     connectionStatus.value = 'disconnected'
-    lastWsError.value = parseWsError(error as any)
+    lastWsError.value = parseWsError(error as unknown)
   }
 }
 
 // Handle incoming WebSocket messages
-  const handleWebSocketMessage = (data: any) => {
+const handleWebSocketMessage = (data: WebSocketMessage) => {
   switch (data.type) {
-      case 'message':
-      const message = {
-        id: Date.now() + Math.random(),
-        sender: data.sender === 'user' ? 'user' : 'agent',
-        content: data.content,
-        timestamp: new Date(data.timestamp || Date.now()),
-        status: 'delivered'
+    case 'message':
+      {
+        const message: ChatMessage = {
+          id: Date.now() + Math.random(),
+          sender: data.sender === 'user' ? 'user' : 'agent',
+          content: data.content || '',
+          timestamp: new Date(data.timestamp || Date.now()),
+          status: 'delivered'
+        }
+        messages.value.push(message)
+
+        // Increment unread count if chat is closed
+        if (!isVisible.value && message.sender === 'agent') {
+          unreadCount.value++
+        }
+
+        // Scroll to bottom
+        nextTick(() => {
+          scrollToBottom()
+        })
       }
-      messages.value.push(message)
-      
-      // Increment unread count if chat is closed
-      if (!isVisible.value && message.sender === 'agent') {
-        unreadCount.value++
-      }
-      
-      // Scroll to bottom
-      nextTick(() => {
-        scrollToBottom()
-      })
       break
-      
-      case 'error':
+
+    case 'error':
       if (data.message === 'rate limit exceeded') {
         rateLimitExceeded.value = true
         setTimeout(() => {
@@ -312,34 +325,34 @@ const getAuthToken = () => {
         }, 5000) // Show warning for 5 seconds
       }
       break
-      
-      case 'new_message':
-        // فرمت جدید بک‌اند
-        if (data.data) {
-          const msg = data.data
-          const mapped = {
-            id: msg.id || Date.now() + Math.random(),
-            sender: msg.sender_type === 'customer' ? 'user' : 'agent',
-            content: msg.message,
-            timestamp: new Date(msg.created_at || Date.now()),
-            status: 'delivered'
-          }
-          messages.value.push(mapped)
-          if (!isVisible.value && mapped.sender === 'agent') {
-            unreadCount.value++
-          }
-          nextTick(() => {
-            scrollToBottom()
-          })
+
+    case 'new_message':
+      // فرمت جدید بک‌اند
+      if (data.data) {
+        const msg = data.data
+        const mapped: ChatMessage = {
+          id: typeof msg.id === 'number' ? msg.id : Date.now() + Math.random(),
+          sender: msg.sender_type === 'customer' ? 'user' : 'agent',
+          content: msg.message || '',
+          timestamp: new Date(msg.created_at || Date.now()),
+          status: 'delivered'
         }
-        break
-      
+        messages.value.push(mapped)
+        if (!isVisible.value && mapped.sender === 'agent') {
+          unreadCount.value++
+        }
+        nextTick(() => {
+          scrollToBottom()
+        })
+      }
+      break
+
     case 'stats':
       if (data.onlineAgents !== undefined) {
         onlineAgents.value = data.onlineAgents
       }
       break
-      
+
     case 'ping':
       // Respond to ping with pong
       if (ws.value?.readyState === WebSocket.OPEN) {
@@ -350,39 +363,39 @@ const getAuthToken = () => {
 }
 
 // Send message via WebSocket
-  const sendMessage = () => {
+const sendMessage = () => {
   if (!newMessage.value.trim() || connectionStatus.value !== 'connected' || rateLimitExceeded.value || isBlocked.value || securityCooldown.value) {
     return
   }
-  
+
   const messageContent = newMessage.value.trim()
-  
   // اعتبارسنجی امنیتی پیام
   const validationResult = validateTextMessage(messageContent)
-  
+
   if (!validationResult.isValid) {
     // نمایش هشدار امنیتی
     securityWarning.value = validationResult.errors[0]
-    
+
     // لاگ امنیتی
-    const securityReport = generateSecurityReport(validationResult, user.value)
+    const userData = user.value && typeof user.value === 'object' ? user.value as Record<string, unknown> : {}
+    const securityReport = generateSecurityReport(validationResult, userData)
     logSecurityEvent(securityReport)
-    
+
     // در صورت تهدید بالا، کاربر را مسدود کن
     if (validationResult.riskLevel === 'critical') {
       isBlocked.value = true
       securityWarning.value = 'پیام شما حاوی محتوای مخرب است. دسترسی شما محدود شده است.'
-      
+
       // مسدود کردن موقت (10 دقیقه)
       setTimeout(() => {
         isBlocked.value = false
         securityWarning.value = ''
       }, 10 * 60 * 1000)
-      
+
       newMessage.value = ''
       return
     }
-    
+
     // در صورت تهدید متوسط، cooldown کوتاه
     if (validationResult.riskLevel === 'high') {
       securityCooldown.value = true
@@ -390,24 +403,24 @@ const getAuthToken = () => {
         securityCooldown.value = false
         securityWarning.value = ''
       }, 30000) // 30 ثانیه
-      
+
       newMessage.value = ''
       return
     }
-    
+
     // پاک کردن هشدار بعد از 5 ثانیه
     setTimeout(() => {
       securityWarning.value = ''
     }, 5000)
-    
+
     newMessage.value = ''
     return
   }
-  
+
   // استفاده از محتوای پاکسازی شده
   const sanitizedContent = validationResult.sanitizedContent || messageContent
   newMessage.value = ''
-  
+
   // بررسی طول نهایی
   if (sanitizedContent.length > 1000) {
     securityWarning.value = 'پیام بیش از حد طولانی است (حداکثر 1000 کاراکتر)'
@@ -416,27 +429,27 @@ const getAuthToken = () => {
     }, 5000)
     return
   }
-  
+
   // Add message to local state immediately
-  const message = {
+  const message: ChatMessage = {
     id: Date.now() + Math.random(),
-    sender: 'user' as const,
+    sender: 'user',
     content: sanitizedContent,
     timestamp: new Date(),
     status: 'sending'
   }
   messages.value.push(message)
-  
+
   // Scroll to bottom
   nextTick(() => {
     scrollToBottom()
   })
-  
-    // Send via WebSocket (فرمت جدید)
-    if (ws.value?.readyState === WebSocket.OPEN) {
+
+  // Send via WebSocket (فرمت جدید)
+  if (ws.value?.readyState === WebSocket.OPEN) {
     try {
-        ws.value.send(JSON.stringify({ type: 'send_message', data: { content: sanitizedContent } }))
-      
+      ws.value.send(JSON.stringify({ type: 'send_message', data: { content: sanitizedContent } }))
+
       // Update message status to sent
       message.status = 'sent'
     } catch (error) {
@@ -454,28 +467,28 @@ const validateInput = () => {
     securityWarning.value = ''
     return
   }
-  
+
   // بررسی سریع الگوهای مخرب در حین تایپ
   const content = newMessage.value
-  
+
   // بررسی script tags
   if (/<script/gi.test(content)) {
     securityWarning.value = 'استفاده از تگ script مجاز نیست'
     return
   }
-  
+
   // بررسی javascript: URLs
   if (/javascript:/gi.test(content)) {
     securityWarning.value = 'استفاده از لینک‌های JavaScript مجاز نیست'
     return
   }
-  
+
   // بررسی HTML injection
   if (/<iframe|<object|<embed/gi.test(content)) {
     securityWarning.value = 'استفاده از تگ‌های HTML خاص مجاز نیست'
     return
   }
-  
+
   // پاک کردن هشدار اگر محتوا امن است
   securityWarning.value = ''
 }
@@ -490,12 +503,12 @@ const scrollToBottom = () => {
 const openWidget = () => {
   isVisible.value = true
   unreadCount.value = 0
-  
+
   // Connect to WebSocket when opening chat
   if (connectionStatus.value === 'disconnected') {
     connectWebSocket()
   }
-  
+
   nextTick(() => {
     messageInput.value?.focus()
     scrollToBottom()
@@ -535,7 +548,7 @@ onUnmounted(() => {
   if (ws.value) {
     ws.value.close()
   }
-  
+
   if (reconnectInterval.value) {
     clearTimeout(reconnectInterval.value)
   }
@@ -544,56 +557,56 @@ onUnmounted(() => {
 
 <style scoped>
 .chat-widget {
-  position: fixed !important;
-  bottom: 24px !important;
-  right: 24px !important;
-  left: auto !important;
-  top: auto !important;
-  width: 400px !important;
-  height: 600px !important;
-  max-width: calc(100vw - 48px) !important;
-  max-height: calc(100vh - 48px) !important;
-  background: white !important;
-  border-radius: 1rem !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
-  border: 1px solid rgba(229, 231, 235, 0.5) !important;
-  z-index: 9999 !important;
-  direction: ltr !important;
-  transform: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
+  position: fixed   ;
+  bottom: 24px;
+  right: 24px ;
+  left: auto ;
+  top: auto ;
+  width: 400px ;
+  height: 600px;
+  max-width: calc(100vw - 48px) ;
+  max-height: calc(100vh - 48px) ;
+  background: white ;
+  border-radius: 1rem ;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) ;
+  border: 1px solid rgba(229, 231, 235, 0.5);
+  z-index: 9999 ;
+  direction: ltr ;
+  transform: none;
+  margin: 0 ;
+  padding: 0 ;
 }
 
 .chat-button {
-  position: fixed !important;
-  bottom: 24px !important;
-  right: 24px !important;
-  left: auto !important;
-  top: auto !important;
-  width: 64px !important;
-  height: 64px !important;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
-  color: white !important;
-  border-radius: 50% !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
-  border: none !important;
-  cursor: pointer !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  z-index: 9998 !important;
-  transition: all 0.3s ease !important;
-  transform: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
+  position: fixed ;
+  bottom: 24px ;
+  right: 24px ;
+  left: auto ;
+  top: auto ;
+  width: 64px ;
+  height: 64px ;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white ;
+  border-radius: 50% ;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) ;
+  border: none ;
+  cursor: pointer ;
+  display: flex ;
+  align-items: center ;
+  justify-content: center ;
+  z-index: 9998 ;
+  transition: all 0.3s ease ;
+  transform: none ;
+  margin: 0 ;
+  padding: 0 ;
 }
 
 .chat-button:hover {
-  transform: scale(1.1) !important;
-  box-shadow: 0 32px 64px -12px rgba(0, 0, 0, 0.35) !important;
+  transform: scale(1.1) ;
+  box-shadow: 0 32px 64px -12px rgba(0, 0, 0, 0.35) ;
 }
 
 .chat-button, .chat-widget {
-  font-family: inherit !important;
+  font-family: inherit ;
 }
-</style> 
+</style>

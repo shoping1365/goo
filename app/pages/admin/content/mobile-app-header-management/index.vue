@@ -152,21 +152,56 @@
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-// تعریف definePageMeta برای Nuxt 3
-declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
-
 definePageMeta({
   layout: 'admin-main'
 })
 
+interface Item {
+  type: string
+  text?: string
+  badge?: string
+  fontSize?: string
+  color?: string
+  fontWeight?: string
+  [key: string]: unknown
+}
+
+interface Layer {
+  items?: string
+  color?: string
+  opacity?: number
+  padding_top?: number
+  padding_right?: number
+  padding_bottom?: number
+  padding_left?: number
+  height?: number
+  show_separator?: boolean
+  separator_width?: number
+  separator_color?: string
+  separator_opacity?: number
+  [key: string]: unknown
+}
+
+interface MobileAppHeader {
+  id: number | string
+  name: string
+  is_active: boolean
+  description?: string
+  platform: string
+  created_at?: string
+  createdAt?: string
+  layers?: Layer[]
+  [key: string]: unknown
+}
+
 const router = useRouter()
 
 // State
-const mobileAppHeaders = ref([])
+const mobileAppHeaders = ref<MobileAppHeader[]>([])
 const loading = ref(false)
 const error = ref('')
 const showPreview = ref(false)
-const previewHeader = ref(null)
+const previewHeader = ref<MobileAppHeader | null>(null)
 
 // Methods
 const loadMobileAppHeaders = async () => {
@@ -174,11 +209,12 @@ const loadMobileAppHeaders = async () => {
   error.value = ''
   
   try {
-    const response = await $fetch<{ data?: unknown[] }>('/api/admin/mobile-app-header-settings')
+    const response = await $fetch<{ data?: MobileAppHeader[] }>('/api/admin/mobile-app-header-settings')
     const data = response.data
     mobileAppHeaders.value = data || []
-  } catch (err: any) {
-    error.value = err.data?.message || 'خطا در بارگذاری هدرهای موبایل و اپلیکیشن'
+  } catch (err: unknown) {
+    const message = (err as { data?: { message?: string } })?.data?.message || 'خطا در بارگذاری هدرهای موبایل و اپلیکیشن'
+    error.value = message
     console.error('Error loading mobile app headers:', err)
   } finally {
     loading.value = false
@@ -189,11 +225,11 @@ const addNewMobileAppHeader = () => {
   router.push('/admin/content/mobile-app-header-management/create')
 }
 
-const editMobileAppHeader = (header: any) => {
+const editMobileAppHeader = (header: MobileAppHeader) => {
   router.push(`/admin/content/mobile-app-header-management/edit/${header.id}`)
 }
 
-const previewMobileAppHeader = (header: any) => {
+const previewMobileAppHeader = (header: MobileAppHeader) => {
   previewHeader.value = header
   showPreview.value = true
 }
@@ -203,7 +239,7 @@ const closePreview = () => {
   previewHeader.value = null
 }
 
-const deleteMobileAppHeader = async (header: any) => {
+const deleteMobileAppHeader = async (header: MobileAppHeader) => {
   if (!confirm(`آیا مطمئن هستید که می‌خواهید هدر "${header.name}" را حذف کنید؟`)) {
     return
   }
@@ -214,14 +250,15 @@ const deleteMobileAppHeader = async (header: any) => {
     })
     
     // حذف از لیست محلی
-    const index = mobileAppHeaders.value.findIndex((h: any) => h.id === header.id)
+    const index = mobileAppHeaders.value.findIndex((h) => h.id === header.id)
     if (index > -1) {
       mobileAppHeaders.value.splice(index, 1)
     }
     
     alert('هدر موبایل و اپلیکیشن با موفقیت حذف شد')
-  } catch (err: any) {
-    alert(err.data?.message || 'خطا در حذف هدر موبایل و اپلیکیشن')
+  } catch (err: unknown) {
+    const message = (err as { data?: { message?: string } })?.data?.message || 'خطا در حذف هدر موبایل و اپلیکیشن'
+    alert(message)
     console.error('Error deleting mobile app header:', err)
   }
 }
@@ -241,7 +278,7 @@ const formatDate = (dateString: string) => {
   return date.toLocaleDateString('fa-IR')
 }
 
-const getLayerItems = (layer: any) => {
+const getLayerItems = (layer: Layer): Item[] => {
   if (!layer.items) return []
   
   try {
@@ -252,10 +289,10 @@ const getLayerItems = (layer: any) => {
   }
 }
 
-const getLayerStyle = (layer: any): Record<string, string | number> => {
+const getLayerStyle = (layer: Layer): Record<string, string | number> => {
   return {
-    backgroundColor: layer.color || '#ffffff',
-    opacity: layer.opacity || 1,
+    backgroundColor: (layer.color as string) || '#ffffff',
+    opacity: (layer.opacity as number) || 1,
     padding: `${layer.padding_top || 10}px ${layer.padding_right || 20}px ${layer.padding_bottom || 10}px ${layer.padding_left || 20}px`,
     minHeight: `${layer.height || 50}px`,
     display: 'flex',
@@ -266,23 +303,23 @@ const getLayerStyle = (layer: any): Record<string, string | number> => {
   }
 }
 
-const getItemStyle = (item: any) => {
+const getItemStyle = (item: Item) => {
   return {
     display: 'flex',
     alignItems: 'center',
     gap: '4px',
-    fontSize: item.fontSize || '14px',
-    color: item.color || '#333333',
-    fontWeight: item.fontWeight || 'normal'
+    fontSize: (item.fontSize as string) || '14px',
+    color: (item.color as string) || '#333333',
+    fontWeight: (item.fontWeight as string) || 'normal'
   }
 }
 
-const getSeparatorStyle = (layer: any) => {
+const getSeparatorStyle = (layer: Layer) => {
   return {
     width: '100%',
     height: `${layer.separator_width || 1}px`,
-    backgroundColor: layer.separator_color || '#000000',
-    opacity: layer.separator_opacity || 1,
+    backgroundColor: (layer.separator_color as string) || '#000000',
+    opacity: (layer.separator_opacity as number) || 1,
     margin: '8px 0'
   }
 }

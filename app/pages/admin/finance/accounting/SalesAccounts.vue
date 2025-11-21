@@ -61,8 +61,16 @@ const salesAccounts = ref([
 ])
 const showAddModal = ref(false)
 const showEditModal = ref(false)
-const form = ref({ id: null, name: '', code: '', description: '' })
-const editAccount = (account: any) => {
+interface Account {
+  id?: number | string | null
+  name?: string
+  code?: string
+  description?: string
+  [key: string]: unknown
+}
+
+const form = ref<Account>({ id: null, name: '', code: '', description: '' })
+const editAccount = (account: Account) => {
   form.value = { ...account }
   showEditModal.value = true
 }
@@ -75,7 +83,7 @@ const updateAccount = () => {
   if (idx !== -1) salesAccounts.value[idx] = { ...form.value }
   closeModal()
 }
-const deleteAccount = (account: any) => {
+const deleteAccount = (account: Account) => {
   if (confirm('آیا از حذف این حساب اطمینان دارید؟'))
     salesAccounts.value = salesAccounts.value.filter(a => a.id !== account.id)
 }

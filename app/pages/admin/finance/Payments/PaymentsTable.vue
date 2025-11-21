@@ -132,12 +132,22 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 
-const props = defineProps<{ payments: any[] }>()
+interface Payment {
+  id?: number | string
+  amount?: number
+  status?: string
+  [key: string]: unknown
+}
+const props = defineProps<{ payments: Payment[] }>()
 
 const search = ref('')
 const actionMenuOpen = ref<number|null>(null)
 const modal = ref({ manualConfirm: false, refund: false, sendReceipt: false, note: false })
-const selectedPayment = ref<any>(null)
+interface Payment {
+  [key: string]: unknown
+}
+
+const selectedPayment = ref<Payment | null>(null)
 const noteText = ref('')
 const successMessage = ref('')
 
@@ -196,22 +206,22 @@ function closeModal() {
   noteText.value = ''
   actionMenuOpen.value = null
 }
-function showManualConfirm(payment: any) {
+function showManualConfirm(payment: Payment) {
   selectedPayment.value = payment
   modal.value = { manualConfirm: true, refund: false, sendReceipt: false, note: false }
   actionMenuOpen.value = null
 }
-function showRefund(payment: any) {
+function showRefund(payment: Payment) {
   selectedPayment.value = payment
   modal.value = { manualConfirm: false, refund: true, sendReceipt: false, note: false }
   actionMenuOpen.value = null
 }
-function showSendReceipt(payment: any) {
+function showSendReceipt(payment: Payment) {
   selectedPayment.value = payment
   modal.value = { manualConfirm: false, refund: false, sendReceipt: true, note: false }
   actionMenuOpen.value = null
 }
-function showNote(payment: any) {
+function showNote(payment: Payment) {
   selectedPayment.value = payment
   noteText.value = payment.note || ''
   modal.value = { manualConfirm: false, refund: false, sendReceipt: false, note: true }

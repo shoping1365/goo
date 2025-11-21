@@ -21,8 +21,50 @@ jobs:
 
       - name: Check file encodings
         run: |
-          echo "Checking UTF-8 encoding for Persian/Farsi support..."
-          python3 scripts/check_utf8.py
+          echo "Checking UTF-8 encoding..."
+          # Find text files and check if they are valid UTF-8
+          # We check .ts, .tsx, .js, .jsx, .vue, .md, .json
+          FAILED_FILES=$(find . -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" -o -name "*.vue" -o -name "*.md" -o -name "*.json" \) -not -path "*/node_modules/*" -not -path "*/.nuxt/*" -not -path "*/.output/*" -not -path "*/dist/*" -print0 | xargs -0 -I {} bash -c 'iconv -f UTF-8 -t UTF-8 "{}" > /dev/null 2>&1 || echo "{}"')
+          
+          if [ -n "$FAILED_FILES" ]; then
+            echo "❌ Error: The following files are not valid UTF-8 (potential corrupted Persian characters):"
+            echo "$FAILED_FILES"
+            exit 1
+          else
+            echo "✅ All checked files are valid UTF-8"
+          fi
+
+  auth-check:
+    name: Admin Authentication Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check Admin Middleware
+        run: |
+          echo "Checking for 'admin' middleware in admin pages..."
+          # Find all .vue files in app/pages/admin
+          # Exclude files that might not need auth if any (adjust as needed, currently checking all)
+          # We look for "middleware: 'admin'" or 'middleware: "admin"'
+          
+          # Using grep -L (files without match)
+          # We search for the middleware definition allowing for whitespace
+          # Pattern: middleware:[space]*['"]admin['"]
+          # Checking .vue, .ts, .js, .tsx, .jsx files in app/pages/admin
+          MISSING_AUTH=$(find app/pages/admin -type f \( -name "*.vue" -o -name "*.ts" -o -name "*.js" -o -name "*.tsx" -o -name "*.jsx" \) -print0 | xargs -0 grep -L -E "middleware:[[:space:]]*['\"]admin['\"]")
+          
+          if [ -n "$MISSING_AUTH" ]; then
+            echo "❌ Error: The following admin pages are missing the required authentication middleware:"
+            echo "$MISSING_AUTH"
+            echo "Please add the following to these files:"
+            echo "definePageMeta({"
+            echo "  middleware: 'admin'"
+            echo "})"
+            exit 1
+          else
+            echo "✅ All admin pages have correct authentication middleware"
+          fi
 
   duplicate-code-detection:
     name: Duplicate Code Detection
@@ -54,8 +96,29 @@ jobs:
   go-tests:
     name: Go Unit Tests & Coverage
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: mydb3
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     env:
       GOTOOLCHAIN: go1.25.4
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: password
+      DB_NAME: mydb3
+      DB_SSLMODE: disable
+      JWT_SECRET: test-secret-key
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -75,14 +138,16 @@ jobs:
           go test -v -race -coverprofile=coverage.out -covermode=atomic ./...
           go tool cover -func=coverage.out | tail -1
           
-          # Check coverage threshold (minimum 0% - temporarily lowered)
+          # Check coverage threshold (minimum 10%)
           COVERAGE=$(go tool cover -func=coverage.out | tail -1 | awk '{print $3}' | sed 's/%//')
           echo "Coverage: $COVERAGE%"
-          if (( $(echo "$COVERAGE < 0" | bc -l) )); then
-            echo "❌ Coverage below 0%"
+          
+          # Use awk for float comparison to avoid bc dependency issues or syntax errors
+          if awk "BEGIN {exit !($COVERAGE < 10)}"; then
+            echo "❌ Coverage below 10%"
             exit 1
           fi
-          echo "✅ Coverage meets requirements"
+          echo "✅ Coverage meets requirements (>10%)"
 
       - name: Upload coverage reports
         uses: codecov/codecov-action@v4

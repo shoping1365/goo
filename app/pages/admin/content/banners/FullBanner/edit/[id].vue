@@ -212,7 +212,7 @@
                 max="2000"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="1000"
-                @input="(e: any) => bannerConfig.center_width = e.target.value === '' ? undefined : Number(e.target.value)"
+                @input="(e: Event) => { const target = e.target as HTMLInputElement; bannerConfig.center_width = target.value === '' ? undefined : Number(target.value) }"
               />
             </div>
 
@@ -226,7 +226,7 @@
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e: any) => bannerConfig.padding_top = e.target.value === '' ? undefined : Number(e.target.value)"
+                @input="(e: Event) => { const target = e.target as HTMLInputElement; bannerConfig.padding_top = target.value === '' ? undefined : Number(target.value) }"
               />
             </div>
 
@@ -240,7 +240,7 @@
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e: any) => bannerConfig.padding_bottom = e.target.value === '' ? undefined : Number(e.target.value)"
+                @input="(e: Event) => { const target = e.target as HTMLInputElement; bannerConfig.padding_bottom = target.value === '' ? undefined : Number(target.value) }"
               />
             </div>
 
@@ -254,7 +254,7 @@
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e: any) => bannerConfig.margin_right = e.target.value === '' ? undefined : Number(e.target.value)"
+                @input="(e: Event) => { const target = e.target as HTMLInputElement; bannerConfig.margin_right = target.value === '' ? undefined : Number(target.value) }"
               />
             </div>
 
@@ -268,7 +268,7 @@
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e: any) => bannerConfig.margin_left = e.target.value === '' ? undefined : Number(e.target.value)"
+                @input="(e: Event) => { const target = e.target as HTMLInputElement; bannerConfig.margin_left = target.value === '' ? undefined : Number(target.value) }"
               />
             </div>
            </div>
@@ -405,7 +405,7 @@
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e: any) => bannerConfig.mobile_padding_top = e.target.value === '' ? undefined : Number(e.target.value)"
+                @input="(e: Event) => { const target = e.target as HTMLInputElement; bannerConfig.mobile_padding_top = target.value === '' ? undefined : Number(target.value) }"
               />
             </div>
 
@@ -419,7 +419,7 @@
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e: any) => bannerConfig.mobile_padding_bottom = e.target.value === '' ? undefined : Number(e.target.value)"
+                @input="(e: Event) => { const target = e.target as HTMLInputElement; bannerConfig.mobile_padding_bottom = target.value === '' ? undefined : Number(target.value) }"
               />
             </div>
           </div>
@@ -675,8 +675,22 @@ import TemplateButton from '~/components/common/TemplateButton.vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
 import { useToast } from '~/composables/useToast'
 import { useWidget } from '~/composables/useWidget'
-import type { BannerConfig, BannerItem, Widget } from '~/types/widget'
+import type { BannerConfig, BannerItem, Widget, WidgetType, WidgetStatus, WidgetPage } from '~/types/widget'
 import { WIDGET_TYPE_LABELS } from '~/types/widget'
+
+interface ImageCropResponse {
+  success: boolean
+  data?: {
+    cropped_url: string
+  }
+}
+
+interface MediaFile {
+  id?: number | string
+  url: string
+  name?: string
+  [key: string]: unknown
+}
 import DeviceTabs from './components/DeviceTabs.vue'
 
 // تعریف definePageMeta و useHead برای Nuxt 3
@@ -691,7 +705,7 @@ const route = useRoute()
 const widgetId = parseInt(route.params.id as string)
 
 // Composables
-const { fetchWidget, updateWidget, loading, error, clearError, widget: fetchedWidget } = useWidget()
+const { fetchWidget, updateWidget, loading: _loading, error: _error, clearError, widget: fetchedWidget } = useWidget()
 const { showSuccess, showError } = useToast()
 
 // Props
@@ -699,10 +713,10 @@ interface Props {
   widget?: Widget
 }
 
-const props = defineProps<Props>()
+const _props = defineProps<Props>()
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   updated: [widget: Widget]
 }>()
 
@@ -758,7 +772,6 @@ const formData = ref({
 // Initialize form data when widget is available
 const initializeFormData = () => {
   if (fetchedWidget.value) {
-    console.log('Widget data:', fetchedWidget.value) // Debug log
     formData.value = {
       title: fetchedWidget.value.title || '',
       description: fetchedWidget.value.description || '',
@@ -767,7 +780,6 @@ const initializeFormData = () => {
       page: fetchedWidget.value.page || 'home',
       show_on_mobile: fetchedWidget.value.show_on_mobile !== undefined ? fetchedWidget.value.show_on_mobile : true
     }
-    console.log('Form data initialized:', formData.value) // Debug log
   }
 }
 
@@ -778,11 +790,11 @@ watch(fetchedWidget, (newWidget) => {
   }
 }, { immediate: true })
 
-// Computed properties for reactive form data
-const widgetTitle = computed(() => fetchedWidget.value?.title || '')
-const widgetType = computed(() => fetchedWidget.value?.type || 'full-banner')
-const widgetStatus = computed(() => fetchedWidget.value?.status || 'active')
-const widgetPage = computed(() => fetchedWidget.value?.page || 'home')
+// Computed properties for reactive form data (not currently used but may be needed for future features)
+const _widgetTitle = computed(() => fetchedWidget.value?.title || '')
+const _widgetType = computed(() => fetchedWidget.value?.type || 'full-banner')
+const _widgetStatus = computed(() => fetchedWidget.value?.status || 'active')
+const _widgetPage = computed(() => fetchedWidget.value?.page || 'home')
 
 // Active device tab
 const activeDeviceTab = ref<'desktop' | 'mobile'>('desktop')
@@ -846,28 +858,26 @@ const applyMobileCrop = async () => {
           device: 'mobile',
           quality: 85
         }
-      }) as any
+      }) as ImageCropResponse
       
       if (response.success) {
         bannerConfig.value.mobile_cropped_image = response.data.cropped_url
       } else {
         throw new Error('API response failed')
       }
-    } catch (error) {
-      console.error('Backend crop API error:', error)
+    } catch (_error) {
       // اگر API کراپ کار نکرد، هیچ fallback استفاده نکن
       return
     }
     
     showSuccess('برش موبایل با موفقیت اعمال شد')
-  } catch (error) {
+  } catch (_error) {
     showError('خطا در اعمال برش موبایل')
-    console.error('Mobile crop error:', error)
   }
 }
 
 // Helper functions for mobile image handling
-const getMobileImageUrl = (banner) => {
+const _getMobileImageUrl = (banner) => {
   // اگر حالت عکس جداگانه انتخاب شده و عکس موبایل وجود دارد
   if (bannerConfig.value.mobile_image_mode === 'separate' && banner.mobile_image) {
     return banner.mobile_image
@@ -1010,7 +1020,7 @@ const openMediaLibrary = () => {
   showMediaLibrary.value = true
 }
 
-const onSelectFromLibrary = (files: any[]) => {
+const onSelectFromLibrary = (files: MediaFile[]) => {
   if (files && files.length > 0) {
     const file = files[0]
     if (activeDeviceTab.value === 'mobile') {
@@ -1034,7 +1044,7 @@ const removeImage = () => {
 
 // Save widget function
 // اعمال برش خودکار موبایل هنگام ذخیره
-const applyAutoMobileCrop = async () => {
+const _applyAutoMobileCrop = async () => {
   // فقط اگر حالت برش خودکار انتخاب شده باشد
   if (bannerConfig.value.mobile_image_mode !== 'auto') {
     return
@@ -1068,22 +1078,20 @@ const applyAutoMobileCrop = async () => {
           device: 'mobile',
           quality: 85
         }
-      }) as any
+      }) as ImageCropResponse
       
       if (response.success) {
         bannerConfig.value.mobile_cropped_image = response.data.cropped_url
       } else {
         throw new Error('API response failed')
       }
-    } catch (error) {
-      console.error('Backend crop API error:', error)
+    } catch (_error) {
       // اگر API کراپ کار نکرد، هیچ fallback استفاده نکن
       return
     }
     
-    console.log('برش خودکار موبایل اعمال شد')
-  } catch (error) {
-    console.error('خطا در اعمال برش خودکار موبایل:', error)
+  } catch (_error) {
+    // خطا در اعمال برش خودکار موبایل
   }
 }
 
@@ -1114,9 +1122,9 @@ const saveWidget = async () => {
     const widgetData = {
       title: formData.value.title,
       description: formData.value.description,
-      type: formData.value.type as any, // Type casting for compatibility
-      status: formData.value.status as any, // Type casting for compatibility
-      page: formData.value.page as any, // Type casting for compatibility
+      type: formData.value.type as WidgetType,
+      status: formData.value.status as WidgetStatus,
+      page: formData.value.page as WidgetPage,
       show_on_mobile: formData.value.show_on_mobile,
       config: configToSave
     }
@@ -1128,8 +1136,8 @@ const saveWidget = async () => {
       showSuccess('ابزارک با موفقیت به‌روزرسانی شد!')
     }
     
-  } catch (error) {
-    console.error('خطا در ذخیره ابزارک:', error)
+  } catch (_error) {
+    showError('خطا در ذخیره ابزارک')
   } finally {
     isSaving.value = false
   }

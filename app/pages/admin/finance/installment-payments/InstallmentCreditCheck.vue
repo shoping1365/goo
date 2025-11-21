@@ -298,7 +298,7 @@ const submitCreditCheck = async () => {
 }
 
 const openBulkCreditCheck = () => {
-  console.log('باز کردن اعتبارسنجی گروهی')
+
 }
 
 const refreshPendingRequests = async () => {

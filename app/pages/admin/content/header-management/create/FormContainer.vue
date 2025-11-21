@@ -66,18 +66,18 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref } from 'vue'
 import type { Ref } from 'vue'
+import { inject, ref } from 'vue'
 
 // Inject data and functions from parent
-const headerData = inject<Ref<any>>('headerData', ref({}))
-const saveHeader = inject<() => void>('saveHeader', () => {})
-const openItemsModal = inject<() => void>('openItemsModal', () => {})
-const getSelectedItemsText = inject<() => string>('getSelectedItemsText', () => 'انتخاب ایتم ها')
+// const headerData = inject<Ref<unknown>>('headerData', ref({}))
+// const saveHeader = inject<() => void>('saveHeader', () => {})
+// const openItemsModal = inject<() => void>('openItemsModal', () => {})
+// const getSelectedItemsText = inject<() => string>('getSelectedItemsText', () => 'انتخاب ایتم ها')
 const showLayerSettings = inject<Ref<boolean>>('showLayerSettings', ref(false))
-const newLayer = inject<Ref<any>>('newLayer', ref({}))
-const resetLayerForm = inject<() => void>('resetLayerForm', () => {})
-const createdLayers = inject<Ref<any[]>>('createdLayers', ref([]))
+const newLayer = inject<Ref<unknown>>('newLayer', ref({}))
+// const resetLayerForm = inject<() => void>('resetLayerForm', () => {})
+const createdLayers = inject<Ref<unknown[]>>('createdLayers', ref([]))
 const clearAllLayers = inject<() => void>('clearAllLayers', () => {})
 const isEditing = inject<Ref<boolean>>('isEditing', ref(false))
 
@@ -98,12 +98,13 @@ function editLayer(layer) {
 }
 
 function deleteLayer(layerId) {
-  console.log('حذف لایه با ID:', layerId)
+
   const index = createdLayers.value.findIndex(layer => layer.id === layerId)
   if (index > -1) {
-    const deletedLayer = createdLayers.value.splice(index, 1)[0]
-    console.log('لایه حذف شد:', deletedLayer)
-    console.log('لایه‌های باقی‌مانده:', createdLayers.value)
+    // const deletedLayer = createdLayers.value.splice(index, 1)[0]
+    createdLayers.value.splice(index, 1)
+
+
   } else {
     console.error('لایه با ID مورد نظر پیدا نشد:', layerId)
   }
@@ -140,7 +141,7 @@ function continueEditing() {
 function onDragStart(index: number) {
   dragIndex.value = index
 }
-function onDragOver(index: number) {
+function onDragOver(_index: number) {
   // Highlighting can be added if needed
 }
 function onDrop(index: number) {

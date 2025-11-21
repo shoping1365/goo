@@ -40,7 +40,7 @@
             const sanitizedHtml = computed(() => DOMPurify.sanitize(activeBadge.html))
             <div v-html="sanitizedHtml"></div>
           -->
-          <div v-if="activeBadge.html" class="trust-slide__html" v-html="activeBadge.html"></div>
+          <SanitizedHtml v-if="activeBadge.html" :content="activeBadge.html" class="trust-slide__html" />
 
           <a
             v-else-if="activeBadge.link"
@@ -107,6 +107,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import SanitizedHtml from '~/components/common/SanitizedHtml.vue'
 
 type RawBadge = {
   id?: string | number
@@ -114,6 +115,14 @@ type RawBadge = {
   link?: string
   imageUrl?: string
   html?: string
+}
+
+interface Badge {
+  id: string | number
+  title: string
+  link: string
+  imageUrl: string
+  html: string
 }
 
 const props = withDefaults(defineProps<{
@@ -142,17 +151,21 @@ const props = withDefaults(defineProps<{
   showArrows: true
 })
 
-const sanitizeBadges = (badges: RawBadge[]) => {
+const sanitizeBadges = (badges: RawBadge[]): Badge[] => {
   if (!Array.isArray(badges)) return []
   return badges
-    .map((badge, index) => ({
-      id: badge.id ?? `badge-${index}`,
-      title: badge.title?.trim() || '',
-      link: badge.link?.trim() || '',
-      imageUrl: badge.imageUrl?.trim() || '',
-      html: badge.html?.trim() || ''
-    }))
-    .filter(badge => badge.title || badge.imageUrl || badge.html || badge.link)
+    .map((badge, index) => {
+      const html = badge.html?.trim() || ''
+      
+      return {
+        id: badge.id ?? `badge-${index}`,
+        title: badge.title?.trim() || '',
+        link: badge.link?.trim() || '',
+        imageUrl: badge.imageUrl?.trim() || '',
+        html // Sanitization will be done by SanitizedHtml component
+      }
+    })
+    .filter(badge => badge.title || badge.imageUrl || badge.html || badge.link) as Badge[]
 }
 
 const normalizeInterval = (value?: number) => {

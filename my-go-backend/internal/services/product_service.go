@@ -20,6 +20,13 @@ type ProductService struct {
 	uowFactory unitofwork.UnitOfWorkFactory
 }
 
+// NewProductService ایجاد نمونه جدید از سرویس محصول
+func NewProductService(uowFactory unitofwork.UnitOfWorkFactory) *ProductService {
+	return &ProductService{
+		uowFactory: uowFactory,
+	}
+}
+
 // CreateProduct ایجاد محصول جدید با اعتبارسنجی و منطق کسب و کار
 func (s *ProductService) CreateProduct(ctx context.Context, cmd commands.CreateProductCommand) (*models.Product, error) {
 	// اعتبارسنجی داده‌ها

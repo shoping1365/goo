@@ -307,7 +307,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission } = useAuth()
 
 // تعریف interface ها
 interface Alert {
@@ -581,10 +581,8 @@ const saveAlert = async () => {
     showCreateModal.value = false
     editingAlert.value = null
     resetAlertForm()
-    console.log('اعلان با موفقیت ذخیره شد')
   } catch (error) {
     console.error('خطا در ذخیره اعلان:', error)
-    console.log('خطا در ذخیره اعلان')
   }
 }
 
@@ -604,10 +602,8 @@ const toggleAlertStatus = async (alert: Alert) => {
       alerts.value[index].status = newStatus
       alerts.value[index].isActive = newStatus === 'active'
     }
-    console.log(`وضعیت اعلان به ${getStatusLabel(newStatus)} تغییر یافت`)
   } catch (error) {
     console.error('خطا در تغییر وضعیت:', error)
-    console.log('خطا در تغییر وضعیت')
   }
 }
 
@@ -616,17 +612,14 @@ const deleteAlert = async (alertId: number) => {
     try {
       alerts.value = alerts.value.filter(alert => alert.id !== alertId)
       selectedAlerts.value = selectedAlerts.value.filter(id => id !== alertId)
-      console.log('اعلان با موفقیت حذف شد')
     } catch (error) {
       console.error('خطا در حذف اعلان:', error)
-      console.log('خطا در حذف اعلان')
     }
   }
 }
 
 const bulkAction = () => {
   if (selectedAlerts.value.length === 0) {
-    console.log('لطفاً ابتدا اعلان‌هایی را انتخاب کنید')
     return
   }
 

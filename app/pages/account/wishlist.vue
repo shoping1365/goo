@@ -145,7 +145,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // تعریف متا صفحه
 definePageMeta({
   layout: 'default',
@@ -175,13 +175,12 @@ const loading = ref(false)
 async function loadWishlist() {
   try {
     loading.value = true
-    console.log('درخواست دریافت محصولات علاقه‌مندی...')
+
     const response = await $fetch('/api/wishlist', { credentials: 'include' })
-    console.log('پاسخ API علاقه‌مندی‌ها:', response)
-    
+
     if (response.success) {
       products.value = response.data
-      console.log('محصولات علاقه‌مندی دریافت شده:', products.value.length)
+
     } else {
       console.error('خطا در دریافت علاقه‌مندی‌ها:', response.message)
       products.value = []
@@ -202,8 +201,7 @@ onMounted(async () => {
 // توابع علاقه‌مندی و لیست
 async function toggleFavorite(productId) {
   try {
-    console.log('محصول به لیست علاقه‌مندی‌ها اضافه/حذف شد:', productId)
-    
+
     // بررسی اینکه آیا محصول در لیست است یا نه
     const isInWishlist = products.value.some(p => p.id === productId)
     
@@ -229,7 +227,7 @@ async function toggleFavorite(productId) {
       if (response.success) {
         // حذف از لیست محلی
         products.value = products.value.filter(p => p.id !== productId)
-        console.log('محصول از لیست علاقه‌مندی‌ها حذف شد')
+
       }
     } else {
       // اضافه کردن به لیست
@@ -243,7 +241,7 @@ async function toggleFavorite(productId) {
       })
       
       if (response.success) {
-        console.log('محصول به لیست علاقه‌مندی‌ها اضافه شد')
+
         // بارگذاری مجدد لیست
         await loadWishlist()
       }
@@ -253,15 +251,15 @@ async function toggleFavorite(productId) {
   }
 }
 
-function addToList(productId) {
-  console.log('محصول به لیست اضافه شد:', productId)
-  // TODO: نمایش مودال انتخاب لیست یا ارسال درخواست به سرور
-}
+// Functions removed - not used
+// function addToList(_productId: number | string) {
+//   // TODO: نمایش مودال انتخاب لیست یا ارسال درخواست به سرور
+// }
 
-function isFavorite(productId) {
-  // بررسی اینکه آیا محصول در لیست علاقه‌مندی‌ها است
-  return products.value.some(p => p.id === productId)
-}
+// function isFavorite(_productId: number | string) {
+//   // بررسی اینکه آیا محصول در لیست علاقه‌مندی‌ها است
+//   return products.value.some(p => p.id === _productId)
+// }
 
 function formatPrice(price) {
   if (!price || isNaN(price)) return 'قیمت نامشخص'

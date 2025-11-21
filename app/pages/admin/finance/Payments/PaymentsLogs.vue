@@ -300,7 +300,11 @@ const exportLogs = () => {
   // TODO: خروجی لاگ‌ها
 }
 
-const viewLogDetails = (log: any) => {
+interface Log {
+  [key: string]: unknown
+}
+
+const viewLogDetails = (_log: Log) => {
   // TODO: نمایش جزئیات لاگ
 }
 </script>

@@ -262,7 +262,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue';
 
 definePageMeta({
   layout: 'admin-main',
@@ -270,7 +270,7 @@ definePageMeta({
 });
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // Reactive data
 const files = ref([])

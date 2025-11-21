@@ -8,14 +8,11 @@ export default defineNuxtPlugin(async (_nuxtApp) => {
 
   const { fetchUser, isAuthenticated, clearAuthState } = useAuthState()
 
-  // console.log('🔍 Client Plugin: Starting... (Auth already initialized in SSR)')
-
   // همگام‌سازی در تب‌های مختلف مرورگر
   if (typeof window !== 'undefined') {
     window.addEventListener('storage', async (e) => {
       // اگر تغییری در auth state رخ داده، اطلاعات را مجدداً بارگذاری کن
       if (e.key === 'auth-sync') {
-        // console.log('🔄 Client Plugin: Auth sync detected, refreshing user data')
         // ✅ همیشه fetch کن - کوکی httpOnly است
         try {
           await fetchUser(true) // force refresh
@@ -36,7 +33,6 @@ export default defineNuxtPlugin(async (_nuxtApp) => {
       heartbeatInterval = setInterval(async () => {
         if (isAuthenticated.value) {
           try {
-            // console.log('💓 Client Plugin: Heartbeat - refreshing auth')
             await fetchUser(true)
           } catch (error) {
             console.error('❌ Client Plugin: Heartbeat failed:', error)

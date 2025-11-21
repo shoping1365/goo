@@ -28,7 +28,7 @@
 import MobileHeaderSearchBox from '~/components/widgets/mobile/MobileHeaderSearchBox.vue'
 import { useAuthState } from '~/composables/useAuthState'
 
-const props = defineProps({
+defineProps({
   header: {
     type: Object,
     required: true

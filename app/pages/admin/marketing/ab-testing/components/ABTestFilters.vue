@@ -229,8 +229,12 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 // Props
+interface FilterValue {
+  [key: string]: unknown
+}
+
 interface Props {
-  modelValue?: any
+  modelValue?: FilterValue
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -238,9 +242,13 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // Emits
+interface Filters {
+  [key: string]: unknown
+}
+
 const emit = defineEmits<{
-  'update:modelValue': [value: any]
-  'filter-change': [filters: any]
+  'update:modelValue': [value: FilterValue]
+  'filter-change': [filters: Filters]
 }>()
 
 // State
@@ -268,7 +276,7 @@ const activeFiltersCount = computed(() => {
 
 // نمایش فیلترهای فعال
 const activeFilters = computed(() => {
-  const active: any = {}
+  const active: Record<string, { label: string; value: string }> = {}
   
   if (filters.value.testType) {
     active.testType = {
@@ -324,7 +332,7 @@ const activeFilters = computed(() => {
 
 // توابع کمکی
 const getTestTypeLabel = (type: string) => {
-  const labels: any = {
+  const labels: Record<string, string> = {
     page: 'صفحه',
     button: 'دکمه',
     price: 'قیمت',
@@ -335,7 +343,7 @@ const getTestTypeLabel = (type: string) => {
 }
 
 const getStatusLabel = (status: string) => {
-  const labels: any = {
+  const labels: Record<string, string> = {
     active: 'فعال',
     inactive: 'غیرفعال',
     pending: 'در انتظار',
@@ -345,7 +353,7 @@ const getStatusLabel = (status: string) => {
 }
 
 const getResultLabel = (result: string) => {
-  const labels: any = {
+  const labels: Record<string, string> = {
     winner: 'برنده',
     loser: 'بازنده',
     inconclusive: 'نامشخص',

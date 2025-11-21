@@ -102,7 +102,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission: _hasPermission } = useAuth()
 
 // State management
 const isFormModalOpen = ref(false)
@@ -146,7 +146,7 @@ const viewResults = (testId: number) => {
 // کپی کردن تست
 const duplicateTest = (testId: number) => {
   // منطق کپی کردن تست
-  console.log('کپی کردن تست:', testId)
+
   notificationsRef.value?.addNotification({
     type: 'completion',
     title: 'تست کپی شد',
@@ -158,7 +158,7 @@ const duplicateTest = (testId: number) => {
 const deleteTest = (testId: number) => {
   if (confirm('آیا از حذف این تست اطمینان دارید؟')) {
     // منطق حذف تست
-    console.log('حذف تست:', testId)
+
     notificationsRef.value?.addNotification({
       type: 'completion',
       title: 'تست حذف شد',
@@ -167,9 +167,19 @@ const deleteTest = (testId: number) => {
   }
 }
 
+interface ABTestFormData {
+  name?: string
+  description?: string
+  [key: string]: unknown
+}
+
+interface ABTestSettings {
+  [key: string]: unknown
+}
+
 // ارسال فرم
-const handleFormSubmit = (formData: any) => {
-  console.log('داده‌های فرم:', formData)
+const handleFormSubmit = (formData: ABTestFormData) => {
+
   closeFormModal()
   notificationsRef.value?.addNotification({
     type: 'completion',
@@ -190,8 +200,8 @@ const closeSettingsModal = () => {
 }
 
 // ذخیره تنظیمات
-const handleSettingsSave = (settings: any) => {
-  console.log('تنظیمات جدید:', settings)
+const handleSettingsSave = (settings: ABTestSettings) => {
+
   closeSettingsModal()
   notificationsRef.value?.addNotification({
     type: 'completion',
@@ -200,15 +210,31 @@ const handleSettingsSave = (settings: any) => {
   })
 }
 
+interface Filters {
+  [key: string]: unknown
+}
+
+interface Permissions {
+  [key: string]: unknown
+}
+
+interface Limits {
+  [key: string]: unknown
+}
+
+interface IntegrationData {
+  [key: string]: unknown
+}
+
 // مدیریت فیلترها
-const handleFilterChange = (newFilters: any) => {
-  console.log('فیلترهای جدید:', newFilters)
+const handleFilterChange = (newFilters: Filters) => {
+
   filters.value = newFilters
 }
 
 // مدیریت مجوزها
-const handlePermissionsChanged = (permissions: any) => {
-  console.log('مجوزهای جدید:', permissions)
+const handlePermissionsChanged = (permissions: Permissions) => {
+
   notificationsRef.value?.addNotification({
     type: 'completion',
     title: 'مجوزها ذخیره شد',
@@ -217,8 +243,8 @@ const handlePermissionsChanged = (permissions: any) => {
 }
 
 // مدیریت محدودیت‌ها
-const handleLimitsChanged = (limits: any) => {
-  console.log('محدودیت‌های جدید:', limits)
+const handleLimitsChanged = (limits: Limits) => {
+
   notificationsRef.value?.addNotification({
     type: 'completion',
     title: 'محدودیت‌ها ذخیره شد',
@@ -227,8 +253,8 @@ const handleLimitsChanged = (limits: any) => {
 }
 
 // مدیریت یکپارچه‌سازی
-const handleIntegrationChanged = (integration: string, data: any) => {
-  console.log('یکپارچه‌سازی تغییر کرد:', integration, data)
+const handleIntegrationChanged = (integration: string, data: IntegrationData) => {
+
   notificationsRef.value?.addNotification({
     type: 'completion',
     title: 'یکپارچه‌سازی ذخیره شد',

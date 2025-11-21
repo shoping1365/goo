@@ -109,7 +109,7 @@
     <!-- تنظیمات بنر -->
     <DeviceTabs
       ref="deviceTabsRef"
-      v-model:bannerConfig="bannerConfig"
+      v-model:banner-config="bannerConfig"
       :current-preview-banner="currentPreviewBanner"
       :open-add-banner-modal="openAddBannerModal"
       :edit-banner="editBanner"
@@ -797,7 +797,21 @@ import { useRoute } from 'vue-router'
 import TemplateButton from '~/components/common/TemplateButton.vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
 import { useWidget } from '~/composables/useWidget'
-import type { SlideItem, Widget } from '~/types/widget'
+import type { SlideItem, Widget, WidgetType, WidgetStatus, WidgetPage, BannerConfig } from '~/types/widget'
+
+interface ImageCropResponse {
+  success: boolean
+  data?: {
+    cropped_url: string
+  }
+}
+
+interface MediaFile {
+  id?: number | string
+  url: string
+  name?: string
+  [key: string]: unknown
+}
 import { WIDGET_TYPE_LABELS } from '~/types/widget'
 import DeviceTabs from './components/DeviceTabs.vue'
 
@@ -816,13 +830,12 @@ const widgetId = parseInt(route.params.id as string)
 const { fetchWidget, updateWidget, loading: _loading, error: _error, clearError, widget: fetchedWidget } = useWidget()
 
 // Notification helpers
-const showSuccess = (message: string) => {
-  // console.log('Success:', message)
+const showSuccess = (_message: string) => {
   // You can add toast notification logic here
 }
 
-const showError = (message: string) => {
-  // console.error('Error:', message)
+const showError = (_message: string) => {
+  // console.error('Error:', _message)
   // You can add toast notification logic here
 }
 
@@ -887,7 +900,6 @@ const formData = ref({
 // Initialize form data when widget is available
 const initializeFormData = () => {
   if (fetchedWidget.value) {
-    console.log('Widget data:', fetchedWidget.value) // Debug log
     formData.value = {
       title: fetchedWidget.value.title || '',
       description: fetchedWidget.value.description || '',
@@ -895,7 +907,6 @@ const initializeFormData = () => {
       status: fetchedWidget.value.status || 'active',
       page: fetchedWidget.value.page || 'home'
     }
-    console.log('Form data initialized:', formData.value) // Debug log
   }
 }
 
@@ -970,7 +981,7 @@ const applyMobileCrop = async () => {
           device: 'mobile',
           quality: 85
         }
-      }) as any
+      }) as ImageCropResponse
       
       if (response.success) {
         bannerConfig.value.mobile_cropped_image = response.data.cropped_url
@@ -978,13 +989,11 @@ const applyMobileCrop = async () => {
       } else {
         throw new Error('API response failed')
       }
-    } catch (error) {
-      console.error('Backend crop API error:', error)
+    } catch (_error) {
       alert('خطا در برش عکس موبایل')
       return
     }
-  } catch (error) {
-    console.error('خطا در اعمال برش موبایل:', error)
+  } catch (_error) {
     alert('خطا در اعمال برش موبایل')
   }
 }
@@ -1061,7 +1070,7 @@ const openMediaLibrary = () => {
   showMediaLibrary.value = true
 }
 
-const onSelectFromLibrary = (files: any[]) => {
+const onSelectFromLibrary = (files: MediaFile[]) => {
   if (files && files.length > 0) {
     const file = files[0]
     editingBanner.value.image = file.url
@@ -1105,7 +1114,7 @@ const updateBannerRatios = (changedBanner: 'banner1' | 'banner2' | 'banner3' | '
       // نسبت‌ها را بر اساس نسبت فعلی تقسیم کن
       const ratioA = currentA / totalCurrent
       const ratioB = currentB / totalCurrent
-      const ratioC = currentC / totalCurrent
+      const _ratioC = currentC / totalCurrent
       
       bannerConfig.value[`${bannerA}_ratio`] = Math.round(remaining * ratioA)
       bannerConfig.value[`${bannerB}_ratio`] = Math.round(remaining * ratioB)
@@ -1147,9 +1156,9 @@ const saveWidget = async () => {
     const widgetData = {
       title: formData.value.title,
       description: formData.value.description,
-      type: formData.value.type as any, // Type casting for compatibility
-      status: formData.value.status as any, // Type casting for compatibility
-      page: formData.value.page as any, // Type casting for compatibility
+      type: formData.value.type as WidgetType,
+      status: formData.value.status as WidgetStatus,
+      page: formData.value.page as WidgetPage,
       config: bannerConfig.value
     }
     
@@ -1160,8 +1169,8 @@ const saveWidget = async () => {
       showSuccess('ابزارک با موفقیت به‌روزرسانی شد!')
     }
     
-  } catch (error) {
-    console.error('خطا در ذخیره ابزارک:', error)
+  } catch (_error) {
+    showError('خطا در ذخیره ابزارک')
   } finally {
     isSaving.value = false
   }
@@ -1202,22 +1211,19 @@ const applyAutoMobileCrop = async () => {
           device: 'mobile',
           quality: 85
         }
-      }) as any
+      }) as ImageCropResponse
       
       if (response.success) {
         bannerConfig.value.mobile_cropped_image = response.data.cropped_url
       } else {
         throw new Error('API response failed')
       }
-    } catch (error) {
-      console.error('Backend crop API error:', error)
+    } catch (_error) {
       // اگر API کراپ کار نکرد، هیچ fallback استفاده نکن
       return
     }
-    
-    console.log('برش خودکار موبایل اعمال شد')
-  } catch (error) {
-    console.error('خطا در اعمال برش خودکار موبایل:', error)
+  } catch (_error) {
+    // خطا در اعمال برش خودکار موبایل
   }
 }
 
@@ -1231,7 +1237,7 @@ onMounted(async () => {
   
   // Only copy specific config fields, don't overwrite defaults
   if (fetchedWidget.value?.config) {
-    const config = fetchedWidget.value.config as any
+    const config = fetchedWidget.value.config as BannerConfig
     if (config.banners) bannerConfig.value.banners = config.banners
     else if (config.slides) bannerConfig.value.banners = config.slides
     if (config.height) bannerConfig.value.height = config.height

@@ -390,7 +390,7 @@ const getGridClass = (deviceId: string) => {
 
 // پیش‌نمایش طراحی
 const previewDesign = () => {
-  console.log('پیش‌نمایش طراحی:', uiSettings.value)
+
 }
 </script>
 

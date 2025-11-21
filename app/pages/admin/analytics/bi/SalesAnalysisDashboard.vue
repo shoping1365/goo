@@ -265,7 +265,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission: _hasPermission } = useAuth()
 
 // Reactive data
 const filters = ref({
@@ -366,7 +366,7 @@ const clearFilters = () => {
 }
 
 const applyFilters = () => {
-  console.log('Applying filters:', filters.value)
+
   // Implementation for applying filters
 }
 

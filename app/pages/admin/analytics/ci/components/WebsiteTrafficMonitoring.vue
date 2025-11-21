@@ -230,7 +230,7 @@ const formatNumber = (num) => {
 }
 
 const exportData = () => {
-  console.log('Exporting traffic data...')
+
   // منطق خروجی داده‌ها
 }
 </script>

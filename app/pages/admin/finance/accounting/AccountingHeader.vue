@@ -226,7 +226,7 @@ const getStatusLabel = (status: string): string => {
 const testAllConnections = async () => {
   try {
     // TODO: تست تمام اتصالات
-    console.log('تست تمام اتصالات شروع شد')
+
   } catch (error) {
     console.error('خطا در تست اتصالات:', error)
   }
@@ -236,7 +236,7 @@ const testAllConnections = async () => {
 const syncAllData = async () => {
   try {
     // TODO: همگام‌سازی کامل داده‌ها
-    console.log('همگام‌سازی کامل شروع شد')
+
   } catch (error) {
     console.error('خطا در همگام‌سازی:', error)
   }
@@ -245,7 +245,7 @@ const syncAllData = async () => {
 // نمایش تنظیمات
 const showSettings = () => {
   // TODO: نمایش تنظیمات
-  console.log('نمایش تنظیمات')
+
 }
 
 // بارگذاری اولیه

@@ -80,11 +80,25 @@ export function useAttributeGroup() {
     if (!groupId) return
     loadingGroup.value = true
     try {
-      const res: any = await $fetch(`/api/attribute-groups/${groupId}`)
-      // console.log('group-res', res)
+      interface AttributeGroupResponse {
+        attributes?: unknown[]
+        Attributes?: unknown[]
+        attribute_group_attributes?: unknown[]
+        data?: unknown[]
+        [key: string]: unknown
+      }
+      interface AttributeItem {
+        attribute?: { id?: number | string; name?: string }
+        Attribute?: { id?: number | string; name?: string }
+        attribute_id?: number | string
+        id?: number | string
+        name?: string
+        [key: string]: unknown
+      }
+      const res = await $fetch<AttributeGroupResponse>(`/api/attribute-groups/${groupId}`)
       const list = res?.attributes || res?.Attributes || res?.attribute_group_attributes || res?.data || []
       if (Array.isArray(list)) {
-        attributes.value = list.map((a: any) => ({
+        attributes.value = (list as AttributeItem[]).map((a) => ({
           id: a.attribute?.id || a.Attribute?.id || a.attribute_id || a.id,
           name: a.attribute?.name || a.Attribute?.name || a.name,
           // Normalise Persian labels to English slugs so that downstream components
@@ -110,7 +124,7 @@ export function useAttributeGroup() {
             const vals = await loadAttributeValues(attr.id)
             // Normalise values structure to ensure {id, value} shape
             if (Array.isArray(vals)) {
-              attr.values = vals.map((v: any) => ({
+              attr.values = vals.map((v: Record<string, unknown>) => ({
                 id: Number(v.id ?? v.ID ?? v.value_id ?? v.ValueID ?? v.value_id),
                 value: v.value ?? v.Value ?? v.name ?? v.Name ?? v.label ?? ''
               }))
@@ -136,7 +150,7 @@ export function useAttributeGroup() {
   async function loadAttributeValues(attrId: string | number) {
     if (!attrId) return []
     try {
-      const res: any = await $fetch(`/api/attribute-values/by-attribute/${attrId}`)
+      const res = await $fetch<unknown>(`/api/attribute-values/by-attribute/${attrId}`)
       return Array.isArray(res) ? res : res?.data || []
     } catch (e) {
       console.error('Failed load values', e)

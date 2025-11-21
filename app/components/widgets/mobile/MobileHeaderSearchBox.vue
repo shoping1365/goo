@@ -127,7 +127,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 interface PopularSearchItem {
@@ -136,7 +136,66 @@ interface PopularSearchItem {
   context?: string
 }
 
-const props = withDefaults(defineProps<{ placeholder?: string }>(), {
+interface SearchResult {
+  id?: string | number
+  type?: 'product' | 'category' | 'post' | 'brand' | string
+  title?: string
+  name?: string
+  description?: string
+  url?: string
+  image?: string
+  price?: number | string | null
+  final_price?: number | string | null
+  sale_price?: number | string | null
+  slug?: string
+  link?: string
+  data?: {
+    title?: string
+    name?: string
+    description?: string
+    price?: number | string
+    final_price?: number | string
+    image?: string
+    image_url?: string
+    main_image?: string
+    thumbnail?: string
+    thumbnail_url?: string
+    thumb?: string
+  }
+  media?: Array<{
+    thumbnail?: string
+    thumbnail_url?: string
+    small?: string
+    url?: string
+  }>
+  thumbnail?: string
+  thumbnail_url?: string
+  image_thumbnail?: string
+  small_image?: string
+  thumb?: string
+  image_url?: string
+  main_image?: string
+  featured_image?: string
+  cover?: string
+  picture?: string
+  excerpt?: string
+}
+
+interface SearchResponse {
+  success?: boolean
+  data?: SearchResult[] | unknown[]
+}
+
+interface SuggestionsResponse {
+  success?: boolean
+  data?: string[]
+}
+
+interface WindowWithTimeout extends Window {
+  mobileSearchTimeout?: ReturnType<typeof setTimeout>
+}
+
+withDefaults(defineProps<{ placeholder?: string }>(), {
   placeholder: 'جستجو...'
 })
 
@@ -146,7 +205,7 @@ const searchQuery = ref('')
 const querySnapshot = ref('')
 const recentSearches = ref<string[]>([])
 const suggestions = ref<string[]>([])
-const searchResults = ref<any[]>([])
+const searchResults = ref<SearchResult[]>([])
 const popularSearches = ref<PopularSearchItem[]>([])
 const isLoading = ref(false)
 const showPanel = ref(false)
@@ -175,8 +234,9 @@ const handleSearchInput = () => {
   showPanel.value = true
   highlightedIndex.value = -1
 
-  clearTimeout((window as any).mobileSearchTimeout)
-  ;(window as any).mobileSearchTimeout = setTimeout(async () => {
+  const windowWithTimeout = window as WindowWithTimeout
+  clearTimeout(windowWithTimeout.mobileSearchTimeout)
+  windowWithTimeout.mobileSearchTimeout = setTimeout(async () => {
     await Promise.all([
       fetchSuggestions(current),
       fetchSearchResults(current)
@@ -190,9 +250,9 @@ const fetchSuggestions = async (keyword: string) => {
 
   try {
     isLoading.value = true
-    const response = await $fetch('/api/search/suggestions', {
+    const response = await $fetch<SuggestionsResponse>('/api/search/suggestions', {
       query: { q: trimmed }
-    }) as any
+    })
 
     if (trimmed !== searchQuery.value.trim()) return
 
@@ -201,7 +261,7 @@ const fetchSuggestions = async (keyword: string) => {
     } else {
       suggestions.value = []
     }
-  } catch (error) {
+  } catch (_error) {
     suggestions.value = []
   } finally {
     isLoading.value = false
@@ -213,14 +273,14 @@ const fetchSearchResults = async (keyword: string) => {
   if (!trimmed) return
 
   try {
-    const response = await $fetch('/api/search', {
+    const response = await $fetch<SearchResponse>('/api/search', {
       query: { q: trimmed, limit: 8 }
-    }) as any
+    })
 
     if (trimmed !== searchQuery.value.trim()) return
 
     if (response?.success && Array.isArray(response.data)) {
-      searchResults.value = response.data.map((item: any) => ({
+      searchResults.value = response.data.map((item: SearchResult) => ({
         ...item,
         title: item.title || item.name || item.data?.title || item.data?.name || 'بدون عنوان',
         description: item.description || item.excerpt || item.data?.description || '',
@@ -231,12 +291,12 @@ const fetchSearchResults = async (keyword: string) => {
     } else {
       searchResults.value = []
     }
-  } catch (error) {
+  } catch (_error) {
     searchResults.value = []
   }
 }
 
-const resolveImage = (item: any) => {
+const resolveImage = (item: SearchResult) => {
   const take = (values: unknown[]) => {
     for (const value of values) {
       if (typeof value === 'string' && value.trim()) {
@@ -316,7 +376,7 @@ const selectSuggestion = (suggestion: string) => {
   submitQuery()
 }
 
-const selectResult = (result: any) => {
+const selectResult = (result: SearchResult) => {
   addRecentSearch(result.title || querySnapshot.value)
   showPanel.value = false
   searchInput.value?.blur()
@@ -372,9 +432,9 @@ const loadRecentSearches = () => {
     if (!raw) return
     const parsed = JSON.parse(raw)
     if (Array.isArray(parsed)) {
-      recentSearches.value = parsed.filter((item: any) => typeof item === 'string' && item.trim()).slice(0, 8)
+      recentSearches.value = parsed.filter((item: unknown) => typeof item === 'string' && item.trim()).slice(0, 8)
     }
-  } catch (error) {
+  } catch (_error) {
     recentSearches.value = []
   }
 }
@@ -388,15 +448,25 @@ const clearRecentSearches = () => {
 
 const loadPopularSearches = async () => {
   try {
-    const response = await $fetch('/api/search/popular') as any
+    interface PopularSearchResponse {
+      success?: boolean
+      data?: Array<{
+        query?: string
+        term?: string
+        keyword?: string
+        context?: string
+        category?: string
+      }>
+    }
+    const response = await $fetch<PopularSearchResponse>('/api/search/popular')
     if (response?.success && Array.isArray(response.data)) {
-      popularSearches.value = response.data.slice(0, 8).map((item: any) => ({
+      popularSearches.value = response.data.slice(0, 8).map((item) => ({
         label: item.query || item.term || item.keyword,
         query: item.query || item.term || item.keyword,
         context: item.context || item.category || ''
       }))
     }
-  } catch (error) {
+  } catch (_error) {
     popularSearches.value = []
   }
 }
@@ -411,8 +481,10 @@ const getTypeLabel = (type: string) => {
   return labels[type] || type
 }
 
-const formatPrice = (price: number) => {
-  return new Intl.NumberFormat('fa-IR').format(price) + ' تومان'
+const formatPrice = (price: number | string | null | undefined): string => {
+  if (price === null || price === undefined) return '0 تومان'
+  const numPrice = typeof price === 'string' ? parseFloat(price) || 0 : price
+  return new Intl.NumberFormat('fa-IR').format(numPrice) + ' تومان'
 }
 
 const handleClickOutside = (event: Event) => {

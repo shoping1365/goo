@@ -85,7 +85,7 @@ const activeTab = ref('design')
 
 // ذخیره تنظیمات UI
 const saveUISettings = () => {
-  console.log('ذخیره تنظیمات رابط کاربری')
+
 }
 </script>
 

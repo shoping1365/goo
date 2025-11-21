@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router';
 // تعریف navigateTo برای Nuxt 3
 declare const navigateTo: (to: string) => Promise<void>
 
-const props = defineProps<{ error: any }>()
+const props = defineProps<{ error: { statusCode?: number; status?: number; [key: string]: unknown } }>()
 const status = props.error?.statusCode || props.error?.status || 500
 const router = useRouter()
 

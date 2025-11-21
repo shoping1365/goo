@@ -538,27 +538,21 @@ function formatDataSize(bytes) {
 }
 
 function testConnection(_systemId) {
-  // console.log('Testing connection for system:', systemId)
 }
 
 function startSync(_systemId) {
-  // console.log('Starting sync for system:', systemId)
 }
 
 function editSystem(_systemId) {
-  // console.log('Editing system:', systemId)
 }
 
 function viewLogs(_systemId) {
-  // console.log('Viewing logs for system:', systemId)
 }
 
 function toggleSystem(_systemId) {
-  // console.log('Toggling system:', systemId)
 }
 
 function addSystem() {
-  // console.log('Adding new system:', newSystem)
 }
 
 function resetNewSystem() {
@@ -574,15 +568,12 @@ function resetNewSystem() {
 }
 
 function refreshLogs() {
-  // console.log('Refreshing logs')
 }
 
 function viewLogDetails(_logId) {
-  // console.log('Viewing log details:', logId)
 }
 
 onMounted(() => {
-  // console.log('SystemSync component mounted')
 })
 </script>
 

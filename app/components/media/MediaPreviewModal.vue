@@ -173,8 +173,18 @@ const form = reactive({
   description: ''
 })
 
+interface MediaFile {
+  alt?: string
+  title?: string
+  caption?: string
+  description?: string
+  url?: string
+  preview?: string
+  [key: string]: unknown
+}
+
 // initialise form when file changes
-watch(() => props.file, (newFile: any) => {
+watch(() => props.file, (newFile: MediaFile | null | undefined) => {
   if (!newFile) return
   form.alt = newFile.alt || ''
   form.title = newFile.title || ''
@@ -224,7 +234,7 @@ function copyLink() {
   }
 }
 
-function refreshImage() {
+const _refreshImage = () => {
   // force reload image
   if (props.file && (props.file.url || props.file.preview)) {
     const img = new Image()
@@ -263,7 +273,7 @@ const imgRelY = ref(0) // image-relative center Y
 const imgWidth = ref(0)
 const imgHeight = ref(0)
 const zoom = ref(2) // magnification factor
-function setZoom(val) {
+const _setZoom = (val: number | string) => {
   zoom.value = Number(val)
 }
 const lensSize = 300
@@ -324,7 +334,7 @@ function onMouseMove(e: MouseEvent) {
     const imgRect = img.getBoundingClientRect()
     const x = lastClientX - rect.left
     const y = lastClientY - rect.top
-    const size = effectiveLensSize.value
+    const _size = effectiveLensSize.value
     // allow lens to move outside image; only background coords are clamped separately
     const offsetX = imgRect.left - rect.left
     const offsetY = imgRect.top - rect.top

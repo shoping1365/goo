@@ -317,20 +317,25 @@ const getStatusLabel = (status: string) => {
 }
 
 // عملیات
-const viewVersion = (version: any) => {
-  console.log('مشاهده نسخه:', version)
+const viewVersion = (_version: Version) => {
+
 }
 
-const downloadVersion = (version: any) => {
-  console.log('دانلود نسخه:', version)
+interface Version {
+  id?: number | string
+  [key: string]: unknown
 }
 
-const deleteVersion = (version: any) => {
-  console.log('حذف نسخه:', version)
+const downloadVersion = (_version: Version) => {
+
+}
+
+const deleteVersion = (_version: Version) => {
+
 }
 
 const exportVersions = () => {
-  console.log('خروجی نسخه‌ها')
+
 }
 
 const clearFilters = () => {

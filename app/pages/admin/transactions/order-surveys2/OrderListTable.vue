@@ -744,7 +744,6 @@ const sendSMS = async (orderId: number) => {
   try {
     // Simulate SMS sending
     await new Promise(resolve => setTimeout(resolve, 1000))
-    // console.log(`Sending SMS for order ${orderId}`)
     // Update order status
     const order = orders.value.find(o => o.id === orderId)
     if (order) {
@@ -760,7 +759,6 @@ const sendBulkSMS = async () => {
   try {
     // Simulate bulk SMS sending
     await new Promise(resolve => setTimeout(resolve, 2000))
-    // console.log(`Sending bulk SMS to ${selectedOrders.value.length} orders`)
     // Update all selected orders
     selectedOrders.value.forEach(orderId => {
       const order = orders.value.find(o => o.id === orderId)
@@ -784,7 +782,6 @@ const resendFailedSMS = async () => {
     })
     
     await new Promise(resolve => setTimeout(resolve, 1500))
-    // console.log(`Resending SMS to ${failedOrders.length} failed orders`)
     
     failedOrders.forEach(orderId => {
       const order = orders.value.find(o => o.id === orderId)
@@ -802,17 +799,14 @@ const resendFailedSMS = async () => {
 }
 
 const viewDetails = (_orderId: number) => {
-  // console.log(`Viewing details for order ${orderId}`)
   // Navigate to order details page
 }
 
 const editOrder = (_orderId: number) => {
-  // console.log(`Editing order ${orderId}`)
   // Navigate to edit order page
 }
 
 const exportToExcel = () => {
-  // console.log('Exporting to Excel...')
   // Implement Excel export functionality
 }
 

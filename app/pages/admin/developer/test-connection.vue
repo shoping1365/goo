@@ -321,7 +321,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, watch } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue';
 
 definePageMeta({
   layout: 'admin-main',
@@ -329,7 +329,7 @@ definePageMeta({
 });
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // Reactive data
 const testing = ref(false)

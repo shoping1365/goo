@@ -71,7 +71,7 @@ definePageMeta({
 
         <!-- Product Management -->
         <NuxtLink
-          to="/admin/product-management"
+          to="/admin/product-management/products"
           class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer"
         >
           <div class="flex items-center">

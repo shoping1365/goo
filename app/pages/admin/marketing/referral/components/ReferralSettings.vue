@@ -277,7 +277,6 @@ const settings = ref({
 // ذخیره تنظیمات
 function saveSettings() {
   // TODO: فراخوانی API برای ذخیره تنظیمات
-  console.log('تنظیمات ذخیره شد:', settings.value)
   alert('تنظیمات با موفقیت ذخیره شد!')
 }
 </script> 

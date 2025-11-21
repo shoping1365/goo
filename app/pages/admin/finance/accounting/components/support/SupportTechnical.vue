@@ -299,7 +299,7 @@ const getStatusLabel = (status: string) => {
 // شروع چت زنده
 const startLiveChat = () => {
   // TODO: شروع چت زنده
-  console.log('شروع چت زنده')
+
 }
 
 // ارسال تیکت
@@ -307,8 +307,7 @@ const submitTicket = async () => {
   try {
     isSubmitting.value = true
     // TODO: ارسال تیکت به سرور
-    console.log('ارسال تیکت:', ticketForm.value)
-    
+
     // شبیه‌سازی ارسال
     await new Promise(resolve => setTimeout(resolve, 2000))
     
@@ -321,8 +320,7 @@ const submitTicket = async () => {
       description: '',
       attachments: []
     }
-    
-    console.log('تیکت با موفقیت ارسال شد')
+
   } catch (error) {
     console.error('خطا در ارسال تیکت:', error)
   } finally {
@@ -338,10 +336,15 @@ const handleFileUpload = (event: Event) => {
   }
 }
 
+interface Ticket {
+  id: number | string
+  [key: string]: unknown
+}
+
 // مشاهده تیکت
-const viewTicket = (ticket: any) => {
+const viewTicket = (_ticket: Ticket) => {
   // TODO: مشاهده جزئیات تیکت
-  console.log('مشاهده تیکت:', ticket)
+
 }
 </script>
 

@@ -130,7 +130,7 @@
 // کامپوننت چت‌بات و دستیار هوشمند
 import { ref } from 'vue'
 
-const chatMessages = ref([
+const _chatMessages = ref([
   { sender: 'bot', text: 'سلام! چطور می‌تونم کمکتون کنم؟' },
   { sender: 'user', text: 'می‌خوام یک گوشی موبایل مناسب بخرم.' },
   { sender: 'bot', text: 'چه ویژگی‌هایی براتون مهمه؟' }

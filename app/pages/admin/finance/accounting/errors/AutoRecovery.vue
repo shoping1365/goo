@@ -568,25 +568,30 @@ const getRecoveryStatusLabel = (status: string) => {
 // تست بازیابی
 const testRecovery = () => {
   // TODO: تست بازیابی
-  console.log('تست بازیابی')
+
 }
 
 // ذخیره تنظیمات بازیابی
 const saveRecoverySettings = () => {
   // TODO: ذخیره تنظیمات بازیابی
-  console.log('ذخیره تنظیمات بازیابی:', recoverySettings.value)
+
+}
+
+interface Recovery {
+  id?: number | string
+  [key: string]: unknown
 }
 
 // مشاهده جزئیات بازیابی
-const viewRecoveryDetails = (recovery: any) => {
+const viewRecoveryDetails = (_recovery: Recovery) => {
   // TODO: نمایش جزئیات بازیابی
-  console.log('جزئیات بازیابی:', recovery)
+
 }
 
 // تلاش مجدد بازیابی
-const retryRecovery = (recovery: any) => {
+const retryRecovery = (_recovery: Recovery) => {
   // TODO: تلاش مجدد بازیابی
-  console.log('تلاش مجدد بازیابی:', recovery)
+
 }
 </script>
 

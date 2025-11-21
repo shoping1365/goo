@@ -275,10 +275,6 @@ function toggleFaqStatus(id) {
 // تابع ذخیره تنظیمات
 function saveSettings() {
   // اینجا می‌توانید کد ذخیره تنظیمات را اضافه کنید
-  // console.log('تنظیمات ذخیره شد:', {
-  //   color: selectedColor.value,
-  //   settings: settings.value
-  // })
   
   // نمایش پیام موفقیت
   alert('تنظیمات با موفقیت ذخیره شد!')

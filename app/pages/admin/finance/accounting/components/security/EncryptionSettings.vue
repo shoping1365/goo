@@ -301,17 +301,23 @@ const getKeyStatusColor = (status: string) => {
   return colors[status] || 'bg-gray-500'
 }
 
+interface EncryptionKey {
+  id: number | string
+  name?: string
+  [key: string]: unknown
+}
+
 // عملیات
-const rotateKey = (key: any) => {
-  console.log('چرخش کلید:', key)
+const rotateKey = (_key: EncryptionKey) => {
+
 }
 
-const backupKey = (key: any) => {
-  console.log('پشتیبان‌گیری کلید:', key)
+const backupKey = (_key: EncryptionKey) => {
+
 }
 
-const deleteKey = (key: any) => {
-  console.log('حذف کلید:', key)
+const deleteKey = (_key: EncryptionKey) => {
+
 }
 </script>
 

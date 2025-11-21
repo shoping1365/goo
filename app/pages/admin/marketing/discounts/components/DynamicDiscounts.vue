@@ -603,7 +603,7 @@ const getPredictionClass = (probability: number): string => {
 
 const filterRules = () => {
   // پیاده‌سازی فیلتر کردن قوانین
-  console.log('فیلتر کردن قوانین:', { priority: filterPriority.value, status: filterStatus.value })
+
 }
 
 const bulkAction = (action: string) => {
@@ -633,12 +633,18 @@ const bulkAction = (action: string) => {
   selectedRules.value = []
 }
 
-const editRule = (rule: any) => {
-  console.log('ویرایش قانون:', rule)
+interface Rule {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
+}
+
+const editRule = (_rule: Rule) => {
+
   showRuleForm.value = true
 }
 
-const deleteRule = (rule: any) => {
+const deleteRule = (rule: Rule) => {
   if (confirm(`آیا از حذف قانون "${rule.name}" اطمینان دارید؟`)) {
     const index = rules.value.findIndex(r => r.id === rule.id)
     if (index !== -1) {

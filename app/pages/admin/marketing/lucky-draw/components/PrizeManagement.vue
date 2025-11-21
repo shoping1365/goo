@@ -117,7 +117,7 @@
 <script setup>
 import PrizeForm from './PrizeForm.vue'
 
-const emit = defineEmits(['close'])
+defineEmits(['close'])
 
 // متغیرهای reactive
 const showPrizeForm = ref(false)

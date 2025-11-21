@@ -461,11 +461,11 @@ const getStatusText = (status: string) => {
 
 // عملیات
 const generateReport = () => {
-  console.log('تولید گزارش')
+
 }
 
 const applyFilters = () => {
-  console.log('اعمال فیلترها:', filters.value)
+
 }
 
 const clearFilters = () => {
@@ -477,16 +477,21 @@ const clearFilters = () => {
   }
 }
 
-const viewReport = (report: any) => {
-  console.log('مشاهده گزارش:', report)
+interface Report {
+  id: number | string
+  [key: string]: unknown
 }
 
-const downloadReport = (report: any) => {
-  console.log('دانلود گزارش:', report)
+const viewReport = (_report: Report) => {
+
 }
 
-const shareReport = (report: any) => {
-  console.log('اشتراک‌گذاری گزارش:', report)
+const downloadReport = (_report: Report) => {
+
+}
+
+const shareReport = (_report: Report) => {
+
 }
 </script>
 

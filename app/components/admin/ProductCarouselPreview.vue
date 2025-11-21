@@ -171,9 +171,16 @@ const fetchProducts = async () => {
     const response = await $fetch(`/api/products/public?${query}`)
     
     // پردازش پاسخ API
+    interface ProductResponse {
+      data?: {
+        products?: unknown[]
+      }
+      products?: unknown[]
+    }
+    
     if (response && typeof response === 'object' && 'data' in response) {
-      const data = (response as any).data
-      if (Array.isArray(data.products)) {
+      const data = (response as ProductResponse).data
+      if (data && Array.isArray(data.products)) {
         products.value = data.products
       } else if (Array.isArray(data)) {
         products.value = data
@@ -185,7 +192,7 @@ const fetchProducts = async () => {
     } else {
       products.value = []
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('خطا در دریافت محصولات:', err)
     error.value = 'خطا در دریافت محصولات'
     products.value = []

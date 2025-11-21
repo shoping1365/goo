@@ -509,7 +509,7 @@ const toggleProductStatus = async (product: Product) => {
 
 const applyFilters = () => {
   // فیلترها اعمال می‌شوند
-  console.log('فیلترها اعمال شدند:', filters.value)
+
 }
 
 // Utility functions

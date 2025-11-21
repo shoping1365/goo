@@ -91,13 +91,22 @@ const fetchReviews = async () => {
   if (filters.value.status) params.append('status', String(filters.value.status))
   if (filters.value.rating) params.append('rating', String(filters.value.rating))
   if (filters.value.search) params.append('search', String(filters.value.search))
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const res = await $fetch('/api/admin/reviews?' + params.toString()) as any
+  interface ReviewsResponse {
+    reviews?: Array<{
+      id?: number | string
+      [key: string]: unknown
+    }>
+    [key: string]: unknown
+  }
+  const res = await $fetch<ReviewsResponse>('/api/admin/reviews?' + params.toString())
   items.value = res?.reviews || []
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const approve = async (row: any) => {
+interface Review {
+  id?: number | string
+  [key: string]: unknown
+}
+const approve = async (row: Review) => {
   await $fetch(`/api/admin/reviews/${row.id}/approve`, { method: 'POST' })
   fetchReviews()
 }

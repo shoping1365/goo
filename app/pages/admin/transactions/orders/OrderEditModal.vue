@@ -521,7 +521,6 @@ const saveOrder = async () => {
     await new Promise(resolve => setTimeout(resolve, 1500))
     
     emit('save', editedOrder.value)
-    // console.log('سفارش ذخیره شد:', editedOrder.value)
     
   } catch {
     // console.error('خطا در ذخیره سفارش:', error)

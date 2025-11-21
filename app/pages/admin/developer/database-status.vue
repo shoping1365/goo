@@ -79,14 +79,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="query in activeQueries" :key="query.pid">
-                <td class="px-4 py-2">{{ query.usename }}</td>
-                <td class="px-4 py-2">{{ query.client_addr }}</td>
-                <td class="px-4 py-2">{{ query.duration }}</td>
-                <td class="px-4 py-2">{{ formatStartTime(query) }}</td>
+              <tr v-for="q in activeQueries" :key="q.pid">
+                <td class="px-4 py-2">{{ q.usename }}</td>
+                <td class="px-4 py-2">{{ q.client_addr }}</td>
+                <td class="px-4 py-2">{{ q.duration }}</td>
+                <td class="px-4 py-2">{{ formatStartTime(q) }}</td>
                 <td class="px-4 py-2 text-gray-400">در حال اجرا</td>
-                <td class="px-4 py-2">{{ query.state }}</td>
-                <td class="px-4 py-2">{{ query.query }}</td>
+                <td class="px-4 py-2">{{ q.state }}</td>
+                <td class="px-4 py-2">{{ q.query }}</td>
               </tr>
               <tr v-if="!activeQueries.length">
                 <td colspan="7" class="text-center text-gray-400 py-4">کوئری فعالی وجود ندارد</td>
@@ -107,14 +107,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="query in activeQueries" :key="query.pid">
-              <td class="px-4 py-2">{{ query.usename }}</td>
-              <td class="px-4 py-2">{{ query.client_addr }}</td>
-              <td class="px-4 py-2">{{ query.duration }}</td>
-              <td class="px-4 py-2">{{ formatStartTime(query) }}</td>
+            <tr v-for="q in activeQueries" :key="q.pid">
+              <td class="px-4 py-2">{{ q.usename }}</td>
+              <td class="px-4 py-2">{{ q.client_addr }}</td>
+              <td class="px-4 py-2">{{ q.duration }}</td>
+              <td class="px-4 py-2">{{ formatStartTime(q) }}</td>
               <td class="px-4 py-2 text-gray-400">در حال اجرا</td>
-              <td class="px-4 py-2">{{ query.state }}</td>
-              <td class="px-4 py-2">{{ query.query }}</td>
+              <td class="px-4 py-2">{{ q.state }}</td>
+              <td class="px-4 py-2">{{ q.query }}</td>
             </tr>
             <tr v-if="!activeQueries.length">
               <td colspan="7" class="text-center text-gray-400 py-4">کوئری فعالی وجود ندارد</td>
@@ -142,10 +142,10 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="query in slowQueries" :key="query.queryid">
-                <td class="px-4 py-2">{{ query.calls }}</td>
-                <td class="px-4 py-2">{{ query.mean_time }}ms</td>
-                <td class="px-4 py-2">{{ query.max_time }}ms</td>
+              <tr v-for="q in slowQueries" :key="q.queryid">
+                <td class="px-4 py-2">{{ q.calls }}</td>
+                <td class="px-4 py-2">{{ q.mean_time }}ms</td>
+                <td class="px-4 py-2">{{ q.max_time }}ms</td>
                 <td class="px-4 py-2">{{ query.total_exec_time ? query.total_exec_time + 'ms' : '-' }}</td>
                 <td class="px-4 py-2">{{ query.query }}</td>
               </tr>
@@ -166,10 +166,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="query in slowQueries" :key="query.queryid">
-              <td class="px-4 py-2">{{ query.calls }}</td>
-              <td class="px-4 py-2">{{ query.mean_time }}ms</td>
-              <td class="px-4 py-2">{{ query.max_time }}ms</td>
+            <tr v-for="q in slowQueries" :key="q.queryid">
+              <td class="px-4 py-2">{{ q.calls }}</td>
+              <td class="px-4 py-2">{{ q.mean_time }}ms</td>
+              <td class="px-4 py-2">{{ q.max_time }}ms</td>
               <td class="px-4 py-2">{{ query.total_exec_time ? query.total_exec_time + 'ms' : '-' }}</td>
               <td class="px-4 py-2">{{ query.query }}</td>
             </tr>
@@ -389,8 +389,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch, computed } from 'vue';
 import dayjs from 'dayjs/esm/index.js';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 
 definePageMeta({
   layout: 'admin-main',
@@ -398,7 +398,7 @@ definePageMeta({
 });
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 const connectionStatus = ref('checking');
 const dbInfo = ref({
@@ -416,7 +416,7 @@ const queryResult = ref(null);
 const queryError = ref(null);
 const queryTime = ref(null);
 const queryRows = ref(null);
-const isQueryRunning = ref(false);
+// const isQueryRunning = ref(false);
 const systemStats = ref({
   responseTime: '-',
   databaseSize: '-',
@@ -449,15 +449,15 @@ const settings = ref({
 const customQueryLogs = ref([]);
 const customQueryLogsLoading = ref(false);
 
-const autoRefreshSettings = ref({
-  enabled: true,
-  interval: 1
-});
+// const autoRefreshSettings = ref({
+//   enabled: true,
+//   interval: 1
+// });
 
-const customQueryAutoSettings = ref({
-  enabled: false,
-  interval: 10,
-});
+// const customQueryAutoSettings = ref({
+//   enabled: false,
+//   interval: 10,
+// });
 
 const showCustomQueryLogs = ref(false);
 const activeQueriesExpanded = ref(false);
@@ -550,7 +550,7 @@ async function fetchDbMonitor() {
     const data = await response.json();
     activeQueries.value = data.activeQueries || [];
     slowQueries.value = data.slowQueries || [];
-  } catch (e) {
+  } catch {
     activeQueries.value = [];
     slowQueries.value = [];
   }
@@ -691,20 +691,6 @@ async function runQuery() {
   }
 }
 
-async function saveSettings() {
-  try {
-    const dbUrl = `postgres://${settings.value.user}:${settings.value.password}@${settings.value.host}:${settings.value.port}/${settings.value.database}?sslmode=disable`;
-    await fetch('/api/save-settings', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ databaseUrl: dbUrl })
-    });
-    showSettings.value = false;
-    await testConnection();
-  } catch (err) {
-    error.value = err.message;
-  }
-}
 
 function formatUptimeStr(str) {
   if (!str || str === '-') return '-';

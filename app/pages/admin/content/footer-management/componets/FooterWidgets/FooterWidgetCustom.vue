@@ -22,6 +22,7 @@
           const sanitizedContent = computed(() => DOMPurify.sanitize(props.content))
           <div v-html="sanitizedContent"></div>
         -->
+        <!-- eslint-disable-next-line vue/no-v-html -->
         <div v-if="isHtml" class="text-white text-opacity-90" v-html="content"></div>
         
         <!-- متن ساده -->
@@ -315,7 +316,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // متغیرهای محلی
-const formData = ref<Record<string, any>>({})
+const formData = ref<Record<string, unknown>>({})
 const isSubmitting = ref(false)
 const successMessage = ref('')
 const errorMessage = ref('')
@@ -329,7 +330,7 @@ const hasContent = computed(() => {
 const handleButtonClick = (button: Button) => {
   if (button.action) {
     // اینجا می‌توانید عملیات مورد نظر را انجام دهید
-    console.log('کلیک روی دکمه:', button)
+
   }
 }
 
@@ -356,7 +357,7 @@ const handleFormSubmit = async () => {
       successMessage.value = ''
     }, 5000)
     
-  } catch (error) {
+  } catch (_error) {
     // خطا
     errorMessage.value = 'خطا در ارسال فرم. لطفاً دوباره تلاش کنید.'
     

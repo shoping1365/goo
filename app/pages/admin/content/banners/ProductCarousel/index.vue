@@ -109,7 +109,7 @@
         <!-- Carousels List -->
         <div class="divide-y divide-gray-200">
           <div
-            v-for="(carousel, idx) in filteredCarousels"
+            v-for="carousel in filteredCarousels"
             :key="carousel.id"
             class="px-6 py-4 hover:bg-gray-50 transition-colors duration-200"
           >
@@ -323,7 +323,6 @@ const updateOrder = async (id: number, event: Event) => {
   }
   
   // Here you would call your API to update the order
-  console.log('Updating order for carousel:', id, 'to:', newOrder)
 }
 
 const toggleStatus = async (id: number) => {
@@ -333,7 +332,6 @@ const toggleStatus = async (id: number) => {
   }
   
   // Here you would call your API to update the status
-  console.log('Toggling status for carousel:', id)
 }
 
 const duplicateCarousel = async (id: number) => {
@@ -351,7 +349,6 @@ const duplicateCarousel = async (id: number) => {
   }
   
   // Here you would call your API to duplicate the carousel
-  console.log('Duplicating carousel:', id)
 }
 
 const confirmDelete = async (id: number) => {
@@ -359,7 +356,6 @@ const confirmDelete = async (id: number) => {
     carousels.value = carousels.value.filter(c => c.id !== id)
     
     // Here you would call your API to delete the carousel
-    console.log('Deleting carousel:', id)
   }
 }
 

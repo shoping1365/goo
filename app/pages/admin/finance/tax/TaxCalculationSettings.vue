@@ -646,7 +646,7 @@ const testCalculation = () => {
 const saveSettings = async () => {
   try {
     // TODO: ارسال درخواست به API
-    console.log('تنظیمات ذخیره شد:', settings.value)
+
   } catch (error) {
     console.error('خطا در ذخیره تنظیمات:', error)
   }

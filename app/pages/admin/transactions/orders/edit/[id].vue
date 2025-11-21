@@ -834,12 +834,8 @@ const checkScrollButtons = () => {
 // دریافت اطلاعات سفارش از API
 const fetchOrderData = async () => {
   try {
-    // console.log('دریافت اطلاعات سفارش:', orderId)
-    
     // دریافت اطلاعات سفارش از API
     const response = await $fetch(`/api/admin/orders/${orderId}`)
-    
-    // console.log('پاسخ API:', response)
     
     if (response && response.success && response.data) {
       const orderInfo = response.data
@@ -863,10 +859,6 @@ const fetchOrderData = async () => {
           item.totalPrice = orderInfo.totalAmount / orderData.value.items.length
         })
       }
-      
-      // console.log('وضعیت سفارش به‌روزرسانی شد:', orderInfo.status)
-    } else {
-      // console.log('پاسخ API نامعتبر یا سفارش یافت نشد')
     }
   } catch {
     // console.error('خطا در دریافت اطلاعات سفارش:', error)
@@ -877,9 +869,6 @@ const fetchOrderData = async () => {
 // ذخیره تغییرات سفارش
 const saveOrder = async () => {
   try {
-    // console.log('شروع ذخیره تغییرات...')
-    // console.log('وضعیت فعلی:', orderData.value.status.status)
-    
     // به‌روزرسانی وضعیت سفارش
     if (orderData.value.status && orderData.value.status.status) {
       const updateData = {
@@ -887,17 +876,11 @@ const saveOrder = async () => {
         notes: orderData.value.status.internalNotes || ''
       }
       
-      // console.log('ارسال درخواست به API:', updateData)
-      
       const _response = await $fetch(`/api/admin/orders/${orderId}/status`, {
         method: 'PUT',
         body: updateData
       })
-      
-      // console.log('پاسخ API:', response)
     }
-    
-    // console.log('ذخیره تغییرات سفارش:', orderData.value)
     
     // نمایش پیام موفقیت
     alert('تغییرات با موفقیت ذخیره شد')
@@ -910,8 +893,6 @@ const saveOrder = async () => {
 
 // مدیریت به‌روزرسانی وضعیت از کامپوننت OrderStatus
 const handleStatusUpdate = (updateData) => {
-  // console.log('وضعیت سفارش به‌روزرسانی شد:', updateData)
-  
   // به‌روزرسانی داده‌های محلی
   orderData.value.status.status = updateData.status
   orderData.value.status.paymentStatus = updateData.paymentStatus
@@ -923,7 +904,6 @@ const handleStatusUpdate = (updateData) => {
 // چاپ سفارش
 const printOrder = () => {
   // در اینجا منطق چاپ سفارش پیاده‌سازی می‌شود
-  // console.log('چاپ سفارش:', orderData.value)
   window.print()
 }
 

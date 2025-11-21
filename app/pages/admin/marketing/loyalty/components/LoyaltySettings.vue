@@ -229,7 +229,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 // تنظیمات برنامه وفاداری
 const settings = ref({
@@ -261,7 +261,6 @@ const settings = ref({
 // ذخیره تنظیمات
 function saveSettings() {
   // TODO: فراخوانی API برای ذخیره تنظیمات
-  console.log('تنظیمات ذخیره شد:', settings.value)
   alert('تنظیمات با موفقیت ذخیره شد')
 }
 </script> 

@@ -222,7 +222,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, nextTick, computed, watch } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import ImagePreviewModal from '~/components/media/ImagePreviewModal.vue'
 import MediaPreviewModal from '~/components/media/MediaPreviewModal.vue'
 
@@ -277,7 +277,7 @@ const saveStatus: SaveStatusMap = reactive({});
 
 const selectedCategory = ref('library')
 
-const categoryChecks = reactive({
+const _categoryChecks = reactive({
   library: false,
   products: false
 })
@@ -298,20 +298,23 @@ useHead({
 const isDragOver = ref(false)
 const uploadQueue = ref<UploadItem[]>([])
 const recentUploads = ref<RecentFile[]>([])
-const allPaused = ref(false)
-const modalImage = ref<string|null>(null)
-const showModal = ref(false)
+const _allPaused = ref(false)
+const _modalImage = ref<string|null>(null)
+const _showModal = ref(false)
 // NEW: state for simple image preview
 const imgPreviewVisible = ref(false)
-const imgPreviewFile = ref<Record<string, any> | null>(null)
-const selectedFile = ref<UploadItem | RecentFile | null>(null)
+interface PreviewFileData {
+  [key: string]: unknown
+}
+const imgPreviewFile = ref<PreviewFileData | null>(null)
+const _selectedFile = ref<UploadItem | RecentFile | null>(null)
 const itemsToShow = ref(30)
 const autoCompress = ref(true)
 const previewModalFile = ref<UploadItem|null>(null)
 const previewModalVisible = ref(false)
 
 
-const router = useRouter()
+const _router = useRouter()
 
 const filteredFiles = computed(() => uploadQueue.value)
 
@@ -404,9 +407,9 @@ const uploadFile = (item: UploadItem) => {
         } else {
           throw new Error(result.error || 'خطا در آپلود')
         }
-      } catch (e: any) {
+      } catch (e: unknown) {
         item.status = 'error'
-        item.error = e.message
+        item.error = e instanceof Error ? e.message : 'خطای ناشناخته'
         reject(e)
       }
     }
@@ -531,7 +534,6 @@ const processFiles = (files: File[]) => {
 }
 
 const handleSave = async (file: UploadItem) => {
-  console.log('handleSave called', file, 'id:', file?.id, 'url:', file?.url);
   if (!file || !file.id) return;
   try {
     const headers: Record<string,string> = { 'Content-Type': 'application/json' }
@@ -550,7 +552,7 @@ const handleSave = async (file: UploadItem) => {
     });
     if (!res.ok) throw new Error('خطا در ذخیره اطلاعات');
     saveStatus[file.id] = 'saved';
-  } catch (e) {
+  } catch (_e) {
     alert('خطا در ذخیره اطلاعات');
   }
 };
@@ -588,7 +590,7 @@ const removeFromQueue = async (id: string, skipConfirm: boolean = false) => {
     uploadQueue.value.splice(index, 1)
 }
 
-function openPreviewModal(file: UploadItem) {
+const _openPreviewModal = (file: UploadItem) => {
   previewModalFile.value = file
   previewModalVisible.value = true
 }
@@ -604,7 +606,15 @@ function closePreviewModal() {
   previewModalFile.value = null
 }
 
-async function onModalSave(payload: any) {
+interface ModalSavePayload {
+  alt?: string
+  title?: string
+  caption?: string
+  description?: string
+  id: string
+}
+
+async function onModalSave(payload: ModalSavePayload) {
   // payload = {alt,title,caption,description,id}
   const item = uploadQueue.value.find(f => f.id === payload.id)
   if (item) {
@@ -612,7 +622,7 @@ async function onModalSave(payload: any) {
     item.title = payload.title
     item.caption = payload.caption
     item.description = payload.description
-    await handleSave(item as any)
+    await handleSave(item)
   }
 }
 
@@ -630,7 +640,7 @@ async function onModalDelete(id: string | number) {
 // ---------------------------
 // نمایش فایل در مودال پیش‌نمایش
 const viewFile = (file: UploadItem | RecentFile) => {
-  previewModalFile.value = file as any
+  previewModalFile.value = file as UploadItem
   previewModalVisible.value = true
 }
 

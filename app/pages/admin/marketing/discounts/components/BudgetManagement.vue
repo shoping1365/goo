@@ -170,10 +170,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive } from 'vue'
+
+interface Budget {
+  id?: number | string
+  [key: string]: unknown
+}
 
 const showBudgetForm = ref(false)
-const editingBudget = ref<any>(null)
+const editingBudget = ref<Budget | null>(null)
 
 const stats = ref({
   totalBudget: 50000000,
@@ -223,13 +228,19 @@ const formatPrice = (price: number): string => {
   return new Intl.NumberFormat('fa-IR').format(price) + ' تومان'
 }
 
-const editBudget = (budget: any) => {
+interface Budget {
+  id?: number | string
+  campaignName?: string
+  [key: string]: unknown
+}
+
+const editBudget = (budget: Budget) => {
   editingBudget.value = budget
   Object.assign(form, budget)
   showBudgetForm.value = true
 }
 
-const deleteBudget = async (budget: any) => {
+const deleteBudget = async (budget: Budget) => {
   if (confirm(`آیا از حذف بودجه کمپین "${budget.campaignName}" اطمینان دارید؟`)) {
     try {
       const index = budgets.value.findIndex(b => b.id === budget.id)

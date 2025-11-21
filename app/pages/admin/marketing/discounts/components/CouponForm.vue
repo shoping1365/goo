@@ -103,18 +103,33 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
+interface Coupon {
+  id?: number | string
+  name?: string
+  code?: string
+  discount?: number
+  [key: string]: unknown
+}
+
 // Props
 interface Props {
-  coupon?: any
+  coupon?: Coupon
 }
 
 const props = withDefaults(defineProps<Props>(), {
   coupon: undefined
 })
 
+interface Coupon {
+  id?: number | string
+  code?: string
+  discount?: number
+  [key: string]: unknown
+}
+
 // Emits
 const emit = defineEmits<{
-  save: [coupon: any]
+  save: [coupon: Coupon]
   cancel: []
 }>()
 

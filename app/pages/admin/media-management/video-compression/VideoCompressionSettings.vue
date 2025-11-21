@@ -280,7 +280,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { ref, reactive, onMounted, watch } from 'vue'
 
 const emit = defineEmits(['update:enabled'])
 // Reactive data
@@ -365,10 +365,10 @@ async function saveCompressionSettings() {
       
       // showToast('تنظیمات با موفقیت ذخیره شد')
     } else {
-      const data = await res.json()
+      const _data = await res.json()
       // showToast(data?.error || 'خطا در ذخیره تنظیمات', 'error')
     }
-  } catch (err) {
+  } catch (_err) {
     // showToast('ارتباط با سرور برقرار نشد', 'error')
   }
 }
@@ -384,8 +384,14 @@ const loadCompressionSchedule = async () => {
     })
     
     if (Array.isArray(response)) {
-      const settings = response.reduce((acc: any, setting: any) => {
-        acc[setting.key || setting.Key] = setting.value ?? setting.Value
+      interface SettingItem {
+        key?: string
+        Key?: string
+        value?: string
+        Value?: string
+      }
+      const _settings = response.reduce((acc: Record<string, string>, setting: SettingItem) => {
+        acc[setting.key || setting.Key || ''] = setting.value ?? setting.Value ?? ''
         return acc
       }, {})
       
@@ -412,7 +418,6 @@ const testScheduler = async () => {
     })
     
     if (response.success) {
-      console.log('نتایج تست Scheduler:', response.data)
       // نمایش نتایج در console یا toast
     }
   } catch (error) {
@@ -440,7 +445,7 @@ onMounted(async () => {
       }
     }
 
-    const toBool = (v: any) => {
+    const toBool = (v: unknown) => {
       if (typeof v === 'boolean') return v
       return String(v).toLowerCase() === 'true' || v === '1'
     }
@@ -466,7 +471,7 @@ onMounted(async () => {
 
     lastLoadedSettings.value = { ...compressionSettings }
     unsavedChanges.value = false
-  } catch (e) {
+  } catch (_e) {
     // silently fail
   }
 })

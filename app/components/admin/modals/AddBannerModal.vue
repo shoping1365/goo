@@ -102,7 +102,17 @@ function onBannerImageChange(e: Event) {
   }
 }
 
-function onSelectBannerFromLibrary(files: any[]) {
+interface MediaFile {
+  id: number
+  url: string
+  thumbnail: string
+  type: string
+  name: string
+  size: number
+  category: string
+}
+
+function onSelectBannerFromLibrary(files: MediaFile[]) {
   if (files && files.length > 0) {
     bannerImage.value = files[0].url
     const img = new window.Image()
@@ -133,7 +143,19 @@ function handleSave() {
   bannerLink.value = ''
 }
 
-function onSliderSave(sliderData: any) {
+interface SliderData {
+  slides: Array<{
+    desktopImage: string | null
+    mobileImage: string | null
+    desktopTitle: string
+    mobileTitle: string
+    desktopLink: string
+    mobileLink: string
+    description: string
+  }>
+}
+
+function onSliderSave(sliderData: SliderData) {
   emit('save', {
     type: 'slider',
     data: sliderData

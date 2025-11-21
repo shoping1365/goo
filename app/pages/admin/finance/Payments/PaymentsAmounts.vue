@@ -40,7 +40,7 @@
 import { computed } from 'vue'
 
 interface Props {
-  amounts: Array<{
+  amounts?: Array<{
     range: string
     count: number
     percentage: number

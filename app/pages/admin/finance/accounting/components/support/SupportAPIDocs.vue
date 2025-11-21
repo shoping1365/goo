@@ -44,8 +44,8 @@
           v-for="category in categories"
           :key="category.id"
           class="px-4 py-2 text-sm font-medium rounded-full transition-colors"
-          :class="selectedCategory === category.id 
-            ? 'bg-blue-100 text-blue-700 border border-blue-200' 
+          :class="selectedCategory === category.id
+            ? 'bg-blue-100 text-blue-700 border border-blue-200'
             : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'"
           @click="selectCategory(category.id)"
         >
@@ -96,7 +96,7 @@
           </div>
           <p class="text-sm text-gray-600 mt-2">{{ api.description }}</p>
         </div>
-        
+
         <div
           v-show="openAPIs.includes(api.id)"
           class="px-6 py-4"
@@ -322,9 +322,7 @@ const response = await fetch('/api/v1/connections', {
     }
   })
 });
-
-const data = await response.json();
-console.log(data);`
+const data = await response.json();`
 
 const phpExample = `<?php
 // نمونه کد PHP
@@ -347,10 +345,8 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
     'Authorization: Bearer your_token'
 ]);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
 $response = curl_exec($ch);
 curl_close($ch);
-
 $result = json_decode($response, true);
 echo json_encode($result, JSON_PRETTY_PRINT);
 ?>`
@@ -366,7 +362,7 @@ const filteredAPIs = computed(() => {
 
 // کلاس متد
 const getMethodClass = (method: string) => {
-  const classes = {
+  const classes: Record<string, string> = {
     GET: 'bg-green-100 text-green-700',
     POST: 'bg-blue-100 text-blue-700',
     PUT: 'bg-yellow-100 text-yellow-700',
@@ -377,7 +373,7 @@ const getMethodClass = (method: string) => {
 
 // کلاس دسته‌بندی
 const getCategoryClass = (category: string) => {
-  const classes = {
+  const classes: Record<string, string> = {
     authentication: 'bg-purple-100 text-purple-700',
     connections: 'bg-blue-100 text-blue-700',
     sync: 'bg-green-100 text-green-700',
@@ -389,7 +385,7 @@ const getCategoryClass = (category: string) => {
 
 // برچسب دسته‌بندی
 const getCategoryLabel = (category: string) => {
-  const labels = {
+  const labels: Record<string, string> = {
     authentication: 'احراز هویت',
     connections: 'اتصالات',
     sync: 'همگام‌سازی',
@@ -415,13 +411,13 @@ const toggleAPI = (apiId: number) => {
 }
 
 // تست API
-const testAPI = (api: any) => {
-  console.log(`تست API: ${api.title}`, testParams.value[api.id])
+const testAPI = (_api: unknown) => {
+  // TODO: Implement API testing
 }
 
 // دانلود مستندات
 const downloadDocs = () => {
-  console.log('دانلود مستندات API')
+  // TODO: Implement documentation download
 }
 </script>
 
@@ -434,4 +430,4 @@ const downloadDocs = () => {
   4. نمونه کدها
   5. تست API
   6. طراحی مدرن و کاملاً ریسپانسیو
---> 
+-->

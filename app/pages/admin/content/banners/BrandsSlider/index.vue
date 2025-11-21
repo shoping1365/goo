@@ -101,7 +101,7 @@
         <!-- Sliders List -->
         <div class="divide-y divide-gray-200">
           <div
-            v-for="(slider, idx) in filteredSliders"
+            v-for="slider in filteredSliders"
             :key="slider.id"
             class="px-6 py-4 hover:bg-gray-50 transition-colors duration-200"
           >
@@ -227,8 +227,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useAuth } from '~/composables/useAuth'
+import { computed, ref } from 'vue';
+import { useAuth } from '~/composables/useAuth';
 
 // تعریف definePageMeta و useHead برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
@@ -240,8 +240,8 @@ definePageMeta({
   middleware: 'admin'
 })
 
-// استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// استفاده از useAuth برای احراز هویت و بررسی دسترسی‌ها
+const { user: _user, hasPermission } = useAuth()
 
 // Page title
 useHead({
@@ -309,6 +309,12 @@ const filteredSliders = computed(() => {
 
 // Methods
 const updateOrder = async (id: number, event: Event) => {
+  // بررسی دسترسی برای به‌روزرسانی ترتیب
+  if (!hasPermission('brands-slider.update')) {
+    error.value = 'شما مجوز به‌روزرسانی ترتیب را ندارید'
+    return
+  }
+  
   const target = event.target as HTMLInputElement
   const newOrder = parseInt(target.value)
   
@@ -320,20 +326,30 @@ const updateOrder = async (id: number, event: Event) => {
   }
   
   // Here you would call your API to update the order
-  console.log('Updating order for slider:', id, 'to:', newOrder)
 }
 
 const toggleStatus = async (id: number) => {
+  // بررسی دسترسی برای تغییر وضعیت
+  if (!hasPermission('brands-slider.update')) {
+    error.value = 'شما مجوز تغییر وضعیت را ندارید'
+    return
+  }
+  
   const slider = sliders.value.find(s => s.id === id)
   if (slider) {
     slider.status = slider.status === 'active' ? 'inactive' : 'active'
   }
   
   // Here you would call your API to update the status
-  console.log('Toggling status for slider:', id)
 }
 
 const duplicateSlider = async (id: number) => {
+  // بررسی دسترسی برای کپی کردن
+  if (!hasPermission('brands-slider.create')) {
+    error.value = 'شما مجوز ایجاد اسلایدر جدید را ندارید'
+    return
+  }
+  
   const slider = sliders.value.find(s => s.id === id)
   if (slider) {
     const newSlider = {
@@ -348,15 +364,19 @@ const duplicateSlider = async (id: number) => {
   }
   
   // Here you would call your API to duplicate the slider
-  console.log('Duplicating slider:', id)
 }
 
 const confirmDelete = async (id: number) => {
+  // بررسی دسترسی برای حذف
+  if (!hasPermission('brands-slider.delete')) {
+    error.value = 'شما مجوز حذف اسلایدر را ندارید'
+    return
+  }
+  
   if (confirm('آیا مطمئن هستید که می‌خواهید این اسلایدر را حذف کنید؟')) {
     sliders.value = sliders.value.filter(s => s.id !== id)
     
     // Here you would call your API to delete the slider
-    console.log('Deleting slider:', id)
   }
 }
 

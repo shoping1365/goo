@@ -206,19 +206,16 @@ async function submitForm() {
     priority: 1
   }
 
-  console.log('در حال ارسال درخواست:', payload)
   try {
-    const res = await $fetch('/api/sms-gateways', {
+    await $fetch('/api/sms-gateways', {
       method: 'POST',
       body: payload
     })
-    console.log('پاسخ سرور:', res)
     alert('درگاه با موفقیت ثبت شد!')
     form.value = {}
     selectedGateway.value = ''
     router.push('/admin/notifications/system-settings')
-  } catch (e) {
-    console.error('خطا در ثبت درگاه:', e)
+  } catch {
     alert('خطا در ثبت درگاه!')
   }
 }
@@ -226,7 +223,7 @@ async function submitForm() {
 
 
 // تست اتصال (فقط بعد از ثبت درگاه)
-const testConnectionStatus = ref('') // '', 'success', 'error'
+const _testConnectionStatus = ref('') // '', 'success', 'error'
 function testConnection() {
   alert('برای تست اتصال، ابتدا درگاه را ثبت کنید و سپس از صفحه ویرایش استفاده کنید.')
 }

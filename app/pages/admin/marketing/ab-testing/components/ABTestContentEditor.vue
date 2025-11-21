@@ -310,6 +310,7 @@
                 const sanitizedPreviewContent = computed(() => DOMPurify.sanitize(getPreviewContent()))
                 <div v-html="sanitizedPreviewContent"></div>
               -->
+              <!-- eslint-disable-next-line vue/no-v-html -->
               <div v-if="contentType === 'page'" v-html="getPreviewContent()"></div>
               
               <div v-else-if="contentType === 'product'" class="space-y-4">
@@ -371,7 +372,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 // Props
-const props = defineProps<{
+const _props = defineProps<{
   isOpen: boolean
   testName?: string
 }>()

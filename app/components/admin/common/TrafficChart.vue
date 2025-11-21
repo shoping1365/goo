@@ -42,7 +42,7 @@ Chart.register(...registerables)
 const props = defineProps({
   data: {
     type: Object,
-    required: true,
+    required: false,
     default: () => ({
       daily_traffic: [],
       weekly_traffic: [],
@@ -154,7 +154,7 @@ const updateChart = () => {
           borderColor: 'rgb(59, 130, 246)',
           borderWidth: 1,
           callbacks: {
-            title: function(context) {
+            title: function(_context) {
               return title
             }
           }

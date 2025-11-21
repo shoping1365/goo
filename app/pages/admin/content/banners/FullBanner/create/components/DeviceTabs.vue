@@ -370,7 +370,12 @@ const _desktopBanners = computed(() => (localBannerConfig.value?.banners ?? []))
 const mobileBanners = computed(() => (localBannerConfig.value?.mobile_banners ?? []))
 
 // Helper functions for image handling
-const getMobileImageUrl = (banner: any) => {
+interface BannerItem {
+  image?: string
+  mobile_image?: string
+  [key: string]: unknown
+}
+const getMobileImageUrl = (banner: BannerItem) => {
   // این تابع فقط برای پیش‌نمایش موبایل استفاده میشه
   // اگر عکس موبایل وجود دارد، استفاده کن
   if (banner.mobile_image) {

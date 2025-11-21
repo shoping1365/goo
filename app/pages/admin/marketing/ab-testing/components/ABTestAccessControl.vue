@@ -251,19 +251,31 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 // Props
-interface Props {
-  modelValue?: any
+interface AccessControlValue {
+  [key: string]: unknown
 }
 
-const props = withDefaults(defineProps<Props>(), {
+interface Props {
+  modelValue?: AccessControlValue
+}
+
+const _props = withDefaults(defineProps<Props>(), {
   modelValue: () => ({})
 })
 
 // Emits
+interface Permissions {
+  [key: string]: unknown
+}
+
+interface Limits {
+  [key: string]: unknown
+}
+
 const emit = defineEmits<{
-  'update:modelValue': [value: any]
-  'permissions-changed': [permissions: any]
-  'limits-changed': [limits: any]
+  'update:modelValue': [value: AccessControlValue]
+  'permissions-changed': [permissions: Permissions]
+  'limits-changed': [limits: Limits]
 }>()
 
 // State
@@ -395,20 +407,26 @@ const nextPage = () => {
 
 const refreshLogs = () => {
   // در حالت واقعی، لاگ‌ها را از API دریافت می‌کنیم
-  console.log('به‌روزرسانی لاگ‌ها')
+
 }
 
 const saveUserPermissions = () => {
   emit('permissions-changed', users.value)
-  console.log('مجوزهای کاربران ذخیره شد:', users.value)
+
 }
 
 const saveSystemLimits = () => {
   emit('limits-changed', systemLimits.value)
-  console.log('محدودیت‌های سیستم ذخیره شد:', systemLimits.value)
+
 }
 
-const showLogDetails = (log: any) => {
+interface LogItem {
+  id?: number | string
+  type?: string
+  [key: string]: unknown
+}
+
+const showLogDetails = (log: LogItem) => {
   selectedLog.value = log
   showLogModal.value = true
 }
@@ -429,7 +447,7 @@ const formatDate = (date: Date) => {
 }
 
 const getLogTypeLabel = (type: string) => {
-  const labels: any = {
+  const labels: Record<string, string> = {
     change: 'تغییر',
     access: 'دسترسی',
     error: 'خطا'
@@ -438,7 +456,7 @@ const getLogTypeLabel = (type: string) => {
 }
 
 const getLogTypeClass = (type: string) => {
-  const classes: any = {
+  const classes: Record<string, string> = {
     change: 'bg-blue-100 text-blue-800',
     access: 'bg-green-100 text-green-800',
     error: 'bg-red-100 text-red-800'

@@ -241,7 +241,12 @@ interface Props {
     page: string
   }
   config: ProductCarouselConfig
-  categories: any[]
+  categories: Array<{
+    id: number | string
+    name: string
+    slug?: string
+    [key: string]: unknown
+  }>
 }
 
 const props = defineProps<Props>()
@@ -278,7 +283,7 @@ const showCategoryDropdown = ref(false)
 const categorySearch = ref('')
 
 // متدهای مدیریت dropdown (در صورت نیاز)
-const closeCategoryDropdown = () => {
+const _closeCategoryDropdown = () => {
   showCategoryDropdown.value = false
   categorySearch.value = ''
 }

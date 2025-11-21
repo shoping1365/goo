@@ -173,8 +173,13 @@ import { ref, reactive, onMounted, nextTick } from 'vue'
 import Chart from 'chart.js/auto'
 
 // Props
-const props = defineProps<{
-  giftCards: any[]
+interface GiftCard {
+  id?: number | string
+  [key: string]: unknown
+}
+
+const _props = defineProps<{
+  giftCards: GiftCard[]
 }>()
 
 // Emits
@@ -272,8 +277,8 @@ const recentActivities = ref([
 ])
 
 // Methods
-const refreshData = () => {
-  console.log('به‌روزرسانی داده‌های داشبورد')
+const _refreshData = () => {
+
   // اینجا می‌توانید API call برای به‌روزرسانی داده‌ها اضافه کنید
 }
 
@@ -431,7 +436,7 @@ const initCharts = async () => {
 // Lifecycle
 onMounted(() => {
   initCharts()
-  console.log('Gift card dashboard component mounted')
+
 })
 </script>
 

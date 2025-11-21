@@ -7,13 +7,10 @@ export default defineEventHandler(async (event) => {
      
      // دریافت query parameters از درخواست
      const query = getQuery(event)
-     
-     // console.log('🔍 Nuxt API Route - Query params:', query)
 
      try {
           // ارسال query parameters به Backend
           const url = `${base}/api/admin/products`
-          // console.log('📡 Nuxt API Route - Sending to:', url, 'with query:', query)
           
           const response = await $fetch(url, {
                headers: {
@@ -21,13 +18,6 @@ export default defineEventHandler(async (event) => {
                },
                query: query  // ✅ ارسال page, limit, search, filters
           }) as { data: unknown[]; total: number; page: number; limit: number }
-          
-          // console.log('📦 Nuxt API Route - Backend response:', {
-          //      dataLength: response?.data?.length,
-          //      total: response?.total,
-          //      page: response?.page,
-          //      limit: response?.limit
-          // })
 
           return response
      } catch {

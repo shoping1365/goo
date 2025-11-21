@@ -409,11 +409,15 @@ v-for="tab in tabs" :key="tab.value" :class="['px-6 py-3 -mb-px font-medium text
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 const activeTab = ref('api')
 const showWebhookForm = ref(false)
-const editingWebhook = ref<any>(null)
+interface Webhook {
+  id?: number | string
+  [key: string]: unknown
+}
+const editingWebhook = ref<Webhook | null>(null)
 
 const tabs = [
   { value: 'api', label: 'تنظیمات API' },
@@ -560,8 +564,14 @@ const getLogLevelClass = (level: string): string => {
   return classes[level as keyof typeof classes] || 'bg-gray-100 text-gray-800'
 }
 
-const regenerateKey = async (key: any) => {
-  if (confirm(`آیا از تجدید کلید API "${key.name}" اطمینان دارید؟`)) {
+interface ApiKey {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
+}
+
+const regenerateKey = async (key: ApiKey) => {
+  if (confirm(`آیا از تجدید کلید API "${key.name || 'نامشخص'}" اطمینان دارید؟`)) {
     try {
       key.key = 'sk_' + Math.random().toString(36).substr(2, 9)
       key.lastUsed = new Date().toISOString()
@@ -571,7 +581,7 @@ const regenerateKey = async (key: any) => {
   }
 }
 
-const deleteKey = async (key: any) => {
+const deleteKey = async (key: ApiKey) => {
   if (confirm(`آیا از حذف کلید API "${key.name}" اطمینان دارید؟`)) {
     try {
       const index = apiKeys.value.findIndex(k => k.id === key.id)
@@ -604,13 +614,19 @@ const createNewApiKey = () => {
   apiKeys.value.unshift(newKey)
 }
 
-const editWebhook = (webhook: any) => {
+interface Webhook {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
+}
+
+const editWebhook = (webhook: Webhook) => {
   editingWebhook.value = webhook
   Object.assign(webhookForm, webhook)
   showWebhookForm.value = true
 }
 
-const deleteWebhook = async (webhook: any) => {
+const deleteWebhook = async (webhook: Webhook) => {
   if (confirm(`آیا از حذف وب‌هوک "${webhook.name}" اطمینان دارید؟`)) {
     try {
       const index = webhooks.value.findIndex(w => w.id === webhook.id)
@@ -650,13 +666,13 @@ const closeWebhookForm = () => {
 
 const loadLogs = () => {
   // پیاده‌سازی بارگذاری لاگ‌ها بر اساس فیلترها
-  console.log('بارگذاری لاگ‌ها با فیلترها:', logFilters)
+
 }
 
 const saveAllSettings = async () => {
   try {
     // پیاده‌سازی ذخیره همه تنظیمات
-    console.log('ذخیره تنظیمات پیشرفته:', advancedSettings)
+
     alert('تنظیمات با موفقیت ذخیره شد')
   } catch (error) {
     console.error('خطا در ذخیره تنظیمات:', error)

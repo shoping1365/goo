@@ -473,13 +473,29 @@ const getTestStatusLabel = (status: string) => {
   return labels[status] || status
 }
 
+interface TestInput {
+  amount?: number
+  vatRate?: number
+  incomeTaxRate?: number
+  customsRate?: number
+  minAmount?: number
+  [key: string]: unknown
+}
+interface Test {
+  input: TestInput
+  [key: string]: unknown
+}
+interface TestOutput {
+  [key: string]: unknown
+}
+
 // اجرای تست محاسباتی
-const runTest = async (test: any) => {
+const runTest = async (test: Test) => {
   try {
     // شبیه‌سازی محاسبه
     const { amount, vatRate, incomeTaxRate, customsRate, minAmount } = test.input
     
-    const actualOutput: any = {}
+    const actualOutput: TestOutput = {}
     
     if (vatRate) {
       actualOutput.vatAmount = (amount * vatRate) / 100
@@ -514,8 +530,13 @@ const runTest = async (test: any) => {
   }
 }
 
+interface Test {
+  status?: string
+  [key: string]: unknown
+}
+
 // اجرای تست معافیت
-const runExemptionTest = async (test: any) => {
+const runExemptionTest = async (test: Test) => {
   try {
     // شبیه‌سازی محاسبه معافیت
     const exemptions = {
@@ -529,14 +550,14 @@ const runExemptionTest = async (test: any) => {
     test.status = test.actualExemption === test.expectedExemption ? 'passed' : 'failed'
     
     updateTestStats()
-  } catch (error) {
+  } catch (_error) {
     test.status = 'failed'
     updateTestStats()
   }
 }
 
 // اجرای تست تخفیف
-const runDiscountTest = async (test: any) => {
+const runDiscountTest = async (test: Test) => {
   try {
     // شبیه‌سازی محاسبه تخفیف
     const discounts = {
@@ -556,7 +577,7 @@ const runDiscountTest = async (test: any) => {
     test.status = test.actualDiscount === test.expectedDiscount ? 'passed' : 'failed'
     
     updateTestStats()
-  } catch (error) {
+  } catch (_error) {
     test.status = 'failed'
     updateTestStats()
   }
@@ -595,7 +616,7 @@ const runAllTests = async () => {
 // خروجی گزارش تست
 const exportTestReport = () => {
   // TODO: تولید گزارش
-  console.log('گزارش تست تولید شد')
+
 }
 
 // پاک کردن نتایج تست

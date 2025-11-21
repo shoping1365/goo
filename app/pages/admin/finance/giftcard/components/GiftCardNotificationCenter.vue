@@ -497,30 +497,40 @@ const visiblePages = computed(() => {
 // Methods
 const applyFilters = () => {
   currentPage.value = 1
-  console.log('فیلترها اعمال شد:', filters)
+
 }
 
-const markAsRead = (notification: any) => {
+interface Notification {
+  id?: number | string
+  isRead?: boolean
+  [key: string]: unknown
+}
+
+interface Action {
+  label?: string
+  [key: string]: unknown
+}
+
+const markAsRead = (notification: Notification) => {
   notification.isRead = true
-  console.log('نوتیفیکیشن به عنوان خوانده شده علامت‌گذاری شد:', notification.id)
+
 }
 
 const markAllAsRead = () => {
   notifications.value.forEach(n => n.isRead = true)
-  console.log('همه نوتیفیکیشن‌ها به عنوان خوانده شده علامت‌گذاری شدند')
+
 }
 
-const deleteNotification = (notification: any) => {
+const deleteNotification = (notification: Notification) => {
   const index = notifications.value.findIndex(n => n.id === notification.id)
   if (index > -1) {
     notifications.value.splice(index, 1)
   }
-  console.log('نوتیفیکیشن حذف شد:', notification.id)
+
 }
 
-const handleAction = (notification: any, action: any) => {
-  console.log('عملیات انجام شد:', { notificationId: notification.id, actionId: action.id, actionLabel: action.label })
-  
+const handleAction = (notification: Notification, action: Action) => {
+
   // اینجا می‌توانید منطق عملیات مختلف را اضافه کنید
   switch (action.label) {
     case 'مشاهده جزئیات':
@@ -539,7 +549,7 @@ const handleAction = (notification: any, action: any) => {
 }
 
 const refreshNotifications = () => {
-  console.log('نوتیفیکیشن‌ها به‌روزرسانی شدند')
+
   // اینجا می‌توانید API call برای دریافت نوتیفیکیشن‌های جدید اضافه کنید
 }
 
@@ -632,7 +642,7 @@ const goToPage = (page: number) => {
 
 // Lifecycle
 onMounted(() => {
-  console.log('Gift card notification center component mounted')
+
 })
 </script>
 

@@ -387,9 +387,9 @@ async function onAddClick() {
     await refresh()
     notification.value = { message: 'انبار با موفقیت ایجاد شد', type: 'success' }
     setTimeout(() => (notification.value = null), 2500)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (e: any) {
-    notification.value = { message: e?.data?.message || e?.statusMessage || 'خطا در ثبت انبار', type: 'error' }
+  } catch (e: unknown) {
+    const error = e as { data?: { message?: string }; statusMessage?: string; [key: string]: unknown }
+    notification.value = { message: error?.data?.message || error?.statusMessage || 'خطا در ثبت انبار', type: 'error' }
     setTimeout(() => (notification.value = null), 3000)
   } finally {
     creating.value = false

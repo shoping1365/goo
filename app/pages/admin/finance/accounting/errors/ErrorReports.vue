@@ -507,12 +507,10 @@ const generateReport = async () => {
   try {
     isGenerating.value = true
     // TODO: تولید گزارش
-    console.log('تولید گزارش با فیلترها:', reportFilters.value)
-    
+
     // شبیه‌سازی تولید گزارش
     await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    console.log('گزارش تولید شد')
+
   } catch (error) {
     console.error('خطا در تولید گزارش:', error)
   } finally {
@@ -523,7 +521,7 @@ const generateReport = async () => {
 // خروجی گزارش
 const exportReport = () => {
   // TODO: خروجی گزارش
-  console.log('خروجی گزارش')
+
 }
 
 // تغییر ترتیب
@@ -546,16 +544,21 @@ const nextPage = () => {
   }
 }
 
+interface Error {
+  id?: number | string
+  [key: string]: unknown
+}
+
 // مشاهده جزئیات خطا
-const viewErrorDetails = (error: any) => {
+const viewErrorDetails = (_error: Error) => {
   // TODO: نمایش جزئیات خطا
-  console.log('جزئیات خطا:', error)
+
 }
 
 // خروجی خطا
-const exportError = (error: any) => {
+const exportError = (_error: Error) => {
   // TODO: خروجی خطا
-  console.log('خروجی خطا:', error)
+
 }
 </script>
 

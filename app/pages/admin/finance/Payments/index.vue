@@ -265,8 +265,12 @@ const filteredPayments = computed(() => {
   })
 })
 
+interface Filters {
+  [key: string]: unknown
+}
+
 // مدیریت تغییر فیلترها
-const handleFilterChange = (filters: any) => {
+const handleFilterChange = (filters: Filters) => {
   currentFilters.value = { ...filters }
 }
 </script>

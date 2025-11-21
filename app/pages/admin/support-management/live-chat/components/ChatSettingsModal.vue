@@ -408,7 +408,6 @@ const tabs = ref([
 const saveSettings = () => {
   // Save settings to localStorage or API
   localStorage.setItem('chatSettings', JSON.stringify(settings.value))
-  // console.log('Settings saved:', settings.value)
   emit('close')
 }
 </script>

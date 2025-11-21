@@ -148,7 +148,7 @@ async function testPatternDirect() {
         variables[v] = prompt(`مقدار متغیر ${v}:`, '') || `[${v}]`
       })
     }
-  const response = await $fetch(`${apiBase}/api/admin/sms-patterns/test`, {
+  await $fetch(`${apiBase}/api/admin/sms-patterns/test`, {
       method: 'POST',
       body: {
         pattern_id: props.pattern.id,
@@ -158,8 +158,15 @@ async function testPatternDirect() {
     })
     testResult.value = 'ارسال تست موفقیت‌آمیز بود.'
     alert('ارسال تست موفقیت‌آمیز بود.')
-  } catch (e: any) {
-    testResult.value = 'خطا در ارسال تست: ' + (e?.data?.message || e?.message || 'خطای ناشناخته')
+  } catch (e: unknown) {
+    interface ErrorWithMessage {
+      data?: {
+        message?: string
+      }
+      message?: string
+    }
+    const error = e as ErrorWithMessage
+    testResult.value = 'خطا در ارسال تست: ' + (error?.data?.message || error?.message || 'خطای ناشناخته')
     alert(testResult.value)
   } finally {
     isTesting.value = false

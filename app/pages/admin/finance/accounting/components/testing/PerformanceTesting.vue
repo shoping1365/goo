@@ -361,19 +361,19 @@ const getTestStatus = (status: string) => {
 
 // عملیات
 const runPerformanceTest = () => {
-  console.log('اجرای تست عملکرد')
+
 }
 
 const runSpeedTest = () => {
-  console.log('اجرای تست سرعت')
+
 }
 
 const runLoadTest = () => {
-  console.log('اجرای تست بار')
+
 }
 
 const runStressTest = () => {
-  console.log('اجرای تست استرس')
+
 }
 </script>
 

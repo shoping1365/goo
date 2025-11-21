@@ -162,9 +162,12 @@ const createRole = async () => {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const editRole = (role: any) => {
-  // console.log('Edit role:', role)
+interface Role {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
+}
+const editRole = (role: Role) => {
   // TODO: Open edit modal
 }
 

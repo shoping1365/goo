@@ -471,7 +471,7 @@
 
 <script setup lang="ts">
 // کامپوننت شخصی‌سازی پیشرفته
-import { ref, reactive } from 'vue'
+import { reactive } from 'vue';
 
 // متغیرهای reactive برای تنظیمات
 const features = reactive({
@@ -513,18 +513,4 @@ const features = reactive({
 })
 
 // توابع مدیریت
-const updateSettings = () => {
-  // به‌روزرسانی تنظیمات
-  console.log('تنظیمات شخصی‌سازی پیشرفته به‌روزرسانی شد')
-}
-
-const exportProfile = () => {
-  // صادرات پروفایل
-  console.log('پروفایل صادر شد')
-}
-
-const importProfile = () => {
-  // واردات پروفایل
-  console.log('پروفایل وارد شد')
-}
 </script> 

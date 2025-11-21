@@ -389,8 +389,21 @@ const sections = reactive({
 
 // const showFeaturesList = ref(false)
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const api = (useNuxtApp() as any).$api
+interface ApiClient {
+  (url: string, options?: { method?: string; body?: unknown; [key: string]: unknown }): Promise<unknown>
+  get?: <T>(url: string) => Promise<T>
+  post?: <T>(url: string, body?: unknown) => Promise<T>
+  put?: <T>(url: string, body?: unknown) => Promise<T>
+  delete?: <T>(url: string) => Promise<T>
+}
+
+interface NuxtApp {
+  $api: ApiClient
+  [key: string]: unknown
+}
+
+const nuxtApp = useNuxtApp() as NuxtApp
+const api = nuxtApp.$api
 const pStore = useProductCreateStore()
 const notifier = useNotifier()
 const { confirm } = useConfirmDialog()
@@ -558,8 +571,13 @@ async function addNewOption(attr: Attribute){
   const val = prompt(`مقدار جدید برای "${attr.name}" را وارد کنید:`)
   if(!val || !val.trim()) return
   try{
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const res: any = await api(`/api/attribute-values/by-attribute/${attr.id}`, {method: 'POST', body: {value: val.trim()}})
+    interface AttributeValueResponse {
+      id?: number | string
+      value?: string
+      attribute_id?: number | string
+      [key: string]: unknown
+    }
+    const res = await api(`/api/attribute-values/by-attribute/${attr.id}`, {method: 'POST', body: {value: val.trim()}}) as AttributeValueResponse
     if(res && res.id){
       const newVal = {id: Number(res.id), value: val.trim()}
       if(Array.isArray(attr.values)){

@@ -381,15 +381,20 @@ const getChartIcon = (type: string) => {
 
 // عملیات
 const exportCharts = () => {
-  console.log('خروجی نمودارها')
+
 }
 
-const editChart = (chart: any) => {
-  console.log('ویرایش نمودار:', chart)
+interface Chart {
+  id: number | string
+  [key: string]: unknown
 }
 
-const deleteChart = (chart: any) => {
-  console.log('حذف نمودار:', chart)
+const editChart = (_chart: Chart) => {
+
+}
+
+const deleteChart = (_chart: Chart) => {
+
 }
 
 const resetSettings = () => {
@@ -410,11 +415,11 @@ const resetSettings = () => {
 }
 
 const previewChart = () => {
-  console.log('پیش‌نمایش نمودار:', chartSettings.value)
+
 }
 
 const saveChart = () => {
-  console.log('ذخیره نمودار:', chartSettings.value)
+
 }
 </script>
 

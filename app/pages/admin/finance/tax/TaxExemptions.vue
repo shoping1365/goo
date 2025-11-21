@@ -566,15 +566,21 @@ const copyToClipboard = async (text: string) => {
   }
 }
 
+interface TaxExemption {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
+}
+
 // ویرایش معافیت
-const editExemption = (exemption: any) => {
+const editExemption = (exemption: TaxExemption) => {
   editingExemption.value = exemption
   exemptionForm.value = { ...exemption }
   showAddExemptionModal.value = true
 }
 
 // تغییر وضعیت معافیت
-const toggleExemptionStatus = async (exemption: any) => {
+const toggleExemptionStatus = async (exemption: TaxExemption) => {
   try {
     // TODO: ارسال درخواست به API
     exemption.status = exemption.status === 'active' ? 'inactive' : 'active'
@@ -583,14 +589,19 @@ const toggleExemptionStatus = async (exemption: any) => {
   }
 }
 
+interface Discount {
+  id?: number | string
+  [key: string]: unknown
+}
+
 // ویرایش تخفیف
-const editDiscount = (discount: any) => {
+const editDiscount = (_discount: Discount) => {
   // TODO: پیاده‌سازی ویرایش تخفیف
-  console.log('ویرایش تخفیف:', discount)
+
 }
 
 // حذف تخفیف
-const deleteDiscount = async (discount: any) => {
+const deleteDiscount = async (discount: Discount) => {
   if (confirm('آیا از حذف این کد تخفیف اطمینان دارید؟')) {
     try {
       // TODO: ارسال درخواست به API
@@ -633,7 +644,7 @@ const saveExemption = async () => {
 const saveSettings = async () => {
   try {
     // TODO: ارسال درخواست به API
-    console.log('تنظیمات ذخیره شد:', settings.value)
+
   } catch (error) {
     console.error('خطا در ذخیره تنظیمات:', error)
   }

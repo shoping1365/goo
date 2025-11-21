@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 interface ShopSettingsResponse {
   status: string
@@ -70,7 +70,7 @@ const loadLogo = async () => {
     } else {
       // لوگو در تنظیمات یافت نشد، از لوگوی پیش‌فرض استفاده می‌شود
     }
-  } catch (error) {
+  } catch {
     // خطا در بارگذاری لوگو
     // در صورت خطا، لوگوی پیش‌فرض نمایش داده می‌شود
   }

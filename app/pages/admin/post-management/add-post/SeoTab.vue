@@ -52,7 +52,7 @@ const isGeneratingSlug = ref(false)
 const { checkSlugUnique: checkSlugUniqueAPI, generateUniqueSlug: generateUniqueSlugAPI, generateSlugFromTitle } = useSlugManagement()
 
 // Try to get title provided by parent via provide('pageTitle')
-const providedTitle = inject<any>('pageTitle', null)
+const providedTitle = inject<string | Ref<string> | null>('pageTitle', null)
 const seoTitleTouched = ref(false)
 
 function getProvided(){ return providedTitle ? (isRef(providedTitle) ? providedTitle.value : providedTitle) : '' }
@@ -352,11 +352,12 @@ watch(ogImage, (val) => {
 })
 
 // ---------------- Robots Meta -------------------
-const robotsMeta = ref<'index,follow'|'noindex,follow'|'index,nofollow'|'noindex,nofollow'>(props.robotsMeta as any || 'index,follow')
+type RobotsMetaType = 'index,follow' | 'noindex,follow' | 'index,nofollow' | 'noindex,nofollow'
+const robotsMeta = ref<RobotsMetaType>((props.robotsMeta as RobotsMetaType) || 'index,follow')
 
 // Watch for prop changes
 watch(() => props.robotsMeta, (newVal) => {
-  if (newVal) robotsMeta.value = newVal as any
+  if (newVal) robotsMeta.value = newVal as RobotsMetaType
 })
 
 // Emit changes

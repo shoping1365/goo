@@ -228,7 +228,7 @@ const formatDate = (value) => {
       month: 'long',
       day: 'numeric'
     })
-  } catch (error) {
+  } catch (_error) {
     return '—'
   }
 }

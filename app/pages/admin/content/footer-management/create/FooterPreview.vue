@@ -1,22 +1,3 @@
-.chip-value {
-  font-family: 'Fira Code', monospace;
-  direction: ltr;
-}
-
-@media (max-width: 768px) {
-  .info-capsule {
-    min-width: calc(50% - 8px);
-  }
-
-  .width-items-inline {
-    gap: 6px;
-  }
-
-  .width-chip {
-    font-size: 10px;
-    padding: 4px 8px;
-  }
-}
 <template>
   <div class="preview-section" :class="{ 'full-width': isEditing }">
     <div class="footer-info">
@@ -275,8 +256,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onBeforeUnmount, ref, watch, defineAsyncComponent } from 'vue'
 import type { CSSProperties, Ref } from 'vue'
+import { computed, defineAsyncComponent, inject, onBeforeUnmount, ref, watch } from 'vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
 
 const RichTextEditor = defineAsyncComponent(() => import('~/components/common/RichTextEditor.vue'))
@@ -290,12 +271,12 @@ type FooterItem = {
   bgColor?: string
   paddingRight?: number
   paddingLeft?: number
-  props?: Record<string, any>
-  config?: Record<string, any>
-  [key: string]: any
+  props?: Record<string, string | number | boolean | unknown>
+  config?: Record<string, string | number | boolean | unknown>
+  [key: string]: unknown
 }
 
-type SocialEntry = {
+type _SocialEntry = {
   id: string
   platform: string
   label: string
@@ -307,13 +288,37 @@ type SocialEntry = {
   visible?: boolean
 }
 
-const createdLayers = inject<Ref<any[]>>('createdLayers', ref([]))
-const newLayer = inject<Ref<any>>('newLayer', ref({ items: [] }))
+interface FooterLayer {
+  id?: string | number
+  name?: string
+  items: FooterItem[] | string
+  color?: string
+  opacity?: number
+  height?: number
+  width?: number
+  direction?: 'rtl' | 'ltr'
+  showSeparator?: boolean
+  separatorColor?: string
+  separatorWidth?: number
+  separatorOpacity?: number
+  separatorType?: 'solid' | 'dashed' | 'dotted' | 'double'
+  [key: string]: unknown
+}
+
+interface AvailableItem {
+  id: string | number
+  name?: string
+  label?: string
+  [key: string]: unknown
+}
+
+const createdLayers = inject<Ref<FooterLayer[]>>('createdLayers', ref([]))
+const newLayer = inject<Ref<FooterLayer>>('newLayer', ref({ items: [] }))
 const showLayerSettings = inject<Ref<boolean>>('showLayerSettings', ref(false))
 const openItemsModal = inject<() => void>('openItemsModal', () => {})
 const getSelectedItemsText = inject<() => string>('getSelectedItemsText', () => 'انتخاب آیتم‌ها')
 const isEditing = inject<Ref<boolean>>('isEditing', ref(false))
-const availableItemsSource = inject<any>('availableItems', [])
+const availableItemsSource = inject<AvailableItem[] | Ref<AvailableItem[]>>('availableItems', [])
 
 const previewItemsContainer = ref<HTMLElement | null>(null)
 const activeIndex = ref<number | null>(null)
@@ -330,7 +335,7 @@ const dragOverIndex = ref<number | null>(null)
 const showMediaLibrary = ref(false)
 const selectedMediaIds = ref<number[]>([])
 
-const SOCIAL_PRESETS = [
+const _SOCIAL_PRESETS = [
   { platform: 'instagram', label: 'اینستاگرام' },
   { platform: 'telegram', label: 'تلگرام' },
   { platform: 'twitter', label: 'توییتر' },
@@ -340,7 +345,7 @@ const SOCIAL_PRESETS = [
   { platform: 'whatsapp', label: 'واتساپ' }
 ]
 
-const LEGACY_SOCIAL_KEYS = ['instagram', 'telegram', 'twitter', 'linkedin', 'youtube', 'facebook', 'whatsapp'] as const
+const _LEGACY_SOCIAL_KEYS = ['instagram', 'telegram', 'twitter', 'linkedin', 'youtube', 'facebook', 'whatsapp'] as const
 
 const resolvedAvailableItems = computed(() => {
   if (availableItemsSource && typeof availableItemsSource === 'object' && 'value' in availableItemsSource) {
@@ -395,7 +400,7 @@ watch(
   { deep: true, immediate: true }
 )
 
-function parseLayerItems(items: any): FooterItem[] {
+function parseLayerItems(items: FooterItem[] | string | unknown): FooterItem[] {
   if (Array.isArray(items)) return items
   if (typeof items === 'string') {
     try {
@@ -407,7 +412,7 @@ function parseLayerItems(items: any): FooterItem[] {
   return []
 }
 
-function getPreviewWidth(item: FooterItem, original: any): string {
+function getPreviewWidth(item: FooterItem, original: FooterItem[] | string | unknown): string {
   if (typeof item.width === 'number') return item.width.toFixed(1)
   const list = parseLayerItems(original)
   if (!list.length) return '0.0'
@@ -551,7 +556,7 @@ function enforceWidthBudget(changedIndex?: number) {
   }
 }
 
-function getLayerStyle(layer: any, index: number): CSSProperties {
+function getLayerStyle(layer: FooterLayer, index: number): CSSProperties {
   return {
     backgroundColor: resolveBackground(layer.color),
     opacity: ((layer.opacity ?? 100) as number) / 100,
@@ -562,7 +567,7 @@ function getLayerStyle(layer: any, index: number): CSSProperties {
   }
 }
 
-function getPreviewItemStyle(item: FooterItem, original: any, itemIndex: number): CSSProperties {
+function getPreviewItemStyle(item: FooterItem, original: FooterItem[] | string | unknown, itemIndex: number): CSSProperties {
   const list = parseLayerItems(original)
   const width = typeof item.width === 'number' ? item.width : (list.length ? 100 / list.length : 100)
   return {
@@ -572,7 +577,7 @@ function getPreviewItemStyle(item: FooterItem, original: any, itemIndex: number)
   }
 }
 
-function getSeparatorStyle(layer: any): CSSProperties {
+function getSeparatorStyle(layer: FooterLayer): CSSProperties {
   const style: CSSProperties = {
     borderTopStyle: 'solid',
     borderTopColor: layer.separatorColor || '#e9ecef',
@@ -658,7 +663,7 @@ function getItemDisplayName(item: FooterItem | string) {
   }
   const itemId = resolveItemId(item)
   const registry = resolvedAvailableItems.value
-  const found = registry.find((entry: any) => entry.id === itemId)
+  const found = registry.find((entry: AvailableItem) => entry.id === itemId)
   return found?.name || itemId
 }
 
@@ -727,7 +732,7 @@ function handleDragEnd() {
   document.body.classList.remove('is-dragging-item')
 }
 
-function handleDragOver(index: number, event: DragEvent) {
+function handleDragOver(index: number, _event: DragEvent) {
   if (draggingIndex.value === null || draggingIndex.value === index) return
   dragOverIndex.value = index
 }
@@ -773,7 +778,7 @@ function ensureWidthsSnapshot() {
   initialWidths.value = currentItems.value.map(item => (typeof item.width === 'number' ? item.width : fallbackWidth.value))
 }
 
-function startResize(itemIndex: number, event: MouseEvent | TouchEvent) {
+const _startResize = (itemIndex: number, event: MouseEvent | TouchEvent) => {
   if (!previewItemsContainer.value || !currentItems.value[itemIndex + 1]) return
   isResizing.value = true
   resizeItemIndex.value = itemIndex
@@ -874,7 +879,17 @@ function openMediaLibrary() {
   showMediaLibrary.value = true
 }
 
-function onMediaSelected(mediaList: any[]) {
+interface MediaFile {
+  id: number
+  url: string
+  thumbnail: string
+  type: string
+  name: string
+  size: number
+  category: string
+}
+
+function onMediaSelected(mediaList: MediaFile[]) {
   if (!mediaList.length || activeIndex.value === null) {
     showMediaLibrary.value = false
     return
@@ -901,81 +916,6 @@ function removeSelectedImage() {
 
 function closeActiveSettings() {
   activeIndex.value = null
-}
-
-// Social media functions
-const isActiveItemSocial = computed(() => {
-  if (activeIndex.value === null) return false
-  const item = currentItems.value[activeIndex.value]
-  return item?.id === 'social'
-})
-
-const activeSocials = computed<SocialEntry[]>({
-  get() {
-    if (activeIndex.value === null) return []
-    const item = currentItems.value[activeIndex.value]
-    if (!item || item.id !== 'social') return []
-    if (!item.props) item.props = {}
-    if (!Array.isArray(item.props.socials)) {
-      item.props.socials = []
-    }
-    return item.props.socials
-  },
-  set(newVal: SocialEntry[]) {
-    if (activeIndex.value === null) return
-    const item = currentItems.value[activeIndex.value]
-    if (!item || item.id !== 'social') return
-    if (!item.props) item.props = {}
-    item.props.socials = newVal
-  }
-})
-
-function handleSocialPlatformChange(social: SocialEntry, index: number) {
-  const preset = SOCIAL_PRESETS.find(p => p.platform === social.platform)
-  if (preset) {
-    social.label = preset.label
-  }
-}
-
-function addActiveSocial() {
-  if (activeIndex.value === null) return
-  const item = currentItems.value[activeIndex.value]
-  if (!item || item.id !== 'social') return
-  if (!item.props) item.props = {}
-  if (!Array.isArray(item.props.socials)) {
-    item.props.socials = []
-  }
-  item.props.socials.push({
-    id: `social-${Date.now()}`,
-    platform: '',
-    label: '',
-    url: '',
-    enabled: true,
-    openInNewTab: true
-  })
-}
-
-function removeActiveSocial(index: number) {
-  if (activeIndex.value === null) return
-  const item = currentItems.value[activeIndex.value]
-  if (!item || item.id !== 'social') return
-  if (!item.props || !Array.isArray(item.props.socials)) return
-  item.props.socials.splice(index, 1)
-}
-
-function resetActiveSocials() {
-  if (activeIndex.value === null) return
-  const item = currentItems.value[activeIndex.value]
-  if (!item || item.id !== 'social') return
-  if (!item.props) item.props = {}
-  item.props.socials = SOCIAL_PRESETS.map(preset => ({
-    id: `social-${preset.platform}`,
-    platform: preset.platform,
-    label: preset.label,
-    url: '',
-    enabled: true,
-    openInNewTab: true
-  }))
 }
 </script>
 
@@ -1467,6 +1407,26 @@ body.is-dragging-item {
   }
   .resize-handle {
     display: none;
+  }
+}
+
+.chip-value {
+  font-family: 'Fira Code', monospace;
+  direction: ltr;
+}
+
+@media (max-width: 768px) {
+  .info-capsule {
+    min-width: calc(50% - 8px);
+  }
+
+  .width-items-inline {
+    gap: 6px;
+  }
+
+  .width-chip {
+    font-size: 10px;
+    padding: 4px 8px;
   }
 }
 </style>

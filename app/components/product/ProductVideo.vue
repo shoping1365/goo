@@ -39,11 +39,11 @@
       <!-- Direct Video File -->
       <div v-else class="direct-video">
         <video 
+          v-if="normalizedUrl"
           ref="videoPlayer"
           :controls="props.showControls"
           :autoplay="autoplay"
           :muted="autoplay"
-          v-if="normalizedUrl"
           :loop="false"
           :poster="props.posterImage"
           preload="metadata"
@@ -171,7 +171,7 @@ const hlsInstance = ref<HlsInstance | null>(null)
 const videoLoaded = ref(false)
 const videoError = ref(false)
 const isPlaying = ref(false)
-const currentTime = ref(0)
+const _currentTime = ref(0)
 const duration = ref(0)
 
 // Helper function to safely check URL domain

@@ -180,15 +180,20 @@
 import { ref, computed, onMounted, watch } from 'vue'
 
 // Props
+interface Message {
+  id?: number | string
+  [key: string]: unknown
+}
+
 const props = defineProps<{
-  message?: any
+  message?: Message
 }>()
 
 // Emits
 const emit = defineEmits<{
   close: []
-  created: [message: any]
-  updated: [message: any]
+  created: [message: Message]
+  updated: [message: Message]
 }>()
 
 // Reactive data
@@ -322,7 +327,6 @@ const handleSubmit = async () => {
     }
 
     // در نسخه واقعی: ارسال به API
-    console.log('Saving message:', messageData)
 
     // شبیه‌سازی تأخیر
     await new Promise(resolve => setTimeout(resolve, 1000))

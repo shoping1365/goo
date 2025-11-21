@@ -297,7 +297,6 @@ const checkWishlistStatus = async () => {
     isInWishlist.value = response?.isInWishlist || false
   } catch {
     // Silently fail for non-authenticated users
-    // console.log('Wishlist check failed:', err)
     isInWishlist.value = false
   }
 }

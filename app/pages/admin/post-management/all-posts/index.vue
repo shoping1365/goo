@@ -520,11 +520,11 @@ v-for="item in bulkActions" :key="item.value" type="button" class="w-full text-r
                               <p class="text-sm whitespace-pre-wrap">{{ message.content }}</p>
                               
                                                            <!-- پیشنهادات عنوان -->
-                             <div v-if="message.role === 'assistant' && (message as any).suggestions && (message as any).suggestions.length > 0" class="mt-3 space-y-2">
+                             <div v-if="message.role === 'assistant' && 'suggestions' in message && Array.isArray(message.suggestions) && message.suggestions.length > 0" class="mt-3 space-y-2">
                                <p class="text-xs text-gray-600 mb-2">برای انتخاب عنوان، شماره آن را بنویسید:</p>
                                <div class="grid grid-cols-1 gap-2">
                                  <div 
-                                   v-for="(suggestion, idx) in (message as any).suggestions" 
+                                   v-for="(suggestion, idx) in message.suggestions" 
                                    :key="idx"
                                    class="p-2 bg-blue-50 border border-blue-200 rounded text-xs"
                                  >
@@ -534,7 +534,7 @@ v-for="item in bulkActions" :key="item.value" type="button" class="w-full text-r
                              </div>
                              
                              <!-- دکمه‌های تأیید/ویرایش برای مقاله -->
-                             <div v-if="message.role === 'assistant' && (message as any).requiresConfirmation" class="mt-3 flex gap-2">
+                             <div v-if="message.role === 'assistant' && 'requiresConfirmation' in message && message.requiresConfirmation" class="mt-3 flex gap-2">
                                 <button 
                                   class="inline-flex items-center gap-2 px-3 py-1 bg-green-600 text-white text-xs rounded-lg hover:bg-green-700 transition-colors"
                                   @click="confirmArticle(message)"
@@ -887,7 +887,7 @@ import Pagination from '~/components/admin/common/Pagination.vue'
 import { useAuth } from '@/composables/useAuth'
 
 // Import useAuth for permission checking
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission } = useAuth()
 
 // const { showError } = useErrorHandler()
 
@@ -904,6 +904,69 @@ interface Post {
   created_at: string
   updated_at: string
   slug: string
+}
+
+// تعریف interface برای response types
+interface ChatSessionResponse {
+  sessions?: ChatSession[]
+}
+
+interface ChatSession {
+  id: string | number
+  title?: string
+  model?: string
+  messages?: ChatMessage[]
+  session?: {
+    messages?: ChatMessage[]
+    model?: string
+  }
+}
+
+interface ChatMessage {
+  role: string
+  content: string
+  generatedContent?: unknown
+  isArticleRequest?: boolean
+  suggestions?: string[]
+  requiresConfirmation?: boolean
+}
+
+interface CreateSessionResponse {
+  id: string | number
+}
+
+interface AIChatResponse {
+  message?: string
+  article?: unknown
+  type?: string
+  post_id?: string | number
+}
+
+interface APISettingsResponse {
+  openai?: {
+    api_key?: string
+    enabled?: boolean
+  }
+  data?: {
+    openai?: {
+      api_key?: string
+      enabled?: boolean
+    }
+  }
+}
+
+interface TestOpenAIResponse {
+  status: string
+  message?: string
+}
+
+interface ErrorResponse {
+  status?: number
+  statusCode?: number
+  data?: {
+    message?: string
+  }
+  message?: string
 }
 
 // تعریف interface برای دسته‌بندی
@@ -952,15 +1015,10 @@ const showChatHistory = ref(false)
 const showGuideModal = ref(false)
 const userInput = ref('')
 const isGenerating = ref(false)
-const messages = ref<Array<{
-  role: 'user' | 'assistant'
-  content: string
-  generatedContent?: any
-  isArticleRequest?: boolean
-}>>([])
+const messages = ref<ChatMessage[]>([])
 const testResult = ref<{ success: boolean; message: string } | null>(null)
 const showScrollButton = ref(false)
-const chatHistory = ref<any[]>([])
+const chatHistory = ref<ChatSession[]>([])
 
 // AI Settings
 const aiSettings = ref({
@@ -985,8 +1043,14 @@ const fetchAvailableModels = async () => {
       credentials: 'include'
     })
     
-    if (apiSettings && (apiSettings as any).openai && (apiSettings as any).openai.available_models) {
-      availableModels.value = (apiSettings as any).openai.available_models.map((model: any) => ({
+    const settings = apiSettings as APISettingsResponse
+    if (settings?.openai?.available_models) {
+      interface AIModel {
+        id: string
+        name: string
+        [key: string]: unknown
+      }
+      availableModels.value = (settings.openai.available_models as AIModel[]).map((model: AIModel) => ({
         id: model.id,
         name: model.name
       }))
@@ -1004,10 +1068,13 @@ function selectBulkAction(item) {
 const fetchPosts = async () => {
   try {
     const res = await $fetch('/api/posts?all=1')
+    interface PostsResponse {
+      data?: Post[]
+    }
     if (Array.isArray(res)) {
       posts.value = res
-    } else if (res && Array.isArray((res as any).data)) {
-      posts.value = (res as any).data
+    } else if (res && Array.isArray((res as PostsResponse).data)) {
+      posts.value = (res as PostsResponse).data
     } else {
       posts.value = []
     }
@@ -1019,7 +1086,10 @@ const fetchPosts = async () => {
 const fetchCategories = async () => {
   try {
     // دریافت همه دسته‌بندی‌ها از API
-    const response = await $fetch('/api/post-categories?all=1') as any
+    interface CategoriesResponse {
+      data?: Category[]
+    }
+    const response = await $fetch<CategoriesResponse>('/api/post-categories?all=1')
     if (response && response.data) {
       categories.value = response.data
     }
@@ -1122,7 +1192,7 @@ const editPost = (post: Post) => {
   navigateTo(`/admin/post-management/edit-post/${post.id}`)
 }
 
-const viewPost = (post: Post) => {
+const _viewPost = (post: Post) => {
   // اینجا باید به صفحه مشاهده هدایت شود
 }
 
@@ -1138,7 +1208,12 @@ const deletePost = async (post: Post) => {
 }
 
 // تابع کمکی برای نمایش نام نویسنده
-const getAuthorName = (author: any) => {
+interface Author {
+  name?: string
+  [key: string]: unknown
+}
+
+const getAuthorName = (author: string | Author | null | undefined): string => {
   if (!author) return '-'
   if (typeof author === 'string') return author
   if (typeof author === 'object' && author.name) return author.name
@@ -1257,13 +1332,13 @@ function handleBulkAction() {
           }
           
           // تأیید مقاله
-          const confirmArticle = (message: any) => {
+          const confirmArticle = (_message: ChatMessage) => {
             userInput.value = 'همین خوبه'
             sendMessage()
           }
           
           // ویرایش مقاله
-          const editArticle = (message: any) => {
+          const editArticle = (_message: ChatMessage) => {
             userInput.value = 'این قسمت را ویرایش کن'
             sendMessage()
           }
@@ -1305,7 +1380,7 @@ function handleBulkAction() {
         }
       })
       
-      const aiResponse = response as any
+      const aiResponse = response as AIChatResponse
       
       if (aiResponse && aiResponse.message) {
         messages.value.push({
@@ -1328,7 +1403,7 @@ function handleBulkAction() {
       
       // اسکرول به پایین بعد از دریافت پاسخ AI
       scrollToBottom()
-    } catch (error: any) {
+    } catch (error: unknown) {
       // استفاده از سیستم خطای جدید
       // const { showError } = useErrorHandler()
       // showError(error)
@@ -1392,10 +1467,9 @@ const showChatHistoryModal = () => {
 // تابع بارگذاری سابقه چت از API
 const loadChatHistory = async () => {
   try {
-    const response = await $fetch('/api/admin/chat/sessions') as any
+    const response = await $fetch<ChatSessionResponse>('/api/admin/chat/sessions')
     chatHistory.value = response.sessions || []
-  } catch (error) {
-    console.error('خطا در بارگذاری سابقه چت:', error)
+  } catch (_error) {
     chatHistory.value = []
   }
 }
@@ -1404,11 +1478,11 @@ const loadChatHistory = async () => {
 const loadAIConversationHistory = async () => {
   try {
     if (currentSessionId.value) {
-      const response = await $fetch(`/api/admin/chat/sessions/${currentSessionId.value}`)
-      const sessionResponse = response as any
+      const response = await $fetch<ChatSession>(`/api/admin/chat/sessions/${currentSessionId.value}`)
+      const sessionResponse = response
       if (sessionResponse.session && sessionResponse.session.messages) {
         // تبدیل پیام‌ها به فرمت مورد نیاز AI
-        const aiMessages = sessionResponse.session.messages.map((msg: any) => ({
+        const aiMessages = sessionResponse.session.messages.map((msg: ChatMessage) => ({
           role: msg.role,
           content: msg.content
         }))
@@ -1422,7 +1496,7 @@ const loadAIConversationHistory = async () => {
 }
 
 // تابع ذخیره سابقه چت در API
-const saveChatHistory = async () => {
+const _saveChatHistory = async () => {
   try {
     if (messages.value.length === 0) return
     
@@ -1443,7 +1517,7 @@ const saveChatHistory = async () => {
           model: aiSettings.value.model
         }
       })
-      const createResponse = response as any
+      const createResponse = response as CreateSessionResponse
       currentSessionId.value = createResponse.id
     }
     
@@ -1464,9 +1538,9 @@ const saveChatHistory = async () => {
 }
 
 // تابع بارگذاری session خاص
-const loadSession = async (session: any) => {
+const loadSession = async (session: ChatSession) => {
   try {
-    const response = await $fetch(`/api/admin/chat/sessions/${session.id}`) as any
+    const response = await $fetch<ChatSession>(`/api/admin/chat/sessions/${session.id}`)
     messages.value = response.session.messages || []
     aiSettings.value.model = response.session.model
     currentSessionId.value = session.id
@@ -1505,7 +1579,6 @@ const startNewChat = () => {
   clearChat()
   currentSessionId.value = null
   showChatHistory.value = false
-  console.log('🆕 چت جدید شروع شد - سابقه پاک شد')
 }
 
 // تابع بررسی تنظیمات OpenAI قبل از باز کردن مودال
@@ -1516,7 +1589,7 @@ const checkOpenAISettings = async () => {
       credentials: 'include'
     })
     // پشتیبانی از هر دو ساختار
-    const settingsResponse = apiSettings as any
+    const settingsResponse = apiSettings as APISettingsResponse
     const openaiSettings = settingsResponse.openai || settingsResponse.data?.openai
     if (!openaiSettings) {
       alert('لطفاً ابتدا تنظیمات OpenAI را در بخش تنظیمات فعال کنید و API Key را وارد کنید.')
@@ -1527,8 +1600,8 @@ const checkOpenAISettings = async () => {
       return false
     }
     return true
-  } catch (error) {
-    const errorDetails = error as any
+  } catch (error: unknown) {
+    const errorDetails = error as ErrorResponse
           if (errorDetails.status === 401 || errorDetails.statusCode === 401) {
         alert('خطا در احراز هویت. لطفاً ابتدا وارد شوید و دوباره تلاش کنید.')
         // navigateTo('/auth/login')
@@ -1560,7 +1633,7 @@ const openAIChatModal = async () => {
   }
 }
 
-const createArticleFromAI = (generatedContent: any) => {
+const _createArticleFromAI = (generatedContent: unknown) => {
   if (!generatedContent) {
     alert('محتوای تولید شده یافت نشد!')
     return
@@ -1584,14 +1657,15 @@ const testOpenAIConnection = async () => {
   testResult.value = null
   try {
     const res = await $fetch('/api/admin/api-settings/test-openai', { method: 'POST', credentials: 'include' })
-    const testResponse = res as any
+    const testResponse = res as TestOpenAIResponse
     if (testResponse.status === 'success') {
       testResult.value = { success: true, message: 'اتصال موفق به OpenAI ✅' }
     } else {
       testResult.value = { success: false, message: testResponse.message || 'اتصال ناموفق به OpenAI' }
     }
-  } catch (e: any) {
-    testResult.value = { success: false, message: 'خطا در تست اتصال: ' + (e.data?.message || e.message) }
+  } catch (e: unknown) {
+    const error = e as ErrorResponse
+    testResult.value = { success: false, message: 'خطا در تست اتصال: ' + (error.data?.message || error.message || 'خطای نامشخص') }
   }
 }
 

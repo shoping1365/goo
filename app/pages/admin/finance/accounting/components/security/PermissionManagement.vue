@@ -462,20 +462,26 @@ const getRoleStatusColor = (status: string) => {
 }
 
 // عملیات
+interface Role {
+  id: number | string
+  name?: string
+  [key: string]: unknown
+}
+
 const createRole = () => {
-  console.log('ایجاد نقش جدید')
+
 }
 
-const viewRole = (role: any) => {
-  console.log('مشاهده نقش:', role)
+const viewRole = (_role: Role) => {
+
 }
 
-const editRole = (role: any) => {
-  console.log('ویرایش نقش:', role)
+const editRole = (_role: Role) => {
+
 }
 
-const deleteRole = (role: any) => {
-  console.log('حذف نقش:', role)
+const deleteRole = (_role: Role) => {
+
 }
 </script>
 

@@ -43,7 +43,7 @@
           <div class="flex items-center gap-2 border-2 border-blue-200 rounded-lg p-1 bg-blue-50">
             <input
               id="easyLoadMobile"
-              v-model="props.sliderConfig.easy_load_enabled"
+              v-model="easyLoadEnabled"
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-blue-100 border-blue-300 rounded focus:ring-blue-500 focus:ring-2"
             />
@@ -56,7 +56,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پس‌زمینه فعال</label>
             <select
-              v-model="props.sliderConfig.bg_enabled"
+              v-model="bgEnabled"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">فعال</option>
@@ -68,7 +68,7 @@
           <div v-if="props.sliderConfig.bg_enabled">
             <label class="block mb-2 text-sm font-medium text-gray-700">عریض پس‌زمینه</label>
             <select
-              v-model="props.sliderConfig.wide_bg"
+              v-model="wideBg"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">بله</option>
@@ -80,7 +80,7 @@
           <div v-if="props.sliderConfig.bg_enabled">
             <label class="block mb-2 text-sm font-medium text-gray-700">رنگ پس‌زمینه</label>
             <input
-              v-model="props.sliderConfig.bg_color"
+              v-model="bgColor"
               type="color"
               class="w-full h-10 border border-gray-300 rounded-md"
             />
@@ -90,7 +90,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ بالا (px)</label>
             <input
-              v-model="props.sliderConfig.padding_top"
+              v-model.number="paddingTop"
               type="number"
               min="0"
               max="100"
@@ -103,7 +103,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ پایین (px)</label>
             <input
-              v-model="props.sliderConfig.padding_bottom"
+              v-model.number="paddingBottom"
               type="number"
               min="0"
               max="100"
@@ -116,7 +116,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین راست (px)</label>
             <input
-              v-model="props.sliderConfig.margin_right"
+              v-model.number="marginRight"
               type="number"
               min="0"
               max="100"
@@ -129,7 +129,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین چپ (px)</label>
             <input
-              v-model="props.sliderConfig.margin_left"
+              v-model.number="marginLeft"
               type="number"
               min="0"
               max="100"
@@ -144,7 +144,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">عرض اسلایدر در موبایل</label>
             <select
-              v-model="props.sliderConfig.mobile_slider_width"
+              v-model.number="mobileSliderWidth"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="100">کوچک (100px)</option>
@@ -386,9 +386,28 @@
 // Vue composables
 import { ref, computed } from 'vue'
 
+// Slider Config interface
+interface SliderConfig {
+  easy_load_enabled?: boolean
+  bg_enabled?: boolean
+  wide_bg?: boolean
+  bg_color?: string
+  padding_top?: number
+  padding_bottom?: number
+  margin_right?: number
+  margin_left?: number
+  mobile_slider_width?: number
+  mobile_height?: number
+  mobile_vertical_display?: boolean
+  show_title?: boolean
+  show_description?: boolean
+  slides?: unknown[]
+  [key: string]: unknown
+}
+
 // Props
 interface Props {
-  sliderConfig: any
+  sliderConfig: SliderConfig
   currentPreviewSlide: number
   openAddSliderModal: () => void
   editSlide: (index: number) => void
@@ -404,21 +423,74 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const emit = defineEmits<{
+  'update:sliderConfig': [config: SliderConfig]
+}>()
+
+// Helper function to emit config updates
+const updateConfig = (field: string, value: unknown) => {
+  emit('update:sliderConfig', {
+    ...props.sliderConfig,
+    [field]: value
+  })
+}
+
+// Computed properties for config fields using emit instead of direct mutation
+const easyLoadEnabled = computed({
+  get: () => props.sliderConfig?.easy_load_enabled ?? false,
+  set: (val: boolean) => updateConfig('easy_load_enabled', val)
+})
+
+const bgEnabled = computed({
+  get: () => props.sliderConfig?.bg_enabled ?? false,
+  set: (val: boolean) => updateConfig('bg_enabled', val)
+})
+
+const wideBg = computed({
+  get: () => props.sliderConfig?.wide_bg ?? false,
+  set: (val: boolean) => updateConfig('wide_bg', val)
+})
+
+const bgColor = computed({
+  get: () => props.sliderConfig?.bg_color ?? '#ffffff',
+  set: (val: string) => updateConfig('bg_color', val)
+})
+
+const paddingTop = computed({
+  get: () => props.sliderConfig?.padding_top ?? 0,
+  set: (val: number) => updateConfig('padding_top', val)
+})
+
+const paddingBottom = computed({
+  get: () => props.sliderConfig?.padding_bottom ?? 0,
+  set: (val: number) => updateConfig('padding_bottom', val)
+})
+
+const marginRight = computed({
+  get: () => props.sliderConfig?.margin_right ?? 0,
+  set: (val: number) => updateConfig('margin_right', val)
+})
+
+const marginLeft = computed({
+  get: () => props.sliderConfig?.margin_left ?? 0,
+  set: (val: number) => updateConfig('margin_left', val)
+})
+
+const mobileSliderWidth = computed({
+  get: () => props.sliderConfig?.mobile_slider_width ?? 300,
+  set: (val: number) => updateConfig('mobile_slider_width', val)
+})
+
+const mobileSliderHeight = computed({
+  get: () => props.sliderConfig?.mobile_height ?? 150,
+  set: (val: number) => updateConfig('mobile_height', val)
+})
+
 // Tab state
 const activeTab = ref<'desktop' | 'mobile'>('desktop')
 
 // Expose activeTab for parent component
 defineExpose({
   activeTab
-})
-
-// Computed values with default fallbacks
-const mobileSliderHeight = computed({
-  get: () => props.sliderConfig.mobile_height,
-  set: val => {
-    if (props.sliderConfig) {
-      props.sliderConfig.mobile_height = val
-    }
-  }
 })
 </script>

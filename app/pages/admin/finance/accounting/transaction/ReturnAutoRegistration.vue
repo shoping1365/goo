@@ -301,22 +301,28 @@ const toggleAutoRegistration = () => {
   // TODO: ذخیره در سرور
 }
 
+interface Rule {
+  id?: number | string
+  active?: boolean
+  [key: string]: unknown
+}
+
 // ویرایش قانون
-const editRule = (rule: any) => {
+const editRule = (_rule: Rule) => {
   // TODO: باز کردن فرم ویرایش
-  console.log('ویرایش قانون:', rule)
+
 }
 
 // تغییر وضعیت قانون
-const toggleRule = (rule: any) => {
+const toggleRule = (rule: Rule) => {
   rule.active = !rule.active
   // TODO: ذخیره در سرور
 }
 
 // حذف قانون
-const deleteRule = (rule: any) => {
+const deleteRule = (_rule: Rule) => {
   // TODO: حذف قانون
-  console.log('حذف قانون:', rule)
+
 }
 </script>
 

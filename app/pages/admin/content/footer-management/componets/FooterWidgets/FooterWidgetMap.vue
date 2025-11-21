@@ -134,7 +134,7 @@ const copyCoordinates = async () => {
         hasCopied.value = false
       }, 2000)
       
-    } catch (error) {
+    } catch (_error) {
       // روش جایگزین برای مرورگرهای قدیمی
       const textArea = document.createElement('textarea')
       textArea.value = coordinates

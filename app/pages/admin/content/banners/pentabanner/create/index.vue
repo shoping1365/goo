@@ -3,7 +3,7 @@
     <!-- Title Section -->
     <div class="bg-white w-full shadow-sm border-2 border-blue-200 rounded-lg mt-4">
       <div class="flex justify-between items-center px-8 py-6">
-        <h1 class="text-2xl font-bold text-gray-800">ایجاد {{ widget?.title || 'ابزارک' }}</h1>
+        <h1 class="text-2xl font-bold text-gray-800">ایجاد بنر پنج‌تایی</h1>
         <div class="flex items-center gap-6">
           <button
             :disabled="isSaving"
@@ -108,17 +108,17 @@
       </div>
     </div>
 
-    <!-- تنظیمات اسلایدر -->
+    <!-- تنظیمات بنر -->
     <DeviceTabs
       ref="deviceTabsRef"
-      :slider-config="sliderConfig"
-      :current-preview-slide="currentPreviewSlide"
-      :open-add-slider-modal="openAddSliderModal"
-      :edit-slide="editSlide"
-      :remove-slide="removeSlide"
-      :open-add-banner-modal="() => {}"
-      :edit-banner="() => {}"
-      :remove-banner="() => {}"
+      :slider-config="bannerConfig"
+      :current-preview-slide="0"
+      :open-add-slider-modal="openAddBannerModal"
+      :edit-slide="editBanner"
+      :remove-slide="removeBanner"
+      :open-add-banner-modal="openAddBannerModal"
+      :edit-banner="editBanner"
+      :remove-banner="removeBanner"
       :get-slider-classes="() => ''"
       :get-slider-width="() => ''"
       :get-banner-classes="() => ''"
@@ -127,206 +127,198 @@
       <!-- محتوای تب دسکتاپ -->
       <template #desktop-content>
         <div class="bg-white rounded-xl shadow p-8 mt-6 mx-4">
-                     <div class="flex justify-between items-center mb-6">
-             <h3 class="text-lg font-bold text-gray-700">تنظیمات دسکتاپ</h3>
-             <div class="flex items-center gap-2 border-2 border-blue-200 rounded-lg p-1 bg-blue-50">
-               <input
-                 id="easyLoad"
-                 v-model="sliderConfig.easy_load_enabled"
-                 type="checkbox"
-                 class="w-4 h-4 text-blue-600 bg-blue-100 border-blue-300 rounded focus:ring-blue-500 focus:ring-2"
-               />
-               <label for="easyLoad" class="text-sm font-medium text-blue-700">لیزی لود</label>
-             </div>
-           </div>
-           
-                      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-lg font-bold text-gray-700">تنظیمات دسکتاپ</h3>
+          </div>
+          
+          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            <!-- پس‌زمینه فعال -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">پس‌زمینه فعال</label>
+              <select
+                v-model="bannerConfig.bg_enabled"
+                class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+              >
+                <option :value="true">فعال</option>
+                <option :value="false">غیرفعال</option>
+              </select>
+            </div>
 
-                         <!-- پس‌زمینه فعال -->
-             <div>
-               <label class="block mb-2 text-sm font-medium text-gray-700">پس‌زمینه فعال</label>
-               <select
-                 v-model="sliderConfig.bg_enabled"
-                 class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
-               >
-                 <option :value="true">فعال</option>
-                 <option :value="false">غیرفعال</option>
-               </select>
-             </div>
+            <!-- عریض پس‌زمینه -->
+            <div v-if="bannerConfig.bg_enabled">
+              <label class="block mb-2 text-sm font-medium text-gray-700">عریض پس‌زمینه</label>
+              <select
+                v-model="bannerConfig.wide_bg"
+                class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+              >
+                <option :value="true">بله</option>
+                <option :value="false">خیر</option>
+              </select>
+            </div>
 
-                         <!-- عریض پس‌زمینه -->
-             <div v-if="sliderConfig.bg_enabled">
-               <label class="block mb-2 text-sm font-medium text-gray-700">عریض پس‌زمینه</label>
-               <select
-                 v-model="sliderConfig.wide_bg"
-                 class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
-               >
-                 <option :value="true">بله</option>
-                 <option :value="false">خیر</option>
-               </select>
-             </div>
+            <!-- رنگ پس‌زمینه -->
+            <div v-if="bannerConfig.bg_enabled">
+              <label class="block mb-2 text-sm font-medium text-gray-700">رنگ پس‌زمینه</label>
+              <input
+                v-model="bannerConfig.bg_color"
+                type="color"
+                class="w-full h-8 border border-gray-300 rounded-md"
+              />
+            </div>
 
-             <!-- رنگ پس‌زمینه -->
-             <div v-if="sliderConfig.bg_enabled">
-               <label class="block mb-2 text-sm font-medium text-gray-700">رنگ پس‌زمینه</label>
-               <input
-                 v-model="sliderConfig.bg_color"
-                 type="color"
-                 class="w-full h-8 border border-gray-300 rounded-md"
-               />
-             </div>
+            <!-- ارتفاع بنر -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">ارتفاع بنر (پیکسل)</label>
+              <select
+                v-model="bannerConfig.height"
+                class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+              >
+                <option :value="300">300 پیکسل</option>
+                <option :value="400">400 پیکسل</option>
+                <option :value="500">500 پیکسل</option>
+                <option :value="600">600 پیکسل</option>
+                <option :value="700">700 پیکسل</option>
+              </select>
+            </div>
 
-                                                   <!-- ارتفاع بنر -->
-              <div>
-                <label class="block mb-2 text-sm font-medium text-gray-700">ارتفاع بنر (پیکسل)</label>
-                <select
-                  v-model="sliderConfig.height"
-                  class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
-                >
-                  <option :value="300">300 پیکسل</option>
-                  <option :value="400">400 پیکسل</option>
-                  <option :value="500">500 پیکسل</option>
-                  <option :value="600">600 پیکسل</option>
-                  <option :value="700">700 پیکسل</option>
-                </select>
-              </div>
+            <!-- نسبت بنر 1 -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 1</label>
+              <select
+                v-model="bannerConfig.banner1_ratio"
+                class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+                @change="updateBannerRatios('banner1')"
+              >
+                <option :value="20">20%</option>
+                <option :value="25">25%</option>
+                <option :value="30">30%</option>
+                <option :value="40">40%</option>
+                <option :value="50">50%</option>
+              </select>
+            </div>
 
-              
+            <!-- نسبت بنر 2 -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 2</label>
+              <select
+                v-model="bannerConfig.banner2_ratio"
+                class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+                @change="updateBannerRatios('banner2')"
+              >
+                <option :value="15">15%</option>
+                <option :value="20">20%</option>
+                <option :value="25">25%</option>
+                <option :value="30">30%</option>
+                <option :value="40">40%</option>
+              </select>
+            </div>
 
-                                                                                                                            <!-- نسبت بنر 1 -->
-                 <div>
-                   <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 1</label>
-                   <select
-                     v-model="sliderConfig.banner1_ratio"
-                     class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
-                     @change="updateBannerRatios('banner1')"
-                   >
-                     <option :value="20">20%</option>
-                     <option :value="25">25%</option>
-                     <option :value="30">30%</option>
-                     <option :value="40">40%</option>
-                     <option :value="50">50%</option>
-                   </select>
-                 </div>
+            <!-- نسبت بنر 3 -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 3</label>
+              <select
+                v-model="bannerConfig.banner3_ratio"
+                class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+                @change="updateBannerRatios('banner3')"
+              >
+                <option :value="15">15%</option>
+                <option :value="20">20%</option>
+                <option :value="25">25%</option>
+                <option :value="30">30%</option>
+                <option :value="40">40%</option>
+              </select>
+            </div>
 
-                 <!-- نسبت بنر 2 -->
-                 <div>
-                   <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 2</label>
-                   <select
-                     v-model="sliderConfig.banner2_ratio"
-                     class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
-                     @change="updateBannerRatios('banner2')"
-                   >
-                     <option :value="15">15%</option>
-                     <option :value="20">20%</option>
-                     <option :value="25">25%</option>
-                     <option :value="30">30%</option>
-                     <option :value="40">40%</option>
-                   </select>
-                 </div>
+            <!-- نسبت بنر 4 -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 4</label>
+              <select
+                v-model="bannerConfig.banner4_ratio"
+                class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+                @change="updateBannerRatios('banner4')"
+              >
+                <option :value="15">15%</option>
+                <option :value="20">20%</option>
+                <option :value="25">25%</option>
+                <option :value="30">30%</option>
+                <option :value="40">40%</option>
+              </select>
+            </div>
 
-                 <!-- نسبت بنر 3 -->
-                 <div>
-                   <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 3</label>
-                   <select
-                     v-model="sliderConfig.banner3_ratio"
-                     class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
-                     @change="updateBannerRatios('banner3')"
-                   >
-                     <option :value="15">15%</option>
-                     <option :value="20">20%</option>
-                     <option :value="25">25%</option>
-                     <option :value="30">30%</option>
-                     <option :value="40">40%</option>
-                   </select>
-                 </div>
+            <!-- نسبت بنر 5 -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 5</label>
+              <select
+                v-model="bannerConfig.banner5_ratio"
+                class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+                @change="updateBannerRatios('banner5')"
+              >
+                <option :value="15">15%</option>
+                <option :value="20">20%</option>
+                <option :value="25">25%</option>
+                <option :value="30">30%</option>
+                <option :value="40">40%</option>
+              </select>
+            </div>
 
-                 <!-- نسبت بنر 4 -->
-                 <div>
-                   <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 4</label>
-                   <select
-                     v-model="sliderConfig.banner4_ratio"
-                     class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
-                     @change="updateBannerRatios('banner4')"
-                   >
-                     <option :value="15">15%</option>
-                     <option :value="20">20%</option>
-                     <option :value="25">25%</option>
-                     <option :value="30">30%</option>
-                     <option :value="40">40%</option>
-                   </select>
-                 </div>
+            <!-- پدینگ بالا -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ بالا (px)</label>
+              <input
+                type="number"
+                :value="bannerConfig.padding_top !== undefined ? bannerConfig.padding_top : ''"
+                min="0"
+                max="100"
+                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                placeholder="0"
+                @input="e => bannerConfig.padding_top = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+              />
+            </div>
 
-                 <!-- نسبت بنر 5 -->
-                 <div>
-                   <label class="block mb-2 text-sm font-medium text-gray-700">نسبت بنر 5</label>
-                   <select
-                     v-model="sliderConfig.banner5_ratio"
-                     class="w-full border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
-                     @change="updateBannerRatios('banner5')"
-                   >
-                     <option :value="15">15%</option>
-                     <option :value="20">20%</option>
-                     <option :value="25">25%</option>
-                     <option :value="30">30%</option>
-                     <option :value="40">40%</option>
-                   </select>
-                 </div>
+            <!-- پدینگ پایین -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ پایین (px)</label>
+              <input
+                type="number"
+                :value="bannerConfig.padding_bottom !== undefined ? bannerConfig.padding_bottom : ''"
+                min="0"
+                max="100"
+                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                placeholder="0"
+                @input="e => bannerConfig.padding_bottom = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+              />
+            </div>
 
-             <!-- پدینگ بالا -->
-             <div>
-               <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ بالا (px)</label>
-               <input
-                 v-model="sliderConfig.padding_top"
-                 type="number"
-                 min="0"
-                 max="100"
-                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                 placeholder="0"
-               />
-             </div>
+            <!-- مارجین راست -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">مارجین راست (px)</label>
+              <input
+                type="number"
+                :value="bannerConfig.margin_right !== undefined ? bannerConfig.margin_right : ''"
+                min="0"
+                max="100"
+                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                placeholder="0"
+                @input="e => bannerConfig.margin_right = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+              />
+            </div>
 
-             <!-- پدینگ پایین -->
-             <div>
-               <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ پایین (px)</label>
-               <input
-                 v-model="sliderConfig.padding_bottom"
-                 type="number"
-                 min="0"
-                 max="100"
-                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                 placeholder="0"
-               />
-             </div>
-
-             <!-- مارجین راست -->
-             <div>
-               <label class="block mb-2 text-sm font-medium text-gray-700">مارجین راست (px)</label>
-               <input
-                 v-model="sliderConfig.margin_right"
-                 type="number"
-                 min="0"
-                 max="100"
-                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                 placeholder="0"
-               />
-             </div>
-
-             <!-- مارجین چپ -->
-             <div>
-               <label class="block mb-2 text-sm font-medium text-gray-700">مارجین چپ (px)</label>
-               <input
-                 v-model="sliderConfig.margin_left"
-                 type="number"
-                 min="0"
-                 max="100"
-                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                 placeholder="0"
-               />
-             </div>
-           </div>
-         </div>
-       </template>
+            <!-- مارجین چپ -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">مارجین چپ (px)</label>
+              <input
+                type="number"
+                :value="bannerConfig.margin_left !== undefined ? bannerConfig.margin_left : ''"
+                min="0"
+                max="100"
+                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                placeholder="0"
+                @input="e => bannerConfig.margin_left = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+              />
+            </div>
+          </div>
+        </div>
+      </template>
 
       <!-- محتوای تب موبایل -->
       <template #mobile-content>
@@ -335,293 +327,570 @@
             <h3 class="text-lg font-bold text-gray-700">تنظیمات موبایل</h3>
           </div>
           
-                     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-
+          <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <!-- نمایش عمودی در موبایل -->
             <div>
               <label class="block mb-2 text-sm font-medium text-gray-700">نمایش عمودی</label>
               <select
-                v-model="sliderConfig.mobile_vertical_display"
+                v-model="bannerConfig.mobile_vertical_display"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
               >
                 <option :value="true">فعال</option>
                 <option :value="false">غیرفعال</option>
               </select>
             </div>
+
+            <!-- تنظیمات عکس موبایل -->
+            <div class="col-span-full">
+              <div class="bg-gray-50 rounded-lg p-6">
+                <div class="flex items-center gap-6 mb-4">
+                  <label class="flex items-center gap-2">
+                    <input
+                      v-model="bannerConfig.mobile_image_mode"
+                      type="radio"
+                      value="auto"
+                      class="w-4 h-4 text-blue-600"
+                    />
+                    <span class="text-sm">برش خودکار از عکس دسکتاپ</span>
+                  </label>
+                  <label class="flex items-center gap-2">
+                    <input
+                      v-model="bannerConfig.mobile_image_mode"
+                      type="radio"
+                      value="separate"
+                      class="w-4 h-4 text-blue-600"
+                    />
+                    <span class="text-sm">عکس جداگانه برای موبایل</span>
+                  </label>
+                  <button
+                    type="button"
+                    class="bg-green-500 text-white px-3 py-2 rounded-md text-sm hover:bg-green-600 transition-colors"
+                    @click="applyMobileCrop"
+                  >
+                    اعمال برش موبایل
+                  </button>
+                  <span v-if="bannerConfig.mobile_cropped_image" class="text-xs text-green-600">
+                    ✓ برش اعمال شده
+                  </span>
+                  <span v-else class="text-xs text-gray-500">
+                    برش اعمال نشده
+                  </span>
+                </div>
+                
+                <!-- تنظیمات برش خودکار -->
+                <div v-if="bannerConfig.mobile_image_mode === 'auto'" class="space-y-3">
+                  <div class="grid grid-cols-2 gap-6">
+                    <div>
+                      <label class="block mb-2 text-sm font-medium text-gray-700">عرض موبایل (پیکسل)</label>
+                      <input
+                        v-model="bannerConfig.mobile_crop_width"
+                        type="number"
+                        min="200"
+                        max="800"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                        placeholder="375"
+                      />
+                    </div>
+                    <div>
+                      <label class="block mb-2 text-sm font-medium text-gray-700">ارتفاع موبایل (پیکسل)</label>
+                      <input
+                        v-model="bannerConfig.mobile_crop_height"
+                        type="number"
+                        min="100"
+                        max="600"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                        placeholder="150"
+                      />
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- آپلود عکس جداگانه -->
+                <div v-if="bannerConfig.mobile_image_mode === 'separate'" class="space-y-3">
+                </div>
+              </div>
+            </div>
+
+            <!-- ارتفاع موبایل -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">ارتفاع موبایل (px)</label>
+              <select
+                v-model="bannerConfig.mobile_height"
+                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+              >
+                <option :value="150">150 پیکسل</option>
+                <option :value="200">200 پیکسل</option>
+                <option :value="250">250 پیکسل</option>
+                <option :value="300">300 پیکسل</option>
+              </select>
+            </div>
+
+            <!-- پدینگ بالا موبایل -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ بالا موبایل (px)</label>
+              <input
+                type="number"
+                :value="bannerConfig.mobile_padding_top !== undefined ? bannerConfig.mobile_padding_top : ''"
+                min="0"
+                max="50"
+                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                placeholder="0"
+                @input="e => bannerConfig.mobile_padding_top = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+              />
+            </div>
+
+            <!-- پدینگ پایین موبایل -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ پایین موبایل (px)</label>
+              <input
+                type="number"
+                :value="bannerConfig.mobile_padding_bottom !== undefined ? bannerConfig.mobile_padding_bottom : ''"
+                min="0"
+                max="50"
+                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                placeholder="0"
+                @input="e => bannerConfig.mobile_padding_bottom = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- پیش‌نمایش موبایل -->
+        <div class="bg-white rounded-xl shadow p-8 mt-6 mx-4">
+          <h3 class="text-lg font-bold text-gray-700 mb-6">پیش‌نمایش موبایل</h3>
+          
+          <!-- پیش‌نمایش بنرهای پنج‌تایی در موبایل -->
+          <div class="bg-gray-50 rounded-lg p-6 border-2 border-dashed border-gray-300">
+            <div v-if="bannerConfig.mobile_vertical_display" class="space-y-4">
+              <!-- نمایش عمودی -->
+              <div
+                v-for="(banner, index) in bannerConfig.banners.slice(0, 5)"
+                :key="index"
+                class="relative overflow-hidden rounded-lg shadow-lg"
+              >
+                <div 
+                  class="relative"
+                  :style="{
+                    height: `${bannerConfig.mobile_height}px`,
+                    backgroundColor: bannerConfig.bg_enabled ? bannerConfig.bg_color : 'transparent'
+                  }"
+                >
+                  <img
+                    v-if="banner.image"
+                    :src="banner.image"
+                    :alt="banner.title"
+                    class="w-full h-full object-cover"
+                  />
+                  <div v-else class="flex items-center justify-center h-full text-gray-400">
+                    <div class="text-center">
+                      <svg class="w-8 h-8 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                      </svg>
+                      <p class="text-xs">بنر {{ index + 1 }}</p>
+                    </div>
+                  </div>
+                  <div
+                    v-if="bannerConfig.show_title || bannerConfig.show_description"
+                    class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3"
+                  >
+                    <h4
+                      v-if="bannerConfig.show_title && banner.title"
+                      class="text-white text-sm font-bold mb-1"
+                    >
+                      {{ banner.title }}
+                    </h4>
+                    <p
+                      v-if="bannerConfig.show_description && banner.description"
+                      class="text-white/90 text-xs"
+                    >
+                      {{ banner.description }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-else class="grid grid-cols-2 gap-2">
+              <!-- نمایش افقی -->
+              <div
+                v-for="(banner, index) in bannerConfig.banners.slice(0, 4)"
+                :key="index"
+                class="relative overflow-hidden rounded-lg shadow-lg"
+              >
+                <div 
+                  class="relative"
+                  :style="{
+                    height: `${bannerConfig.mobile_height}px`,
+                    backgroundColor: bannerConfig.bg_enabled ? bannerConfig.bg_color : 'transparent'
+                  }"
+                >
+                  <img
+                    v-if="banner.image"
+                    :src="banner.image"
+                    :alt="banner.title"
+                    class="w-full h-full object-cover"
+                  />
+                  <div v-else class="flex items-center justify-center h-full text-gray-400">
+                    <div class="text-center">
+                      <svg class="w-6 h-6 mx-auto mb-1 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                      </svg>
+                      <p class="text-xs">بنر {{ index + 1 }}</p>
+                    </div>
+                  </div>
+                  <div
+                    v-if="bannerConfig.show_title || bannerConfig.show_description"
+                    class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2"
+                  >
+                    <h4
+                      v-if="bannerConfig.show_title && banner.title"
+                      class="text-white text-xs font-bold mb-1"
+                    >
+                      {{ banner.title }}
+                    </h4>
+                    <p
+                      v-if="bannerConfig.show_description && banner.description"
+                      class="text-white/90 text-xs"
+                    >
+                      {{ banner.description }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- اطلاعات تنظیمات موبایل -->
+            <div class="mt-4 text-sm text-gray-600 text-center">
+              <p>ارتفاع موبایل: {{ bannerConfig.mobile_height }}px | 
+                  نمایش: {{ bannerConfig.mobile_vertical_display ? 'عمودی' : 'افقی' }} | 
+                  پدینگ: {{ bannerConfig.mobile_padding_top || 0 }}px / {{ bannerConfig.mobile_padding_bottom || 0 }}px</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- مدیریت بنرها در موبایل -->
+        <div class="bg-white rounded-xl shadow p-8 mt-6 mx-4">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-lg font-bold text-gray-700">بنرها</h3>
+            <button
+              class="bg-cyan-500 text-white px-4 py-2 rounded-md font-bold hover:bg-cyan-600 transition-colors"
+              @click="openAddBannerModal"
+            >
+              افزودن بنر جدید
+            </button>
+          </div>
+
+          <div v-if="bannerConfig.banners.length === 0" class="text-gray-400 text-center py-8">
+            چیزی برای نمایش وجود ندارد!
+          </div>
+
+          <div v-else class="space-y-3">
+            <div
+              v-for="(banner, idx) in bannerConfig.banners"
+              :key="idx"
+              class="flex items-center gap-3 p-3 border rounded-lg bg-gray-50"
+            >
+              <img
+                :src="banner.image"
+                alt="بنر"
+                class="w-20 h-16 object-cover rounded border"
+              />
+              <div class="flex flex-col flex-1">
+                <div class="font-bold text-sm text-gray-700 mb-1">{{ banner.title }}</div>
+                <div v-if="banner.description" class="text-xs text-gray-600 mb-1">{{ banner.description }}</div>
+                <div v-if="banner.link" class="text-xs text-blue-600 break-all">{{ banner.link }}</div>
+              </div>
+              <div class="flex gap-2">
+                <button
+                  class="text-blue-500 hover:text-blue-700 p-1"
+                  @click="editBanner(idx)"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 11l6 6M3 17v4h4l10.293-10.293a1 1 0 00-1.414-1.414L3 17z"></path>
+                  </svg>
+                </button>
+                <button
+                  class="text-red-500 hover:text-red-700 p-1"
+                  @click="removeBanner(idx)"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </template>
     </DeviceTabs>
 
-
-                         <!-- پیش‌نمایش زنده -->
-         <div v-if="deviceTabsRef?.activeTab === 'desktop'" class="bg-white rounded-xl shadow p-8 mt-6 mx-4">
-       <h3 class="text-lg font-bold text-gray-700 mb-6">پیش‌نمایش زنده</h3>
-       
-                        <!-- پیش‌نمایش بنرهای پنج‌تایی -->
-         <div class="bg-gray-50 rounded-lg p-6 border-2 border-dashed border-gray-300">
-           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-            <!-- بنر اول -->
-            <div class="relative overflow-hidden rounded-lg shadow-lg">
-              <div 
-                class="relative"
-                :style="{
-                  height: `${sliderConfig.height}px`,
-                  backgroundColor: sliderConfig.bg_enabled ? sliderConfig.bg_color : 'transparent'
-                }"
-              >
-                <img
-                  v-if="sliderConfig.slides && sliderConfig.slides.length > 0"
-                  :src="sliderConfig.slides[0].image"
-                  :alt="sliderConfig.slides[0].title"
-                  class="w-full h-full object-cover"
-                />
-                <div v-else class="flex items-center justify-center h-full text-gray-400">
-                  <div class="text-center">
-                    <svg class="w-12 h-12 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
-                    <p class="text-sm">بنر اول</p>
-                  </div>
-                </div>
-                <div
-                  v-if="sliderConfig.show_title || sliderConfig.show_description"
-                  class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6"
-                >
-                  <h4
-                    v-if="sliderConfig.show_title && sliderConfig.slides && sliderConfig.slides[0] && sliderConfig.slides[0].title"
-                    class="text-white text-lg font-bold mb-2"
-                  >
-                    {{ sliderConfig.slides[0].title }}
-                  </h4>
-                  <p
-                    v-if="sliderConfig.show_description && sliderConfig.slides && sliderConfig.slides[0] && sliderConfig.slides[0].description"
-                    class="text-white/90 text-sm"
-                  >
-                    {{ sliderConfig.slides[0].description }}
-                  </p>
+    <!-- پیش‌نمایش زنده -->
+    <div v-if="deviceTabsRef?.activeTab === 'desktop'" class="bg-white rounded-xl shadow p-8 mt-6 mx-4">
+      <h3 class="text-lg font-bold text-gray-700 mb-6">پیش‌نمایش زنده</h3>
+      
+      <!-- پیش‌نمایش بنرهای پنج‌تایی -->
+      <div class="bg-gray-50 rounded-lg p-6 border-2 border-dashed border-gray-300">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+          <!-- بنر اول -->
+          <div class="relative overflow-hidden rounded-lg shadow-lg">
+            <div 
+              class="relative"
+              :style="{
+                height: `${bannerConfig.height}px`,
+                backgroundColor: bannerConfig.bg_enabled ? bannerConfig.bg_color : 'transparent'
+              }"
+            >
+              <img
+                v-if="bannerConfig.banners && bannerConfig.banners.length > 0"
+                :src="bannerConfig.banners[0].image"
+                :alt="bannerConfig.banners[0].title"
+                class="w-full h-full object-cover"
+              />
+              <div v-else class="flex items-center justify-center h-full text-gray-400">
+                <div class="text-center">
+                  <svg class="w-12 h-12 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+                  <p class="text-sm">بنر اول</p>
                 </div>
               </div>
-            </div>
-
-            <!-- بنر دوم -->
-            <div class="relative overflow-hidden rounded-lg shadow-lg">
-              <div 
-                class="relative"
-                :style="{
-                  height: `${sliderConfig.height}px`,
-                  backgroundColor: sliderConfig.bg_enabled ? sliderConfig.bg_color : 'transparent'
-                }"
+              <div
+                v-if="bannerConfig.show_title || bannerConfig.show_description"
+                class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6"
               >
-                <img
-                  v-if="sliderConfig.slides && sliderConfig.slides.length > 1"
-                  :src="sliderConfig.slides[1].image"
-                  :alt="sliderConfig.slides[1].title"
-                  class="w-full h-full object-cover"
-                />
-                <div v-else class="flex items-center justify-center h-full text-gray-400">
-                  <div class="text-center">
-                    <svg class="w-12 h-12 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
-                    <p class="text-sm">بنر دوم</p>
-                  </div>
-                </div>
-                <div
-                  v-if="sliderConfig.show_title || sliderConfig.show_description"
-                  class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6"
+                <h4
+                  v-if="bannerConfig.show_title && bannerConfig.banners && bannerConfig.banners[0] && bannerConfig.banners[0].title"
+                  class="text-white text-lg font-bold mb-2"
                 >
-                  <h4
-                    v-if="sliderConfig.show_title && sliderConfig.slides && sliderConfig.slides[1] && sliderConfig.slides[1].title"
-                    class="text-white text-lg font-bold mb-2"
-                  >
-                    {{ sliderConfig.slides[1].title }}
-                  </h4>
-                  <p
-                    v-if="sliderConfig.show_description && sliderConfig.slides && sliderConfig.slides[1] && sliderConfig.slides[1].description"
-                    class="text-white/90 text-sm"
-                  >
-                    {{ sliderConfig.slides[1].description }}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <!-- بنر سوم -->
-            <div class="relative overflow-hidden rounded-lg shadow-lg">
-              <div 
-                class="relative"
-                :style="{
-                  height: `${sliderConfig.height}px`,
-                  backgroundColor: sliderConfig.bg_enabled ? sliderConfig.bg_color : 'transparent'
-                }"
-              >
-                <img
-                  v-if="sliderConfig.slides && sliderConfig.slides.length > 2"
-                  :src="sliderConfig.slides[2].image"
-                  :alt="sliderConfig.slides[2].title"
-                  class="w-full h-full object-cover"
-                />
-                <div v-else class="flex items-center justify-center h-full text-gray-400">
-                  <div class="text-center">
-                    <svg class="w-12 h-12 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
-                    <p class="text-sm">بنر سوم</p>
-                  </div>
-                </div>
-                <div
-                  v-if="sliderConfig.show_title || sliderConfig.show_description"
-                  class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6"
+                  {{ bannerConfig.banners[0].title }}
+                </h4>
+                <p
+                  v-if="bannerConfig.show_description && bannerConfig.banners && bannerConfig.banners[0] && bannerConfig.banners[0].description"
+                  class="text-white/90 text-sm"
                 >
-                  <h4
-                    v-if="sliderConfig.show_title && sliderConfig.slides && sliderConfig.slides[2] && sliderConfig.slides[2].title"
-                    class="text-white text-lg font-bold mb-2"
-                  >
-                    {{ sliderConfig.slides[2].title }}
-                  </h4>
-                  <p
-                    v-if="sliderConfig.show_description && sliderConfig.slides && sliderConfig.slides[2] && sliderConfig.slides[2].description"
-                    class="text-white/90 text-sm"
-                  >
-                    {{ sliderConfig.slides[2].description }}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <!-- بنر چهارم -->
-            <div class="relative overflow-hidden rounded-lg shadow-lg">
-              <div 
-                class="relative"
-                :style="{
-                  height: `${sliderConfig.height}px`,
-                  backgroundColor: sliderConfig.bg_enabled ? sliderConfig.bg_color : 'transparent'
-                }"
-              >
-                <img
-                  v-if="sliderConfig.slides && sliderConfig.slides.length > 3"
-                  :src="sliderConfig.slides[3].image"
-                  :alt="sliderConfig.slides[3].title"
-                  class="w-full h-full object-cover"
-                />
-                <div v-else class="flex items-center justify-center h-full text-gray-400">
-                  <div class="text-center">
-                    <svg class="w-12 h-12 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
-                    <p class="text-sm">بنر چهارم</p>
-                  </div>
-                </div>
-                <div
-                  v-if="sliderConfig.show_title || sliderConfig.show_description"
-                  class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6"
-                >
-                  <h4
-                    v-if="sliderConfig.show_title && sliderConfig.slides && sliderConfig.slides[3] && sliderConfig.slides[3].title"
-                    class="text-white text-lg font-bold mb-2"
-                  >
-                    {{ sliderConfig.slides[3].title }}
-                  </h4>
-                  <p
-                    v-if="sliderConfig.show_description && sliderConfig.slides && sliderConfig.slides[3] && sliderConfig.slides[3].description"
-                    class="text-white/90 text-sm"
-                  >
-                    {{ sliderConfig.slides[3].description }}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <!-- بنر پنجم -->
-            <div class="relative overflow-hidden rounded-lg shadow-lg">
-              <div 
-                class="relative"
-                :style="{
-                  height: `${sliderConfig.height}px`,
-                  backgroundColor: sliderConfig.bg_enabled ? sliderConfig.bg_color : 'transparent'
-                }"
-              >
-                <img
-                  v-if="sliderConfig.slides && sliderConfig.slides.length > 4"
-                  :src="sliderConfig.slides[4].image"
-                  :alt="sliderConfig.slides[4].title"
-                  class="w-full h-full object-cover"
-                />
-                <div v-else class="flex items-center justify-center h-full text-gray-400">
-                  <div class="text-center">
-                    <svg class="w-12 h-12 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
-                    <p class="text-sm">بنر پنجم</p>
-                  </div>
-                </div>
-                <div
-                  v-if="sliderConfig.show_title || sliderConfig.show_description"
-                  class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6"
-                >
-                  <h4
-                    v-if="sliderConfig.show_title && sliderConfig.slides && sliderConfig.slides[4] && sliderConfig.slides[4].title"
-                    class="text-white text-lg font-bold mb-2"
-                  >
-                    {{ sliderConfig.slides[4].title }}
-                  </h4>
-                  <p
-                    v-if="sliderConfig.show_description && sliderConfig.slides && sliderConfig.slides[4] && sliderConfig.slides[4].description"
-                    class="text-white/90 text-sm"
-                  >
-                    {{ sliderConfig.slides[4].description }}
-                  </p>
-                </div>
+                  {{ bannerConfig.banners[0].description }}
+                </p>
               </div>
             </div>
           </div>
-          
-                     <!-- اطلاعات تنظیمات -->
-           <div class="mt-4 text-sm text-gray-600 text-center">
-             <p>ارتفاع: {{ sliderConfig.height }}px | 
-                 پس‌زمینه: {{ sliderConfig.bg_enabled ? 'فعال' : 'غیرفعال' }} | 
-                 نسبت‌ها: {{ sliderConfig.banner1_ratio }}% / {{ sliderConfig.banner2_ratio }}% / {{ sliderConfig.banner3_ratio }}% / {{ sliderConfig.banner4_ratio }}% / {{ sliderConfig.banner5_ratio }}%</p>
-           </div>
+
+          <!-- بنر دوم -->
+          <div class="relative overflow-hidden rounded-lg shadow-lg">
+            <div 
+              class="relative"
+              :style="{
+                height: `${bannerConfig.height}px`,
+                backgroundColor: bannerConfig.bg_enabled ? bannerConfig.bg_color : 'transparent'
+              }"
+            >
+              <img
+                v-if="bannerConfig.banners && bannerConfig.banners.length > 1"
+                :src="bannerConfig.banners[1].image"
+                :alt="bannerConfig.banners[1].title"
+                class="w-full h-full object-cover"
+              />
+              <div v-else class="flex items-center justify-center h-full text-gray-400">
+                <div class="text-center">
+                  <svg class="w-12 h-12 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+                  <p class="text-sm">بنر دوم</p>
+                </div>
+              </div>
+              <div
+                v-if="bannerConfig.show_title || bannerConfig.show_description"
+                class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6"
+              >
+                <h4
+                  v-if="bannerConfig.show_title && bannerConfig.banners && bannerConfig.banners[1] && bannerConfig.banners[1].title"
+                  class="text-white text-lg font-bold mb-2"
+                >
+                  {{ bannerConfig.banners[1].title }}
+                </h4>
+                <p
+                  v-if="bannerConfig.show_description && bannerConfig.banners && bannerConfig.banners[1] && bannerConfig.banners[1].description"
+                  class="text-white/90 text-sm"
+                >
+                  {{ bannerConfig.banners[1].description }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- بنر سوم -->
+          <div class="relative overflow-hidden rounded-lg shadow-lg">
+            <div 
+              class="relative"
+              :style="{
+                height: `${bannerConfig.height}px`,
+                backgroundColor: bannerConfig.bg_enabled ? bannerConfig.bg_color : 'transparent'
+              }"
+            >
+              <img
+                v-if="bannerConfig.banners && bannerConfig.banners.length > 2"
+                :src="bannerConfig.banners[2].image"
+                :alt="bannerConfig.banners[2].title"
+                class="w-full h-full object-cover"
+              />
+              <div v-else class="flex items-center justify-center h-full text-gray-400">
+                <div class="text-center">
+                  <svg class="w-12 h-12 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+                  <p class="text-sm">بنر سوم</p>
+                </div>
+              </div>
+              <div
+                v-if="bannerConfig.show_title || bannerConfig.show_description"
+                class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6"
+              >
+                <h4
+                  v-if="bannerConfig.show_title && bannerConfig.banners && bannerConfig.banners[2] && bannerConfig.banners[2].title"
+                  class="text-white text-lg font-bold mb-2"
+                >
+                  {{ bannerConfig.banners[2].title }}
+                </h4>
+                <p
+                  v-if="bannerConfig.show_description && bannerConfig.banners && bannerConfig.banners[2] && bannerConfig.banners[2].description"
+                  class="text-white/90 text-sm"
+                >
+                  {{ bannerConfig.banners[2].description }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- بنر چهارم -->
+          <div class="relative overflow-hidden rounded-lg shadow-lg">
+            <div 
+              class="relative"
+              :style="{
+                height: `${bannerConfig.height}px`,
+                backgroundColor: bannerConfig.bg_enabled ? bannerConfig.bg_color : 'transparent'
+              }"
+            >
+              <img
+                v-if="bannerConfig.banners && bannerConfig.banners.length > 3"
+                :src="bannerConfig.banners[3].image"
+                :alt="bannerConfig.banners[3].title"
+                class="w-full h-full object-cover"
+              />
+              <div v-else class="flex items-center justify-center h-full text-gray-400">
+                <div class="text-center">
+                  <svg class="w-12 h-12 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+                  <p class="text-sm">بنر چهارم</p>
+                </div>
+              </div>
+              <div
+                v-if="bannerConfig.show_title || bannerConfig.show_description"
+                class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6"
+              >
+                <h4
+                  v-if="bannerConfig.show_title && bannerConfig.banners && bannerConfig.banners[3] && bannerConfig.banners[3].title"
+                  class="text-white text-lg font-bold mb-2"
+                >
+                  {{ bannerConfig.banners[3].title }}
+                </h4>
+                <p
+                  v-if="bannerConfig.show_description && bannerConfig.banners && bannerConfig.banners[3] && bannerConfig.banners[3].description"
+                  class="text-white/90 text-sm"
+                >
+                  {{ bannerConfig.banners[3].description }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- بنر پنجم -->
+          <div class="relative overflow-hidden rounded-lg shadow-lg">
+            <div 
+              class="relative"
+              :style="{
+                height: `${bannerConfig.height}px`,
+                backgroundColor: bannerConfig.bg_enabled ? bannerConfig.bg_color : 'transparent'
+              }"
+            >
+              <img
+                v-if="bannerConfig.banners && bannerConfig.banners.length > 4"
+                :src="bannerConfig.banners[4].image"
+                :alt="bannerConfig.banners[4].title"
+                class="w-full h-full object-cover"
+              />
+              <div v-else class="flex items-center justify-center h-full text-gray-400">
+                <div class="text-center">
+                  <svg class="w-12 h-12 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+                  <p class="text-sm">بنر پنجم</p>
+                </div>
+              </div>
+              <div
+                v-if="bannerConfig.show_title || bannerConfig.show_description"
+                class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6"
+              >
+                <h4
+                  v-if="bannerConfig.show_title && bannerConfig.banners && bannerConfig.banners[4] && bannerConfig.banners[4].title"
+                  class="text-white text-lg font-bold mb-2"
+                >
+                  {{ bannerConfig.banners[4].title }}
+                </h4>
+                <p
+                  v-if="bannerConfig.show_description && bannerConfig.banners && bannerConfig.banners[4] && bannerConfig.banners[4].description"
+                  class="text-white/90 text-sm"
+                >
+                  {{ bannerConfig.banners[4].description }}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-     </div>
+        
+        <!-- اطلاعات تنظیمات -->
+        <div class="mt-4 text-sm text-gray-600 text-center">
+          <p>ارتفاع: {{ bannerConfig.height }}px | 
+              پس‌زمینه: {{ bannerConfig.bg_enabled ? 'فعال' : 'غیرفعال' }} | 
+              نسبت‌ها: {{ bannerConfig.banner1_ratio }}% / {{ bannerConfig.banner2_ratio }}% / {{ bannerConfig.banner3_ratio }}% / {{ bannerConfig.banner4_ratio }}% / {{ bannerConfig.banner5_ratio }}%</p>
+        </div>
+      </div>
+    </div>
 
-            <!-- نمایش و مدیریت اسلایدها -->
-        <div v-if="deviceTabsRef?.activeTab === 'desktop'" class="bg-white rounded-xl shadow p-8 mt-6 mx-4">
-             <div class="flex justify-between items-center mb-6">
-         <h3 class="text-lg font-bold text-gray-700">بنرها</h3>
-         <button
-           class="bg-cyan-500 text-white px-4 py-2 rounded-md font-bold hover:bg-cyan-600 transition-colors"
-           @click="openAddSliderModal"
-         >
-           افزودن بنر جدید
-         </button>
-       </div>
+    <!-- نمایش و مدیریت بنرها -->
+    <div v-if="deviceTabsRef?.activeTab === 'desktop'" class="bg-white rounded-xl shadow p-8 mt-6 mx-4">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-bold text-gray-700">بنرها</h3>
+        <button
+          class="bg-cyan-500 text-white px-4 py-2 rounded-md font-bold hover:bg-cyan-600 transition-colors"
+          @click="openAddBannerModal"
+        >
+          افزودن بنر جدید
+        </button>
+      </div>
 
-      <div v-if="sliderConfig.slides.length === 0" class="text-gray-400 text-center py-8">
+      <div v-if="bannerConfig.banners.length === 0" class="text-gray-400 text-center py-8">
         چیزی برای نمایش وجود ندارد!
       </div>
 
       <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div
-          v-for="(slide, idx) in sliderConfig.slides"
+          v-for="(banner, idx) in bannerConfig.banners"
           :key="idx"
           class="flex items-center gap-6 p-3 border rounded-lg bg-gray-50"
         >
           <img
-            :src="slide.image"
-            alt="اسلایدر"
+            :src="banner.image"
+            alt="بنر"
             class="w-32 h-20 object-cover rounded border"
           />
           <div class="flex flex-col flex-1">
-            <div class="font-bold text-sm text-gray-700 mb-1">{{ slide.title }}</div>
-            <div v-if="slide.description" class="text-xs text-gray-600 mb-1">{{ slide.description }}</div>
-            <div v-if="slide.link" class="text-xs text-blue-600 break-all">{{ slide.link }}</div>
+            <div class="font-bold text-sm text-gray-700 mb-1">{{ banner.title }}</div>
+            <div v-if="banner.description" class="text-xs text-gray-600 mb-1">{{ banner.description }}</div>
+            <div v-if="banner.link" class="text-xs text-blue-600 break-all">{{ banner.link }}</div>
           </div>
           <div class="flex gap-2">
             <button
               class="text-blue-500 hover:text-blue-700 p-1"
-              @click="editSlide(idx)"
+              @click="editBanner(idx)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 11l6 6M3 17v4h4l10.293-10.293a1 1 0 00-1.414-1.414L3 17z"></path>
@@ -629,7 +898,7 @@
             </button>
             <button
               class="text-red-500 hover:text-red-700 p-1"
-              @click="removeSlide(idx)"
+              @click="removeBanner(idx)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -638,20 +907,18 @@
           </div>
         </div>
       </div>
-         </div>
+    </div>
 
-
-
-     <!-- Slide Modal Component -->
+    <!-- Banner Modal Component -->
     <SlideModal
-      :is-visible="showSliderModal"
-      :is-editing="editingSlideIndex !== null"
-      :slide-data="editingSlide"
-      :show-title="showTitleInSlide"
-      @update:is-visible="showSliderModal = $event"
-      @update:show-title="showTitleInSlide = $event"
-      @update:slide-data="editingSlide = $event"
-      @save="handleSlideSave"
+      :is-visible="showBannerModal"
+      :is-editing="editingBannerIndex !== null"
+      :slide-data="editingBanner"
+      :show-title="showTitleInBanner"
+      @update:is-visible="showBannerModal = $event"
+      @update:show-title="showTitleInBanner = $event"
+      @update:slide-data="editingBanner = $event"
+      @save="handleBannerSave"
       @open-media-library="openMediaLibrary"
       @remove-image="removeImage"
     />
@@ -664,22 +931,35 @@
       @confirm="onSelectFromLibrary"
     />
 
-    <!-- Page content will be added here -->
-
     <!-- فاصله انتهای صفحه -->
     <div class="pb-16"></div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import SlideModal from '~/components/common/SlideModal.vue'
 import TemplateButton from '~/components/common/TemplateButton.vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
 import { useToast } from '~/composables/useToast'
 import { useWidget } from '~/composables/useWidget'
-import type { SlideItem, SliderConfig, Widget } from '~/types/widget'
+import type { BannerConfig, BannerItem, Widget, WidgetType, WidgetStatus, WidgetPage } from '~/types/widget'
+
+interface ImageCropResponse {
+  success: boolean
+  data?: {
+    cropped_url: string
+  }
+}
+
+interface MediaFile {
+  id?: number | string
+  url: string
+  name?: string
+  [key: string]: unknown
+}
+
 import { WIDGET_TYPE_LABELS } from '~/types/widget'
 import DeviceTabs from './components/DeviceTabs.vue'
 
@@ -688,35 +968,32 @@ declare const definePageMeta: (meta: { layout?: string; middleware?: string }) =
 declare const useHead: (head: { title?: string }) => void
 
 definePageMeta({ layout: 'admin-main', middleware: 'admin' })
-useHead({ title: 'ویرایش اسلایدر تکی - پنل ادمین' })
+useHead({ title: 'ایجاد بنر پنج‌تایی - پنل ادمین' })
 
-// Route params
-const route = useRoute()
+// Router
 const router = useRouter()
-const widgetId = parseInt(route.params.id as string)
 
 // Composables
-const { fetchWidget, createWidget, loading, error, clearError, widget: fetchedWidget } = useWidget()
-const { showSuccess } = useToast()
+const { createWidget, clearError } = useWidget()
+const { showSuccess, showError } = useToast()
 
 // Props
 interface Props {
   widget?: Widget
 }
 
-const props = defineProps<Props>()
+const _props = defineProps<Props>()
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   updated: [widget: Widget]
 }>()
 
 // State
 const isSaving = ref(false)
-const showSliderModal = ref(false)
+const showBannerModal = ref(false)
 const showMediaLibrary = ref(false)
-const editingSlideIndex = ref<number | null>(null)
-const currentPreviewSlide = ref(0)
+const editingBannerIndex = ref<number | null>(null)
 const deviceTabsRef = ref()
 
 // Error states
@@ -735,8 +1012,8 @@ const validateTitle = () => {
   }
 }
 
-// Editing slide data
-const editingSlide = ref<SlideItem>({
+// Editing banner data
+const editingBanner = ref<BannerItem>({
   title: '',
   description: '',
   image: '',
@@ -746,7 +1023,7 @@ const editingSlide = ref<SlideItem>({
 })
 
 // Title display control
-const showTitleInSlide = ref(true)
+const showTitleInBanner = ref(true)
 
 // Form data
 const formData = ref({
@@ -757,147 +1034,139 @@ const formData = ref({
   page: 'home'
 })
 
-// Initialize form data when widget is available
-const initializeFormData = () => {
-  if (fetchedWidget.value) {
-    console.log('Widget data:', fetchedWidget.value) // Debug log
-    formData.value = {
-      title: fetchedWidget.value.title || '',
-      description: fetchedWidget.value.description || '',
-      type: fetchedWidget.value.type || 'penta-banner',
-      status: fetchedWidget.value.status || 'active',
-      page: fetchedWidget.value.page || 'home'
-    }
-    console.log('Form data initialized:', formData.value) // Debug log
-  }
-}
-
-// Watch for widget changes
-watch(fetchedWidget, (newWidget) => {
-  if (newWidget) {
-    initializeFormData()
-  }
-}, { immediate: true })
-
-// Computed properties for reactive form data
-const widgetTitle = computed(() => fetchedWidget.value?.title || '')
-const widgetType = computed(() => fetchedWidget.value?.type || 'penta-banner')
-const widgetStatus = computed(() => fetchedWidget.value?.status || 'active')
-const widgetPage = computed(() => fetchedWidget.value?.page || 'home')
-
-// Slider config
-const sliderConfig = ref<SliderConfig>({
-  slider_count: 5,
+// Banner config
+const bannerConfig = ref<BannerConfig>({
   wide_bg: false,
   bg_color: '#ffffff',
-  banner_position: 'right',
-  display_order: 'asc',
   height: 400,
-  slides: [],
-  side_banners: [],
+  banners: [],
   bg_enabled: false,
-  slider_width: 800,
-  banner_width: 400,
-  center_width: 1000,
   banner1_ratio: 20,
   banner2_ratio: 20,
   banner3_ratio: 20,
   banner4_ratio: 20,
   banner5_ratio: 20,
-  navigation_enabled: true,
-  autoplay_enabled: true,
-  autoplay_delay: 5,
-  loop_enabled: true,
-  show_navigation: true,
-  show_pagination: true,
   show_title: true,
   show_description: true,
-  transition_duration: 500,
-  pause_on_hover: true,
-  navigation_style: 'default',
-  navigation_size: 40,
-  pagination_style: 'default',
-  pagination_color: '#ffffff',
   padding_top: 0,
   padding_bottom: 0,
   margin_left: 0,
   margin_right: 0,
-  border_radius: 8,
-  shadow_enabled: false,
-  shadow_style: 'default',
-  easy_load_enabled: false,
   // Mobile specific settings
-  mobile_autoplay_enabled: true,
-  mobile_autoplay_delay: 5,
-  mobile_loop_enabled: true,
-  mobile_show_navigation: true,
-  mobile_show_pagination: true,
   mobile_vertical_display: false,
-  mobile_slider_width: 300,
-  mobile_height: 150
+  mobile_height: 150,
+  mobile_banner_width: 500,
+  mobile_image_mode: 'auto',
+  mobile_crop_width: 375,
+  mobile_crop_height: 150,
+  mobile_cropped_image: '',
+  mobile_image: '',
+  mobile_padding_top: 0,
+  mobile_padding_bottom: 0
 })
 
-// Methods for managing slides
-const openAddSliderModal = () => {
-  editingSlideIndex.value = null
-  editingSlide.value = {
+// Apply mobile crop function
+const applyMobileCrop = async () => {
+  if (!bannerConfig.value.banners.length) {
+    alert('ابتدا یک بنر اضافه کنید')
+    return
+  }
+  
+  const banner = bannerConfig.value.banners[0]
+  if (!banner.image) {
+    alert('عکس بنر انتخاب نشده است')
+    return
+  }
+  
+  try {
+    const cropWidth = bannerConfig.value.mobile_crop_width || 375
+    const cropHeight = bannerConfig.value.mobile_crop_height || 150
+    
+    try {
+      const response = await $fetch('/api/media/image-crop', {
+        method: 'POST',
+        body: {
+          src: banner.image,
+          crop_width: cropWidth,
+          crop_height: cropHeight,
+          mode: 'cover',
+          device: 'mobile',
+          quality: 85
+        }
+      }) as ImageCropResponse
+      
+      if (response.success) {
+        bannerConfig.value.mobile_cropped_image = response.data?.cropped_url || ''
+        alert('برش موبایل با موفقیت اعمال شد')
+      } else {
+        throw new Error('API response failed')
+      }
+    } catch (_error) {
+      alert('خطا در برش عکس موبایل')
+      return
+    }
+  } catch (_error) {
+    alert('خطا در اعمال برش موبایل')
+  }
+}
+
+// Methods for managing banners
+const openAddBannerModal = () => {
+  editingBannerIndex.value = null
+  editingBanner.value = {
     title: '',
     description: '',
     image: '',
     link: '',
-    order: sliderConfig.value.slides.length + 1,
+    order: bannerConfig.value.banners.length + 1,
     status: 'active'
   }
-  showTitleInSlide.value = true // Reset to default
-  showSliderModal.value = true
+  showTitleInBanner.value = true
+  showBannerModal.value = true
 }
 
-const editSlide = (index: number) => {
-  editingSlideIndex.value = index
-  const slide = sliderConfig.value.slides[index]
-  editingSlide.value = {
-    title: slide.title || '',
-    description: slide.description || '',
-    image: slide.image || '',
-    link: slide.link || '',
-    order: slide.order || index + 1,
-    status: slide.status || 'active'
+const editBanner = (index: number) => {
+  editingBannerIndex.value = index
+  const banner = bannerConfig.value.banners[index]
+  editingBanner.value = {
+    title: banner.title || '',
+    description: banner.description || '',
+    image: banner.image || '',
+    link: banner.link || '',
+    order: banner.order || index + 1,
+    status: banner.status || 'active'
   }
-  // Set showTitleInSlide based on existing slide data or default to true
-  showTitleInSlide.value = slide.showTitle !== undefined ? slide.showTitle : true
-  showSliderModal.value = true
+  showTitleInBanner.value = banner.showTitle !== undefined ? banner.showTitle : true
+  showBannerModal.value = true
 }
 
-const removeSlide = (index: number) => {
-  sliderConfig.value.slides.splice(index, 1)
-  // Re-order remaining slides
-  sliderConfig.value.slides.forEach((slide, idx) => {
-    slide.order = idx + 1
+const removeBanner = (index: number) => {
+  bannerConfig.value.banners.splice(index, 1)
+  bannerConfig.value.banners.forEach((banner, idx) => {
+    banner.order = idx + 1
   })
 }
 
-// Handle slide save from modal component
-const handleSlideSave = (slideData: SlideItem, showTitle: boolean) => {
-  const slide: SlideItem = {
-    ...slideData,
-    title: slideData.title?.trim() || '',
-    description: slideData.description?.trim() || '',
-    link: slideData.link?.trim() || '',
-    order: editingSlideIndex.value !== null ? sliderConfig.value.slides[editingSlideIndex.value].order : sliderConfig.value.slides.length + 1,
+// Handle banner save from modal component
+const handleBannerSave = (bannerData: BannerItem, showTitle: boolean) => {
+  const banner: BannerItem = {
+    ...bannerData,
+    title: bannerData.title?.trim() || '',
+    description: bannerData.description?.trim() || '',
+    link: bannerData.link?.trim() || '',
+    order: editingBannerIndex.value !== null ? bannerConfig.value.banners[editingBannerIndex.value].order : bannerConfig.value.banners.length + 1,
     status: 'active',
     showTitle: showTitle
   }
 
-  if (editingSlideIndex.value !== null) {
-    // ویرایش اسلاید موجود
-    sliderConfig.value.slides[editingSlideIndex.value] = slide
+  if (editingBannerIndex.value !== null) {
+    bannerConfig.value.banners[editingBannerIndex.value] = banner
   } else {
-    // افزودن اسلاید جدید
-    sliderConfig.value.slides.push(slide)
+    bannerConfig.value.banners.push(banner)
   }
 
-  showSliderModal.value = false
-  editingSlideIndex.value = null
+  showBannerModal.value = false
+  editingBannerIndex.value = null
 }
 
 // Media library functions
@@ -905,114 +1174,69 @@ const openMediaLibrary = () => {
   showMediaLibrary.value = true
 }
 
-const onSelectFromLibrary = (files: any[]) => {
+const onSelectFromLibrary = (files: MediaFile[]) => {
   if (files && files.length > 0) {
     const file = files[0]
-    editingSlide.value.image = file.url
-    // Clear any previous image error
-    // Note: This will be handled by the child component's reactive system
+    editingBanner.value.image = file.url
   }
   showMediaLibrary.value = false
 }
 
 // Image functions
 const removeImage = () => {
-  editingSlide.value.image = ''
+  editingBanner.value.image = ''
 }
 
 // Banner ratio management functions
 const updateBannerRatios = (changedBanner: 'banner1' | 'banner2' | 'banner3' | 'banner4' | 'banner5') => {
-  const changedValue = sliderConfig.value[`${changedBanner}_ratio`]
+  const changedValue = bannerConfig.value[`${changedBanner}_ratio`]
   const remaining = 100 - changedValue
   
   if (remaining < 0) {
-    // اگر مقدار انتخاب شده بیشتر از 100 است، آن را به 100 محدود کن
-    sliderConfig.value[`${changedBanner}_ratio`] = 100
-    sliderConfig.value.banner1_ratio = 0
-    sliderConfig.value.banner2_ratio = 0
-    sliderConfig.value.banner3_ratio = 0
-    sliderConfig.value.banner4_ratio = 0
-    sliderConfig.value.banner5_ratio = 0
+    bannerConfig.value[`${changedBanner}_ratio`] = 100
+    bannerConfig.value.banner1_ratio = 0
+    bannerConfig.value.banner2_ratio = 0
+    bannerConfig.value.banner3_ratio = 0
+    bannerConfig.value.banner4_ratio = 0
+    bannerConfig.value.banner5_ratio = 0
     return
   }
   
-  // نسبت‌های باقیمانده را بین چهار بنر دیگر تقسیم کن
   const otherBanners = ['banner1', 'banner2', 'banner3', 'banner4', 'banner5'].filter(b => b !== changedBanner)
   
   if (otherBanners.length === 4) {
     const [bannerA, bannerB, bannerC, bannerD] = otherBanners
-    const currentA = sliderConfig.value[`${bannerA}_ratio`]
-    const currentB = sliderConfig.value[`${bannerB}_ratio`]
-    const currentC = sliderConfig.value[`${bannerC}_ratio`]
-    const currentD = sliderConfig.value[`${bannerD}_ratio`]
+    const currentA = bannerConfig.value[`${bannerA}_ratio`]
+    const currentB = bannerConfig.value[`${bannerB}_ratio`]
+    const currentC = bannerConfig.value[`${bannerC}_ratio`]
+    const currentD = bannerConfig.value[`${bannerD}_ratio`]
     const totalCurrent = currentA + currentB + currentC + currentD
     
     if (totalCurrent > 0) {
-      // نسبت‌ها را بر اساس نسبت فعلی تقسیم کن
       const ratioA = currentA / totalCurrent
       const ratioB = currentB / totalCurrent
       const ratioC = currentC / totalCurrent
-      const ratioD = currentD / totalCurrent
+      const _ratioD = currentD / totalCurrent
       
-      sliderConfig.value[`${bannerA}_ratio`] = Math.round(remaining * ratioA)
-      sliderConfig.value[`${bannerB}_ratio`] = Math.round(remaining * ratioB)
-      sliderConfig.value[`${bannerC}_ratio`] = Math.round(remaining * ratioC)
-      sliderConfig.value[`${bannerD}_ratio`] = remaining - sliderConfig.value[`${bannerA}_ratio`] - sliderConfig.value[`${bannerB}_ratio`] - sliderConfig.value[`${bannerC}_ratio`]
+      bannerConfig.value[`${bannerA}_ratio`] = Math.round(remaining * ratioA)
+      bannerConfig.value[`${bannerB}_ratio`] = Math.round(remaining * ratioB)
+      bannerConfig.value[`${bannerC}_ratio`] = Math.round(remaining * ratioC)
+      bannerConfig.value[`${bannerD}_ratio`] = remaining - bannerConfig.value[`${bannerA}_ratio`] - bannerConfig.value[`${bannerB}_ratio`] - bannerConfig.value[`${bannerC}_ratio`]
     } else {
-      // اگر هر چهار صفر هستند، به طور مساوی تقسیم کن
       const equalShare = Math.floor(remaining / 4)
-      sliderConfig.value[`${bannerA}_ratio`] = equalShare
-      sliderConfig.value[`${bannerB}_ratio`] = equalShare
-      sliderConfig.value[`${bannerC}_ratio`] = equalShare
-      sliderConfig.value[`${bannerD}_ratio`] = remaining - equalShare - equalShare - equalShare
+      bannerConfig.value[`${bannerA}_ratio`] = equalShare
+      bannerConfig.value[`${bannerB}_ratio`] = equalShare
+      bannerConfig.value[`${bannerC}_ratio`] = equalShare
+      bannerConfig.value[`${bannerD}_ratio`] = remaining - equalShare - equalShare - equalShare
     }
   }
 }
 
-// Auto-rotation for live preview
-let previewInterval: NodeJS.Timeout | null = null
-
-const startPreviewRotation = () => {
-  if (previewInterval) clearInterval(previewInterval)
-  
-  if (sliderConfig.value.autoplay_enabled && sliderConfig.value.slides.length > 1) {
-    previewInterval = setInterval(() => {
-      currentPreviewSlide.value = currentPreviewSlide.value === 0 
-        ? sliderConfig.value.slides.length - 1 
-        : currentPreviewSlide.value - 1
-    }, (sliderConfig.value.autoplay_delay || 5) * 1000)
-  }
-}
-
-const stopPreviewRotation = () => {
-  if (previewInterval) {
-    clearInterval(previewInterval)
-    previewInterval = null
-  }
-}
-
-// Watch for autoplay changes
-watch(() => [sliderConfig.value.autoplay_enabled, sliderConfig.value.autoplay_delay, sliderConfig.value.slides.length], () => {
-  if (sliderConfig.value.autoplay_enabled && sliderConfig.value.slides.length > 1) {
-    startPreviewRotation()
-  } else {
-    stopPreviewRotation()
-  }
-}, { immediate: true })
-
-// Cleanup on unmount
-onUnmounted(() => {
-  stopPreviewRotation()
-})
-
 // Save widget function
 const saveWidget = async () => {
-  // Validate title field
   validateTitle()
 
-  // Check if there are validation errors
   if (titleError.value) {
-    // Scroll to the title field
     const titleInput = document.querySelector('input[placeholder="عنوان ابزارک را وارد کنید"]') as HTMLInputElement
     if (titleInput) {
       titleInput.focus()
@@ -1024,61 +1248,38 @@ const saveWidget = async () => {
   try {
     isSaving.value = true
 
-    // Prepare widget data for creation
+    const configToSave = { ...bannerConfig.value }
+    configToSave.padding_top = bannerConfig.value.padding_top
+    configToSave.padding_bottom = bannerConfig.value.padding_bottom
+    configToSave.margin_left = bannerConfig.value.margin_left
+    configToSave.margin_right = bannerConfig.value.margin_right
+    configToSave.mobile_padding_top = bannerConfig.value.mobile_padding_top
+    configToSave.mobile_padding_bottom = bannerConfig.value.mobile_padding_bottom
+
     const widgetData = {
       title: formData.value.title,
       description: formData.value.description,
-      type: formData.value.type as any, // Type casting for compatibility
-      status: formData.value.status as any, // Type casting for compatibility
-      page: formData.value.page as any, // Type casting for compatibility
-      config: sliderConfig.value
+      type: formData.value.type as WidgetType,
+      status: formData.value.status as WidgetStatus,
+      page: formData.value.page as WidgetPage,
+      config: configToSave
     }
-    
-    // Create new widget
+
     const createdWidget = await createWidget(widgetData)
-    
+
     if (createdWidget) {
       showSuccess('ابزارک با موفقیت ایجاد شد!')
+      await router.push(`/admin/content/banners/pentabanner/edit/${createdWidget.id}`)
     }
-    
-  } catch (error) {
-    console.error('خطا در ذخیره ابزارک:', error)
+  } catch (_error) {
+    showError('خطا در ذخیره ابزارک')
   } finally {
     isSaving.value = false
   }
 }
 
-// Initialize config from widget
+// Initialize config
 onMounted(async () => {
   clearError()
-  if (widgetId) {
-    await fetchWidget(widgetId)
-  }
-  initializeFormData()
-  
-  // Only copy specific config fields, don't overwrite defaults
-  if (fetchedWidget.value?.config) {
-    const config = fetchedWidget.value.config as SliderConfig
-    if (config.slides) sliderConfig.value.slides = config.slides
-    if (config.side_banners) sliderConfig.value.side_banners = config.side_banners
-    if (config.height) sliderConfig.value.height = config.height
-    if (config.slider_width) sliderConfig.value.slider_width = config.slider_width
-    if (config.bg_enabled !== undefined) sliderConfig.value.bg_enabled = config.bg_enabled
-    if (config.bg_color) sliderConfig.value.bg_color = config.bg_color
-    if (config.wide_bg !== undefined) sliderConfig.value.wide_bg = config.wide_bg
-    if (config.autoplay_enabled !== undefined) sliderConfig.value.autoplay_enabled = config.autoplay_enabled
-    if (config.autoplay_delay) sliderConfig.value.autoplay_delay = config.autoplay_delay
-    if (config.loop_enabled !== undefined) sliderConfig.value.loop_enabled = config.loop_enabled
-    if (config.show_navigation !== undefined) sliderConfig.value.show_navigation = config.show_navigation
-    if (config.show_pagination !== undefined) sliderConfig.value.show_pagination = config.show_pagination
-    if (config.easy_load_enabled !== undefined) sliderConfig.value.easy_load_enabled = config.easy_load_enabled
-    // Mobile specific settings
-    if (config.mobile_autoplay_enabled !== undefined) sliderConfig.value.mobile_autoplay_enabled = config.mobile_autoplay_enabled
-    if (config.mobile_autoplay_delay) sliderConfig.value.mobile_autoplay_delay = config.mobile_autoplay_delay
-    if (config.mobile_loop_enabled !== undefined) sliderConfig.value.mobile_loop_enabled = config.mobile_loop_enabled
-    if (config.mobile_show_navigation !== undefined) sliderConfig.value.mobile_show_navigation = config.mobile_show_navigation
-    if (config.mobile_show_pagination !== undefined) sliderConfig.value.mobile_show_pagination = config.mobile_show_pagination
-    if (config.mobile_vertical_display !== undefined) sliderConfig.value.mobile_vertical_display = config.mobile_vertical_display
-  }
 })
 </script>

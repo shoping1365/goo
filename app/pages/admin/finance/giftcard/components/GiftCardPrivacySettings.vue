@@ -146,8 +146,8 @@
 import { computed, ref } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 
-const { user, hasPermission } = useAuth()
-const canDeletePrivacyRequest = computed(() => hasPermission('giftcard-privacy-request.delete'))
+const { user: _user, hasPermission } = useAuth()
+const _canDeletePrivacyRequest = computed(() => hasPermission('giftcard-privacy-request.delete'))
 
 // آمار رضایت GDPR
 const gdprStats = ref({
@@ -219,21 +219,28 @@ const saveCookieSettings = () => {
   alert('تنظیمات کوکی‌ها با موفقیت ذخیره شد.')
 }
 
-const approveDeletion = (request: any) => {
+interface DeletionRequest {
+  id?: number | string
+  userName?: string
+  status?: string
+  [key: string]: unknown
+}
+
+const approveDeletion = (request: DeletionRequest) => {
   if (confirm('آیا از تأیید حذف اطلاعات این کاربر اطمینان دارید؟')) {
     request.status = 'completed'
     alert('درخواست حذف تأیید شد.')
   }
 }
 
-const rejectDeletion = (request: any) => {
+const rejectDeletion = (request: DeletionRequest) => {
   if (confirm('آیا از رد درخواست حذف اطمینان دارید؟')) {
     request.status = 'rejected'
     alert('درخواست حذف رد شد.')
   }
 }
 
-const viewDeletionLog = (request: any) => {
+const viewDeletionLog = (request: DeletionRequest) => {
   alert('لاگ حذف اطلاعات: ' + request.userName)
 }
 

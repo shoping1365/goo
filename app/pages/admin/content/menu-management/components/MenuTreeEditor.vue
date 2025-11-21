@@ -41,7 +41,14 @@ const props = defineProps<{
 
 const maxDepth = computed(() => props.maxDepth || 3)
 
-const dragInfo = ref<{item:any, from:number[], to:number[], depth:number}|null>(null)
+interface DragInfo {
+  item: unknown
+  from: number[]
+  to: number[]
+  depth: number
+}
+
+const dragInfo = ref<DragInfo | null>(null)
 
 function onDragStart(payload) {
   dragInfo.value = payload
@@ -71,10 +78,10 @@ function onDrop(payload) {
   // emit('update:items', props.items)
 }
 function onDragOver() {}
-function editItem(item) {
+function editItem(_item: unknown) {
   // emit('edit', item)
 }
-function deleteItem(item) {
+function deleteItem(_item: unknown) {
   // emit('delete', item)
 }
 

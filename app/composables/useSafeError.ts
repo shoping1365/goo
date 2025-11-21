@@ -44,7 +44,7 @@ export const useSafeError = () => {
         safeLogError(error, context)
 
         // نمایش خطا به کاربر (اگر toast در دسترس باشد)
-        const win = typeof window !== 'undefined' ? (window as unknown as { $toast?: { error: (msg: string, opts?: any) => void } }) : null
+        const win = typeof window !== 'undefined' ? (window as unknown as { $toast?: { error: (msg: string, opts?: Record<string, unknown>) => void } }) : null
         if (win && win.$toast) {
           win.$toast.error(message, {
             duration: 5000

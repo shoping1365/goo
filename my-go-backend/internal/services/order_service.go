@@ -11,12 +11,12 @@ import (
 
 // OrderService service برای مدیریت سفارش‌ها
 type OrderService struct {
-	orderRepo     *repository.OrderRepository
-	inventoryRepo *repository.InventoryRepository
+	orderRepo     repository.OrderRepositoryInterface
+	inventoryRepo repository.InventoryRepositoryInterface
 }
 
 // NewOrderService ایجاد instance جدید از OrderService
-func NewOrderService(orderRepo *repository.OrderRepository, inventoryRepo *repository.InventoryRepository) *OrderService {
+func NewOrderService(orderRepo repository.OrderRepositoryInterface, inventoryRepo repository.InventoryRepositoryInterface) *OrderService {
 	return &OrderService{
 		orderRepo:     orderRepo,
 		inventoryRepo: inventoryRepo,

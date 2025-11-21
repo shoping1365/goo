@@ -256,7 +256,7 @@ interface ApiError {
   data?: {
     code?: string
     message?: string
-    details?: any
+    details?: Record<string, unknown>
   }
 }
 
@@ -313,8 +313,8 @@ const roleForm = reactive({
   description: ''
 })
 
-// Computed
-const isFormValid = computed(() => {
+// Computed - kept for potential future use
+const _isFormValid = computed(() => {
   return roleForm.name.trim() && roleForm.display_name.trim() && !nameError.value
 })
 
@@ -417,7 +417,7 @@ const saveRole = async () => {
     closeModal()
     await fetchRoles()
     await fetchStatistics()
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در ذخیره نقش:', error)
     
     const apiError = error as ApiError
@@ -464,7 +464,7 @@ const deleteRole = async (roleId: number) => {
     
     await fetchRoles()
     await fetchStatistics()
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در حذف نقش:', error)
     
     // نمایش پیام سفارشی بک‌اند یا پیام پیش‌فرض

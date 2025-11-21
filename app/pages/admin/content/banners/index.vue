@@ -233,12 +233,11 @@ import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useWidget } from '~/composables/useWidget'
-import type { WidgetStatus, WidgetType } from '~/types/widget'
+import type { WidgetStatus, WidgetType, WidgetPage } from '~/types/widget'
 import { WIDGET_TYPE_LABELS, getWidgetStatusLabel, getWidgetTypeLabel } from '~/types/widget'
 
-// تعریف definePageMeta و navigateTo برای Nuxt 3
+// تعریف definePageMeta برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
-declare const navigateTo: (to: string) => Promise<void>
 
 definePageMeta({
   layout: 'admin-main'
@@ -251,7 +250,7 @@ const {
   widgets, 
   loading, 
   error, 
-  fetchWidgets, 
+  fetchWidgets: _fetchWidgets, 
   fetchWidgetsByPage,
   updateWidgetOrder, 
   toggleWidgetStatus, 
@@ -268,7 +267,7 @@ const selectedPage = ref<string>('home')
 const searchQuery = ref('')
 const statusFilter = ref<WidgetStatus | ''>('')
 const typeFilter = ref<WidgetType | ''>('')
-const showAddPageModal = ref(false)
+const _showAddPageModal = ref(false)
 
 // Drag & Drop
 const dragIdx = ref<number | null>(null)
@@ -300,15 +299,15 @@ const filteredWidgets = computed(() => {
 // Methods
 const fetchPageWidgets = async (page: string) => {
   selectedPage.value = page
-  await fetchWidgetsByPage(page as any)
+  await fetchWidgetsByPage(page as WidgetPage)
 }
 
 const fetchOtherPagesWidgets = async () => {
   selectedPage.value = 'other'
-  await fetchWidgetsByPage('other' as any)
+  await fetchWidgetsByPage('other' as WidgetPage)
 }
 
-const updateOrder = async (id: number, event: Event) => {
+const _updateOrder = async (id: number, event: Event) => {
   const target = event.target as HTMLInputElement
   const newOrder = parseInt(target.value)
   

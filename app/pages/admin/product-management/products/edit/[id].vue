@@ -144,7 +144,23 @@ const tabs = computed(() => {
   })
 })
 
-const tabComponents = {
+type TabName = 'info' | 'pricing' | 'shipping' | 'inventory' | 'images' | 'variants' | 'specs' | 'faq' | 'seo' | 'complements' | 'video'
+
+interface TabComponents {
+  info: ReturnType<typeof defineAsyncComponent>
+  pricing: ReturnType<typeof defineAsyncComponent>
+  shipping: ReturnType<typeof defineAsyncComponent>
+  inventory: ReturnType<typeof defineAsyncComponent>
+  images: typeof ProductImagesTab
+  variants: ReturnType<typeof defineAsyncComponent>
+  specs: ReturnType<typeof defineAsyncComponent>
+  faq: ReturnType<typeof defineAsyncComponent>
+  seo: typeof ProductSeoTab
+  complements: ReturnType<typeof defineAsyncComponent>
+  video: typeof ProductVideoTab
+}
+
+const tabComponents: TabComponents = {
   info: defineAsyncComponent(() => import('./info.vue')),
   pricing: defineAsyncComponent(() => import('./pricing.vue')),
   shipping: defineAsyncComponent(() => import('./shipping.vue')),
@@ -158,8 +174,10 @@ const tabComponents = {
   video: ProductVideoTab
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const currentTabComponent = computed(() => (tabComponents as any)[activeTab.value] || (tabComponents as any).info)
+const currentTabComponent = computed(() => {
+  const tab = activeTab.value as TabName
+  return tabComponents[tab] || tabComponents.info
+})
 const currentTabProps = computed(() => {
   if (activeTab.value === 'seo') {
     return {
@@ -197,9 +215,12 @@ onUnmounted(() => {
 async function saveProduct() {
   try {
     if (pStore.isEditMode && pStore.editingProductId) {
-      const product = await pStore.updateProduct(pStore.editingProductId)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if (product && (product as any).id) {
+      interface Product {
+        id?: number | string
+        [key: string]: unknown
+      }
+      const product = await pStore.updateProduct(pStore.editingProductId) as Product | null
+      if (product && product.id) {
         alert('تغییرات با موفقیت ذخیره شد')
         router.push('/admin/product-management/products')
       }

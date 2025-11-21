@@ -149,7 +149,6 @@ const config = computed(() => {
   return finalConfig
 })
 
-const bannerImage = ref(null)
 const isLazyLoadingEnabled = ref(false)
 
 // بنرهای دسکتاپ و موبایل - از آرایه‌های جداگانه banners و mobile_banners استفاده می‌کنیم

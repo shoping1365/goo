@@ -145,21 +145,21 @@ export const useMenuManagement = () => {
     return Date.now() * 1000 + tempClientIdSequence
   }
 
-  
+
   const isLoading = ref(false)
   const isSaving = ref(false)
-  
+
   // Content data - wrapped in computed to ensure arrays
   const _pages = ref<RawMenuItem[]>([])
   const _posts = ref<RawMenuItem[]>([])
   const _categories = ref<RawMenuItem[]>([])
   const _productCategories = ref<RawMenuItem[]>([])
-  
+
   const pages = computed(() => Array.isArray(_pages.value) ? _pages.value : [])
   const posts = computed(() => Array.isArray(_posts.value) ? _posts.value : [])
   const categories = computed(() => Array.isArray(_categories.value) ? _categories.value : [])
   const productCategories = computed(() => Array.isArray(_productCategories.value) ? _productCategories.value : [])
-  
+
   const menuLocations = ref<MenuLocation[]>([
     { id: 1, name: 'منوی اصلی', slug: 'main-menu', description: 'منوی اصلی سایت' },
     { id: 2, name: 'منوی فوتر', slug: 'footer-menu', description: 'منوی پایین صفحه' },
@@ -302,7 +302,7 @@ export const useMenuManagement = () => {
     const titleKey = (item?.title ?? '').toString().trim().toLowerCase()
     const parentKey = item?.parentId ?? item?.parentClientId ?? 'root'
     const depthKey = item?.depth ?? 0
-    
+
     // Signature شامل parent و depth هم میشه تا آیتم‌های یکسان در سطوح مختلف unique باشن
     return `${typeKey}::${pathKey || titleKey}::parent-${parentKey}::depth-${depthKey}`
   }
@@ -463,9 +463,9 @@ export const useMenuManagement = () => {
       enabled = false
     }
 
-  const persistedId = raw?.id ?? raw?.item_id
-  const clientId = raw?.clientId ?? raw?.client_id ?? persistedId ?? index
-  const menuId = menuIdOverride ?? raw?.menuId ?? raw?.menu_id ?? raw?.menuID ?? raw?.menu ?? undefined
+    const persistedId = raw?.id ?? raw?.item_id
+    const clientId = raw?.clientId ?? raw?.client_id ?? persistedId ?? index
+    const menuId = menuIdOverride ?? raw?.menuId ?? raw?.menu_id ?? raw?.menuID ?? raw?.menu ?? undefined
 
     return {
       id: persistedId,
@@ -561,32 +561,14 @@ export const useMenuManagement = () => {
       return { id: undefined, name: '', slug: '', items: [] }
     }
 
-    // console.log('🔍 Raw menu data from backend:', {
-    //   enabled: data.enabled,
-    //   is_active: data.is_active,
-    //   status: data.status,
-    //   full: data
-    // })
-
     const menuId = data?.id ?? data?.menu_id
     const rawItems = data?.items ?? data?.menuItems ?? []
-    
-    // console.log('📥 Raw items from backend:', JSON.parse(JSON.stringify(rawItems)))
-    
+
     // First flatten all items
     const flatItems = flattenMenuItems(rawItems, null, menuId)
-    
-    // console.log('📋 Flattened items:', flatItems.map(i => ({ 
-    //   id: i.id, 
-    //   title: i.title, 
-    //   enabled: i.enabled, 
-    //   parentId: i.parentId 
-    // })))
-    
+
     // Then build tree structure
     const treeItems = buildMenuTree(flatItems)
-    
-    // console.log('🌳 Built menu tree:', treeItems)
 
     return {
       id: data.id ?? data.menu_id ?? undefined,
@@ -631,7 +613,7 @@ export const useMenuManagement = () => {
   const flattenMenuItemsForSave = (items: MenuItem[], parentLink: number | null = null, currentOrder = 0): Record<string, unknown>[] => {
     const result: Record<string, unknown>[] = []
     let order = currentOrder
-    
+
     items.forEach((item) => {
       order++
       const source = item as RawMenuItem
@@ -643,7 +625,7 @@ export const useMenuManagement = () => {
       const depth = typeof source?.depth === 'number' ? source.depth : 0
       const effectiveParentLink = typeof parentLink === 'number' ? parentLink : null
       const resolvedParentClientId = parentClientId ?? effectiveParentLink
-      
+
       // Add current item
       const flatItem = {
         id: shouldCreate ? undefined : persistedId,
@@ -662,8 +644,8 @@ export const useMenuManagement = () => {
         sort_order: order,
         parentId: parentDbId,
         parent_id: parentDbId,
-  parentClientId: resolvedParentClientId,
-  parent_client_id: resolvedParentClientId,
+        parentClientId: resolvedParentClientId,
+        parent_client_id: resolvedParentClientId,
         clientId: clientId ?? null,
         client_id: clientId ?? null,
         depth,
@@ -690,13 +672,13 @@ export const useMenuManagement = () => {
         showOnTablet: source?.showOnTablet ?? source?.show_on_tablet ?? true,
         show_on_tablet: source?.showOnTablet ?? source?.show_on_tablet ?? true
       }
-      
+
       result.push(flatItem)
-      
+
       // Recursively process children
       if (item.children && item.children.length > 0) {
         const childItems = flattenMenuItemsForSave(
-          item.children, 
+          item.children,
           persistedId ?? clientId ?? parentLink ?? null,
           order
         )
@@ -704,7 +686,7 @@ export const useMenuManagement = () => {
         order += childItems.length
       }
     })
-    
+
     return result
   }
 
@@ -764,9 +746,6 @@ export const useMenuManagement = () => {
 
   const syncMenuItems = async (menuId: number | undefined, items: RawMenuItem[]) => {
     if (!menuId || !Array.isArray(items)) return
-
-    // console.log(`🔄 Starting menu sync for menu #${menuId}`)
-    // const syncStartTime = Date.now()
 
     const idMap = new Map<number | string, number>()
     const processedIds = new Set<number>()
@@ -839,7 +818,7 @@ export const useMenuManagement = () => {
           if (typeof clientId === 'number') registerPersisted(clientId, currentId)
           item.id = currentId
           if (item && typeof item === 'object') {
-            ;(item as RawMenuItem).isNew = false
+            ; (item as RawMenuItem).isNew = false
           }
         }
 
@@ -850,11 +829,6 @@ export const useMenuManagement = () => {
     }
 
     await walkItems(items)
-
-    // const upsertEndTime = Date.now()
-    // console.log(`✅ Upsert completed in ${upsertEndTime - syncStartTime}ms`)
-
-    // const deleteStartTime = Date.now()
 
     const uniqueDeletedIds = [...new Set(deletedMenuItemIds.value)].filter(id => typeof id === 'number' && Number.isFinite(id) && id > 0)
     const deleteTargets: number[] = []
@@ -876,7 +850,6 @@ export const useMenuManagement = () => {
     }
 
     if (deleteTargets.length > 0) {
-      // console.log(`🗑️ Deleting ${deleteTargets.length} menu items:`, deleteTargets)
       const chunkSize = 6
       for (let idx = 0; idx < deleteTargets.length; idx += chunkSize) {
         const chunk = deleteTargets.slice(idx, idx + chunkSize)
@@ -907,10 +880,6 @@ export const useMenuManagement = () => {
     }
 
     resetDeletedMenuItems()
-
-    // const deleteEndTime = Date.now()
-    // console.log(`✅ Delete completed in ${deleteEndTime - deleteStartTime}ms`)
-    // console.log(`🎉 Full sync completed in ${deleteEndTime - syncStartTime}ms`)
   }
 
   const saveMenu = async (menu: Menu) => {
@@ -920,13 +889,9 @@ export const useMenuManagement = () => {
       if (!menu.slug || menu.slug === '') {
         menu.slug = generateSlug(menu.name)
       }
-      
-      // console.log('🔵 Original menu structure:', JSON.parse(JSON.stringify(menu.items)))
-      
+
       // Flatten the tree structure
       const flattenedItems = flattenMenuItemsForSave(menu.items || [])
-      
-      // console.log('📦 Flattened items for save:', flattenedItems)
 
       // Add menuId to all items
       const itemsWithMenuId = flattenedItems.map(item => ({
@@ -941,9 +906,7 @@ export const useMenuManagement = () => {
         enabled: menu.enabled !== false, // اضافه شد - حفظ وضعیت فعال/غیرفعال منو
         items: itemsWithMenuId
       }
-      
-      // console.log('📤 Final payload:', JSON.parse(JSON.stringify(payload)))
-      
+
       let response
       if (menu.id) {
         // Update existing menu
@@ -992,10 +955,10 @@ export const useMenuManagement = () => {
       await $fetch(`/api/admin/menus/${id}`, {
         method: 'DELETE'
       })
-      
+
       // Remove from local list
       menus.value = menus.value.filter(menu => menu.id !== id)
-      
+
       // Clear current menu if it was the deleted one
       if (currentMenu.value.id === id) {
         currentMenu.value = { id: undefined, name: '', items: [] }
@@ -1116,11 +1079,11 @@ export const useMenuManagement = () => {
     const nextOrder = currentMenu.value.items.length + 1
     const prepared = normalizeIncomingItem(item, nextOrder)
     const signature = computeItemSignature(prepared)
-    
+
     if (menuContainsSignature(currentMenu.value.items, signature)) {
       return
     }
-    
+
     currentMenu.value.items.push(prepared)
   }
 
@@ -1137,19 +1100,19 @@ export const useMenuManagement = () => {
     const items = [...currentMenu.value.items]
     const [movedItem] = items.splice(fromIndex, 1)
     items.splice(toIndex, 0, movedItem)
-    
+
     // Update order
     items.forEach((item, index) => {
       item.order = index + 1
     })
-    
+
     currentMenu.value.items = items
   }
 
   // Helper to get item by path
   const getItemByPath = (items: MenuItem[], path: number[]): MenuItem | null => {
     if (!path || path.length === 0) return null
-    
+
     let current = items[path[0]]
     for (let i = 1; i < path.length; i++) {
       if (!current?.children || !current.children[path[i]]) return null
@@ -1161,39 +1124,36 @@ export const useMenuManagement = () => {
   // Helper to remove item by path
   const removeItemByPath = (items: MenuItem[], path: number[]): MenuItem | null => {
     if (!path || path.length === 0) return null
-    
+
     if (path.length === 1) {
       const [removed] = items.splice(path[0], 1)
       return removed
     }
-    
+
     let current = items[path[0]]
     for (let i = 1; i < path.length - 1; i++) {
       if (!current?.children) return null
       current = current.children[path[i]]
     }
-    
+
     if (!current?.children) return null
     const [removed] = current.children.splice(path[path.length - 1], 1)
     return removed
   }
 
   // Simple drag & drop: just change depth based on horizontal movement
-  const handleDropItem = (dropData: {draggedPath: number[], targetPath: number[], newDepth: number}) => {
+  const handleDropItem = (dropData: { draggedPath: number[], targetPath: number[], newDepth: number }) => {
     const { draggedPath, targetPath, newDepth } = dropData
-    
-    // console.log('🎯 Simple Drop:', { draggedPath, targetPath, newDepth })
-    
+
     // پیدا کردن آیتمی که drag شده
     const draggedItem = getItemByPath(currentMenu.value.items, draggedPath)
     if (!draggedItem) {
-      // console.log('⚠️ Dragged item not found')
       return
     }
-    
+
     // حذف از جای قبلی
     removeItemByPath(currentMenu.value.items, draggedPath)
-    
+
     // تنظیم depth جدید با parentId
     // depth 0 = parentId: null
     // depth > 0 = parentId: آیتم بالایی
@@ -1206,15 +1166,13 @@ export const useMenuManagement = () => {
         draggedItem.parentId = targetItem.id || targetItem.clientId
       }
     }
-    
+
     // اضافه کردن به جای جدید
     currentMenu.value.items.push(draggedItem)
-    
+
     // Rebuild tree
     const flatItems = flattenMenuItems(currentMenu.value.items, null, currentMenu.value.id)
     currentMenu.value.items = buildMenuTree(flatItems)
-    
-    // console.log('✅ Drop completed, new tree:', currentMenu.value.items)
   }
 
   // Initialize content data
@@ -1229,7 +1187,6 @@ export const useMenuManagement = () => {
 
   // Refresh content data (for when new content is added)
   const refreshContent = async () => {
-    // console.log('Refreshing menu content...')
     await initializeContent()
   }
 
@@ -1245,7 +1202,7 @@ export const useMenuManagement = () => {
     categories,
     productCategories,
     menuLocations,
-    
+
     // API Methods
     fetchMenus,
     fetchMenu,
@@ -1254,9 +1211,9 @@ export const useMenuManagement = () => {
     reorderMenuItems,
     assignMenuToLocation,
     unassignMenuFromLocation,
-  markMenuItemDeleted,
-  registerDeletedMenuBranch,
-    
+    markMenuItemDeleted,
+    registerDeletedMenuBranch,
+
     // Content API Methods
     fetchPages,
     fetchPosts,
@@ -1264,7 +1221,7 @@ export const useMenuManagement = () => {
     fetchProductCategories,
     initializeContent,
     refreshContent,
-    
+
     // Utility Methods
     createNewMenu,
     generateSlug,

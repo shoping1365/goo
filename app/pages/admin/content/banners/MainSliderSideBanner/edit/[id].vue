@@ -706,7 +706,7 @@ const router = useRouter()
 const widgetId = computed(() => route.params.id ? parseInt(route.params.id as string) : null)
 
 // Composables
-const { createWidget, fetchWidget, updateWidget, loading, error, clearError, widget } = useWidget()
+const { createWidget, fetchWidget, updateWidget, loading: _widgetLoading, error: _widgetError, clearError, widget: widgetData } = useWidget()
 const { showSuccess, showError } = useToast()
 
 // Props
@@ -714,7 +714,7 @@ interface Props {
   widget?: Widget
 }
 
-const props = defineProps<Props>()
+const _props = defineProps<Props>()
 
 // Emits
 const emit = defineEmits<{
@@ -796,7 +796,7 @@ const getBannerClasses = () => {
 }
 
 // Banner navigation functions
-const nextBanner = () => {
+const _nextBanner = () => {
   if (desktopBanners.value.length > 1) {
     currentPreviewBanner.value = currentPreviewBanner.value === desktopBanners.value.length - 1
       ? 0
@@ -804,7 +804,7 @@ const nextBanner = () => {
   }
 }
 
-const previousBanner = () => {
+const _previousBanner = () => {
   if (desktopBanners.value.length > 1) {
     currentPreviewBanner.value = currentPreviewBanner.value === 0
       ? desktopBanners.value.length - 1
@@ -851,22 +851,20 @@ const formData = ref({
 
 // Initialize form data when widget is available
 const initializeFormData = () => {
-  if (widget.value) {
-    console.log('Widget data:', widget.value) // Debug log
+  if (widgetData.value) {
     formData.value = {
-      title: widget.value.title || '',
-      description: widget.value.description || '',
-      type: widget.value.type || 'main-slider-side-banner',
-      status: widget.value.status || 'active',
-      page: widget.value.page || 'home',
-      show_on_mobile: widget.value.show_on_mobile !== undefined ? widget.value.show_on_mobile : true
+      title: widgetData.value.title || '',
+      description: widgetData.value.description || '',
+      type: widgetData.value.type || 'main-slider-side-banner',
+      status: widgetData.value.status || 'active',
+      page: widgetData.value.page || 'home',
+      show_on_mobile: widgetData.value.show_on_mobile !== undefined ? widgetData.value.show_on_mobile : true
     }
-    console.log('Form data initialized:', formData.value) // Debug log
   }
 }
 
 // Watch for widget changes
-watch(widget, (newWidget) => {
+watch(widgetData, (newWidget) => {
   if (newWidget) {
     initializeFormData()
   }
@@ -883,11 +881,11 @@ watch(() => formData.value.show_on_mobile, (isEnabled) => {
   }
 })
 
-// Computed properties for reactive form data
-const widgetTitle = computed(() => widget.value?.title || '')
-const widgetType = computed(() => widget.value?.type || 'single-slider-side')
-const widgetStatus = computed(() => widget.value?.status || 'active')
-const widgetPage = computed(() => widget.value?.page || 'home')
+// Computed properties for reactive form data - currently unused but kept for future use
+const _widgetTitle = computed(() => widgetData.value?.title || '')
+const _widgetType = computed(() => widgetData.value?.type || 'single-slider-side')
+const _widgetStatus = computed(() => widgetData.value?.status || 'active')
+const _widgetPage = computed(() => widgetData.value?.page || 'home')
 
 // Slider config
 const sliderConfig = ref<SliderConfig>({
@@ -975,19 +973,13 @@ const openAddSliderModal = () => {
 }
 
 const editSlide = (index: number) => {
-  console.log('editSlide called with index:', index, 'activeDeviceTab:', activeDeviceTab.value)
-  
   // تعیین آرایه بر اساس تب فعال
-  const slides = activeDeviceTab.value === 'mobile' 
-    ? sliderConfig.value.mobile_slides 
+  const slides = activeDeviceTab.value === 'mobile'
+    ? sliderConfig.value.mobile_slides
     : sliderConfig.value.slides
     
-  console.log('slides array:', slides, 'length:', slides.length)
-  
   editingSlideIndex.value = index
   const slide = slides[index]
-  
-  console.log('editing slide:', slide)
   
   editingSlide.value = {
     title: slide.title || '',
@@ -1002,8 +994,6 @@ const editSlide = (index: number) => {
   // Set showTitleInSlide based on existing slide data or default to false
   showTitleInSlide.value = slide.showTitle !== undefined ? slide.showTitle : false
   showSliderModal.value = true
-  
-  console.log('showSliderModal set to true')
 }
 
 const removeSlide = (index: number) => {
@@ -1158,7 +1148,13 @@ const openMediaLibrary = () => {
   showMediaLibrary.value = true
 }
 
-const onSelectFromLibrary = (files: any[]) => {
+interface MediaFile {
+  url?: string
+  id?: string | number
+  [key: string]: unknown
+}
+
+const onSelectFromLibrary = (files: MediaFile[]) => {
   if (files && files.length > 0) {
     const file = files[0]
     // Check if we're editing a slide or banner
@@ -1341,9 +1337,9 @@ const saveWidget = async () => {
     const widgetData = {
       title: formData.value.title,
       description: formData.value.description,
-      type: formData.value.type as any, // Type casting for compatibility
-      status: formData.value.status as any, // Type casting for compatibility
-      page: formData.value.page as any, // Type casting for compatibility
+      type: formData.value.type as Widget['type'],
+      status: formData.value.status as Widget['status'],
+      page: formData.value.page as Widget['page'],
       show_on_mobile: formData.value.show_on_mobile,
       config: updatedConfig
     }
@@ -1352,7 +1348,7 @@ const saveWidget = async () => {
       // Update existing widget
       await updateWidget(widgetId.value, widgetData)
       showSuccess('ابزارک با موفقیت ذخیره شد')
-      emit('updated', widget.value!)
+      emit('updated', widgetData.value!)
     } else {
       // Create new widget
       const newWidget = await createWidget(widgetData)
@@ -1363,8 +1359,7 @@ const saveWidget = async () => {
       }
     }
     
-  } catch (err) {
-    console.error('خطا در ذخیره ابزارک:', err)
+  } catch {
     showError('خطا در ذخیره ابزارک. لطفاً دوباره تلاش کنید.')
   } finally {
     isSaving.value = false
@@ -1380,8 +1375,8 @@ onMounted(async () => {
   initializeFormData()
   
   // Only copy specific config fields, don't overwrite defaults
-  if (widget.value?.config) {
-    const config = widget.value.config as SliderConfig
+  if (widgetData.value?.config) {
+    const config = widgetData.value.config as SliderConfig
     if (config.slides) sliderConfig.value.slides = config.slides
     if (config.side_banners) sliderConfig.value.side_banners = config.side_banners
     if (config.mobile_slides) sliderConfig.value.mobile_slides = config.mobile_slides

@@ -597,7 +597,7 @@ const getStatusLabel = (status: string) => {
 // فیلتر کردن فاکتورها
 const filterInvoices = () => {
   // TODO: اعمال فیلترها
-  console.log('فاکتورها فیلتر شدند:', invoiceFilters.value)
+
 }
 
 // انتخاب همه
@@ -609,29 +609,34 @@ const toggleSelectAll = () => {
   }
 }
 
+interface Invoice {
+  id?: number | string
+  invoice_number?: string
+  [key: string]: unknown
+}
 // مشاهده فاکتور
-const viewInvoice = (invoice: any) => {
+const viewInvoice = (_invoice: Invoice) => {
   // TODO: نمایش جزئیات فاکتور
-  console.log('مشاهده فاکتور:', invoice)
+
 }
 
 // چاپ فاکتور
-const printInvoice = (invoice: any) => {
+const printInvoice = (_invoice: Invoice) => {
   // TODO: چاپ فاکتور
-  console.log('چاپ فاکتور:', invoice)
+
 }
 
 // ویرایش فاکتور
-const editInvoice = (invoice: any) => {
+const editInvoice = (_invoice: Invoice) => {
   // TODO: ویرایش فاکتور
-  console.log('ویرایش فاکتور:', invoice)
+
 }
 
 // حذف فاکتور
-const deleteInvoice = (invoice: any) => {
+const deleteInvoice = (_invoice: Invoice) => {
   if (confirm('آیا از حذف این فاکتور اطمینان دارید؟')) {
     // TODO: حذف فاکتور
-    console.log('حذف فاکتور:', invoice)
+
   }
 }
 
@@ -642,7 +647,7 @@ const bulkPrintInvoices = () => {
     return
   }
   // TODO: چاپ دسته‌ای
-  console.log('چاپ دسته‌ای فاکتورها:', selectedInvoices.value)
+
 }
 
 // صفحه بعدی
@@ -692,7 +697,7 @@ const calculateInvoiceTotal = () => {
 const createInvoice = async () => {
   try {
     // TODO: ارسال درخواست به API
-    console.log('فاکتور جدید ایجاد شد:', newInvoice.value)
+
     showCreateInvoiceModal.value = false
     
     // ریست فرم

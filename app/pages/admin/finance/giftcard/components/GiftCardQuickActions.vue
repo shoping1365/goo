@@ -149,7 +149,7 @@
 import { ref } from 'vue'
 
 // تعریف events
-const emit = defineEmits<{
+const _emit = defineEmits<{
   'create-card': []
   'bulk-create': []
   'export-data': []

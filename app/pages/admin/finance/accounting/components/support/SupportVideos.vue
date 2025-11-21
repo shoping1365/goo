@@ -319,8 +319,15 @@ const getCategoryLabel = (category: string) => {
   return labels[category] || category
 }
 
+interface Video {
+  id: number | string
+  title?: string
+  url?: string
+  [key: string]: unknown
+}
+
 // پخش ویدیو
-const playVideo = (video: any) => {
+const playVideo = (video: Video) => {
   selectedVideo.value = video
   showVideoModal.value = true
 }
@@ -334,7 +341,7 @@ const closeVideoModal = () => {
 // باز کردن کتابخانه ویدیو
 const openVideoLibrary = () => {
   // TODO: باز کردن کتابخانه ویدیو
-  console.log('باز کردن کتابخانه ویدیو')
+
 }
 </script>
 

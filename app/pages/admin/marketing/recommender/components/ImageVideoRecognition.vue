@@ -434,34 +434,34 @@
 import { ref, onMounted } from 'vue'
 
 // متغیرهای کامپوننت
-const productRecognitionStats = ref({
+const _productRecognitionStats = ref({
   accuracy: 94.8,
   detectedProducts: 12456,
   processedImages: 15892,
   errorRate: 5.2
 })
 
-const brandRecognitionStats = ref({
+const _brandRecognitionStats = ref({
   totalDetections: 6839,
   accuracy: 92.4,
   supportedBrands: 15,
   errorRate: 7.6
 })
 
-const imageQualityStats = ref({
+const _imageQualityStats = ref({
   excellent: 45.2,
   good: 32.8,
   medium: 15.6,
   poor: 6.4
 })
 
-const faceRecognitionStats = ref({
+const _faceRecognitionStats = ref({
   accuracy: 89.3,
   detectedFaces: 3456,
   avgProcessingTime: 2.1
 })
 
-const emotionRecognitionStats = ref({
+const _emotionRecognitionStats = ref({
   happy: 42.3,
   neutral: 35.7,
   surprised: 12.8,
@@ -473,33 +473,27 @@ const emotionRecognitionStats = ref({
 })
 
 // توابع کامپوننت
-const updateProductRecognition = () => {
+const _updateProductRecognition = () => {
   // به‌روزرسانی تشخیص محصول
-  console.log('به‌روزرسانی تشخیص محصول')
 }
 
-const updateBrandRecognition = () => {
+const _updateBrandRecognition = () => {
   // به‌روزرسانی تشخیص برند
-  console.log('به‌روزرسانی تشخیص برند')
 }
 
-const updateImageQualityAnalysis = () => {
+const _updateImageQualityAnalysis = () => {
   // به‌روزرسانی تحلیل کیفیت تصاویر
-  console.log('به‌روزرسانی تحلیل کیفیت تصاویر')
 }
 
-const updateFaceRecognition = () => {
+const _updateFaceRecognition = () => {
   // به‌روزرسانی تشخیص چهره
-  console.log('به‌روزرسانی تشخیص چهره')
 }
 
-const updateEmotionRecognition = () => {
+const _updateEmotionRecognition = () => {
   // به‌روزرسانی تشخیص احساسات
-  console.log('به‌روزرسانی تشخیص احساسات')
 }
 
 onMounted(() => {
   // مقداردهی اولیه کامپوننت
-  console.log('کامپوننت تشخیص تصویر و ویدیو بارگذاری شد')
 })
 </script> 

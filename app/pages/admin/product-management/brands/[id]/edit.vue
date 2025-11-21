@@ -272,8 +272,7 @@ async function saveBrand(){
   const id = route.params.id;
   try{
     await $fetch(`/api/brands/${id}`,{
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      method:'PUT' as any,
+      method:'PUT',
       body:{
         name: name.value,
         official_name: officialName.value,

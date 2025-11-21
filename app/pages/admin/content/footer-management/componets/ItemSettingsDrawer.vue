@@ -330,10 +330,78 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, computed } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+
+interface SocialItem {
+  id: string
+  platform: string
+  label: string
+  url: string
+  enabled: boolean
+  openInNewTab: boolean
+  title?: string
+  href?: string
+  visible?: boolean
+  value?: string
+}
+
+interface LinkItem {
+  title: string
+  url: string
+}
+
+interface TrustBadge {
+  id: string
+  title: string
+  description: string
+  htmlCode: string
+  icon: string
+}
+
+interface ItemProps {
+  logoLink?: string
+  logoAlt?: string
+  links?: LinkItem[]
+  title?: string
+  description?: string
+  note?: string
+  buttonText?: string
+  placeholder?: string
+  instagram?: string
+  telegram?: string
+  twitter?: string
+  linkedin?: string
+  youtube?: string
+  facebook?: string
+  whatsapp?: string
+  socials?: SocialItem[]
+  trustBadges?: TrustBadge[]
+  [key: string]: unknown
+}
+
+interface ItemConfig {
+  menuIds?: number[]
+  [key: string]: unknown
+}
+
+interface Item {
+  id?: string
+  type?: string
+  component?: string
+  widget?: string
+  widgetKey?: string
+  width?: number
+  align?: string
+  paddingRight?: number
+  paddingLeft?: number
+  bgColor?: string
+  config?: ItemConfig
+  props?: ItemProps
+  [key: string]: unknown
+}
 
 interface Props {
-  item: any
+  item: Item
 }
 
 const props = defineProps<Props>()
@@ -341,26 +409,44 @@ const props = defineProps<Props>()
 // Emit events
 const emit = defineEmits<{
   close: []
-  save: [item: any]
+  save: [item: Item]
 }>()
 
+interface Menu {
+  id: number | string
+  name?: string
+  [key: string]: unknown
+}
+
 // منوها
-const menus = ref<any[]>([])
+const menus = ref<Menu[]>([])
 const menusLoading = ref(false)
 
 // تنظیمات شرکت برای مقادیر پیش‌فرض
-const companySettings = ref<any>({
+const companySettings = ref<Record<string, string>>({
   phone: '',
   address: '',
   email: ''
 })
 
 // بارگذاری تنظیمات شرکت
+interface Setting {
+  key: string
+  value: string
+  [key: string]: unknown
+}
+
+interface SettingsResponse {
+  success?: boolean
+  data?: Setting[]
+  [key: string]: unknown
+}
+
 async function fetchCompanySettings() {
   try {
-    const response: any = await $fetch('/api/admin/settings?category=company')
+    const response = await $fetch<SettingsResponse>('/api/admin/settings?category=company')
     if (response && response.success && Array.isArray(response.data)) {
-      response.data.forEach((setting: any) => {
+      response.data.forEach((setting: Setting) => {
         if (setting.key === 'company_phone' || setting.key === 'footer_phone_number' || setting.key === 'header_phone_number') {
           companySettings.value.phone = setting.value
         } else if (setting.key === 'company_address') {
@@ -370,8 +456,8 @@ async function fetchCompanySettings() {
         }
       })
     }
-  } catch (error) {
-    console.error('خطا در بارگذاری تنظیمات شرکت:', error)
+  } catch (_error) {
+    // console.error('خطا در بارگذاری تنظیمات شرکت:', error)
   }
 }
 
@@ -382,8 +468,8 @@ async function fetchMenus() {
     if (data) {
       menus.value = Array.isArray(data) ? data : []
     }
-  } catch (err) {
-    console.error('Error loading menus:', err)
+  } catch (_err) {
+    // console.error('Error loading menus:', err)
     menus.value = []
   } finally {
     menusLoading.value = false
@@ -436,8 +522,8 @@ function findPresetLabel(platform?: string) {
   return preset ? preset.label : ''
 }
 
-const normalizeSocials = (source: any = {}) => {
-  const list: any[] = Array.isArray(source.socials) ? source.socials : []
+const normalizeSocials = (source: ItemProps = {}) => {
+  const list: SocialItem[] = Array.isArray(source.socials) ? source.socials : []
 
   if (list.length) {
     return list.map((item, index) => ({
@@ -476,7 +562,7 @@ const normalizeSocials = (source: any = {}) => {
 }
 
 // کپی محلی از آیتم برای ویرایش
-const local = ref({
+const local = ref<Item>({
   width: 25,
   align: 'center',
   paddingRight: 0,
@@ -509,7 +595,7 @@ const local = ref({
   }
 })
 
-const resolveItemType = (item: any): string => {
+const resolveItemType = (item: Item): string => {
   if (!item) return ''
   const raw = (item.type || item.component || item.id || item.widget || item.widgetKey || '')
     .toString()
@@ -524,7 +610,7 @@ const isSocialItem = computed(() => {
   return type === 'social' || type.endsWith('social') || type.includes('footerwidgetsocial') || type.includes('socialwidget')
 })
 
-const applyItemToLocal = (item: any) => {
+const applyItemToLocal = (item: Item) => {
   if (!item) {
     local.value = {
       ...local.value,
@@ -570,15 +656,21 @@ const applyItemToLocal = (item: any) => {
 
 // افزودن لینک جدید
 const addLink = () => {
+  if (!local.value.props) local.value.props = {}
+  if (!local.value.props.links) local.value.props.links = []
   local.value.props.links.push({ title: '', url: '' })
 }
 
 // حذف لینک
 const removeLink = (index: number) => {
-  local.value.props.links.splice(index, 1)
+  if (local.value.props?.links) {
+    local.value.props.links.splice(index, 1)
+  }
 }
 
-const addSocial = () => {
+const _addSocial = () => {
+  if (!local.value.props) local.value.props = {}
+  if (!local.value.props.socials) local.value.props.socials = []
   local.value.props.socials.push({
     id: `custom-${Date.now()}`,
     platform: 'custom',
@@ -589,13 +681,15 @@ const addSocial = () => {
   })
 }
 
-const removeSocial = (index: number) => {
-  if (local.value.props.socials.length <= 1) return
-  local.value.props.socials.splice(index, 1)
+const _removeSocial = (_index: number) => {
+  if (local.value.props?.socials && local.value.props.socials.length > 1) {
+    local.value.props.socials.splice(index, 1)
+  }
 }
 
 // مدیریت نشان‌های اعتماد
 const addTrustBadge = () => {
+  if (!local.value.props) local.value.props = {}
   if (!local.value.props.trustBadges) {
     local.value.props.trustBadges = []
   }
@@ -609,14 +703,15 @@ const addTrustBadge = () => {
 }
 
 const removeTrustBadge = (index: number) => {
-  if (local.value.props.trustBadges && local.value.props.trustBadges.length > 1) {
+  if (local.value.props?.trustBadges && local.value.props.trustBadges.length > 1) {
     local.value.props.trustBadges.splice(index, 1)
   }
 }
 
 // مقداردهی اولیه trustBadges اگر خالی است
 const ensureTrustBadges = () => {
-  if (props.item?.id === 'trust' && (!local.value.props.trustBadges || local.value.props.trustBadges.length === 0)) {
+  if (props.item?.id === 'trust' && (!local.value.props?.trustBadges || local.value.props.trustBadges.length === 0)) {
+    if (!local.value.props) local.value.props = {}
     local.value.props.trustBadges = [{
       id: `badge-${Date.now()}`,
       title: 'نماد اعتماد',
@@ -654,11 +749,11 @@ watch(() => props.item, async (newItem) => {
   }
 })
 
-const resetSocials = () => {
+const _resetSocials = () => {
   local.value.props.socials = createDefaultSocials()
 }
 
-const sanitizeSocialsForSave = (list: any[]) => {
+const sanitizeSocialsForSave = (list: SocialItem[]) => {
   return (Array.isArray(list) ? list : [])
     .map((item, index) => {
       const platform = (item.platform || '').toLowerCase()
@@ -679,14 +774,14 @@ const sanitizeSocialsForSave = (list: any[]) => {
     .filter(item => item.url || item.label)
 }
 
-const prepareItemForSave = (current: any) => {
+const prepareItemForSave = (current: Item) => {
   if (isSocialItem.value) {
     return {
       ...current,
       config: current.config || {},
       props: {
         ...current.props,
-        socials: Array.isArray(current.props?.socials) ? current.props.socials : []
+        socials: Array.isArray(current.props?.socials) ? current.props?.socials : []
       }
     }
   }
@@ -706,13 +801,13 @@ const prepareItemForSave = (current: any) => {
     props: {
       ...current.props,
       socials,
-      instagram: legacy.instagram || current.props.instagram || '',
-      telegram: legacy.telegram || current.props.telegram || '',
-      twitter: legacy.twitter || current.props.twitter || '',
-      linkedin: legacy.linkedin || current.props.linkedin || '',
-      youtube: legacy.youtube || current.props.youtube || '',
-      facebook: legacy.facebook || current.props.facebook || '',
-      whatsapp: legacy.whatsapp || current.props.whatsapp || ''
+      instagram: legacy.instagram || current.props?.instagram || '',
+      telegram: legacy.telegram || current.props?.telegram || '',
+      twitter: legacy.twitter || current.props?.twitter || '',
+      linkedin: legacy.linkedin || current.props?.linkedin || '',
+      youtube: legacy.youtube || current.props?.youtube || '',
+      facebook: legacy.facebook || current.props?.facebook || '',
+      whatsapp: legacy.whatsapp || current.props?.whatsapp || ''
     }
   }
 }

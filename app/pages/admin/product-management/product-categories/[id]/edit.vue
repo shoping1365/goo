@@ -368,8 +368,16 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
  // ---------------------------------------------------------------------------
  // Products for this category
  // ---------------------------------------------------------------------------
- // eslint-disable-next-line @typescript-eslint/no-explicit-any
- const allProducts = ref<any[]>([])
+ interface Product {
+   id?: number | string
+   category_id?: number | string
+   category?: {
+     id?: number | string
+     [key: string]: unknown
+   }
+   [key: string]: unknown
+ }
+ const allProducts = ref<Product[]>([])
    
    /** Fetch all products once (simple implementation, could be paginated later) */
   async function loadProducts() {
@@ -397,10 +405,8 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
  // computed products that belong to current category
  const productsInCategory = computed(() => {
    if (!currentCategory.value) return []
-   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-   const id = Number((currentCategory.value as any).id)
-   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-   return allProducts.value.filter((p:any) => {
+   const id = Number(currentCategory.value.id)
+   return allProducts.value.filter((p: Product) => {
      if (p.category_id && Number(p.category_id) === id) return true
      if (p.category && Number(p.category.id) === id) return true
      return false
@@ -445,12 +451,10 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
    return ['1','true','yes','featured'].includes(status)
  }
    
- // eslint-disable-next-line @typescript-eslint/no-explicit-any
- async function deleteProduct(p:any) {
-   if (!confirm(`آیا از حذف «${p.name}» مطمئن هستید؟`)) return
+ async function deleteProduct(p: Product) {
+   if (!confirm(`آیا از حذف «${p.name || 'محصول'}» مطمئن هستید؟`)) return
    try {
-     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-     await $fetch(`/api/products/${p.id}`, { method: 'DELETE' as any })
+     await $fetch(`/api/products/${p.id}`, { method: 'DELETE' })
      // Remove from local list
      // eslint-disable-next-line @typescript-eslint/no-explicit-any
      allProducts.value = allProducts.value.filter((x:any) => x.id !== p.id)

@@ -289,17 +289,19 @@ async function saveProduct() {
     // If we are in "edit mode" (because of save & continue), we should update.
     // Otherwise, we create a new product.
     if (pStore.isEditMode && pStore.editingProductId) {
-      const product = await pStore.updateProduct(pStore.editingProductId);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if (product && (product as any).id) {
+      interface Product {
+        id?: number | string
+        [key: string]: unknown
+      }
+      const product = await pStore.updateProduct(pStore.editingProductId) as Product | null
+      if (product && product.id) {
         // نمایش پیام موفقیت با notifier
         notifier.success('تغییرات با موفقیت ذخیره شد')
         navigateTo('/admin/product-management/products')
       }
     } else {
-      const product = await pStore.createProduct()
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if (product && (product as any).id) {
+      const product = await pStore.createProduct() as Product | null
+      if (product && product.id) {
         notifier.success('محصول با موفقیت ایجاد شد')
         navigateTo('/admin/product-management/products')
       }

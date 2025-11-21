@@ -227,10 +227,8 @@ const saveAsDraft = async () => {
   try {
     pageData.value.status = 'draft'
     // اینجا کد ذخیره در دیتابیس قرار می‌گیرد
-    console.log('صفحه به عنوان پیش‌نویس ذخیره شد:', pageData.value)
     // نمایش پیام موفقیت
-  } catch (error) {
-    console.error('خطا در ذخیره پیش‌نویس:', error)
+  } catch {
     // نمایش پیام خطا
   }
 }
@@ -240,10 +238,8 @@ const publishPage = async () => {
   try {
     pageData.value.status = 'published'
     // اینجا کد ذخیره و انتشار در دیتابیس قرار می‌گیرد
-    console.log('صفحه منتشر شد:', pageData.value)
     // نمایش پیام موفقیت
-  } catch (error) {
-    console.error('خطا در انتشار صفحه:', error)
+  } catch {
     // نمایش پیام خطا
   }
 }

@@ -47,17 +47,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import type { ProductCarouselConfig } from '~/types/widget'
-import { useWidgetRegistry } from '~/composables/useWidgetRegistry'
+import { ref, onMounted } from 'vue'
+import type { ProductCarouselConfig, CategoryItem } from '~/types/widget'
 import { useWidget } from '~/composables/useWidget'
 import ProductCarouselSettings from './components/ProductCarouselSettings.vue'
 import ProductCarouselPreview from './components/ProductCarouselPreview.vue'
 import { useRouter } from 'vue-router'
 
-// تعریف definePageMeta و navigateTo برای Nuxt 3
+// تعریف definePageMeta برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
-declare const navigateTo: (to: string) => Promise<void>
 
 definePageMeta({
   layout: 'admin-main',
@@ -71,7 +69,7 @@ const { createWidget } = useWidget()
 
 // State
 const isSaving = ref(false)
-const categories = ref<any[]>([])
+const categories = ref<CategoryItem[]>([])
 
 // فرم داده‌ها
 const formData = ref({
@@ -150,12 +148,13 @@ const saveWidget = async () => {
       await router.push(`/admin/content/banners/ProductCarousel/edit/${createdWidget.id}`)
     }
 
-  } catch (error: any) {
-    console.error('خطا در ذخیره ویجت:', error)
+  } catch (err: unknown) {
+    console.error('خطا در ذخیره ویجت:', err)
 
     // نمایش پیام خطای مناسب به کاربر
     let errorMessage = 'خطا در ذخیره ویجت. لطفاً دوباره تلاش کنید.'
 
+    const error = err as { statusCode?: number; message?: string }
     if (error?.statusCode === 400) {
       errorMessage = 'داده‌های وارد شده نامعتبر است. لطفاً بررسی کنید.'
     } else if (error?.statusCode === 401) {
@@ -193,12 +192,13 @@ const saveAsDraft = async () => {
     await createWidget(widgetData)
     alert('پیش‌نویس با موفقیت ذخیره شد')
 
-  } catch (error: any) {
-    console.error('خطا در ذخیره پیش‌نویس:', error)
+  } catch (err: unknown) {
+    console.error('خطا در ذخیره پیش‌نویس:', err)
 
     // نمایش پیام خطای مناسب به کاربر
     let errorMessage = 'خطا در ذخیره پیش‌نویس. لطفاً دوباره تلاش کنید.'
 
+    const error = err as { statusCode?: number; message?: string }
     if (error?.statusCode === 400) {
       errorMessage = 'داده‌های وارد شده نامعتبر است. لطفاً بررسی کنید.'
     } else if (error?.statusCode === 401) {
@@ -216,18 +216,18 @@ const saveAsDraft = async () => {
 }
 
 // Methods
+interface CategoryResponse {
+  data?: CategoryItem[]
+}
+
 const loadCategories = async () => {
   try {
-    console.log('در حال بارگذاری دسته‌بندی‌ها...')
-    const response = await $fetch('/api/admin/product-categories') as any
-    console.log('پاسخ دسته‌بندی‌ها:', response)
+    const response = await $fetch<CategoryResponse | CategoryItem[]>('/api/admin/product-categories')
 
-    if (response?.data) {
-      categories.value = response.data
-      console.log('دسته‌بندی‌ها بارگذاری شد:', categories.value.length, 'دسته‌بندی')
+    if (response && typeof response === 'object' && 'data' in response) {
+      categories.value = response.data || []
     } else if (Array.isArray(response)) {
       categories.value = response
-      console.log('دسته‌بندی‌ها بارگذاری شد:', categories.value.length, 'دسته‌بندی')
     }
   } catch (error) {
     console.error('خطا در بارگذاری دسته‌بندی‌ها:', error)

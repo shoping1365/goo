@@ -86,7 +86,7 @@ async function fetchVideosForProduct(pid){
     const res = await $fetch(`/api/product-videos/${pid}`)
     const list = Array.isArray(res?.data) ? res.data : (Array.isArray(res) ? res : [])
     videos.value = list
-  } catch (e) {
+  } catch (_e) {
     // ignore
   }
 }

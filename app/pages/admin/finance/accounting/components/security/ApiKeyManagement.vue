@@ -272,20 +272,26 @@ const getKeyStatusColor = (status: string) => {
 }
 
 // عملیات
+interface ApiKey {
+  id: number | string
+  name?: string
+  [key: string]: unknown
+}
+
 const generateNewApiKey = () => {
-  console.log('تولید کلید API جدید')
+
 }
 
-const viewKey = (key: any) => {
-  console.log('مشاهده کلید:', key)
+const viewKey = (_key: ApiKey) => {
+
 }
 
-const editKey = (key: any) => {
-  console.log('ویرایش کلید:', key)
+const editKey = (_key: ApiKey) => {
+
 }
 
-const revokeKey = (key: any) => {
-  console.log('لغو کلید:', key)
+const revokeKey = (_key: ApiKey) => {
+
 }
 </script>
 

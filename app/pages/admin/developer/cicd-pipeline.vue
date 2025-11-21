@@ -338,7 +338,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { reactive, ref } from 'vue';
 
 definePageMeta({
   layout: 'admin-main',
@@ -346,7 +346,7 @@ definePageMeta({
 });
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // Reactive data
 const pipelineName = ref('')

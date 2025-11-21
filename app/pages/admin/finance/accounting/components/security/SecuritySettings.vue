@@ -299,7 +299,7 @@ const getLoginStatusText = (status: string) => {
 
 // عملیات
 const toggleTwoFactor = () => {
-  console.log('تغییر وضعیت احراز هویت دو مرحله‌ای')
+
 }
 </script>
 

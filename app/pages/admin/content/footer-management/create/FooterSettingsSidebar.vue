@@ -221,7 +221,7 @@ interface LayerData {
   separatorColor: string
   separatorOpacity: number
   separatorWidth: number
-  items: any[]
+  items: unknown[]
 }
 
 // Inject functions and data from parent

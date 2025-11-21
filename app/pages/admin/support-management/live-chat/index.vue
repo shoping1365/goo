@@ -557,7 +557,6 @@ const handleCloseSession = async () => {
 
 const handleTransferSession = async () => {
   // TODO: Implement session transfer functionality
-  // console.log('Transfer session functionality to be implemented')
 }
 
 const formatDate = (dateString: string) => {

@@ -87,11 +87,11 @@ function closeDeleteConfirm() {
 
 // تأیید حذف تک آیتم
 async function confirmDelete() {
-  console.log('confirmDelete فراخوانی شد، ID:', deleteItemId.value)
+
   if (!deleteItemId.value) return
   try {
     deleting.value = true
-    console.log('emit single-delete با ID:', deleteItemId.value)
+
     emit('single-delete', deleteItemId.value)
     closeDeleteConfirm()
   } finally {

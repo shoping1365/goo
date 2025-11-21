@@ -402,52 +402,52 @@ const clearLogs = () => {
 
 const backupDatabase = () => {
   // شبیه‌سازی پشتیبان‌گیری
-  console.log('Database backup started...')
+
 }
 
 const optimizeDatabase = () => {
   // شبیه‌سازی بهینه‌سازی
-  console.log('Database optimization started...')
+
 }
 
 const clearCache = () => {
   // شبیه‌سازی پاک کردن کش
-  console.log('Cache cleared...')
+
 }
 
 const warmCache = () => {
   // شبیه‌سازی گرم کردن کش
-  console.log('Cache warming started...')
+
 }
 
 const runSecurityScan = () => {
   // شبیه‌سازی اسکن امنیتی
-  console.log('Security scan started...')
+
 }
 
 const optimizePerformance = () => {
   // شبیه‌سازی بهینه‌سازی عملکرد
-  console.log('Performance optimization started...')
+
 }
 
 const restartServices = () => {
   // شبیه‌سازی راه‌اندازی مجدد سرویس‌ها
-  console.log('Services restart initiated...')
+
 }
 
 const checkUpdates = () => {
   // شبیه‌سازی بررسی بروزرسانی‌ها
-  console.log('Checking for updates...')
+
 }
 
 const exportLogs = () => {
   // شبیه‌سازی خروجی لاگ‌ها
-  console.log('Exporting logs...')
+
 }
 
 const systemHealth = () => {
   // شبیه‌سازی بررسی سلامت سیستم
-  console.log('System health check started...')
+
 }
 
 const getLogLevelClass = (level) => {
@@ -477,5 +477,5 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 </script> 

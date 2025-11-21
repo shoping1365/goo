@@ -434,7 +434,7 @@ const fetchGateways = async (isManual = false) => {
   }
 }
 
-const manualRefresh = () => {
+const _manualRefresh = () => {
   // فقط یک بار تلاش مجدد
   fetchGateways(true)
 }
@@ -442,7 +442,7 @@ const manualRefresh = () => {
 const testConnection = async (gatewayId: number) => {
   try {
     testingConnection.value = gatewayId
-    const response: any = await $fetch(`/api/payments/admin/gateway/${gatewayId}/test`)
+    const response = await $fetch(`/api/payments/admin/gateway/${gatewayId}/test`) as { success?: boolean; message?: string }
     
     testResult.value = {
       success: response.success,
@@ -465,11 +465,17 @@ const closeTestResult = () => {
   showTestResult.value = false
 }
 
-const toggleStatus = async (gateway: any) => {
+interface Gateway {
+  id?: number | string
+  status?: string
+  [key: string]: unknown
+}
+
+const toggleStatus = async (gateway: Gateway) => {
   try {
     const newStatus = gateway.status === 'active' ? 'inactive' : 'active'
     await $fetch(`/api/payment-gateways/${gateway.id}`, {
-      method: 'PUT' as any,
+      method: 'PUT' as 'PUT',
       body: { status: newStatus }
     })
     
@@ -487,12 +493,12 @@ const openAddModal = () => {
   router.push('/admin/finance/payment-gateways/new')
 }
 
-const editGateway = (gateway: any) => {
+const editGateway = (gateway: Gateway) => {
   // هدایت به صفحه ویرایش درگاه
   window.location.href = `/admin/finance/payment-gateways/${gateway.id}`
 }
 
-const confirmDelete = (gateway: any) => {
+const confirmDelete = (gateway: Gateway) => {
   gatewayToDelete.value = gateway
   showDeleteModal.value = true
 }
@@ -566,7 +572,7 @@ const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat('fa-IR').format(amount) + ' تومان'
 }
 
-const getGatewayIcon = (type: string, name: string = '') => {
+const _getGatewayIcon = (_type: string, _name: string = '') => {
   // استفاده از آیکون SVG به جای تصویر برای سرعت بیشتر
   return 'i-heroicons-credit-card'
 }

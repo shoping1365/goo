@@ -614,7 +614,6 @@ const formatDate = (dateString: string) => {
 
 const refreshData = () => {
   // اینجا می‌توانید API call برای به‌روزرسانی داده‌ها اضافه کنید
-  // console.log('به‌روزرسانی داده‌ها...');
 };
 
 const viewTicket = (ticket: Ticket) => {
@@ -630,14 +629,12 @@ const assignTicket = (ticket: Ticket) => {
 const closeTicket = (ticket: Ticket) => {
   // اینجا می‌توانید تیکت را ببندید
   if (confirm(`آیا از بستن تیکت #${ticket.id} اطمینان دارید؟`)) {
-    // console.log(`تیکت #${ticket.id} بسته شد`);
   }
 };
 
 const sendReply = () => {
   if (replyMessage.value.trim()) {
     // اینجا می‌توانید پاسخ را ارسال کنید
-    // console.log('پاسخ ارسال شد:', replyMessage.value);
     replyMessage.value = '';
     showTicketModal.value = false;
   }

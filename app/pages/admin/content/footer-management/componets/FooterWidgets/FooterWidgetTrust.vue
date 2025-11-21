@@ -33,6 +33,7 @@
               const sanitizedHtmlCode = computed(() => DOMPurify.sanitize(badge.htmlCode))
               <div v-html="sanitizedHtmlCode"></div>
             -->
+            <!-- eslint-disable-next-line vue/no-v-html -->
             <div v-if="badge.htmlCode" class="trust-badge-html" v-html="badge.htmlCode"></div>
             
             <!-- اگر کد نداشت، نمایش پیش‌فرض -->
@@ -185,18 +186,20 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // مدیریت کلیک روی نشان اعتماد
-const handleBadgeClick = (badge: TrustBadge) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const handleBadgeClick = (_badge: TrustBadge) => {
   // اینجا می‌توانید عملیات مورد نظر را انجام دهید
-  console.log('کلیک روی نشان اعتماد:', badge)
+
 }
 
 // مدیریت کلیک روی گواهینامه
-const handleCertificateClick = (cert: Certificate) => {
+const _handleCertificateClick = (_cert: Certificate) => {
   // اینجا می‌توانید عملیات مورد نظر را انجام دهید
-  console.log('کلیک روی گواهینامه:', cert)
+
 }
 
 // تبدیل متن وضعیت
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getStatusText = (status: string): string => {
   switch (status) {
     case 'verified':

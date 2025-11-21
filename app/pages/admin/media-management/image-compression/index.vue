@@ -997,7 +997,7 @@ const compareModalData = ref<{ name: string, originalUrl: string, compressedUrl:
 
 
 // Methods
-const toggleImageSelection = (imageId: number) => {
+const _toggleImageSelection = (imageId: number) => {
   const index = selectedImages.value.indexOf(imageId)
   if (index > -1) {
     selectedImages.value.splice(index, 1)
@@ -1010,7 +1010,7 @@ const selectAllImages = () => {
   selectedImages.value = images.value.map(img => img.id)
 }
 
-const clearSelection = () => {
+const _clearSelection = () => {
   selectedImages.value = []
 }
 
@@ -1124,13 +1124,14 @@ const startCompression = async () => {
           originalUrl: img.url
         })
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       img.compressionStatus = 'error'
       const row = compressionResults.value.find(r => r.id === img.id)
       if (row) {
+        const errorMessage = e instanceof Error ? e.message : 'خطا'
         Object.assign(row, {
           status: 'error',
-          errorMessage: e?.message || 'خطا',
+          errorMessage,
           outputFormat: outFmt,
           originalUrl: img.url
         })
@@ -1161,7 +1162,7 @@ const startCompression = async () => {
   updateCompressionQueue()
 }
 
-const getQualityMultiplier = (): number => {
+const _getQualityMultiplier = (): number => {
   switch (compressionSettings.value.quality) {
     case 'high': return 0.85
     case 'medium': return 0.65
@@ -1171,7 +1172,7 @@ const getQualityMultiplier = (): number => {
   }
 }
 
-const getFormatMultiplier = (): number => {
+const _getFormatMultiplier = (): number => {
   switch (compressionSettings.value.format) {
     case 'webp': return 0.7
     case 'jpeg': return 0.8
@@ -1202,7 +1203,7 @@ const replaceOriginal = (result: CompressionResult) => {
 
 const openCompareModal = (result: CompressionResult) => {
   // Find original image url
-  const original = images.value.find(img => img.id === result.id)
+  const _original = images.value.find(img => img.id === result.id)
   const originalFormat = (result.name.split('.').pop() || '').toUpperCase()
   const compressedFormat = (result.outputFormat || originalFormat).toUpperCase()
   compareModalData.value = {
@@ -1235,7 +1236,7 @@ const formatFileSize = (bytes: number): string => {
 }
 
 // Simulate download all and restore actions
-function downloadAllCompressed() {
+const _downloadAllCompressed = () => {
   showToast('دانلود همه تصاویر فشرده‌شده (شبیه‌سازی)', 'success')
 }
 
@@ -1244,9 +1245,19 @@ const totalOriginalSize = computed(() => compressionResults.value.reduce((sum, r
 const totalCompressedSize = computed(() => compressionResults.value.reduce((sum, r) => sum + (r.compressedSize || 0), 0))
 const totalSavedSize = computed(() => totalOriginalSize.value - totalCompressedSize.value)
 
+interface DetailsModalData {
+  name: string
+  dimensions: string
+  format: string
+  originalSize: number
+  compressedSize: number
+  path: string
+  date: string
+}
+
 // Technical details modal state
-const detailsModalData = ref<any>(null)
-function showDetails(result: CompressionResult) {
+const detailsModalData = ref<DetailsModalData | null>(null)
+const _showDetails = (result: CompressionResult) => {
   // Simulate technical details
   detailsModalData.value = {
     name: result.name,
@@ -1258,7 +1269,7 @@ function showDetails(result: CompressionResult) {
     date: '1403/03/25'
   }
 }
-function closeDetailsModal() {
+const _closeDetailsModal = () => {
   detailsModalData.value = null
 }
 
@@ -1340,7 +1351,7 @@ function batchRestore() {
   showToast('همه تصاویر انتخاب‌شده بازگردانی شدند', 'success')
 }
 
-function batchCompare() {
+const _batchCompare = () => {
   if (selectedResults.value.length === 0) {
     showToast('هیچ نتیجه‌ای انتخاب نشده است', 'error')
     return
@@ -1350,7 +1361,7 @@ function batchCompare() {
   if (first) openCompareModal(first)
 }
 
-function exportCSV() {
+const _exportCSV = () => {
   // Simulate CSV export
   let csv = 'نام,ابعاد,فرمت,حجم اصلی,حجم جدید,کاهش حجم,وضعیت\n'
   compressionResults.value.forEach(r => {
@@ -1558,7 +1569,7 @@ async function saveCompressionSettings() {
       const data = await res.json()
       showToast(data?.error || 'خطا در ذخیره تنظیمات', 'error')
     }
-  } catch (err) {
+  } catch (_err) {
     showToast('ارتباط با سرور برقرار نشد', 'error')
   }
 }
@@ -1573,7 +1584,16 @@ onMounted(async () => {
     })
     if (!res.ok) { isLoadingCompressionSettings.value = false; return }
     const raw = await res.json()
-    const list = Array.isArray(raw) ? raw : (Array.isArray((raw as any)?.data) ? (raw as any).data : [])
+    interface SettingItem {
+      key?: string
+      Key?: string
+      value?: string
+      Value?: string
+    }
+    interface SettingsResponse {
+      data?: SettingItem[]
+    }
+    const list = Array.isArray(raw) ? raw : (Array.isArray((raw as SettingsResponse)?.data) ? (raw as SettingsResponse).data : [])
     const map: Record<string, string> = {}
     // settings می‌تواند آرایه‌ای از آبجکت‌ها باشد (مستقیم یا داخل data)
     for (const s of list) {
@@ -1581,7 +1601,7 @@ onMounted(async () => {
     }
 
     // کمک‌کننده برای تبدیل رشته بولین به مقدار منطقی
-    const toBool = (v: any) => {
+    const toBool = (v: unknown) => {
       if (typeof v === 'boolean') return v
       return String(v).toLowerCase() === 'true' || v === '1'
     }
@@ -1602,7 +1622,7 @@ onMounted(async () => {
 
     lastLoadedSettings.value = { ...compressionSettings.value }
     unsavedChanges.value = false
-  } catch (e) {
+  } catch (_e) {
     // silently fail
   }
   finally {
@@ -1623,8 +1643,21 @@ async function scanImages() {
     })
     if (!res.ok) throw new Error('server')
     const json = await res.json()
-    const list = (json.data || []) as any[]
-    images.value = list.filter((m: any) => {
+    interface MediaItem {
+      id: number | string
+      compressed?: boolean | number | string
+      is_compressed?: boolean | number | string
+      compressed_flag?: boolean | number | string
+      compressed_size?: number | string
+      file_name?: string
+      name?: string
+      url?: string
+      size?: number
+      width?: number
+      height?: number
+    }
+    const list = (json.data || []) as MediaItem[]
+    images.value = list.filter((m: MediaItem) => {
       // consider various representations of compressed flag
       const flag = m.compressed ?? m.is_compressed ?? m.compressed_flag
       const isCompressed = flag === true || flag === 1 || flag === '1' || String(flag).toLowerCase() === 'true'
@@ -1642,7 +1675,7 @@ async function scanImages() {
       // فقط در صورت یافتن تصویر، Toast نمایش داده شود
       showToast(`${images.value.length} تصویر یافت شد`)
     }
-  } catch (e) {
+  } catch (_e) {
     showToast('خطا در ارتباط با سرور', 'error')
   } finally {
     isScanning.value = false
@@ -1652,9 +1685,17 @@ async function scanImages() {
 // Import MediaPreviewModal and add modal instance near root template bottom (before closing main div)  -- I'll append after preview section
 import ImagePreviewModal from '~/components/media/ImagePreviewModal.vue'
 const previewModalVisible = ref(false)
-const previewFile = ref<any|null>(null)
+interface PreviewFile {
+  id: number | string
+  name: string
+  url: string
+  thumbnail: string
+  size: number
+  dimensions: string
+}
+const previewFile = ref<PreviewFile|null>(null)
 
-function openImagePreview(image: any) {
+function openImagePreview(image: ImageFile) {
   previewFile.value = {
     id: image.id,
     name: image.name,
@@ -1672,7 +1713,7 @@ const backupState = reactive({
   periods: [] as string[],
   selected: '',
   restoring: false,
-  report: null as any
+  report: null as BackupReport | null
 })
 
 async function loadBackupPeriods() {
@@ -1689,7 +1730,7 @@ async function loadBackupPeriods() {
     if (backupState.periods.length === 0) {
       showToast('هیچ دوره‌ای پیدا نشد', 'error')
     }
-  } catch (e) {
+  } catch (_e) {
     showToast('خطا در دریافت دوره‌ها', 'error')
   } finally {
     backupState.loading = false
@@ -1713,7 +1754,7 @@ async function restoreBackup() {
     // Refresh uncompressed images list so newly restored originals appear in manual compression section
     await scanImages()
     selectedImages.value = []
-  } catch (e) {
+  } catch (_e) {
     showToast('خطا در بازگردانی', 'error')
   } finally {
     backupState.restoring = false
@@ -1785,7 +1826,10 @@ function clearCompressionResults() {
 
 const lastLoadedSettings = ref({ ...compressionSettings.value })
 
-function isSettingsChanged(current: any, last: any) {
+interface SettingsObject {
+  [key: string]: unknown
+}
+function isSettingsChanged(current: SettingsObject, last: SettingsObject) {
   return JSON.stringify(current) !== JSON.stringify(last)
 }
 
@@ -1810,12 +1854,10 @@ async function loadImageSizes() {
       credentials: 'include'
     })
     if (!res.ok) {
-      console.log('Failed to fetch settings:', res.status, res.statusText)
       return
     }
     
     const settings = await res.json()
-    console.log('Raw settings response:', settings)
     
     const map: Record<string, string> = {}
     // Handle the response structure: {data: [...], success: true}
@@ -1826,17 +1868,18 @@ async function loadImageSizes() {
       }
     }
     
-    console.log('Settings map:', map)
-    
     if (map['image_sizes']) {
       const savedSizes = JSON.parse(map['image_sizes'])
-      console.log('Raw saved sizes from server:', savedSizes)
       // Update the reactive sizes object with saved values
       for (const [key, value] of Object.entries(savedSizes)) {
         if (sizes[key] && typeof value === 'object' && value !== null) {
-          const newWidth = Number((value as any).width)
-          const newHeight = Number((value as any).height)
-          console.log(`Updating ${key}: width=${newWidth}, height=${newHeight}`)
+          interface SizeValue {
+            width?: number | string
+            height?: number | string
+          }
+          const sizeValue = value as SizeValue
+          const newWidth = Number(sizeValue.width)
+          const newHeight = Number(sizeValue.height)
           // Only update if the values are valid numbers (including 0)
           if (!isNaN(newWidth)) {
             sizes[key].width = newWidth
@@ -1846,27 +1889,21 @@ async function loadImageSizes() {
           }
         }
       }
-    } else {
-      console.log('No image_sizes found in settings')
     }
-    
-    // Log current sizes for debugging
-    console.log('Loaded image sizes:', sizes)
   } catch (e) {
     console.error('خطا در بارگذاری سایزهای تصاویر:', e)
   }
 }
 
+interface SizeData {
+  [key: string]: { width: number; height: number }
+}
 async function saveSizes() {
   // Build plain object { thumbnail:{width,height}, ... }
-  const data:any = {}
+  const data: SizeData = {}
   for (const k of Object.keys(sizes)) {
     data[k] = { width: Number(sizes[k].width)||0, height: Number(sizes[k].height)||0 }
   }
-
-  // Log what we're saving
-  console.log('Saving sizes:', data)
-  console.log('Large size being saved:', data.large)
 
   const payload = [{ key: 'image_sizes', value: JSON.stringify(data), category: 'media', type: 'json' }]
 
@@ -1886,7 +1923,7 @@ async function saveSizes() {
       const j=await res.json().catch(()=>({}))
       showToast(j?.error||'خطا در ذخیره سایزها','error')
     }
-  }catch(e){
+  }catch(_e){
     showToast('ارتباط با سرور برقرار نشد','error')
   }
 }
@@ -1923,9 +1960,23 @@ const imageSeo = reactive({
 })
 const availableModels = ref<{id:string,name?:string}[]>([])
 const imageSeoSaved = ref(false)
-const jobs = ref<any[]>([])
+interface ImageSeoJob {
+  id: number
+  image_id: number
+  status: string
+  created_at?: string
+  updated_at?: string
+  [key: string]: unknown
+}
+interface MissingImageSeo {
+  id: number
+  alt_text?: string
+  short_description?: string
+  [key: string]: unknown
+}
+const jobs = ref<ImageSeoJob[]>([])
 const jobFilter = ref('')
-const missingList = ref<any[]>([])
+const missingList = ref<MissingImageSeo[]>([])
 
 async function loadImageSeoSettings(){
   try{
@@ -1943,7 +1994,17 @@ async function loadImageSeoSettings(){
     // دریافت مدل‌های در دسترس و مدل پیش‌فرض سکشن از تنظیمات API
     try{
       const apiRes = await fetch('/api/admin/api-settings', { credentials: 'include' })
-      const apiJson:any = await apiRes.json().catch(()=>null)
+      interface ApiSettingsResponse {
+        data?: {
+          openai?: {
+            available_models?: Array<{id: string; name?: string}>
+          }
+        }
+        openai?: {
+          available_models?: Array<{id: string; name?: string}>
+        }
+      }
+      const apiJson: ApiSettingsResponse = await apiRes.json().catch(()=>null) as ApiSettingsResponse
       const openai = apiJson?.data?.openai || apiJson?.openai
       if (openai?.available_models && Array.isArray(openai.available_models)) {
         availableModels.value = openai.available_models
@@ -1971,7 +2032,19 @@ async function saveImageSeoSettings(){
   // همگام‌سازی با سکشن مدل‌ها در تنظیمات API
   try{
     // ابتدا تنظیمات فعلی را می‌گیریم تا فیلدهای الزامی (api_key و ...) حفظ شوند
-    const current:any = await fetch('/api/admin/api-settings', { credentials:'include' }).then(r=>r.json()).catch(()=>null)
+    interface CurrentApiSettings {
+      data?: {
+        openai?: {
+          section_models?: Record<string, string>
+          [key: string]: unknown
+        }
+      }
+      openai?: {
+        section_models?: Record<string, string>
+        [key: string]: unknown
+      }
+    }
+    const current: CurrentApiSettings = await fetch('/api/admin/api-settings', { credentials:'include' }).then(r=>r.json()).catch(()=>null) as CurrentApiSettings
     const openai = current?.data?.openai || current?.openai || {}
     const section_models = { ...(openai.section_models||{}), image_seo: imageSeo.model }
     const body = { openai: {
@@ -2003,7 +2076,14 @@ async function loadJobs(){
   const json = await res.json().catch(()=>({}))
   jobs.value = json?.data || []
 }
-function formatDateTime(v:any){ if(!v) return ''; try{ return new Date(v).toLocaleString('fa-IR') }catch{ return '' } }
+function formatDateTime(v: string | number | Date | null | undefined): string {
+  if(!v) return ''
+  try{ 
+    return new Date(v).toLocaleString('fa-IR') 
+  }catch{ 
+    return '' 
+  }
+}
 
 async function retryJob(id:number){
   await fetch('/api/admin/image-seo/retry',{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ job_id:id }) })
@@ -2017,7 +2097,7 @@ async function scanMissingMeta(){
   const res = await fetch('/api/media/list')
   const j = await res.json().catch(()=>({}))
   const arr = Array.isArray(j?.data)? j.data:[]
-  missingList.value = arr.filter((m:any)=> !m?.alt_text || !m?.short_description)
+  missingList.value = arr.filter((m: MissingImageSeo)=> !m?.alt_text || !m?.short_description)
 }
 
 onMounted(async()=>{

@@ -197,9 +197,13 @@ const filteredInstallments = computed(() => {
   return installments.value
 })
 
+interface Filters {
+  [key: string]: unknown
+}
+
 // متدها
-const handleFilterChange = (filters: any) => {
-  console.log('فیلترها تغییر کردند:', filters)
+const handleFilterChange = (_filters: Filters) => {
+
 }
 
 // دریافت داده‌ها

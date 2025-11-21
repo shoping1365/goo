@@ -10,11 +10,11 @@ import (
 
 // MenuService سرویس مدیریت منوها
 type MenuService struct {
-	menuRepo *repository.MenuRepository
+	menuRepo repository.MenuRepositoryInterface
 }
 
 // NewMenuService ایجاد نمونه جدید از سرویس منو
-func NewMenuService(menuRepo *repository.MenuRepository) *MenuService {
+func NewMenuService(menuRepo repository.MenuRepositoryInterface) *MenuService {
 	return &MenuService{
 		menuRepo: menuRepo,
 	}

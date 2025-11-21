@@ -578,7 +578,6 @@ const insertVariable = (variable: string) => {
 
 const editTemplate = (_templateId: string) => {
   // Implementation for editing template
-  // console.log('Edit template:', templateId)
 }
 
 const testTemplate = async (templateId: string) => {
@@ -607,7 +606,6 @@ const toggleTemplate = (templateId: string) => {
 
 const viewHistory = (_templateId: string) => {
   // Implementation for viewing template history
-  // console.log('View template history:', templateId)
 }
 
 const addTemplate = () => {
@@ -641,7 +639,6 @@ const resetNewTemplate = () => {
 
 const editRule = (_ruleId: string) => {
   // Implementation for editing rule
-  // console.log('Edit rule:', ruleId)
 }
 
 const toggleRule = (ruleId: string) => {
@@ -669,12 +666,10 @@ const getNotificationStatusText = (status: string): string => {
 
 const viewNotificationDetails = (_notificationId: string) => {
   // Implementation for viewing notification details
-  // console.log('View notification details:', notificationId)
 }
 
 const refreshHistory = () => {
   // Implementation for refreshing history
-  // console.log('Refreshing history...')
 }
 
 // Lifecycle

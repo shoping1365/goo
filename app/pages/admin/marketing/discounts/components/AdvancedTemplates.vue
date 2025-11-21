@@ -229,6 +229,7 @@ v-for="tab in tabs" :key="tab.value" :class="['px-6 py-3 -mb-px font-medium text
               const sanitizedPreviewContent = computed(() => DOMPurify.sanitize(previewContent.value))
               <div v-html="sanitizedPreviewContent"></div>
             -->
+            <!-- eslint-disable-next-line vue/no-v-html -->
             <div v-if="previewContent" class="text-sm" v-html="previewContent"></div>
             <div v-else class="text-gray-400 text-center py-8">پیش‌نمایش قالب</div>
           </div>
@@ -436,11 +437,15 @@ v-for="tab in tabs" :key="tab.value" :class="['px-6 py-3 -mb-px font-medium text
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { computed, reactive, ref } from 'vue'
 
 const activeTab = ref('templates')
 const showTemplateForm = ref(false)
-const editingTemplate = ref<any>(null)
+interface Template {
+  id?: number | string
+  [key: string]: unknown
+}
+const editingTemplate = ref<Template | null>(null)
 const selectedTemplates = ref<number[]>([])
 const filterCategory = ref('')
 const filterComplexity = ref('')
@@ -578,12 +583,18 @@ const formatDate = (date: string): string => {
   return new Intl.DateTimeFormat('fa-IR').format(new Date(date))
 }
 
-const previewTemplate = (template: any) => {
-  // پیاده‌سازی پیش‌نمایش قالب
-  console.log('پیش‌نمایش قالب:', template)
+interface Template {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
 }
 
-const editTemplate = (template: any) => {
+const previewTemplate = (_template: Template) => {
+  // پیاده‌سازی پیش‌نمایش قالب
+
+}
+
+const editTemplate = (template: Template) => {
   editingTemplate.value = template
   Object.assign(form, {
     ...template,
@@ -592,20 +603,35 @@ const editTemplate = (template: any) => {
   showTemplateForm.value = true
 }
 
-const duplicateTemplate = (template: any) => {
-  const duplicate = { ...template, id: Date.now(), name: `${template.name} (کپی)` }
+interface Template {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
+}
+
+interface Tool {
+  [key: string]: unknown
+}
+
+interface Variable {
+  name?: string
+  [key: string]: unknown
+}
+
+const duplicateTemplate = (template: Template) => {
+  const duplicate = { ...template, id: Date.now(), name: `${template.name || 'نامشخص'} (کپی)` }
   templates.value.unshift(duplicate)
 }
 
-const deleteTemplate = async (template: any) => {
-  if (confirm(`آیا از حذف قالب "${template.name}" اطمینان دارید؟`)) {
+const deleteTemplate = async (template: Template) => {
+  if (confirm(`آیا از حذف قالب "${template.name || 'نامشخص'}" اطمینان دارید؟`)) {
     try {
       const index = templates.value.findIndex(t => t.id === template.id)
       if (index !== -1) {
         templates.value.splice(index, 1)
       }
-    } catch (error) {
-      console.error('خطا در حذف قالب:', error)
+    } catch (_error) {
+      // console.error('خطا در حذف قالب:', error)
     }
   }
 }
@@ -619,7 +645,7 @@ const bulkAction = (action: string) => {
   switch (action) {
     case 'export':
       // پیاده‌سازی صادرات قالب‌ها
-      console.log('صادرات قالب‌ها:', selectedTemplates.value)
+
       break
     case 'duplicate':
       selectedTemplates.value.forEach(id => {
@@ -633,23 +659,23 @@ const bulkAction = (action: string) => {
   }
 }
 
-const insertTool = (tool: any) => {
+const insertTool = (_tool: Tool) => {
   // پیاده‌سازی درج ابزار
-  console.log('درج ابزار:', tool)
+
 }
 
-const insertVariable = (variable: any) => {
-  editorCode.value += variable.name
+const insertVariable = (variable: Variable) => {
+  editorCode.value += variable.name || ''
 }
 
 const formatCode = () => {
   // پیاده‌سازی فرمت کردن کد
-  console.log('فرمت کردن کد')
+
 }
 
-const useReadyMadeTemplate = (template: any) => {
+const useReadyMadeTemplate = (_template: Template) => {
   // پیاده‌سازی استفاده از قالب آماده
-  console.log('استفاده از قالب آماده:', template)
+
   showTemplateForm.value = true
 }
 

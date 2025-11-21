@@ -557,7 +557,7 @@ const mobileBannerHeight = computed(() => {
 const currentHeight = computed(() => isMobile.value ? mobileHeight.value : height.value)
 
 // Calculate individual banner height so total banners + gaps = configured height
-const individualBannerHeight = computed(() => {
+const _individualBannerHeight = computed(() => {
   const bannerCount = sideBanners.value.length
   if (bannerCount === 0) return 0
 

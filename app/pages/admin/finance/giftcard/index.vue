@@ -459,7 +459,7 @@ const fetchGiftCards = async (isManual = false) => {
   }
 }
 
-const manualRefresh = () => {
+const _manualRefresh = () => {
   fetchGiftCards(true)
 }
 

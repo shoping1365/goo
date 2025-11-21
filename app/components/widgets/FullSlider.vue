@@ -115,12 +115,11 @@ const getSlidesArray = (): SlideItem[] => {
 }
 
 // Helper function to type slide item in template
-const getSlideItem = (item: any): SlideItem => {
+const getSlideItem = (item: SlideItem | unknown): SlideItem => {
   return item as SlideItem
 }
 
 // Computed properties for template access
-const slides = computed<SlideItem[]>(() => getSlidesArray())
 const slidesList = computed<SlideItem[]>(() => getSlidesArray())
 const sliderHeight = computed<number>(() => config.value.height || 400)
 const hasSlides = computed<boolean>(() => getSlidesArray().length > 0)

@@ -164,19 +164,28 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-
 // Props
+interface Coupon {
+  id?: number | string
+  [key: string]: unknown
+}
+
 interface Props {
-  coupon: any
+  coupon: Coupon
 }
 
 const props = defineProps<Props>()
 
 // Emits
+interface Coupon {
+  id?: number | string
+  code?: string
+  discount?: number
+  [key: string]: unknown
+}
 const emit = defineEmits<{
   close: []
-  edit: [coupon: any]
+  edit: [coupon: Coupon]
 }>()
 
 // توابع کمکی
@@ -232,7 +241,13 @@ const getTypeName = (type: string) => {
   }
 }
 
-const formatDiscount = (coupon: any) => {
+interface Coupon {
+  type?: string
+  discountValue?: number | string
+  [key: string]: unknown
+}
+
+const formatDiscount = (coupon: Coupon) => {
   if (coupon.type === 'percentage') {
     return `${coupon.discountValue}%`
   } else if (coupon.type === 'fixed') {

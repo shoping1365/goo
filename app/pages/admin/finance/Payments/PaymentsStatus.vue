@@ -52,7 +52,7 @@
 import { computed } from 'vue'
 
 interface Props {
-  status: Array<{
+  status?: Array<{
     status: string
     count: number
     percentage: number

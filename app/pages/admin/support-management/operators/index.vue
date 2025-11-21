@@ -515,7 +515,6 @@ function toggleOperatorAssignment(operatorId: number | string) {
 
 // ذخیره تخصیص اپراتور
 function saveOperatorAssignment() {
-  // console.log('اپراتورهای انتخاب شده:', selectedOperators.value)
   // اینجا منطق ذخیره تخصیص پیاده‌سازی می‌شود
   alert('تخصیص اپراتور با موفقیت ذخیره شد!')
 }
@@ -548,7 +547,6 @@ function removeOperatorField(index: number) {
 
 // ذخیره تخصیص لینک
 function saveLinkAssignment() {
-  // console.log('تخصیص لینک:', linkAssignment.value)
   // اینجا منطق ذخیره تخصیص لینک پیاده‌سازی می‌شود
   alert('تخصیص لینک با موفقیت ذخیره شد!')
 }

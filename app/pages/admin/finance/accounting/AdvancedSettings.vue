@@ -118,12 +118,10 @@ const saveAllSettings = async () => {
   try {
     isSaving.value = true
     // TODO: ذخیره همه تنظیمات
-    console.log('ذخیره همه تنظیمات پیشرفته')
-    
+
     // شبیه‌سازی ذخیره
     await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    console.log('همه تنظیمات با موفقیت ذخیره شد')
+
   } catch (error) {
     console.error('خطا در ذخیره تنظیمات:', error)
   } finally {
@@ -134,7 +132,7 @@ const saveAllSettings = async () => {
 // بازنشانی به تنظیمات پیش‌فرض
 const resetToDefaults = () => {
   // TODO: بازنشانی به تنظیمات پیش‌فرض
-  console.log('بازنشانی به تنظیمات پیش‌فرض')
+
 }
 </script>
 

@@ -288,7 +288,7 @@
           <!-- نقاط پایانی API -->
           <div class="space-y-4">
             <h3 class="text-lg font-semibold text-gray-900">نقاط پایانی اصلی</h3>
-            
+
             <!-- دریافت موجودی -->
             <div class="border border-gray-200 rounded-lg p-6">
               <div class="flex items-center justify-between mb-2">
@@ -342,9 +342,7 @@ const response = await fetch('/api/wallet/balance/123', {
     'Content-Type': 'application/json'
   }
 });
-
-const balance = await response.json();
-console.log('موجودی:', balance.amount);</code></pre>
+const balance = await response.json();</code></pre>
             </div>
           </div>
 
@@ -378,6 +376,7 @@ console.log('موجودی:', balance.amount);</code></pre>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+
 // تعریف reactive data
 const activeTab = ref('guide')
 
@@ -425,11 +424,9 @@ const toggleFaq = (index: number) => {
 
 const submitSupportForm = () => {
   // ارسال فرم پشتیبانی
-  console.log('فرم پشتیبانی ارسال شد:', supportForm.value)
-  
   // نمایش پیام موفقیت
   alert('درخواست پشتیبانی شما با موفقیت ارسال شد.')
-  
+
   // پاک کردن فرم
   supportForm.value = {
     subject: '',
@@ -438,4 +435,4 @@ const submitSupportForm = () => {
     priority: 'medium'
   }
 }
-</script> 
+</script>

@@ -284,7 +284,7 @@
       <div class="bg-white shadow rounded-lg p-6">
         <h3 class="text-lg font-medium text-gray-900 mb-4">تاریخچه ورود</h3>
         <div class="space-y-4">
-          <div v-for="login in loginHistory" :key="(login as any).id" class="py-3 border-b border-gray-200">
+          <div v-for="login in loginHistory" :key="login.id || Math.random()" class="py-3 border-b border-gray-200">
             <p class="text-sm font-medium text-gray-900">{{ login.device }}</p>
             <p class="text-sm text-gray-500">{{ login.location }} - {{ login.timestamp }}</p>
           </div>

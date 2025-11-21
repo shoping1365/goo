@@ -498,14 +498,19 @@
 import { ref, computed, onMounted } from 'vue'
 
 // Props
+interface GiftCard {
+  id?: number | string
+  [key: string]: unknown
+}
+
 const props = defineProps<{
-  giftCard?: any
+  giftCard?: GiftCard
 }>()
 
 // Emits
 const emit = defineEmits<{
   close: []
-  created: [giftCard: any]
+  created: [giftCard: GiftCard]
 }>()
 
 // Reactive data
@@ -704,7 +709,6 @@ const handleSubmit = async () => {
     }
 
     // در نسخه واقعی: ارسال به API
-    console.log('Creating gift card:', giftCard)
 
     // شبیه‌سازی تأخیر
     await new Promise(resolve => setTimeout(resolve, 1000))

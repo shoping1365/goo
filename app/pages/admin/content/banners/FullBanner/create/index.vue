@@ -92,7 +92,10 @@
             class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
           >
             <option value="home">صفحه اصلی</option>
-           
+            <option value="category">دسته‌بندی</option>
+            <option value="product">محصول</option>
+            <option value="about">درباره ما</option>
+            <option value="contact">تماس با ما</option>
           </select>
         </div>
 
@@ -120,7 +123,8 @@
     <!-- تنظیمات بنر -->
     <DeviceTabs
       ref="deviceTabsRef"
-      :banner-config="bannerConfig"
+      v-model:active-tab="activeDeviceTab"
+      v-model:banner-config="bannerConfig"
       :current-preview-banner="currentPreviewBanner"
       :open-add-banner-modal="openAddBannerModal"
       :edit-banner="editBanner"
@@ -207,10 +211,7 @@
                 max="2000"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="1000"
-                @input="(e: Event) => {
-                  const target = e.target as HTMLInputElement
-                  bannerConfig.center_width = target.value === '' ? undefined : Number(target.value)
-                }"
+                @input="(e: Event) => { const target = e.target as HTMLInputElement; bannerConfig.center_width = target.value === '' ? undefined : Number(target.value) }"
               />
             </div>
 
@@ -224,10 +225,7 @@
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e: Event) => {
-                  const target = e.target as HTMLInputElement
-                  bannerConfig.padding_top = target.value === '' ? undefined : Number(target.value)
-                }"
+                @input="(e: Event) => { const target = e.target as HTMLInputElement; bannerConfig.padding_top = target.value === '' ? undefined : Number(target.value) }"
               />
             </div>
 
@@ -241,10 +239,7 @@
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e: Event) => {
-                  const target = e.target as HTMLInputElement
-                  bannerConfig.padding_bottom = target.value === '' ? undefined : Number(target.value)
-                }"
+                @input="(e: Event) => { const target = e.target as HTMLInputElement; bannerConfig.padding_bottom = target.value === '' ? undefined : Number(target.value) }"
               />
             </div>
 
@@ -258,10 +253,7 @@
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e: Event) => {
-                  const target = e.target as HTMLInputElement
-                  bannerConfig.margin_right = target.value === '' ? undefined : Number(target.value)
-                }"
+                @input="(e: Event) => { const target = e.target as HTMLInputElement; bannerConfig.margin_right = target.value === '' ? undefined : Number(target.value) }"
               />
             </div>
 
@@ -275,10 +267,7 @@
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e: Event) => {
-                  const target = e.target as HTMLInputElement
-                  bannerConfig.margin_left = target.value === '' ? undefined : Number(target.value)
-                }"
+                @input="(e: Event) => { const target = e.target as HTMLInputElement; bannerConfig.margin_left = target.value === '' ? undefined : Number(target.value) }"
               />
             </div>
           </div>
@@ -344,10 +333,7 @@
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e: Event) => {
-                  const target = e.target as HTMLInputElement
-                  bannerConfig.mobile_padding_top = target.value === '' ? undefined : Number(target.value)
-                }"
+                @input="(e: Event) => { const target = e.target as HTMLInputElement; bannerConfig.mobile_padding_top = target.value === '' ? undefined : Number(target.value) }"
               />
             </div>
 
@@ -361,10 +347,7 @@
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e: Event) => {
-                  const target = e.target as HTMLInputElement
-                  bannerConfig.mobile_padding_bottom = target.value === '' ? undefined : Number(target.value)
-                }"
+                @input="(e: Event) => { const target = e.target as HTMLInputElement; bannerConfig.mobile_padding_bottom = target.value === '' ? undefined : Number(target.value) }"
               />
             </div>
           </div>
@@ -604,8 +587,6 @@
       @confirm="onSelectFromLibrary"
     />
 
-    <!-- Page content will be added here -->
-
     <!-- فاصله انتهای صفحه -->
     <div class="pb-16"></div>
   </div>
@@ -614,7 +595,7 @@
 <script setup lang="ts">
 import BannerModal from '@/components/common/BannerModal.vue'
 import { computed, onMounted, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import TemplateButton from '~/components/common/TemplateButton.vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
 import { useToast } from '~/composables/useToast'
@@ -623,20 +604,18 @@ import type { BannerConfig, BannerItem, Widget, WidgetPage, WidgetStatus, Widget
 import { WIDGET_TYPE_LABELS } from '~/types/widget'
 import DeviceTabs from './components/DeviceTabs.vue'
 
-// تعریف definePageMeta، useHead برای Nuxt 3
+// تعریف definePageMeta و useHead برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 declare const useHead: (head: { title?: string }) => void
 
 definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 useHead({ title: 'ایجاد بنر کامل - پنل ادمین' })
 
-// Route params
-const route = useRoute()
+// Router
 const router = useRouter()
-const widgetId = parseInt(route.params.id as string)
 
 // Composables
-const { fetchWidget, createWidget, loading, error, clearError, widget: fetchedWidget } = useWidget()
+const { createWidget, loading: _loading, error: _error, clearError, widget: fetchedWidget } = useWidget()
 const { showSuccess, showError } = useToast()
 
 // Props
@@ -644,10 +623,10 @@ interface Props {
   widget?: Widget
 }
 
-const props = defineProps<Props>()
+const _props = defineProps<Props>()
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   updated: [widget: Widget]
 }>()
 
@@ -658,7 +637,6 @@ const showMediaLibrary = ref(false)
 const editingBannerIndex = ref<number | null>(null)
 const currentPreviewBanner = ref(0)
 const deviceTabsRef = ref()
-const activeDeviceTab = ref<'desktop' | 'mobile'>('desktop')
 
 // Error states
 const titleError = ref<string>('')
@@ -701,42 +679,8 @@ const formData = ref({
   show_on_mobile: true
 })
 
-// Initialize form data when widget is available
-const initializeFormData = () => {
-  if (fetchedWidget.value) {
-    console.log('Widget data:', fetchedWidget.value) // Debug log
-    formData.value = {
-      title: fetchedWidget.value.title || '',
-      description: fetchedWidget.value.description || '',
-      type: fetchedWidget.value.type || 'full-banner',
-      status: fetchedWidget.value.status || 'active',
-      page: fetchedWidget.value.page || 'home',
-      show_on_mobile: fetchedWidget.value.show_on_mobile !== undefined ? fetchedWidget.value.show_on_mobile : true
-    }
-    
-    // Load banner config from widget
-    if (fetchedWidget.value.config) {
-      const config = fetchedWidget.value.config as BannerConfig
-      bannerConfig.value = {
-        ...bannerConfig.value,
-        ...config,
-        banners: config.banners || [],
-        mobile_banners: config.mobile_banners || [],
-        mobile_height: typeof config.mobile_height === 'number' ? config.mobile_height : (config.mobile_height === 'auto' ? 150 : 150)
-      }
-    }
-    
-    console.log('Form data initialized:', formData.value) // Debug log
-    console.log('Banner config loaded:', bannerConfig.value) // Debug log
-  }
-}
-
-// Watch for widget changes
-watch(fetchedWidget, (newWidget) => {
-  if (newWidget) {
-    initializeFormData()
-  }
-}, { immediate: true })
+// Active device tab
+const activeDeviceTab = ref<'desktop' | 'mobile'>('desktop')
 
 // Watch for device tab changes
 watch(() => deviceTabsRef.value?.activeTab, (newTab) => {
@@ -745,11 +689,11 @@ watch(() => deviceTabsRef.value?.activeTab, (newTab) => {
   }
 })
 
-// Computed properties for reactive form data
-const widgetTitle = computed(() => fetchedWidget.value?.title || '')
-const widgetType = computed(() => fetchedWidget.value?.type || 'full-banner')
-const widgetStatus = computed(() => fetchedWidget.value?.status || 'active')
-const widgetPage = computed(() => fetchedWidget.value?.page || 'home')
+// Computed properties for reactive form data (not currently used but may be needed for future features)
+const _widgetTitle = computed(() => fetchedWidget.value?.title || '')
+const _widgetType = computed(() => fetchedWidget.value?.type || 'full-banner')
+const _widgetStatus = computed(() => fetchedWidget.value?.status || 'active')
+const _widgetPage = computed(() => fetchedWidget.value?.page || 'home')
 
 // Banner config
 const bannerConfig = ref<BannerConfig>({
@@ -757,7 +701,7 @@ const bannerConfig = ref<BannerConfig>({
   bg_color: '#ffffff',
   height: 400,
   banners: [],
-  mobile_banners: [],  // آرایه جداگانه برای بنرهای موبایل
+  mobile_banners: [],
   bg_enabled: false,
   banner_width: 800,
   show_title: true,
@@ -775,10 +719,10 @@ const bannerConfig = ref<BannerConfig>({
 
 // Methods for managing banners
 const openAddBannerModal = () => {
-  const banners = activeDeviceTab.value === 'mobile' 
-    ? bannerConfig.value.mobile_banners 
+  const banners = activeDeviceTab.value === 'mobile'
+    ? bannerConfig.value.mobile_banners
     : bannerConfig.value.banners
-
+  
   // بررسی محدودیت یک بنر برای بنر تکی
   if (banners.length >= 1) {
     showError('در بنر تکی فقط یک بنر مجاز است')
@@ -801,10 +745,10 @@ const openAddBannerModal = () => {
 }
 
 const editBanner = (index: number) => {
-  const banners = activeDeviceTab.value === 'mobile' 
-    ? bannerConfig.value.mobile_banners 
+  const banners = activeDeviceTab.value === 'mobile'
+    ? bannerConfig.value.mobile_banners
     : bannerConfig.value.banners
-
+  
   editingBannerIndex.value = index
   const banner = banners[index]
   editingBanner.value = {
@@ -823,10 +767,10 @@ const editBanner = (index: number) => {
 }
 
 const removeBanner = (index: number) => {
-  const banners = activeDeviceTab.value === 'mobile' 
-    ? bannerConfig.value.mobile_banners 
+  const banners = activeDeviceTab.value === 'mobile'
+    ? bannerConfig.value.mobile_banners
     : bannerConfig.value.banners
-
+  
   banners.splice(index, 1)
   // Re-order remaining banners
   banners.forEach((banner, idx) => {
@@ -836,22 +780,22 @@ const removeBanner = (index: number) => {
 
 // Handle banner save from modal component
 const handleBannerSave = (bannerData: BannerItem, showTitle: boolean) => {
-  const banners = activeDeviceTab.value === 'mobile' 
-    ? bannerConfig.value.mobile_banners 
+  const banners = activeDeviceTab.value === 'mobile'
+    ? bannerConfig.value.mobile_banners
     : bannerConfig.value.banners
-
+  
   // برای موبایل، اگر mobile_image وجود دارد، آن را به image کپی کن
-  const imageUrl = activeDeviceTab.value === 'mobile' && bannerData.mobile_image 
-    ? bannerData.mobile_image 
+  const imageUrl = activeDeviceTab.value === 'mobile' && bannerData.mobile_image
+    ? bannerData.mobile_image
     : bannerData.image
-
+  
   const banner: BannerItem = {
     ...bannerData,
     image: imageUrl, // استفاده از imageUrl به جای bannerData.image
     title: bannerData.title?.trim() || '',
     description: bannerData.description?.trim() || '',
     link: bannerData.link?.trim() || '',
-    mobile_image: bannerData.mobile_image || '', // اضافه کردن فیلد mobile_image
+    mobile_image: bannerData.mobile_image || '',
     order: editingBannerIndex.value !== null ? banners[editingBannerIndex.value].order : banners.length + 1,
     status: 'active',
     showTitle: showTitle
@@ -932,7 +876,7 @@ const saveWidget = async () => {
     // ذخیره آرایه‌های بنرها
     configToSave.banners = bannerConfig.value.banners
     configToSave.mobile_banners = bannerConfig.value.mobile_banners
-    
+
     const widgetData = {
       title: formData.value.title,
       description: formData.value.description,
@@ -942,49 +886,24 @@ const saveWidget = async () => {
       show_on_mobile: formData.value.show_on_mobile,
       config: configToSave
     }
-    
+
     // Create new widget
     const createdWidget = await createWidget(widgetData)
-    
+
     if (createdWidget) {
       showSuccess('ابزارک با موفقیت ایجاد شد!')
       // Redirect to edit page
       await router.push(`/admin/content/banners/FullBanner/edit/${createdWidget.id}`)
     }
-    
-  } catch (error) {
-    console.error('خطا در ذخیره ابزارک:', error)
+  } catch (_error) {
+    showError('خطا در ذخیره ابزارک')
   } finally {
     isSaving.value = false
   }
 }
 
-// Initialize config from widget
+// Initialize config
 onMounted(async () => {
   clearError()
-  if (widgetId) {
-    await fetchWidget(widgetId)
-  }
-  initializeFormData()
-  
-  // Only copy specific config fields, don't overwrite defaults
-  if (fetchedWidget.value?.config) {
-    const config = fetchedWidget.value.config as BannerConfig
-    if (config.banners) bannerConfig.value.banners = config.banners
-    if (config.height) bannerConfig.value.height = config.height
-    if (config.banner_width) bannerConfig.value.banner_width = config.banner_width
-    if (config.center_width) bannerConfig.value.center_width = config.center_width
-    if (config.bg_enabled !== undefined) bannerConfig.value.bg_enabled = config.bg_enabled
-    if (config.bg_color) bannerConfig.value.bg_color = config.bg_color
-    if (config.wide_bg !== undefined) bannerConfig.value.wide_bg = config.wide_bg
-    if (config.padding_top !== undefined) bannerConfig.value.padding_top = config.padding_top
-    if (config.padding_bottom !== undefined) bannerConfig.value.padding_bottom = config.padding_bottom
-    if (config.margin_left !== undefined) bannerConfig.value.margin_left = config.margin_left
-    if (config.margin_right !== undefined) bannerConfig.value.margin_right = config.margin_right
-    // Mobile specific settings
-    if (config.mobile_vertical_display !== undefined) bannerConfig.value.mobile_vertical_display = config.mobile_vertical_display
-    if (config.mobile_padding_top !== undefined) bannerConfig.value.mobile_padding_top = config.mobile_padding_top
-    if (config.mobile_padding_bottom !== undefined) bannerConfig.value.mobile_padding_bottom = config.mobile_padding_bottom
-  }
 })
 </script>

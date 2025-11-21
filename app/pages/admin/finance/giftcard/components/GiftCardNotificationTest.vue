@@ -417,8 +417,7 @@ const testPurchaseNotification = async () => {
   const startTime = Date.now()
   
   try {
-    console.log('تست اطلاع‌رسانی خرید جدید در حال اجرا...', testData.purchase)
-    
+
     // شبیه‌سازی API call
     await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 1000))
     
@@ -439,8 +438,7 @@ const testPurchaseNotification = async () => {
         paymentMethod: testData.purchase.paymentMethod
       }
     })
-    
-    console.log('تست خرید جدید تکمیل شد:', { success, time })
+
   } catch (error) {
     console.error('خطا در تست خرید جدید:', error)
     testResults.purchase = { success: false, time: Date.now() - startTime }
@@ -451,8 +449,7 @@ const testExpiryNotification = async () => {
   const startTime = Date.now()
   
   try {
-    console.log('تست هشدار انقضا در حال اجرا...', testData.expiry)
-    
+
     // شبیه‌سازی API call
     await new Promise(resolve => setTimeout(resolve, 300 + Math.random() * 800))
     
@@ -473,8 +470,7 @@ const testExpiryNotification = async () => {
         recipientName: testData.expiry.recipientName
       }
     })
-    
-    console.log('تست هشدار انقضا تکمیل شد:', { success, time })
+
   } catch (error) {
     console.error('خطا در تست هشدار انقضا:', error)
     testResults.expiry = { success: false, time: Date.now() - startTime }
@@ -485,8 +481,7 @@ const testSuspiciousNotification = async () => {
   const startTime = Date.now()
   
   try {
-    console.log('تست تراکنش مشکوک در حال اجرا...', testData.suspicious)
-    
+
     // شبیه‌سازی API call
     await new Promise(resolve => setTimeout(resolve, 400 + Math.random() * 600))
     
@@ -507,8 +502,7 @@ const testSuspiciousNotification = async () => {
         reason: testData.suspicious.reason
       }
     })
-    
-    console.log('تست تراکنش مشکوک تکمیل شد:', { success, time })
+
   } catch (error) {
     console.error('خطا در تست تراکنش مشکوک:', error)
     testResults.suspicious = { success: false, time: Date.now() - startTime }
@@ -519,8 +513,7 @@ const testSystemNotification = async () => {
   const startTime = Date.now()
   
   try {
-    console.log('تست سیستم در حال اجرا...', testData.system)
-    
+
     // شبیه‌سازی API call
     await new Promise(resolve => setTimeout(resolve, 200 + Math.random() * 400))
     
@@ -540,8 +533,7 @@ const testSystemNotification = async () => {
         message: testData.system.message
       }
     })
-    
-    console.log('تست سیستم تکمیل شد:', { success, time })
+
   } catch (error) {
     console.error('خطا در تست سیستم:', error)
     testResults.system = { success: false, time: Date.now() - startTime }
@@ -549,8 +541,7 @@ const testSystemNotification = async () => {
 }
 
 const runAllTests = async () => {
-  console.log('اجرای همه تست‌ها شروع شد')
-  
+
   await testPurchaseNotification()
   await new Promise(resolve => setTimeout(resolve, 1000))
   
@@ -561,8 +552,7 @@ const runAllTests = async () => {
   await new Promise(resolve => setTimeout(resolve, 1000))
   
   await testSystemNotification()
-  
-  console.log('همه تست‌ها تکمیل شد')
+
 }
 
 const clearResults = () => {
@@ -571,7 +561,7 @@ const clearResults = () => {
     Object.keys(testResults).forEach(key => {
       testResults[key] = null
     })
-    console.log('نتایج تست‌ها پاک شد')
+
   }
 }
 
@@ -600,7 +590,7 @@ const getTestResultIcon = (success: boolean) => {
 
 // Lifecycle
 onMounted(() => {
-  console.log('Gift card notification test component mounted')
+
 })
 </script>
 

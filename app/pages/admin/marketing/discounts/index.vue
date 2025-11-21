@@ -117,17 +117,29 @@ const editingCoupon = ref(null)
 const editingCampaign = ref(null)
 const selectedCoupon = ref(null)
 
+interface Coupon {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
+}
+
+interface Campaign {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
+}
+
 // مدیریت ذخیره کوپن
-function handleCouponSave(coupon: any) {
-  console.log('کوپن ذخیره شد:', coupon)
+function handleCouponSave(coupon: Coupon) {
+
   showCouponForm.value = false
   editingCoupon.value = null
   // TODO: فراخوانی API برای ذخیره کوپن
 }
 
 // مدیریت ذخیره کمپین
-function handleCampaignSave(campaign: any) {
-  console.log('کمپین ذخیره شد:', campaign)
+function handleCampaignSave(campaign: Campaign) {
+
   showCampaignForm.value = false
   editingCampaign.value = null
   // TODO: فراخوانی API برای ذخیره کمپین

@@ -228,13 +228,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 // Props
-const props = defineProps<{
+const _props = defineProps<{
   isOpen: boolean
   testId?: number
 }>()
 
 // Events
-const emit = defineEmits(['close'])
+const _emit = defineEmits(['close'])
 
 // داده‌های نتایج (mock data)
 const results = ref({
@@ -312,7 +312,7 @@ const formatCurrency = (amount: number) => {
 // صادرات نتایج
 const exportResults = () => {
   // منطق صادرات به Excel/PDF/CSV
-  console.log('صادرات نتایج تست:', props.testId)
+
   alert('نتایج با موفقیت صادر شد')
 }
 </script> 

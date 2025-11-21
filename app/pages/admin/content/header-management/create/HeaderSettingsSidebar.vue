@@ -200,6 +200,20 @@
 <script setup lang="ts">
 import { inject, type Ref } from 'vue'
 
+interface HeaderLayerItem {
+  id: string
+  name?: string
+  path?: string
+  icon?: string
+  align?: string
+  width?: number
+  paddingRight?: number
+  paddingLeft?: number
+  imageUrl?: string
+  imageName?: string
+  [key: string]: unknown
+}
+
 interface LayerData {
   id?: string
   name: string
@@ -221,7 +235,7 @@ interface LayerData {
   separatorColor: string
   separatorOpacity: number
   separatorWidth: number
-  items: any[]
+  items: HeaderLayerItem[]
 }
 
 // Inject functions and data from parent

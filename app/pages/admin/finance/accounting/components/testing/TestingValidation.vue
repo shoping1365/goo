@@ -79,7 +79,7 @@ const activeTab = ref('connections')
 
 // اجرای همه تست‌ها
 const runAllTests = () => {
-  console.log('اجرای همه تست‌ها')
+
 }
 </script>
 

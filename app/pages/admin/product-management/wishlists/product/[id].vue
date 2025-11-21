@@ -615,7 +615,6 @@ const updatePrice = () => {
     
     if (notifyUsersOfPriceChange.value) {
       // Send price change notification
-      // console.log('اطلاع‌رسانی تغییر قیمت به کاربران...')
     }
     
     showPriceModal.value = false
@@ -647,8 +646,6 @@ const sendSms = () => {
     ? wishlistUsers.value.filter(w => selectedUsers.value.includes(w.id))
     : wishlistUsers.value
   
-  // console.log('ارسال پیام به', recipients.length, 'کاربر:', smsMessage.value)
-  
   showSmsModal.value = false
   selectedUsers.value = []
   alert(`پیام با موفقیت به ${recipients.length} کاربر ارسال شد!`)
@@ -660,7 +657,6 @@ const sendBulkSms = () => {
 }
 
 const sendPersonalSms = (user: User) => {
-  // console.log('ارسال پیام شخصی به', user.name)
   alert(`پیام شخصی به ${user.name} ارسال شد!`)
 }
 

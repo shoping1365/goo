@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
+	"html"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -85,6 +86,15 @@ func (h *ReviewHandler) CreateReview(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "user_id نامعتبر است"})
 		return
 	}
+
+	// Sanitize inputs to prevent XSS
+	fmt.Println("DEBUG: Original Comment:", comment)
+	comment = html.EscapeString(comment)
+	fmt.Println("DEBUG: Escaped Comment:", comment)
+	title = html.EscapeString(title)
+	pros = html.EscapeString(pros)
+	cons = html.EscapeString(cons)
+	providedFullName = html.EscapeString(providedFullName)
 
 	// چک مقدار rating
 	if rating < 1 || rating > 5 {

@@ -336,7 +336,40 @@ const securitySettings = {
 }
 
 // کارت‌های بانکی از API ادمین
-const bankCards = ref<any[]>([])
+interface BankAccountItem {
+  id?: number | string
+  user_name?: string
+  user_id?: number | string
+  user_email?: string
+  iban?: string
+  card_number_last4?: string
+  bank_name?: string
+  created_at?: string
+  status?: string
+  verified_at?: string | null
+  [key: string]: unknown
+}
+
+interface BankAccountResponse {
+  items?: BankAccountItem[]
+  total?: number
+  [key: string]: unknown
+}
+
+interface BankCard {
+  id?: number | string
+  userName: string | number
+  userEmail: string
+  userInitials: string
+  cardNumber: string
+  bankName: string
+  bankIcon: string
+  cardType: string
+  registrationDate: string
+  status: string
+}
+
+const bankCards = ref<BankCard[]>([])
 const page = ref(1)
 const pageSize = ref(20)
 const statusFilter = ref('')
@@ -350,14 +383,14 @@ const { data, refresh } = await useFetch('/api/admin/bank-accounts', {
 })
 const paginationInfo = reactive({ start: 1, end: 0, total: 0 })
 watchEffect(() => {
-  const res: any = data.value
+  const res = data.value as BankAccountResponse | null
   if (!res) return
   const items = Array.isArray(res.items) ? res.items : []
-  bankCards.value = items.map((x: any) => ({
+  bankCards.value = items.map((x: BankAccountItem) => ({
     id: x.id,
-    userName: x.user_name || x.user_id,
+    userName: x.user_name || x.user_id || '-',
     userEmail: x.user_email || '-',
-    userInitials: (x.user_name || '-').slice(0,2),
+    userInitials: (x.user_name || '-').toString().slice(0,2),
     cardNumber: x.iban ? `${x.iban.slice(0,6)}****${x.iban.slice(-4)}` : (x.card_number_last4 ? `****-${x.card_number_last4}` : '-'),
     bankName: x.bank_name || '-',
     bankIcon: '🏦',
@@ -370,8 +403,8 @@ watchEffect(() => {
   paginationInfo.end = Math.min(page.value * pageSize.value, paginationInfo.total)
   // آمار ساده سمت‌کلاینت
   cardStats.totalCards = paginationInfo.total
-  const verified = bankCards.value.filter((c:any)=>c.status==='تأیید شده').length
-  const blocked = bankCards.value.filter((c:any)=>c.status==='مسدود شده').length
+  const verified = bankCards.value.filter((c: BankCard)=>c.status==='تأیید شده').length
+  const blocked = bankCards.value.filter((c: BankCard)=>c.status==='مسدود شده').length
   const pending = Math.max(0, cardStats.totalCards - verified - blocked)
   cardStats.verifiedCards = verified
   cardStats.blockedCards = blocked

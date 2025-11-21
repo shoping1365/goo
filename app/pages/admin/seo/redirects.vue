@@ -474,8 +474,12 @@
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 declare const navigateTo: (to: string) => Promise<void>
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare const useAuth: () => { user: any; hasPermission: (perm: string) => boolean }
+interface User {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
+}
+declare const useAuth: () => { user: User | null; hasPermission: (perm: string) => boolean }
 </script>
 
 <script setup lang="ts">
@@ -695,8 +699,13 @@ const resetForm = () => {
   redirectForm.description = ''
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const editRedirect = (redirect: any) => {
+interface Redirect {
+  id?: number | string
+  from?: string
+  to?: string
+  [key: string]: unknown
+}
+const editRedirect = (redirect: Redirect) => {
   // Navigate to group redirects page
   navigateTo(`/admin/seo/redirects/group/${encodeURIComponent(redirect.group_name || 'بدون گروه')}`)
 }

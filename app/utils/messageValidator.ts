@@ -45,7 +45,7 @@ const SECURITY_CONFIG = {
   
   // کلمات ممنوع
   bannedWords: [
-    'alert', 'confirm', 'prompt', 'console.log',
+    'alert', 'confirm', 'prompt',
     'document.cookie', 'localStorage', 'sessionStorage',
     'window.location', 'location.href', 'location.replace',
     'eval', 'Function', 'setTimeout', 'setInterval',

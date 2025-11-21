@@ -787,7 +787,7 @@ v-if="canShowMenu('/admin/developer/deployment-manager')" to="/admin/developer/d
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, provide, reactive, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import CollapsibleSection from '~/components/common/CollapsibleSection.vue';
 import ConfirmDialog from '~/components/common/ConfirmDialog.vue';
 import ToastContainer from '~/components/common/ToastContainer.vue';
@@ -798,7 +798,7 @@ import { useAdminThemeStore } from '~/stores/adminTheme';
 declare const navigateTo: (to: string) => Promise<void>;
 
 // استفاده از Global Auth State
-const { user: globalUser, setUser } = useAuthState()
+const { setUser } = useAuthState()
 
 
 
@@ -812,11 +812,10 @@ const currentTime = ref('');
 let timer: NodeJS.Timeout | null = null;
 
 const showProfile = ref(false);
-const router = useRouter();
 const route = useRoute();
 
 // Provide confirm dialog for all admin pages
-const confirmDialogRef = ref<any>(null);
+const confirmDialogRef = ref<{ show?: (options: Record<string, unknown>) => void; [key: string]: unknown } | null>(null);
 provide('confirmDialogRef', confirmDialogRef);
 
 // Session-based user state
@@ -848,7 +847,7 @@ onMounted(async () => {
   try {
     const response = await $fetch('/api/auth/me', {
       credentials: 'include'
-    }) as any
+    }) as { authenticated?: boolean; user?: Record<string, unknown>; [key: string]: unknown }
     
     if (response?.authenticated && response?.user) {
       currentUser.value = response.user
@@ -857,7 +856,7 @@ onMounted(async () => {
       // اگر احراز نشده، redirect به صفحه ورود
       await navigateTo('/auth/login')
     }
-  } catch (error) {
+  } catch (_error) {
     // در صورت عدم دسترسی یا خطا، redirect به صفحه ورود
     await navigateTo('/auth/login')
   }
@@ -957,14 +956,10 @@ const openAdminChat = () => {
   }
 };
 
-const openUserSettings = () => {
-  alert('اینجا مودال تنظیمات کاربر باز می‌شود.');
-};
+// openUserSettings removed - not used
 
 const applyThemeSettings = () => {
-  const colorScheme = document.getElementById('colorScheme') as HTMLSelectElement;
   // فونت از selectedFont گرفته شده و همین الان ذخیره شده است.
-
   alert(`تنظیمات پوسته ذخیره شد.`);
 
   showThemeSettings.value = false;
@@ -995,7 +990,7 @@ async function logout() {
   const auth = useAuthState()
   try {
     await auth.logout()
-    console.log('Logout successful')
+
   } catch (e) {
     console.warn('Logout failed but proceeding with redirect', e)
   }
@@ -1011,8 +1006,8 @@ defineExpose({ displayName });
 
 // const { hasPermission, permissions } = useAuth() // احراز هویت غیرفعال شده است
 
-// نگاشت مسیر به permission
-const menuPermissions = {
+// نگاشت مسیر به permission - currently unused but kept for future use
+const _menuPermissions = {
   '/admin': 'admin_panel_access',
   
   // مدیریت رسانه
@@ -1191,13 +1186,13 @@ const menuPermissions = {
 }
 
 // بررسی permission برای نمایش menu item ها - حالت پیش‌فرض
-const canShowMenu = (path: string): boolean => {
+const canShowMenu = (_path: string): boolean => {
   // حالت پیش‌فرض: همه menu items نمایش داده می‌شوند
   return true
 }
 
 // تابع کمکی برای بررسی اینکه آیا کاربر در هیچ‌کدام از زیرمنوهای یک سرگروه دسترسی مشاهده دارد یا نه - حالت پیش‌فرض
-function canShowSection(permissionList: string[]): boolean {
+function canShowSection(_permissionList: string[]): boolean {
   // حالت پیش‌فرض: همه sections نمایش داده می‌شوند
   return true
 }

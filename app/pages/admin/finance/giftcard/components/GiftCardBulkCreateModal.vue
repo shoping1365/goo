@@ -212,10 +212,15 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 
+interface GiftCard {
+  id?: number | string
+  [key: string]: unknown
+}
+
 // تعریف events
 const emit = defineEmits<{
   close: []
-  created: [giftCards: any[]]
+  created: [giftCards: GiftCard[]]
 }>()
 
 // Reactive data

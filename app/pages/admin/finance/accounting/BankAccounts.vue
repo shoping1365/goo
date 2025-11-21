@@ -61,14 +61,24 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-const bankAccounts = ref([
+
+interface BankAccount {
+  id?: number | string | null
+  bankName?: string
+  accountNumber?: string
+  sheba?: string
+  description?: string
+  [key: string]: unknown
+}
+
+const bankAccounts = ref<BankAccount[]>([
   { id: 1, bankName: 'ملت', accountNumber: '1234567890', sheba: 'IR820540102680020817909002', description: 'حساب جاری شرکت' },
   { id: 2, bankName: 'ملی', accountNumber: '9876543210', sheba: 'IR120170000000123456789001', description: 'حساب پس‌انداز' }
 ])
 const showAddModal = ref(false)
 const showEditModal = ref(false)
-const form = ref({ id: null, bankName: '', accountNumber: '', sheba: '', description: '' })
-const editAccount = (account: any) => {
+const form = ref<BankAccount>({ id: null, bankName: '', accountNumber: '', sheba: '', description: '' })
+const editAccount = (account: BankAccount) => {
   form.value = { ...account }
   showEditModal.value = true
 }
@@ -81,7 +91,7 @@ const updateAccount = () => {
   if (idx !== -1) bankAccounts.value[idx] = { ...form.value }
   closeModal()
 }
-const deleteAccount = (account: any) => {
+const deleteAccount = (account: BankAccount) => {
   if (confirm('آیا از حذف این حساب اطمینان دارید؟'))
     bankAccounts.value = bankAccounts.value.filter(a => a.id !== account.id)
 }

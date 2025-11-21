@@ -234,11 +234,20 @@ const performSearch = async () => {
       params.type = searchType.value
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const response = await $fetch('/api/search', { query: params }) as any
-    if (response?.success) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      searchResults.value = response.data.map((item: any) => ({
+    interface SearchItem {
+      id?: number | string
+      title?: string
+      image?: string
+      [key: string]: unknown
+    }
+    interface SearchResponse {
+      success?: boolean
+      data?: SearchItem[]
+      [key: string]: unknown
+    }
+    const response = await $fetch<SearchResponse>('/api/search', { query: params })
+    if (response?.success && response.data) {
+      searchResults.value = response.data.map((item: SearchItem) => ({
         ...item,
         image: resolveImage(item)
       }))

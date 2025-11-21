@@ -286,7 +286,7 @@ export const useWidgetRegistry = () => {
   /**
    * Validate widget config against schema
    */
-  const validateWidgetConfig = (type: string, config: Record<string, unknown>): boolean => {
+  const validateWidgetConfig = (type: string, _config: Record<string, unknown>): boolean => {
     const definition = getWidgetDefinition(type)
     if (!definition?.configSchema) {
       return true // No schema = valid

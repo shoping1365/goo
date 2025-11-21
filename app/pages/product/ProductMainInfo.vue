@@ -127,7 +127,7 @@ v-if="!product.call_for_price" :class="[
         <div v-if="product.sku" class="text-sm text-gray-500">
           شناسه کالا: <span class="font-mono bg-gray-100 px-2 py-0.5 rounded">{{ product.sku }}</span>
         </div>
-        <div v-if="product.category && product.category.name" class="text-sm text-gray-500 mt-1">
+        <div v-if="product.category && typeof product.category === 'object' && product.category.name" class="text-sm text-gray-500 mt-1">
           دسته‌بندی: 
           <NuxtLink 
             :to="`/product-category/${product.category.slug}`"
@@ -136,7 +136,7 @@ v-if="!product.call_for_price" :class="[
             {{ product.category.name }}
           </NuxtLink>
         </div>
-        <div v-if="product.brand && product.brand.name" class="text-sm text-gray-500 mt-1">
+        <div v-if="product.brand && typeof product.brand === 'object' && product.brand.name" class="text-sm text-gray-500 mt-1">
           برند: 
           <NuxtLink 
             :to="`/brand/${product.brand.slug}`"
@@ -241,17 +241,17 @@ interface Product {
   images?: (string | ProductImage | { url?: string; image_url?: string })[]
   main_image?: string
   in_stock?: boolean
-  stock_quantity: number
+  stock_quantity?: number
   sku?: string
-  category?: {
+  category?: string | {
     name: string
     slug: string
   }
-  brand?: {
+  brand?: string | {
     name: string
     slug: string
   }
-  show_stock_to_customer: boolean
+  show_stock_to_customer?: boolean
   track_inventory?: boolean
   call_for_price?: boolean
   disable_buy_button?: boolean
@@ -545,7 +545,6 @@ async function toggleFavorite() {
       
       if ((response as Record<string, unknown>).success) {
         isFavorite.value = false
-        // console.log('محصول از لیست علاقه‌مندی‌ها حذف شد:', props.product.id)
       }
     } else {
       // افزودن به لیست علاقه‌مندی‌ها
@@ -557,7 +556,6 @@ async function toggleFavorite() {
       
       if ((response as Record<string, unknown>).success) {
         isFavorite.value = true
-        // console.log('محصول به لیست علاقه‌مندی‌ها اضافه شد:', props.product.id)
       }
     }
   } catch (error) {
@@ -566,7 +564,6 @@ async function toggleFavorite() {
 }
 
 function addToList() {
-  // console.log('محصول به لیست اضافه شد:', props.product.id)
   // TODO: نمایش مودال انتخاب لیست یا ارسال درخواست به سرور
 }
 

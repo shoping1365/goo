@@ -425,7 +425,7 @@ const getStatusLabel = (status: string) => {
 // اعمال فیلترها
 const applyFilters = () => {
   // TODO: اعمال فیلترها
-  console.log('فیلترهای تراکنش اعمال شد:', filters.value)
+
 }
 
 // همگام‌سازی تراکنش‌های دوطرفه
@@ -433,12 +433,10 @@ const syncDualTransactions = async () => {
   try {
     isSyncing.value = true
     // TODO: همگام‌سازی تراکنش‌ها
-    console.log('همگام‌سازی تراکنش‌های دوطرفه شروع شد')
-    
+
     // شبیه‌سازی همگام‌سازی
     await new Promise(resolve => setTimeout(resolve, 3000))
-    
-    console.log('همگام‌سازی تراکنش‌های دوطرفه تکمیل شد')
+
   } catch (error) {
     console.error('خطا در همگام‌سازی تراکنش‌های دوطرفه:', error)
   } finally {
@@ -446,26 +444,31 @@ const syncDualTransactions = async () => {
   }
 }
 
+interface Transaction {
+  id?: number | string
+  [key: string]: unknown
+}
+
 // مشاهده تراکنش
-const viewTransaction = (transaction: any) => {
+const viewTransaction = (_transaction: Transaction) => {
   // TODO: مشاهده جزئیات تراکنش
-  console.log('مشاهده تراکنش:', transaction)
+
 }
 
 // همگام‌سازی مجدد تراکنش
-const resyncTransaction = async (transaction: any) => {
+const resyncTransaction = async (_transaction: Transaction) => {
   try {
     // TODO: همگام‌سازی مجدد تراکنش
-    console.log('همگام‌سازی مجدد تراکنش:', transaction)
+
   } catch (error) {
     console.error('خطا در همگام‌سازی مجدد:', error)
   }
 }
 
 // حل تضاد
-const resolveConflict = (transaction: any) => {
+const resolveConflict = (_transaction: Transaction) => {
   // TODO: حل تضاد تراکنش
-  console.log('حل تضاد تراکنش:', transaction)
+
 }
 
 // صفحه قبلی

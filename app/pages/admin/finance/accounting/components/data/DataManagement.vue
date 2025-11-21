@@ -79,7 +79,7 @@ const activeTab = ref('backup')
 
 // ایجاد پشتیبان
 const createBackup = () => {
-  console.log('ایجاد پشتیبان')
+
 }
 </script>
 

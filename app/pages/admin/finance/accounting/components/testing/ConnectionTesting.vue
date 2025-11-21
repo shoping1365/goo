@@ -362,15 +362,20 @@ const getStatusText = (status: string) => {
 
 // عملیات
 const runConnectionTests = () => {
-  console.log('اجرای تست‌های اتصال')
+
 }
 
-const testConnection = (connection: any) => {
-  console.log('تست اتصال:', connection)
+interface Connection {
+  id: number | string
+  [key: string]: unknown
 }
 
-const viewConnectionDetails = (connection: any) => {
-  console.log('مشاهده جزئیات اتصال:', connection)
+const testConnection = (_connection: Connection) => {
+
+}
+
+const viewConnectionDetails = (_connection: Connection) => {
+
 }
 </script>
 

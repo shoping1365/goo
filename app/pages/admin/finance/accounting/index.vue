@@ -223,7 +223,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission: _hasPermission } = useAuth()
 
 // تعریف تب‌های اصلی - با توجه به ماهیت کانتینرها دسته‌بندی شده
 const tabs = [

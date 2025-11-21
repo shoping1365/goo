@@ -600,8 +600,8 @@
                   </div>
                   <div class="flex-1 min-w-0">
                     <div class="text-xs text-gray-500">دستگاه / مرورگر</div>
-                    <div class="text-sm font-medium text-gray-900 truncate" :title="(selectedQuestion as any).user_agent || ((selectedQuestion as any).device_info && JSON.stringify((selectedQuestion as any).device_info))">
-                      {{ (selectedQuestion as any).user_agent || 'نامشخص' }}
+                    <div class="text-sm font-medium text-gray-900 truncate" :title="selectedQuestion?.user_agent || (selectedQuestion?.device_info && JSON.stringify(selectedQuestion.device_info)) || ''">
+                      {{ selectedQuestion?.user_agent || 'نامشخص' }}
                     </div>
                   </div>
                 </div>
@@ -959,8 +959,7 @@ interface Question {
   customer_name?: string; customer_mobile?: string; customer_id?: number | null;
   created_at?: string;
   user_agent?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  device_info?: any;
+  device_info?: Record<string, unknown>;
 }
 
 // Component State

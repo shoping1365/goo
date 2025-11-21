@@ -133,12 +133,12 @@ const sidebarClasses = computed(() => {
 })
 
 // Helper functions
-const canShowMenu = (path: string) => {
+const canShowMenu = (_path: string) => {
   // TODO: Implement permission checking
   return true
 }
 
-const canShowSection = (permissions: string[]) => {
+const canShowSection = (_permissions: string[]) => {
   // TODO: Implement section permission checking
   return true
 }

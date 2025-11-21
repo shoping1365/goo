@@ -143,7 +143,7 @@ const deleteMenu = async (id) => {
   try {
     await deleteMenuFromAPI(id)
     // Use console instead of alert
-    console.log('منو با موفقیت حذف شد')
+
   } catch (error) {
     console.error('Error deleting menu:', error)
     // Use console instead of alert

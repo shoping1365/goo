@@ -151,7 +151,7 @@ type SMSGateway = {
   pattern_based?: boolean
   created_at?: string
   updated_at?: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 // دریافت لیست درگاه‌ها از API
@@ -205,7 +205,7 @@ const successRate = computed(() => {
   return total > 0 ? Math.round((success / total) * 100) : 0
 })
 
-const activeTab = ref('status')
+const _activeTab = ref('status')
 
 const handleGatewayDeleted = () => {
   fetchGateways()

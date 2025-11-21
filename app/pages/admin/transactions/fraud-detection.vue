@@ -1976,7 +1976,6 @@ const generateReport = () => {
   }
   
   // اینجا می‌توانید منطق تولید گزارش را اضافه کنید
-  // console.log('Generating report with data:', reportData)
 }
 
 const downloadQuickReport = (period, format) => {

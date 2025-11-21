@@ -257,7 +257,7 @@ const detailedDifferences = ref([
 ])
 
 // فیلتر کردن تفاوت‌ها
-const filteredDifferences = computed(() => {
+const _filteredDifferences = computed(() => {
   return detailedDifferences.value.filter(diff => 
     activeDiffFilters.value.includes(diff.type)
   )
@@ -300,7 +300,7 @@ const toggleDiffFilter = (filterType: string) => {
 }
 
 const exportComparison = () => {
-  console.log('خروجی مقایسه نسخه‌ها')
+
 }
 </script>
 

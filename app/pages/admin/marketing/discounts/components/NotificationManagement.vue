@@ -386,7 +386,11 @@ import { ref, reactive, computed } from 'vue'
 
 const activeTab = ref('notifications')
 const showNotificationForm = ref(false)
-const editingNotification = ref<any>(null)
+interface NotificationData {
+  id?: number | string
+  [key: string]: unknown
+}
+const editingNotification = ref<NotificationData | null>(null)
 const selectedNotifications = ref<number[]>([])
 const filterType = ref('')
 const filterStatus = ref('')
@@ -534,19 +538,51 @@ const getStatusText = (status: string): string => {
   return texts[status as keyof typeof texts] || status
 }
 
-const editNotification = (notification: any) => {
+interface Notification {
+  id?: number | string
+  title?: string
+  [key: string]: unknown
+}
+
+const editNotification = (notification: Notification) => {
   editingNotification.value = notification
   Object.assign(form, notification)
   showNotificationForm.value = true
 }
 
-const duplicateNotification = (notification: any) => {
+const duplicateNotification = (notification: Notification) => {
   const duplicate = { ...notification, id: Date.now(), title: `${notification.title} (کپی)` }
   notifications.value.unshift(duplicate)
 }
 
-const deleteNotification = async (notification: any) => {
-  if (confirm(`آیا از حذف اعلان "${notification.title}" اطمینان دارید؟`)) {
+interface NotificationItem {
+  id?: number | string
+  title?: string
+  [key: string]: unknown
+}
+
+interface Reminder {
+  id?: number | string
+  title?: string
+  [key: string]: unknown
+}
+
+interface Timezone {
+  [key: string]: unknown
+}
+
+interface Behavior {
+  [key: string]: unknown
+}
+
+interface Template {
+  name?: string
+  content?: string
+  [key: string]: unknown
+}
+
+const deleteNotification = async (notification: NotificationItem) => {
+  if (confirm(`آیا از حذف اعلان "${notification.title || 'نامشخص'}" اطمینان دارید؟`)) {
     try {
       const index = notifications.value.findIndex(n => n.id === notification.id)
       if (index !== -1) {
@@ -588,13 +624,13 @@ const bulkAction = (action: string) => {
   }
 }
 
-const editReminder = (reminder: any) => {
+const editReminder = (_reminder: Reminder) => {
   // پیاده‌سازی ویرایش یادآوری
-  console.log('ویرایش یادآوری:', reminder)
+
 }
 
-const deleteReminder = async (reminder: any) => {
-  if (confirm(`آیا از حذف یادآوری "${reminder.title}" اطمینان دارید؟`)) {
+const deleteReminder = async (reminder: Reminder) => {
+  if (confirm(`آیا از حذف یادآوری "${reminder.title || 'نامشخص'}" اطمینان دارید؟`)) {
     try {
       const index = reminders.value.findIndex(r => r.id === reminder.id)
       if (index !== -1) {
@@ -606,25 +642,25 @@ const deleteReminder = async (reminder: any) => {
   }
 }
 
-const updateTimezone = (timezone: any) => {
+const updateTimezone = (_timezone: Timezone) => {
   // پیاده‌سازی به‌روزرسانی منطقه زمانی
-  console.log('به‌روزرسانی منطقه زمانی:', timezone)
+
 }
 
-const updateBehavior = (behavior: any) => {
+const updateBehavior = (_behavior: Behavior) => {
   // پیاده‌سازی به‌روزرسانی رفتار
-  console.log('به‌روزرسانی رفتار:', behavior)
+
 }
 
-const useTemplate = (template: any) => {
+const useTemplate = (template: Template) => {
   form.title = template.name
   form.content = template.content
   showNotificationForm.value = true
 }
 
-const editTemplate = (template: any) => {
+const editTemplate = (_template: Template) => {
   // پیاده‌سازی ویرایش قالب
-  console.log('ویرایش قالب:', template)
+
 }
 
 const handleSubmit = async () => {

@@ -78,9 +78,9 @@
 import { inject, ref, type Ref } from 'vue'
 
 // Inject functions and data from parent
-const createdLayers = inject<Ref<any[]>>('createdLayers', ref([]))
+const createdLayers = inject<Ref<unknown[]>>('createdLayers', ref([]))
 const showLayerSettings = inject<Ref<boolean>>('showLayerSettings')!
-const editLayer = inject<(layer: any) => void>('editLayer')!
+const editLayer = inject<(layer: unknown) => void>('editLayer')!
 const deleteLayer = inject<(id: string) => void>('deleteLayer')!
 const clearAllLayers = inject<() => void>('clearAllLayers')!
 
@@ -104,7 +104,7 @@ function handleDragEnd() {
   document.body.classList.remove('is-dragging-layer')
 }
 
-function handleDragOver(index: number, event: DragEvent) {
+function handleDragOver(index: number, _event: DragEvent) {
   if (draggingIndex.value === null || draggingIndex.value === index) return
   dragOverIndex.value = index
 }

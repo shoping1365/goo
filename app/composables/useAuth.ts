@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router'
 interface LoginResponse {
   token: string
   refresh_token: string
-  user: any
+  user: Record<string, unknown>
 }
 
 export const useAuth = () => {
@@ -32,21 +32,18 @@ export const useAuth = () => {
     error.value = ''
 
     try {
-      // console.log('🔐 Login attempt with:', email)
-
       const response = await $fetch<LoginResponse>('/api/auth/login-password', {
         method: 'POST',
         body: { email, password },
       })
 
-      // console.log('🔐 Login response:', response)
-
       authStore.setTokens(response.token, response.token) // استفاده از token برای refresh_token هم
       authStore.setUser(response.user)
 
       await router.push('/admin')
-    } catch (err: any) {
-      console.error('❌ Login error:', err)
+    } catch (err: unknown) {
+      const error = err as { message?: string; [key: string]: unknown }
+      console.error('❌ Login error:', error)
       error.value = err.data?.error || err.statusMessage || 'ورود ناموفق بود'
     } finally {
       loading.value = false
@@ -68,8 +65,9 @@ export const useAuth = () => {
       authStore.setUser(response.user)
 
       await router.push('/dashboard')
-    } catch (err: any) {
-      error.value = err.data?.error || 'تایید کد ناموفق بود'
+    } catch (err: unknown) {
+      const errorObj = err as { data?: { error?: string }; [key: string]: unknown }
+      error.value = errorObj.data?.error || 'تایید کد ناموفق بود'
     } finally {
       loading.value = false
     }
@@ -104,7 +102,7 @@ export const useAuth = () => {
 
       authStore.setAccessToken(response.token)
       return true
-    } catch (err) {
+    } catch (_err) {
       authStore.clearAuth()
       await router.push('/auth/login')
       return false
@@ -114,7 +112,7 @@ export const useAuth = () => {
   // دریافت اطلاعات کاربر جاری
   const fetchCurrentUser = async () => {
     try {
-      const response: any = await $fetch('/api/auth/me', {
+      const response = await $fetch<Record<string, unknown>>('/api/auth/me', {
         headers: {
           Authorization: `Bearer ${authStore.accessToken}`,
         },

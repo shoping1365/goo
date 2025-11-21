@@ -296,7 +296,7 @@ const copyLog = (log: Log) => {
   alert('لاگ کپی شد')
 }
 
-const reportBug = (log: Log) => {
+const reportBug = (_log: Log) => {
   // Report bug functionality
   alert('گزارش باگ ارسال شد')
 }

@@ -314,12 +314,19 @@ const createBackup = () => {
   }
 }
 
-const downloadBackup = (backup: any) => {
-  alert('دانلود بکاپ: ' + formatDate(backup.date) + ' - ' + formatTime(backup.date))
+interface Backup {
+  date?: Date
+  [key: string]: unknown
+}
+
+const downloadBackup = (backup: Backup) => {
+  if (backup.date) {
+    alert('دانلود بکاپ: ' + formatDate(backup.date) + ' - ' + formatTime(backup.date))
+  }
   // اینجا می‌توانید منطق دانلود را اضافه کنید
 }
 
-const restoreBackup = (backup: any) => {
+const restoreBackup = (_backup: Backup) => {
   if (confirm('آیا از بازیابی این بکاپ اطمینان دارید؟ اطلاعات فعلی جایگزین خواهند شد.')) {
     alert('بازیابی انجام شد!')
     // اینجا می‌توانید منطق بازیابی را اضافه کنید

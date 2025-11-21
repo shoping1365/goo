@@ -259,7 +259,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // Reactive data
 const stats = ref({
@@ -366,18 +366,18 @@ const saveConfiguration = async () => {
   try {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000))
-    console.log('Configuration saved:', config.value)
+
   } catch (error) {
     console.error('Error saving configuration:', error)
   }
 }
 
-const downloadBackup = (id) => {
-  console.log('Downloading backup:', id)
+const downloadBackup = (_id) => {
+
 }
 
-const restoreBackup = (id) => {
-  console.log('Restoring backup:', id)
+const restoreBackup = (_id) => {
+
 }
 
 const deleteBackup = (id) => {

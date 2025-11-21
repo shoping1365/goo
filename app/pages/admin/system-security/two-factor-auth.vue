@@ -916,7 +916,6 @@ const clearFilters = () => {
 // توابع عملیات
 const viewUser = (_userId) => {
   // مشاهده جزئیات کاربر
-  // console.log('مشاهده کاربر:', userId)
 }
 
 const toggleTwoFactor = (userId) => {
@@ -925,7 +924,6 @@ const toggleTwoFactor = (userId) => {
   if (user) {
     user.status = user.status === 'active' ? 'inactive' : 'active'
   }
-  // console.log('تغییر وضعیت احراز هویت دو مرحله‌ای برای کاربر:', userId)
 }
 
 // توابع فرم ایجاد تایید دو مرحله‌ای
@@ -952,7 +950,6 @@ const createTwoFactor = async () => {
     }
 
     // شبیه‌سازی ارسال درخواست به سرور
-    // console.log('ایجاد تایید دو مرحله‌ای:', newTwoFactor.value)
     
     // نمایش پیام موفقیت
     alert('تایید دو مرحله‌ای با موفقیت ایجاد شد!')
@@ -1051,10 +1048,6 @@ const activateTwoFactor = async () => {
     }
 
     // شبیه‌سازی فعال‌سازی
-    /* console.log('فعال‌سازی تایید دو مرحله‌ای:', {
-      method: selectedMethod.value,
-      data: setupData.value
-    }) */
 
     // نمایش پیام موفقیت
     alert('تایید دو مرحله‌ای با موفقیت فعال شد!')
@@ -1123,7 +1116,6 @@ const exportToExcel = () => {
     link.click()
     document.body.removeChild(link)
 
-    // console.log('خروجی اکسل با موفقیت ایجاد شد')
     alert('فایل اکسل با موفقیت دانلود شد!')
     
   } catch (error) {

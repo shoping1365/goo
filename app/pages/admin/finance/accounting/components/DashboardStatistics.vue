@@ -84,6 +84,7 @@ const performanceData = ref({
 
 // رفرنس نمودار
 const performanceChart = ref(null)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let chartInstance: any = null
 
 // رسم نمودار

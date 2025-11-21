@@ -281,15 +281,24 @@ const topGateways = ref<TopGateway[]>([])
 const fetchTopGateways = async () => {
   try {
     // دریافت درگاه‌های فعال
-    const response = await $fetch('/api/payment-gateways?status=active')
+    const response = await $fetch('/api/payment-gateways?status=active') as { success?: boolean; data?: unknown[] }
     
-    if ((response as any).success && (response as any).data) {
+    interface Gateway {
+      id?: number | string
+      name?: string
+      english_name?: string
+      status?: string
+      today_transactions?: number
+      [key: string]: unknown
+    }
+    
+    if (response.success && Array.isArray(response.data)) {
       // فیلتر کردن فقط درگاه‌های فعال و مرتب‌سازی بر اساس تراکنش‌های امروز
-      const activeGateways = (response as any).data
-        .filter((gateway: any) => gateway.status === 'active')
-        .sort((a: any, b: any) => (b.today_transactions || 0) - (a.today_transactions || 0))
+      const activeGateways = (response.data as Gateway[])
+        .filter((gateway: Gateway) => gateway.status === 'active')
+        .sort((a: Gateway, b: Gateway) => (b.today_transactions || 0) - (a.today_transactions || 0))
         .slice(0, 5)
-        .map((gateway: any, index: number) => ({
+        .map((gateway: Gateway, index: number) => ({
           id: gateway.id,
           name: gateway.name,
           englishName: gateway.english_name || gateway.name,

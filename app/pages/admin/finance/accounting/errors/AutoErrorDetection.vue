@@ -465,31 +465,36 @@ const getStatusLabel = (status: string) => {
 const startMonitoring = () => {
   isMonitoring.value = !isMonitoring.value
   // TODO: شروع/توقف نظارت
-  console.log('نظارت:', isMonitoring.value ? 'شروع شد' : 'متوقف شد')
+
 }
 
 // تنظیمات تشخیص
 const configureDetection = () => {
   // TODO: باز کردن مودال تنظیمات
-  console.log('باز کردن تنظیمات تشخیص')
+
+}
+
+interface Error {
+  id?: number | string
+  [key: string]: unknown
 }
 
 // حل خطا
-const resolveError = (error: any) => {
+const resolveError = (_error: Error) => {
   // TODO: حل خطا
-  console.log('حل خطا:', error)
+
 }
 
 // نادیده گرفتن خطا
-const ignoreError = (error: any) => {
+const ignoreError = (_error: Error) => {
   // TODO: نادیده گرفتن خطا
-  console.log('نادیده گرفتن خطا:', error)
+
 }
 
 // مشاهده جزئیات خطا
-const viewErrorDetails = (error: any) => {
+const viewErrorDetails = (_error: Error) => {
   // TODO: نمایش جزئیات خطا
-  console.log('جزئیات خطا:', error)
+
 }
 </script>
 

@@ -17,7 +17,7 @@ interface SearchLog {
   resultsCount: number
   clickedResults: number
   searchDuration: number
-  filters?: Record<string, any>
+  filters?: Record<string, string | number | boolean>
   userAgent?: string
   ip?: string
 }
@@ -33,9 +33,7 @@ interface SearchStats {
   popularFilters: Record<string, number>
 }
 
-import { useApiClient } from '@/utils/api'
-
-const { api } = useApiClient()
+// API client removed - using $fetch directly
 const isLoading = ref(false)
 const searchLogs = ref<SearchLog[]>([])
 const stats = ref<SearchStats | null>(null)

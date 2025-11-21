@@ -606,15 +606,14 @@ const ensureAutoDefaults = () => {
 
           // helper to switch tabs and notify parent
           const switchTab = (tab: 'desktop' | 'mobile') => {
-            console.log('switchTab called with:', tab, 'isMobileEnabled:', props.isMobileEnabled)
-            
+
             // اگر تب موبایل غیرفعال است، اجازه سوییچ نده
             if (tab === 'mobile' && !props.isMobileEnabled) {
-              console.log('Mobile tab is disabled, cannot switch')
+
               return
             }
             activeTab.value = tab
-            console.log('Emitting change-device event with:', tab)
+
             emit('change-device', tab)
           }
 
@@ -631,8 +630,8 @@ const ensureAutoDefaults = () => {
           })
 
           // Collections split per device
-          const desktopSlides = computed(() => (props.sliderConfig?.slides ?? []))
-          const desktopBanners = computed(() => (props.sliderConfig?.side_banners ?? []))
+          const _desktopSlides = computed(() => (props.sliderConfig?.slides ?? []))
+          const _desktopBanners = computed(() => (props.sliderConfig?.side_banners ?? []))
           // آرایه‌های جداگانه برای موبایل
           const mobileSlides = computed(() => (props.sliderConfig?.mobile_slides ?? []))
           const mobileBanners = computed(() => (props.sliderConfig?.mobile_side_banners ?? []))
@@ -694,7 +693,7 @@ const ensureAutoDefaults = () => {
             resolveNumeric(props.sliderConfig?.mobile_slider_width) ?? DEFAULT_PREVIEW_MAX_WIDTH
           ))
 
-          const resolvedMobileSliderHeight = computed(() => {
+          const _resolvedMobileSliderHeight = computed(() => {
             if (props.sliderConfig?.mobile_height === 'auto') {
               return null
             }

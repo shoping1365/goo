@@ -220,9 +220,9 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
-import MobileNavigationPreview from '~/components/widgets/MobileNavigationPreview.vue'
+import { onMounted, reactive, ref } from 'vue'
 import NavigationItemSelector from '~/components/admin/NavigationItemSelector.vue'
+import MobileNavigationPreview from '~/components/widgets/MobileNavigationPreview.vue'
 
 // Meta
 definePageMeta({
@@ -230,7 +230,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // Route params
 const route = useRoute()
@@ -267,12 +267,8 @@ const fetchNavigation = async () => {
       credentials: 'include'
     })
     
-    console.log('Raw API response:', data)
-    
     if (data.success) {
       const navigation = data.data.data
-      console.log('Navigation data received:', navigation)
-      console.log('Navigation name:', navigation.name)
       formData.name = navigation.name || ''
       formData.description = navigation.description || ''
       formData.platform = navigation.platform || 'mobile'
@@ -306,7 +302,6 @@ const fetchNavigation = async () => {
 const updateNavigation = async () => {
   try {
     updateLoading.value = true
-    console.log('Starting update...')
 
     const payload = {
       ...formData,
@@ -315,22 +310,15 @@ const updateNavigation = async () => {
       navigation_items: JSON.stringify(formData.navigation_items)
     }
 
-    console.log('Payload:', payload)
-
     const responseData = await $fetch(`/api/admin/mobile-app-navigation-settings/${navigationId}`, {
       method: 'PUT',
       credentials: 'include',
       body: payload
     })
 
-    console.log('Update response:', responseData)
-
     if (responseData.success) {
-      console.log('Update successful, navigating...')
       // نمایش پیام موفقیت
       await navigateTo('/admin/content/mobile-app-navigation-management')
-    } else {
-      console.log('Update failed:', responseData)
     }
   } catch (err) {
     console.error('خطا در به‌روزرسانی ناوبری:', err)

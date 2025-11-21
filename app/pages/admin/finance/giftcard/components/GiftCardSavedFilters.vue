@@ -272,13 +272,21 @@
 import { computed, onMounted, reactive, ref } from 'vue';
 
 // Props
+interface CurrentFilters {
+  [key: string]: unknown
+}
+
 const props = defineProps<{
-  currentFilters: any
+  currentFilters: CurrentFilters
 }>()
 
 // Emits
+interface FilterCriteria {
+  [key: string]: unknown
+}
+
 const emit = defineEmits<{
-  'apply-filter': [filters: any]
+  'apply-filter': [filters: FilterCriteria]
 }>()
 
 // Reactive data
@@ -394,12 +402,12 @@ const shareLink = computed(() => {
 })
 
 // Methods
-const applyFilter = (filter: any) => {
+const applyFilter = (filter: SavedFilter) => {
   emit('apply-filter', filter.criteria)
-  console.log('فیلتر اعمال شد:', filter.name)
+
 }
 
-const editFilter = (filter: any) => {
+const editFilter = (filter: SavedFilter) => {
   selectedFilter.value = filter
   Object.assign(newFilter, {
     name: filter.name,
@@ -412,17 +420,17 @@ const editFilter = (filter: any) => {
   showSaveFilterModal.value = true
 }
 
-const deleteFilter = (filter: any) => {
+const deleteFilter = (filter: SavedFilter) => {
   if (confirm(`آیا مطمئن هستید که می‌خواهید فیلتر "${filter.name}" را حذف کنید؟`)) {
     const index = savedFilters.value.findIndex(f => f.id === filter.id)
     if (index > -1) {
       savedFilters.value.splice(index, 1)
     }
-    console.log('فیلتر حذف شد:', filter.name)
+
   }
 }
 
-const shareFilter = (filter: any) => {
+const shareFilter = (filter: SavedFilter) => {
   selectedFilter.value = filter
   showShareModal.value = true
 }
@@ -455,8 +463,7 @@ const saveFilter = () => {
     isDefault: false,
     criteria: {}
   })
-  
-  console.log('فیلتر ذخیره شد:', filter.name)
+
 }
 
 const copyShareLink = () => {
@@ -470,8 +477,7 @@ const shareWithUsers = () => {
     alert('لطفاً حداقل یک کاربر انتخاب کنید')
     return
   }
-  
-  console.log('فیلتر با کاربران زیر اشتراک‌گذاری شد:', selectedUsers.value)
+
   showShareModal.value = false
   selectedUsers.value = []
 }
@@ -504,7 +510,7 @@ const formatDate = (date: Date) => {
 
 // Lifecycle
 onMounted(() => {
-  console.log('Gift card saved filters component mounted')
+
 })
 </script>
 

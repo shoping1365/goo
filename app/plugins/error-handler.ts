@@ -1,8 +1,15 @@
 // Global error handler plugin
 declare const defineNuxtPlugin: (plugin: (nuxtApp: unknown) => void | Promise<void>) => { provide?: Record<string, unknown> }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default defineNuxtPlugin((nuxtApp: any) => {
+interface NuxtApp {
+  vueApp: {
+    config: {
+      errorHandler?: (error: unknown, instance: unknown, info: string) => void
+    }
+  }
+  [key: string]: unknown
+}
+export default defineNuxtPlugin((nuxtApp: NuxtApp) => {
   nuxtApp.vueApp.config.errorHandler = (_error: unknown, _instance: unknown, _info: string) => {
     // Log error
     // console.error('Global error:', error)

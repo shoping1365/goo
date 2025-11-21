@@ -79,7 +79,7 @@ const activeTab = ref('versions')
 
 // ایجاد نسخه پشتیبان
 const createBackup = () => {
-  console.log('ایجاد نسخه پشتیبان جدید')
+
 }
 </script>
 

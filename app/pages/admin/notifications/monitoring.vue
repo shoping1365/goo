@@ -368,7 +368,7 @@ declare const definePageMeta: (meta: { layout?: string; middleware?: string | st
 <script setup lang="ts">
 import Pagination from '~/components/admin/common/Pagination.vue'
 import TemplateCard from '~/components/common/TemplateCard.vue'
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 
 definePageMeta({
@@ -377,7 +377,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission: _hasPermission } = useAuth()
 
 // تعریف interface ها
 interface Stats {
@@ -398,6 +398,22 @@ interface Gateway {
   name: string
   status: 'active' | 'inactive'
   responseTime: number
+  type?: string
+  priority?: number
+  is_active: boolean
+  balance?: number
+  credit?: number
+  [key: string]: unknown
+}
+
+interface SMSMessage {
+  id?: string | number
+  created_at?: string
+  sent_at?: string
+  message?: string
+  phone_number?: string
+  status?: string
+  [key: string]: unknown
 }
 
 
@@ -490,23 +506,34 @@ const smsList = ref<SmsRecord[]>([])
 // لیست SMS های ارسالی بر اساس درگاه‌ها
 const gatewaySmsData = ref<GatewaySmsData[]>([])
 
-// درگاه‌های فعال با اولویت
-const activeGateways = ref<any[]>([])
+interface Gateway {
+  id: number
+  name: string
+  type: string
+  priority?: number
+  is_active: boolean
+  balance?: number
+  credit?: number
+  [key: string]: unknown
+}
 
-const loading = ref(false)
-const smsHistory = computed(() => {
+// درگاه‌های فعال با اولویت
+const activeGateways = ref<Gateway[]>([])
+
+const _loading = ref(false)
+const _smsHistory = computed(() => {
   // جمع‌آوری همه پیامک‌ها از همه درگاه‌ها
   return gatewaySmsData.value.flatMap(g => g.smsList)
 })
 
 // Computed properties
-const filteredSmsList = computed(() => {
+const _filteredSmsList = computed(() => {
   if (smsFilter.value === 'all' || smsFilter.value === '') return smsList.value
   return smsList.value.filter(sms => sms.status === smsFilter.value)
 })
 
 // فیلتر کردن SMS های هر درگاه
-const filteredGatewaySmsData = computed(() => {
+const _filteredGatewaySmsData = computed(() => {
   return gatewaySmsData.value.map(gatewayData => {
     const filteredList = smsFilter.value === 'all' || smsFilter.value === '' 
       ? gatewayData.smsList 
@@ -544,26 +571,20 @@ const filteredGatewaySmsData = computed(() => {
 
 // نمایش درگاه‌ها (فقط درگاه‌های روشن)
 const sortedGatewaySmsData = computed(() => {
-  console.log('🔍 sortedGatewaySmsData computed - gatewaySmsData.length:', gatewaySmsData.value.length)
-  console.log('🔍 sortedGatewaySmsData computed - activeGateways.length:', activeGateways.value.length)
-  console.log('🔍 sortedGatewaySmsData computed - activeGateways:', activeGateways.value)
-  console.log('🔍 sortedGatewaySmsData computed - gatewaySmsData:', gatewaySmsData.value)
-  
   // اگر gatewaySmsData خالی است، از activeGateways استفاده کن
   if (gatewaySmsData.value.length === 0 && activeGateways.value.length > 0) {
     const filteredActiveGateways = activeGateways.value.filter(gateway => gateway.is_active)
-    console.log('🔍 filteredActiveGateways:', filteredActiveGateways)
     
     const result = filteredActiveGateways.map(gateway => ({
-              gateway: {
-          id: gateway.id,
-          name: gateway.name,
-          type: gateway.type,
-          priority: gateway.priority || 1,
-          is_active: gateway.is_active,
-          balance: gateway.balance || 0,
-          credit: gateway.credit || 0
-        },
+      gateway: {
+        id: gateway.id,
+        name: gateway.name,
+        type: gateway.type,
+        priority: gateway.priority || 1,
+        is_active: gateway.is_active,
+        balance: gateway.balance || 0,
+        credit: gateway.credit || 0
+      },
       smsList: [], // لیست خالی
       stats: {
         total: 0,
@@ -579,7 +600,6 @@ const sortedGatewaySmsData = computed(() => {
       }
     }))
     
-    console.log('🔍 sortedGatewaySmsData result:', result)
     return result
   }
   
@@ -587,12 +607,10 @@ const sortedGatewaySmsData = computed(() => {
   if (gatewaySmsData.value.length > 0) {
     // فیلتر کردن فقط درگاه‌های روشن
     const filteredResult = gatewaySmsData.value.filter(gatewayData => gatewayData.gateway.is_active)
-    console.log('🔍 gatewaySmsData filtered result:', filteredResult)
     return filteredResult
   }
   
   // اگر هیچ داده‌ای نیست، آرایه خالی برگردان
-  console.log('🔍 هیچ داده‌ای برای نمایش وجود ندارد')
   return []
 })
 
@@ -600,7 +618,7 @@ const sortedGatewaySmsData = computed(() => {
 const loadGatewaysStatus = async () => {
   try {
     // دریافت لیست درگاه‌ها از API
-    const gatewaysResponse = await $fetch<{status: string, data: any[]}>('/api/sms-gateways', {
+    const gatewaysResponse = await $fetch<{status: string, data: Gateway[]}>('/api/sms-gateways', {
       method: 'GET'
     })
     
@@ -659,14 +677,10 @@ const dismissAlert = (alertId: number) => {
 // توابع مربوط به SMS
 const refreshSmsData = async () => {
   try {
-    console.log('🔄 refreshSmsData شروع شد')
-    console.log('🔄 activeGateways در refreshSmsData:', activeGateways.value)
-    
     // ایجاد ساختار اولیه برای درگاه‌ها و بارگذاری داده‌های SMS
     const gatewayData: GatewaySmsData[] = []
     
     for (const gateway of activeGateways.value) {
-      console.log('🔄 پردازش درگاه:', gateway)
       
       // ایجاد ساختار اولیه برای هر درگاه
       const gatewayItem = {
@@ -696,13 +710,21 @@ const refreshSmsData = async () => {
       // بارگذاری خودکار داده‌های SMS بر اساس نوع درگاه
       try {
         if (gateway.type === 'ippanel') {
-          console.log('📡 بارگذاری خودکار پیامک‌های خروجی IPPanel...')
-          const response = await $fetch<{status: string, data: any}>(`/api/ippanel-outbox?page=1&limit=${gatewayItem.pagination.itemsPerPage}`, {
+          interface IPPanelResponse {
+            status: string
+            data: {
+              messages?: SMSMessage[]
+              pagination?: {
+                total?: number
+              }
+            }
+          }
+          const response = await $fetch<IPPanelResponse>(`/api/ippanel-outbox?page=1&limit=${gatewayItem.pagination.itemsPerPage}`, {
             method: 'GET'
           })
           
           if (response.status === 'success' && response.data && response.data.messages) {
-            const smsList = response.data.messages.map((msg: any) => ({
+            const smsList = response.data.messages.map((msg: SMSMessage) => ({
               id: msg.id || Math.random(),
               timestamp: msg.created_at,
               sent_at: msg.sent_at,
@@ -716,25 +738,32 @@ const refreshSmsData = async () => {
             }))
             
             const total = response.data.pagination?.total || smsList.length
-            const success = smsList.filter((sms: any) => sms.status === 'finish').length
-            const failed = smsList.filter((sms: any) => sms.status === 'error').length
-            const pending = smsList.filter((sms: any) => sms.status === 'sending').length
+            const success = smsList.filter((sms) => sms.status === 'finish').length
+            const failed = smsList.filter((sms) => sms.status === 'error').length
+            const pending = smsList.filter((sms) => sms.status === 'sending').length
             const successRate = total > 0 ? Math.round((success / total) * 100 * 100) / 100 : 0
             
             gatewayItem.smsList = smsList
             gatewayItem.stats = { total, success, failed, pending, successRate }
             gatewayItem.pagination.totalPages = Math.ceil(total / gatewayItem.pagination.itemsPerPage)
             
-            console.log('✅ داده‌های IPPanel بارگذاری شد:', total, 'پیامک')
           }
         } else if (gateway.type === 'farazsms') {
-          console.log('📡 بارگذاری خودکار پیامک‌های خروجی فراز اس‌ام‌اس...')
-          const response = await $fetch<{status: string, data: any}>(`/api/farazsms-outbox?page=1&limit=${gatewayItem.pagination.itemsPerPage}`, {
+          interface FarazSMSResponse {
+            status: string
+            data: {
+              messages?: SMSMessage[]
+              pagination?: {
+                total?: number
+              }
+            }
+          }
+          const response = await $fetch<FarazSMSResponse>(`/api/farazsms-outbox?page=1&limit=${gatewayItem.pagination.itemsPerPage}`, {
             method: 'GET'
           })
           
           if (response.status === 'success' && response.data && response.data.messages) {
-            const smsList = response.data.messages.map((msg: any) => ({
+            const smsList = response.data.messages.map((msg: SMSMessage) => ({
               id: msg.id || Math.random(),
               timestamp: msg.created_at,
               sent_at: msg.sent_at,
@@ -748,16 +777,15 @@ const refreshSmsData = async () => {
             }))
             
             const total = response.data.pagination?.total || smsList.length
-            const success = smsList.filter((sms: any) => sms.status === 'finish').length
-            const failed = smsList.filter((sms: any) => sms.status === 'error').length
-            const pending = smsList.filter((sms: any) => sms.status === 'sending').length
+            const success = smsList.filter((sms) => sms.status === 'finish').length
+            const failed = smsList.filter((sms) => sms.status === 'error').length
+            const pending = smsList.filter((sms) => sms.status === 'sending').length
             const successRate = total > 0 ? Math.round((success / total) * 100 * 100) / 100 : 0
             
             gatewayItem.smsList = smsList
             gatewayItem.stats = { total, success, failed, pending, successRate }
             gatewayItem.pagination.totalPages = Math.ceil(total / gatewayItem.pagination.itemsPerPage)
             
-            console.log('✅ داده‌های فراز اس‌ام‌اس بارگذاری شد:', total, 'پیامک')
           }
         }
       } catch (error) {
@@ -767,11 +795,8 @@ const refreshSmsData = async () => {
       gatewayData.push(gatewayItem)
     }
     
-    console.log('🔄 gatewayData ایجاد شده:', gatewayData)
-    
     // ذخیره داده‌ها
     gatewaySmsData.value = gatewayData
-    console.log('🔄 gatewaySmsData ذخیره شد:', gatewaySmsData.value)
     
   } catch (error) {
     console.error('خطا در بروزرسانی داده‌های SMS:', error)
@@ -820,23 +845,20 @@ const getMeliPayamakInfo = async (gatewayId: number): Promise<{remaining_sms: nu
 // بارگذاری درگاه‌های فعال
 const loadActiveGateways = async () => {
   try {
-    console.log('🔄 شروع بارگذاری درگاه‌های فعال...')
-    const response = await $fetch<{status: string, data: any[]}>('/api/sms-gateways', { 
+    interface GatewaysResponse {
+      status: string
+      data: Gateway[]
+    }
+    const response = await $fetch<GatewaysResponse>('/api/sms-gateways', { 
       method: 'GET'
     })
-    
-    console.log('📡 پاسخ API درگاه‌ها:', response)
     
     if (response.status === 'success' && response.data) {
       // درگاه‌ها حالا از backend فیلتر شده‌اند
       const allGateways = response.data
       const activeOnly = allGateways
-        .sort((a: any, b: any) => (a.priority || 1) - (b.priority || 1))
-        .map((g: any, idx: number) => ({ ...g, priority: idx + 1 }))
-      
-      console.log('📊 همه درگاه‌ها:', allGateways.length)
-      console.log('📊 درگاه‌های فعال:', activeOnly.length)
-      console.log('📊 درگاه‌های فعال:', activeOnly)
+        .sort((a: Gateway, b: Gateway) => (a.priority || 1) - (b.priority || 1))
+        .map((g: Gateway, idx: number) => ({ ...g, priority: idx + 1 }))
       
       // دریافت موجودی برای هر درگاه
       for (const gateway of activeOnly) {
@@ -846,12 +868,10 @@ const loadActiveGateways = async () => {
             const meliInfo = await getMeliPayamakInfo(gateway.id)
             gateway.balance = meliInfo.remaining_sms // تعداد باقی‌مانده SMS
             gateway.credit = meliInfo.credit // موجودی ریالی
-            console.log(`💰 اطلاعات ملی پیامک ${gateway.name}:`, meliInfo)
           } else {
             // برای سایر درگاه‌ها از endpoint قبلی استفاده کن
             const balance = await getGatewayBalance(gateway.id)
             gateway.balance = balance
-            console.log(`💰 موجودی درگاه ${gateway.name}:`, balance)
           }
         } catch (error) {
           console.error(`❌ خطا در دریافت موجودی درگاه ${gateway.name}:`, error)
@@ -862,7 +882,6 @@ const loadActiveGateways = async () => {
       
       activeGateways.value = activeOnly
     } else {
-      console.log('❌ پاسخ API نامعتبر:', response)
       activeGateways.value = []
     }
   } catch (error) {
@@ -950,7 +969,7 @@ onMounted(async () => {
 
 
 // نمایش اطلاعات درگاه
-const showGatewayDetails = (gateway: any) => {
+const showGatewayDetails = (gateway: Gateway) => {
   try {
     // بررسی چندین فیلد برای کلید API یا اطلاعات ورود
     // اگر api_url نبود، سراغ apiKey، api_key، username و password هم برو
@@ -983,7 +1002,7 @@ const showGatewayDetails = (gateway: any) => {
 }
 
 // تست ارسال درگاه
-const testGatewaySend = async (gateway: any) => {
+const testGatewaySend = async (_gateway: Gateway) => {
   alert('این قابلیت در حال حاضر غیرفعال است')
 }
 
@@ -1005,10 +1024,20 @@ const handlePageChange = async (gatewayId: number, newPage: number) => {
     }
     try {
       // دریافت داده از API
-      const response = await $fetch<{status: string, data: any}>(apiUrl, { method: 'GET' })
+      interface OutboxResponse {
+        status: string
+        data: {
+          messages?: SMSMessage[]
+          pagination?: {
+            total?: number
+          }
+        }
+      }
+      const response = await $fetch<OutboxResponse>(apiUrl, { method: 'GET' })
+
       if (response.status === 'success' && response.data && response.data.messages) {
         // تبدیل داده‌ها به فرمت جدول
-        const smsList = response.data.messages.map((msg: any) => ({
+        const smsList = (response.data.messages as SMSMessage[]).map((msg: SMSMessage) => ({
           id: msg.id || Math.random(),
           timestamp: msg.created_at,
           sent_at: msg.sent_at,
@@ -1055,47 +1084,31 @@ const handleItemsPerPageChange = async (newItemsPerPage: number, gatewayId?: num
 
 // تابع تست داده‌ها
 const debugData = () => {
-  console.log('🔍 === DEBUG DATA ===')
-  console.log('🔍 activeGateways:', activeGateways.value)
-  console.log('🔍 gatewaySmsData:', gatewaySmsData.value)
-  console.log('🔍 sortedGatewaySmsData:', sortedGatewaySmsData.value)
-  console.log('🔍 sortedGatewaySmsData.length:', sortedGatewaySmsData.value.length)
-  
   // تست API های outbox
   testOutboxAPIs()
   
   alert(`تست داده‌ها:\n\n` +
         `activeGateways: ${activeGateways.value.length}\n` +
         `gatewaySmsData: ${gatewaySmsData.value.length}\n` +
-        `sortedGatewaySmsData: ${sortedGatewaySmsData.value.length}\n\n` +
-        `جزئیات در کنسول مرورگر`)
+        `sortedGatewaySmsData: ${sortedGatewaySmsData.value.length}`)
 }
 
 // تست API های outbox
 const testOutboxAPIs = async () => {
   try {
-    console.log('🧪 تست API های outbox...')
-    
     // تست IPPanel outbox
-    console.log('🧪 تست IPPanel outbox...')
-    const ippanelResponse = await $fetch('/api/ippanel-outbox?page=1&limit=5', { method: 'GET' })
-    console.log('📡 پاسخ IPPanel outbox:', ippanelResponse)
+    await $fetch('/api/ippanel-outbox?page=1&limit=5', { method: 'GET' })
     
     // تست فراز اس‌ام‌اس outbox
-    console.log('🧪 تست فراز اس‌ام‌اس outbox...')
-    const farazResponse = await $fetch('/api/farazsms-outbox?page=1&limit=5', { method: 'GET' })
-    console.log('📡 پاسخ فراز اس‌ام‌اس outbox:', farazResponse)
-    
-  } catch (error) {
-    console.error('❌ خطا در تست API های outbox:', error)
+    await $fetch('/api/farazsms-outbox?page=1&limit=5', { method: 'GET' })
+  } catch {
+    // خطا در تست API های outbox
   }
 }
 
 // به‌روزرسانی موجودی درگاه‌ها
 const refreshGatewayBalances = async () => {
   try {
-    console.log('💰 شروع به‌روزرسانی موجودی درگاه‌ها...')
-    
     for (const gateway of activeGateways.value) {
       try {
         // برای ملی پیامک از endpoint جدید استفاده کن
@@ -1103,15 +1116,12 @@ const refreshGatewayBalances = async () => {
           const meliInfo = await getMeliPayamakInfo(gateway.id)
           gateway.balance = meliInfo.remaining_sms // تعداد باقی‌مانده SMS
           gateway.credit = meliInfo.credit // موجودی ریالی
-          console.log(`💰 اطلاعات ملی پیامک ${gateway.name}:`, meliInfo)
         } else {
           // برای سایر درگاه‌ها از endpoint قبلی استفاده کن
           const balance = await getGatewayBalance(gateway.id)
           gateway.balance = balance
-          console.log(`💰 موجودی درگاه ${gateway.name}:`, balance)
         }
-      } catch (error) {
-        console.error(`❌ خطا در دریافت موجودی درگاه ${gateway.name}:`, error)
+      } catch {
         gateway.balance = 0
         gateway.credit = 0
       }
@@ -1125,10 +1135,8 @@ const refreshGatewayBalances = async () => {
         gatewayData.gateway.credit = gateway.credit
       }
     }
-    
-    console.log('✅ موجودی درگاه‌ها به‌روزرسانی شد')
-  } catch (error) {
-    console.error('❌ خطا در به‌روزرسانی موجودی درگاه‌ها:', error)
+  } catch {
+    // خطا در به‌روزرسانی موجودی درگاه‌ها
   }
 }
 

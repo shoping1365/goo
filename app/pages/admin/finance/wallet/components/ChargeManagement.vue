@@ -381,7 +381,19 @@ const gatewayStats = [
 const chargeTrend = ref<Array<{ date: string; amount: number }>>([])
 
 // شارژهای اخیر (از API تراکنش‌ها)
-const recentCharges = ref<any[]>([])
+interface ChargeDisplayItem {
+  id?: number | string
+  transactionId?: number | string
+  userName: string | number
+  userEmail: string
+  userInitials: string
+  amount: number
+  gateway: string
+  date?: string
+  status: string
+}
+
+const recentCharges = ref<ChargeDisplayItem[]>([])
 
 const page = ref(1)
 const pageSize = ref(20)
@@ -396,10 +408,19 @@ const { data: trend } = await useFetch('/api/admin/wallet/trend', {
   method: 'GET', query: { days: 7 }, credentials: 'include', key: 'admin-wallet-trend-7', defaultCache: true,
 })
 
+interface ChargeItem {
+  id?: number | string
+  transactionId?: number | string
+  [key: string]: unknown
+}
+interface ChargesResponse {
+  items?: ChargeItem[]
+  [key: string]: unknown
+}
 watchEffect(() => {
-  const res: any = txs.value
+  const res = txs.value as ChargesResponse | null
   if (res && Array.isArray(res.items)) {
-    recentCharges.value = res.items.map((r: any) => ({
+    recentCharges.value = res.items.map((r: ChargeItem) => ({
       id: r.id,
       transactionId: r.id,
       userName: r.username || r.user_id,
@@ -412,17 +433,26 @@ watchEffect(() => {
     }))
     // آمار ساده
     chargeStats.totalCharges = Number(res.total || 0)
-    const succ = recentCharges.value.filter((x:any)=>x.status==='موفق').length
-    const fail = recentCharges.value.filter((x:any)=>x.status==='ناموفق').length
+    const succ = recentCharges.value.filter((x: ChargeDisplayItem)=>x.status==='موفق').length
+    const fail = recentCharges.value.filter((x: ChargeDisplayItem)=>x.status==='ناموفق').length
     const totalShown = Math.max(1, recentCharges.value.length)
     chargeStats.successfulCharges = succ
     chargeStats.failedCharges = fail
     chargeStats.successRate = Math.round((succ/totalShown)*1000)/10
     chargeStats.failureRate = Math.round((fail/totalShown)*1000)/10
   }
-  const t: any = trend.value
+  interface TrendItem {
+    day?: string
+    net?: number
+    [key: string]: unknown
+  }
+  interface TrendResponse {
+    items?: TrendItem[]
+    [key: string]: unknown
+  }
+  const t = trend.value as TrendResponse | null
   if (t && Array.isArray(t.items)) {
-    chargeTrend.value = t.items.map((x:any)=>({ date: x.day, amount: Number(x.net||0) }))
+    chargeTrend.value = t.items.map((x: TrendItem)=>({ date: x.day || '', amount: Number(x.net||0) }))
   }
 })
 

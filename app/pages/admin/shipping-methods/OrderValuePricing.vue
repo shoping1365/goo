@@ -148,15 +148,12 @@ function formatCurrency(value) {
 }
 
 function editRule(_rule) {
-  // console.log('Editing rule:', rule)
 }
 
 function deleteRule(_id) {
-  // console.log('Deleting rule:', id)
 }
 
 function addNewRule() {
-  // console.log('Adding new rule:', newRule)
   // Reset form
   Object.assign(newRule, {
     minValue: 0,

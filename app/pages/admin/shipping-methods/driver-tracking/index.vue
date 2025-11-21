@@ -445,7 +445,6 @@ const formatTime = (timeString: string) => {
 
 const refreshData = () => {
   // اینجا می‌توانید API call برای به‌روزرسانی داده‌ها اضافه کنید
-  // console.log('به‌روزرسانی داده‌ها...');
 };
 
 const viewDriverDetails = (driver: Driver) => {

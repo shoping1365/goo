@@ -237,7 +237,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 // فیلترها
 const filters = ref({
@@ -378,17 +378,17 @@ const getTypeBadgeClass = (type: string): string => {
 // توابع عملیات
 const applyFilters = () => {
   // TODO: اعمال فیلترها و بارگذاری مجدد داده‌ها
-  console.log('اعمال فیلترها:', filters.value)
+
 }
 
 const exportReport = () => {
   // TODO: خروجی اکسل از گزارش
-  console.log('خروجی اکسل گزارش')
+
 }
 
 const refreshData = () => {
   // TODO: بروزرسانی داده‌ها
-  console.log('بروزرسانی داده‌ها')
+
 }
 
 // بارگذاری داده‌ها

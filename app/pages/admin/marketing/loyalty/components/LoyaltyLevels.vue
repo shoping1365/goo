@@ -200,7 +200,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 // سطوح وفاداری
 const loyaltyLevels = ref([
@@ -280,8 +280,13 @@ function getLevelColor(levelName: string) {
   return colors[levelName] || 'bg-gray-400'
 }
 
+interface Level {
+  active?: boolean
+  [key: string]: unknown
+}
+
 // تغییر وضعیت سطح
-function toggleLevelStatus(level: any) {
+function toggleLevelStatus(level: Level) {
   level.active = !level.active
   // TODO: فراخوانی API برای تغییر وضعیت
 }

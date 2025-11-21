@@ -38,14 +38,14 @@ v-if="showToast"
 </template>
 
 <script setup lang="ts">
-import { ref, provide, computed, onMounted, watch } from 'vue'
+import { computed, onMounted, provide, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import FooterSettingsSidebar from './FooterSettingsSidebar.vue'
-import PageHeader from './PageHeader.vue'
 import FooterPreview from './FooterPreview.vue'
+import FooterSettingsForm from './FooterSettingsForm.vue'
+import FooterSettingsSidebar from './FooterSettingsSidebar.vue'
 import FormContainer from './FormContainer.vue'
 import ItemsSelectionModal from './ItemsSelectionModal.vue'
-import FooterSettingsForm from './FooterSettingsForm.vue'
+import PageHeader from './PageHeader.vue'
 
 // @ts-ignore
 definePageMeta({
@@ -77,9 +77,9 @@ const showItemsModal = ref(false)
 const showLayerSettings = ref(false)
 
 // آرایه لایه‌های ایجاد شده
-const createdLayers = ref<any[]>([])
+const createdLayers = ref<Record<string, unknown>[]>([])
 
-const newLayer = ref<any>({
+const newLayer = ref<Record<string, unknown>>({
   name: '',
   width: 100,
   height: 50,
@@ -146,10 +146,10 @@ async function loadExistingFooter() {
     try {
       const footerId = parseInt(route.query.id as string)
       
-  const response = await $fetch(`/api/admin/footer-settings/${footerId}`) as any
+  const response = await $fetch(`/api/admin/footer-settings/${footerId}`) as Record<string, unknown>
       
       if (response && typeof response === 'object' && 'success' in response && response.success && 'data' in response && response.data) {
-        const existingFooter = response.data as any
+        const existingFooter = response.data as Record<string, unknown>
         
         footerData.value = {
           name: existingFooter.name || '',
@@ -215,68 +215,68 @@ onMounted(async () => {
 watch(() => newLayer.value, () => {
 }, { deep: true })
 
-watch(() => newLayer.value.color, (newColor) => {
+watch(() => newLayer.value.color, (_newColor) => {
 }, { immediate: true })
 
-watch(() => newLayer.value.opacity, (newOpacity) => {
+watch(() => newLayer.value.opacity, (_newOpacity) => {
 }, { immediate: true })
 
-async function loadLayersFromDatabase() {
-  try {
-    if (isEditing.value) {
-      try {
-        const footerId = parseInt(route.query.id as string)
+// async function loadLayersFromDatabase() {
+//   try {
+//     if (isEditing.value) {
+//       try {
+//         const footerId = parseInt(route.query.id as string)
         
-  const response = await $fetch(`/api/admin/footer-settings/${footerId}/layers`) as any
+//   const response = await $fetch(`/api/admin/footer-settings/${footerId}/layers`) as any
         
-        if (response && response.data && Array.isArray(response.data)) {
+//         if (response && response.data && Array.isArray(response.data)) {
           
-          const layersFromBackend = response.data.map(layer => {
-            return {
-              id: layer.id,
-              name: layer.name,
-              width: layer.width,
-              height: layer.height,
-              rowCount: layer.row_count,
-              color: layer.color,
-              opacity: (layer.opacity || 1.0) * 100,
-              showSeparator: layer.show_separator || false,
-              separatorType: layer.separator_type || 'solid',
-              separatorColor: layer.separator_color || '#e9ecef',
-              separatorOpacity: (layer.separator_opacity || 0.2) * 100,
-              separatorWidth: layer.separator_width || 1,
-              items: typeof layer.items === 'string' ? JSON.parse(layer.items) : layer.items || []
-            }
-          })
+//           const layersFromBackend = response.data.map(layer => {
+//             return {
+//               id: layer.id,
+//               name: layer.name,
+//               width: layer.width,
+//               height: layer.height,
+//               rowCount: layer.row_count,
+//               color: layer.color,
+//               opacity: (layer.opacity || 1.0) * 100,
+//               showSeparator: layer.show_separator || false,
+//               separatorType: layer.separator_type || 'solid',
+//               separatorColor: layer.separator_color || '#e9ecef',
+//               separatorOpacity: (layer.separator_opacity || 0.2) * 100,
+//               separatorWidth: layer.separator_width || 1,
+//               items: typeof layer.items === 'string' ? JSON.parse(layer.items) : layer.items || []
+//             }
+//           })
           
-          createdLayers.value = layersFromBackend
-          return true
-        } else {
-        }
-      } catch (error) {
-        console.error('❌ خطا در بارگذاری لایه‌ها از دیتابیس:', error)
-      }
+//           createdLayers.value = layersFromBackend
+//           return true
+//         } else {
+//         }
+//       } catch (error) {
+//         console.error('❌ خطا در بارگذاری لایه‌ها از دیتابیس:', error)
+//       }
       
-      return true
-    } else {
-      const savedLayers = sessionStorage.getItem('footerLayers')
+//       return true
+//     } else {
+//       const savedLayers = sessionStorage.getItem('footerLayers')
       
-      if (savedLayers && savedLayers.trim() !== '') {
-        const parsedLayers = JSON.parse(savedLayers)
+//       if (savedLayers && savedLayers.trim() !== '') {
+//         const parsedLayers = JSON.parse(savedLayers)
         
-        if (Array.isArray(parsedLayers) && parsedLayers.length > 0) {
-          createdLayers.value = parsedLayers
-          return true
-        }
-      }
+//         if (Array.isArray(parsedLayers) && parsedLayers.length > 0) {
+//           createdLayers.value = parsedLayers
+//           return true
+//         }
+//       }
       
-      return false
-    }
-  } catch (error) {
-    console.error('❌ خطا در بارگذاری لایه‌ها از session storage:', error)
-    return false
-  }
-}
+//       return false
+//     }
+//   } catch (error) {
+//     console.error('❌ خطا در بارگذاری لایه‌ها از session storage:', error)
+//     return false
+//   }
+// }
 
 async function saveLayer() {
   if (!newLayer.value.name.trim()) {
@@ -448,7 +448,7 @@ async function saveFooter() {
     return
   }
 
-  const footerPayload: any = {
+  const footerPayload: Record<string, unknown> = {
     name: footerData.value.name,
     description: footerData.value.description,
     page_selection: footerData.value.pageSelection,
@@ -477,7 +477,7 @@ async function saveFooter() {
         }
       }
       
-      const l: any = {
+      const l: Record<string, unknown> = {
         name: layer.name,
         width: layer.width,
         height: layer.height,
@@ -498,12 +498,10 @@ async function saveFooter() {
     })
   }
 
-  console.log('Footer Payload:', footerPayload)
-  console.log('Footer Data:', footerData.value)
-  console.log('Created Layers:', createdLayers.value)
+
 
   try {
-    let response: any
+    let response: unknown
     if (isEditing.value) {
       const footerId = parseInt(route.query.id as string)
   response = await fetch(`/api/admin/footer-settings/${footerId}`, {
@@ -542,9 +540,10 @@ async function saveFooter() {
     } else {
       showToastMessage('خطا در ذخیره فوتر', 'error')
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('saveFooter error:', error)
-    showToastMessage('خطا در ذخیره فوتر: ' + (error?.data?.message || error?.message || error), 'error')
+    const err = error as { data?: { message?: string }, message?: string }
+    showToastMessage('خطا در ذخیره فوتر: ' + (err?.data?.message || err?.message || error), 'error')
   }
 }
 

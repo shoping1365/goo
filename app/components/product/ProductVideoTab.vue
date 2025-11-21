@@ -494,7 +494,7 @@ import DeleteConfirmModal from '~/components/common/DeleteConfirmModal.vue'
 import { useDeleteConfirmModal } from '~/composables/useDeleteConfirmModal'
 import { useNotifier } from '~/composables/useNotifier'
 import { useProductVideos, type ProductVideo } from '~/composables/useProductVideos'
-import { useProductCreateStore } from '~/stores/productCreate'
+// import { useProductCreateStore } from '~/stores/productCreate' // Currently unused
 import ProductVideoPlayer from '~/components/product/ProductVideo.vue'
 import MediaPreviewModal from '~/components/media/MediaPreviewModal.vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
@@ -515,14 +515,8 @@ const {
 // DeleteConfirm modal controller
 const { deleteModalRef, openDeleteConfirm } = useDeleteConfirmModal()
 
-// استفاده مستقیم از store
-const pStore = useProductCreateStore()
-console.log('🎬 ProductVideoTab - pStore initialized:', { 
-  pStore, 
-  pStoreType: typeof pStore,
-  editingProductId: pStore.editingProductId,
-  isEditMode: pStore.isEditMode
-})
+// استفاده مستقیم از store - removed unused variable
+// const pStore = useProductCreateStore()
 
 // State management
 const sections = reactive({
@@ -561,7 +555,7 @@ const sortedVideos = computed(() => {
   return [...videos.value].sort((a, b) => a.sort_order - b.sort_order)
 })
 
-const hasVideos = computed(() => videos.value.length > 0)
+const _hasVideos = computed(() => videos.value.length > 0)
 
 // Methods
 const toggleSection = (section: keyof typeof sections) => {
@@ -586,16 +580,14 @@ const openMediaLibrary = (type: 'video' | 'thumbnail') => {
   showMediaLibrary.value = true
 }
 
-const onMediaSelected = async (payload: any) => {
+const onMediaSelected = async (payload: Record<string, unknown> | Array<Record<string, unknown>>) => {
   const media = Array.isArray(payload) ? payload[0] : payload
   if (!media) {
     showMediaLibrary.value = false
     return
   }
 
-  console.log('🎬 Media selected:', media)
-  console.log('📹 Media type:', mediaLibraryType.value)
-  console.log('✏️ Is editing:', isEditing.value)
+
 
   let url = media.url || media.path || media.file_path || media.src || ''
   // normalize path for public serving
@@ -613,7 +605,7 @@ const onMediaSelected = async (payload: any) => {
   if (mediaLibraryType.value === 'video') {
     if (isEditing.value && editingVideo.value) {
       editingVideo.value.video_url = url
-      console.log('✅ Set video_url on editingVideo:', url)
+
       // ذخیره فوری در حالت ویرایش
       try {
         await updateVideo(editingVideo.value.id!, {
@@ -631,7 +623,7 @@ const onMediaSelected = async (payload: any) => {
     } else {
       // در حالت افزودن: پس از انتخاب رسانه، فوراً رکورد را ایجاد کن
       videoForm.video_url = url
-      console.log('✅ Set video_url on videoForm:', url)
+
       try {
         const ok = await addVideo({
           title: videoForm.title,
@@ -653,17 +645,15 @@ const onMediaSelected = async (payload: any) => {
   } else {
     if (isEditing.value && editingVideo.value) {
       editingVideo.value.thumbnail_url = url
-      console.log('✅ Set thumbnail_url on editingVideo:', url)
+
     } else {
       videoForm.thumbnail_url = url
-      console.log('✅ Set thumbnail_url on videoForm:', url)
+
     }
   }
 
-  console.log('📊 Current form state:')
-  console.log('  - videoForm.video_url:', videoForm.video_url)
-  console.log('  - editingVideo?.video_url:', editingVideo.value?.video_url)
-  console.log('  - currentForm.video_url:', currentForm.value.video_url)
+
+
 
   showMediaLibrary.value = false
 }
@@ -744,9 +734,10 @@ const videoFileInput = ref<HTMLInputElement | null>(null)
 const uploadingVideo = ref(false)
 const uploadError = ref('')
 
-function triggerVideoFileInput() {
-  videoFileInput.value?.click()
-}
+// triggerVideoFileInput removed - not used
+// function triggerVideoFileInput() {
+//   videoFileInput.value?.click()
+// }
 
 async function handleVideoFileChange(e: Event) {
   const target = e.target as HTMLInputElement
@@ -771,8 +762,9 @@ async function handleVideoFileChange(e: Event) {
     } else {
       uploadError.value = data.message || 'خطا در آپلود ویدیو'
     }
-  } catch (err: any) {
-    uploadError.value = err.message || 'خطا در آپلود ویدیو'
+  } catch (err: unknown) {
+    const errorObj = err as { message?: string; [key: string]: unknown }
+    uploadError.value = errorObj.message || 'خطا در آپلود ویدیو'
   } finally {
     uploadingVideo.value = false
   }
@@ -794,7 +786,7 @@ watch(currentProductId, async (newId, oldId) => {
 
 // Preview modal state and opener
 const previewShow = ref(false)
-const previewFile = ref<any>(null)
+const previewFile = ref<Record<string, unknown> | null>(null)
 function openPreview(video: ProductVideo) {
   previewFile.value = {
     id: video.id,

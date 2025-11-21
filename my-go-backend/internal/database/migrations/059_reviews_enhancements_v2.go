@@ -27,7 +27,8 @@ func Up059ReviewsEnhancementsV2(db *gorm.DB) error {
                 has_purchased BOOLEAN DEFAULT FALSE,
                 helpful_count INT DEFAULT 0,
                 created_at TIMESTAMPTZ DEFAULT NOW(),
-                updated_at TIMESTAMPTZ DEFAULT NOW()
+                updated_at TIMESTAMPTZ DEFAULT NOW(),
+                deleted_at TIMESTAMPTZ
             );
         `)
 
@@ -41,6 +42,7 @@ func Up059ReviewsEnhancementsV2(db *gorm.DB) error {
 		_ = tx.Exec("ALTER TABLE reviews ADD COLUMN IF NOT EXISTS cons TEXT")
 		_ = tx.Exec("ALTER TABLE reviews ADD COLUMN IF NOT EXISTS user_agent TEXT")
 		_ = tx.Exec("ALTER TABLE reviews ADD COLUMN IF NOT EXISTS device_info JSONB")
+		_ = tx.Exec("ALTER TABLE reviews ADD COLUMN IF NOT EXISTS deleted_at TIMESTAMPTZ")
 		return nil
 	})
 }

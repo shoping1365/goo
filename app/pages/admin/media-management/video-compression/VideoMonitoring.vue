@@ -166,7 +166,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
+import { ref, reactive, onMounted, onUnmounted } from 'vue'
 
 interface Activity {
   id: number
@@ -182,7 +182,17 @@ interface SystemHealth {
   disk: number
 }
 
-const props = defineProps({
+interface Job {
+  id?: number
+  status: string
+  created_at?: string
+  updated_at?: string
+  original_size?: number
+  compressed_size?: number
+  [key: string]: unknown
+}
+
+const _props = defineProps({
   compressionEnabled: {
     type: Boolean,
     required: true
@@ -255,12 +265,12 @@ const fetchSystemStatus = async () => {
     })
     
     if (response.success) {
-      const jobs = response.data || []
+      const jobs = (response.data || []) as Job[]
       systemStatus.value = {
         totalJobs: jobs.length,
-        activeJobs: jobs.filter((job: any) => job.status === 'processing').length,
-        completedJobs: jobs.filter((job: any) => job.status === 'completed').length,
-        errorJobs: jobs.filter((job: any) => job.status === 'error').length
+        activeJobs: jobs.filter((job: Job) => job.status === 'processing').length,
+        completedJobs: jobs.filter((job: Job) => job.status === 'completed').length,
+        errorJobs: jobs.filter((job: Job) => job.status === 'error').length
       }
     }
   } catch (error) {
@@ -282,8 +292,8 @@ const fetchPerformanceMetrics = async () => {
     })
     
     if (response.success) {
-      const jobs = response.data || []
-      const completedJobs = jobs.filter((job: any) => job.status === 'completed')
+      const jobs = (response.data || []) as Job[]
+      const completedJobs = jobs.filter((job: Job) => job.status === 'completed')
       const totalJobs = jobs.length
       
       // محاسبه میانگین زمان فشرده‌سازی
@@ -291,7 +301,7 @@ const fetchPerformanceMetrics = async () => {
       let avgTime = 0
       
       if (completedJobs.length > 0) {
-        completedJobs.forEach((job: any) => {
+        completedJobs.forEach((job: Job) => {
           if (job.created_at && job.updated_at) {
             const startTime = new Date(job.created_at).getTime()
             const endTime = new Date(job.updated_at).getTime()
@@ -304,7 +314,7 @@ const fetchPerformanceMetrics = async () => {
       
       // محاسبه فضای ذخیره شده
       let totalSavedSpace = 0
-      completedJobs.forEach((job: any) => {
+      completedJobs.forEach((job: Job) => {
         if (job.original_size && job.compressed_size) {
           totalSavedSpace += (job.original_size - job.compressed_size)
         }
@@ -335,11 +345,12 @@ const fetchRecentActivities = async () => {
     })
     
     if (response.success) {
-      const jobs = response.data || []
+      const _jobs = response.data || []
       const activities: Activity[] = []
       
       // تبدیل کارها به فعالیت‌ها
-      jobs.slice(0, 10).forEach((job: any, index: number) => {
+      const typedJobs = (response.data || []) as Job[]
+      typedJobs.slice(0, 10).forEach((job: Job) => {
         const activity: Activity = {
           id: job.id,
           type: job.status === 'completed' ? 'complete' : 
@@ -435,7 +446,7 @@ const formatFileSize = (bytes: number): string => {
 }
 
 // Compression schedule methods
-const updateCompressionSchedule = async () => {
+const _updateCompressionSchedule = async () => {
   try {
     interface ApiResponse {
       success?: boolean
@@ -454,7 +465,6 @@ const updateCompressionSchedule = async () => {
     })
     
     if (response.success) {
-      console.log('تنظیمات زمان‌بندی با موفقیت ذخیره شد')
     }
   } catch (error) {
     console.error('خطا در ذخیره تنظیمات زمان‌بندی:', error)
@@ -488,13 +498,13 @@ const updateCurrentTime = () => {
   scheduleStatus.value = inTimeWindow ? 'active' : 'inactive'
 }
 
-const getScheduleStatusText = () => {
+const _getScheduleStatusText = () => {
   return scheduleStatus.value === 'active' 
     ? 'فشرده‌سازی فعال است' 
     : 'فشرده‌سازی غیرفعال است'
 }
 
-const getScheduleStatusClass = () => {
+const _getScheduleStatusClass = () => {
   return scheduleStatus.value === 'active' 
     ? 'bg-green-500' 
     : 'bg-red-500'

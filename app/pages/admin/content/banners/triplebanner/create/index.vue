@@ -123,7 +123,7 @@
     <!-- تنظیمات بنر -->
     <DeviceTabs
       ref="deviceTabsRef"
-      v-model:bannerConfig="bannerConfig"
+      v-model:banner-config="bannerConfig"
       :current-preview-banner="currentPreviewBanner"
       :open-add-banner-modal="openAddBannerModal"
       :edit-banner="editBanner"
@@ -261,7 +261,7 @@
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e: any) => bannerConfig.padding_top = e.target.value === '' ? undefined : Number(e.target.value)"
+                @input="(e: Event) => { const target = e.target as HTMLInputElement; bannerConfig.padding_top = target.value === '' ? undefined : Number(target.value) }"
               />
             </div>
 
@@ -275,7 +275,7 @@
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e: any) => bannerConfig.padding_bottom = e.target.value === '' ? undefined : Number(e.target.value)"
+                @input="(e: Event) => { const target = e.target as HTMLInputElement; bannerConfig.padding_bottom = target.value === '' ? undefined : Number(target.value) }"
               />
             </div>
 
@@ -289,7 +289,7 @@
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e: any) => bannerConfig.margin_right = e.target.value === '' ? undefined : Number(e.target.value)"
+                @input="(e: Event) => { const target = e.target as HTMLInputElement; bannerConfig.margin_right = target.value === '' ? undefined : Number(target.value) }"
               />
             </div>
 
@@ -303,7 +303,7 @@
                 max="100"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="0"
-                @input="(e: any) => bannerConfig.margin_left = e.target.value === '' ? undefined : Number(e.target.value)"
+                @input="(e: Event) => { const target = e.target as HTMLInputElement; bannerConfig.margin_left = target.value === '' ? undefined : Number(target.value) }"
               />
             </div>
 
@@ -597,7 +597,7 @@ import TemplateButton from '~/components/common/TemplateButton.vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
 import { useToast } from '~/composables/useToast'
 import { useWidget } from '~/composables/useWidget'
-import type { BannerConfig, BannerItem, Widget } from '~/types/widget'
+import type { BannerConfig, BannerItem, Widget, WidgetType, WidgetStatus, WidgetPage } from '~/types/widget'
 import { WIDGET_TYPE_LABELS } from '~/types/widget'
 import DeviceTabs from './components/DeviceTabs.vue'
 
@@ -609,11 +609,11 @@ definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 useHead({ title: 'ایجاد بنر سه‌تایی - پنل ادمین' })
 
 // Route params
-const route = useRoute()
-const router = useRouter()
+const _route = useRoute()
+const _router = useRouter()
 
 // Composables
-const { fetchWidget, createWidget, updateWidget, loading: _loading, error: _error, clearError, widget: fetchedWidget } = useWidget()
+const { fetchWidget: _fetchWidget, createWidget, updateWidget: _updateWidget, loading: _loading, error: _error, clearError, widget: _fetchedWidget } = useWidget()
 const { showSuccess } = useToast()
 
 // Props
@@ -681,7 +681,6 @@ const formData = ref({
 // Initialize form data when widget is available
 const initializeFormData = () => {
   if (widget.value) {
-    console.log('Widget data:', widget.value) // Debug log
     formData.value = {
       title: widget.value.title || '',
       description: widget.value.description || '',
@@ -690,7 +689,6 @@ const initializeFormData = () => {
       page: widget.value.page || 'home',
       show_on_mobile: widget.value.show_on_mobile !== undefined ? widget.value.show_on_mobile : true
     }
-    console.log('Form data initialized:', formData.value) // Debug log
   }
 }
 
@@ -708,10 +706,10 @@ watch(() => deviceTabsRef.value?.activeTab, (newTab) => {
 })
 
 // Computed properties for reactive form data
-const widgetTitle = computed(() => widget.value?.title || '')
-const widgetType = computed(() => widget.value?.type || 'triple-banner')
-const widgetStatus = computed(() => widget.value?.status || 'active')
-const widgetPage = computed(() => widget.value?.page || 'home')
+const _widgetTitle = computed(() => widget.value?.title || '')
+const _widgetType = computed(() => widget.value?.type || 'triple-banner')
+const _widgetStatus = computed(() => widget.value?.status || 'active')
+const _widgetPage = computed(() => widget.value?.page || 'home')
 
 // Banner config
 const bannerConfig = ref<BannerConfig>({
@@ -856,7 +854,13 @@ const openMediaLibrary = () => {
   showMediaLibrary.value = true
 }
 
-const onSelectFromLibrary = (files: any[]) => {
+interface MediaFile {
+  id?: number | string
+  url: string
+  name?: string
+  [key: string]: unknown
+}
+const onSelectFromLibrary = (files: MediaFile[]) => {
   if (files && files.length > 0) {
     const file = files[0]
     editingBanner.value.image = file.url
@@ -901,7 +905,7 @@ const updateBannerRatios = (changedBanner: 'banner1' | 'banner2' | 'banner3') =>
     if (totalCurrent > 0) {
       // نسبت‌ها را بر اساس نسبت فعلی تقسیم کن
       const ratioA = currentA / totalCurrent
-      const ratioB = currentB / totalCurrent
+      const _ratioB = currentB / totalCurrent
       
       bannerConfig.value[`${bannerA}_ratio`] = Math.round(remaining * ratioA)
       bannerConfig.value[`${bannerB}_ratio`] = remaining - bannerConfig.value[`${bannerA}_ratio`]
@@ -945,9 +949,9 @@ const saveWidget = async () => {
     const widgetData = {
       title: formData.value.title,
       description: formData.value.description,
-      type: formData.value.type as any, // Type casting for compatibility
-      status: formData.value.status as any, // Type casting for compatibility
-      page: formData.value.page as any, // Type casting for compatibility
+      type: formData.value.type as WidgetType,
+      status: formData.value.status as WidgetStatus,
+      page: formData.value.page as WidgetPage,
       show_on_mobile: formData.value.show_on_mobile,
       config: {
         ...configToSave,

@@ -121,9 +121,9 @@ interface Props {
   order: Order
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 const emit = defineEmits<{
-  submit: [data: any]
+  submit: [data: Record<string, unknown>]
 }>()
 
 const selectedRating = ref(0)

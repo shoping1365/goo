@@ -355,7 +355,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // Reactive data
 const deploymentStats = ref({
@@ -517,7 +517,7 @@ const rollbackDeployment = async () => {
   isDeploying.value = true
   try {
     await new Promise(resolve => setTimeout(resolve, 3000))
-    console.log('Rollback completed')
+
   } catch (error) {
     console.error('Rollback error:', error)
   } finally {
@@ -528,22 +528,22 @@ const rollbackDeployment = async () => {
 const saveDeploymentConfiguration = async () => {
   try {
     await new Promise(resolve => setTimeout(resolve, 1000))
-    console.log('Configuration saved:', deploymentConfig.value)
+
   } catch (error) {
     console.error('Error saving configuration:', error)
   }
 }
 
-const viewDeploymentLogs = (id) => {
-  console.log('Viewing logs for deployment:', id)
+const viewDeploymentLogs = (_id) => {
+
 }
 
-const rollbackToVersion = (id) => {
-  console.log('Rolling back to version:', id)
+const rollbackToVersion = (_id) => {
+
 }
 
-const scaleEnvironment = (name, direction) => {
-  console.log(`Scaling ${name} ${direction}`)
+const scaleEnvironment = (_name, _direction) => {
+
 }
 
 const getEnvironmentBadgeClass = (environment) => {

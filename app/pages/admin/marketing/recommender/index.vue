@@ -390,5 +390,5 @@ import SmartRecommendations from './components/SmartRecommendations.vue'
 import UserBehaviorAnalysis from './components/UserBehaviorAnalysis.vue'
 
 // متغیرهای صفحه
-const pageTitle = ref('مدیریت پیشنهادات هوشمند')
+const _pageTitle = ref('مدیریت پیشنهادات هوشمند')
 </script> 

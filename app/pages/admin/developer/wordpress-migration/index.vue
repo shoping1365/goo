@@ -693,7 +693,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission: _hasPermission } = useAuth()
 
 // تنظیمات اتصال به وردپرس
 const wordpressConfig = ref({
@@ -747,8 +747,6 @@ const LS_KEYS = {
 }
 
 onMounted(async () => {
-  console.log('🔥 Component mounted - loading existing logs...')
-  
   try {
     const cfg = localStorage.getItem(LS_KEYS.config)
     if (cfg) Object.assign(wordpressConfig.value, JSON.parse(cfg))
@@ -764,33 +762,26 @@ onMounted(async () => {
   
   // بارگذاری لاگ‌های موجود
   try {
-    console.log('📡 Loading existing logs...')
     const response = await $fetch('/api/admin/wordpress-migration/logs')
-    console.log('📊 Existing logs response:', response)
     
     if (response && response.success && Array.isArray(response.logs)) {
-      console.log(`📝 Found ${response.logs.length} existing logs`)
-      
       // اگر لاگ‌هایی موجود است، یعنی فرآیند در حال اجرا است
       if (response.logs.length > 0) {
         isMigrating.value = true
         migrationProgress.value.isActive = true
         migrationStartTime.value = new Date()
         
-        response.logs.forEach((log, index) => {
-          console.log(`📄 Loading existing log ${index + 1}:`, log)
-          
+        response.logs.forEach((log) => {
           let message = log.message
           try {
             // بهبود decode برای کاراکترهای فارسی
             if (message.includes('Ø') || message.includes('Û') || message.includes('Ø§') || message.includes('Ø±')) {
               message = decodeURIComponent(escape(message))
             }
-          } catch (e) {
-            console.log('Failed to decode existing log:', e)
+          } catch (_e) {
+            // Failed to decode existing log
           }
           
-          console.log(`📝 Loading existing log message: "${message}" (type: ${log.type})`)
           addLog(log.type, message)
         })
         
@@ -813,15 +804,10 @@ onUnmounted(() => {
 
 // تابع جداگانه برای polling
 const startLogPolling = (initialLogCount = 0) => {
-  console.log('🚀 Starting log polling with initial count:', initialLogCount)
   let lastLogCount = initialLogCount
-  let pollingAttempts = 0
   let lastLogUpdateTime = Date.now()
   
   const fetchLogs = async () => {
-    pollingAttempts++
-    console.log(`📡 Polling attempt ${pollingAttempts}`)
-    
     try {
       const response = await $fetch('/api/admin/wordpress-migration/logs')
       
@@ -835,27 +821,22 @@ const startLogPolling = (initialLogCount = 0) => {
               (lastLogCount > 0 && lastLog.message !== migrationLogs.value[migrationLogs.value.length - 1]?.message)) {
             
             const newLogs = response.logs.slice(lastLogCount)
-            console.log(`🆕 New logs found: ${newLogs.length}`)
             
-            newLogs.forEach((log, index) => {
-              console.log(`➕ Adding new log ${index + 1}:`, log)
-              
+            newLogs.forEach((log) => {
               let message = log.message
               try {
                 // بهبود decode برای کاراکترهای فارسی
                 if (message.includes('Ø') || message.includes('Û') || message.includes('Ø§') || message.includes('Ø±')) {
                   message = decodeURIComponent(escape(message))
                 }
-              } catch (e) {
-                console.log('Failed to decode new log:', e)
+              } catch (_e) {
+                // Failed to decode new log
               }
               
-              console.log(`📝 Processed log message: "${message}" (type: ${log.type})`)
               addLog(log.type, message)
               
               if (message.includes('=== انتقال تکمیل شد ===') || 
                   (message.includes('فرآیند انتقال با موفقیت تکمیل شد') && log.type === 'success')) {
-                console.log('🏁 Migration completed!')
                 progressInternal.value = 100
                 isMigrating.value = false
                 migrationProgress.value.isActive = false
@@ -865,7 +846,6 @@ const startLogPolling = (initialLogCount = 0) => {
                   alert('انتقال با موفقیت تکمیل شد!')
                 }, 1000)
               } else if (message.includes('انتقال محصولات تکمیل شد')) {
-                console.log('📦 Products migration completed!')
                 migrationProgress.value.currentItem = 'انتقال محصولات تکمیل شد'
               }
             })
@@ -874,7 +854,6 @@ const startLogPolling = (initialLogCount = 0) => {
           } else {
             // اگر لاگ جدیدی نیامده، اما تعداد کل تغییر کرده، به‌روزرسانی کن
             if (response.logs.length !== lastLogCount) {
-              console.log(`📊 Log count changed from ${lastLogCount} to ${response.logs.length}`)
               lastLogCount = response.logs.length
             }
           }
@@ -887,7 +866,6 @@ const startLogPolling = (initialLogCount = 0) => {
   
   const logInterval = setInterval(async () => {
     if (!isMigrating.value) {
-      console.log('🛑 Stopping polling - migration not active')
       clearInterval(logInterval)
       return
     }
@@ -896,7 +874,6 @@ const startLogPolling = (initialLogCount = 0) => {
     
     // اگر بیش از 30 ثانیه لاگ جدیدی نیامده، وضعیت را به‌روزرسانی کن
     if (Date.now() - lastLogUpdateTime > 30000) {
-      console.log('⏰ No new logs for 30 seconds, updating status...')
       migrationProgress.value.currentItem = 'در حال پردازش...'
       lastLogUpdateTime = Date.now()
     }
@@ -1263,16 +1240,8 @@ const startMigration = async () => {
   currentItemStartTime.value = null
 
   addLog('info', 'شروع فرآیند انتقال...')
-  console.log('🎯 startMigration function called!')
-  console.log('🔧 isMigrating.value:', isMigrating.value)
-  console.log('🔧 migrationProgress.value.isActive:', migrationProgress.value.isActive)
 
   // شروع polling برای لاگ‌های زنده
-  console.log('🚀 شروع polling لاگ‌ها...')
-  const lastLogCount = 0
-  const pollingAttempts = 0
-  
-  
   // شروع polling با تابع جداگانه
   const logInterval = startLogPolling(0)
 
@@ -1340,7 +1309,7 @@ const abortMigration = async () => {
     await $fetch('/api/admin/wordpress-migration/abort', {
       method: 'POST'
     })
-  } catch (error) {
+  } catch (_error) {
     // ignore abort errors
   }
   
@@ -1685,8 +1654,6 @@ const clearLogs = () => {
 
 // تابع refresh برای بارگذاری مجدد لاگ‌ها و وضعیت
 const refreshPage = async () => {
-  console.log('🔄 Refreshing page data...')
-  
   // Reset states
   isMigrating.value = false
   migrationProgress.value.isActive = false
@@ -1702,29 +1669,23 @@ const refreshPage = async () => {
   
   // Reload existing logs
   try {
-    console.log('📡 Loading existing logs after refresh...')
     const response = await $fetch('/api/admin/wordpress-migration/logs')
-    console.log('📊 Refresh logs response:', response)
     
     if (response && response.success && Array.isArray(response.logs)) {
-      console.log(`📝 Found ${response.logs.length} existing logs after refresh`)
-      
       // اگر لاگ‌هایی موجود است، یعنی فرآیند در حال اجرا است
       if (response.logs.length > 0) {
         isMigrating.value = true
         migrationProgress.value.isActive = true
         migrationStartTime.value = new Date()
         
-        response.logs.forEach((log, index) => {
-          console.log(`📄 Loading refreshed log ${index + 1}:`, log)
-          
+        response.logs.forEach((log) => {
           let message = log.message
           try {
             if (message.includes('Ø') || message.includes('Û')) {
               message = decodeURIComponent(escape(message))
             }
-          } catch (e) {
-            console.log('Failed to decode refreshed log:', e)
+          } catch (_e) {
+            // Failed to decode refreshed log
           }
           
           addLog(log.type, message)

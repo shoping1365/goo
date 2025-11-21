@@ -504,7 +504,7 @@ const maxAmountCount = computed(() => Math.max(...popularAmounts.value.map(a => 
 // Methods
 const updateReportData = () => {
   // به‌روزرسانی داده‌ها بر اساس فیلترها
-  console.log('به‌روزرسانی گزارش با فیلترها:', reportFilters)
+
 }
 
 const formatCurrency = (amount: number) => {
@@ -537,19 +537,19 @@ const getTypeLabel = (type: string) => {
 
 const exportReport = () => {
   // شبیه‌سازی export PDF
-  console.log('خروجی PDF در حال آماده‌سازی...')
+
   alert('گزارش PDF آماده شد')
 }
 
 const exportExcel = () => {
   // شبیه‌سازی export Excel
-  console.log('خروجی Excel در حال آماده‌سازی...')
+
   alert('گزارش Excel آماده شد')
 }
 
 // Lifecycle
 onMounted(() => {
-  console.log('Gift card financial reports component mounted')
+
   updateReportData()
 })
 </script>

@@ -1429,12 +1429,10 @@ const getPaymentMethodText = (method) => {
 const refreshData = async () => {
   await fetchStats()
   await fetchCancelledOrders()
-  // console.log('بروزرسانی داده‌ها...')
 }
 
 const exportData = () => {
   // خروجی اکسل
-  // console.log('خروجی اکسل...')
 }
 
 // متدهای مودال
@@ -1449,18 +1447,15 @@ const closeModal = () => {
 }
 
 const editOrder = (_order) => {
-  // console.log('ویرایش سفارش:', order)
   // اینجا می‌توانید کاربر را به صفحه ویرایش هدایت کنید
 }
 
 const _viewOrder = (_order) => {
   // مشاهده جزئیات سفارش
-  // console.log('مشاهده سفارش:', order)
 }
 
 const _restoreOrder = (_order) => {
   // بازگردانی سفارش
-  // console.log('بازگردانی سفارش:', order)
 }
 
 
@@ -1468,36 +1463,23 @@ const _restoreOrder = (_order) => {
 // متدهای صفحه‌بندی
 const handlePageChange = (page) => {
   currentPage.value = page
-  // console.log('تغییر به صفحه:', page)
   // اینجا می‌توانید داده‌های جدید را بارگذاری کنید
 }
 
 const handleItemsPerPageChange = (newItemsPerPage) => {
   itemsPerPage.value = newItemsPerPage
   currentPage.value = 1 // بازگشت به صفحه اول
-  // console.log('تغییر تعداد آیتم در هر صفحه به:', newItemsPerPage)
   // اینجا می‌توانید داده‌های جدید را بارگذاری کنید
 }
 
 // متدهای گزارشات
 const generateReport = () => {
-  // console.log('تولید گزارش با پارامترهای:', {
-  //   type: reportType.value,
-  //   period: reportPeriod.value,
-  //   dateFrom: reportDateFrom.value,
-  //   dateTo: reportDateTo.value,
-  //   cancellationReason: reportCancellationReason.value,
-  //   paymentMethod: reportPaymentMethod.value,
-  //   format: reportFormat.value
-  // })
 }
 
 const downloadQuickReport = (_period, _format) => {
-  // console.log('دانلود گزارش سریع:', { period, format })
 }
 
 const refreshReportHistory = () => {
-  // console.log('بروزرسانی تاریخچه گزارشات')
 }
 
 const _handleReportPageChange = (page) => {

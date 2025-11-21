@@ -454,19 +454,24 @@ const getActivityTypeLabel = (type: string) => {
 // اعمال فیلترها
 const applyFilters = () => {
   // TODO: اعمال فیلترها
-  console.log('فیلترهای لاگ اعمال شد:', filters.value)
+
 }
 
 // صادر کردن لاگ‌ها
 const exportLogs = () => {
   // TODO: صادر کردن لاگ‌ها
-  console.log('صادر کردن لاگ‌ها')
+
+}
+
+interface Log {
+  id?: number | string
+  [key: string]: unknown
 }
 
 // مشاهده جزئیات لاگ
-const viewLogDetails = (log: any) => {
+const viewLogDetails = (_log: Log) => {
   // TODO: مشاهده جزئیات لاگ
-  console.log('مشاهده جزئیات لاگ:', log)
+
 }
 
 // صفحه قبلی

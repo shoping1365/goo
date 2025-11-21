@@ -445,14 +445,27 @@ const canDeleteRule = computed(() => {
 
 const activeTab = ref('rules')
 const showRuleForm = ref(false)
-const editingRule = ref<any>(null)
+interface Rule {
+  id?: number | string
+  [key: string]: unknown
+}
+
+interface TestData {
+  [key: string]: unknown
+}
+
+interface TestResults {
+  [key: string]: unknown
+}
+
+const editingRule = ref<Rule | null>(null)
 const selectedRules = ref<number[]>([])
 const filterCategory = ref('')
 const filterStatus = ref('')
 const selectedRuleForTest = ref('')
 const testDataType = ref('user')
-const testData = ref<any>(null)
-const testResults = ref<any>(null)
+const testData = ref<TestData | null>(null)
+const testResults = ref<TestResults | null>(null)
 
 const tabs = [
   { value: 'rules', label: 'قوانین فعال' },
@@ -611,19 +624,31 @@ const getStatusText = (status: string): string => {
   return texts[status as keyof typeof texts] || status
 }
 
-const editRule = (rule: any) => {
+interface Rule {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
+}
+
+const editRule = (rule: Rule) => {
   editingRule.value = rule
   Object.assign(form, rule)
   showRuleForm.value = true
 }
 
-const duplicateRule = (rule: any) => {
+const duplicateRule = (rule: Rule) => {
   const duplicate = { ...rule, id: Date.now(), name: `${rule.name} (کپی)` }
   rules.value.unshift(duplicate)
 }
 
-const deleteRule = async (rule: any) => {
-  if (confirm(`آیا از حذف قانون "${rule.name}" اطمینان دارید؟`)) {
+interface Rule {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
+}
+
+const deleteRule = async (rule: Rule) => {
+  if (confirm(`آیا از حذف قانون "${rule.name || 'نامشخص'}" اطمینان دارید؟`)) {
     try {
       const index = rules.value.findIndex(r => r.id === rule.id)
       if (index !== -1) {
@@ -681,7 +706,7 @@ const removeCondition = (index: number) => {
 
 const loadRuleDetails = () => {
   // پیاده‌سازی بارگذاری جزئیات قانون
-  console.log('بارگذاری جزئیات قانون:', selectedRuleForTest.value)
+
 }
 
 const getSelectedRuleDetails = () => {

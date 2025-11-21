@@ -112,7 +112,7 @@ class="w-full md:w-48 px-10 py-3 rounded-lg text-base font-bold shadow-md transi
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
 // تعریف interface برای gateway
 interface Gateway {
@@ -131,7 +131,7 @@ interface Gateway {
   pattern_based?: boolean
   created_at?: string
   updated_at?: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 // تعریف props برای دریافت gateway از parent component
@@ -142,6 +142,7 @@ const props = defineProps<{
 // تعریف emit برای اطلاع‌رسانی به parent component
 const emit = defineEmits<{
   gatewayDeleted: [id: number]
+  gatewayUpdated: [gateway: Gateway]
 }>()
 
 // متغیر reactive برای موجودی درگاه
@@ -214,7 +215,7 @@ const fetchGatewayBalance = async (id: number) => {
     } else {
       gatewayBalance.value = 0
     }
-  } catch (error) {
+  } catch {
     // خطا در دریافت موجودی درگاه
     gatewayBalance.value = 0
   } finally {
@@ -235,7 +236,7 @@ const fetchMeliPayamakInfo = async (id: number) => {
     } else {
       meliPayamakInfo.value = { remaining_sms: 0, credit: 0 }
     }
-  } catch (error) {
+  } catch {
     // خطا در دریافت اطلاعات ملی پیامک
     meliPayamakInfo.value = { remaining_sms: 0, credit: 0 }
   } finally {
@@ -254,16 +255,19 @@ const testGateway = async (id: number) => {
     } else {
       alert('❌ خطا در تست اتصال!\n\n' + (response.error_message || 'لطفاً تنظیمات درگاه را بررسی کنید.'))
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     let errorMessage = 'خطا در تست اتصال!'
     
     // استخراج پیام خطا از response
-    if (error.response && error.response._data) {
-      const errorData = error.response._data
+    if (error && typeof error === 'object' && 'response' in error) {
+      const errorResponse = error.response as { _data?: { error_message?: string; message?: string } }
+      if (errorResponse._data) {
+        const errorData = errorResponse._data
       if (errorData.error_message) {
         errorMessage = errorData.error_message
       } else if (errorData.message) {
         errorMessage = errorData.message
+        }
       }
     }
     
@@ -280,7 +284,7 @@ const testSendSMS = async (id: number) => {
   if (!message) return
   
   try {
-    const response = await $fetch(`/api/sms-gateways/${id}/send-test`, {
+    await $fetch(`/api/sms-gateways/${id}/send-test`, {
       method: 'POST',
       body: {
         mobile: mobile,
@@ -288,7 +292,7 @@ const testSendSMS = async (id: number) => {
       }
     })
     alert('پیامک با موفقیت ارسال شد!')
-  } catch (error) {
+  } catch {
     // خطا در ارسال پیامک
     alert('خطا در ارسال پیامک!')
   }
@@ -308,11 +312,14 @@ const toggleGateway = async (id: number) => {
         is_active: newIsActive
       }
     })
-    // به‌روزرسانی وضعیت در parent component
-    props.gateway.status = newStatus
-    props.gateway.is_active = newIsActive
+    // به‌روزرسانی وضعیت در parent component از طریق emit
+    emit('gatewayUpdated', {
+      ...props.gateway,
+      status: newStatus,
+      is_active: newIsActive
+    })
     alert(`درگاه ${newIsActive ? 'فعال' : 'غیرفعال'} شد!`)
-  } catch (error) {
+  } catch {
     alert('خطا در تغییر وضعیت درگاه!')
   }
 }
@@ -334,7 +341,7 @@ const deleteGateway = async (id: number) => {
     // اطلاع‌رسانی به parent component
     emit('gatewayDeleted', id)
     alert('درگاه با موفقیت حذف شد!')
-  } catch (error) {
+  } catch {
     // خطا در حذف درگاه
     alert('خطا در حذف درگاه! لطفاً دوباره تلاش کنید.')
   }
@@ -343,13 +350,6 @@ const deleteGateway = async (id: number) => {
 onMounted(() => {
   // دریافت موجودی درگاه در بارگذاری
   fetchGatewayBalance(props.gateway.id)
-  
-  // به‌روزرسانی زمان آخرین بررسی هر 60 ثانیه
-  setInterval(() => {
-    if (props.gateway.lastCheck) {
-      props.gateway.lastCheck = new Date()
-    }
-  }, 60000)
   
   // به‌روزرسانی موجودی هر 5 دقیقه
   setInterval(() => {

@@ -24,8 +24,8 @@
   </header>
 </template>
 
-<script setup>
-import CartBadge from '~/components/cart/CartBadge.vue'
+<script setup lang="ts">
+import CartBadge from '~/components/cart/CartBadge.vue';
 const { user, isAuthenticated } = useAuth()
 </script> 
 

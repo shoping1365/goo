@@ -109,13 +109,10 @@ const alignmentClass = computed(() => {
 })
 
 const normalizedSocials = computed(() => {
-  console.log('🎯 FooterWidgetSocial - props.socials:', props.socials)
-  
+
   const fromArray = Array.isArray(props.socials) && props.socials.length
     ? props.socials
     : legacySocials()
-
-  console.log('🎯 FooterWidgetSocial - fromArray:', fromArray)
 
   const result = fromArray
     .filter(item => {
@@ -137,8 +134,7 @@ const normalizedSocials = computed(() => {
         openInNewTab: item.openInNewTab !== false
       }
     })
-  
-  console.log('✅ FooterWidgetSocial - normalizedSocials:', result)
+
   return result
 })
 

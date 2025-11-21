@@ -515,7 +515,7 @@ const rejectRefund = (refund) => {
 // تابع خروجی گزارش
 const exportRefunds = () => {
   // اینجا کد export را اضافه کنید
-  console.log('Exporting refunds')
+
   alert('گزارش بازپرداخت‌ها در حال دانلود است')
 }
 

@@ -251,7 +251,7 @@ function getGatewayFields(val: string) {
 }
 
 // تابع به‌روزرسانی نام درگاه (تعریف شده قبل از استفاده)
-const updateGatewayName = async () => {
+const _updateGatewayName = async () => {
   if (!selectedGateway.value) return
   
   try {
@@ -266,8 +266,15 @@ const updateGatewayName = async () => {
   }
 }
 
+interface GatewayData {
+  id: number
+  name: string
+  type: string
+  [key: string]: unknown
+}
+
 // دریافت اطلاعات درگاه
-const { data: gatewayData, pending, error, refresh } = await useFetch<{ data: any }>(`/api/sms-gateways/${id}`)
+const { data: gatewayData, pending, error, refresh } = await useFetch<{ data: GatewayData }>(`/api/sms-gateways/${id}`)
 
 // اضافه کردن loading state برای نمایش وضعیت بارگذاری
 const isLoading = ref(true)
@@ -354,7 +361,17 @@ async function submitForm() {
   if (!isFormValid.value) return
 
   // ساخت payload بر اساس ساختار backend
-  const payload: any = {
+  interface GatewayPayload {
+    type: string
+    name: string
+    api_url?: string
+    api_key?: string
+    username?: string
+    password?: string
+    sender_number?: string
+    [key: string]: unknown
+  }
+  const payload: GatewayPayload = {
     type: selectedGateway.value,
     name: getGatewayLabel(selectedGateway.value), // استفاده از نام نوع درگاه
     api_url: apiUrl.value, // آدرس API
@@ -396,7 +413,7 @@ const gatewayApiInfo = {
         ippanel: 'https://rest.ippanel.com/v1/messages/patterns/send',
   kavenegar: 'https://api.kavenegar.com/v1/{API-KEY}/sms/send.json'
 }
-function getGatewayApiInfo(val: string) {
+const _getGatewayApiInfo = (val: string) => {
   return gatewayApiInfo[val] || ''
 }
 
@@ -423,7 +440,16 @@ async function testConnection() {
       testConnectionMessage.value = response.error_message || 'خطا در اتصال'
       alert('❌ خطا در اتصال!\n\n' + (response.error_message || 'لطفاً تنظیمات درگاه را بررسی کنید.'))
     }
-  } catch (error: any) {
+  } catch (e: unknown) {
+    interface ErrorResponse {
+      response?: {
+        _data?: {
+          error_message?: string
+        }
+      }
+      message?: string
+    }
+    const error = e as ErrorResponse
     testConnectionStatus.value = 'error'
     let errorMessage = 'خطا در اتصال!'
     if (error.response && error.response._data) {

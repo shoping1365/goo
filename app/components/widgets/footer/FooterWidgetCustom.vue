@@ -16,13 +16,14 @@
       const sanitizedHtml = computed(() => DOMPurify.sanitize(viewModel.value.html))
       <div v-html="sanitizedHtml"></div>
     -->
-    <div v-if="viewModel.html" class="footer-widget__content" v-html="viewModel.html"></div>
+    <SanitizedHtml v-if="viewModel.html" :content="viewModel.html" class="footer-widget__content" />
     <slot v-else />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import SanitizedHtml from '~/components/common/SanitizedHtml.vue'
 
 const props = withDefaults(defineProps<{
   title?: string
@@ -32,10 +33,14 @@ const props = withDefaults(defineProps<{
   html: ''
 })
 
-const viewModel = computed(() => ({
-  title: props.title?.trim() || '',
-  html: props.html || ''
-}))
+const viewModel = computed(() => {
+  const html = props.html || ''
+  
+  return {
+    title: props.title?.trim() || '',
+    html
+  }
+})
 </script>
 
 <style scoped>

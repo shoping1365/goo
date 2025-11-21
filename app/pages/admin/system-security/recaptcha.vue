@@ -571,17 +571,14 @@ const turnstileSize = ref('normal')
 // توابع Turnstile
 const onTurnstileToken = (token: string) => {
   turnstileToken.value = token
-  // console.log('Turnstile token received:', token)
 }
 
 const onTurnstileExpired = () => {
   turnstileToken.value = ''
-  // console.log('Turnstile token expired')
 }
 
 const onTurnstileError = (error: string) => {
   turnstileToken.value = ''
-  // console.log('Turnstile error:', error)
 }
 
 // فرم جدید
@@ -656,11 +653,9 @@ const toggleRecaptcha = (enabled: boolean) => {
 }
 
 const changeRecaptchaType = () => {
-  // console.log('نوع reCAPTCHA تغییر کرد به:', recaptchaType.value)
 }
 
 const testRecaptcha = () => {
-  // console.log('تست reCAPTCHA انجام شد')
 }
 
 const testTurnstileForm = async () => {
@@ -717,7 +712,6 @@ const testTurnstileForm = async () => {
 }
 
 const saveSettings = () => {
-  // console.log('تنظیمات ذخیره شد:', settings.value)
   showSettingsModal.value = false
 }
 
@@ -744,11 +738,9 @@ const toggleForm = (id: number) => {
 }
 
 const editForm = (id: number) => {
-  // console.log('ویرایش فرم با ID:', id)
 }
 
 const testFormById = (id: number) => {
-  // console.log('تست فرم با ID:', id)
 }
 
 const deleteForm = (id: number) => {

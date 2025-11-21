@@ -523,16 +523,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { reactive, computed, onMounted } from 'vue'
+
+interface GiftCard {
+  id?: number | string
+  [key: string]: unknown
+}
+
+interface Filters {
+  status?: string
+  minAmount?: number
+  maxAmount?: number
+  [key: string]: unknown
+}
 
 // Props
 const props = defineProps<{
-  giftCards: any[]
+  giftCards: GiftCard[]
 }>()
 
 // Emits
 const emit = defineEmits<{
-  'apply-filters': [filters: any]
+  'apply-filters': [filters: Filters]
 }>()
 
 // Reactive data
@@ -670,7 +682,6 @@ const activeFiltersCount = computed(() => {
 // Methods
 const applyFilters = () => {
   emit('apply-filters', { ...filters })
-  console.log('فیلترها اعمال شد:', filters)
 }
 
 const resetAllFilters = () => {
@@ -685,33 +696,44 @@ const resetAllFilters = () => {
       filters[key] = ''
     }
   })
-  console.log('همه فیلترها پاک شد')
 }
 
-const setAmountRange = (range: any) => {
-  filters.amountMin = range.min
-  filters.amountMax = range.max
+interface AmountRange {
+  min?: number | null
+  max?: number | null
+  [key: string]: unknown
 }
 
-const setCreatedDatePeriod = (period: any) => {
+interface DatePeriod {
+  from?: string
+  to?: string
+  [key: string]: unknown
+}
+
+const setAmountRange = (range: AmountRange) => {
+  filters.amountMin = range.min ?? null
+  filters.amountMax = range.max ?? null
+}
+
+const setCreatedDatePeriod = (period: DatePeriod) => {
   const { from, to } = period
-  filters.createdDateFrom = getDateFromPeriod(from)
-  filters.createdDateTo = getDateFromPeriod(to)
+  filters.createdDateFrom = getDateFromPeriod(from || '')
+  filters.createdDateTo = getDateFromPeriod(to || '')
 }
 
-const setExpiryDatePeriod = (period: any) => {
+const setExpiryDatePeriod = (period: DatePeriod) => {
   const { from, to } = period
-  filters.expiryDateFrom = getDateFromPeriod(from)
-  filters.expiryDateTo = getDateFromPeriod(to)
+  filters.expiryDateFrom = getDateFromPeriod(from || '')
+  filters.expiryDateTo = getDateFromPeriod(to || '')
 }
 
-const setDeliveryDatePeriod = (period: any) => {
+const setDeliveryDatePeriod = (period: DatePeriod) => {
   const { from, to } = period
-  filters.deliveryDateFrom = getDateFromPeriod(from)
-  filters.deliveryDateTo = getDateFromPeriod(to)
+  filters.deliveryDateFrom = getDateFromPeriod(from || '')
+  filters.deliveryDateTo = getDateFromPeriod(to || '')
 }
 
-const setLastUsedDatePeriod = (period: any) => {
+const setLastUsedDatePeriod = (period: DatePeriod) => {
   const { from, to } = period
   filters.lastUsedDateFrom = getDateFromPeriod(from)
   filters.lastUsedDateTo = getDateFromPeriod(to)
@@ -783,7 +805,6 @@ const formatCurrency = (amount: number) => {
 // Lifecycle
 onMounted(() => {
   updateCounts()
-  console.log('Gift card filters component mounted')
 })
 </script>
 

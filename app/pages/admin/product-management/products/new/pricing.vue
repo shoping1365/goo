@@ -784,15 +784,19 @@ async function runPriceAnalysis() {
       method: 'POST',
       body: { q: keyword.value.trim(), limit: Number(limit.value) || 10 }
     })
+    interface PricingResult {
+      id?: number | string
+      price?: number
+      name?: string
+      [key: string]: unknown
+    }
     const rows = Array.isArray(res?.data) ? res.data : (res?.results || [])
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    results.value = rows.map((r: any) => ({
+    results.value = (rows as PricingResult[]).map((r) => ({
       ...r,
       priceFormatted: r?.price ? `${formatToman(r.price)} تومان` : '-'
     }))
   } catch (err: unknown) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const e = err as any
+    const e = err as { message?: string; [key: string]: unknown }
     errorMsg.value = e?.data?.message || e?.message || 'خطا در تحلیل قیمت'
   } finally {
     loading.value = false

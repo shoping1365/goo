@@ -224,7 +224,7 @@
 import { ref, computed } from 'vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
 
-const props = defineProps<{
+defineProps<{
   modelValue?: boolean
 }>()
 const emit = defineEmits(['save'])
@@ -253,38 +253,27 @@ const currentSlideIndex = ref(0)
 
 // Computed
 const isFormValid = computed(() => {
-  console.log('isFormValid computed - slides:', slides.value)
-  
+
   if (slides.value.length === 0) {
-    console.log('هیچ اسلایدی وجود ندارد')
+
     return false
   }
   
-  const validSlides = slides.value.every((slide, index) => {
+  const validSlides = slides.value.every((slide, _index) => {
     // برای هر اسلاید، حداقل یکی (دسکتاپ یا موبایل) باید کامل باشه
     const desktopValid = slide.desktopImage && slide.desktopTitle
     const mobileValid = slide.mobileImage && slide.mobileTitle
-    
-    console.log(`اسلاید ${index + 1}:`, {
-      desktopValid,
-      mobileValid,
-      desktopImage: slide.desktopImage,
-      desktopTitle: slide.desktopTitle,
-      mobileImage: slide.mobileImage,
-      mobileTitle: slide.mobileTitle
-    })
-    
+
     // حداقل یکی باید کامل باشه
     const isValid = desktopValid || mobileValid
     
     if (!isValid) {
-      console.log(`اسلاید ${index + 1} معتبر نیست - هیچ کدام کامل نیست`)
+
     }
     
     return isValid
   })
-  
-  console.log('isFormValid result:', validSlides)
+
   return validSlides
 })
 
@@ -325,7 +314,17 @@ const openMediaLibrary = (type: 'desktop' | 'mobile', slideIndex: number) => {
   showMediaLibrary.value = true
 }
 
-const onSelectFromLibrary = (files: any[]) => {
+interface MediaFile {
+  id: number
+  url: string
+  thumbnail: string
+  type: string
+  name: string
+  size: number
+  category: string
+}
+
+const onSelectFromLibrary = (files: MediaFile[]) => {
   if (files && files.length > 0) {
     const slide = slides.value[currentSlideIndex.value]
     const file = files[0]
@@ -340,13 +339,12 @@ const onSelectFromLibrary = (files: any[]) => {
 }
 
 const handleSave = () => {
-  console.log('handleSave اجرا شد')
-  console.log('isFormValid:', isFormValid.value)
-  console.log('slides:', slides.value)
-  console.log('sliderSettings:', sliderSettings.value)
-  
+
+
+
+
   if (!isFormValid.value) {
-    console.log('فرم معتبر نیست!')
+
     return
   }
   

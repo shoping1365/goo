@@ -47,17 +47,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useState } from 'nuxt/app'
-import { usePublicHeaders } from '~/composables/usePublicHeaders'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useDeviceDetection } from '~/composables/useDeviceDetection'
+import { usePublicHeaders } from '~/composables/usePublicHeaders'
 
 const route = useRoute()
 const { loadHeaders, getActiveHeader, getHeaderForPage } = usePublicHeaders()
 const { isDesktop } = useDeviceDetection()
-const activeHeader = ref<any>(null)
-const headerRef = ref<HTMLElement>()
-const isSticky = ref(false)
+const activeHeader = ref<Record<string, unknown> | null>(null)
+// const headerRef = ref<HTMLElement>()
+// const isSticky = ref(false)
 
 
 
@@ -101,10 +101,10 @@ const headerStyle = computed(() => {
   }
 })
 
-function getLayerStyle(layer: any) {
+function getLayerStyle(layer: Record<string, unknown>) {
   // سبک پایه هدر را تعریف می‌کنیم و سپس هر استایل سفارشی درج‌شده در لایه را روی آن اعمال می‌کنیم
-  const baseStyle: Record<string, any> = {
-    height: (layer.height ?? 80) + 'px',
+  const baseStyle: Record<string, unknown> = {
+    height: ((layer.height as number) ?? 80) + 'px',
     backgroundColor: layer.color || '#ffffff',
     width: layer.width ? layer.width + '%' : '100%',
     display: 'flex',
@@ -128,7 +128,7 @@ function getLayerStyle(layer: any) {
   }
 
   // لایه ممکن است یک آبجکت استایل یا یک رشته JSON باشد
-  let customStyle: Record<string, any> = {}
+  let customStyle: Record<string, unknown> = {}
   if (layer.style) {
     if (typeof layer.style === 'string') {
       try {
@@ -137,7 +137,7 @@ function getLayerStyle(layer: any) {
         customStyle = {}
       }
     } else if (typeof layer.style === 'object') {
-      customStyle = layer.style
+      customStyle = layer.style as Record<string, unknown>
     }
   }
 
@@ -157,7 +157,7 @@ function resolveToggle(value: unknown): boolean {
 /**
  * تعیین چینش لایه بر اساس آیتم‌ها و تنظیمات
  */
-function getLayerJustifyContent(layer: any): string {
+function getLayerJustifyContent(layer: Record<string, unknown>): string {
   // اگر لایه دارای آیتم‌هایی با چینش مشخص باشد
   if (layer?.items) {
     try {
@@ -171,7 +171,7 @@ function getLayerJustifyContent(layer: any): string {
         const firstItem = items[0]
         const firstAlign = firstItem?.align || 'center'
 
-        const allSameAlign = items.every((item: any) => (item?.align || 'center') === firstAlign)
+        const allSameAlign = items.every((item: Record<string, unknown>) => (item?.align || 'center') === firstAlign)
 
         if (allSameAlign) {
           switch (firstAlign) {
@@ -188,7 +188,7 @@ function getLayerJustifyContent(layer: any): string {
 
         return 'space-between'
       }
-    } catch (error) {
+    } catch {
       // خطا در پردازش آیتم‌های لایه
     }
   }
@@ -197,7 +197,7 @@ function getLayerJustifyContent(layer: any): string {
   return layer.direction === 'ltr' ? 'flex-start' : 'flex-end'
 }
 
-function parseStyleSettings(layer: any) {
+function parseStyleSettings(layer: Record<string, unknown>) {
   const raw = layer?.styleSettings ?? layer?.style_settings
   if (!raw) return null
   if (typeof raw === 'string') {
@@ -212,8 +212,8 @@ function parseStyleSettings(layer: any) {
   return null
 }
 
-function resolveBorderConfig(layer: any) {
-  const styleSettings = parseStyleSettings(layer) || {}
+function resolveBorderConfig(layer: Record<string, unknown>) {
+  const styleSettings = (parseStyleSettings(layer) || {}) as { border?: Record<string, unknown> }
   const border = styleSettings.border || {}
   const enabled = resolveToggle(
     layer?.borderEnabled ??
@@ -224,10 +224,10 @@ function resolveBorderConfig(layer: any) {
   )
   return {
     enabled,
-    position: layer?.borderPosition ?? layer?.border_position ?? border.position ?? 'all',
-    color: layer?.borderColor ?? layer?.border_color ?? border.color ?? '#e5e7eb',
+    position: (layer?.borderPosition ?? layer?.border_position ?? border.position ?? 'all') as string,
+    color: (layer?.borderColor ?? layer?.border_color ?? border.color ?? '#e5e7eb') as string,
     width: Number(layer?.borderWidth ?? layer?.border_width ?? border.width ?? 1) || 1,
-    style: layer?.borderStyle ?? layer?.border_style ?? border.style ?? 'solid'
+    style: (layer?.borderStyle ?? layer?.border_style ?? border.style ?? 'solid') as string
   }
 }
 
@@ -288,17 +288,17 @@ const SHADOW_PRESETS: Record<string, Record<string, string>> = {
   }
 }
 
-function resolveShadowConfig(layer: any) {
-  const styleSettings = parseStyleSettings(layer) || {}
+function resolveShadowConfig(layer: Record<string, unknown>) {
+  const styleSettings = (parseStyleSettings(layer) || {}) as { shadow?: Record<string, unknown> }
   const shadow = styleSettings.shadow || {}
   const rawIntensity = typeof layer?.shadowIntensity === 'string'
     ? layer.shadowIntensity
     : (typeof layer?.shadow_intensity === 'string' ? layer.shadow_intensity : shadow.intensity)
-  const intensity = rawIntensity && rawIntensity.trim() !== '' ? rawIntensity : 'md'
+  const intensity = (rawIntensity && (rawIntensity as string).trim() !== '' ? rawIntensity : 'md') as string
   const rawDirection = typeof layer?.shadowDirection === 'string'
     ? layer.shadowDirection
     : (typeof layer?.shadow_direction === 'string' ? layer.shadow_direction : shadow.direction)
-  const direction = rawDirection && rawDirection.trim() !== '' ? rawDirection : 'top'
+  const direction = (rawDirection && (rawDirection as string).trim() !== '' ? rawDirection : 'top') as string
   const enabled = resolveToggle(
     layer?.elevationEnabled ??
     layer?.elevation_enabled ??
@@ -314,7 +314,7 @@ function resolveShadowConfig(layer: any) {
   }
 }
 
-function resolveShadowStyles(layer: any) {
+function resolveShadowStyles(layer: Record<string, unknown>) {
   const shadowConfig = resolveShadowConfig(layer)
   if (!shadowConfig.enabled) return { boxShadow: '', position: '', zIndex: undefined as number | undefined }
 
@@ -345,15 +345,15 @@ function getLayerItems(layer) {
 /**
  * تعیین نام کامپوننت برای رندر ویجت هدر بر اساس فیلد type یا component
  */
-function resolveWidgetComponent(item: any): string | null {
+function resolveWidgetComponent(item: Record<string, unknown>): string | null {
   let raw: string | undefined
   if (typeof item === 'string') {
     raw = item
   } else {
-    raw = item?.component || item?.type
+    raw = (item?.component || item?.type) as string | undefined
   }
 
-  if (!raw && typeof item === 'object' && item.id) raw = item.id
+  if (!raw && typeof item === 'object' && item.id) raw = item.id as string
 
   if (!raw) return null
 
@@ -385,13 +385,13 @@ function getJustifyContent(align: string): string {
   }
 }
 
-function getItemStyle(item: any) {
+function getItemStyle(item: Record<string, unknown>) {
   if (typeof item !== 'object') return {}
-  const style: Record<string, any> = {
+  const style: Record<string, unknown> = {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: getJustifyContent(item.align || 'center'),
+    justifyContent: getJustifyContent((item.align as string) || 'center'),
     height: '100%'
   }
   
@@ -432,8 +432,8 @@ function getItemStyle(item: any) {
 /**
  * تعیین استایل جداکننده لایه
  */
-function getSeparatorStyle(layer: any) {
-  const style: Record<string, any> = {}
+function getSeparatorStyle(layer: Record<string, unknown>) {
+  const style: Record<string, unknown> = {}
   
   // تنظیم نوع خط
   if (layer.separatorType) {
@@ -461,12 +461,12 @@ function getSeparatorStyle(layer: any) {
 
 // @ts-ignore - vite/nuxt import meta glob
 const widgetModules = import.meta.glob('./HeaderWidget*.vue', { eager: true })
-const widgetRegistry: Record<string, any> = {}
+const widgetRegistry: Record<string, unknown> = {}
 for (const path in widgetModules) {
-  const mod: any = (widgetModules as any)[path]
-  if (mod && mod.default) {
+  const mod: unknown = (widgetModules as Record<string, unknown>)[path]
+  if (mod && (mod as { default: unknown }).default) {
     const name = path.split('/').pop()?.replace('.vue', '') || ''
-    widgetRegistry[name] = mod.default
+    widgetRegistry[name] = (mod as { default: unknown }).default
   }
 }
 
@@ -488,13 +488,13 @@ onMounted(async () => {
             // اگر هدر برای صفحه جدید وجود داشته باشد، آن را تنظیم کن
             activeHeader.value = headerForPage
           }
-        } catch (error) {
+        } catch {
           // در صورت خطا، هدر را پاک کن
           activeHeader.value = null
         }
       }
     })
-  } catch (error) {
+  } catch {
     activeHeader.value = null
   }
 })

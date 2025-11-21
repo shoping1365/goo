@@ -395,37 +395,42 @@ const getStatusLabel = (status: string) => {
   return labels[status] || status
 }
 
+interface Version {
+  id: number | string
+  [key: string]: unknown
+}
+
 // عملیات
-const restoreVersion = (version: any) => {
-  console.log('بازیابی نسخه:', version)
+const restoreVersion = (_version: Version) => {
+
 }
 
-const downloadVersion = (version: any) => {
-  console.log('دانلود نسخه:', version)
+const downloadVersion = (_version: Version) => {
+
 }
 
-const deleteVersion = (version: any) => {
-  console.log('حذف نسخه:', version)
+const deleteVersion = (_version: Version) => {
+
 }
 
 const restoreSelected = () => {
-  console.log('بازیابی نسخه‌های انتخاب شده:', selectedVersions.value)
+
 }
 
 const downloadSelected = () => {
-  console.log('دانلود نسخه‌های انتخاب شده:', selectedVersions.value)
+
 }
 
 const deleteSelected = () => {
-  console.log('حذف نسخه‌های انتخاب شده:', selectedVersions.value)
+
 }
 
 const cleanupArchive = () => {
-  console.log('پاکسازی آرشیو')
+
 }
 
 const saveArchiveSettings = () => {
-  console.log('ذخیره تنظیمات آرشیو:', archiveSettings.value)
+
 }
 
 const clearFilters = () => {

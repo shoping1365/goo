@@ -332,72 +332,52 @@
 // کامپوننت بهینه‌سازی و یادگیری مداوم
 // قابلیت‌های ۷۶-۸۰: یادگیری آنلاین، Multi-Armed Bandit، بهینه‌سازی Hyperparameter، Ensemble Methods
 
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
 // متغیرهای کامپوننت
-const onlineLearningStats = ref({
+const _onlineLearningStats = ref({
   continuousLearning: '24/7',
   newSamplesToday: 12456,
   learningAccuracy: 98.2
 })
 
-const algorithmPerformance = ref([
+const _algorithmPerformance = ref([
   { name: 'Collaborative Filtering', performance: 87, color: 'blue' },
   { name: 'Content-Based', performance: 82, color: 'green' },
   { name: 'Hybrid Approach', performance: 91, color: 'purple' },
   { name: 'Deep Learning', performance: 89, color: 'yellow' }
 ])
 
-const algorithmDistribution = ref([
+const _algorithmDistribution = ref([
   { name: 'Collaborative', percentage: 35.2, color: 'blue' },
   { name: 'Content-Based', percentage: 28.7, color: 'green' },
   { name: 'Hybrid', percentage: 24.3, color: 'purple' },
   { name: 'Deep Learning', percentage: 11.8, color: 'yellow' }
 ])
 
-const activeTests = ref([
-  {
-    name: 'تست الگوریتم جدید',
-    status: 'فعال',
-    progress: 67,
-    participants: 12456
-  },
-  {
-    name: 'تست رابط کاربری',
-    status: 'در انتظار',
-    progress: 23,
-    participants: 8923
-  }
-])
 
-const testResults = ref({
-  clickRateImprovement: 15.3,
-  conversionRateImprovement: 8.7,
-  loadingTimeReduction: 23.1,
-  userSatisfactionImprovement: 12.4
-})
 
-const optimalParameters = ref({
+const _optimalParameters = ref({
   learningRate: 0.001,
   batchSize: 64,
   epochs: 100,
   dropoutRate: 0.2
 })
 
-const optimizationStats = ref({
+const _optimizationStats = ref({
   bestAccuracy: 94.8,
   optimizationTime: '2 ساعت 34 دقیقه',
   numberOfTrials: 156,
   improvement: 6.2
 })
 
-const ensembleStats = ref({
+const _ensembleStats = ref({
   numberOfAlgorithms: 5,
   ensembleAccuracy: 96.3,
   improvementOverBest: 4.1
 })
 
-const algorithmWeights = ref([
+const _algorithmWeights = ref([
   { name: 'Collaborative Filtering', weight: 30, color: 'blue' },
   { name: 'Content-Based', weight: 25, color: 'green' },
   { name: 'Deep Learning', weight: 25, color: 'purple' },
@@ -405,30 +385,4 @@ const algorithmWeights = ref([
 ])
 
 // توابع کامپوننت
-const updateOnlineLearning = () => {
-  // به‌روزرسانی یادگیری آنلاین
-  console.log('به‌روزرسانی یادگیری آنلاین')
-}
-
-const updateMultiArmedBandit = () => {
-  // به‌روزرسانی Multi-Armed Bandit
-  console.log('به‌روزرسانی Multi-Armed Bandit')
-}
-
-
-
-const updateHyperparameterOptimization = () => {
-  // به‌روزرسانی بهینه‌سازی Hyperparameter
-  console.log('به‌روزرسانی بهینه‌سازی Hyperparameter')
-}
-
-const updateEnsembleMethods = () => {
-  // به‌روزرسانی Ensemble Methods
-  console.log('به‌روزرسانی Ensemble Methods')
-}
-
-onMounted(() => {
-  // مقداردهی اولیه کامپوننت
-  console.log('کامپوننت بهینه‌سازی و یادگیری مداوم بارگذاری شد')
-})
 </script> 

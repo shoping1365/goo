@@ -258,22 +258,12 @@ onMounted(() => {
 
 // تابع ذخیره اطلاعات پایه
 function saveBasicInfo() {
-  // console.log('اطلاعات پایه ذخیره شد:', {
-  //   title: questionData.value.title,
-  //   siteTitle: questionData.value.siteTitle,
-  //   isActive: questionData.value.isActive
-  // })
-  
   // نمایش پیام موفقیت
   alert('اطلاعات پایه با موفقیت ذخیره شد!')
 }
 
 // تابع ذخیره پاسخ
 function saveAnswer() {
-  // console.log('پاسخ ذخیره شد:', {
-  //   question: questionData.value.question,
-  //   answer: questionData.value.answer
-  // })
   
   // نمایش پیام موفقیت
   alert('پاسخ با موفقیت ذخیره شد!')

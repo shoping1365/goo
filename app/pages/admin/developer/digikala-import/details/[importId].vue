@@ -351,14 +351,14 @@ const loadImportDetails = async () => {
     // بارگذاری نام دسته‌بندی
     if (response.settings?.targetCategoryId) {
       try {
-        const categories = await $fetch<{ data: any[] }>('/api/admin/product-categories?all=1')
+        const categories = await $fetch<{ data: { id: number | string; name: string }[] }>('/api/admin/product-categories?all=1')
         const category = categories.data?.find(c => c.id.toString() === response.settings.targetCategoryId)
         targetCategoryName.value = category?.name || 'نامشخص'
-      } catch (error) {
+      } catch {
         targetCategoryName.value = 'خطا در بارگذاری'
       }
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error loading import details:', error)
   }
 }
@@ -367,7 +367,7 @@ const loadDetailedLogs = async () => {
   try {
     const response = await $fetch<{ logs: LogEntry[] }>(`/go-api/admin/digikala/import-logs/${importId}`)
     detailedLogs.value = response.logs || []
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error loading logs:', error)
     detailedLogs.value = []
   }

@@ -255,7 +255,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // متغیرهای reactive
 const selectedDomain = ref('main')
 const keywordSearch = ref('')
@@ -339,22 +339,22 @@ const getSeverityText = (severity) => {
 }
 
 const refreshSeoData = () => {
-  console.log('Refreshing SEO data...')
+
   // منطق به‌روزرسانی داده‌های SEO
 }
 
 const addNewKeyword = () => {
-  console.log('Adding new keyword...')
+
   // منطق افزودن کلمه کلیدی جدید
 }
 
-const fixIssue = (issueId) => {
-  console.log('Fixing issue:', issueId)
+const fixIssue = (_issueId: string | number) => {
+
   // منطق رفع مشکل
 }
 
-const implementRecommendation = (recommendationId) => {
-  console.log('Implementing recommendation:', recommendationId)
+const implementRecommendation = (_recommendationId: string | number) => {
+
   // منطق پیاده‌سازی توصیه
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <header v-if="shouldShowMobileHeader && activeMobileHeader" :style="mobileHeaderStyle as any" class="mobile-sticky-header">
+  <header v-if="shouldShowMobileHeader && activeMobileHeader" :style="mobileHeaderStyle" class="mobile-sticky-header">
     <!-- نمایش هدر بر اساس نوع از دیتابیس -->
     <div class="mobile-header-content">
       
@@ -28,9 +28,23 @@ const BannerTemplate = defineAsyncComponent(() => import('~/pages/admin/content/
 const ClassicTemplate = defineAsyncComponent(() => import('~/pages/admin/content/mobile-app-header-management/templates/classic-template.vue'))
 
 const route = useRoute()
-const { loadMobileHeaders, getActiveMobileHeader, getMobileHeaderForPage, shouldShowMobileHeader: checkShouldShowMobileHeader } = usePublicMobileHeaders()
+const { loadMobileHeaders, getActiveMobileHeader, shouldShowMobileHeader: checkShouldShowMobileHeader } = usePublicMobileHeaders()
 const { isMobile } = useDeviceDetection()
-const activeMobileHeader = ref<any>(null)
+
+// تشخیص نوع هدر بر اساس نام
+interface Header {
+  id?: number
+  name?: string
+  type?: string
+  is_active?: boolean
+  page_selection?: 'all' | 'specific' | 'exclude'
+  specific_pages?: string | null
+  excluded_pages?: string | null
+  description?: string
+  [key: string]: unknown
+}
+
+const activeMobileHeader = ref<Header | null>(null)
 
 // بررسی اینکه آیا هدر موبایل باید نمایش داده شود یا نه
 const shouldShowMobileHeader = computed(() => {
@@ -55,13 +69,10 @@ const shouldShowMobileHeader = computed(() => {
   return checkShouldShowMobileHeader(currentPath)
 })
 
-const mobileHeaderStyle = computed(() => {
-  return {
-  }
+const mobileHeaderStyle = computed((): Record<string, string | number> => {
+  return {}
 })
-
-// تشخیص نوع هدر بر اساس نام
-const getHeaderType = (header: any) => {
+const getHeaderType = (header: Header) => {
   if (!header?.name) return 'classic'
   
   const name = header.name.toLowerCase()
@@ -81,8 +92,6 @@ onMounted(async () => {
   try {
     await loadMobileHeaders()
     activeMobileHeader.value = getActiveMobileHeader.value
-    // console.log('Active mobile header loaded:', activeMobileHeader.value) // Debug log
-    // console.log('Header type detected:', getHeaderType(activeMobileHeader.value)) // Debug log
   } catch (error) {
     console.error('خطا در بارگذاری هدرهای موبایل:', error)
   }

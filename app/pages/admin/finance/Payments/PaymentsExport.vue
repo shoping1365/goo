@@ -117,11 +117,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-interface Props {
-  payments: any[]
+interface Payment {
+  [key: string]: unknown
 }
 
-const props = defineProps<Props>()
+interface Props {
+  payments: Payment[]
+}
+
+const _props = defineProps<Props>()
 
 const isExporting = ref(false)
 const exportSettings = ref({
@@ -133,7 +137,7 @@ const exportToExcel = async () => {
   isExporting.value = true
   try {
     // TODO: پیاده‌سازی خروجی Excel
-    console.log('Exporting to Excel with settings:', exportSettings.value)
+
     await new Promise(resolve => setTimeout(resolve, 2000)) // شبیه‌سازی تاخیر
     alert('فایل Excel با موفقیت دانلود شد!')
   } catch (error) {
@@ -148,7 +152,7 @@ const exportToPDF = async () => {
   isExporting.value = true
   try {
     // TODO: پیاده‌سازی خروجی PDF
-    console.log('Exporting to PDF with settings:', exportSettings.value)
+
     await new Promise(resolve => setTimeout(resolve, 2000)) // شبیه‌سازی تاخیر
     alert('فایل PDF با موفقیت دانلود شد!')
   } catch (error) {
@@ -163,7 +167,7 @@ const exportAnalytics = async () => {
   isExporting.value = true
   try {
     // TODO: پیاده‌سازی گزارش تحلیلی
-    console.log('Exporting analytics with settings:', exportSettings.value)
+
     await new Promise(resolve => setTimeout(resolve, 2000)) // شبیه‌سازی تاخیر
     alert('گزارش تحلیلی با موفقیت دانلود شد!')
   } catch (error) {

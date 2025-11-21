@@ -13,7 +13,7 @@
       @keydown="onKeyDown"
       @click="onInputClick"
     />
-    
+
     <!-- Dropdown arrow -->
     <div class="absolute inset-y-0 left-0 flex items-center pl-2">
       <button
@@ -84,8 +84,8 @@
   </div>
 </template>
 
-<script setup>
-import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
+<script setup lang="ts">
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 
 const props = defineProps({
   modelValue: {
@@ -94,7 +94,7 @@ const props = defineProps({
   },
   options: {
     type: Array,
-    required: true,
+    required: false,
     default: () => []
   },
   placeholder: {
@@ -114,8 +114,8 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 
 // Refs
-const container = ref(null)
-const inputRef = ref(null)
+const container = ref<HTMLElement | null>(null)
+const inputRef = ref<HTMLInputElement | null>(null)
 
 // State
 const searchTerm = ref('')
@@ -134,7 +134,6 @@ function updateDropdownPosition() {
       left: rect.left,
       width: rect.width
     }
-    console.log('🟢 dropdownPosition:', dropdownPosition.value)
   }
 }
 
@@ -151,7 +150,7 @@ const normalizedOptions = computed(() => {
   if (!props.options || !Array.isArray(props.options)) {
     return []
   }
-  
+
   return props.options.map(option => {
     if (typeof option === 'object' && option !== null) {
       return {
@@ -167,8 +166,6 @@ const normalizedOptions = computed(() => {
 })
 
 const filteredOptions = computed(() => {
-  // DEBUG: Log filtered options
-  console.log('🔎 [SearchableSelect] filteredOptions:', searchTerm.value, filteredOptionsRaw())
   if (!searchTerm.value || searchTerm.value.trim() === '') {
     return normalizedOptions.value
   }
@@ -178,17 +175,7 @@ const filteredOptions = computed(() => {
   )
 })
 
-function filteredOptionsRaw() {
-  if (!searchTerm.value || searchTerm.value.trim() === '') {
-    return normalizedOptions.value
-  }
-  const term = searchTerm.value.toLowerCase()
-  return normalizedOptions.value.filter(option =>
-    option.label.toLowerCase().includes(term)
-  )
-}
-
-const selectedOption = computed(() => {
+const _selectedOption = computed(() => {
   return normalizedOptions.value.find(option => option.value == selectedValue.value)
 })
 
@@ -208,12 +195,12 @@ const onInput = () => {
     showDropdown.value = true
   }
   highlightedIndex.value = -1
-  
+
   // If there's an exact match, select it
-  const exactMatch = normalizedOptions.value.find(option => 
+  const exactMatch = normalizedOptions.value.find(option =>
     option.label.toLowerCase() === searchTerm.value.toLowerCase()
   )
-  
+
   if (exactMatch) {
     selectedValue.value = exactMatch.value
     emit('update:modelValue', exactMatch.value)
@@ -224,7 +211,7 @@ const onInput = () => {
   }
 }
 
-const selectOption = (option) => {
+const selectOption = (option: { label: string; value: string | number }) => {
   selectedValue.value = option.value
   searchTerm.value = option.label
   showDropdown.value = false
@@ -242,9 +229,7 @@ const clearSelection = () => {
 }
 
 const toggleDropdown = () => {
-  console.log('🔄 Toggle dropdown clicked, current state:', showDropdown.value)
   showDropdown.value = !showDropdown.value
-  console.log('🔄 New dropdown state:', showDropdown.value, 'Options count:', filteredOptions.value.length)
   if (showDropdown.value) {
     nextTick(() => {
       inputRef.value?.focus()
@@ -252,7 +237,7 @@ const toggleDropdown = () => {
   }
 }
 
-const onKeyDown = (event) => {
+const onKeyDown = (event: KeyboardEvent) => {
   switch (event.key) {
     case 'ArrowDown':
       event.preventDefault()
@@ -274,7 +259,7 @@ const onKeyDown = (event) => {
         }
       }
       break
-      
+
     case 'ArrowUp':
       event.preventDefault()
       if (!showDropdown.value) {
@@ -295,27 +280,26 @@ const onKeyDown = (event) => {
         }
       }
       break
-      
+
     case 'Enter':
       event.preventDefault()
       if (showDropdown.value && highlightedIndex.value >= 0 && filteredOptions.value[highlightedIndex.value]) {
         selectOption(filteredOptions.value[highlightedIndex.value])
       }
       break
-      
+
     case 'Escape':
       showDropdown.value = false
       inputRef.value?.blur()
       break
-
     case 'Tab':
       showDropdown.value = false
       break
   }
 }
 
-const handleClickOutside = (event) => {
-  if (container.value && !container.value.contains(event.target)) {
+const handleClickOutside = (event: Event) => {
+  if (container.value && !container.value.contains(event.target as Node)) {
     showDropdown.value = false
   }
 }
@@ -350,8 +334,6 @@ watch(showDropdown, (show) => {
 // Lifecycle
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
-  console.log('🎯 SearchableSelect mounted with options:', props.options.length)
-  console.log('🟣 inputRef onMounted:', inputRef.value)
 })
 
 onUnmounted(() => {
@@ -372,6 +354,7 @@ ul {
   max-height: 300px;
   overflow-y: auto;
 }
+
 li {
   background: #fff;
   color: #222;
@@ -382,7 +365,8 @@ li {
   padding: 8px 12px;
   cursor: pointer;
 }
+
 li:last-child {
   border-bottom: none;
 }
-</style> 
+</style>

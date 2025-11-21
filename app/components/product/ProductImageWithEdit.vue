@@ -25,7 +25,7 @@
     <div
       v-if="clickable"
       class="absolute inset-0 cursor-pointer z-10"
-      @click="$emit('click')"
+      @click="emit('click')"
     ></div>
   </div>
 </template>
@@ -42,7 +42,9 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits(['click'])
+const emit = defineEmits<{
+  'click': []
+}>()
 
 const { isAdmin } = useAdmin()
 

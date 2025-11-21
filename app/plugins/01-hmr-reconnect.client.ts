@@ -10,8 +10,6 @@ export default defineNuxtPlugin(() => {
       if (isReconnecting) return
       isReconnecting = true
 
-      // console.log('🔄 HMR disconnected, attempting to reconnect...')
-
       // Wait a bit before attempting to reconnect
       setTimeout(() => {
         window.location.reload()

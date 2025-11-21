@@ -305,7 +305,7 @@ declare const definePageMeta: (meta: { title?: string; layout?: string; middlewa
 import { ref } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 // Import useAuth for permission checking
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission } = useAuth()
 
 // تعریف interface ها
 interface Sms {

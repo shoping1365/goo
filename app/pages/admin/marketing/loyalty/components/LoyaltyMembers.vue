@@ -136,10 +136,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 
 // تعریف emit events
-const emit = defineEmits(['show-member-details', 'edit-member'])
+defineEmits(['show-member-details', 'edit-member'])
 
 // اعضای وفاداری
 const members = ref([

@@ -447,11 +447,16 @@ const getEventColor = (type: string) => {
 
 // عملیات
 const refreshStatus = () => {
-  console.log('به‌روزرسانی وضعیت')
+
 }
 
-const testConnection = (connection: any) => {
-  console.log('تست اتصال:', connection)
+interface Connection {
+  id: number | string
+  [key: string]: unknown
+}
+
+const testConnection = (_connection: Connection) => {
+
 }
 </script>
 

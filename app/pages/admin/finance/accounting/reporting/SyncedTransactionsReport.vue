@@ -488,25 +488,30 @@ const getSyncRateColor = (rate: number) => {
 // اعمال فیلترها
 const applyFilters = () => {
   // TODO: اعمال فیلترها
-  console.log('فیلترهای تراکنش اعمال شد:', filters.value)
+
 }
 
 // صادر کردن گزارش تراکنش‌ها
 const exportTransactionsReport = () => {
   // TODO: صادر کردن گزارش
-  console.log('صادر کردن گزارش تراکنش‌های همگام شده')
+
+}
+
+interface Transaction {
+  id?: number | string
+  [key: string]: unknown
 }
 
 // مشاهده تراکنش
-const viewTransaction = (transaction: any) => {
+const viewTransaction = (_transaction: Transaction) => {
   // TODO: مشاهده جزئیات تراکنش
-  console.log('مشاهده تراکنش:', transaction)
+
 }
 
 // همگام‌سازی مجدد تراکنش
-const resyncTransaction = (transaction: any) => {
+const resyncTransaction = (_transaction: Transaction) => {
   // TODO: همگام‌سازی مجدد
-  console.log('همگام‌سازی مجدد تراکنش:', transaction)
+
 }
 
 // صفحه قبلی

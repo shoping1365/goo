@@ -238,15 +238,12 @@ function updateChecklist() {
 }
 
 function editDocument(_document) {
-  // console.log('Editing document:', document)
 }
 
 function deleteDocument(_id) {
-  // console.log('Deleting document:', id)
 }
 
 function addNewDocument() {
-  // console.log('Adding new document:', newDocument)
   // Reset form
   Object.assign(newDocument, {
     name: '',
@@ -258,11 +255,9 @@ function addNewDocument() {
 }
 
 function downloadTemplate(_template) {
-  // console.log('Downloading template:', template)
 }
 
 function previewTemplate(_template) {
-  // console.log('Previewing template:', template)
 }
 </script>
 

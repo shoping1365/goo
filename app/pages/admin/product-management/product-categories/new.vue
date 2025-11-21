@@ -512,8 +512,15 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
           return
         }
       // جمع‌آوری داده‌های فرم
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const payload: any = {
+        interface CategoryPayload {
+          name: string
+          name_en: string
+          slug?: string
+          parent_id?: number | string | null
+          description?: string
+          [key: string]: unknown
+        }
+        const payload: CategoryPayload = {
         name: categoryName.value.trim(),
         name_en: categoryNameEn.value.trim(),
         slug: seoSlug.value.trim(),
@@ -538,18 +545,18 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
           if(!seoSlug.value.trim() && categoryNameEn.value.trim()){
             seoSlug.value = slugify(categoryNameEn.value)
           }
-          // console.log('📤 درخواست ایجاد دسته‌بندی:', payload)
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const res = await ($fetch as any)('/api/product-categories', {
+          interface CreateCategoryResponse {
+            id?: number | string
+            success?: boolean
+            [key: string]: unknown
+          }
+          const res = await $fetch<CreateCategoryResponse>('/api/product-categories', {
           method: 'POST',
           body: payload
         });
-          // console.log('✅ پاسخ سرور:', res)
           const createdId = (res && (res.id || (res.data && res.data.id)))
-          // console.log('🆔 ID ایجاد شده:', createdId)
           // پس از ایجاد، به حالت ویرایش برو
           if(createdId){
-            // console.log('🔄 رفتن به صفحه ویرایش:', createdId)
             navigateTo(`/admin/product-management/product-categories/${createdId}/edit`)
           }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -626,7 +633,6 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
     // function handleParentCategoryChange(category: any) {
     //   selectedParentCategory.value = category
     //   parentId.value = category ? category.id : ''
-    //   console.log('دسته پدر انتخاب شد:', category)
     // }
 
     // Computed filtered categories for parent selection
@@ -649,7 +655,6 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
       parentId.value = category.id
       parentSearchTerm.value = category.name
       showParentDropdown.value = false
-      // console.log('دسته پدر انتخاب شد:', category)
     }
 
     // Hide parent dropdown with delay

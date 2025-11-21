@@ -123,7 +123,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { Widget, BannerConfig } from '~/types/widget'
+import type { Widget } from '~/types/widget'
 
 interface Props {
   widget: Widget
@@ -133,7 +133,7 @@ const props = defineProps<Props>()
 
 // Get config with proper typing
 const config = computed(() => {
-  const widgetConfig: any = props.widget.config || {}
+  const widgetConfig = (props.widget.config || {}) as Record<string, unknown>
   
   return {
     banners: widgetConfig.banners || [],

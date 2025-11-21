@@ -341,7 +341,6 @@ const removeGateway = (index: number) => {
 
 const testGateway = async (index: number) => {
   const gateway = gateways.value[index]
-  // console.log(`Testing gateway: ${gateway.name}`)
   // اینجا باید تست اتصال واقعی انجام شود
   await new Promise(resolve => setTimeout(resolve, 1000))
   alert(`تست اتصال ${gateway.name} انجام شد!`)
@@ -353,7 +352,6 @@ const testAllConnections = async () => {
     // تست همه درگاه‌ها
     for (const gateway of gateways.value) {
       if (gateway.status === 'active') {
-        // console.log(`Testing: ${gateway.name}`)
         await new Promise(resolve => setTimeout(resolve, 500))
       }
     }

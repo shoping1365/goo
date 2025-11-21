@@ -433,15 +433,22 @@ const formatDate = (date: string) => {
   return new Date(date).toLocaleDateString('fa-IR')
 }
 
+interface TaxRate {
+  id?: number | string
+  name?: string
+  rate?: number
+  [key: string]: unknown
+}
+
 // ویرایش نرخ
-const editRate = (rate: any) => {
+const editRate = (rate: TaxRate) => {
   editingRate.value = rate
   rateForm.value = { ...rate }
   showAddRateModal.value = true
 }
 
 // تغییر وضعیت نرخ
-const toggleRateStatus = async (rate: any) => {
+const toggleRateStatus = async (rate: TaxRate) => {
   try {
     // TODO: ارسال درخواست به API
     // await $fetch(`/api/admin/tax/rates/${rate.id}/toggle-status`, { method: 'PATCH' })
@@ -453,7 +460,7 @@ const toggleRateStatus = async (rate: any) => {
 }
 
 // حذف نرخ
-const deleteRate = async (rate: any) => {
+const deleteRate = async (rate: TaxRate) => {
   if (confirm('آیا از حذف این نرخ اطمینان دارید؟')) {
     try {
       // TODO: ارسال درخواست به API

@@ -147,26 +147,26 @@ const props = defineProps<Props>()
 
 // Get config with proper typing
 const config = computed(() => {
-  const widgetConfig = props.widget.config as DoubleBannerConfig
+  const widgetConfig = props.widget.config as Partial<DoubleBannerConfig>
   
   const finalConfig = {
-    banners: (widgetConfig as any).banners || (widgetConfig as any).slides || [],
-    mobile_banners: (widgetConfig as any).mobile_banners || [],
-    height: (widgetConfig as any).height || 400,
-    mobile_height: (widgetConfig as any).mobile_height || (widgetConfig as any).height || 150,
-    mobile_vertical_display: (widgetConfig as any).mobile_vertical_display || false,
-    bg_enabled: (widgetConfig as any).bg_enabled || false,
-    bg_color: (widgetConfig as any).bg_color || '#ffffff',
-    show_title: (widgetConfig as any).show_title !== undefined ? (widgetConfig as any).show_title : true,
-    show_description: (widgetConfig as any).show_description !== undefined ? (widgetConfig as any).show_description : true,
-    padding_top: (widgetConfig as any).padding_top || 0,
-    padding_bottom: (widgetConfig as any).padding_bottom || 0,
-    margin_left: (widgetConfig as any).margin_left || 0,
-    margin_right: (widgetConfig as any).margin_right || 0,
-    banner1_ratio: (widgetConfig as any).banner1_ratio || 50,
-    banner2_ratio: (widgetConfig as any).banner2_ratio || 50,
-    banner_width: (widgetConfig as any).banner_width || 800,
-    center_width: (widgetConfig as any).center_width || 1000
+    banners: widgetConfig.banners || widgetConfig.slides || [],
+    mobile_banners: widgetConfig.mobile_banners || [],
+    height: widgetConfig.height || 400,
+    mobile_height: widgetConfig.mobile_height ?? widgetConfig.height ?? 150,
+    mobile_vertical_display: widgetConfig.mobile_vertical_display || false,
+    bg_enabled: widgetConfig.bg_enabled || false,
+    bg_color: widgetConfig.bg_color || '#ffffff',
+    show_title: widgetConfig.show_title !== undefined ? widgetConfig.show_title : true,
+    show_description: widgetConfig.show_description !== undefined ? widgetConfig.show_description : true,
+    padding_top: widgetConfig.padding_top || 0,
+    padding_bottom: widgetConfig.padding_bottom || 0,
+    margin_left: widgetConfig.margin_left || 0,
+    margin_right: widgetConfig.margin_right || 0,
+    banner1_ratio: widgetConfig.banner1_ratio || 50,
+    banner2_ratio: widgetConfig.banner2_ratio || 50,
+    banner_width: widgetConfig.banner_width || 800,
+    center_width: widgetConfig.center_width || 1000
   }
   
   return finalConfig

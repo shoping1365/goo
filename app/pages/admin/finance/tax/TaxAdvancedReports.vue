@@ -582,7 +582,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 // تب‌های گزارش
 const reportTabs = [
@@ -688,14 +688,14 @@ const formatCurrency = (amount: number): string => {
 // بروزرسانی تنظیمات گزارش
 const updateReportConfig = () => {
   // TODO: بروزرسانی گزارش بر اساس تنظیمات
-  console.log('تنظیمات گزارش بروزرسانی شد:', reportConfig.value)
+
 }
 
 // تولید گزارش
 const generateReport = async () => {
   try {
     // TODO: تولید گزارش بر اساس تنظیمات
-    console.log('گزارش تولید شد:', reportConfig.value)
+
   } catch (error) {
     console.error('خطا در تولید گزارش:', error)
   }
@@ -704,13 +704,13 @@ const generateReport = async () => {
 // خروجی Excel
 const exportToExcel = () => {
   // TODO: خروجی Excel
-  console.log('گزارش به Excel صادر شد')
+
 }
 
 // خروجی PDF
 const exportToPDF = () => {
   // TODO: خروجی PDF
-  console.log('گزارش به PDF صادر شد')
+
 }
 
 // کلاس border توصیه
@@ -746,14 +746,14 @@ const getRecommendationPriorityLabel = (priority: string) => {
 // ذخیره گزارش سفارشی
 const saveCustomReport = () => {
   // TODO: ذخیره گزارش سفارشی
-  console.log('گزارش سفارشی ذخیره شد:', customReport.value)
+
   customReport.value.preview = true
 }
 
 // بارگذاری گزارش سفارشی
 const loadCustomReport = () => {
   // TODO: بارگذاری گزارش سفارشی
-  console.log('گزارش سفارشی بارگذاری شد')
+
 }
 
 // بارگذاری اولیه

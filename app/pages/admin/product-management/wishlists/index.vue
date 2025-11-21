@@ -727,10 +727,8 @@ v-for="userWishlist in productGroup.users" :key="userWishlist.user.id"
 declare const definePageMeta: (meta: { layout?: string }) => void
 declare const useHead: (head: { title?: string }) => void
 declare const navigateTo: (to: string) => Promise<void>
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare const useAsyncData: <T>(key: string, fn: () => Promise<T>, options?: { watch?: any[] }) => Promise<{ data: { value: T } }>
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare const $fetch: <T = any>(url: string, options?: { method?: string; body?: any; params?: any }) => Promise<T>
+declare const useAsyncData: <T>(key: string, fn: () => Promise<T>, options?: { watch?: unknown[] }) => Promise<{ data: { value: T } }>
+declare const $fetch: <T = unknown>(url: string, options?: { method?: string; body?: unknown; params?: Record<string, unknown> }) => Promise<T>
 </script>
 
 <script setup lang="ts">
@@ -1536,7 +1534,6 @@ const viewProduct = (productId: number) => {
 }
 
 const sendNotification = (userId: number, productId: number) => {
-  // console.log(`Sending notification to user ${userId} about product ${productId}`)
   notifier.success('اعلان ارسال شد!')
 }
 
@@ -1550,7 +1547,6 @@ const removeFromWishlist = async (wishlistId: number) => {
 }
 
 // const exportWishlists = () => {
-//   console.log('Exporting wishlists to Excel...')
 //   notifier.info('خروجی اکسل در حال تهیه است...')
 // }
 
@@ -1577,12 +1573,10 @@ const toggleProductExpansion = (productId: number) => {
 }
 
 const notifyAllUsers = (productId: number) => {
-  // console.log(`اطلاع‌رسانی همه کاربران برای محصول ${productId}`)
   // Implement notification logic here
 }
 
 const removeProductFromAllWishlists = (productId: number) => {
-  // console.log(`حذف محصول ${productId} از همه لیست‌ها`)
   // Implement removal logic here
   wishlists.value = wishlists.value.filter(w => w.product.id !== productId)
 }

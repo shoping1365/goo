@@ -353,7 +353,35 @@ const accountSettings = {
 // فهرست درگاه‌ها از بک‌اند
 import { ref, watchEffect } from 'vue'
 declare const useFetch: <T>(url: string, options?: unknown) => Promise<{ data: { value: T }; refresh: () => Promise<void> }>
-const accountingSoftware = ref<any[]>([])
+
+interface Gateway {
+  id?: number | string
+  name?: string
+  english_name?: string
+  type?: string
+  status?: string
+  today_transactions?: number
+  [key: string]: unknown
+}
+
+interface GatewayResponse {
+  data?: Gateway[]
+  [key: string]: unknown
+}
+
+interface AccountingSoftwareItem {
+  id?: number | string
+  name: string
+  version: string
+  icon: string
+  status: string
+  connectionType: string
+  lastSync: string
+  todayTransactions: number
+  apiStatus: string
+}
+
+const accountingSoftware = ref<AccountingSoftwareItem[]>([])
 const { data: gateways, refresh } = await useFetch('/api/payment-gateways', {
   credentials: 'include',
   key: 'payment-gateways-list',
@@ -361,14 +389,14 @@ const { data: gateways, refresh } = await useFetch('/api/payment-gateways', {
   swr: true,
 })
 watchEffect(()=>{
-  const res:any = gateways.value
+  const res = gateways.value as GatewayResponse | null
   const list = Array.isArray(res?.data) ? res.data : []
-  accountingSoftware.value = list.map((g:any)=>({
+  accountingSoftware.value = list.map((g: Gateway)=>({
     id: g.id,
-    name: g.name || g.english_name || g.type,
+    name: g.name || g.english_name || g.type || '',
     version: g.type?.toUpperCase?.() || '',
     icon: '🏦',
-    status: mapGatewayStatusFa(g.status),
+    status: mapGatewayStatusFa(g.status || ''),
     connectionType: 'API',
     lastSync: '-',
     todayTransactions: g.today_transactions || 0,
@@ -382,7 +410,7 @@ function mapGatewayStatusFa(st: string){
   return 'غیرفعال'
 }
 
-async function toggleGateway(item: any){
+async function toggleGateway(item: AccountingSoftwareItem){
   const newStatus = item.status === 'فعال' ? 'inactive' : 'active'
   await $fetch(`/api/payment-gateways/${item.id}/status`, { method: 'PUT', body: { status: newStatus }, credentials: 'include' })
   await refresh()

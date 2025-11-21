@@ -299,9 +299,12 @@ const selectAll = computed({
     return products.value.length > 0 && selectedProducts.value.length === products.value.length
   },
   set(value) {
+    interface Product {
+      id: number
+      [key: string]: unknown
+    }
     if (value) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      selectedProducts.value = products.value.map((p: any) => p.id as number)
+      selectedProducts.value = (products.value as Product[]).map((p) => p.id)
     } else {
       selectedProducts.value = []
     }
@@ -386,9 +389,17 @@ const fetchProducts = async () => {
     }
     
     // درخواست محصولات با pagination سرور
+    interface ProductsResponse {
+      data?: Array<{
+        id: number
+        [key: string]: unknown
+      }>
+      total?: number
+      page?: number
+      [key: string]: unknown
+    }
     const url = `/api/admin/products?${params.toString()}`
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const response: any = await $fetch(url)
+    const response = await $fetch<ProductsResponse>(url)
     
     // بررسی فرمت پاسخ
     if (response && response.data && Array.isArray(response.data)) {

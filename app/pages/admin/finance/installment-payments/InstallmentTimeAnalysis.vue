@@ -117,7 +117,7 @@ const formatCurrency = (amount: number): string => {
   }).format(amount)
 }
 
-const getHourlyHeight = (hour: number): number => {
+const getHourlyHeight = (_hour: number): number => {
   return Math.random() * 50 + 10
 }
 

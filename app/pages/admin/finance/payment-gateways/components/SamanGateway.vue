@@ -285,7 +285,7 @@ const form = reactive({
 // بارگذاری تنظیمات درگاه
 const loadGateway = async () => {
   try {
-    const response = await $fetch('/api/payments/admin/gateway/saman') as any
+    const response = await $fetch('/api/payments/admin/gateway/saman') as { success?: boolean; data?: unknown }
     if (response.success) {
       gateway.value = response.data
       // پر کردن فرم با داده‌های موجود
@@ -329,16 +329,16 @@ const saveSettings = async () => {
         isActive: form.isActive,
         status: form.isActive ? 'active' : 'inactive'
       }
-    }) as any
+    }) as { success?: boolean; [key: string]: unknown }
 
     if (response.success) {
       await loadGateway()
       // نمایش پیام موفقیت
       alert('تنظیمات با موفقیت ذخیره شد')
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در ذخیره تنظیمات:', error)
-    alert('خطا در ذخیره تنظیمات: ' + (error.statusMessage || 'خطای نامشخص'))
+    alert('خطا در ذخیره تنظیمات: ' + ((error as { statusMessage?: string }).statusMessage || 'خطای نامشخص'))
   } finally {
     saving.value = false
   }
@@ -350,15 +350,15 @@ const testConnection = async () => {
   testResult.value = null
   
   try {
-    const response = await $fetch('/api/payments/admin/gateway/saman/test') as any
+    const response = await $fetch('/api/payments/admin/gateway/saman/test') as { success?: boolean; message?: string }
     testResult.value = {
       success: response.success,
       message: response.message
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     testResult.value = {
       success: false,
-      message: error.statusMessage || 'خطا در تست اتصال'
+      message: (error as { statusMessage?: string }).statusMessage || 'خطا در تست اتصال'
     }
   } finally {
     testing.value = false

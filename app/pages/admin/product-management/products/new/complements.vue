@@ -241,13 +241,22 @@ async function refreshSelected(){
     return
   }
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const res = await $fetch(`/api/product-complements/${store.editingProductId}`) as any
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const data = (res as any)?.data ?? res
+    interface ComplementItem {
+      id?: number | string
+      image_url?: string
+      image?: string
+      main_image?: string
+      thumbnail?: string
+      [key: string]: unknown
+    }
+    interface ComplementsResponse {
+      data?: ComplementItem[]
+      [key: string]: unknown
+    }
+    const res = await $fetch<ComplementItem[] | ComplementsResponse>(`/api/product-complements/${store.editingProductId}`)
+    const data = Array.isArray(res) ? res : (res?.data ?? [])
     const arr = Array.isArray(data) ? data : []
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    selected.value = arr.map((it: any) => {
+    selected.value = arr.map((it: ComplementItem) => {
       const base = it.image_url || it.image || it.main_image || it.thumbnail
       const thumb = toThumbnail(base)
       return { ...it, thumbnail: thumb || base }

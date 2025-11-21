@@ -268,7 +268,7 @@ const filteredCoupons = computed(() => {
 const totalPages = computed(() => Math.ceil(filteredCoupons.value.length / itemsPerPage.value))
 
 // توابع کمکی
-const getTypeName = (type: string) => {
+const _getTypeName = (type: string) => {
   const types = {
     percentage: 'درصدی',
     fixed: 'مبلغ ثابت',
@@ -277,7 +277,7 @@ const getTypeName = (type: string) => {
   return types[type as keyof typeof types] || type
 }
 
-const getTypeBadgeClass = (type: string) => {
+const _getTypeBadgeClass = (type: string) => {
   const classes = {
     percentage: 'bg-blue-100 text-blue-800',
     fixed: 'bg-green-100 text-green-800',
@@ -286,7 +286,7 @@ const getTypeBadgeClass = (type: string) => {
   return classes[type as keyof typeof classes] || 'bg-gray-100 text-gray-800'
 }
 
-const getStatusName = (status: string) => {
+const _getStatusName = (status: string) => {
   const statuses = {
     active: 'فعال',
     inactive: 'غیرفعال',
@@ -295,7 +295,7 @@ const getStatusName = (status: string) => {
   return statuses[status as keyof typeof statuses] || status
 }
 
-const getStatusBadgeClass = (status: string) => {
+const _getStatusBadgeClass = (status: string) => {
   const classes = {
     active: 'bg-green-100 text-green-800',
     inactive: 'bg-yellow-100 text-yellow-800',
@@ -304,7 +304,7 @@ const getStatusBadgeClass = (status: string) => {
   return classes[status as keyof typeof classes] || 'bg-gray-100 text-gray-800'
 }
 
-const formatDiscount = (coupon: Coupon) => {
+const _formatDiscount = (coupon: Coupon) => {
   switch (coupon.type) {
     case 'percentage':
       return `${coupon.discountValue}%`
@@ -317,7 +317,7 @@ const formatDiscount = (coupon: Coupon) => {
   }
 }
 
-const formatDate = (dateString: string) => {
+const _formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('fa-IR')
 }
 
@@ -336,7 +336,7 @@ const resetFilters = () => {
   currentPage.value = 1
 }
 
-const toggleSelectAll = () => {
+const _toggleSelectAll = () => {
   if (selectAll.value) {
     selectedCoupons.value = filteredCoupons.value.map(coupon => coupon.id)
   } else {
@@ -344,7 +344,7 @@ const toggleSelectAll = () => {
   }
 }
 
-const copyCode = async (code: string) => {
+const _copyCode = async (code: string) => {
   try {
     await navigator.clipboard.writeText(code)
     // TODO: نمایش پیام موفقیت
@@ -353,12 +353,12 @@ const copyCode = async (code: string) => {
   }
 }
 
-const editCoupon = (coupon: Coupon) => {
+const _editCoupon = (coupon: Coupon) => {
   editingCoupon.value = { ...coupon }
   showEditCoupon.value = true
 }
 
-const toggleCouponStatus = async (coupon: Coupon) => {
+const _toggleCouponStatus = async (coupon: Coupon) => {
   try {
     // TODO: فراخوانی API برای تغییر وضعیت
     coupon.status = coupon.status === 'active' ? 'inactive' : 'active'
@@ -367,12 +367,12 @@ const toggleCouponStatus = async (coupon: Coupon) => {
   }
 }
 
-const viewCouponDetails = (coupon: Coupon) => {
+const _viewCouponDetails = (coupon: Coupon) => {
   selectedCoupon.value = coupon
   showCouponDetails.value = true
 }
 
-const deleteCoupon = async (coupon: Coupon) => {
+const _deleteCoupon = async (coupon: Coupon) => {
   if (confirm(`آیا از حذف کوپن "${coupon.name}" اطمینان دارید؟`)) {
     try {
       // TODO: فراخوانی API برای حذف کوپن
@@ -386,7 +386,7 @@ const deleteCoupon = async (coupon: Coupon) => {
   }
 }
 
-const bulkActivate = async () => {
+const _bulkActivate = async () => {
   try {
     // TODO: فراخوانی API برای فعال کردن دسته‌ای
     selectedCoupons.value.forEach(id => {
@@ -399,7 +399,7 @@ const bulkActivate = async () => {
   }
 }
 
-const bulkDeactivate = async () => {
+const _bulkDeactivate = async () => {
   try {
     // TODO: فراخوانی API برای غیرفعال کردن دسته‌ای
     selectedCoupons.value.forEach(id => {
@@ -412,7 +412,7 @@ const bulkDeactivate = async () => {
   }
 }
 
-const bulkDelete = async () => {
+const _bulkDelete = async () => {
   if (confirm(`آیا از حذف ${selectedCoupons.value.length} کوپن انتخاب شده اطمینان دارید؟`)) {
     try {
       // TODO: فراخوانی API برای حذف دسته‌ای
@@ -424,7 +424,13 @@ const bulkDelete = async () => {
   }
 }
 
-const handleSaveCoupon = (couponData: any) => {
+interface CouponData {
+  id?: number | string
+  code?: string
+  discount?: number
+  [key: string]: unknown
+}
+const _handleSaveCoupon = (couponData: CouponData) => {
   if (editingCoupon.value) {
     // ویرایش کوپن موجود
     const index = coupons.value.findIndex(c => c.id === editingCoupon.value?.id)
@@ -451,13 +457,13 @@ const closeCouponForm = () => {
   editingCoupon.value = null
 }
 
-const previousPage = () => {
+const _previousPage = () => {
   if (currentPage.value > 1) {
     currentPage.value--
   }
 }
 
-const nextPage = () => {
+const _nextPage = () => {
   if (currentPage.value < totalPages.value) {
     currentPage.value++
   }
@@ -478,7 +484,7 @@ onMounted(async () => {
 const { hasPermission } = useAuth()
 
 // Computed برای چک کردن پرمیژن حذف
-const canDeleteCoupon = computed(() => hasPermission('coupon.delete'))
+const _canDeleteCoupon = computed(() => hasPermission('coupon.delete'))
 </script>
 
 <!--

@@ -333,7 +333,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // Reactive data
 const securityStats = ref({
@@ -450,14 +450,14 @@ const startScan = async (type) => {
 const saveScanConfiguration = async () => {
   try {
     await new Promise(resolve => setTimeout(resolve, 1000))
-    console.log('Configuration saved:', scanConfig.value)
+
   } catch (error) {
     console.error('Error saving configuration:', error)
   }
 }
 
 const fixVulnerability = (id) => {
-  console.log('Fixing vulnerability:', id)
+
   // Remove from list
   const index = vulnerabilities.value.findIndex(v => v.id === id)
   if (index > -1) {
@@ -466,7 +466,7 @@ const fixVulnerability = (id) => {
 }
 
 const ignoreVulnerability = (id) => {
-  console.log('Ignoring vulnerability:', id)
+
   // Remove from list
   const index = vulnerabilities.value.findIndex(v => v.id === id)
   if (index > -1) {
@@ -475,11 +475,11 @@ const ignoreVulnerability = (id) => {
 }
 
 const exportReport = () => {
-  console.log('Exporting security report...')
+
 }
 
 const scheduleScan = () => {
-  console.log('Scheduling scan...')
+
 }
 
 const getVulnerabilityClass = (severity) => {

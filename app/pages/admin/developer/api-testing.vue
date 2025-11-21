@@ -397,7 +397,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { reactive, ref } from 'vue';
 
 definePageMeta({
   layout: 'admin-main',
@@ -405,7 +405,7 @@ definePageMeta({
 });
 
 // Authentication setup
-const { user, isAuthenticated, checkAuth } = useAuth()
+const { checkAuth } = useAuth()
 
 // Check authentication on mount
 if (import.meta.client) {

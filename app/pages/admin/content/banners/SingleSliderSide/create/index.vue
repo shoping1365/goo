@@ -248,85 +248,85 @@
               </select>
             </div>
 
-                          <!-- عرض اسلایدر -->
-              <div>
-                <label class="block mb-2 text-sm font-medium text-gray-700">عرض اسلایدر</label>
-                <select
-                  v-model="sliderConfig.slider_width"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                >
-                  <option :value="800">تمام عرض</option>
-                  <option :value="600">وسط</option>
-                </select>
-              </div>
+            <!-- عرض اسلایدر -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">عرض اسلایدر</label>
+              <select
+                v-model="sliderConfig.slider_width"
+                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+              >
+                <option :value="800">تمام عرض</option>
+                <option :value="600">وسط</option>
+              </select>
+            </div>
 
-              <!-- عرض دقیق وسط -->
-              <div v-if="sliderConfig.slider_width === 600">
-                <label class="block mb-2 text-sm font-medium text-gray-700">عرض دقیق وسط (px)</label>
-                <input
-                  v-model="sliderConfig.center_width"
-                  type="number"
-                  min="200"
-                  max="2000"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                  placeholder="1000"
-                />
-              </div>
+            <!-- عرض دقیق وسط -->
+            <div v-if="sliderConfig.slider_width === 600">
+              <label class="block mb-2 text-sm font-medium text-gray-700">عرض دقیق وسط (px)</label>
+              <input
+                v-model="sliderConfig.center_width"
+                type="number"
+                min="200"
+                max="2000"
+                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                placeholder="1000"
+              />
+            </div>
 
-              <!-- پدینگ بالا -->
-              <div>
-                <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ بالا (px)</label>
-                <input
-                  v-model="sliderConfig.padding_top"
-                  type="number"
-                  min="0"
-                  max="100"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                  placeholder="0"
-                />
-              </div>
+            <!-- پدینگ بالا -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ بالا (px)</label>
+              <input
+                v-model="sliderConfig.padding_top"
+                type="number"
+                min="0"
+                max="100"
+                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                placeholder="0"
+              />
+            </div>
 
-              <!-- پدینگ پایین -->
-              <div>
-                <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ پایین (px)</label>
-                <input
-                  v-model="sliderConfig.padding_bottom"
-                  type="number"
-                  min="0"
-                  max="100"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                  placeholder="0"
-                />
-              </div>
+            <!-- پدینگ پایین -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ پایین (px)</label>
+              <input
+                v-model="sliderConfig.padding_bottom"
+                type="number"
+                min="0"
+                max="100"
+                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                placeholder="0"
+              />
+            </div>
 
-              <!-- مارجین راست -->
-              <div>
-                <label class="block mb-2 text-sm font-medium text-gray-700">مارجین راست (px)</label>
-                <input
-                  v-model="sliderConfig.margin_right"
-                  type="number"
-                  min="0"
-                  max="100"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                  placeholder="0"
-                />
-              </div>
+            <!-- مارجین راست -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">مارجین راست (px)</label>
+              <input
+                v-model="sliderConfig.margin_right"
+                type="number"
+                min="0"
+                max="100"
+                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                placeholder="0"
+              />
+            </div>
 
-              <!-- مارجین چپ -->
-              <div>
-                <label class="block mb-2 text-sm font-medium text-gray-700">مارجین چپ (px)</label>
-                <input
-                  v-model="sliderConfig.margin_left"
-                  type="number"
-                  min="0"
-                  max="100"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                  placeholder="0"
-                />
-              </div>
+            <!-- مارجین چپ -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-700">مارجین چپ (px)</label>
+              <input
+                v-model="sliderConfig.margin_left"
+                type="number"
+                min="0"
+                max="100"
+                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                placeholder="0"
+              />
             </div>
           </div>
-        </template>
+        </div>
+      </template>
 
       <!-- محتوای تب موبایل -->
       <template #mobile-content>
@@ -414,9 +414,8 @@
       </template>
     </DeviceTabs>
 
-
-            <!-- پیش‌نمایش زنده -->
-        <div v-if="deviceTabsRef?.activeTab === 'desktop'" class="bg-white rounded-xl shadow p-8 mt-6 mx-4">
+    <!-- پیش‌نمایش زنده -->
+    <div v-if="deviceTabsRef?.activeTab === 'desktop'" class="bg-white rounded-xl shadow p-8 mt-6 mx-4">
       <h3 class="text-lg font-bold text-gray-700 mb-6">پیش‌نمایش زنده</h3>
       
       <div class="bg-gray-50 rounded-lg p-6 border-2 border-dashed border-gray-300">
@@ -507,8 +506,8 @@
       </div>
     </div>
 
-            <!-- نمایش و مدیریت اسلایدها -->
-        <div v-if="deviceTabsRef?.activeTab === 'desktop'" class="bg-white rounded-xl shadow p-8 mt-6 mx-4">
+    <!-- نمایش و مدیریت اسلایدها -->
+    <div v-if="deviceTabsRef?.activeTab === 'desktop'" class="bg-white rounded-xl shadow p-8 mt-6 mx-4">
       <div class="flex justify-between items-center mb-6">
         <h3 class="text-lg font-bold text-gray-700">اسلایدر اصلی</h3>
         <button
@@ -579,11 +578,9 @@
     <MediaLibraryModal
       v-model="showMediaLibrary"
       file-type="image"
-      default-category="banners"
+      default-category="sliders"
       @confirm="onSelectFromLibrary"
     />
-
-    <!-- Page content will be added here -->
 
     <!-- فاصله انتهای صفحه -->
     <div class="pb-16"></div>
@@ -591,13 +588,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import SlideModal from '~/components/common/SlideModal.vue'
 import TemplateButton from '~/components/common/TemplateButton.vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
+import { useToast } from '~/composables/useToast'
 import { useWidget } from '~/composables/useWidget'
-import type { SlideItem, SliderConfig, Widget } from '~/types/widget'
+import type { SlideItem, SliderConfig, Widget, WidgetPage, WidgetStatus, WidgetType } from '~/types/widget'
 import { WIDGET_TYPE_LABELS } from '~/types/widget'
 import DeviceTabs from './components/DeviceTabs.vue'
 
@@ -608,25 +606,19 @@ declare const useHead: (head: { title?: string }) => void
 definePageMeta({ layout: 'admin-main' })
 useHead({ title: 'ایجاد اسلایدر تکی - پنل ادمین' })
 
-// Route params
-const route = useRoute()
+// Router
 const router = useRouter()
-const widgetId = parseInt(route.params.id as string)
 
 // Composables
-const { fetchWidget, createWidget, loading, error, clearError, widget: fetchedWidget } = useWidget()
+const { createWidget } = useWidget()
+const toast = useToast()
 
 // Props
 interface Props {
   widget?: Widget
 }
 
-const props = defineProps<Props>()
-
-// Emits
-const emit = defineEmits<{
-  updated: [widget: Widget]
-}>()
+const _props = defineProps<Props>()
 
 // State
 const isSaving = ref(false)
@@ -673,34 +665,6 @@ const formData = ref({
   status: 'active',
   page: 'home'
 })
-
-// Initialize form data when widget is available
-const initializeFormData = () => {
-  if (fetchedWidget.value) {
-    console.log('Widget data:', fetchedWidget.value) // Debug log
-    formData.value = {
-      title: fetchedWidget.value.title || '',
-      description: fetchedWidget.value.description || '',
-      type: fetchedWidget.value.type || 'single-slider-side',
-      status: fetchedWidget.value.status || 'active',
-      page: fetchedWidget.value.page || 'home'
-    }
-    console.log('Form data initialized:', formData.value) // Debug log
-  }
-}
-
-// Watch for widget changes
-watch(fetchedWidget, (newWidget) => {
-  if (newWidget) {
-    initializeFormData()
-  }
-}, { immediate: true })
-
-// Computed properties for reactive form data
-const widgetTitle = computed(() => fetchedWidget.value?.title || '')
-const widgetType = computed(() => fetchedWidget.value?.type || 'single-slider-side')
-const widgetStatus = computed(() => fetchedWidget.value?.status || 'active')
-const widgetPage = computed(() => fetchedWidget.value?.page || 'home')
 
 // Slider config
 const sliderConfig = ref<SliderConfig>({
@@ -756,7 +720,7 @@ const openAddSliderModal = () => {
     order: sliderConfig.value.slides.length + 1,
     status: 'active'
   }
-  showTitleInSlide.value = true // Reset to default
+  showTitleInSlide.value = true
   showSliderModal.value = true
 }
 
@@ -771,14 +735,12 @@ const editSlide = (index: number) => {
     order: slide.order || index + 1,
     status: slide.status || 'active'
   }
-  // Set showTitleInSlide based on existing slide data or default to true
   showTitleInSlide.value = slide.showTitle !== undefined ? slide.showTitle : true
   showSliderModal.value = true
 }
 
 const removeSlide = (index: number) => {
   sliderConfig.value.slides.splice(index, 1)
-  // Re-order remaining slides
   sliderConfig.value.slides.forEach((slide, idx) => {
     slide.order = idx + 1
   })
@@ -797,10 +759,8 @@ const handleSlideSave = (slideData: SlideItem, showTitle: boolean) => {
   }
 
   if (editingSlideIndex.value !== null) {
-    // ویرایش اسلاید موجود
     sliderConfig.value.slides[editingSlideIndex.value] = slide
   } else {
-    // افزودن اسلاید جدید
     sliderConfig.value.slides.push(slide)
   }
 
@@ -813,12 +773,17 @@ const openMediaLibrary = () => {
   showMediaLibrary.value = true
 }
 
-const onSelectFromLibrary = (files: any[]) => {
+interface MediaFile {
+  id?: number | string
+  url: string
+  name?: string
+  [key: string]: unknown
+}
+
+const onSelectFromLibrary = (files: MediaFile[]) => {
   if (files && files.length > 0) {
     const file = files[0]
     editingSlide.value.image = file.url
-    // Clear any previous image error
-    // Note: This will be handled by the child component's reactive system
   }
   showMediaLibrary.value = false
 }
@@ -828,50 +793,11 @@ const removeImage = () => {
   editingSlide.value.image = ''
 }
 
-// Auto-rotation for live preview
-let previewInterval: NodeJS.Timeout | null = null
-
-const startPreviewRotation = () => {
-  if (previewInterval) clearInterval(previewInterval)
-  
-  if (sliderConfig.value.autoplay_enabled && sliderConfig.value.slides.length > 1) {
-    previewInterval = setInterval(() => {
-      currentPreviewSlide.value = currentPreviewSlide.value === 0 
-        ? sliderConfig.value.slides.length - 1 
-        : currentPreviewSlide.value - 1
-    }, (sliderConfig.value.autoplay_delay || 5) * 1000)
-  }
-}
-
-const stopPreviewRotation = () => {
-  if (previewInterval) {
-    clearInterval(previewInterval)
-    previewInterval = null
-  }
-}
-
-// Watch for autoplay changes
-watch(() => [sliderConfig.value.autoplay_enabled, sliderConfig.value.autoplay_delay, sliderConfig.value.slides.length], () => {
-  if (sliderConfig.value.autoplay_enabled && sliderConfig.value.slides.length > 1) {
-    startPreviewRotation()
-  } else {
-    stopPreviewRotation()
-  }
-}, { immediate: true })
-
-// Cleanup on unmount
-onUnmounted(() => {
-  stopPreviewRotation()
-})
-
 // Save widget function
 const saveWidget = async () => {
-  // Validate title field
   validateTitle()
 
-  // Check if there are validation errors
   if (titleError.value) {
-    // Scroll to the title field
     const titleInput = document.querySelector('input[placeholder="عنوان ابزارک را وارد کنید"]') as HTMLInputElement
     if (titleInput) {
       titleInput.focus()
@@ -883,61 +809,29 @@ const saveWidget = async () => {
   try {
     isSaving.value = true
 
-    // Prepare widget data for creation
     const widgetData = {
       title: formData.value.title,
       description: formData.value.description,
-      type: formData.value.type as any, // Type casting for compatibility
-      status: formData.value.status as any, // Type casting for compatibility
-      page: formData.value.page as any, // Type casting for compatibility
+      type: formData.value.type as WidgetType,
+      status: formData.value.status as WidgetStatus,
+      page: formData.value.page as WidgetPage,
       config: sliderConfig.value
     }
-    
-    // Create new widget
+
     const createdWidget = await createWidget(widgetData)
-    
+
     if (createdWidget) {
-      // Redirect to widgets list page after successful creation
+      toast.showSuccess('ابزارک با موفقیت ایجاد شد')
       await router.push('/admin/content/banners')
     }
-    
-  } catch (error) {
-    console.error('خطا در ذخیره ابزارک:', error)
+  } catch (_error) {
+    toast.showError('خطا در ایجاد ابزارک')
   } finally {
     isSaving.value = false
   }
 }
 
-// Initialize config from widget
-onMounted(async () => {
-  clearError()
-  if (widgetId) {
-    await fetchWidget(widgetId)
-  }
-  initializeFormData()
-  
-  // Only copy specific config fields, don't overwrite defaults
-  if (fetchedWidget.value?.config) {
-    const config = fetchedWidget.value.config as SliderConfig
-    if (config.slides) sliderConfig.value.slides = config.slides
-    if (config.height) sliderConfig.value.height = config.height
-    if (config.slider_width) sliderConfig.value.slider_width = config.slider_width
-    if (config.bg_enabled !== undefined) sliderConfig.value.bg_enabled = config.bg_enabled
-    if (config.bg_color) sliderConfig.value.bg_color = config.bg_color
-    if (config.wide_bg !== undefined) sliderConfig.value.wide_bg = config.wide_bg
-    if (config.autoplay_enabled !== undefined) sliderConfig.value.autoplay_enabled = config.autoplay_enabled
-    if (config.autoplay_delay) sliderConfig.value.autoplay_delay = config.autoplay_delay
-    if (config.loop_enabled !== undefined) sliderConfig.value.loop_enabled = config.loop_enabled
-    if (config.show_navigation !== undefined) sliderConfig.value.show_navigation = config.show_navigation
-    if (config.show_pagination !== undefined) sliderConfig.value.show_pagination = config.show_pagination
-    if (config.easy_load_enabled !== undefined) sliderConfig.value.easy_load_enabled = config.easy_load_enabled
-    // Mobile specific settings
-    if (config.mobile_autoplay_enabled !== undefined) sliderConfig.value.mobile_autoplay_enabled = config.mobile_autoplay_enabled
-    if (config.mobile_autoplay_delay) sliderConfig.value.mobile_autoplay_delay = config.mobile_autoplay_delay
-    if (config.mobile_loop_enabled !== undefined) sliderConfig.value.mobile_loop_enabled = config.mobile_loop_enabled
-    if (config.mobile_show_navigation !== undefined) sliderConfig.value.mobile_show_navigation = config.mobile_show_navigation
-    if (config.mobile_show_pagination !== undefined) sliderConfig.value.mobile_show_pagination = config.mobile_show_pagination
-    if (config.mobile_vertical_display !== undefined) sliderConfig.value.mobile_vertical_display = config.mobile_vertical_display
-  }
+onMounted(() => {
+  // Initialize for create page
 })
 </script>

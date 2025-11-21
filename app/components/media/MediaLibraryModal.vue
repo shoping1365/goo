@@ -109,8 +109,11 @@ function normalizePath(p:string){
 import MediaPreviewModal from '~/components/media/MediaPreviewModal.vue'
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-// @ts-ignore
-const { hasPermission } = useAuth() as any
+interface UseAuthReturn {
+  hasPermission: (permission: string) => boolean
+}
+
+const { hasPermission } = useAuth() as UseAuthReturn
 
 // Computed برای چک کردن پرمیژن حذف
 const canDeleteMedia = computed(() => hasPermission('media_library.delete'))
@@ -160,7 +163,13 @@ async function fetchList(){
       credentials: 'include',
       headers
     })
-    const raw:any[] = Array.isArray(response)? response : (response as any)?.data || []
+    interface MediaResponse {
+      data?: MediaFile[]
+    }
+    
+    const raw: MediaFile[] = Array.isArray(response) 
+      ? response 
+      : ((response as MediaResponse)?.data || [])
     
     list.value = raw.map(r=>{ 
       const p=r.url||r.file_path||''; 
@@ -196,8 +205,7 @@ async function fetchList(){
         )
       }
     })
-    
-    console.log('fetchList - لیست به‌روزرسانی شد، تعداد:', list.value.length)
+
   } catch (error) {
     console.error('خطا در fetchList:', error)
   }
@@ -205,16 +213,13 @@ async function fetchList(){
 fetchList()
 
 const filtered = computed(()=>{
-  console.log('filtered computed اجرا شد - list.value length:', list.value.length)
-  
+
   let arr=list.value.filter(i=>{
     if (props.fileType === 'video') return i.type==='video';
     if (props.fileType === 'image') return i.type==='image';
     return i.type==='image' || i.type==='video';
   })
-  
-  console.log('بعد از فیلتر type - arr length:', arr.length)
-  
+
   // فیلتر بر اساس دسته‌بندی
   if(selectedCategory.value==='library') arr=arr.filter(i=>i.category==='library')
   else if(selectedCategory.value==='customer') arr=arr.filter(i=>i.category==='customer')
@@ -224,16 +229,12 @@ const filtered = computed(()=>{
   else if(selectedCategory.value==='banners') arr=arr.filter(i=>i.category==='banners')
   // اگر 'all' انتخاب شده، فیلتر دسته‌بندی اعمال نکن
   else if(selectedCategory.value==='all') {
-    console.log('دسته‌بندی all انتخاب شده - فیلتر اعمال نمی‌شه')
+
   }
-  
-  console.log('بعد از فیلتر category - arr length:', arr.length, 'selectedCategory:', selectedCategory.value)
-  
+
   // فیلتر بر اساس جستجو
   if(search.value) arr=arr.filter(i=> i.name.toLowerCase().includes(search.value.toLowerCase()))
-  
-  console.log('filtered computed - selectedCategory:', selectedCategory.value, 'list length:', list.value.length, 'filtered length:', arr.length)
-  
+
   return arr
 })
 
@@ -301,7 +302,20 @@ async function handleFileChange(e:Event){
   }
 
   // helper to build Media object
-  function buildMedia(obj:any):MediaFile{
+  interface MediaFileRaw {
+    url?: string
+    file_path?: string
+    mime_type?: string
+    file_type?: string
+    original_name?: string
+    file_name?: string
+    size?: number
+    file_size?: number
+    category?: string
+    [key: string]: unknown
+  }
+  
+  function buildMedia(obj: MediaFileRaw): MediaFile {
     const p=obj.url||obj.file_path||''
     let path = normalizePath(p)
     path = path.replace(/\/public\//,'/')
@@ -342,8 +356,8 @@ async function handleFileChange(e:Event){
   // Reset selection after upload
   internalSelected.value = []
 
-  let completed = 0
-  const total = filesArr.length
+  const _completed = 0
+  const _total = filesArr.length
 
   const tasks = filesArr.map(file=>{
     const item = reactive({ name:file.name, progress:0 })
@@ -381,15 +395,11 @@ async function handleFileChange(e:Event){
                   temp.type = 'image'
                   if(!temp.thumbnail) temp.thumbnail = temp.url
                 }
-                
-                console.log('فایل آپلود شد، temp:', temp)
-                console.log('قبل از اضافه کردن - list length:', list.value.length)
-                
+
+
                                   // اضافه کردن فایل جدید به لیست
                   list.value = [temp, ...list.value]
-                  
-                  console.log('بعد از اضافه کردن - list length:', list.value.length)
-                  console.log('list.value[0]:', list.value[0])
+
 
                   // emit event برای اطلاع از آپلود فایل جدید
                   emit('media-uploaded', temp)
@@ -399,7 +409,7 @@ async function handleFileChange(e:Event){
                   const currentList = [...list.value]
                   list.value = []
                   list.value = currentList
-                  console.log('Reactivity force update - list.value length:', list.value.length)
+
                   // force trigger reactivity
                   triggerRef(list)
 
@@ -420,7 +430,7 @@ async function handleFileChange(e:Event){
                         }
                         newArr[p]=full
                         list.value=newArr
-                        console.log('فایل کامل به‌روزرسانی شد:', full)
+
                       }
                     }
                   }).catch(error => {
@@ -479,7 +489,12 @@ async function onFileDeleted(id:number){
   }
 }
 
-function onFileSaved(payload:any){
+interface FileSavePayload {
+  id: number
+  [key: string]: unknown
+}
+
+function onFileSaved(payload: FileSavePayload) {
   const idx = list.value.findIndex(f=>f.id===payload.id)
   if(idx>-1){ list.value[idx] = { ...list.value[idx], ...payload } }
 }

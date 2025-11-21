@@ -52,6 +52,16 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+
+interface Campaign {
+  id?: number | string
+  [key: string]: unknown
+}
+
+const _emit = defineEmits<{
+  'show-form': [campaign: Campaign | null]
+}>()
+
 const search = ref('')
 const campaigns = ref([
   { id: 1, name: 'کمپین تابستان', type: 'فصلی', description: 'تخفیف ویژه تابستان', startsAt: '1403/04/01', endsAt: '1403/04/31', status: 'active' },

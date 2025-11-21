@@ -234,9 +234,28 @@ const searchQuery = ref('')
 const querySnapshot = ref('')
 const recentSearches = ref<string[]>([])
 const suggestions = ref<string[]>([])
-const searchResults = ref<any[]>([])
+interface SearchResult {
+  id?: number | string
+  title?: string
+  name?: string
+  type?: string
+  image?: string
+  price?: number
+  description?: string
+  url?: string
+  [key: string]: unknown
+}
+
+interface SearchGroup {
+  key: string
+  label: string
+  items: SearchResult[]
+  offset: number
+}
+
+const searchResults = ref<SearchResult[]>([])
 const groupedResults = computed(() => {
-  const groups: Array<{ key: string; label: string; items: any[]; offset: number }> = []
+  const groups: SearchGroup[] = []
   let offset = 0
 
   const ordered = [
@@ -278,15 +297,25 @@ const popularSearches = ref<PopularSearchItem[]>([])
 
 const loadPopularSearches = async () => {
   try {
-    const response = await $fetch('/api/search/popular') as any
+    interface PopularSearchResponse {
+      success?: boolean
+      data?: Array<{
+        query?: string
+        term?: string
+        keyword?: string
+        [key: string]: unknown
+      }>
+      [key: string]: unknown
+    }
+    const response = await $fetch<PopularSearchResponse>('/api/search/popular')
     if (response.success && Array.isArray(response.data)) {
-      popularSearches.value = response.data.slice(0, 10).map((item: any) => ({
-        label: item.query || item.term || item.keyword,
-        query: item.query || item.term || item.keyword,
-        context: item.context || item.category || ''
+      popularSearches.value = response.data.slice(0, 10).map((item) => ({
+        label: (item.query || item.term || item.keyword || '') as string,
+        query: (item.query || item.term || item.keyword || '') as string,
+        context: (item.context || item.category || '') as string
       }))
     }
-  } catch (error) {
+  } catch {
     // اگر API موجود نیست، از داده‌های پیش‌فرض استفاده کن
     popularSearches.value = [
       { label: 'گوشی سامسونگ', query: 'گوشی سامسونگ', context: 'موبایل' },
@@ -322,8 +351,12 @@ const handleSearchInput = async () => {
   showSuggestions.value = true
   highlightedIndex.value = -1
 
-  clearTimeout((window as any).searchTimeout)
-  ;(window as any).searchTimeout = setTimeout(async () => {
+  interface WindowWithTimeout extends Window {
+    searchTimeout?: ReturnType<typeof setTimeout>
+  }
+  const win = window as WindowWithTimeout
+  clearTimeout(win.searchTimeout)
+  win.searchTimeout = setTimeout(async () => {
     await fetchSuggestions(currentQuery)
     await fetchSearchResults(currentQuery)
   }, 250)
@@ -341,8 +374,8 @@ const addRecentSearch = (query: string) => {
     if (typeof localStorage !== 'undefined') {
       localStorage.setItem('recent-searches', JSON.stringify(recentSearches.value))
     }
-  } catch (err) {
-    console.error('Error saving recent search:', err)
+  } catch {
+    // console.error('Error saving recent search:', err)
   }
 }
 
@@ -356,7 +389,7 @@ const loadRecentSearches = () => {
       // فقط جستجوهای منحصر به فرد و حداکثر 8 تا
       recentSearches.value = [...new Set(parsed)].slice(0, 8).filter(item => item && item.trim())
     }
-  } catch (err) {
+  } catch (_err) {
     recentSearches.value = []
   }
 }
@@ -381,7 +414,7 @@ const fetchSuggestions = async (query: string) => {
     showSuggestions.value = true
     const response = await $fetch('/api/search/suggestions', {
       query: { q: trimmed }
-    }) as any
+    }) as { success: boolean, data: string[] }
     
     if (trimmed !== searchQuery.value.trim()) return
 
@@ -390,7 +423,7 @@ const fetchSuggestions = async (query: string) => {
     } else {
       suggestions.value = []
     }
-  } catch (error) {
+  } catch {
     suggestions.value = []
   } finally {
     isLoading.value = false
@@ -407,15 +440,15 @@ const fetchSearchResults = async (query: string) => {
   }
 
   try {
-    const params: any = { q: trimmed, limit: 10 }
-    const response = await $fetch('/api/search', { query: params }) as any
+    const params: Record<string, unknown> = { q: trimmed, limit: 10 }
+    const response = await $fetch('/api/search', { query: params }) as { success: boolean, data: unknown[] }
 
     if (trimmed !== searchQuery.value.trim()) return
     
     if (response.success) {
       const mapped = Array.isArray(response.data)
-        ? response.data.map((item: any) => {
-            const normalizedType = normalizeResultType(item.type || item.data?.type)
+        ? response.data.map((item: Record<string, unknown>) => {
+            const normalizedType = normalizeResultType(item.type as string || (item.data as Record<string, unknown>)?.type as string)
             const enrichedItem = { ...item, type: normalizedType }
             return {
               ...enrichedItem,
@@ -428,9 +461,9 @@ const fetchSearchResults = async (query: string) => {
           })
         : []
 
-      const categories = mapped.filter((item: any) => item.type === 'category')
-      const products = mapped.filter((item: any) => item.type === 'product')
-      const others = mapped.filter((item: any) => item.type !== 'category' && item.type !== 'product')
+      const categories = mapped.filter((item: Record<string, unknown>) => item.type === 'category')
+      const products = mapped.filter((item: Record<string, unknown>) => item.type === 'product')
+      const others = mapped.filter((item: Record<string, unknown>) => item.type !== 'category' && item.type !== 'product')
 
       // ترتیب: دسته‌بندی‌ها اول، بعد محصولات، بعد بقیه
       searchResults.value = [...categories, ...products, ...others]
@@ -442,7 +475,7 @@ const fetchSearchResults = async (query: string) => {
       showResultsPanel.value = false
       querySnapshot.value = trimmed
     }
-  } catch (error) {
+  } catch {
     searchResults.value = []
     showResultsPanel.value = false
     querySnapshot.value = trimmed
@@ -460,12 +493,12 @@ const selectSuggestion = (suggestion: string) => {
   })
 }
 
-const selectResult = (result: any) => {
+const selectResult = (result: Record<string, unknown>) => {
   showResultsPanel.value = false
   showSuggestions.value = false
   isInputFocused.value = false
-  addRecentSearch(result.title || querySnapshot.value)
-  router.push(result.url)
+  addRecentSearch((result.title as string) || querySnapshot.value)
+  router.push(result.url as string)
   nextTick(() => {
     searchQuery.value = ''
   })
@@ -560,17 +593,17 @@ const normalizeResultType = (rawType?: string) => {
   return lowered
 }
 
-const resolveTitle = (item: any) => {
-  return item.title || item.name || item.data?.title || item.data?.name || 'بدون عنوان'
+const resolveTitle = (item: Record<string, unknown>): string => {
+  return (item.title || item.name || (item.data as Record<string, unknown>)?.title || (item.data as Record<string, unknown>)?.name || 'بدون عنوان') as string
 }
 
-const resolveDescription = (item: any) => {
-  return item.description || item.excerpt || item.data?.description || ''
+const resolveDescription = (item: Record<string, unknown>): string => {
+  return (item.description || item.excerpt || (item.data as Record<string, unknown>)?.description || '') as string
 }
 
-const resolveUrl = (item: any) => {
+const resolveUrl = (item: Record<string, unknown>): string => {
   if (item.url || item.link) {
-    return item.url || item.link
+    return (item.url || item.link) as string
   }
   if (item.slug) {
     const base = item.type === 'category' ? '/category' : `/${item.type || 'item'}`
@@ -589,7 +622,7 @@ const parseJsonIfNeeded = (value: string) => {
   }
   try {
     return JSON.parse(trimmed)
-  } catch (error) {
+  } catch {
     return null
   }
 }
@@ -656,7 +689,7 @@ const normalizePriceValue = (value: unknown): number | null => {
   return null
 }
 
-const collectPriceCandidates = (item: any): unknown[] => {
+const collectPriceCandidates = (item: Record<string, unknown>): unknown[] => {
   const candidates: unknown[] = []
   const push = (val: unknown) => {
     if (val !== null && val !== undefined) {
@@ -685,7 +718,7 @@ const collectPriceCandidates = (item: any): unknown[] => {
   return candidates
 }
 
-const resolvePrice = (item: any) => {
+const resolvePrice = (item: Record<string, unknown>) => {
   const candidates = collectPriceCandidates(item)
   for (const candidate of candidates) {
     const numeric = normalizePriceValue(candidate)
@@ -716,7 +749,7 @@ const stripWrappingQuotes = (value: string) => {
   return value.replace(/^['"]+|['"]+$/g, '')
 }
 
-const resolveImage = (item: any) => {
+const resolveImage = (item: Record<string, unknown>) => {
   const normalize = (val?: unknown): string => {
     if (val === null || val === undefined) {
       return ''
@@ -765,7 +798,7 @@ const resolveImage = (item: any) => {
     }
 
     const baseName = basePath.slice(0, dotIndex)
-    const extension = basePath.slice(dotIndex)
+    // const extension = basePath.slice(dotIndex)
     
     // تبدیل به webp برای بهینه‌سازی
     const thumbnailUrl = `${baseName}_thumbnail.webp${query ? `?${query}` : ''}`
@@ -815,13 +848,13 @@ const resolveImage = (item: any) => {
     item.image_thumbnail,
     item.small_image,
     item.thumb,
-    item.data?.thumbnail,
-    item.data?.thumbnail_url,
-    item.data?.thumb,
-    item.media?.[0]?.thumbnail,
-    item.media?.[0]?.thumbnail_url,
-    item.media?.[0]?.small,
-    item.media?.[0]?.url
+    (item.data as Record<string, unknown>)?.thumbnail,
+    (item.data as Record<string, unknown>)?.thumbnail_url,
+    (item.data as Record<string, unknown>)?.thumb,
+    (item.media as Record<string, unknown>[])?.[0]?.thumbnail,
+    (item.media as Record<string, unknown>[])?.[0]?.thumbnail_url,
+    (item.media as Record<string, unknown>[])?.[0]?.small,
+    (item.media as Record<string, unknown>[])?.[0]?.url
   ]
 
   let selected = takeFirst(thumbnailCandidates)
@@ -836,9 +869,9 @@ const resolveImage = (item: any) => {
       item.cover,
       item.picture,
       item.media,
-      item.data?.image,
-      item.data?.image_url,
-      item.data?.main_image
+      (item.data as Record<string, unknown>)?.image,
+      (item.data as Record<string, unknown>)?.image_url,
+      (item.data as Record<string, unknown>)?.main_image
     ]
 
     const fallback = takeFirst(fallbackCandidates)
@@ -927,8 +960,8 @@ onUnmounted(() => {
 
 // تابع تعیین استایل آیتم
 const getItemStyle = () => {
-  const style: Record<string, any> = {}
-  
+  const style: Record<string, string | number> = {}
+
   if (props.width) {
     style.width = `${props.width}%`
     style.flex = `0 0 ${props.width}%`

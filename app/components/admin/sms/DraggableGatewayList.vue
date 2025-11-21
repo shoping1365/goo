@@ -182,7 +182,7 @@ interface Gateway {
   pattern_based?: boolean
   created_at?: string
   updated_at?: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 // تعریف props برای دریافت gateways از parent component
@@ -206,7 +206,7 @@ const isLoadingBalance = ref<Record<number, boolean>>({})
 const meliPayamakInfos = ref<Record<number, {remaining_sms: number, credit: number}>>({})
 
 // بررسی وجود پترن تست برای هر درگاه
-const checkTestPatterns = async () => {
+const _checkTestPatterns = async () => {
   // این قابلیت غیرفعال شده است
 }
 
@@ -216,7 +216,7 @@ const sortedGateways = computed(() => {
 })
 
 // دریافت درگاه پیش‌فرض (اولین درگاه فعال با کمترین اولویت)
-const getDefaultGateway = () => {
+const _getDefaultGateway = () => {
   const activeGateways = sortedGateways.value.filter(g => g.is_active || g.status === 'active')
   return activeGateways.length > 0 ? activeGateways[0] : null
 }
@@ -305,12 +305,10 @@ const onDrop = async (event: DragEvent, dropIndex: number) => {
   try {
     isUpdating.value = true
     
-    const response = await $fetch('/api/sms-gateways/priorities', {
+    await $fetch('/api/sms-gateways/priorities', {
       method: 'PUT',
       body: { priorities }
     })
-    
-    // پاسخ سرور
     
     // اطلاع‌رسانی به parent component بدون refresh
     emit('prioritiesUpdated', priorities)
@@ -337,7 +335,7 @@ const fetchGatewayBalance = async (gatewayId: number) => {
     if (response.status === 'success') {
       gatewayBalances.value[gatewayId] = response.data.balance
     }
-  } catch (error) {
+  } catch (_error) {
     // خطا در دریافت موجودی
   } finally {
     isLoadingBalance.value[gatewayId] = false
@@ -358,7 +356,7 @@ const fetchMeliPayamakInfo = async (gatewayId: number) => {
         credit: response.data.credit || 0
       }
     }
-  } catch (error) {
+  } catch (_error) {
     // خطا در دریافت اطلاعات ملی پیامک
   } finally {
     isLoadingBalance.value[gatewayId] = false
@@ -377,16 +375,26 @@ const testGateway = async (gatewayId: number) => {
     } else {
       alert('❌ خطا در تست اتصال درگاه!\n\n' + (response.error_message || 'لطفاً تنظیمات درگاه را بررسی کنید.'))
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     // خطا در تست اتصال
     let errorMessage = 'خطا در تست اتصال درگاه'
     
     // استخراج پیام خطا از response
-    if (error.response && error.response._data) {
-      const errorData = error.response._data
-      if (errorData.error_message) {
+    interface ErrorResponse {
+      response?: {
+        _data?: {
+          error_message?: string
+          message?: string
+        }
+      }
+    }
+    
+    if (error && typeof error === 'object' && 'response' in error) {
+      const errorResponse = error as ErrorResponse
+      const errorData = errorResponse.response?._data
+      if (errorData?.error_message) {
         errorMessage = errorData.error_message
-      } else if (errorData.message) {
+      } else if (errorData?.message) {
         errorMessage = errorData.message
       }
     }
@@ -442,14 +450,23 @@ const testSendSMS = async (gatewayId: number) => {
     } else {
       alert('❌ خطا در ارسال پیامک تست!\n\n' + (response.message || 'لطفاً تنظیمات درگاه و پترن تست را بررسی کنید.'))
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     // خطا در ارسال پیامک تست
     let errorMessage = 'خطا در ارسال پیامک تست'
     
     // استخراج پیام خطا از response
-    if (error.response && error.response._data) {
-      const errorData = error.response._data
-      if (errorData.message) {
+    interface ErrorResponse {
+      response?: {
+        _data?: {
+          message?: string
+        }
+      }
+    }
+    
+    if (error && typeof error === 'object' && 'response' in error) {
+      const errorResponse = error as ErrorResponse
+      const errorData = errorResponse.response?._data
+      if (errorData?.message) {
         errorMessage = errorData.message
       }
     }
@@ -461,7 +478,7 @@ const testSendSMS = async (gatewayId: number) => {
 // فعال/غیرفعال کردن درگاه
 const toggleGateway = async (gatewayId: number) => {
   try {
-    const response = await $fetch(`/api/sms-gateways/${gatewayId}`, {
+    await $fetch(`/api/sms-gateways/${gatewayId}`, {
       method: 'PATCH',
       body: {
         is_active: false // تغییر وضعیت
@@ -471,7 +488,7 @@ const toggleGateway = async (gatewayId: number) => {
     alert('وضعیت درگاه با موفقیت تغییر یافت')
     // به جای reload، emit event
     emit('gatewayDeleted', gatewayId)
-  } catch (error) {
+  } catch (_error) {
     // خطا در تغییر وضعیت درگاه
     alert('خطا در تغییر وضعیت درگاه')
   }
@@ -490,7 +507,7 @@ const deleteGateway = async (gatewayId: number) => {
     
     alert('درگاه با موفقیت حذف شد')
     emit('gatewayDeleted', gatewayId)
-  } catch (error) {
+  } catch (_error) {
     // خطا در حذف درگاه
     alert('خطا در حذف درگاه')
   }
@@ -498,9 +515,8 @@ const deleteGateway = async (gatewayId: number) => {
 
 // دریافت موجودی همه درگاه‌ها در ابتدا
 onMounted(async () => {
-  console.log('🚀 کامپوننت mounted شد')
-  console.log('📊 تعداد درگاه‌ها:', props.gateways.length)
-  
+
+
   sortedGateways.value.forEach(gateway => {
     // برای ملی پیامک از endpoint جدید استفاده کن
     if (gateway.type === 'meli_payamak') {
@@ -513,7 +529,7 @@ onMounted(async () => {
 
 // وقتی درگاه‌ها تغییر کردند، دوباره بررسی کن
 watch(() => props.gateways, async () => {
-  console.log('🔄 درگاه‌ها تغییر کردند')
+
 }, { deep: true })
 </script>
 

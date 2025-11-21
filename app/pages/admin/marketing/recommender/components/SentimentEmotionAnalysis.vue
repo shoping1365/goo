@@ -534,11 +534,11 @@ const removeBrand = (id: number) => {
   }
 }
 
-const updateSettings = () => {
-  console.log('تنظیمات تحلیل احساسات به‌روزرسانی شد')
+const _updateSettings = () => {
+  // تنظیمات تحلیل احساسات به‌روزرسانی شد
 }
 
-const exportAnalysis = () => {
-  console.log('تحلیل احساسات صادر شد')
+const _exportAnalysis = () => {
+  // تحلیل احساسات صادر شد
 }
 </script> 

@@ -146,7 +146,7 @@
 </template>
 
 <script setup>
-const { $toast } = useNuxtApp()
+const { $toast: _$toast } = useNuxtApp()
 
 // Reactive data
 const settings = ref({
@@ -177,7 +177,7 @@ const loadSettings = async () => {
     if (response.success) {
       Object.assign(settings.value, response.data)
     }
-  } catch (error) {
+  } catch (_error) {
     showMessage('خطا در بارگذاری تنظیمات', 'error')
   }
 }
@@ -196,7 +196,7 @@ const saveSettings = async () => {
     } else {
       showMessage(response.message || 'خطا در ذخیره تنظیمات', 'error')
     }
-  } catch (error) {
+  } catch (_error) {
     showMessage('خطا در ذخیره تنظیمات', 'error')
   } finally {
     saving.value = false
@@ -216,7 +216,7 @@ const testConnection = async () => {
     } else {
       showMessage(response.message || 'خطا در اتصال به درگاه', 'error')
     }
-  } catch (error) {
+  } catch (_error) {
     showMessage('خطا در تست اتصال', 'error')
   } finally {
     testing.value = false

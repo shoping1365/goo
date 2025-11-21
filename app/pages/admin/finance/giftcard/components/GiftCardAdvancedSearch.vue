@@ -533,14 +533,19 @@
 import { ref, reactive, computed, onMounted, watch } from 'vue'
 
 // Props
+interface GiftCard {
+  id?: number | string
+  [key: string]: unknown
+}
+
 const props = defineProps<{
-  giftCards: any[]
+  giftCards: GiftCard[]
 }>()
 
 // Emits
 const emit = defineEmits<{
-  'view-details': [card: any]
-  'edit-card': [card: any]
+  'view-details': [card: GiftCard]
+  'edit-card': [card: GiftCard]
 }>()
 
 // Reactive data
@@ -792,7 +797,7 @@ const paginatedResults = computed(() => {
 // Methods
 const applyFilters = () => {
   currentPage.value = 1
-  console.log('فیلترها اعمال شد:', filters)
+
 }
 
 const clearAllFilters = () => {
@@ -806,19 +811,19 @@ const clearAllFilters = () => {
     }
   })
   currentPage.value = 1
-  console.log('همه فیلترها پاک شد')
+
 }
 
 const exportResults = () => {
-  console.log('خروجی Excel در حال آماده‌سازی...', filteredResults.value)
+
   // اینجا منطق خروجی Excel اضافه می‌شود
 }
 
-const viewCardDetails = (card: any) => {
+const viewCardDetails = (card: GiftCard) => {
   emit('view-details', card)
 }
 
-const editCard = (card: any) => {
+const editCard = (card: GiftCard) => {
   emit('edit-card', card)
 }
 
@@ -856,7 +861,7 @@ watch(filters, () => {
 
 // Lifecycle
 onMounted(() => {
-  console.log('Gift card advanced search component mounted')
+
 })
 </script>
 

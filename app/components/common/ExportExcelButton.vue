@@ -17,7 +17,7 @@ const props = defineProps({
 });
 
 // تابع ساده برای تبدیل آرایه به CSV
-function arrayToCSV(data: any[]): string {
+function arrayToCSV(data: Record<string, unknown>[]): string {
   if (!data || !data.length) return '';
   
   // دریافت کلیدهای ستون‌ها
@@ -27,7 +27,7 @@ function arrayToCSV(data: any[]): string {
   const headerRow = headers.map(header => `"${header}"`).join(',');
   
   // ایجاد data rows
-  const dataRows = data.map(row => 
+  const dataRows = data.map(row =>
     headers.map(header => {
       const value = row[header];
       // اگر مقدار شامل کاما، نقل قول یا خط جدید باشد، آن را در نقل قول قرار بده

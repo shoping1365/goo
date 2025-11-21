@@ -513,7 +513,6 @@ const fetchCategories = async () => {
       }
     });
     categories.value = raw;
-    // console.log('دسته‌بندی‌های لود شده:', categories.value);
   } catch (error) {
     console.error('خطا در دریافت دسته‌بندی‌ها:', error);
     categories.value = [];

@@ -179,15 +179,12 @@ const editingArea = ref({
 const currentAreas = computed(() => activeTab.value === 'covered' ? coveredAreas.value : excludedAreas.value)
 
 function selectByProvince() {
-  // console.log('انتخاب بر اساس استان')
 }
 
 function selectByCity() {
-  // console.log('انتخاب بر اساس شهر')
 }
 
 function selectByDistrict() {
-  // console.log('انتخاب بر اساس محله')
 }
 
 function addArea() {

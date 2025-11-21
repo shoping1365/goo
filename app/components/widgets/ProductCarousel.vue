@@ -227,9 +227,19 @@ const fetchProducts = async () => {
 
     const response = await $fetch(`/api/products/public?${query}`)
     
+    interface ProductsResponse {
+      data?: {
+        products?: Array<{
+          id?: number | string
+          [key: string]: unknown
+        }>
+        [key: string]: unknown
+      }
+      [key: string]: unknown
+    }
     if (response && typeof response === 'object' && 'data' in response) {
-      const data = (response as any).data
-      if (Array.isArray(data.products)) {
+      const data = (response as ProductsResponse).data
+      if (data && Array.isArray(data.products)) {
         products.value = data.products
       } else if (Array.isArray(data)) {
         products.value = data
@@ -310,7 +320,6 @@ const addToCart = async (product: Product) => {
     
     if (result.success) {
       // نمایش پیام موفقیت (اختیاری)
-      // console.log('محصول با موفقیت به سبد خرید اضافه شد')
     } else {
       console.error('خطا در افزودن به سبد خرید:', result.message)
     }

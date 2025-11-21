@@ -166,7 +166,7 @@ interface GiftCardStats {
   conversionRate: number
 }
 
-const props = defineProps<{
+const _props = defineProps<{
   stats: GiftCardStats
 }>()
 

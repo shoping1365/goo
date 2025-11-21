@@ -189,7 +189,7 @@ const handleSubmit = async () => {
       successMessage.value = ''
     }, 5000)
     
-  } catch (error) {
+  } catch (_error) {
     // خطا
     errorMessage.value = 'خطا در عضویت. لطفاً دوباره تلاش کنید.'
     

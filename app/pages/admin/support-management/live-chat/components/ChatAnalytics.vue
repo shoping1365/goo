@@ -235,13 +235,11 @@ const performance = ref({
 
 // Methods
 const exportReport = () => {
-  // console.log('Exporting analytics report for period:', selectedPeriod.value)
   // Implementation for exporting report
 }
 
 // Watch for period changes
 watch(selectedPeriod, (newPeriod) => {
-  // console.log('Period changed to:', newPeriod)
   // Update metrics based on selected period
   updateMetrics(newPeriod)
 })

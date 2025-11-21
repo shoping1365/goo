@@ -93,9 +93,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import { useMenuManagement } from '~/composables/useMenuManagement'
+import { computed, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { useMenuManagement } from '~/composables/useMenuManagement';
 
 const props = defineProps<{
   menuId?: number // ID منوی مورد نظر
@@ -109,63 +109,60 @@ const openDropdownId = ref<number | null>(null)
 
 // پیدا کردن منوی مورد نظر
 const selectedMenu = computed(() => {
-  console.log('🔍 All menus:', menus.value)
-  console.log('🔍 Looking for menuId:', props.menuId, 'menuSlug:', props.menuSlug)
-  
+
+
   if (!menus.value.length) {
-    console.log('⚠️ No menus loaded')
+
     return null
   }
   
   // اگر menuId داده شده، از آن استفاده کن
   if (props.menuId) {
     const found = menus.value.find(m => m.id === props.menuId && m.enabled)
-    console.log('🎯 Found by ID:', found)
+
     return found
   }
   
   // اگر menuSlug داده شده، از آن استفاده کن
   if (props.menuSlug) {
     const found = menus.value.find(m => m.slug === props.menuSlug && m.enabled)
-    console.log('🎯 Found by slug:', found)
+
     return found
   }
   
   // وگرنه اولین منوی فعال رو برگردون
   const firstActive = menus.value.find(m => m.enabled)
-  console.log('🎯 Using first active menu:', firstActive)
+
   return firstActive
 })
 
 // آیتم‌های منو (فقط آیتم‌های فعال و سطح اول)
 const menuItems = computed(() => {
-  console.log('🔍 HeaderWidgetMenu - selectedMenu:', selectedMenu.value)
-  console.log('🔍 HeaderWidgetMenu - items:', selectedMenu.value?.items)
-  
+
+
   if (!selectedMenu.value?.items) {
-    console.log('⚠️ No menu or items found')
+
     return []
   }
   
   const items = selectedMenu.value.items
     .filter(item => item.enabled && !item.parentId)
     .sort((a, b) => (a.order || 0) - (b.order || 0))
-  
-  console.log('✅ Filtered menu items:', items)
+
   return items
 })
 
-const hasChildren = (item: any) => {
-  return item.children && item.children.length > 0
+const hasChildren = (item: Record<string, unknown>) => {
+  return item.children && Array.isArray(item.children) && item.children.length > 0
 }
 
 const isActive = (path: string) => {
   return route.path === path
 }
 
-const openDropdown = (item: any) => {
+const openDropdown = (item: Record<string, unknown>) => {
   if (hasChildren(item)) {
-    openDropdownId.value = item.id
+    openDropdownId.value = item.id as string
   }
 }
 

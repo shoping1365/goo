@@ -269,7 +269,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['close'])
+const _emit = defineEmits(['close'])
 
 // تعریف متغیرهای reactive
 const displaySize = ref('medium')

@@ -240,11 +240,81 @@ const props = withDefaults(defineProps<Props>(), {
   maxSuggestions: 5
 })
 
+// Type definitions
+interface SearchResult {
+  id: string | number
+  type: 'product' | 'category' | 'post' | 'brand' | string
+  title: string
+  description?: string
+  url: string
+  image?: string
+  price?: number | string | null
+  slug?: string
+  link?: string
+  data?: {
+    title?: string
+    name?: string
+    description?: string
+    price?: number | string
+    final_price?: number | string
+    image?: string
+    image_url?: string
+    main_image?: string
+    thumbnail?: string
+    thumbnail_url?: string
+    thumb?: string
+  }
+  media?: Array<{
+    thumbnail?: string
+    thumbnail_url?: string
+    small?: string
+    url?: string
+  }>
+  thumbnail?: string
+  thumbnail_url?: string
+  image_thumbnail?: string
+  small_image?: string
+  thumb?: string
+  image_url?: string
+  main_image?: string
+  featured_image?: string
+  cover?: string
+  picture?: string
+  excerpt?: string
+}
+
+interface SearchResponse {
+  success: boolean
+  data: SearchResult[] | unknown[]
+}
+
+interface SuggestionsResponse {
+  success: boolean
+  data: string[]
+}
+
+interface SearchParams {
+  q: string
+  type?: 'all' | 'products' | 'posts' | 'categories' | 'brands'
+  limit?: number
+}
+
+interface SearchResultGroup {
+  key: string
+  label: string
+  items: SearchResult[]
+  offset: number
+}
+
+interface WindowWithTimeout extends Window {
+  searchTimeout?: ReturnType<typeof setTimeout>
+}
+
 // Emits
 const emit = defineEmits<{
   'search': [query: string]
   'suggestion-selected': [suggestion: string]
-  'result-selected': [result: any]
+  'result-selected': [result: SearchResult]
 }>()
 
 // Reactive data
@@ -252,7 +322,7 @@ const searchQuery = ref('')
 const querySnapshot = ref('')
 const recentSearches = ref<string[]>([])
 const suggestions = ref<string[]>([])
-const searchResults = ref<any[]>([])
+const searchResults = ref<SearchResult[]>([])
 const isLoading = ref(false)
 const showSuggestions = ref(false)
 const showResultsPanel = ref(false)
@@ -290,7 +360,7 @@ const router = useRouter()
 const totalResults = computed(() => searchResults.value.length)
 const hasTypedQuery = computed(() => searchQuery.value.trim().length > 0)
 const groupedResults = computed(() => {
-  const groups: Array<{ key: string; label: string; items: any[]; offset: number }> = []
+  const groups: SearchResultGroup[] = []
   let offset = 0
 
   const ordered = [
@@ -332,8 +402,11 @@ const handleSearchInput = async () => {
   highlightedIndex.value = -1
 
   // تاخیر برای جلوگیری از درخواست‌های مکرر
-  clearTimeout((window as any).searchTimeout)
-  ;(window as any).searchTimeout = setTimeout(async () => {
+  const windowWithTimeout = window as WindowWithTimeout
+  if (windowWithTimeout.searchTimeout) {
+    clearTimeout(windowWithTimeout.searchTimeout)
+  }
+  windowWithTimeout.searchTimeout = setTimeout(async () => {
     await fetchSuggestions(currentQuery)
     if (props.showResults) {
       await fetchSearchResults(currentQuery)
@@ -355,7 +428,7 @@ const addRecentSearch = (query: string) => {
     if (typeof localStorage !== 'undefined') {
       localStorage.setItem(key, JSON.stringify(stored))
     }
-  } catch (err) {
+  } catch (_err) {
     // ignore storage errors
   }
 }
@@ -369,7 +442,7 @@ const loadRecentSearches = () => {
     if (Array.isArray(parsed)) {
       recentSearches.value = parsed.slice(0, 10)
     }
-  } catch (err) {
+  } catch (_err) {
     recentSearches.value = []
   }
 }
@@ -385,9 +458,9 @@ const fetchSuggestions = async (query: string) => {
   try {
     isLoading.value = true
     showSuggestions.value = true
-    const response = await $fetch('/api/search/suggestions', {
+    const response = await $fetch<SuggestionsResponse>('/api/search/suggestions', {
       query: { q: trimmed }
-    }) as any
+    })
     
     if (trimmed !== searchQuery.value.trim()) {
       return
@@ -398,7 +471,7 @@ const fetchSuggestions = async (query: string) => {
     } else {
       suggestions.value = []
     }
-  } catch (error) {
+  } catch (_error) {
     // خطا در دریافت پیشنهادات
     suggestions.value = []
   } finally {
@@ -416,13 +489,13 @@ const fetchSearchResults = async (query: string) => {
   }
 
   try {
-    const params: any = { q: trimmed }
+    const params: SearchParams = { q: trimmed }
     if (props.searchType !== 'all') {
       params.type = props.searchType
     }
     params.limit = 10
 
-    const response = await $fetch('/api/search', { query: params }) as any
+    const response = await $fetch<SearchResponse>('/api/search', { query: params })
 
     if (trimmed !== searchQuery.value.trim()) {
       return
@@ -430,7 +503,7 @@ const fetchSearchResults = async (query: string) => {
     
     if (response.success) {
       const mapped = Array.isArray(response.data)
-        ? response.data.map((item: any) => ({
+        ? response.data.map((item: SearchResult) => ({
             ...item,
             title: resolveTitle(item),
             description: resolveDescription(item),
@@ -440,9 +513,9 @@ const fetchSearchResults = async (query: string) => {
           }))
         : []
 
-      const categories = mapped.filter((item: any) => item.type === 'category')
-      const products = mapped.filter((item: any) => item.type === 'product')
-      const others = mapped.filter((item: any) => item.type !== 'category' && item.type !== 'product')
+      const categories = mapped.filter((item: SearchResult) => item.type === 'category')
+      const products = mapped.filter((item: SearchResult) => item.type === 'product')
+      const others = mapped.filter((item: SearchResult) => item.type !== 'category' && item.type !== 'product')
 
       if (categories.length > 0) {
         searchResults.value = [...categories, ...products, ...others]
@@ -459,7 +532,7 @@ const fetchSearchResults = async (query: string) => {
       showResultsPanel.value = false
       querySnapshot.value = trimmed
     }
-  } catch (error) {
+  } catch (_error) {
     // خطا در جستجو
     searchResults.value = []
     showResultsPanel.value = false
@@ -484,7 +557,7 @@ const selectSuggestion = (suggestion: string) => {
   })
 }
 
-const selectResult = (result: any) => {
+const selectResult = (result: SearchResult) => {
   showResultsPanel.value = false
   showSuggestions.value = false
   isInputFocused.value = false
@@ -507,7 +580,7 @@ const viewAllResults = () => {
   addRecentSearch(querySnapshot.value)
   
   // هدایت به صفحه نتایج جستجو
-  const params: any = { q: querySnapshot.value }
+  const params: SearchParams = { q: querySnapshot.value }
   if (props.searchType !== 'all') {
     params.type = props.searchType
   }
@@ -584,15 +657,15 @@ const getTypeBadgeClass = (type: string) => {
   return classes[type] || 'bg-gray-100 text-gray-800'
 }
 
-const resolveTitle = (item: any) => {
+const resolveTitle = (item: SearchResult) => {
   return item.title || item.name || item.data?.title || item.data?.name || 'بدون عنوان'
 }
 
-const resolveDescription = (item: any) => {
+const resolveDescription = (item: SearchResult) => {
   return item.description || item.excerpt || item.data?.description || ''
 }
 
-const resolveUrl = (item: any) => {
+const resolveUrl = (item: SearchResult) => {
   if (item.url || item.link) {
     return item.url || item.link
   }
@@ -603,7 +676,7 @@ const resolveUrl = (item: any) => {
   return '#'
 }
 
-const resolvePrice = (item: any) => {
+const resolvePrice = (item: SearchResult) => {
   const candidates = [
     item.price,
     item.final_price,
@@ -640,7 +713,7 @@ const formatPrice = (price: number | string | null | undefined) => {
   return new Intl.NumberFormat('fa-IR').format(Math.round(numeric)) + ' تومان'
 }
 
-const resolveImage = (item: any) => {
+const resolveImage = (item: SearchResult) => {
   const normalize = (val?: unknown) => {
     if (typeof val !== 'string') return ''
     const trimmed = val.trim()

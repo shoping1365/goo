@@ -313,16 +313,23 @@ const getStatusClasses = (status: string) => {
   return classesMap[status] || 'bg-gray-100 text-gray-800'
 }
 
-const editPrice = (price: any) => {
-  // در نسخه واقعی: باز کردن مودال ویرایش
-  console.log('Edit price:', price)
+interface Price {
+  id?: number | string
+  status?: string
+  category?: string
+  [key: string]: unknown
 }
 
-const togglePriceStatus = async (price: any) => {
+const editPrice = (_price: Price) => {
+  // در نسخه واقعی: باز کردن مودال ویرایش
+
+}
+
+const togglePriceStatus = async (price: Price) => {
   try {
     price.status = price.status === 'active' ? 'inactive' : 'active'
     // در نسخه واقعی: ارسال به API
-    console.log('Toggling price status:', price.id, price.status)
+
     alert(`قیمت ${price.status === 'active' ? 'فعال' : 'غیرفعال'} شد`)
   } catch (error) {
     console.error('خطا در تغییر وضعیت قیمت:', error)
@@ -330,7 +337,7 @@ const togglePriceStatus = async (price: any) => {
   }
 }
 
-const deletePrice = async (price: any) => {
+const deletePrice = async (price: Price) => {
   if (confirm(`آیا از حذف قیمت ${getCategoryText(price.category)} مطمئن هستید؟`)) {
     try {
       const index = prices.value.findIndex(p => p.id === price.id)
@@ -338,7 +345,7 @@ const deletePrice = async (price: any) => {
         prices.value.splice(index, 1)
       }
       // در نسخه واقعی: ارسال به API
-      console.log('Deleting price:', price.id)
+
       alert('قیمت حذف شد')
     } catch (error) {
       console.error('خطا در حذف قیمت:', error)

@@ -37,16 +37,86 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useState } from 'nuxt/app'
+import { computed, onMounted, ref, watch } from 'vue'
 import { usePublicFooters } from '~/composables/usePublicFooters'
+
+interface SocialEntry {
+  id?: string
+  platform: string
+  label: string
+  title?: string
+  href: string
+  url: string
+  enabled: boolean
+  visible?: boolean
+  openInNewTab?: boolean
+  [key: string]: unknown
+}
+
+interface Location {
+  id: string | number
+  title: string
+  address: string
+  phones: string[]
+  email?: string
+  [key: string]: unknown
+}
+
+interface CompanySettings {
+  phones: string[]
+  mobiles: string[]
+  address: string
+  secondaryAddress: string
+  email: string
+  about: string
+  workingSchedules: string[]
+  locations: Location[]
+  [key: string]: unknown
+}
+
+interface SocialMediaSettings {
+  socials: SocialEntry[]
+  links: SocialEntry[]
+  customLinks: SocialEntry[]
+  [key: string]: unknown
+}
+
+interface FooterLayer {
+  id?: string | number
+  height?: number
+  width?: number
+  direction?: string
+  opacity?: number
+  enableShadow?: boolean
+  shadowIntensity?: string
+  shadowDirection?: string
+  enableBorder?: boolean
+  borderColor?: string
+  borderWidth?: number
+  borderStyle?: string
+  borderPosition?: string
+  style?: string | Record<string, unknown>
+  items?: string | unknown[]
+  showSeparator?: boolean
+  separatorType?: string
+  separatorColor?: string
+  separatorOpacity?: number
+  separatorWidth?: number
+  styleSettings?: string | Record<string, unknown>
+  [key: string]: unknown
+}
+
+interface FooterData {
+  layers?: FooterLayer[]
+  [key: string]: unknown
+}
 
 const route = useRoute()
 const { loadFooters, getActiveFooter, getFooterForPage } = usePublicFooters()
-const activeFooter = ref<any>(null)
-const footerRef = ref<HTMLElement>()
-const socialMediaSettings = ref<any>(null)
-const companySettings = ref<any>(null)
+const activeFooter = ref<FooterData | null>(null)
+const socialMediaSettings = ref<SocialMediaSettings | null>(null)
+const companySettings = ref<CompanySettings | null>(null)
 
 // بارگذاری تنظیمات شبکه‌های اجتماعی
 const getSocialMediaSettings = async () => {
@@ -54,30 +124,30 @@ const getSocialMediaSettings = async () => {
     return socialMediaSettings.value
   }
 
-  const fallbackResult = {
-    socials: [] as any[],
-    links: [] as any[],
-    customLinks: [] as any[]
+  const fallbackResult: SocialMediaSettings = {
+    socials: [],
+    links: [],
+    customLinks: []
   }
 
-  let lastFetchError: unknown = null
+  let _lastFetchError: unknown = null
 
   try {
   const endpoints = [
     '/api/public/settings/social-media',
     '/nuxt/admin/settings/social-media'
   ]
-    let response: any = null
+    let response: { success: boolean; data: Record<string, unknown> } | null = null
 
     for (const endpoint of endpoints) {
       try {
-        const result = await $fetch<any>(endpoint)
+        const result = await $fetch<{ success: boolean; data: Record<string, unknown> }>(endpoint)
         if (result && result.success && result.data) {
           response = result
           break
         }
       } catch (fetchError) {
-        lastFetchError = fetchError
+        _lastFetchError = fetchError
       }
     }
 
@@ -85,8 +155,8 @@ const getSocialMediaSettings = async () => {
       const settings = response.data
       
       // ساخت آرایه socials برای FooterWidgetSocial
-      const socials: any[] = []
-      let parsedCustomLinks: any[] = []
+      const socials: SocialEntry[] = []
+      let parsedCustomLinks: Record<string, unknown>[] = []
       const platformLabels: Record<string, string> = {
         instagram: 'اینستاگرام',
         telegram: 'تلگرام',
@@ -147,15 +217,15 @@ const getSocialMediaSettings = async () => {
         }
 
         if (Array.isArray(parsedCustomLinks)) {
-          parsedCustomLinks.forEach((link: any, index: number) => {
+          parsedCustomLinks.forEach((link: Record<string, unknown>, index: number) => {
             const rawHref = link?.href ?? link?.url
             const href = typeof rawHref === 'string' ? rawHref.trim() : ''
             if (!href) {
               return
             }
             socials.push({
-              platform: link?.platform || `custom${index + 1}`,
-              label: link?.title || link?.label || `لینک ${index + 1}`,
+              platform: (link?.platform as string) || `custom${index + 1}`,
+              label: (link?.title as string) || (link?.label as string) || `لینک ${index + 1}`,
               href,
               url: href,
               enabled: true
@@ -167,7 +237,7 @@ const getSocialMediaSettings = async () => {
       const result = {
         socials,
         links: socials,
-        customLinks: Array.isArray(parsedCustomLinks) ? parsedCustomLinks : []
+        customLinks: Array.isArray(parsedCustomLinks) ? (parsedCustomLinks as unknown as SocialEntry[]) : []
       }
       socialMediaSettings.value = result
       return result
@@ -232,7 +302,7 @@ function parsePhoneList(value: unknown): string[] {
   return []
 }
 
-function normalizeArrayInput(raw: unknown): any[] {
+function normalizeArrayInput(raw: unknown): unknown[] {
   if (Array.isArray(raw)) {
     return raw
   }
@@ -246,7 +316,7 @@ function normalizeArrayInput(raw: unknown): any[] {
         return parsed
       }
       if (parsed && typeof parsed === 'object') {
-        return Object.values(parsed as Record<string, any>)
+        return Object.values(parsed as Record<string, unknown>)
       }
     } catch {
       return []
@@ -254,15 +324,15 @@ function normalizeArrayInput(raw: unknown): any[] {
   }
 
   if (raw && typeof raw === 'object') {
-    return Object.values(raw as Record<string, any>)
+    return Object.values(raw as Record<string, unknown>)
   }
 
   return []
 }
 
-function normalizeSocialEntries(raw: unknown): any[] {
+function normalizeSocialEntries(raw: unknown): SocialEntry[] {
   const list = normalizeArrayInput(raw)
-  const normalized: any[] = []
+  const normalized: SocialEntry[] = []
 
   list.forEach((entry, index) => {
     if (!entry && entry !== 0) {
@@ -292,7 +362,7 @@ function normalizeSocialEntries(raw: unknown): any[] {
       return
     }
 
-    const record = entry as Record<string, any>
+    const record = entry as Record<string, unknown>
     const href = typeof record.href === 'string'
       ? record.href.trim()
       : typeof record.url === 'string'
@@ -314,10 +384,10 @@ function normalizeSocialEntries(raw: unknown): any[] {
 
     normalized.push({
       ...record,
-      id: record.id ?? `social-${platform || index}`,
+      id: (record.id as string) ?? `social-${platform || index}`,
       platform,
       label,
-      title: record.title ?? label,
+      title: (record.title as string) ?? label,
       href,
       url: href,
       enabled: true,
@@ -329,20 +399,21 @@ function normalizeSocialEntries(raw: unknown): any[] {
   return normalized
 }
 
-function extractAddressFromLocation(location: Record<string, any>): string {
+function extractAddressFromLocation(location: Record<string, unknown>): string {
   const candidates: string[] = []
 
   const rawAddress = location?.address ?? location?.Address ?? location?.fullAddress ?? location?.full_address ?? location?.addressText ?? location?.address_text
   if (typeof rawAddress === 'string' && rawAddress.trim()) {
     candidates.push(rawAddress)
   } else if (rawAddress && typeof rawAddress === 'object') {
+    const addrObj = rawAddress as Record<string, unknown>
     const parts = [
-      rawAddress.line1 ?? rawAddress.addressLine1 ?? rawAddress.street ?? rawAddress.street1,
-      rawAddress.line2 ?? rawAddress.addressLine2 ?? rawAddress.street2,
-      rawAddress.neighborhood ?? rawAddress.neighbourhood,
-      rawAddress.city ?? rawAddress.City,
-      rawAddress.province ?? rawAddress.Province ?? rawAddress.state ?? rawAddress.State,
-      rawAddress.postalCode ?? rawAddress.PostalCode ?? rawAddress.zipCode ?? rawAddress.zip_code ?? rawAddress.zip
+      addrObj.line1 ?? addrObj.addressLine1 ?? addrObj.street ?? addrObj.street1,
+      addrObj.line2 ?? addrObj.addressLine2 ?? addrObj.street2,
+      addrObj.neighborhood ?? addrObj.neighbourhood,
+      addrObj.city ?? addrObj.City,
+      addrObj.province ?? addrObj.Province ?? addrObj.state ?? addrObj.State,
+      addrObj.postalCode ?? addrObj.PostalCode ?? addrObj.zipCode ?? addrObj.zip_code ?? addrObj.zip
     ].filter(Boolean)
 
     if (parts.length) {
@@ -404,7 +475,7 @@ function normalizeLocationsInput(raw: unknown): NormalizedLocation[] {
     return []
   }
 
-  let list: any[] = []
+  let list: unknown[] = []
 
   if (typeof raw === 'string') {
     const parsed = safeParseJSON(raw)
@@ -441,28 +512,29 @@ function normalizeLocationsInput(raw: unknown): NormalizedLocation[] {
 
     if (typeof entry !== 'object') return
 
-    const rawObject = entry as Record<string, any>
+    const rawObject = entry as Record<string, unknown>
     const id = rawObject.id ?? rawObject.Id ?? rawObject.locationId ?? rawObject.location_id ?? rawObject.code ?? `loc-${index}`
     const titleRaw = rawObject.title ?? rawObject.Title ?? rawObject.name ?? rawObject.Name ?? ''
     const title = typeof titleRaw === 'string' ? normalizeText(titleRaw) : ''
     const address = extractAddressFromLocation(rawObject)
 
     const phoneCollector = new Set<string>()
+    const contact = rawObject.contact as Record<string, unknown> | undefined
     parsePhoneList(rawObject.phones ?? rawObject.phone ?? rawObject.phoneNumbers ?? rawObject.phone_numbers ?? rawObject.tel ?? rawObject.telephone ?? rawObject.landline).forEach(value => phoneCollector.add(value))
     parsePhoneList(rawObject.mobiles ?? rawObject.mobile ?? rawObject.mobilePhones ?? rawObject.mobile_numbers).forEach(value => phoneCollector.add(value))
-    parsePhoneList(rawObject.whatsapp ?? rawObject.whatsappNumber ?? rawObject.contact?.whatsapp).forEach(value => phoneCollector.add(value))
-    parsePhoneList(rawObject.contact?.phones ?? rawObject.contact?.phone).forEach(value => phoneCollector.add(value))
-    parsePhoneList(rawObject.contact?.mobiles ?? rawObject.contact?.mobile).forEach(value => phoneCollector.add(value))
+    parsePhoneList(rawObject.whatsapp ?? rawObject.whatsappNumber ?? contact?.whatsapp).forEach(value => phoneCollector.add(value))
+    parsePhoneList(contact?.phones ?? contact?.phone).forEach(value => phoneCollector.add(value))
+    parsePhoneList(contact?.mobiles ?? contact?.mobile).forEach(value => phoneCollector.add(value))
 
     const phoneList = Array.from(phoneCollector).map(normalizePhoneValue).filter(Boolean)
-    const email = pickFirstEmail(rawObject.email ?? rawObject.contact?.email ?? rawObject.emails ?? rawObject.contact?.emails ?? rawObject.contact?.emailAddress)
+    const email = pickFirstEmail(rawObject.email ?? contact?.email ?? rawObject.emails ?? contact?.emails ?? contact?.emailAddress)
 
     if (!title && !address && phoneList.length === 0 && !email) {
       return
     }
 
     const normalizedLocation: NormalizedLocation = {
-      id,
+      id: id as string | number,
       title,
       address,
       phones: phoneList
@@ -509,32 +581,32 @@ const getCompanySettings = async () => {
     
     for (const endpoint of endpoints) {
       try {
-        const response = await $fetch<any>(endpoint.url, endpoint.params ? { params: endpoint.params } : {})
+        const response = await $fetch<Record<string, unknown>>(endpoint.url, endpoint.params ? { params: endpoint.params } : {})
         
         if (response) {
-          let settingsObj: any = {}
+          let settingsObj: Record<string, unknown> = {}
           
           // تبدیل آرایه به object
-          if (response?.status === 'success' && response?.data && typeof response.data === 'object') {
-            settingsObj = response.data
+          if (response?.status === 'success' && response?.data && typeof response.data === 'object' && !Array.isArray(response.data)) {
+            settingsObj = response.data as Record<string, unknown>
           } else if (response.success && Array.isArray(response.data)) {
-            response.data.forEach((item: any) => {
+            response.data.forEach((item: Record<string, unknown>) => {
               if (item.key && item.value !== undefined) {
-                settingsObj[item.key] = item.value
+                settingsObj[item.key as string] = item.value
               }
             })
           } else if (Array.isArray(response.data)) {
-            response.data.forEach((item: any) => {
+            response.data.forEach((item: Record<string, unknown>) => {
               if (item.key && item.value !== undefined) {
-                settingsObj[item.key] = item.value
+                settingsObj[item.key as string] = item.value
               }
             })
           } else if (response.data && typeof response.data === 'object') {
-            settingsObj = response.data
+            settingsObj = response.data as Record<string, unknown>
           } else if (Array.isArray(response)) {
-            response.forEach((item: any) => {
+            response.forEach((item: Record<string, unknown>) => {
               if (item.key && item.value !== undefined) {
-                settingsObj[item.key] = item.value
+                settingsObj[item.key as string] = item.value
               }
             })
           }
@@ -562,18 +634,18 @@ const getCompanySettings = async () => {
           
           // Fallback به key های قدیمی
           if (phones.length === 0) {
-            if (settingsObj.company_phone) phones.push(settingsObj.company_phone)
-            if (settingsObj.footer_phone_number) phones.push(settingsObj.footer_phone_number)
-            if (settingsObj.header_phone_number) phones.push(settingsObj.header_phone_number)
-            if (settingsObj.phone) phones.push(settingsObj.phone)
-            if (settingsObj.phone_number) phones.push(settingsObj.phone_number)
+            if (settingsObj.company_phone) phones.push(String(settingsObj.company_phone))
+            if (settingsObj.footer_phone_number) phones.push(String(settingsObj.footer_phone_number))
+            if (settingsObj.header_phone_number) phones.push(String(settingsObj.header_phone_number))
+            if (settingsObj.phone) phones.push(String(settingsObj.phone))
+            if (settingsObj.phone_number) phones.push(String(settingsObj.phone_number))
           }
           
           // استخراج موبایل‌های مدیر
           const mobiles: string[] = []
           if (settingsObj.adminPhones) {
             if (Array.isArray(settingsObj.adminPhones)) {
-              mobiles.push(...settingsObj.adminPhones)
+              mobiles.push(...(settingsObj.adminPhones as string[]))
             } else if (typeof settingsObj.adminPhones === 'string') {
               try {
                 const parsed = JSON.parse(settingsObj.adminPhones)
@@ -590,41 +662,41 @@ const getCompanySettings = async () => {
 
           if (mobiles.length === 0) {
             if (Array.isArray(settingsObj.mobiles)) {
-              mobiles.push(...settingsObj.mobiles)
+              mobiles.push(...(settingsObj.mobiles as string[]))
             } else if (typeof settingsObj.mobiles === 'string' && settingsObj.mobiles.trim()) {
               mobiles.push(settingsObj.mobiles)
             }
-            if (settingsObj.mobile_phone) mobiles.push(settingsObj.mobile_phone)
-            if (settingsObj.mobile) mobiles.push(settingsObj.mobile)
+            if (settingsObj.mobile_phone) mobiles.push(String(settingsObj.mobile_phone))
+            if (settingsObj.mobile) mobiles.push(String(settingsObj.mobile))
           }
           
           // استخراج آدرس - از تنظیمات shop
-          let address = settingsObj.address || 
-                        settingsObj.company_address || 
-                        settingsObj.footer_address || 
-                        settingsObj.site_address || ''
+          let address = (settingsObj.address as string) || 
+                        (settingsObj.company_address as string) || 
+                        (settingsObj.footer_address as string) || 
+                        (settingsObj.site_address as string) || ''
           
-          let secondaryAddress = settingsObj.secondaryAddress ||
-                                   settingsObj.address_secondary ||
-                                   settingsObj.second_address ||
-                                   settingsObj.address2 || ''
+          let secondaryAddress = (settingsObj.secondaryAddress as string) ||
+                                   (settingsObj.address_secondary as string) ||
+                                   (settingsObj.second_address as string) ||
+                                   (settingsObj.address2 as string) || ''
           
           // استخراج ایمیل - از تنظیمات shop
-          let email = settingsObj.email || 
-                      settingsObj.company_email || 
-                      settingsObj.footer_email || 
-                      settingsObj.site_email || 
-                      settingsObj.contact_email || ''
+          let email = (settingsObj.email as string) || 
+                      (settingsObj.company_email as string) || 
+                      (settingsObj.footer_email as string) || 
+                      (settingsObj.site_email as string) || 
+                      (settingsObj.contact_email as string) || ''
 
-          const aboutDescription = settingsObj.shortDescription ||
-                                   settingsObj.short_description ||
-                                   settingsObj.aboutDescription ||
-                                   settingsObj.about_description ||
-                                   settingsObj.about ||
-                                   settingsObj.about_us ||
-                                   settingsObj.footerAbout ||
-                                   settingsObj.footer_about ||
-                                   settingsObj.description ||
+          const aboutDescription = (settingsObj.shortDescription as string) ||
+                                   (settingsObj.short_description as string) ||
+                                   (settingsObj.aboutDescription as string) ||
+                                   (settingsObj.about_description as string) ||
+                                   (settingsObj.about as string) ||
+                                   (settingsObj.about_us as string) ||
+                                   (settingsObj.footerAbout as string) ||
+                                   (settingsObj.footer_about as string) ||
+                                   (settingsObj.description as string) ||
                                    ''
           const normalizedAbout = typeof aboutDescription === 'string' ? aboutDescription.trim() : ''
           
@@ -636,10 +708,10 @@ const getCompanySettings = async () => {
                 try {
                   workingSchedules = JSON.parse(settingsObj.workingHours)
                 } catch {
-                  workingSchedules = [settingsObj.workingHours]
+                  workingSchedules = [settingsObj.workingHours as string]
                 }
               } else if (Array.isArray(settingsObj.workingHours)) {
-                workingSchedules = settingsObj.workingHours
+                workingSchedules = settingsObj.workingHours as string[]
               } else {
                 workingSchedules = [String(settingsObj.workingHours)]
               }
@@ -655,10 +727,10 @@ const getCompanySettings = async () => {
                 try {
                   workingSchedules = JSON.parse(settingsObj.working_hours)
                 } catch {
-                  workingSchedules = [settingsObj.working_hours]
+                  workingSchedules = [settingsObj.working_hours as string]
                 }
               } else if (Array.isArray(settingsObj.working_hours)) {
-                workingSchedules = settingsObj.working_hours
+                workingSchedules = settingsObj.working_hours as string[]
               } else {
                 workingSchedules = [String(settingsObj.working_hours)]
               }
@@ -667,11 +739,11 @@ const getCompanySettings = async () => {
             }
           }
           
-          const rawLocations = settingsObj.locations ??
-                               settingsObj.addresses ??
-                               settingsObj.contactLocations ??
-                               settingsObj.branches ??
-                               settingsObj.shop_locations
+          const rawLocations = (settingsObj.locations as unknown[]) ??
+                               (settingsObj.addresses as unknown[]) ??
+                               (settingsObj.contactLocations as unknown[]) ??
+                               (settingsObj.branches as unknown[]) ??
+                               (settingsObj.shop_locations as unknown[])
           const normalizedLocations = normalizeLocationsInput(rawLocations)
 
           if (!address && normalizedLocations.length > 0) {
@@ -762,9 +834,9 @@ const footerStyle = computed(() => {
     : {}
 })
 
-function getLayerStyle(layer: any) {
+function getLayerStyle(layer: FooterLayer) {
   // سبک پایه فوتر را تعریف می‌کنیم و سپس هر استایل سفارشی درج‌شده در لایه را روی آن اعمال می‌کنیم
-  const baseStyle: Record<string, any> = {
+  const baseStyle: Record<string, string | number> = {
     minHeight: (layer.height ?? 50) + 'px',
     width: layer.width ? layer.width + '%' : '100%',
     display: 'flex',
@@ -784,7 +856,7 @@ function getLayerStyle(layer: any) {
     const shadowDirection = layer.shadowDirection || 'top'
     
     // تعریف انواع سایه
-    const shadows = {
+    const shadows: Record<string, Record<string, string>> = {
       sm: {
         top: '0 -2px 4px -1px rgba(0, 0, 0, 0.06)',
         bottom: '0 2px 4px -1px rgba(0, 0, 0, 0.06)',
@@ -843,20 +915,21 @@ function getLayerStyle(layer: any) {
   }
 
   // لایه ممکن است یک آبجکت استایل یا یک رشته JSON باشد
-  let customStyle: Record<string, any> = {}
+  let customStyle: Record<string, string | number> = {}
   if (layer.style) {
     if (typeof layer.style === 'string') {
       try {
-        customStyle = JSON.parse(layer.style)
+        const parsed = JSON.parse(layer.style)
+        customStyle = parsed as Record<string, string | number>
         // گاهی اوقات به صورت اشتباه به جای height از totalHeight استفاده شده
-        if (!('height' in customStyle) && typeof customStyle.totalHeight !== 'undefined') {
-          customStyle.height = customStyle.totalHeight
+        if (!('height' in customStyle) && typeof parsed.totalHeight !== 'undefined') {
+          customStyle.height = parsed.totalHeight
         }
       } catch {
         customStyle = {}
       }
     } else if (typeof layer.style === 'object') {
-      customStyle = layer.style
+      customStyle = layer.style as Record<string, string | number>
     }
   }
 
@@ -866,7 +939,7 @@ function getLayerStyle(layer: any) {
 /**
  * تعیین چینش لایه بر اساس آیتم‌ها و تنظیمات
  */
-function getLayerJustifyContent(layer: any): string {
+function getLayerJustifyContent(layer: FooterLayer): string {
   // اگر لایه دارای آیتم‌هایی با چینش مشخص باشد
   if (layer.items && Array.isArray(layer.items)) {
     try {
@@ -878,7 +951,7 @@ function getLayerJustifyContent(layer: any): string {
         const firstAlign = firstItem?.align || 'center'
 
         // اگر همه آیتم‌ها چینش یکسانی دارند
-        const allSameAlign = items.every((item: any) => (item?.align || 'center') === firstAlign)
+        const allSameAlign = items.every((item: FooterItem) => (item?.align || 'center') === firstAlign)
 
         if (allSameAlign) {
           switch (firstAlign) {
@@ -911,36 +984,54 @@ function getLayerItems(layer) {
     const rawItems = typeof layer.items === 'string' ? JSON.parse(layer.items) : layer.items
 
     return Array.isArray(rawItems)
-      ? rawItems.map((raw: any) => normalizeItem(raw))
+      ? rawItems.map((raw: unknown) => normalizeItem(raw))
       : []
   } catch {
     return []
   }
 }
 
-function normalizeItem(raw: any) {
+interface FooterItem {
+  id?: string
+  type?: string
+  component?: string
+  text?: string
+  name?: string
+  align?: string
+  width?: number
+  height?: number
+  bgColor?: string
+  paddingRight?: number
+  paddingLeft?: number
+  path?: string
+  props?: Record<string, unknown>
+  [key: string]: unknown
+}
+
+function normalizeItem(raw: unknown): FooterItem {
   if (raw && typeof raw === 'object') {
+    const item = raw as Record<string, unknown>
     const resolvedText = (() => {
-      if (typeof raw.text === 'string' && raw.text.trim().length) {
-        return raw.text
+      if (typeof item.text === 'string' && item.text.trim().length) {
+        return item.text
       }
-      if (raw.props && typeof raw.props.text === 'string' && raw.props.text.trim().length) {
-        return raw.props.text
+      if (item.props && typeof (item.props as Record<string, unknown>).text === 'string' && ((item.props as Record<string, unknown>).text as string).trim().length) {
+        return (item.props as Record<string, unknown>).text as string
       }
-      const fallback = raw.copyrightText || raw.title || raw.name || raw.content || raw.value
+      const fallback = item.copyrightText || item.title || item.name || item.content || item.value
       return typeof fallback === 'string' ? fallback : ''
     })()
 
-    const normalizedProps: Record<string, any> = {
-      ...(raw.props || {})
+    const normalizedProps: Record<string, unknown> = {
+      ...(item.props as Record<string, unknown> || {})
     }
 
     if (resolvedText && (normalizedProps.text === undefined || normalizedProps.text === null || normalizedProps.text === '')) {
       normalizedProps.text = resolvedText
     }
 
-    const normalized = {
-      ...raw,
+    const normalized: FooterItem = {
+      ...item,
       text: resolvedText,
       props: normalizedProps
     }
@@ -957,18 +1048,18 @@ function normalizeItem(raw: any) {
     }
   }
 
-  return raw
+  return {} as FooterItem
 }
 
 /**
  * تعیین نام کامپوننت برای رندر ویجت فوتر بر اساس فیلد type یا component
  */
-function resolveWidgetKey(item: any): string | null {
+function resolveWidgetKey(item: FooterItem | string): string | null {
   let raw: string | undefined
   if (typeof item === 'string') {
     raw = item
   } else if (item && typeof item === 'object') {
-    raw = item.component || item.type || item.id || item.props?.type
+    raw = item.component || item.type || item.id || (item.props?.type as string)
   }
 
   if (!raw) return null
@@ -1000,12 +1091,29 @@ function resolveWidgetKey(item: any): string | null {
   return null
 }
 
-function resolveWidgetComponent(item: any): string | null {
-  const key = resolveWidgetKey(item)
-  return key ? footerWidgetRegistry[key] ?? null : null
+interface LayerStyleSettings {
+  border?: {
+    enabled?: boolean
+    position?: string
+    color?: string
+    width?: number
+    style?: string
+  }
+  shadow?: {
+    enabled?: boolean
+    intensity?: string
+    direction?: string
+  }
+  layout?: Record<string, unknown>
+  [key: string]: unknown
 }
 
-function isSocialWidget(item: any): boolean {
+function resolveWidgetComponent(item: FooterItem | string): string | null {
+  const key = resolveWidgetKey(item)
+  return key ? (footerWidgetRegistry[key] as string) ?? null : null
+}
+
+function isSocialWidget(item: FooterItem | string): boolean {
   const key = resolveWidgetKey(item)
   if (!key) return false
   const isSocial = key.toLowerCase() === 'footerwidgetsocial'
@@ -1013,16 +1121,18 @@ function isSocialWidget(item: any): boolean {
   return isSocial
 }
 
-function isContactWidget(item: any): boolean {
+function isContactWidget(item: FooterItem | string): boolean {
   const key = resolveWidgetKey(item)
   if (!key) {
-    return item?.id === 'contact'
+    return typeof item !== 'string' && item?.id === 'contact'
   }
   return key.toLowerCase() === 'footerwidgetcontact'
 }
 
-function getWidgetProps(item: any) {
-  const baseProps: Record<string, any> = {}
+
+
+function getWidgetProps(item: FooterItem) {
+  const baseProps: Record<string, unknown> = {}
 
   if (item.paddingRight !== undefined) baseProps.paddingRight = item.paddingRight
   if (item.paddingLeft !== undefined) baseProps.paddingLeft = item.paddingLeft
@@ -1050,7 +1160,7 @@ function getWidgetProps(item: any) {
     const settings = companySettings.value
     const locationList = Array.isArray(settings.locations) ? settings.locations : []
     const locationAddresses = locationList
-      .map((location: any) => typeof location?.address === 'string' ? normalizeText(location.address) : '')
+      .map((location: Location) => typeof location?.address === 'string' ? normalizeText(location.address) : '')
       .filter(Boolean)
 
     const fallbackAddress = typeof settings.address === 'string' ? normalizeText(settings.address) : ''
@@ -1062,7 +1172,7 @@ function getWidgetProps(item: any) {
     baseProps.secondaryAddress = secondaryFromLocations || (fallbackSecondaryAddress && fallbackSecondaryAddress !== baseProps.address ? fallbackSecondaryAddress : '')
 
     const basePhones = Array.isArray(settings.phones) ? settings.phones : parsePhoneList(settings.phones)
-    const locationPhones = locationList.flatMap((location: any) => Array.isArray(location?.phones) ? location.phones : [])
+    const locationPhones = locationList.flatMap((location: Location) => Array.isArray(location?.phones) ? location.phones : [])
     baseProps.phones = Array.from(new Set([...(basePhones || []), ...locationPhones].map((phone: string) => normalizePhoneValue(phone)))).filter(Boolean)
 
     const baseMobiles = Array.isArray(settings.mobiles) ? settings.mobiles : parsePhoneList(settings.mobiles)
@@ -1071,7 +1181,7 @@ function getWidgetProps(item: any) {
 
     let email = typeof settings.email === 'string' ? settings.email : ''
     if (!email) {
-      const locationWithEmail = locationList.find((location: any) => typeof location?.email === 'string' && location.email.trim())
+      const locationWithEmail = locationList.find((location: Location) => typeof location?.email === 'string' && location.email.trim())
       if (locationWithEmail?.email) {
         email = locationWithEmail.email
       }
@@ -1131,9 +1241,9 @@ function getJustifyContent(align: string): string {
   }
 }
 
-function getItemStyle(item: any) {
+function getItemStyle(item: FooterItem) {
   if (typeof item !== 'object') return {}
-  const style: Record<string, any> = {}
+  const style: Record<string, string> = {}
 
   // تنظیم عرض آیتم
   if (typeof item.width === 'number' && item.width > 0) {
@@ -1169,8 +1279,8 @@ function getItemStyle(item: any) {
 /**
  * تعیین استایل جداکننده لایه
  */
-function getSeparatorStyle(layer: any) {
-  const style: Record<string, any> = {}
+function getSeparatorStyle(layer: FooterLayer) {
+  const style: Record<string, string> = {}
 
   // تنظیم نوع خط
   if (layer.separatorType) {
@@ -1217,9 +1327,14 @@ function getSeparatorStyle(layer: any) {
 
 // @ts-ignore - vite/nuxt import meta glob
 const footerWidgetModules = import.meta.glob('./FooterWidgets/*.vue', { eager: true })
-const footerWidgetRegistry: Record<string, any> = {}
+interface VueModule {
+  default?: unknown
+  [key: string]: unknown
+}
+
+const footerWidgetRegistry: Record<string, unknown> = {}
 for (const path in footerWidgetModules) {
-  const mod: any = (footerWidgetModules as any)[path]
+  const mod = (footerWidgetModules as Record<string, VueModule>)[path]
   if (mod && mod.default) {
     const name = path.split('/').pop()?.replace('.vue', '') || ''
     footerWidgetRegistry[name] = mod.default
@@ -1240,7 +1355,7 @@ watch(() => route?.path, async (newPath) => {
         activeFooter.value = null
       } else {
         // اگر فوتر برای صفحه جدید وجود داشته باشد، آن را تنظیم کن
-        activeFooter.value = footerForPage
+        activeFooter.value = footerForPage as unknown as FooterData
       }
     } catch {
       // در صورت خطا، فوتر را پاک کن
@@ -1257,32 +1372,35 @@ onMounted(async () => {
       getCompanySettings(),
       loadFooters()
     ])
-    activeFooter.value = getActiveFooter()
+    activeFooter.value = getActiveFooter() as unknown as FooterData
     
     // Parse styleSettings برای هر لایه
     if (activeFooter.value && activeFooter.value.layers) {
-      activeFooter.value.layers = activeFooter.value.layers.map((layer: any) => {
-        let styleSettings: any = { border: {}, shadow: {}, layout: {} }
+      activeFooter.value.layers = activeFooter.value.layers.map((layer: FooterLayer) => {
+        let styleSettings: LayerStyleSettings = { border: {}, shadow: {}, layout: {} }
         if (layer.styleSettings) {
           try {
-            styleSettings = typeof layer.styleSettings === 'string' 
+            styleSettings = (typeof layer.styleSettings === 'string' 
               ? JSON.parse(layer.styleSettings) 
-              : layer.styleSettings
+              : layer.styleSettings) as LayerStyleSettings
           } catch {
             styleSettings = { border: {}, shadow: {}, layout: {} }
           }
         }
         
+        const border = styleSettings.border || {}
+        const shadow = styleSettings.shadow || {}
+
         return {
           ...layer,
-          enableBorder: styleSettings.border?.enabled || false,
-          borderPosition: styleSettings.border?.position || 'all',
-          borderColor: styleSettings.border?.color || '#e5e7eb',
-          borderWidth: styleSettings.border?.width || 1,
-          borderStyle: styleSettings.border?.style || 'solid',
-          enableShadow: styleSettings.shadow?.enabled || false,
-          shadowIntensity: styleSettings.shadow?.intensity || 'md',
-          shadowDirection: styleSettings.shadow?.direction || 'top'
+          enableBorder: border.enabled || false,
+          borderPosition: border.position || 'all',
+          borderColor: border.color || '#e5e7eb',
+          borderWidth: border.width || 1,
+          borderStyle: border.style || 'solid',
+          enableShadow: shadow.enabled || false,
+          shadowIntensity: shadow.intensity || 'md',
+          shadowDirection: shadow.direction || 'top'
         }
       })
     }

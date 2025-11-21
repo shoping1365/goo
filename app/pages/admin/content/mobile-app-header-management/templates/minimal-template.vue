@@ -15,9 +15,9 @@
 </template>
 
 <script setup lang="ts">
-import MobileHeaderSearchBox from '~/components/widgets/mobile/MobileHeaderSearchBox.vue'
+import MobileHeaderSearchBox from '~/components/widgets/mobile/MobileHeaderSearchBox.vue';
 
-const props = defineProps({
+defineProps({
   header: {
     type: Object,
     required: true

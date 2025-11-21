@@ -307,20 +307,20 @@ function toggleSelectAll() {
 }
 
 // مشاهده کمپین
-function viewCampaign(campaign: PersonalizedCampaign) {
-  console.log('مشاهده کمپین:', campaign)
+function viewCampaign(_campaign: PersonalizedCampaign) {
+
   // TODO: نمایش جزئیات کمپین
 }
 
 // ویرایش کمپین
-function editCampaign(campaign: PersonalizedCampaign) {
-  console.log('ویرایش کمپین:', campaign)
+function editCampaign(_campaign: PersonalizedCampaign) {
+
   // TODO: باز کردن فرم ویرایش
 }
 
 // کپی کردن کمپین
-function duplicateCampaign(campaign: PersonalizedCampaign) {
-  console.log('کپی کردن کمپین:', campaign)
+function duplicateCampaign(_campaign: PersonalizedCampaign) {
+
   // TODO: ایجاد کپی از کمپین
 }
 
@@ -328,7 +328,7 @@ function duplicateCampaign(campaign: PersonalizedCampaign) {
 function deleteCampaign(campaign: PersonalizedCampaign) {
   if (confirm(`آیا از حذف کمپین "${campaign.name}" اطمینان دارید؟`)) {
     campaigns.value = campaigns.value.filter(c => c.id !== campaign.id)
-    console.log('کمپین حذف شد:', campaign)
+
   }
 }
 
@@ -341,7 +341,7 @@ function bulkActivate() {
       }
     })
     selectedCampaigns.value = []
-    console.log('کمپین‌ها فعال شدند')
+
   }
 }
 
@@ -354,7 +354,7 @@ function bulkPause() {
       }
     })
     selectedCampaigns.value = []
-    console.log('کمپین‌ها متوقف شدند')
+
   }
 }
 
@@ -363,7 +363,7 @@ function bulkDelete() {
   if (confirm(`آیا از حذف ${selectedCampaigns.value.length} کمپین اطمینان دارید؟`)) {
     campaigns.value = campaigns.value.filter(campaign => !selectedCampaigns.value.includes(campaign.id))
     selectedCampaigns.value = []
-    console.log('کمپین‌ها حذف شدند')
+
   }
 }
 

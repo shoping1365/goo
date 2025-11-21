@@ -226,7 +226,7 @@
                      </td>
                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ product.order || 0 }}</td>
                      <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                       <NuxtLink :to="`/product/sku-${product.sku || product.id}${product.slug ? '/' + encodeURIComponent(product.slug) : ''}`" class="text-blue-600 hover:text-blue-900">مشاهده</NuxtLink>
+                       <NuxtLink :to="`/product/sku-${product.sku || product.id}${product.slug && typeof product.slug === 'string' ? '/' + encodeURIComponent(product.slug) : ''}`" class="text-blue-600 hover:text-blue-900">مشاهده</NuxtLink>
                      </td>
                       <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <NuxtLink :to="`/admin/product-management/products/edit?id=${product.id}`" class="text-indigo-600 hover:text-indigo-900">ویرایش</NuxtLink>
@@ -327,7 +327,7 @@ declare const definePageMeta: (meta: { layout?: string; middleware?: string }) =
 });
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission: _hasPermission } = useAuth()
 
  const activeTab = ref('info');
 
@@ -356,21 +356,33 @@ const { user, hasPermission } = useAuth()
    }
  };
 
- // --------------------------------------------------
- // Main reactive form object (page)
- // --------------------------------------------------
+// --------------------------------------------------
+// Main reactive form object (page)
+// --------------------------------------------------
 
- const page = reactive<any>({
-   name: '',
-   slug: '',
-   category_id: '',
-   brand_id: '',
-   published: false,
-   show_on_home: false,
-   show_in_menu: false,
-   order: 0,
-   notice_message: ''
- })
+interface CategoryBrandPage {
+  name: string
+  slug: string
+  category_id: number | string
+  brand_id: number | string
+  published: boolean
+  show_on_home: boolean
+  show_in_menu: boolean
+  order: number
+  notice_message: string
+}
+
+const page = reactive<CategoryBrandPage>({
+  name: '',
+  slug: '',
+  category_id: '',
+  brand_id: '',
+  published: false,
+  show_on_home: false,
+  show_in_menu: false,
+  order: 0,
+  notice_message: ''
+})
 
  // Build name and slug when category or brand changes
  watch([() => page.category_id, () => page.brand_id], ([catId, brId]) => {
@@ -391,7 +403,6 @@ const { user, hasPermission } = useAuth()
  const productCountPerPage = ref('20');
 
  // SEO Settings reactive variables
- const seoPageName = ref('');
  const seoMetaTitle = ref('');
  const seoMetaKeywords = ref('');
  const seoMetaDescription = ref('');
@@ -399,47 +410,85 @@ const { user, hasPermission } = useAuth()
  // Category Message reactive variable
  const categoryMessage = ref('');
 
- const errors = reactive<{ name?: string; slug?: string; category?: string; brand?: string }>({});
+const errors = reactive<{ name?: string; slug?: string; category?: string; brand?: string }>({});
 
- const saveCategory = async () => {
-   // basic validation
-   errors.category = page.category_id ? '' : 'انتخاب دسته‌بندی الزامی است'
-   errors.brand    = page.brand_id    ? '' : 'انتخاب برند الزامی است'
-   if (errors.category || errors.brand) return
+interface CategoryBrandPagePayload {
+  name: string
+  slug: string
+  parent_id: number | string
+  category_id: number | string
+  brand_id: number | string
+  description: string
+  image_url: string
+  published: boolean
+  show_on_home: boolean
+  show_in_menu: boolean
+  is_final_category: boolean
+  meta_title: string
+  meta_keywords: string
+  meta_description: string
+  notice_message: string
+}
 
-   const payload: any = {
-     name: page.name,
-     slug: page.slug,
-     parent_id: page.category_id,
-     category_id: page.category_id,
-     brand_id: page.brand_id,
-     description: categoryDescription.value,
-     image_url: selectedFileName.value,
-     published: isPublished.value,
-     show_on_home: showOnHomepage.value,
-     show_in_menu: showInMainMenu.value,
-     is_final_category: isFinalCategory.value,
-     meta_title: seoMetaTitle.value,
-     meta_keywords: seoMetaKeywords.value,
-     meta_description: seoMetaDescription.value,
-     notice_message: categoryMessage.value,
-   }
+const saveCategory = async () => {
+  // basic validation
+  errors.category = page.category_id ? '' : 'انتخاب دسته‌بندی الزامی است'
+  errors.brand    = page.brand_id    ? '' : 'انتخاب برند الزامی است'
+  if (errors.category || errors.brand) return
 
-   try {
-     const res = await ($fetch as any)('/api/product-categories', {
-       method: 'POST',
-       body: payload
-     });
-     alert('دسته‌بندی با موفقیت ذخیره شد!');
-     // در صورت نیاز ریدایرکت:
-     // navigateTo('/admin/product-categories')
-   } catch (e: any) {
-     alert('خطا در ذخیره دسته‌بندی: ' + (e?.statusMessage || e?.message || ''));
+  const payload: CategoryBrandPagePayload = {
+    name: page.name,
+    slug: page.slug,
+    parent_id: page.category_id,
+    category_id: page.category_id,
+    brand_id: page.brand_id,
+    description: categoryDescription.value,
+    image_url: selectedFileName.value,
+    published: isPublished.value,
+    show_on_home: showOnHomepage.value,
+    show_in_menu: showInMainMenu.value,
+    is_final_category: isFinalCategory.value,
+    meta_title: seoMetaTitle.value,
+    meta_keywords: seoMetaKeywords.value,
+    meta_description: seoMetaDescription.value,
+    notice_message: categoryMessage.value,
+  }
+
+    interface CategoryResponse {
+      id?: number
+      [key: string]: unknown
+    }
+
+    try {
+      await $fetch<CategoryResponse>('/api/product-categories', {
+        method: 'POST',
+        body: payload
+      });
+      alert('دسته‌بندی با موفقیت ذخیره شد!');
+      // در صورت نیاز ریدایرکت:
+      // navigateTo('/admin/product-categories')
+    } catch (e: unknown) {
+     const errorMessage = (e && typeof e === 'object' && ('statusMessage' in e || 'message' in e))
+       ? (e as { statusMessage?: string; message?: string }).statusMessage || (e as { statusMessage?: string; message?: string }).message || ''
+       : ''
+     alert('خطا در ذخیره دسته‌بندی: ' + errorMessage);
    }
  }
 
- const categories = ref<any[]>([]);
- const brands = ref<any[]>([]);
+  interface Category {
+    id: number | string
+    name: string
+    [key: string]: unknown
+  }
+
+  interface Brand {
+    id: number | string
+    name: string
+    [key: string]: unknown
+  }
+
+  const categories = ref<Category[]>([]);
+  const brands = ref<Brand[]>([]);
  
  // Declare useFetch for TypeScript
  declare const useFetch: <T>(url: string, options?: unknown) => Promise<{ data: { value: T } }>
@@ -447,9 +496,9 @@ const { user, hasPermission } = useAuth()
   onMounted(async () => {
     const { data } = await useFetch<unknown>('/api/product-categories?all=1');
     if (Array.isArray((data as { value: unknown }).value)) {
-      categories.value = (data as { value: unknown[] }).value;
+      categories.value = (data as { value: unknown[] }).value as Category[];
     } else if (Array.isArray(((data as { value: { data?: unknown[] } }).value as { data?: unknown[] })?.data)) {
-      categories.value = ((data as { value: { data: unknown[] } }).value).data;
+      categories.value = ((data as { value: { data: unknown[] } }).value).data as Category[];
     } else {
       categories.value = [];
     }
@@ -458,19 +507,27 @@ const { user, hasPermission } = useAuth()
   onMounted(async () => {
     const { data: brandRes } = await useFetch<unknown>('/api/brands?all=1');
     brands.value = Array.isArray((brandRes as { value: unknown }).value)
-      ? (brandRes as { value: unknown[] }).value as unknown[]
-      : ((((brandRes as { value: { data?: unknown[] } }).value as { data?: unknown[] })?.data) || []);
+      ? (brandRes as { value: unknown[] }).value as Brand[]
+      : ((((brandRes as { value: { data?: unknown[] } }).value as { data?: unknown[] })?.data) || []) as Brand[];
   });
 
  // --------------------------------------------------
  // Products list for selected category
  // --------------------------------------------------
 
- const products = ref<any[]>([])
+ interface Product {
+   id: number | string
+   images?: Array<{ image_url: string }>
+   category_id?: number | string
+   category?: { id: number | string }
+   [key: string]: unknown
+ }
+
+ const products = ref<Product[]>([])
  const productsLoading = ref(false)
 
  // Helper to build thumbnail URL (fallback to default placeholder)
- const getProductThumbnail = (product: any) => {
+ const getProductThumbnail = (product: Product) => {
    if (product?.images?.length && product.images[0].image_url) {
      const url = product.images[0].image_url as string
      const dotIdx = url.lastIndexOf('.')
@@ -487,11 +544,16 @@ const { user, hasPermission } = useAuth()
      products.value = []
      return
    }
+    interface ProductsResponse {
+      data?: Product[]
+      [key: string]: unknown
+    }
+
     try {
       productsLoading.value = true
-      const res: any = await ($fetch as any)('/api/products')
-     const list = Array.isArray(res) ? res : (res?.data || [])
-     products.value = list.filter((p: any) => {
+      const res = await $fetch<Product[] | ProductsResponse>('/api/products')
+     const list = Array.isArray(res) ? res : ((res as ProductsResponse)?.data || [])
+     products.value = list.filter((p: Product) => {
        // match by category id – the API may return either category_id or nested category object
        return p.category_id === page.category_id || (p.category && p.category.id === page.category_id)
      })
@@ -508,17 +570,17 @@ const { user, hasPermission } = useAuth()
    fetchProducts()
  })
 
- // Simple delete handler (optional)
- const removeProduct = async (productId: number) => {
-   if (!confirm('آیا از حذف این محصول مطمئن هستید؟')) return
-   try {
-      await ($fetch as any)(`/api/products/${productId}`, { method: 'DELETE' })
-     await fetchProducts()
-   } catch (e) {
-     console.error('خطا در حذف محصول:', e)
-     alert('خطا در حذف محصول')
-   }
- }
+// Simple delete handler (optional)
+const removeProduct = async (productId: number | string) => {
+  if (!confirm('آیا از حذف این محصول مطمئن هستید؟')) return
+  try {
+     await $fetch<void>(`/api/products/${productId}`, { method: 'DELETE' })
+    await fetchProducts()
+  } catch (e) {
+    console.error('خطا در حذف محصول:', e)
+    alert('خطا در حذف محصول')
+  }
+}
 
  // Initial fetch if category already selected
  onMounted(() => {

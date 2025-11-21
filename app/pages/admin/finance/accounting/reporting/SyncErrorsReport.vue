@@ -471,7 +471,7 @@ const getStatusLabel = (status: string) => {
 // اعمال فیلترها
 const applyFilters = () => {
   // TODO: اعمال فیلترها
-  console.log('فیلترهای خطا اعمال شد:', filters.value)
+
 }
 
 // تلاش مجدد همه خطاها
@@ -479,12 +479,10 @@ const retryAllErrors = async () => {
   try {
     isRetrying.value = true
     // TODO: تلاش مجدد همه خطاها
-    console.log('تلاش مجدد همه خطاها شروع شد')
-    
+
     // شبیه‌سازی تلاش مجدد
     await new Promise(resolve => setTimeout(resolve, 3000))
-    
-    console.log('تلاش مجدد همه خطاها تکمیل شد')
+
   } catch (error) {
     console.error('خطا در تلاش مجدد:', error)
   } finally {
@@ -495,25 +493,30 @@ const retryAllErrors = async () => {
 // صادر کردن گزارش خطاها
 const exportErrorsReport = () => {
   // TODO: صادر کردن گزارش خطاها
-  console.log('صادر کردن گزارش خطاها')
+
+}
+
+interface Error {
+  id?: number | string
+  [key: string]: unknown
 }
 
 // تلاش مجدد خطا
-const retryError = (error: any) => {
+const retryError = (_error: Error) => {
   // TODO: تلاش مجدد خطای خاص
-  console.log('تلاش مجدد خطا:', error)
+
 }
 
 // مشاهده جزئیات خطا
-const viewErrorDetails = (error: any) => {
+const viewErrorDetails = (_error: Error) => {
   // TODO: مشاهده جزئیات خطا
-  console.log('مشاهده جزئیات خطا:', error)
+
 }
 
 // نادیده گرفتن خطا
-const ignoreError = (error: any) => {
+const ignoreError = (_error: Error) => {
   // TODO: نادیده گرفتن خطا
-  console.log('نادیده گرفتن خطا:', error)
+
 }
 </script>
 

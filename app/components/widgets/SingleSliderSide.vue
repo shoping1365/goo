@@ -84,7 +84,7 @@
 <script setup lang="ts">
 import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
 import type { Widget, SliderConfig } from '~/types/widget'
-import type { SlideItem } from '~/types/widget'
+// SlideItem type removed - not used
 
 interface Props {
   widget: Widget
@@ -229,7 +229,7 @@ const sliderContainerStyle = computed(() => {
 const currentSlideIndex = ref(0)
 
 // Watch for debugging
-watch(currentSlideIndex, (newIndex, oldIndex) => {
+watch(currentSlideIndex, (_newIndex, _oldIndex) => {
   // Slide index changed
 })
 
@@ -301,12 +301,10 @@ onUnmounted(() => stopAutoplay())
 
 
 
-const handleImageError = (event: Event) => {
-  (event.target as HTMLImageElement).src = '/default-product.svg'
-}
+// Image error handler removed - not used
 
 // Watch for slides changes to reset current slide index
-watch(() => config.value.slides, (newSlides, oldSlides) => {
+watch(() => config.value.slides, (newSlides, _oldSlides) => {
   if (newSlides && newSlides.length > 0) {
     currentSlideIndex.value = 0
     

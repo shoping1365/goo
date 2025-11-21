@@ -868,8 +868,6 @@ const saveInvoicePrintSettings = async () => {
       template: templateSettings
     }
     
-    // console.log('داده‌های ارسالی:', invoicePrintData)
-    
     // ارسال درخواست به API
     await $fetch('/api/admin/invoice-print-settings', {
       method: 'PUT',
@@ -1237,8 +1235,6 @@ const saveLoginPageSettings = async (payload) => {
       'auth.show_password_login': loginPageSettings.showPasswordLogin
     }
     
-    // console.log('داده‌های ارسالی:', loginPageData)
-    
     // ارسال درخواست به API
     await $fetch('/api/admin/settings', {
       method: 'PUT',
@@ -1312,8 +1308,6 @@ const saveSocialMediaSettings = async (payload) => {
   try {
     savingSocialMedia.value = true
     
-    // console.log('💾 Saving social media settings:', payload)
-    
     const sanitizedPayload = {
       ...payload,
       customLinks: Array.isArray(payload.customLinks)
@@ -1333,8 +1327,6 @@ const saveSocialMediaSettings = async (payload) => {
       method: 'PUT',
       body: payloadToSave
     })
-    
-    // console.log('✅ Save response:', response)
     
     // بروزرسانی state محلی
   Object.assign(socialMediaSettings, payloadToSave)
@@ -1475,16 +1467,12 @@ const normalizeSocialMediaResponse = (raw) => {
 // بارگذاری تنظیمات شبکه‌های اجتماعی
 const loadSocialMediaSettings = async () => {
   try {
-    // console.log('🔄 Loading social media settings...')
   const response = await $fetch(socialMediaEndpoint)
-    
-    // console.log('📥 Response:', response)
 
     const normalized = normalizeSocialMediaResponse(response)
 
     if (normalized.success && normalized.data) {
       const settings = normalized.data
-      // console.log('📊 Settings data:', settings)
       
       // بارگذاری تنظیمات به صورت مستقیم
       Object.keys(socialMediaSettings).forEach(key => {
@@ -1501,7 +1489,6 @@ const loadSocialMediaSettings = async () => {
             parsedLinks = rawLinks
           }
           socialMediaSettings.customLinks = Array.isArray(parsedLinks) ? parsedLinks : []
-          // console.log('✅ Loaded customLinks:', socialMediaSettings.customLinks)
           return
         }
 
@@ -1509,19 +1496,11 @@ const loadSocialMediaSettings = async () => {
           // تبدیل رشته boolean به boolean واقعی
           if (key.endsWith('_enabled')) {
             socialMediaSettings[key] = settings[key] === 'true' || settings[key] === true
-            // console.log(`✅ Loaded ${key}:`, socialMediaSettings[key])
           } else {
             socialMediaSettings[key] = settings[key]
-            // console.log(`✅ Loaded ${key}:`, socialMediaSettings[key])
           }
-        } else {
-          // console.log(`⚠️ Key not found in response: ${key}`)
         }
       })
-      
-      // console.log('🎯 Final socialMediaSettings:', socialMediaSettings)
-    } else {
-      // console.log('❌ Invalid response format')
     }
   } catch {
     // console.error('❌ خطا در بارگذاری تنظیمات شبکه‌های اجتماعی:', error)

@@ -333,7 +333,7 @@ import MediaPreviewModal from '~/components/media/MediaPreviewModal.vue'
 import { useProductCreateStore } from '~/stores/productCreate'
 
  // Props for edit mode
- const props = defineProps({
+ defineProps({
    isEditMode: {
      type: Boolean,
      default: false
@@ -357,7 +357,7 @@ import { useProductCreateStore } from '~/stores/productCreate'
 
  // Media modal state
  const showMediaModal = ref(false)
- const previewImage = ref<any|null>(null)
+ const previewImage = ref<Record<string, unknown> | null>(null)
  const previewShow = ref(false)
 
  // drag and drop ordering
@@ -391,7 +391,7 @@ import { useProductCreateStore } from '~/stores/productCreate'
    showMediaModal.value = true
  }
 
- function onImagesSelected(files:any[]){
+ function onImagesSelected(files: Array<Record<string, unknown>>){
    if(files && files.length){
      store.addImages(files)
    }
@@ -400,7 +400,7 @@ import { useProductCreateStore } from '~/stores/productCreate'
 
  // Handle delete emitted from preview modal
  async function onDeleteImage(id:number){
-   console.log('delete event received', id)
+
    store.removeImage(id)
    previewShow.value = false
    try{
@@ -410,13 +410,13 @@ import { useProductCreateStore } from '~/stores/productCreate'
    }catch(err){ console.error('delete media error', err) }
  }
 
- async function onSaveImageMeta(payload:any){
+ async function onSaveImageMeta(payload: Record<string, unknown>){
    // optimistic update
    const idx = store.images.findIndex(i=>i.id===payload.id)
    if(idx>-1){
      store.images[idx] = { ...store.images[idx], ...payload }
    }
-   console.log('save event received', payload)
+
    try{
      await $fetch(`/api/media/${payload.id}`,{
        method:'PUT',
@@ -434,14 +434,14 @@ import { useProductCreateStore } from '~/stores/productCreate'
 function onDropFiles(event: DragEvent) {
   // منطق آپلود غیرفعال است - از کتابخانه رسانه استفاده کنید
   event.preventDefault()
-  console.log('Drag and drop disabled - please use media library')
+
 }
 
 function onFileInput(event: Event) {
   // منطق آپلود غیرفعال است - از کتابخانه رسانه استفاده کنید
   const target = event.target as HTMLInputElement
   if (target.files && target.files.length > 0) {
-    console.log('File input disabled - please use media library')
+
     // Reset input
     target.value = ''
   }
@@ -450,8 +450,7 @@ function onFileInput(event: Event) {
  // Simple error handling for images
  function onImageError(event: Event) {
    const target = event.target as HTMLImageElement
-   console.log('Image failed to load:', target.src)
-   
+
    // Hide broken image and show placeholder icon instead
    target.style.display = 'none'
    

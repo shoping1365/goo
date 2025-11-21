@@ -956,8 +956,15 @@ const paginatedReviews = computed(() => {
 
 // Methods
 // Local alias to avoid deep type instantiation on $fetch
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const $f: any = (globalThis as any).$fetch || (window as any).$fetch
+interface GlobalWithFetch {
+  $fetch?: <T = unknown>(url: string, options?: { method?: string; [key: string]: unknown }) => Promise<T>
+}
+interface WindowWithFetch extends Window {
+  $fetch?: <T = unknown>(url: string, options?: { method?: string; [key: string]: unknown }) => Promise<T>
+}
+const globalObj = globalThis as GlobalWithFetch
+const win = window as WindowWithFetch
+const $f = globalObj.$fetch || win.$fetch || $fetch
 const loadReviews = async () => {
   try {
     const params = new URLSearchParams()
@@ -967,8 +974,14 @@ const loadReviews = async () => {
     params.append('page', String(currentPage.value))
     params.append('per_page', String(itemsPerPage.value))
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const response: any = await $f(`/api/admin/reviews?${params.toString()}`)
+    interface ReviewsResponse {
+      data?: Array<{
+        id?: number | string
+        [key: string]: unknown
+      }>
+      [key: string]: unknown
+    }
+    const response = await $f<ReviewsResponse>(`/api/admin/reviews?${params.toString()}`)
     // Map ID, createdAt, joinDate, and product.image for frontend compatibility
     const list = Array.isArray(response?.reviews) ? response.reviews : []
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

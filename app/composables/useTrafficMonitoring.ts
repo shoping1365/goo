@@ -116,7 +116,7 @@ export const useTrafficMonitoring = () => {
   // دریافت لیست IP های مسدود شده
   const getBlockedIPs = async () => {
     try {
-      const res = await $fetch<ApiResponse<any[]>>('/api/admin/traffic/blocked-ips')
+      const res = await $fetch<ApiResponse<Array<Record<string, unknown>>>>('/api/admin/traffic/blocked-ips')
       return res.data || []
     } catch (error) {
       console.error('خطا در دریافت لیست IP های مسدود شده:', error)

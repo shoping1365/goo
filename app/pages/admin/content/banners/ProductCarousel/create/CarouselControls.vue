@@ -43,7 +43,7 @@ interface Props {
   isPlaying: boolean
 }
 
-const props = defineProps<Props>()
+const _props = defineProps<Props>()
 
 // Emits
 const emit = defineEmits<{

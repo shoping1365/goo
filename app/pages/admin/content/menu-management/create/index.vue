@@ -1,10 +1,10 @@
-﻿<template>
+<template>
   <div class="min-h-screen">
     <!-- Header -->
     <div class="header-bg">
       <div class="page-header-flex">
-        <h1 class="page-title">ایجاد منو جدید</h1>
-        <button class="btn btn-primary new-item-btn" @click="addNewMenu">بازگشت به لیست منوها</button>
+        <h1 class="page-title">����� ��� ����</h1>
+        <button class="btn btn-primary new-item-btn" @click="addNewMenu">��Ґ�� �� ���� �����</button>
       </div>
     </div>
 
@@ -44,7 +44,7 @@
     <div v-if="showIconSelector" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-semibold text-gray-900">انتخاب آیکون</h3>
+          <h3 class="text-lg font-semibold text-gray-900">������ ����</h3>
           <button class="text-gray-400 hover:text-gray-600" @click="showIconSelector = false">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
@@ -59,7 +59,7 @@
     <div v-if="showImageSelector" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-semibold text-gray-900">انتخاب تصویر</h3>
+          <h3 class="text-lg font-semibold text-gray-900">������ �����</h3>
           <button class="text-gray-400 hover:text-gray-600" @click="showImageSelector = false">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
@@ -71,10 +71,10 @@
         </div>
         <div class="flex space-x-2 space-x-reverse">
           <button :disabled="selectedImageIds.length === 0" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg" @click="confirmImageSelection">
-            انتخاب تصویر
+            ������ �����
           </button>
           <button class="px-4 py-2 border border-gray-300 rounded-lg" @click="showImageSelector = false">
-            انصراف
+            ������
           </button>
         </div>
       </div>
@@ -108,12 +108,12 @@ const images = ref([])
 const customLink = reactive({ title: "", url: "" })
 const { showSuccess, showError } = useToast()
 
-const loadImages = async () => {
+const _loadImages = async () => {
   try {
     const { data } = await $fetch("/api/admin/media")
     images.value = data || []
   } catch (error) {
-    console.error("خطا در بارگذاری تصاویر:", error)
+    console.error("��� �� ��ѐ���� ������:", error)
   }
 }
 
@@ -152,12 +152,12 @@ const closeIconSelector = () => {
 }
 
 const addSelectedPages = (selectedPages) => {
-  console.log('🟢 addSelectedPages called with:', selectedPages)
+
   selectedPages?.forEach(page => addMenuItem({ title: page.title, path: `/page/${page.slug}`, itemType: "page" }))
 }
 
 const addSelectedPosts = (selectedPosts) => {
-  console.log('🟢 addSelectedPosts called with:', selectedPosts)
+
   selectedPosts?.forEach(post => addMenuItem({ title: post.title, path: `/blog/${post.slug}`, itemType: "post" }))
 }
 
@@ -176,7 +176,7 @@ const dedupeByKey = (list, makeKey) => {
 }
 
 const addSelectedCategories = (selectedCategories) => {
-  console.log('🟢 addSelectedCategories called with:', selectedCategories)
+
   const unique = dedupeByKey(selectedCategories, (cat) => cat?.id ?? cat?.slug)
   unique.forEach((cat) => {
     addMenuItem({
@@ -188,7 +188,7 @@ const addSelectedCategories = (selectedCategories) => {
 }
 
 const addSelectedProductCategories = (selectedProductCategories) => {
-  console.log('🟢 addSelectedProductCategories called with:', selectedProductCategories)
+
   const unique = dedupeByKey(selectedProductCategories, (cat) => cat?.id ?? cat?.slug)
   unique.forEach((cat) => {
     addMenuItem({
@@ -200,7 +200,7 @@ const addSelectedProductCategories = (selectedProductCategories) => {
 }
 
 const addCustomLink = (linkData) => {
-  console.log('🟢 addCustomLink called with:', linkData)
+
   if (linkData?.title && linkData?.url) {
     addMenuItem({ title: linkData.title, path: linkData.url, icon: "fas fa-link", enabled: true, itemType: "custom" })
   }
@@ -218,11 +218,11 @@ const saveCurrentMenu = async () => {
   if (!currentMenu.value.name) return
   try {
     const response = await saveMenu(currentMenu.value)
-    const successMessage = response?.message ?? "منو با موفقیت ذخیره شد"
+    const successMessage = response?.message ?? "��� �� ������ ����� ��"
     showSuccess(successMessage, 4000)
   } catch (error) {
     console.error("Error saving menu:", error)
-    const errorMessage = error?.data?.message ?? error?.message ?? "خطا در ذخیره منو"
+    const errorMessage = error?.data?.message ?? error?.message ?? "��� �� ����� ���"
     showError(errorMessage, 5000)
   }
 }
@@ -244,7 +244,7 @@ onMounted(async () => {
   if (menuId) {
     try {
       await fetchMenu(parseInt(menuId))
-    } catch (error) {
+    } catch (_error) {
       await navigateTo("/admin/content/menu-management")
       return
     }

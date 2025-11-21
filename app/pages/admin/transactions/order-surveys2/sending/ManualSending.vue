@@ -343,15 +343,12 @@ const toggleOrderSelection = (orderId: number) => {
 
 const refreshOrders = () => {
   // This would trigger a refresh of the orders list
-  // console.log('Refreshing orders...')
 }
 
 const previewSMS = (_orderId: number) => {
-  // console.log(`Previewing SMS for order ${orderId}`)
 }
 
 const previewBulkSMS = () => {
-  // console.log(`Previewing bulk SMS for ${props.selectedOrders.length} orders`)
 }
 
 const previousPage = () => {

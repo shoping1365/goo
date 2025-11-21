@@ -120,13 +120,21 @@ const fetchCat = async () => {
     const isPreview = route.query.preview === '1' || route.query.preview === 'true'
     
     // ابتدا لیست تمام دسته‌بندی‌ها را دریافت کن
-    const categories = await $fetch(`/api/product-categories?all=1`)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const list = Array.isArray(categories) ? categories : ((categories as any)?.data || [])
+    interface Category {
+      id?: number | string
+      slug?: string
+      name?: string
+      [key: string]: unknown
+    }
+    interface CategoriesResponse {
+      data?: Category[]
+      [key: string]: unknown
+    }
+    const categories = await $fetch<Category[] | CategoriesResponse>(`/api/product-categories?all=1`)
+    const list = Array.isArray(categories) ? categories : (categories?.data || [])
     
     // جستجو برای دسته‌بندی با slug
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const result = list.find((c: any) => c.slug === slug)
+    const result = list.find((c: Category) => c.slug === slug)
     
     if (!result) {
       throw new Error('Category not found')
@@ -134,7 +142,6 @@ const fetchCat = async () => {
     
     // بررسی کنید که آیا این دسته‌بندی فرعی است یا نه
     if (result && result.parent_id && result.parent_id !== 0) {
-      // console.log('⚠️ This is a subcategory, redirecting to correct URL')
       // اگر دسته‌بندی فرعی است، به URL صحیح redirect کن
       navigateTo(`/product-category/${result.parent_slug}/${result.slug}`)
       return
@@ -142,7 +149,6 @@ const fetchCat = async () => {
     
     cat.value = result
     error.value = null
-    // console.log('Category loaded with ID:', result?.id, 'Name:', result?.name)
   } catch (e) {
     console.error('Error fetching category:', e)
     cat.value = null
@@ -175,8 +181,6 @@ watchEffect(() => {
 // لود محصولات دسته‌بندی
 watch(() => cat.value, async (newCat) => {
   if (newCat && newCat.id) {
-    // console.log('🎯 Category loaded, fetching products for ID:', newCat.id)
-    
     try {
       loading.value = true
       const response = await $fetch('/api/products/public')
@@ -188,8 +192,6 @@ watch(() => cat.value, async (newCat) => {
         const pid = p.category_id != null ? String(p.category_id) : (p.category ? String(p.category.id) : '')
         return pid === String(newCat.id)
       })
-      
-      // console.log('✅ Products loaded:', products.value.length)
     } catch (error) {
       console.error('❌ Error fetching products:', error)
       products.value = []

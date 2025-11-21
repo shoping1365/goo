@@ -432,8 +432,12 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 // Props
+interface IntegrationValue {
+  [key: string]: unknown
+}
+
 interface Props {
-  modelValue?: any
+  modelValue?: IntegrationValue
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -441,9 +445,13 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // Emits
-const emit = defineEmits<{
-  'update:modelValue': [value: any]
-  'integration-changed': [integration: string, data: any]
+interface IntegrationData {
+  [key: string]: unknown
+}
+
+const _emit = defineEmits<{
+  'update:modelValue': [value: IntegrationValue]
+  'integration-changed': [integration: string, data: IntegrationData]
 }>()
 
 // State
@@ -480,7 +488,7 @@ const emailMarketing = ref({
 // توابع
 const refreshIntegrations = () => {
   // در حالت واقعی، وضعیت اتصال‌ها را از API دریافت می‌کنیم
-  console.log('به‌روزرسانی اتصال‌ها')
+
 }
 
 const toggleGoogleAnalytics = () => {
@@ -504,27 +512,27 @@ const toggleEmailMarketing = () => {
 }
 
 const saveGoogleAnalytics = () => {
-  console.log('ذخیره تنظیمات Google Analytics:', googleAnalytics.value)
+
   emit('integration-changed', 'google-analytics', googleAnalytics.value)
 }
 
 const saveFacebookPixel = () => {
-  console.log('ذخیره تنظیمات Facebook Pixel:', facebookPixel.value)
+
   emit('integration-changed', 'facebook-pixel', facebookPixel.value)
 }
 
 const saveCRMIntegration = () => {
-  console.log('ذخیره تنظیمات CRM:', crmIntegration.value)
+
   emit('integration-changed', 'crm', crmIntegration.value)
 }
 
 const saveEmailMarketing = () => {
-  console.log('ذخیره تنظیمات Email Marketing:', emailMarketing.value)
+
   emit('integration-changed', 'email-marketing', emailMarketing.value)
 }
 
 const testConnection = (type: string) => {
-  console.log(`تست اتصال ${type}`)
+
   // در حالت واقعی، اتصال را تست می‌کنیم
   setTimeout(() => {
     alert(`اتصال ${type} با موفقیت تست شد!`)

@@ -524,8 +524,14 @@ const shipping_time = ref<number | null>(null)
 // Persist helper
 async function persistShipping() {
   if (!store.isEditMode || !store.editingProductId) return
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const payload: any = {}
+  interface ShippingPayload {
+    weight?: number
+    length?: number
+    width?: number
+    height?: number
+    [key: string]: unknown
+  }
+  const payload: ShippingPayload = {}
   if (weight.value != null) payload.weight = Number(weight.value)
   if (length.value != null) payload.length = Number(length.value)
   if (width.value != null) payload.width = Number(width.value)

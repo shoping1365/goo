@@ -38,7 +38,7 @@
               <div v-for="section in infoSections" :key="section.value" class="bg-gray-50 rounded-xl p-6 shadow-sm hover:shadow-lg hover:bg-blue-50 transition-all duration-200 cursor-pointer">
                 <label class="flex flex-row-reverse items-center gap-3 cursor-pointer">
                   <input 
-                    v-model="sections[section.value]" 
+                    v-model="localSections[section.value]" 
                     type="checkbox" 
                     class="accent-blue-600 w-5 h-5" 
                   />
@@ -61,7 +61,7 @@ v-for="section in getCurrentTabSections()" :key="section.value"
               >
                 <label class="flex flex-row-reverse items-center gap-3 cursor-pointer w-full">
                   <input 
-                    v-model="sections[section.value]" 
+                    v-model="localSections[section.value]" 
                     type="checkbox" 
                     class="accent-blue-600 w-5 h-5" 
                   />
@@ -290,9 +290,11 @@ const otherTabSections = ref({
       label: 'ویدیوهای آپارات',
       description: 'نمایش و مدیریت ویدیوهای آپارات مرتبط با این محصول'
     }
-  ],
+  ]
+})
+
 // تنظیمات پیش‌فرض - بخش‌های اجباری همیشه فعال، بخش‌های اختیاری قابل تنظیم
-const sections = ref({
+const defaultSections = {
   // بخش‌های اجباری اطلاعات محصول (همیشه فعال)
   mainInfo: true,
   technicalInfo: true,
@@ -338,6 +340,12 @@ const sections = ref({
   seoAnalytics: true,
   relatedProductsDisplay: true,
   aparatVideos: true
+}
+
+// ایجاد یک کپی reactive از props.sections با مقدار پیش‌فرض
+const localSections = ref({
+  ...defaultSections,
+  ...props.sections
 })
 
 onMounted(() => {
@@ -352,8 +360,8 @@ function loadSettings() {
       try {
         const parsed = JSON.parse(savedSettings)
         // بخش‌های اجباری همیشه فعال باقی می‌مانند
-        sections.value = { 
-          ...sections.value, 
+        localSections.value = { 
+          ...localSections.value, 
           ...parsed,
           // اطمینان از فعال بودن بخش‌های اجباری
           mainInfo: true,
@@ -376,7 +384,7 @@ function getCurrentTabSections() {
 function save() {
   // اطمینان از فعال بودن بخش‌های اجباری قبل از ذخیره
   const settingsToSave = {
-    ...sections.value,
+    ...localSections.value,
     mainInfo: true,
     technicalInfo: true
   }

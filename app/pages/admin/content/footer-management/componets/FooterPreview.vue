@@ -58,22 +58,7 @@ class="w-2 h-2 rounded-full mr-2"
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2 font-iranyekan">محتوای فوتر:</label>
             <div class="bg-gray-50 px-4 py-4 rounded-lg border border-gray-200">
-              <!-- 
-                ⚠️ امنیت XSS: استفاده از v-html خطرناک است!
-                
-                این کد محتوای HTML را بدون sanitization نمایش می‌دهد که می‌تواند منجر به حملات XSS شود.
-                
-                ✅ راه حل صحیح:
-                1. قبل از استفاده از v-html، محتوا را با کتابخانه sanitization (مثل DOMPurify) پاکسازی کنید
-                2. یا از {{ }} به جای v-html استفاده کنید اگر HTML نیاز نیست
-                3. محتوای کاربر را هرگز بدون sanitization در v-html قرار ندهید
-                
-                مثال صحیح:
-                import DOMPurify from 'dompurify'
-                const sanitizedContent = computed(() => DOMPurify.sanitize(footer.content))
-                <div v-html="sanitizedContent"></div>
-              -->
-              <div class="text-sm text-gray-900 leading-relaxed font-iranyekan" v-html="footer.content"></div>
+              <SanitizedHtml :content="footer?.content || ''" class="text-sm text-gray-900 leading-relaxed font-iranyekan" />
             </div>
           </div>
           
@@ -93,9 +78,11 @@ class="w-2 h-2 rounded-full mr-2"
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import SanitizedHtml from '~/components/common/SanitizedHtml.vue'
+
 // تعریف props
-const props = defineProps({
+const _props = defineProps({
   footer: {
     type: Object,
     default: null
@@ -103,11 +90,14 @@ const props = defineProps({
 })
 
 // تعریف events
-const emit = defineEmits(['close'])
+const _emit = defineEmits(['close'])
+
+// Footer data
+const footer = _props.footer
 
 // برچسب نوع نمایش صفحه
-const getPageSelectionLabel = (pageSelection) => {
-  const labels = {
+const getPageSelectionLabel = (pageSelection: string) => {
+  const labels: Record<string, string> = {
     'all': 'همه صفحات',
     'specific': 'صفحات خاص',
     'exclude': 'به جز صفحات خاص'
@@ -116,7 +106,7 @@ const getPageSelectionLabel = (pageSelection) => {
 }
 
 // فرمت تاریخ
-const formatDate = (dateString) => {
+const formatDate = (dateString: string) => {
   if (!dateString) return ''
   const date = new Date(dateString)
   return date.toLocaleDateString('fa-IR', {

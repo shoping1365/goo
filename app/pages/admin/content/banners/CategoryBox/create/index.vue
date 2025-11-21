@@ -196,19 +196,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import type { CategoryConfig, CategoryItem } from '~/types/widget'
-import { useWidgetRegistry } from '~/composables/useWidgetRegistry'
-import { useWidget } from '~/composables/useWidget'
+import { computed, onMounted, ref } from 'vue'
+import type { CategoryConfig } from '~/types/widget'
+// useWidgetRegistry is not used in this component
 import CategoryBoxPreview from '~/components/admin/CategoryBoxPreview.vue'
-import CategoryBoxSettings from './components/CategoryBoxSettings.vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
+import { useWidget } from '~/composables/useWidget'
+import CategoryBoxSettings from './components/CategoryBoxSettings.vue'
 
 import { useRouter } from 'vue-router'
 
-// تعریف definePageMeta و navigateTo برای Nuxt 3
+// تعریف definePageMeta برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
-declare const navigateTo: (to: string) => Promise<void>
 
 const router = useRouter()
 
@@ -225,8 +224,17 @@ const isSaving = ref(false)
 const showMediaModal = ref(false)
 const selectedCategoryIndex = ref<number | null>(null)
 
+interface Category {
+  id: number | string
+  name: string
+  slug?: string
+  parent_id?: number | string
+  parent_name?: string
+  [key: string]: unknown
+}
+
 // All categories for search
-const allCategories = ref<any[]>([])
+const allCategories = ref<Category[]>([])
 
 // Computed filtered categories
 const filteredCategories = computed(() => {
@@ -342,14 +350,14 @@ const addCategory = () => {
 }
 
 // Select category for specific item
-const selectCategoryForItem = (index: number, category: any) => {
+const selectCategoryForItem = (index: number, category: Category) => {
   const item = config.value.categories[index]
   item.selectedCategory = category
   item.title = category.name
   item.link = category.slug || category.name
   item.searchTerm = category.name
   item.showDropdown = false
-  console.log('دسته‌بندی انتخاب شد:', category)
+
 }
 
 // Hide category dropdown with delay
@@ -362,20 +370,25 @@ const hideCategoryDropdown = (index: number) => {
 // Load categories on mount
 onMounted(async () => {
   try {
-    const response = await $fetch('/api/admin/product-categories?all=1')
-    let raw = []
+    interface CategoriesResponse {
+      data?: Category[]
+      [key: string]: unknown
+    }
+
+    const response = await $fetch<Category[] | CategoriesResponse>('/api/admin/product-categories?all=1')
+    let raw: Category[] = []
     if (Array.isArray(response)) {
       raw = response
-    } else if (Array.isArray((response as any)?.data)) {
-      raw = (response as any).data
+    } else if (Array.isArray((response as CategoriesResponse)?.data)) {
+      raw = (response as CategoriesResponse).data as Category[]
     } else {
       raw = []
     }
     
     // Add parent_name for display
-    raw.forEach((cat: any) => {
+    raw.forEach((cat: Category) => {
       if (cat.parent_id) {
-        const parent = raw.find((c: any) => c.id === cat.parent_id)
+        const parent = raw.find((c: Category) => c.id === cat.parent_id)
         cat.parent_name = parent ? parent.name : '-'
       } else {
         cat.parent_name = '-'
@@ -400,7 +413,12 @@ const closeMediaModal = () => {
   selectedCategoryIndex.value = null
 }
 
-const onMediaSelected = (selectedMedia: any[]) => {
+interface MediaFile {
+  url: string
+  [key: string]: unknown
+}
+
+const onMediaSelected = (selectedMedia: MediaFile[]) => {
   if (selectedCategoryIndex.value !== null && selectedMedia.length > 0) {
     const media = selectedMedia[0]
     config.value.categories[selectedCategoryIndex.value].image = media.url
@@ -452,7 +470,7 @@ const saveWidget = async () => {
   }
 }
 
-const saveAsDraft = async () => {
+const _saveAsDraft = async () => {
   try {
     isSaving.value = true
 

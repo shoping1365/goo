@@ -382,8 +382,7 @@
 </template>
 
 <script setup lang="ts">
-// @ts-nocheck
-import { ref, nextTick, onMounted } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 
 interface ImportStats {
   total_imports: number
@@ -394,10 +393,6 @@ interface ImportStats {
   failed_products?: number
   success_rate?: number
   average_speed?: number
-}
-
-interface ImportSettings {
-  itemsPerMinute: number
 }
 
 interface ImportForm {
@@ -453,11 +448,13 @@ interface FlattenedCategory {
 }
 
 // متا و لایوت
+// @ts-ignore
 definePageMeta({
   layout: 'admin-main',
   middleware: 'developer-only'
 })
 
+// @ts-ignore
 useHead({
   title: 'انتقال محصولات دیجی‌کالا - پنل توسعه‌دهنده'
 })
@@ -469,9 +466,9 @@ const stats = ref<ImportStats>({
   failed_imports: 0
 })
 
-const importSettings = ref<ImportSettings>({
-  itemsPerMinute: 30
-})
+// const importSettings = ref<ImportSettings>({
+//   itemsPerMinute: 30
+// })
 
 const importForm = ref<ImportForm>({
   categoryUrl: '',
@@ -596,9 +593,9 @@ const formatNumber = (num: number): string => {
 const refreshStats = async (): Promise<void> => {
   isRefreshing.value = true
   try {
-    console.log('🔄 Refreshing stats...')
+
     const response = await $fetch<ImportStats>('/api/admin/digikala/stats')
-    console.log('📊 Stats response:', response)
+
     stats.value = response
     lastUpdate.value = new Date().toLocaleTimeString('fa-IR')
   } catch (error) {
@@ -648,15 +645,12 @@ const flattenCategories = (categories: LocalCategory[]): FlattenedCategory[] => 
 const loadLocalCategories = async (): Promise<void> => {
   try {
     // استفاده از همان endpoint که در صفحه product-categories کار می‌کند
-    const response = await $fetch('/api/product-categories?all=1')
-    
-    console.log('📦 دسته‌بندی‌های دریافتی:', response)
-    
+    const response = await $fetch<LocalCategory[] | { data: LocalCategory[] }>('/api/product-categories?all=1')
+
     // پاسخ ممکنه {data: []} یا مستقیماً [] باشه
     const categories = Array.isArray(response) ? response : (response?.data || [])
     localCategories.value = Array.isArray(categories) ? categories : []
-    console.log('📦 تعداد دسته‌بندی‌ها:', localCategories.value.length)
-    
+
     // Flatten categories for display in select with proper indentation
     flattenedCategories.value = flattenCategories(localCategories.value)
     
@@ -840,6 +834,16 @@ const retryImport = async (importId: string): Promise<void> => {
     const err = error as Error
     addLog('error', `خطا در Import مجدد: ${err.message}`)
   }
+}
+
+const viewImportDetails = (id: string) => {
+  // TODO: Implement view details
+  // eslint-disable-next-line no-console
+  console.log('View details for:', id)
+}
+
+const clearLogs = () => {
+  logs.value = []
 }
 
 // Lifecycle

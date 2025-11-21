@@ -69,7 +69,7 @@ const widgetStyle = computed(() => {
 })
 
 // مدیریت خطای بارگذاری عکس
-const handleImageError = (event: Event) => {
+const handleImageError = (_event: Event) => {
   // می‌توانید اینجا منطق جایگزینی عکس را اضافه کنید
 }
 </script>

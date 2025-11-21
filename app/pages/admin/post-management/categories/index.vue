@@ -315,7 +315,7 @@ const categoryForm = reactive({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission } = useAuth()
 
 // Computed برای چک کردن پرمیژن حذف
 const canDeleteCategory = computed(() => hasPermission('post-category.delete'))

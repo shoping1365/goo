@@ -165,21 +165,40 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref, onMounted } from 'vue'
+import { inject, onMounted, ref, type Ref } from 'vue'
+
+interface FooterItem {
+  id: string
+  name: string
+  path: string
+  icon: string
+  [key: string]: unknown
+}
+
+interface LayerItem {
+  id: string
+  width?: number
+  [key: string]: unknown
+}
+
+interface Layer {
+  items: LayerItem[]
+  [key: string]: unknown
+}
 
 // Inject functions and data from parent (loose typing for brevity)
-const showItemsModal: any = inject('showItemsModal')
-const closeItemsModal: any = inject('closeItemsModal')
-const toggleItem: any = inject('toggleItem')
-const isItemSelected: any = inject('isItemSelected')
-const newLayer: any = inject('newLayer')
-const availableItems: any = inject('availableItems')
+const showItemsModal = inject<Ref<boolean>>('showItemsModal')
+const closeItemsModal = inject<() => void>('closeItemsModal')
+const toggleItem = inject<(id: string) => void>('toggleItem')
+const isItemSelected = inject<(id: string) => boolean>('isItemSelected')
+const newLayer = inject<Ref<Layer> | Layer>('newLayer')
+const availableItems = inject<Ref<FooterItem[]> | FooterItem[]>('availableItems')
 
 // Local state for menu chooser
 const showMenuChooser = ref(false)
-const menus = ref<any[]>([])
+const menus = ref<unknown[]>([])
 const selectedMenuIds = ref<string[]>([])
-const pendingMenuItem = ref<any>(null)
+const pendingMenuItem = ref<unknown>(null)
 
 type TrustBadgeForm = {
   id: string
@@ -190,7 +209,7 @@ type TrustBadgeForm = {
 }
 
 const showTrustEditor = ref(false)
-const pendingTrustItem = ref<any>(null)
+const pendingTrustItem = ref<FooterItem | null>(null)
 const trustTitle = ref('نشان‌های اعتماد')
 const trustDescription = ref('')
 const trustAutoPlay = ref(true)
@@ -199,7 +218,13 @@ const trustShowArrows = ref(true)
 const trustShowIndicators = ref(true)
 const trustBadges = ref<TrustBadgeForm[]>([])
 
-const resolveLayerState = () => (newLayer && typeof newLayer.value !== 'undefined' ? newLayer.value : newLayer)
+const resolveLayerState = () => {
+  if (!newLayer) return null
+  if (typeof newLayer === 'object' && 'value' in newLayer) {
+    return (newLayer as Ref<Layer>).value
+  }
+  return newLayer as Layer
+}
 const generateBadgeId = () => `trust-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`
 const createEmptyBadge = (): TrustBadgeForm => ({
   id: generateBadgeId(),
@@ -209,15 +234,15 @@ const createEmptyBadge = (): TrustBadgeForm => ({
   html: ''
 })
 
-const resetTrustEditor = () => {
-  trustTitle.value = 'نشان‌های اعتماد'
-  trustDescription.value = ''
-  trustAutoPlay.value = true
-  trustAutoPlayInterval.value = 5000
-  trustShowArrows.value = true
-  trustShowIndicators.value = true
-  trustBadges.value = [createEmptyBadge(), createEmptyBadge()]
-}
+// const resetTrustEditor = () => {
+//   trustTitle.value = 'نشان‌های اعتماد'
+//   trustDescription.value = ''
+//   trustAutoPlay.value = true
+//   trustAutoPlayInterval.value = 5000
+//   trustShowArrows.value = true
+//   trustShowIndicators.value = true
+//   trustBadges.value = [createEmptyBadge(), createEmptyBadge()]
+// }
 
 const cancelTrustEditor = () => {
   showTrustEditor.value = false
@@ -231,31 +256,31 @@ const cancelTrustEditor = () => {
   trustBadges.value = []
 }
 
-const prepareTrustEditor = (item: any, existing?: any) => {
-  pendingTrustItem.value = item
-  resetTrustEditor()
-  if (existing && typeof existing === 'object') {
-    trustTitle.value = existing.props?.title || 'نشان‌های اعتماد'
-    trustDescription.value = existing.props?.description || ''
-    trustAutoPlay.value = existing.props?.autoPlay !== undefined ? Boolean(existing.props.autoPlay) : true
-    trustAutoPlayInterval.value = existing.props?.autoPlayInterval ? Number(existing.props.autoPlayInterval) : 5000
-    if (!Number.isFinite(trustAutoPlayInterval.value) || trustAutoPlayInterval.value <= 0) {
-      trustAutoPlayInterval.value = 5000
-    }
-    trustShowArrows.value = existing.props?.showArrows !== undefined ? Boolean(existing.props.showArrows) : true
-    trustShowIndicators.value = existing.props?.showIndicators !== undefined ? Boolean(existing.props.showIndicators) : true
-    if (Array.isArray(existing.props?.badges) && existing.props.badges.length) {
-      trustBadges.value = existing.props.badges.map((badge: any, index: number) => ({
-        id: badge.id ? String(badge.id) : generateBadgeId() + index,
-        title: badge.title || '',
-        link: badge.link || '',
-        imageUrl: badge.imageUrl || '',
-        html: badge.html || ''
-      }))
-    }
-  }
-  showTrustEditor.value = true
-}
+// const prepareTrustEditor = (item: any, existing?: any) => {
+//   pendingTrustItem.value = item
+//   resetTrustEditor()
+//   if (existing && typeof existing === 'object') {
+//     trustTitle.value = existing.props?.title || 'نشان‌های اعتماد'
+//     trustDescription.value = existing.props?.description || ''
+//     trustAutoPlay.value = existing.props?.autoPlay !== undefined ? Boolean(existing.props.autoPlay) : true
+//     trustAutoPlayInterval.value = existing.props?.autoPlayInterval ? Number(existing.props.autoPlayInterval) : 5000
+//     if (!Number.isFinite(trustAutoPlayInterval.value) || trustAutoPlayInterval.value <= 0) {
+//       trustAutoPlayInterval.value = 5000
+//     }
+//     trustShowArrows.value = existing.props?.showArrows !== undefined ? Boolean(existing.props.showArrows) : true
+//     trustShowIndicators.value = existing.props?.showIndicators !== undefined ? Boolean(existing.props.showIndicators) : true
+//     if (Array.isArray(existing.props?.badges) && existing.props.badges.length) {
+//       trustBadges.value = existing.props.badges.map((badge: any, index: number) => ({
+//         id: badge.id ? String(badge.id) : generateBadgeId() + index,
+//         title: badge.title || '',
+//         link: badge.link || '',
+//         imageUrl: badge.imageUrl || '',
+//         html: badge.html || ''
+//       }))
+//     }
+//   }
+//   showTrustEditor.value = true
+// }
 
 const addTrustBadge = () => {
   trustBadges.value = [...trustBadges.value, createEmptyBadge()]
@@ -310,7 +335,7 @@ const confirmTrustBadges = () => {
     }
   }
 
-  const existingIndex = layerState.items.findIndex((it: any) => typeof it === 'object' && it.id === itemPayload.id)
+  const existingIndex = layerState.items.findIndex((it: LayerItem) => typeof it === 'object' && it.id === itemPayload.id)
   if (existingIndex !== -1) {
     layerState.items.splice(existingIndex, 1, itemPayload)
   } else {
@@ -319,7 +344,7 @@ const confirmTrustBadges = () => {
 
   const total = layerState.items.length
   if (total > 0) {
-    layerState.items.forEach((it: any) => {
+    layerState.items.forEach((it: LayerItem) => {
       it.width = Math.round((100 / total) * 100) / 100
     })
   }
@@ -330,12 +355,13 @@ const confirmTrustBadges = () => {
 async function fetchMenus() {
   try {
     // call admin menus endpoint
-  const res: any = await $fetch('/api/admin/menus').catch(() => null)
+  const res: unknown = await $fetch('/api/admin/menus').catch(() => null)
     if (!res) return
     // handle different shapes
-    menus.value = res.data || res.menus || res || []
-  } catch (e) {
-    console.error('خطا در بارگذاری منوها:', e)
+    const r = res as { data?: unknown[], menus?: unknown[] }
+    menus.value = (r.data || r.menus || res || []) as unknown[]
+  } catch (_e) {
+    // console.error('خطا در بارگذاری منوها:', e)
     menus.value = []
   }
 }
@@ -347,15 +373,15 @@ onMounted(() => {
 
 function getItemDisplayName(itemId: string): string {
   try {
-    const items = (availableItems && (availableItems.value || availableItems)) || []
-    const item = items.find((ai: any) => ai.id === itemId)
-    return item ? item.name : itemId
-  } catch (e) {
+    const items = (availableItems && (typeof availableItems === 'object' && 'value' in availableItems ? availableItems.value : availableItems)) || []
+    const item = items.find((ai: FooterItem) => ai.id === itemId)
+    return item ? (item.name as string) : itemId
+  } catch {
     return itemId
   }
 }
 
-function handleItemClick(item: any) {
+function handleItemClick(item: FooterItem) {
   if (!item) return
   
   // برای منو و trust، فقط آیتم را به لایه اضافه می‌کنیم
@@ -364,30 +390,33 @@ function handleItemClick(item: any) {
     if (typeof toggleItem === 'function') {
       cancelTrustEditor()
       toggleItem(item.id)
-    } else if (newLayer && newLayer.items) {
-      const exists = newLayer.items.some((it: any) => 
-        (typeof it === 'object' && it.id === 'menu') || it === 'menu'
-      )
-      if (!exists) {
-        newLayer.items.push({ 
-          id: 'menu', 
-          name: 'منو', 
-          path: '/menu', 
-          icon: item.icon || 'heroicons:bars-3',
-          align: 'center', 
-          bgColor: 'transparent', 
-          width: 0,
-          config: { 
-            menuIds: [] 
-          }
-        })
-        // recalc widths
-        const total = newLayer.items.length
-        newLayer.items.forEach((it: any) => {
-          if (typeof it === 'object') {
-            it.width = Math.round((100 / total) * 100) / 100
-          }
-        })
+    } else if (newLayer) {
+      const layerState = resolveLayerState()
+      if (layerState && layerState.items) {
+        const exists = layerState.items.some((it: LayerItem) => 
+          (typeof it === 'object' && it.id === 'menu') || it === 'menu'
+        )
+        if (!exists) {
+          layerState.items.push({ 
+            id: 'menu', 
+            name: 'منو', 
+            path: '/menu', 
+            icon: item.icon || 'heroicons:bars-3',
+            align: 'center', 
+            bgColor: 'transparent', 
+            width: 0,
+            config: { 
+              menuIds: [] 
+            }
+          })
+          // recalc widths
+          const total = layerState.items.length
+          layerState.items.forEach((it: LayerItem) => {
+            if (typeof it === 'object') {
+              it.width = Math.round((100 / total) * 100) / 100
+            }
+          })
+        }
       }
     }
     return
@@ -399,32 +428,35 @@ function handleItemClick(item: any) {
     if (typeof toggleItem === 'function') {
       cancelMenuChooser()
       toggleItem(item.id)
-    } else if (newLayer && newLayer.items) {
-      // اگر قبلاً اضافه نشده، آیتم trust با props پیش‌فرض اضافه می‌شود
-      const exists = newLayer.items.some((it: any) => 
-        (typeof it === 'object' && it.id === 'trust') || it === 'trust'
-      )
-      if (!exists) {
-        newLayer.items.push({ 
-          id: 'trust', 
-          name: 'نشان‌های اعتماد', 
-          path: '/trust', 
-          icon: 'heroicons:shield-check',
-          align: 'center', 
-          bgColor: 'transparent', 
-          width: 0,
-          props: {
-            title: 'نشان‌های اعتماد',
-            trustBadges: []
-          }
-        })
-        // recalc widths
-        const total = newLayer.items.length
-        newLayer.items.forEach((it: any) => {
-          if (typeof it === 'object') {
-            it.width = Math.round((100 / total) * 100) / 100
-          }
-        })
+    } else if (newLayer) {
+      const layerState = resolveLayerState()
+      if (layerState && layerState.items) {
+        // اگر قبلاً اضافه نشده، آیتم trust با props پیش‌فرض اضافه می‌شود
+        const exists = layerState.items.some((it: LayerItem) => 
+          (typeof it === 'object' && it.id === 'trust') || it === 'trust'
+        )
+        if (!exists) {
+          layerState.items.push({ 
+            id: 'trust', 
+            name: 'نشان‌های اعتماد', 
+            path: '/trust', 
+            icon: 'heroicons:shield-check',
+            align: 'center', 
+            bgColor: 'transparent', 
+            width: 0,
+            props: {
+              title: 'نشان‌های اعتماد',
+              trustBadges: []
+            }
+          })
+          // recalc widths
+          const total = layerState.items.length
+          layerState.items.forEach((it: LayerItem) => {
+            if (typeof it === 'object') {
+              it.width = Math.round((100 / total) * 100) / 100
+            }
+          })
+        }
       }
     }
     return
@@ -434,9 +466,12 @@ function handleItemClick(item: any) {
   if (typeof toggleItem === 'function') {
     cancelTrustEditor()
     toggleItem(item.id)
-  } else if (newLayer && newLayer.items) {
-    // fallback: push minimal item
-    newLayer.items.push({ id: item.id, name: item.name, path: item.path, icon: item.icon, align: 'right', bgColor: 'transparent', width: 0 })
+  } else if (newLayer) {
+    const layerState = resolveLayerState()
+    if (layerState && layerState.items) {
+      // fallback: push minimal item
+      layerState.items.push({ id: item.id, name: item.name, path: item.path, icon: item.icon, align: 'right', bgColor: 'transparent', width: 0 })
+    }
   }
 }
 
@@ -448,11 +483,12 @@ function cancelMenuChooser() {
 
 function addSelectedMenus() {
   if (!pendingMenuItem.value) return
+  const pm = pendingMenuItem.value as FooterItem
   const cfg = {
-    id: pendingMenuItem.value.id,
-    name: pendingMenuItem.value.name,
-    path: pendingMenuItem.value.path,
-    icon: pendingMenuItem.value.icon,
+    id: pm.id,
+    name: pm.name,
+    path: pm.path,
+    icon: pm.icon,
     align: 'right',
     bgColor: 'transparent',
     width: 0,
@@ -460,14 +496,17 @@ function addSelectedMenus() {
     config: { menuIds: Array.isArray(selectedMenuIds.value) ? [...selectedMenuIds.value] : [] }
   }
 
-  if (newLayer && newLayer.items) {
-    newLayer.items.push(cfg)
+  if (newLayer) {
+    const layerState = resolveLayerState()
+    if (layerState && layerState.items) {
+      layerState.items.push(cfg)
 
-    // recalc widths similarly to existing logic
-    const total = newLayer.items.length
-    newLayer.items.forEach((it: any) => {
-      it.width = Math.round((100 / total) * 100) / 100
-    })
+      // recalc widths similarly to existing logic
+      const total = layerState.items.length
+      layerState.items.forEach((it: LayerItem) => {
+        it.width = Math.round((100 / total) * 100) / 100
+      })
+    }
   }
 
   // close chooser and keep modal open

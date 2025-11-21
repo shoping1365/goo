@@ -100,8 +100,7 @@ import { useRouter } from 'vue-router'
 // تعریف definePageMeta برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string }) => void
 
-// تعریف navigateTo برای Nuxt 3
-declare const navigateTo: (to: string) => Promise<void>
+// navigateTo is available globally in Nuxt 3
 
 // تعریف interface برای Order Item
 interface OrderItem {
@@ -201,13 +200,12 @@ const filteredOrders = computed(() => {
 onMounted(async () => {
   try {
     loading.value = true
-    console.log('درخواست دریافت سفارشات...')
+
     const response = await $fetch<OrdersApiResponse>('/api/orders', { credentials: 'include' })
-    console.log('پاسخ API سفارشات:', response)
-    
+
     if (response.success) {
       orders.value = response.data
-      console.log('سفارشات دریافت شده:', orders.value.length)
+
     } else {
       console.error('خطا در دریافت سفارش‌ها:', response.message)
       // در صورت خطا، داده‌های نمونه اضافه می‌کنیم
@@ -295,7 +293,7 @@ function formatDate(d: string | null | undefined) {
 }
 
 // تابع برای دریافت مرسوله‌های سفارش
-function getShipments(order: any) {
+function getShipments(order: { items?: Array<Record<string, unknown>>; [key: string]: unknown }) {
   if (!order.items || order.items.length === 0) {
     return [{
       product_name: 'محصول سفارش',

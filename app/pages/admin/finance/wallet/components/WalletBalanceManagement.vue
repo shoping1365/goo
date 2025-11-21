@@ -221,7 +221,11 @@ const balanceStats = reactive({
 const balanceTrend = ref<Array<{ date: string; balance: number }>>([])
 
 // تغییرات موجودی (placeholder)
-const balanceChanges = ref<any[]>([])
+interface BalanceChange {
+  id?: number | string
+  [key: string]: unknown
+}
+const balanceChanges = ref<BalanceChange[]>([])
 
 // تابع فرمت کردن ارز
 const formatCurrency = (amount: number) => {
@@ -286,16 +290,33 @@ const { data: trend } = await useFetch('/api/admin/wallet/trend', {
   defaultCache: true,
 })
 
+interface Summary {
+  totalBalance?: number | string
+  blockedCount?: number | string
+  pendingCount?: number | string
+  [key: string]: unknown
+}
+interface Trend {
+  items?: Array<{
+    [key: string]: unknown
+  }>
+  [key: string]: unknown
+}
 watchEffect(() => {
-  const s: any = summary.value
+  const s = summary.value as Summary | null
   if (s) {
     balanceStats.totalBalance = Number(s.totalBalance || 0)
     balanceStats.blockedCount = Number(s.blockedCount || 0)
     balanceStats.pendingCount = Number(s.pendingCount || 0)
   }
-  const t: any = trend.value
+  const t = trend.value as Trend | null
   if (t && Array.isArray(t.items)) {
-    balanceTrend.value = t.items.map((x: any) => ({ date: x.day, balance: Number(x.net || 0) }))
+    interface TrendItem {
+      day?: string
+      net?: number | string
+      [key: string]: unknown
+    }
+    balanceTrend.value = (t.items as TrendItem[]).map((x) => ({ date: x.day || '', balance: Number(x.net || 0) }))
   }
 })
 </script>

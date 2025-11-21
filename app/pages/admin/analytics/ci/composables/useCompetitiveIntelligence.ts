@@ -160,7 +160,7 @@ export const useCompetitiveIntelligence = () => {
                lastUpdateTime.value = new Date()
 
                // TODO: Update data from API response
-               console.log('CI data refreshed successfully')
+
           } catch (err) {
                error.value = 'خطا در به‌روزرسانی داده‌ها'
                console.error('Error refreshing CI data:', err)

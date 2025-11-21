@@ -342,20 +342,26 @@ const getRestoreStatusText = (status: string) => {
 }
 
 // عملیات
+interface Backup {
+  id: number | string
+  name?: string
+  [key: string]: unknown
+}
+
 const createBackup = () => {
-  console.log('ایجاد پشتیبان')
+
 }
 
-const restoreBackup = (backup: any) => {
-  console.log('بازیابی پشتیبان:', backup)
+const restoreBackup = (_backup: Backup) => {
+
 }
 
-const downloadBackup = (backup: any) => {
-  console.log('دانلود پشتیبان:', backup)
+const downloadBackup = (_backup: Backup) => {
+
 }
 
-const deleteBackup = (backup: any) => {
-  console.log('حذف پشتیبان:', backup)
+const deleteBackup = (_backup: Backup) => {
+
 }
 </script>
 

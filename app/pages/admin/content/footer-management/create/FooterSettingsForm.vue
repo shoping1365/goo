@@ -84,7 +84,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, watch, onMounted } from 'vue'
+import { inject, onMounted, watch } from 'vue'
 
 interface FooterData {
   isActive?: boolean
@@ -99,13 +99,13 @@ const footerData = inject<FooterData | undefined>('footerData')
 
 // Debug: نمایش footerData
 onMounted(() => {
-  console.log('🔍 FooterSettingsForm mounted')
-  console.log('🔍 footerData injected:', footerData)
+
+
 })
 
 // Debug: watch تغییرات footerData
-watch(footerData, (newVal) => {
-  console.log('🔄 footerData تغییر کرد:', newVal)
+watch(footerData, () => {
+
 }, { deep: true })
 </script>
 

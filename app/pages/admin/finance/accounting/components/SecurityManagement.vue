@@ -79,7 +79,7 @@ const activeTab = ref('security')
 
 // تولید کلید جدید
 const generateNewKey = () => {
-  console.log('تولید کلید جدید')
+
 }
 </script>
 

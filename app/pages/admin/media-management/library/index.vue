@@ -489,6 +489,7 @@ interface MediaFile {
   extension: string
   size: number
   compressed_size?: number | null
+  compressed?: boolean
   uploadDate: string
   alt?: string
   title?: string
@@ -505,6 +506,27 @@ interface MediaFile {
   uploader_role?: string
   uploader_first_name?: string
   uploader_last_name?: string
+  fileSize?: number
+  image_url?: string
+}
+
+interface ConfirmDialogRef {
+  show: (title: string, message: string, onConfirm: () => void) => void
+  hide: () => void
+}
+
+interface MediaItem {
+  id: number
+  url?: string
+  file_path?: string
+  image_url?: string
+  [key: string]: unknown
+}
+
+interface _SMSMessage {
+  id: number | string
+  status: string
+  [key: string]: unknown
 }
 
 declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
@@ -537,7 +559,7 @@ const notifier = useToast()
 const { deleteModalRef, openDeleteConfirm, openBulkDeleteConfirm } = useDeleteConfirmModal()
 
 // Provide confirm dialog for this page
-const confirmDialogRef = ref<any>(null)
+const confirmDialogRef = ref<ConfirmDialogRef | null>(null)
 provide('confirmDialogRef', confirmDialogRef)
 
 const editFields = reactive({
@@ -571,11 +593,21 @@ async function loadCompressionSettings() {
     if (Array.isArray(arr)) {
       const map: Record<string,string> = {}
       for (const s of arr) map[s.key || s.Key] = s.value ?? s.Value
-      if (map['compression.quality']) compressionConfig.quality = map['compression.quality'] as any
+      if (map['compression.quality']) {
+        const quality = map['compression.quality']
+        if (quality === 'low' || quality === 'medium' || quality === 'high' || quality === 'smart' || quality === 'custom') {
+          compressionConfig.quality = quality
+        }
+      }
       if (map['compression.custom_quality']) {
         const n = Number(map['compression.custom_quality']); if(!isNaN(n)) compressionConfig.customQuality = n
       }
-      if (map['compression.format']) compressionConfig.format = map['compression.format'] as any
+      if (map['compression.format']) {
+        const format = map['compression.format']
+        if (format === 'original' || format === 'webp' || format === 'jpeg' || format === 'png') {
+          compressionConfig.format = format
+        }
+      }
     }
   } catch {}
 }
@@ -641,21 +673,21 @@ const fetchMediaList = async () => {
       const allItems = [...productImages, ...mediaFiles]
       
       // دریافت سایز فایل‌ها برای تصاویر محصولات
-      const itemsWithSize = await Promise.all(allItems.map(async (item: any) => {
+      const itemsWithSize = await Promise.all(allItems.map(async (item: MediaItem) => {
         const isProductImage = 'image_url' in item
         if (isProductImage) {
           try {
-            const sizeResponse = await fetch(`/api/media/file-size?url=${encodeURIComponent(item.image_url)}`)
-            const sizeData = await sizeResponse.json()
+            const sizeResponse = await fetch(`/api/media/file-size?url=${encodeURIComponent(item.image_url || '')}`)
+            const sizeData = await sizeResponse.json() as { size?: number }
             return { ...item, fileSize: sizeData.size || 0 }
-          } catch (error) {
+          } catch (_error) {
             return { ...item, fileSize: 0 }
           }
         }
         return item
       }))
       
-      files.value = itemsWithSize.map((item: any) => {
+      files.value = itemsWithSize.map((item: MediaItem) => {
         // تشخیص نوع آیتم (از product_images یا media_files)
         const isProductImage = 'image_url' in item
         
@@ -761,7 +793,7 @@ const fetchMediaList = async () => {
         files.value = []
         return
       }
-      files.value = data.map((item: any) => {
+      files.value = data.map((item: MediaItem) => {
         const rawPath = item.url || item.file_path || '';
         let normPath = (rawPath || '').replace(/\\/g, '/');
         // ترازسازی مسیر برای سروینگ public
@@ -831,7 +863,11 @@ const fetchMediaList = async () => {
       }) as MediaFile[]
     }
   } catch (error: unknown) {
-    console.error('Error fetching media list:', error as any)
+    if (error instanceof Error) {
+      console.error('Error fetching media list:', error.message)
+    } else {
+      console.error('Error fetching media list:', String(error))
+    }
   }
 }
 
@@ -887,13 +923,13 @@ const filteredFiles = computed(() => {
 })
 
 const totalFiles = computed(() => filteredFiles.value.length)
-const totalSize = computed(() => filteredFiles.value.reduce((sum: number, file: MediaFile) => sum + (file.compressed_size ?? file.size), 0))
+const _totalSize = computed(() => filteredFiles.value.reduce((sum: number, file: MediaFile) => sum + (file.compressed_size ?? file.size), 0))
 const imageCount = computed(() => filteredFiles.value.filter((f: MediaFile) => f.type === 'image').length)
 const videoCount = computed(() => filteredFiles.value.filter((f: MediaFile) => f.type === 'video').length)
 
 const totalPages = computed(() => Math.ceil(filteredFiles.value.length / perPage.value))
 const startIndex = computed(() => (currentPage.value - 1) * perPage.value)
-const paginatedFiles = computed(() => 
+const _paginatedFiles = computed(() => 
   filteredFiles.value.slice(startIndex.value, startIndex.value + perPage.value)
 )
 
@@ -921,7 +957,7 @@ const formatDate = (dateString: string): string => {
   })
 }
 
-const selectFile = (file: MediaFile) => {
+const _selectFile = (file: MediaFile) => {
   selectedFile.value = file
 }
 
@@ -967,19 +1003,15 @@ const toggleSelectAll = () => {
   }
 }
 
-const editFile = (file: MediaFile) => {
+const _editFile = (_file: MediaFile) => {
   // Navigate to edit page or open edit modal
-  console.log('Edit file:', file)
 }
 
 const deleteFile = async (file: MediaFile) => {
   try {
-    console.log('Attempting to delete file:', file);
     const response = await fetch(`/api/media/delete?id=${file.id}`, { method: 'DELETE' })
     
-    console.log('Delete response status:', response.status);
     const responseText = await response.text();
-    console.log('Delete response text:', responseText);
     
     if (!response.ok) {
       throw new Error(`خطا در حذف فایل: ${response.status} ${responseText}`);
@@ -1003,9 +1035,10 @@ const deleteFile = async (file: MediaFile) => {
     }
     
     notifier.showSuccess('فایل با موفقیت حذف شد')
-  } catch (error: any) {
-    console.error('Error deleting file:', error);
-    notifier.showError(`خطا در حذف فایل: ${error.message}`)
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'خطای ناشناخته'
+    console.error('Error deleting file:', errorMessage)
+    notifier.showError(`خطا در حذف فایل: ${errorMessage}`)
   }
 }
 
@@ -1014,7 +1047,7 @@ const bulkDelete = async () => {
 }
 
 function isAlreadyCompressed(f: MediaFile) {
-  const flag = (f as any).compressed === true
+  const flag = f.compressed === true
   const sizeFlag = f.compressed_size !== null && f.compressed_size !== undefined && f.size && f.compressed_size < f.size
   return flag || sizeFlag
 }
@@ -1036,19 +1069,19 @@ const bulkCompress = async () => {
   selectedItems.value = selectedItems.value.filter(id => !targets.some(t => t.id === id))
 }
 
-const previousPage = () => {
+const _previousPage = () => {
   if (currentPage.value > 1) {
     currentPage.value--
   }
 }
 
-const nextPage = () => {
+const _nextPage = () => {
   if (currentPage.value < totalPages.value) {
     currentPage.value++
   }
 }
 
-const copyFileUrl = () => {
+const _copyFileUrl = () => {
   if (selectedFile.value) {
     window.navigator.clipboard.writeText(selectedFile.value.url)
   }
@@ -1115,8 +1148,8 @@ async function handleBulkDelete() {
     if (selectedFile.value && selectedItems.value.includes(selectedFile.value.id)) {
       selectedFile.value = null
     }
-  } catch (error: any) {
-    console.error('Error in bulk delete:', error)
+  } catch (error: unknown) {
+    console.error('Error in bulk delete:', error instanceof Error ? error.message : String(error))
     notifier.showError('خطا در حذف فایل‌ها')
   }
 }
@@ -1134,7 +1167,7 @@ async function handleCompress(payload: CompressPayload) {
     const idx = files.value.findIndex(f => f.id === payload.id);
     if (idx !== -1) {
       files.value[idx].compressed_size = data.compressed_size ?? data.size;
-      (files.value[idx] as any).compressed = true;
+      files.value[idx].compressed = true;
       if (data.size) {
         files.value[idx].size = data.size;
       }
@@ -1151,7 +1184,7 @@ async function handleCompress(payload: CompressPayload) {
     }
     if (selectedFile.value && selectedFile.value.id === payload.id) {
       selectedFile.value.compressed_size = data.compressed_size ?? data.size;
-      (selectedFile.value as any).compressed = true;
+      selectedFile.value.compressed = true;
       if (data.size) {
         selectedFile.value.size = data.size;
       }
@@ -1161,8 +1194,9 @@ async function handleCompress(payload: CompressPayload) {
         selectedFile.value.url = selectedFile.value.url.split('?')[0];
       }
     }
-  } catch (e:any) {
-    notifier.showError(e.message || 'خطا در فشرده‌سازی')
+  } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : 'خطا در فشرده‌سازی'
+    notifier.showError(errorMessage)
   }
 }
 
@@ -1174,7 +1208,7 @@ async function handleRevert(id: number) {
     const idx = files.value.findIndex(f => f.id === id);
     if (idx !== -1) {
       files.value[idx].compressed_size = null;
-      (files.value[idx] as any).compressed = false;
+      files.value[idx].compressed = false;
       if (data.url) {
         files.value[idx].url = data.url;
         const extMatch = data.url.match(/\.([a-zA-Z0-9]+)$/);
@@ -1187,7 +1221,7 @@ async function handleRevert(id: number) {
     }
     if (selectedFile.value && selectedFile.value.id === id) {
       selectedFile.value.compressed_size = null;
-      (selectedFile.value as any).compressed = false;
+      selectedFile.value.compressed = false;
       if (data.url) {
         selectedFile.value.url = data.url;
       } else if (selectedFile.value.url) {
@@ -1195,8 +1229,9 @@ async function handleRevert(id: number) {
       }
       if (data.size) selectedFile.value.size = data.size;
     }
-  } catch (e:any) {
-    notifier.showError(e.message || 'خطا در بازگردانی')
+  } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : 'خطا در بازگردانی'
+    notifier.showError(errorMessage)
   }
 }
 
@@ -1214,13 +1249,13 @@ const filteredSize = computed(() => {
   return files.value.reduce((sum, f) => sum + getSize(f), 0);
 });
 
-const reloadCategory = (category: string) => {
+const _reloadCategory = (category: string) => {
   selectedCategory.value = category
   files.value = []
   fetchMediaList()
 }
 
-const handleFileClick = (file: MediaFile, event: MouseEvent) => {
+const _handleFileClick = (file: MediaFile, event: MouseEvent) => {
   if (event.ctrlKey) {
     // حالت چند انتخابی
     const idx = selectedItems.value.indexOf(file.id)

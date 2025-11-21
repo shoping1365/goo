@@ -169,7 +169,7 @@ interface CompressionQueueItem {
 const selectedVideos = ref<number[]>([])
 const isCompressing = ref(false)
 const compressionQueue = ref<CompressionQueueItem[]>([])
-const allPaused = ref(false)
+const _allPaused = ref(false)
 
 // Sample videos data
 const videos = ref<VideoFile[]>([
@@ -221,7 +221,7 @@ const selectAllVideos = () => {
   selectedVideos.value = videos.value.map(video => video.id)
 }
 
-const clearSelection = () => {
+const _clearSelection = () => {
   selectedVideos.value = []
 }
 
@@ -291,7 +291,11 @@ const processVideo = async (queueItem: CompressionQueueItem) => {
       }
     }
     
-  } catch (err: any) {
+  } catch (e: unknown) {
+    interface ErrorResponse {
+      message?: string
+    }
+    const err = e as ErrorResponse
     queueItem.status = 'error'
     queueItem.error = err?.message || 'خطای ناشناخته'
     
@@ -304,7 +308,6 @@ const processVideo = async (queueItem: CompressionQueueItem) => {
 
 const scanVideos = () => {
   // شبیه‌سازی اسکن ویدیوها
-  console.log('اسکن ویدیوها...')
 }
 
 const formatFileSize = (bytes: number): string => {

@@ -239,7 +239,20 @@ func (h *MediaHandler) UploadMediaHandler(w http.ResponseWriter, r *http.Request
 	}
 	filetype := http.DetectContentType(buff)
 	ext := strings.ToLower(filepath.Ext(header.Filename))
-	if !allowedImageTypes[filetype] && !allowedVideoTypes[filetype] && !allowedAudioTypes[filetype] {
+
+	// Security: Block dangerous extensions explicitly
+	if ext == ".exe" || ext == ".bat" || ext == ".sh" || ext == ".php" || ext == ".go" || ext == ".js" || ext == ".html" {
+		sendJSON(http.StatusBadRequest, utils.New("SECURITY_ERROR", "آپلود این نوع فایل مجاز نیست", nil))
+		return
+	}
+
+	// Security: If content type is generic octet-stream, strictly validate extension against allowed video types
+	if filetype == "application/octet-stream" {
+		if !allowedVideoExt[ext] {
+			sendJSON(http.StatusBadRequest, utils.New("UNSUPPORTED_FILE", "نوع فایل ناشناخته و غیرمجاز است", nil))
+			return
+		}
+	} else if !allowedImageTypes[filetype] && !allowedVideoTypes[filetype] && !allowedAudioTypes[filetype] {
 		sendJSON(http.StatusBadRequest, utils.New("UNSUPPORTED_FILE", "نوع فایل پشتیبانی نمی‌شود", nil))
 		return
 	}

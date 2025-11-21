@@ -174,7 +174,6 @@ const fetchQuestions = async () => {
     loading.value = true
     const response = await $fetch(`/api/products/${props.product.id}/questions`)
     questions.value = response || []
-    // console.log('Questions loaded:', questions.value)
   } catch (error) {
     console.error('Error fetching questions:', error)
   } finally {
@@ -228,7 +227,6 @@ const formatDate = (dateString) => {
 
 // Lifecycle
 onMounted(() => {
-  // console.log('ProductQA mounted, product:', props.product)
   fetchQuestions()
 })
 </script> 

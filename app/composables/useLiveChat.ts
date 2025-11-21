@@ -35,8 +35,6 @@ export function useLiveChat() {
 
   // Toast util - Temporarily disabled to prevent JavaScript errors
   const notify = (msg: string, _type: 'error' | 'success' | 'warning' | 'info' = 'error') => {
-    // Temporarily use console instead of toast to avoid vue3-toastify errors
-    // console.log(`[${type.toUpperCase()}] ${msg}`)
     // TODO: Re-enable toast notifications after fixing vue3-toastify cleanup issues
     /*
     try {

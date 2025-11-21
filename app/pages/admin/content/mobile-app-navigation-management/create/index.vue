@@ -220,9 +220,9 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
-import MobileNavigationPreview from '~/components/widgets/MobileNavigationPreview.vue'
+import { reactive, ref } from 'vue'
 import NavigationItemSelector from '~/components/admin/NavigationItemSelector.vue'
+import MobileNavigationPreview from '~/components/widgets/MobileNavigationPreview.vue'
 
 // Meta
 definePageMeta({
@@ -230,7 +230,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // Reactive data
 const loading = ref(false)

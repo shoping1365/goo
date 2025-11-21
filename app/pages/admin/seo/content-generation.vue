@@ -199,8 +199,7 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare const $fetch: <T = any>(url: string, options?: { method?: string; body?: any; params?: any }) => Promise<T>
+declare const $fetch: <T = unknown>(url: string, options?: { method?: string; body?: unknown; params?: Record<string, unknown> }) => Promise<T>
 </script>
 
 <script setup lang="ts">
@@ -225,8 +224,16 @@ const contents = ref([])
 // دریافت محتوا از API
 const fetchContents = async () => {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const response = await $fetch('/api/posts?all=1') as { data?: any[] } | any[]
+    interface Post {
+      id?: number | string
+      title?: string
+      [key: string]: unknown
+    }
+    interface PostsResponse {
+      data?: Post[]
+      [key: string]: unknown
+    }
+    const response = await $fetch<Post[] | PostsResponse>('/api/posts?all=1')
     const data = Array.isArray(response) ? response : (response?.data || [])
     if (Array.isArray(data) && data.length > 0) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

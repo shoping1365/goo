@@ -318,7 +318,6 @@ const regionalDetailData = ref([
 
 // Methods
 const exportReport = () => {
-  // console.log('Exporting report...')
   // Implementation for PDF export
 }
 
@@ -327,7 +326,6 @@ const refreshReports = async () => {
   try {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000))
-    // console.log('Reports refreshed')
   } catch {
     // console.error('Error refreshing reports:', error)
   } finally {

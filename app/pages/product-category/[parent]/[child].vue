@@ -121,13 +121,22 @@ const fetchCat = async () => {
     const isPreview = route.query.preview === '1' || route.query.preview === 'true'
     
     // ابتدا لیست تمام دسته‌بندی‌ها را دریافت کن
-    const categories = await $fetch(`/api/product-categories?all=1`)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const list = Array.isArray(categories) ? categories : ((categories as any)?.data || [])
+    interface Category {
+      id?: number | string
+      slug?: string
+      parent_slug?: string
+      name?: string
+      [key: string]: unknown
+    }
+    interface CategoriesResponse {
+      data?: Category[]
+      [key: string]: unknown
+    }
+    const categories = await $fetch<Category[] | CategoriesResponse>(`/api/product-categories?all=1`)
+    const list = Array.isArray(categories) ? categories : (categories?.data || [])
     
     // جستجو برای دسته‌بندی با slug ترکیبی
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const result = list.find((c: any) => {
+    const result = list.find((c: Category) => {
       // اگر دسته‌بندی والد دارد، slug کامل را بساز
       if (c.parent_slug && c.parent_slug !== '') {
         const fullSlug = `${c.parent_slug}/${c.slug}`
@@ -141,10 +150,8 @@ const fetchCat = async () => {
       throw new Error('Category not found')
     }
     
-    // console.log('Combined category fetch result:', result)
     cat.value = result
     error.value = null
-    // console.log('Combined category loaded with ID:', result?.id, 'Name:', result?.name)
   } catch (e) {
     console.error('Error fetching combined category:', e)
     cat.value = null
@@ -177,8 +184,6 @@ watchEffect(() => {
 // لود محصولات دسته‌بندی
 watch(() => cat.value, async (newCat) => {
   if (newCat && newCat.id) {
-    // console.log('🎯 Category loaded, fetching products for ID:', newCat.id)
-    
     try {
       loading.value = true
       const response = await $fetch('/api/products/public')
@@ -190,8 +195,6 @@ watch(() => cat.value, async (newCat) => {
         const pid = p.category_id != null ? String(p.category_id) : (p.category ? String(p.category.id) : '')
         return pid === String(newCat.id)
       })
-      
-      // console.log('✅ Products loaded:', products.value.length)
     } catch (error) {
       console.error('❌ Error fetching products:', error)
       products.value = []

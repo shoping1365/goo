@@ -431,7 +431,7 @@ const slugTouched = ref(false)
 const ogImageTouched = ref(false)
 
 const ogTypeTouched = ref(false)
-const ogSiteNameTouched = ref(false)
+const _ogSiteNameTouched = ref(false)
 const metaDescriptionTouched = ref(false)
 
 // همگام‌سازی واکنشی og_image با featured_image فقط در همین صفحه
@@ -557,11 +557,17 @@ const fetchCategories = async () => {
   }
 }
 
-const selectFeaturedImage = () => {
+const _selectFeaturedImage = () => {
   showMediaLibrary.value = true
 }
 
-const onImageSelected = (selectedFiles: any[]) => {
+interface MediaFile {
+  url?: string
+  id?: string | number
+  [key: string]: unknown
+}
+
+const onImageSelected = (selectedFiles: MediaFile[]) => {
   if (selectedFiles.length > 0) {
     postForm.featured_image = selectedFiles[0].url
   }
@@ -577,7 +583,7 @@ const removeFeaturedImage = () => {
 }
 
 // انتخاب تصویر Open Graph
-const onOgImageSelected = (selectedFiles: any[]) => {
+const onOgImageSelected = (selectedFiles: MediaFile[]) => {
   if (selectedFiles.length > 0) {
     postForm.og_image = selectedFiles[0].url
     ogImageTouched.value = true // کاربر دستی og_image را تغییر داد
@@ -586,7 +592,7 @@ const onOgImageSelected = (selectedFiles: any[]) => {
 }
 
 // توابع مربوط به تگ‌ها
-const addTag = () => {
+const _addTag = () => {
   const tag = tagsInput.value.trim()
   if (tag && !postForm.tags?.includes(tag)) {
     if (!postForm.tags) postForm.tags = []
@@ -595,7 +601,7 @@ const addTag = () => {
   }
 }
 
-const removeTag = (index: number) => {
+const _removeTag = (index: number) => {
   if (postForm.tags) {
     postForm.tags.splice(index, 1)
   }
@@ -619,7 +625,7 @@ const calculateWordCountAndReadingTime = () => {
 }
 
 // داده‌های SEO برای پیش‌نمایش
-const seoDataForPreview = computed(() => ({
+const _seoDataForPreview = computed(() => ({
   title: postForm.title,
   excerpt: postForm.excerpt,
   content: postForm.content,
@@ -651,7 +657,7 @@ const updateOgImage = (newOgImage: string) => {
 
 
 
-function showHelp(field: string) {
+function _showHelp(field: string) {
   helpField.value = helpField.value === field ? '' : field
 }
 
@@ -786,7 +792,7 @@ const savePost = async () => {
   
   try {
     // آماده‌سازی داده‌ها برای ارسال
-    const postData: any = {
+    const postData: Partial<Post> = {
       title: postForm.title,
       excerpt: postForm.excerpt,
       content: postForm.content,
@@ -930,8 +936,15 @@ onMounted(async () => {
   }
 })
 
+interface AIContent {
+  title?: string
+  excerpt?: string
+  content?: string
+  [key: string]: unknown
+}
+
 // تابع پر کردن فرم با محتوای AI
-const fillFormWithAIContent = (content: any) => {
+const fillFormWithAIContent = (content: AIContent) => {
   if (content.title) {
     postForm.title = content.title
   }

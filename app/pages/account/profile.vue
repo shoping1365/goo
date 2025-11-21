@@ -769,7 +769,7 @@ const saveLegalInfo = async () => {
 
     alert('اطلاعات حقوقی با موفقیت ذخیره شد و برای تایید ادمین ارسال شد.')
     showLegalInfoForm.value = false
-  } catch (err) {
+  } catch (_err) {
     alert('خطا در ذخیره اطلاعات حقوقی')
   }
 }

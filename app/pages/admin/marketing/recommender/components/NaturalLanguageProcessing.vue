@@ -298,50 +298,46 @@
 import { ref, onMounted } from 'vue'
 
 // متغیرهای کامپوننت
-const sentimentData = ref({
+const _sentimentData = ref({
   positive: 78.5,
   negative: 12.3,
   neutral: 9.2
 })
 
-const topicData = ref([
+const _topicData = ref([
   { name: 'کیفیت محصول', count: 2456, color: 'blue' },
   { name: 'قیمت', count: 1892, color: 'green' },
   { name: 'ارسال و تحویل', count: 1234, color: 'purple' },
   { name: 'پشتیبانی مشتری', count: 987, color: 'yellow' }
 ])
 
-const languageData = ref([
+const _languageData = ref([
   { name: 'فارسی', percentage: 89.2, color: 'green' },
   { name: 'انگلیسی', percentage: 7.8, color: 'blue' },
   { name: 'عربی', percentage: 2.1, color: 'purple' },
   { name: 'سایر', percentage: 0.9, color: 'gray' }
 ])
 
-const spamStats = ref({
+const _spamStats = ref({
   accuracy: 98.7,
   blockedSpam: 234,
   errorRate: 1.3
 })
 
 // توابع کامپوننت
-const updateSentimentAnalysis = () => {
+const _updateSentimentAnalysis = () => {
   // به‌روزرسانی تحلیل احساسات
-  console.log('به‌روزرسانی تحلیل احساسات')
 }
 
-const updateTopicDetection = () => {
+const _updateTopicDetection = () => {
   // به‌روزرسانی تشخیص موضوع
-  console.log('به‌روزرسانی تشخیص موضوع')
 }
 
-const updateSpamDetection = () => {
+const _updateSpamDetection = () => {
   // به‌روزرسانی تشخیص اسپم
-  console.log('به‌روزرسانی تشخیص اسپم')
 }
 
 onMounted(() => {
   // مقداردهی اولیه کامپوننت
-  console.log('کامپوننت پردازش زبان طبیعی بارگذاری شد')
 })
 </script> 

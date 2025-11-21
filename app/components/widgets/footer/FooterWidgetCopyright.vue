@@ -15,7 +15,7 @@
       const sanitizedHtml = computed(() => DOMPurify.sanitize(viewModel.value.html))
       <div v-html="sanitizedHtml"></div>
     -->
-    <div class="footer-widget__text" v-html="viewModel.html"></div>
+    <SanitizedHtml :content="viewModel.html" class="footer-widget__text" />
     <ul v-if="viewModel.links.length" class="footer-widget__links">
       <li v-for="(link, index) in viewModel.links" :key="index" class="footer-widget__link-item">
         <NuxtLink :to="link.href" class="footer-widget__link">{{ link.label }}</NuxtLink>
@@ -26,6 +26,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import SanitizedHtml from '~/components/common/SanitizedHtml.vue'
 
 type FooterLink = {
   label: string
@@ -65,6 +66,7 @@ const viewModel = computed(() => {
   }
 
   const html = props.text.trim()
+  
   return {
     html,
     links: normalizeLinks(props.links)

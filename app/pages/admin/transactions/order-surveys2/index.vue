@@ -212,7 +212,6 @@ const sampleGateway = ref({
 })
 
 const handleGatewayDeleted = (id: number) => {
-  // console.log('Gateway deleted:', id)
 }
 
 // Tab icons components

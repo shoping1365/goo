@@ -37,17 +37,33 @@ export default [
             '@typescript-eslint': tseslint
         },
         rules: {
-            // TypeScript rules
-            '@typescript-eslint/no-unused-vars': ['warn', {
-                'argsIgnorePattern': '^_',
-                'varsIgnorePattern': '^_'
-            }],
-            '@typescript-eslint/no-explicit-any': 'warn',
+            // ============================================
+            // قوانین TypeScript - صریح و محکم
+            // ============================================
 
-            // General rules
-            'no-console': ['warn', { allow: ['warn', 'error'] }],
-            'no-debugger': 'warn',
-            'no-unused-vars': 'off', // Use TypeScript version instead
+            // ممنوعیت استفاده از any - خطا
+            '@typescript-eslint/no-explicit-any': 'error',
+
+            // متغیرهای استفاده نشده - خطا (با استثنا برای متغیرهایی که با _ شروع می‌شوند)
+            '@typescript-eslint/no-unused-vars': ['error', {
+                'argsIgnorePattern': '^_',
+                'varsIgnorePattern': '^_',
+                'caughtErrorsIgnorePattern': '^_',
+                'destructuredArrayIgnorePattern': '^_'
+            }],
+
+            // ============================================
+            // قوانین عمومی - صریح و محکم
+            // ============================================
+
+            // ممنوعیت استفاده از console.log - خطا (فقط console.warn و console.error مجاز)
+            'no-console': ['error', { allow: ['warn', 'error'] }],
+
+            // ممنوعیت استفاده از debugger - خطا
+            'no-debugger': 'error',
+
+            // استفاده از نسخه TypeScript برای no-unused-vars
+            'no-unused-vars': 'off',
         }
     },
     {
@@ -65,25 +81,92 @@ export default [
             '@typescript-eslint': tseslint
         },
         rules: {
-            // Vue rules
-            'vue/multi-word-component-names': 'off',
-            'vue/no-v-html': 'warn',
-            'vue/require-default-prop': 'off',
-            'vue/require-prop-types': 'off',
-            'vue/no-setup-props-destructure': 'off',
-            'vue/no-v-text-v-html-on-component': 'warn',
-            
-            // TypeScript rules
-            '@typescript-eslint/no-unused-vars': ['warn', {
-                'argsIgnorePattern': '^_',
-                'varsIgnorePattern': '^_'
-            }],
-            '@typescript-eslint/no-explicit-any': 'warn',
+            // ============================================
+            // قوانین Vue - صریح و محکم
+            // ============================================
 
-            // General rules
-            'no-console': ['warn', { allow: ['warn', 'error'] }],
-            'no-debugger': 'warn',
-            'no-unused-vars': 'off', // Use TypeScript version instead
+            // نام کامپوننت باید چند کلمه‌ای باشد
+            'vue/multi-word-component-names': 'off',
+
+            // هشدار برای استفاده از v-html
+            'vue/no-v-html': 'warn',
+
+            // غیرفعال کردن require-default-prop
+            'vue/require-default-prop': 'off',
+
+            // غیرفعال کردن require-prop-types
+            'vue/require-prop-types': 'off',
+
+            // غیرفعال کردن no-setup-props-destructure
+            'vue/no-setup-props-destructure': 'off',
+
+            // هشدار برای v-text و v-html روی کامپوننت
+            'vue/no-v-text-v-html-on-component': 'warn',
+
+            // ============================================
+            // قوانین Vue - Mutation Props (خطا)
+            // ============================================
+
+            // ممنوعیت تغییر مستقیم props - خطا
+            'vue/no-mutating-props': 'error',
+
+            // ============================================
+            // قوانین Vue - DefineEmits (خطا)
+            // ============================================
+
+            // ممنوعیت فراخوانی چندباره defineEmits - خطا
+            'vue/valid-define-emits': 'error',
+
+            // ============================================
+            // قوانین Vue - Transition (خطا)
+            // ============================================
+
+            // الزام استفاده از v-if یا v-show در transition - خطا
+            'vue/require-toggle-inside-transition': 'error',
+
+            // ============================================
+            // قوانین Vue - Duplicate Keys (خطا)
+            // ============================================
+
+            // ممنوعیت کلیدهای تکراری - خطا
+            'vue/no-dupe-keys': 'error',
+
+            // ============================================
+            // قوانین Vue - Unused Variables (خطا)
+            // ============================================
+
+            // متغیرهای استفاده نشده در Vue - خطا
+            'vue/no-unused-vars': ['error', {
+                'ignorePattern': '^_'
+            }],
+
+            // ============================================
+            // قوانین TypeScript - صریح و محکم
+            // ============================================
+
+            // ممنوعیت استفاده از any - خطا
+            '@typescript-eslint/no-explicit-any': 'error',
+
+            // متغیرهای استفاده نشده - خطا (با استثنا برای متغیرهایی که با _ شروع می‌شوند)
+            '@typescript-eslint/no-unused-vars': ['error', {
+                'argsIgnorePattern': '^_',
+                'varsIgnorePattern': '^_',
+                'caughtErrorsIgnorePattern': '^_',
+                'destructuredArrayIgnorePattern': '^_'
+            }],
+
+            // ============================================
+            // قوانین عمومی - صریح و محکم
+            // ============================================
+
+            // ممنوعیت استفاده از console.log - خطا (فقط console.warn و console.error مجاز)
+            'no-console': ['error', { allow: ['warn', 'error'] }],
+
+            // ممنوعیت استفاده از debugger - خطا
+            'no-debugger': 'error',
+
+            // استفاده از نسخه TypeScript برای no-unused-vars
+            'no-unused-vars': 'off',
         }
     },
     eslintConfigPrettier

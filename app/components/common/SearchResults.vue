@@ -65,9 +65,20 @@
 </template>
 
 <script setup lang="ts">
+// Type definitions
+interface SearchResult {
+  id: string | number
+  type: 'product' | 'category' | 'post' | 'brand' | string
+  title: string
+  description?: string
+  image?: string
+  price?: number
+  [key: string]: unknown
+}
+
 // Props
 interface Props {
-  results: any[]
+  results: SearchResult[]
   query: string
 }
 
@@ -75,11 +86,11 @@ defineProps<Props>()
 
 // Emits
 const emit = defineEmits<{
-  'result-selected': [result: any]
+  'result-selected': [result: SearchResult]
 }>()
 
 // Methods
-const selectResult = (result: any) => {
+const selectResult = (result: SearchResult) => {
   emit('result-selected', result)
 }
 

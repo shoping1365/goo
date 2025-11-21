@@ -162,8 +162,9 @@ const loadMobileAppFooter = async () => {
         isActive: data.isActive !== false
       }
     }
-  } catch (err: any) {
-    error.value = err.data?.message || 'خطا در بارگذاری فوتر موبایل و اپلیکیشن'
+  } catch (err: unknown) {
+    const errorData = err && typeof err === 'object' && 'data' in err ? (err as { data?: { message?: string } }).data : null
+    error.value = errorData?.message || 'خطا در بارگذاری فوتر موبایل و اپلیکیشن'
     console.error('Error loading mobile app footer:', err)
   } finally {
     loading.value = false
@@ -178,12 +179,13 @@ const updateMobileAppFooter = async () => {
       method: 'PUT',
       body: formData.value
     })
-    const data = response.data
+    const _data = response.data
     
     alert('فوتر موبایل و اپلیکیشن با موفقیت به‌روزرسانی شد')
     router.push('/admin/content/mobile-app-footer-management')
-  } catch (err: any) {
-    alert(err.data?.message || 'خطا در به‌روزرسانی فوتر موبایل و اپلیکیشن')
+  } catch (err: unknown) {
+    const errorData = err && typeof err === 'object' && 'data' in err ? (err as { data?: { message?: string } }).data : null
+    alert(errorData?.message || 'خطا در به‌روزرسانی فوتر موبایل و اپلیکیشن')
     console.error('Error updating mobile app footer:', err)
   } finally {
     updating.value = false

@@ -334,7 +334,7 @@ const saveSettings = async () => {
     // })
     
     await new Promise(resolve => setTimeout(resolve, 1000))
-    console.log('تنظیمات با موفقیت ذخیره شد')
+
   } catch (error) {
     console.error('خطا در ذخیره تنظیمات:', error)
   } finally {

@@ -74,7 +74,16 @@
 </template>
 
 <script setup lang="ts">
-function handlePreview(img:any, e:MouseEvent){
+interface ImageFile {
+  id: number
+  name: string
+  url: string
+  thumbnail: string
+  size: number
+  [key: string]: unknown
+}
+
+function handlePreview(img: ImageFile, e:MouseEvent){
   // اگر ctrl/meta فشرده شده باشد، حالت انتخاب چندگانه است
   if((e.ctrlKey || e.metaKey)) {
     emit('select', img.id, e)
@@ -109,7 +118,7 @@ interface ImageFile {
   type?: string
   extension?: string // برای شناسایی فایل‌های GIF
 }
-const props = defineProps<{
+defineProps<{
   images: ImageFile[],
   selectedImages: number[],
   formatFileSize: (size: number) => string

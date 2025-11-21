@@ -201,8 +201,24 @@ export interface FullBannerConfig extends WidgetConfig {
 
 // تنظیمات بنر دو تایی
 export interface DoubleBannerConfig extends WidgetConfig {
-  banners: BannerItem[];
+  banners?: BannerItem[];
+  slides?: BannerItem[];  // alias for banners
   mobile_banners?: BannerItem[];  // آرایه جداگانه برای بنرهای موبایل
+  height?: number;
+  mobile_height?: number;
+  mobile_vertical_display?: boolean;
+  bg_enabled?: boolean;
+  bg_color?: string;
+  show_title?: boolean;
+  show_description?: boolean;
+  padding_top?: number;
+  padding_bottom?: number;
+  margin_left?: number;
+  margin_right?: number;
+  banner1_ratio?: number;
+  banner2_ratio?: number;
+  banner_width?: number;
+  center_width?: number;
 }
 
 // تنظیمات بنر سه تایی

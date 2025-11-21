@@ -174,7 +174,7 @@ definePageMeta({
 const router = useRouter()
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { hasPermission } = useAuth()
 
 // بررسی پرمیژن‌های مورد نیاز
 const canView = computed(() => hasPermission('mobile_app_navigation'))
@@ -216,17 +216,16 @@ const loadMobileAppNavigations = async () => {
     }
     
     const json = await response.json()
-    console.log('API Response:', json)
-    
+
     // بررسی ساختار داده‌ها
     const data = json?.data?.data || []
-    console.log('داده‌های ناوبری:', data)
-    console.log('تعداد ناوبری‌ها:', data.length)
-    
+
+
     mobileAppNavigations.value = data
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Full error:', err)
-    error.value = err.message || 'خطا در بارگذاری ناوبری‌های موبایل و اپلیکیشن'
+    const message = (err as { message?: string })?.message || 'خطا در بارگذاری ناوبری‌های موبایل و اپلیکیشن'
+    error.value = message
   } finally {
     loading.value = false
   }
@@ -236,11 +235,11 @@ const addNewMobileAppNavigation = () => {
   router.push('/admin/content/mobile-app-navigation-management/create')
 }
 
-const editMobileAppNavigation = (navigation: any) => {
+const editMobileAppNavigation = (navigation: { id: number | string }) => {
   router.push(`/admin/content/mobile-app-navigation-management/edit/${navigation.id}`)
 }
 
-const previewMobileAppNavigation = (navigation: any) => {
+const previewMobileAppNavigation = (navigation: Record<string, unknown>) => {
   previewNavigation.value = navigation
   showPreview.value = true
 }
@@ -250,17 +249,16 @@ const closePreview = () => {
   previewNavigation.value = null
 }
 
-const deleteMobileAppNavigation = async (navigation: any) => {
-  console.log('شروع حذف ناوبری:', navigation)
+const deleteMobileAppNavigation = async (navigation: { id: number | string; name?: string }) => {
+
   itemToDelete.value = navigation
   // استفاده از فیلدهای مختلف برای نام
   const navigationName = navigation.name || navigation.title || navigation.label || 'این ناوبری'
   deleteMessage.value = `آیا مطمئن هستید که می‌خواهید ناوبری "${navigationName}" را حذف کنید؟`
-  console.log('پیام حذف:', deleteMessage.value)
-  console.log('ID ناوبری:', navigation.id)
-  
+
+
   if (deleteModal.value) {
-    console.log('کامپوننت DeleteConfirmModal موجود است')
+
     deleteModal.value.openDeleteConfirm(navigation.id)
   } else {
     console.error('کامپوننت DeleteConfirmModal موجود نیست!')
@@ -269,10 +267,8 @@ const deleteMobileAppNavigation = async (navigation: any) => {
 
 const handleDeleteConfirm = async (id: number | string) => {
   if (!itemToDelete.value) return
-  
-  console.log('حذف ناوبری با ID:', id)
-  console.log('داده‌های ناوبری:', itemToDelete.value)
-  
+
+
   try {
     const response = await fetch(`/api/admin/mobile-app-navigation-settings/${id}`, {
       method: 'DELETE',
@@ -281,9 +277,7 @@ const handleDeleteConfirm = async (id: number | string) => {
         'Content-Type': 'application/json'
       }
     })
-    
-    console.log('پاسخ حذف:', response.status, response.statusText)
-    
+
     if (!response.ok) {
       const errorText = await response.text()
       console.error('خطا در حذف:', errorText)
@@ -291,11 +285,10 @@ const handleDeleteConfirm = async (id: number | string) => {
     }
     
     const json = await response.json()
-    console.log('نتیجه حذف:', json)
-    
+
     if (json?.success) {
       // حذف از لیست محلی
-      const index = mobileAppNavigations.value.findIndex((n: any) => n.id === id)
+      const index = mobileAppNavigations.value.findIndex((n: { id: number | string }) => n.id === id)
       if (index > -1) {
         mobileAppNavigations.value.splice(index, 1)
       }
@@ -304,9 +297,10 @@ const handleDeleteConfirm = async (id: number | string) => {
     } else {
       showToast(json?.message || 'خطا در حذف ناوبری موبایل و اپلیکیشن', 'error')
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('خطا در حذف:', err)
-    showToast(err.message || 'خطا در حذف ناوبری موبایل و اپلیکیشن', 'error')
+    const message = (err as { message?: string })?.message || 'خطا در حذف ناوبری موبایل و اپلیکیشن'
+    showToast(message, 'error')
   } finally {
     itemToDelete.value = null
   }
@@ -337,7 +331,7 @@ const formatDate = (dateString: string) => {
   return date.toLocaleDateString('fa-IR')
 }
 
-const getNavigationItemStyle = (item: any) => {
+const getNavigationItemStyle = (item: Record<string, unknown>) => {
   return {
     display: 'flex',
     alignItems: 'center',

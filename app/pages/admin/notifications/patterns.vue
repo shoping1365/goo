@@ -357,10 +357,37 @@ import TemplateCard from '~/components/common/TemplateCard.vue'
       variables: Record<string, string>
     }
 
+    interface GatewayItem {
+      id: number
+      name: string
+      is_active?: boolean
+      api_url?: string
+      username?: string
+      password?: string
+      [key: string]: unknown
+    }
+
+    interface PatternItem {
+      id: number
+      name: string
+      description?: string
+      scope?: string
+      feature?: string
+      message_template?: string
+      content?: string
+      status?: string
+      usage_count?: number
+      gateway_id?: number
+      gateway?: { name?: string }
+      pattern_code?: string
+      variables?: string
+      [key: string]: unknown
+    }
+
     interface APIResponse {
       success?: boolean
       status?: string
-      data: any
+      data: GatewayItem[] | PatternItem[] | unknown
       message?: string
     }
 
@@ -372,8 +399,8 @@ import TemplateCard from '~/components/common/TemplateCard.vue'
     const loadGateways = async () => {
       try {
         const response = await $fetch('/api/sms-gateways/gateways') as APIResponse
-        if (response.status === 'success') {
-          gateways.value = response.data.map((item: any) => ({
+        if (response.status === 'success' && Array.isArray(response.data)) {
+          gateways.value = (response.data as GatewayItem[]).map((item: GatewayItem) => ({
             id: item.id,
             name: item.name,
             status: item.is_active ? 'active' as const : 'inactive' as const,
@@ -385,7 +412,7 @@ import TemplateCard from '~/components/common/TemplateCard.vue'
           // اگر داده‌ای دریافت نشد، آرایه خالی تنظیم کن
           gateways.value = []
         }
-      } catch (error) {
+      } catch {
         gateways.value = []
       }
     }
@@ -394,19 +421,17 @@ import TemplateCard from '~/components/common/TemplateCard.vue'
     const loadPatterns = async () => {
       try {
         const response = await $fetch('/api/admin/sms-patterns') as APIResponse
-        console.log('🔍 loadPatterns - پاسخ از API:', response)
         
         // بررسی موفقیت با شرط‌های مختلف
         if (response.success || response.status === 'success' || (response.data && Array.isArray(response.data) && response.data.length > 0)) {
-          patterns.value = response.data.map((item: any) => {
-            console.log('🔍 mapping item:', item)
+          patterns.value = (response.data as PatternItem[]).map((item: PatternItem) => {
             return {
               id: item.id,
               name: item.name,
               description: item.description || '',
               type: 'sms' as const,
               category: 'order' as const,
-              scope: item.scope || 'customer',
+              scope: (item.scope === 'customer' || item.scope === 'manager') ? (item.scope as 'customer' | 'manager') : 'customer' as 'customer' | 'manager',
               feature: item.feature || '',
               content: item.message_template || item.content || '',
               status: item.status === 'active' ? 'active' as const : 'inactive' as const,
@@ -418,12 +443,11 @@ import TemplateCard from '~/components/common/TemplateCard.vue'
               variables: item.variables || ''
             }
           })
-          console.log('🔍 patterns.value بعد از mapping:', patterns.value)
         } else {
           // اگر داده‌ای دریافت نشد، آرایه خالی تنظیم کن
           patterns.value = []
         }
-      } catch (error) {
+      } catch {
         patterns.value = []
       }
     }
@@ -431,11 +455,18 @@ import TemplateCard from '~/components/common/TemplateCard.vue'
     // بارگذاری آمار از API
     const loadStats = async () => {
       try {
-        const response = await $fetch('/api/admin/sms-patterns/stats') as APIResponse
+        interface StatsResponse {
+          total_patterns: number
+          active_patterns: number
+          inactive_patterns: number
+          draft_patterns: number
+          total_usage: number
+        }
+        const response = await $fetch<{success?: boolean, data: StatsResponse}>('/api/admin/sms-patterns/stats')
         if (response.success) {
           apiStats.value = response.data
         }
-      } catch (error) {
+      } catch {
         // خطا در بارگذاری آمار
       }
     }
@@ -458,7 +489,7 @@ import TemplateCard from '~/components/common/TemplateCard.vue'
           stats.value.todayUsage = 0
           stats.value.successRate = 0
         }
-      } catch (error) {
+      } catch {
         // خطا در به‌روزرسانی آمار
         stats.value.totalPatterns = 0
         stats.value.activePatterns = 0
@@ -483,11 +514,18 @@ import TemplateCard from '~/components/common/TemplateCard.vue'
     // بارگذاری شماره موبایل مدیر از تنظیمات فروشگاه
     const loadAdminPhone = async () => {
       try {
-        const response = await $fetch('/api/admin/shop-settings') as APIResponse
+        interface ShopSettingsResponse {
+          status?: string
+          data?: {
+            adminPhones?: string[]
+            [key: string]: unknown
+          }
+        }
+        const response = await $fetch<ShopSettingsResponse>('/api/admin/shop-settings')
         if (response.status === 'success' && response.data?.adminPhones && response.data.adminPhones.length > 0) {
           testData.value.phone = response.data.adminPhones[0]
         }
-      } catch (error) {
+      } catch {
         // خطا در بارگذاری شماره موبایل مدیر
       }
     }
@@ -627,7 +665,7 @@ import TemplateCard from '~/components/common/TemplateCard.vue'
       showCreateModal.value = true
     }
 
-    const createPatternForGateway = (gatewayId: number, gatewayName: string) => {
+    const _createPatternForGateway = (gatewayId: number, gatewayName: string) => {
       editingPattern.value = null
       patternForm.value.gatewayId = gatewayId
       patternForm.value.gatewayName = gatewayName
@@ -658,7 +696,7 @@ import TemplateCard from '~/components/common/TemplateCard.vue'
 
         if (editingPattern.value) {
           // ویرایش پترن موجود
-          const response = await $fetch(`/api/admin/sms-patterns/${editingPattern.value.id}`, {
+          await $fetch(`/api/admin/sms-patterns/${editingPattern.value.id}`, {
             method: 'PUT',
             body: apiData
           })
@@ -691,8 +729,13 @@ import TemplateCard from '~/components/common/TemplateCard.vue'
           })
           
           // اضافه کردن به آرایه محلی
+          interface CreatePatternResponse {
+            id: number
+            [key: string]: unknown
+          }
+          const createResponse = response as { data: CreatePatternResponse }
           const newPattern: Pattern = {
-            id: (response as APIResponse).data.id,
+            id: createResponse.data.id,
             name: formData.name,
             description: formData.description,
             type: formData.type,
@@ -714,7 +757,14 @@ import TemplateCard from '~/components/common/TemplateCard.vue'
         showCreateModal.value = false
         editingPattern.value = null
         alert('پترن با موفقیت ذخیره شد')
-      } catch (error) {
+      } catch (e: unknown) {
+        interface ErrorResponse {
+          data?: {
+            code?: string
+            message?: string
+          }
+        }
+        const error = e as ErrorResponse
         if (error?.data?.code === 'DUPLICATE_FEATURE') {
           alert(error.data.message || 'برای این درگاه و هدف قبلاً پترن فعالی وجود دارد')
         } else {
@@ -731,28 +781,29 @@ import TemplateCard from '~/components/common/TemplateCard.vue'
         })
 
         // اضافه کردن کپی جدید به آرایه محلی
-        const duplicatedPattern = (response as APIResponse).data
+        const duplicatedResponse = response as { data: PatternItem }
+        const duplicatedPattern = duplicatedResponse.data
         const newPattern: Pattern = {
           id: duplicatedPattern.id,
           name: duplicatedPattern.name,
-          description: duplicatedPattern.description,
+          description: duplicatedPattern.description || '',
           type: pattern.type,
           category: pattern.category,
           scope: pattern.scope,
           feature: pattern.feature,
-          content: duplicatedPattern.message_template,
-          status: duplicatedPattern.status,
+          content: duplicatedPattern.message_template || duplicatedPattern.content || '',
+          status: (duplicatedPattern.status === 'active' ? 'active' : 'inactive') as 'active' | 'inactive',
           usageCount: duplicatedPattern.usage_count || 0,
           maxLength: pattern.maxLength,
-          gatewayId: duplicatedPattern.gateway_id,
+          gatewayId: duplicatedPattern.gateway_id || pattern.gatewayId,
           gatewayName: duplicatedPattern.gateway?.name || pattern.gatewayName,
-          patternCode: duplicatedPattern.pattern_code,
-          variables: duplicatedPattern.variables
+          patternCode: duplicatedPattern.pattern_code || '',
+          variables: duplicatedPattern.variables || ''
         }
 
         patterns.value.unshift(newPattern)
         alert('پترن با موفقیت کپی شد')
-      } catch (error) {
+      } catch {
         alert('خطا در کپی کردن پترن')
       }
     }
@@ -762,13 +813,20 @@ import TemplateCard from '~/components/common/TemplateCard.vue'
       
       // بارگذاری شماره موبایل مدیر از تنظیمات
       try {
-        const response = await $fetch('/api/admin/shop-settings') as APIResponse
+        interface ShopSettingsResponse {
+          status?: string
+          data?: {
+            adminPhones?: string[]
+            [key: string]: unknown
+          }
+        }
+        const response = await $fetch<ShopSettingsResponse>('/api/admin/shop-settings')
         if (response.status === 'success' && response.data?.adminPhones && response.data.adminPhones.length > 0) {
           testData.value.phone = response.data.adminPhones[0]
         } else {
           testData.value.phone = '' // شماره موبایل خالی
         }
-      } catch (error) {
+      } catch {
         testData.value.phone = '' // شماره موبایل خالی
       }
       
@@ -788,7 +846,7 @@ import TemplateCard from '~/components/common/TemplateCard.vue'
           
           patterns.value = patterns.value.filter(p => p.id !== pattern.id)
           alert('پترن با موفقیت حذف شد')
-              } catch (error) {
+              } catch {
         alert('خطا در حذف پترن')
       }
       }
@@ -862,7 +920,7 @@ import TemplateCard from '~/components/common/TemplateCard.vue'
          }
 
          // آماده‌سازی متغیرها برای ارسال
-         const variables: Record<string, any> = {}
+         const variables: Record<string, string | number> = {}
          
          // استخراج متغیرهای پترن از رشته variables
          if (testingPattern.value.variables) {
@@ -900,14 +958,14 @@ import TemplateCard from '~/components/common/TemplateCard.vue'
          }
 
          // API call برای ارسال پیام تست
-         const response = await $fetch(`/api/admin/sms-patterns/${testingPattern.value.id}/test`, {
+         await $fetch(`/api/admin/sms-patterns/${testingPattern.value.id}/test`, {
            method: 'POST',
            body: requestData
          })
 
          showTestModal.value = false
          alert('پیام تست با موفقیت ارسال شد')
-       } catch (error) {
+       } catch {
          alert('خطا در ارسال پیام تست')
        }
      }

@@ -43,8 +43,8 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({ referral: Object })
-const emit = defineEmits(['close', 'edit'])
+const _props = defineProps({ referral: Object })
+const _emit = defineEmits(['close', 'edit'])
 
 function formatDate(dateString: string) {
   if (!dateString) return ''

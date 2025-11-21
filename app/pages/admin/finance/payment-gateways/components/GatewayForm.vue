@@ -529,9 +529,66 @@ interface GatewayFormData {
   testAmount: number
 }
 
+interface Gateway {
+  id?: number
+  name?: string
+  type?: string
+  description?: string
+  fee?: number
+  minAmount?: number
+  maxAmount?: number
+  min_amount?: number
+  max_amount?: number
+  icon?: string
+  merchantId?: string
+  merchant_id?: string
+  terminalId?: string
+  terminal_id?: string
+  apiKeys?: {
+    publicKey?: string
+    privateKey?: string
+    testKey?: string
+    secretKey?: string
+  }
+  api_keys?: {
+    public_key?: string
+    private_key?: string
+    test_key?: string
+    secret_key?: string
+  }
+  apiEndpoints?: {
+    payment?: string
+    verification?: string
+    callback?: string
+    webhook?: string
+  }
+  api_endpoints?: {
+    payment?: string
+    verification?: string
+    callback?: string
+    webhook?: string
+  }
+  security?: {
+    ipWhitelist?: string
+    httpsRequired?: boolean
+    maxAttempts?: number
+  }
+  testMode?: boolean
+  is_test_mode?: boolean
+  testCard?: string
+  testAmount?: number
+  settings?: {
+    ip_whitelist?: string
+    https_required?: boolean
+    max_attempts?: number
+    [key: string]: unknown
+  }
+  [key: string]: unknown
+}
+
 // تعریف props
 interface Props {
-  gateway?: any
+  gateway?: Gateway
   mode?: 'create' | 'edit'
 }
 
@@ -566,10 +623,23 @@ const formTabs = [
 // درگاه‌های موجود
 const existingGateways = ref<string[]>([])
 
+interface PaymentGatewayResponse {
+  data?: Array<{
+    type: string
+    [key: string]: unknown
+  }>
+  [key: string]: unknown
+}
+
+interface GatewayItem {
+  type: string
+  [key: string]: unknown
+}
+
 // دریافت درگاه‌های موجود - بهینه‌سازی شده
 const fetchExistingGateways = async () => {
   try {
-    const response: any = await $fetch('/api/payment-gateways', {
+    const response = await $fetch<PaymentGatewayResponse>('/api/payment-gateways', {
       method: 'GET',
       headers: {
         'Cache-Control': 'max-age=300' // کش 5 دقیقه
@@ -577,9 +647,9 @@ const fetchExistingGateways = async () => {
     })
     
     if (response.data) {
-      existingGateways.value = response.data.map((gateway: any) => gateway.type)
+      existingGateways.value = response.data.map((gateway: GatewayItem) => gateway.type)
     }
-  } catch (error) {
+  } catch (_error) {
     existingGateways.value = []
   }
 }
@@ -633,28 +703,32 @@ const initializeForm = () => {
     // مقداردهی مستقیم فیلدها
     form.value.type = props.gateway.type || ''
     form.value.description = props.gateway.description || ''
-    form.value.fee = props.gateway.fee || 0
-    form.value.minAmount = props.gateway.min_amount || 0
-    form.value.maxAmount = props.gateway.max_amount || 0
-    form.value.icon = props.gateway.icon || ''
-    form.value.merchantId = props.gateway.merchant_id || ''
-    form.value.terminalId = props.gateway.terminal_id || ''
-    form.value.testMode = props.gateway.is_test_mode || false
+    form.value.fee = (props.gateway.fee ?? props.gateway.fee) || 0
+    form.value.minAmount = (props.gateway.min_amount as number | undefined) || (props.gateway.minAmount as number | undefined) || 0
+    form.value.maxAmount = (props.gateway.max_amount as number | undefined) || (props.gateway.maxAmount as number | undefined) || 0
+    form.value.icon = (props.gateway.icon as string | undefined) || ''
+    form.value.merchantId = (props.gateway.merchant_id as string | undefined) || (props.gateway.merchantId as string | undefined) || ''
+    form.value.terminalId = (props.gateway.terminal_id as string | undefined) || (props.gateway.terminalId as string | undefined) || ''
+    form.value.testMode = (props.gateway.is_test_mode as boolean | undefined) ?? (props.gateway.testMode as boolean | undefined) ?? false
     
     // مقداردهی API Keys
-    if (props.gateway.api_keys) {
-      form.value.apiKeys.publicKey = props.gateway.api_keys.public_key || ''
-      form.value.apiKeys.privateKey = props.gateway.api_keys.private_key || ''
-      form.value.apiKeys.testKey = props.gateway.api_keys.test_key || ''
-      form.value.apiKeys.secretKey = props.gateway.api_keys.secret_key || ''
+    const apiKeys = props.gateway.api_keys || props.gateway.apiKeys
+    if (apiKeys) {
+      const keys = apiKeys as { public_key?: string; private_key?: string; test_key?: string; secret_key?: string; publicKey?: string; privateKey?: string; testKey?: string; secretKey?: string }
+      form.value.apiKeys.publicKey = keys.public_key || keys.publicKey || ''
+      form.value.apiKeys.privateKey = keys.private_key || keys.privateKey || ''
+      form.value.apiKeys.testKey = keys.test_key || keys.testKey || ''
+      form.value.apiKeys.secretKey = keys.secret_key || keys.secretKey || ''
     }
     
     // مقداردهی API Endpoints
-    if (props.gateway.api_endpoints) {
-      form.value.apiEndpoints.payment = props.gateway.api_endpoints.payment || ''
-      form.value.apiEndpoints.verification = props.gateway.api_endpoints.verification || ''
-      form.value.apiEndpoints.callback = props.gateway.api_endpoints.callback || ''
-      form.value.apiEndpoints.webhook = props.gateway.api_endpoints.webhook || ''
+    const apiEndpoints = props.gateway.api_endpoints || props.gateway.apiEndpoints
+    if (apiEndpoints) {
+      const endpoints = apiEndpoints as { payment?: string; verification?: string; callback?: string; webhook?: string }
+      form.value.apiEndpoints.payment = endpoints.payment || ''
+      form.value.apiEndpoints.verification = endpoints.verification || ''
+      form.value.apiEndpoints.callback = endpoints.callback || ''
+      form.value.apiEndpoints.webhook = endpoints.webhook || ''
     }
     
     // مقداردهی Security Settings
@@ -664,7 +738,6 @@ const initializeForm = () => {
       form.value.security.maxAttempts = props.gateway.settings.max_attempts || 5
     }
     
-    console.log('فرم مقداردهی شد')
   }
 }
 
@@ -824,7 +897,7 @@ const validateTestTab = () => {
 }
 
 // بررسی تکمیل تمام تب‌ها
-const isFormComplete = () => {
+const _isFormComplete = () => {
   return validateBasicTab() && validateApiTab() && validateSecurityTab() && validateTestTab()
 }
 
@@ -873,7 +946,7 @@ const hasPreviousTab = () => {
 }
 
 // توابع عملیات
-const nextTab = () => {
+const _nextTab = () => {
   if (isCurrentTabComplete() && hasNextTab()) {
     const currentIndex = formTabs.findIndex(tab => tab.value === activeTab.value)
     activeTab.value = formTabs[currentIndex + 1].value
@@ -1019,10 +1092,10 @@ const handleSubmit = async () => {
   try {
     // ارسال داده‌ها به parent component
     emit('save', form.value)
-  } catch (error) {
+  } catch (_error) {
     validationErrors.value = ['خطا در ذخیره درگاه. لطفاً دوباره تلاش کنید.']
     showErrors.value = true
-  } finally {
+  } finally{
     saving.value = false
   }
 }

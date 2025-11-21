@@ -122,17 +122,17 @@ const stats = ref({
 // متدها
 const openNewInstallmentModal = () => {
   // باز کردن مودال درخواست جدید
-  console.log('باز کردن مودال درخواست جدید')
+
 }
 
 const openCreditCheckModal = () => {
   // باز کردن مودال اعتبارسنجی
-  console.log('باز کردن مودال اعتبارسنجی')
+
 }
 
 const exportData = () => {
   // خروجی گرفتن از داده‌ها
-  console.log('خروجی گرفتن از داده‌ها')
+
 }
 
 // دریافت آمار

@@ -271,7 +271,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // وضعیت مانیتورینگ (آن/آف)
 const monitoringEnabled = ref(true)
@@ -280,7 +280,7 @@ const loadMonitoringStatus = async () => {
   try {
     const resp = await $fetch('/api/admin/monitoring/status')
     monitoringEnabled.value = !!resp?.enabled
-  } catch (e) {
+  } catch {
     monitoringEnabled.value = true
   }
 }
@@ -292,7 +292,7 @@ const loadTrafficLoggingMD = async () => {
     const setting = await $fetch('/api/admin/settings/traffic.logging.enabled')
     const val = (setting?.value || '').toString().toLowerCase()
     trafficLoggingEnabled.value = val === 'true' || val === '1' || val === 'yes'
-  } catch (e) {
+  } catch {
     trafficLoggingEnabled.value = true
   }
 }
@@ -304,7 +304,7 @@ const toggleTrafficLoggingMD = async () => {
       body: { key: 'traffic.logging.enabled', value: newVal, category: 'traffic', type: 'boolean' }
     })
     $toast && $toast.success(trafficLoggingEnabled.value ? 'ثبت لاگ ترافیک فعال شد' : 'ثبت لاگ ترافیک غیرفعال شد')
-  } catch (e) {
+  } catch {
     $toast && $toast.error('خطا در تغییر وضعیت ثبت لاگ ترافیک')
     await loadTrafficLoggingMD()
   }
@@ -314,7 +314,7 @@ const toggleMonitoring = async () => {
     const desired = monitoringEnabled.value
     await $fetch('/api/admin/monitoring/toggle', { method: 'POST', body: { enabled: desired } })
     $toast && $toast.success(desired ? 'مانیتورینگ فعال شد' : 'مانیتورینگ غیرفعال شد')
-  } catch (e) {
+  } catch {
     // در صورت خطا وضعیت را به حالت قبل برگردان
     $toast && $toast.error('خطا در تغییر وضعیت مانیتورینگ')
     await loadMonitoringStatus()
@@ -412,7 +412,7 @@ const alerts = ref([
 // Methods
 const refreshAlerts = () => {
   // Simulate refreshing alerts
-  console.log('Refreshing alerts...')
+
 }
 
 const dismissAlert = (id) => {

@@ -138,12 +138,13 @@ const createMobileAppFooter = async () => {
       method: 'POST',
       body: formData.value
     })
-    const data = response.data
+    const _data = response.data
     
     alert('فوتر موبایل و اپلیکیشن با موفقیت ایجاد شد')
     router.push('/admin/content/mobile-app-footer-management')
-  } catch (err: any) {
-    alert(err.data?.message || 'خطا در ایجاد فوتر موبایل و اپلیکیشن')
+  } catch (err: unknown) {
+    const errorData = err && typeof err === 'object' && 'data' in err ? (err as { data?: { message?: string } }).data : null
+    alert(errorData?.message || 'خطا در ایجاد فوتر موبایل و اپلیکیشن')
     console.error('Error creating mobile app footer:', err)
   } finally {
     loading.value = false

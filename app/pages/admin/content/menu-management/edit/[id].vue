@@ -67,7 +67,7 @@
           </button>
         </div>
         <div class="mb-4">
-          <ImageSelector :images="filteredImages" :selected-images="selectedImageIds" @select="handleImageSelect" />
+          <ImageSelector :images="filteredImages" :selected-images="selectedImageIds" :format-file-size="formatFileSize" @select="handleImageSelect" />
         </div>
         <div class="flex space-x-2 space-x-reverse">
           <button :disabled="selectedImageIds.length === 0" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg" @click="confirmImageSelection">
@@ -82,15 +82,19 @@
   </div>
 </template>
 
-<script setup>
-import { ref, reactive, computed, onMounted, onUnmounted } from "vue"
-import { useMenuManagement } from "~/composables/useMenuManagement"
+<script setup lang="ts">
+import { computed, onMounted, onUnmounted, reactive, ref } from "vue"
+import { useRoute } from "vue-router"
 import IconSelector from "~/components/admin/ui/IconSelector.vue"
 import ImageSelector from "~/components/media/ImageSelector.vue"
+import { useMenuManagement } from "~/composables/useMenuManagement"
+import { useToast } from "~/composables/useToast"
 import AddMenuItemsPanel from "../components/AddMenuItemsPanel.vue"
 import MenuPreview from "../components/MenuPreview.vue"
-import { useRoute, navigateTo } from "#app"
-import { useToast } from "~/composables/useToast"
+
+// Declare Nuxt auto-imports for TypeScript
+declare const definePageMeta: (meta: { layout: string }) => void
+declare const navigateTo: (to: string | { path: string }) => Promise<void> | void
 
 definePageMeta({
   layout: "admin-main"
@@ -104,15 +108,25 @@ const showIconSelector = ref(false)
 const selectedIconForItem = ref("")
 const currentEditingItemIndex = ref(-1)
 const showImageSelector = ref(false)
-const selectedImageIds = ref([])
+const selectedImageIds = ref<number[]>([])
 const images = ref([])
 
 const customLink = reactive({ title: "", url: "" })
 
-const loadImages = async () => {
+const formatFileSize = (bytes: number): string => {
+  if (!bytes) return ""
+  if (bytes < 1024) return bytes + " B"
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB"
+  return (bytes / (1024 * 1024)).toFixed(1) + " MB"
+}
+
+const _loadImages = async () => {
   try {
-    const { data } = await $fetch("/api/admin/media")
-    images.value = data || []
+    interface MediaResponse {
+      data?: unknown[]
+    }
+    const response = await $fetch<MediaResponse>("/api/admin/media")
+    images.value = (response?.data as unknown[]) || []
   } catch (error) {
     console.error("خطا در بارگذاری تصاویر:", error)
   }
@@ -120,7 +134,7 @@ const loadImages = async () => {
 
 const filteredImages = computed(() => images.value)
 
-const handleImageSelect = (imageId) => {
+const handleImageSelect = (imageId: number) => {
   const index = selectedImageIds.value.indexOf(imageId)
   if (index > -1) selectedImageIds.value.splice(index, 1)
   else selectedImageIds.value = [imageId]
@@ -175,7 +189,6 @@ const dedupeByKey = (list, makeKey) => {
 }
 
 const addSelectedCategories = (selectedCategories) => {
-  console.log('🟢 addSelectedCategories called with:', selectedCategories)
   const unique = dedupeByKey(selectedCategories, (cat) => cat?.id ?? cat?.slug)
   unique.forEach((cat) => {
     addMenuItem({
@@ -187,7 +200,6 @@ const addSelectedCategories = (selectedCategories) => {
 }
 
 const addSelectedProductCategories = (selectedProductCategories) => {
-  console.log('🟢 addSelectedProductCategories called with:', selectedProductCategories)
   const unique = dedupeByKey(selectedProductCategories, (cat) => cat?.id ?? cat?.slug)
   unique.forEach((cat) => {
     addMenuItem({
@@ -210,12 +222,6 @@ const handleRemoveMenuItem = (removedBranch) => {
 
 const updateMenuItem = (index, item) => {
   currentMenu.value.items[index] = item
-}
-
-const dragStart = (index) => { draggedIndex.value = index }
-const drop = (index) => {
-  if (draggedIndex.value !== null && draggedIndex.value !== index) reorderItems(draggedIndex.value, index)
-  draggedIndex.value = null
 }
 
 const saveCurrentMenu = async () => {
@@ -243,11 +249,12 @@ onUnmounted(() => {
 })
 
 onMounted(async () => {
-  const menuId = route.params.id
+  const menuIdParam = route.params.id
+  const menuId = Array.isArray(menuIdParam) ? menuIdParam[0] : menuIdParam
   if (menuId) {
     try {
       await fetchMenu(parseInt(menuId))
-    } catch (error) {
+    } catch (_error) {
       showError("منوی مورد نظر یافت نشد")
       await navigateTo("/admin/content/menu-management")
       return

@@ -9,7 +9,7 @@ export default {
   methods: {
     async fetchData() {
       try {
-        const response = await this.$api.get('/some-endpoint');
+        await this.$api.get('/some-endpoint');
         // پردازش داده‌ها
       } catch (error) {
         const msg = error.response?.data?.message || 'یک خطا رخ داده است.';

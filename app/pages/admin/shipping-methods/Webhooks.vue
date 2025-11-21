@@ -442,7 +442,6 @@ const testWebhook = async (webhookId: string) => {
 
 const editWebhook = (_webhookId: string) => {
   // Implementation for editing webhook
-  // console.log('Edit webhook:', webhookId)
 }
 
 const toggleWebhook = (webhookId: string) => {
@@ -455,7 +454,6 @@ const toggleWebhook = (webhookId: string) => {
 
 const viewLogs = (_webhookId: string) => {
   // Implementation for viewing webhook logs
-  // console.log('View webhook logs:', webhookId)
 }
 
 const addWebhook = () => {
@@ -523,12 +521,10 @@ const formatDateTime = (date: Date): string => {
 
 const viewLogDetails = (_logId: string) => {
   // Implementation for viewing log details
-  // console.log('View log details:', logId)
 }
 
 const refreshLogs = () => {
   // Implementation for refreshing logs
-  // console.log('Refreshing logs...')
 }
 
 // Lifecycle

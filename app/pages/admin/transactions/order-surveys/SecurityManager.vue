@@ -447,19 +447,16 @@
    
    const saveSettings = () => {
      // Save security settings to backend
-     // console.log('Saving security settings:', securitySettings.value)
    }
    
    const resetSettings = () => {
      if (confirm('آیا از بازنشانی تنظیمات امنیتی اطمینان دارید؟')) {
        // Reset to default settings
-       // console.log('Resetting security settings')
      }
    }
    
    const testSecurity = () => {
      // Test security features
-     // console.log('Testing security features')
    }
    
    // Expose methods for parent component

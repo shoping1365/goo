@@ -524,7 +524,6 @@
    
    const exportData = () => {
      // Implement export functionality
-     // console.log('Exporting data...')
    }
    
    const bulkAction = () => {
@@ -533,7 +532,6 @@
        return
      }
      // Implement bulk actions
-     // console.log('Bulk action on:', selectedReviews.value)
    }
    
    const clearFilters = () => {

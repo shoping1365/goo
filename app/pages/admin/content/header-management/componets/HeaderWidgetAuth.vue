@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useAuthState } from '~/composables/useAuthState'
 
 interface Props {
@@ -115,7 +115,7 @@ function getJustifyContent(align: string): string {
   }
 }
 
-const { user, isAuthenticated, logout, fetchUser, isAdmin } = useAuthState()
+const { isAuthenticated, logout, fetchUser } = useAuthState()
 
 // مدیریت منوی کشویی
 const isMenuOpen = ref(false)

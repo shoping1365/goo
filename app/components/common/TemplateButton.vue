@@ -19,7 +19,7 @@
   </button>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // کامپوننت دکمه تمپلیت با قابلیت تعیین رنگ و استایل
 // props:
 // - bgGradient: کلاس گرادینت یا رنگ پس‌زمینه
@@ -32,6 +32,10 @@
 //
 // مثال استفاده:
 // <TemplateButton bgGradient="bg-gradient-to-r from-blue-400 to-blue-600" textColor="text-white" borderColor="border border-blue-500" hoverClass="hover:from-blue-500 hover:to-blue-700" size="large">دکمه تست</TemplateButton>
+
+defineEmits<{
+  'click': [event: MouseEvent]
+}>()
 
 const props = defineProps({
   bgGradient: { type: String, default: '' },

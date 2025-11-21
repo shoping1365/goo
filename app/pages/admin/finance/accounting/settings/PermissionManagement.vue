@@ -641,13 +641,13 @@ const getUserStatusLabel = (status: string) => {
 // ذخیره مجوزها
 const savePermissions = () => {
   // TODO: ذخیره مجوزها
-  console.log('ذخیره مجوزها:', permissions.value)
+
 }
 
 // ایجاد نقش جدید
 const createRole = () => {
   // TODO: ایجاد نقش جدید
-  console.log('ایجاد نقش جدید:', newRole.value)
+
   showCreateRoleModal.value = false
   
   // پاک کردن فرم
@@ -658,28 +658,38 @@ const createRole = () => {
   }
 }
 
+interface Role {
+  id?: number | string
+  [key: string]: unknown
+}
+
+interface User {
+  id?: number | string
+  [key: string]: unknown
+}
+
 // ویرایش نقش
-const editRole = (role: any) => {
+const editRole = (_role: Role) => {
   // TODO: ویرایش نقش
-  console.log('ویرایش نقش:', role)
+
 }
 
 // حذف نقش
-const deleteRole = (role: any) => {
+const deleteRole = (_role: Role) => {
   // TODO: حذف نقش
-  console.log('حذف نقش:', role)
+
 }
 
 // ویرایش مجوزهای کاربر
-const editUserPermissions = (user: any) => {
+const editUserPermissions = (_user: User) => {
   // TODO: ویرایش مجوزهای کاربر
-  console.log('ویرایش مجوزهای کاربر:', user)
+
 }
 
 // لغو دسترسی کاربر
-const revokeUserAccess = (user: any) => {
+const revokeUserAccess = (_user: User) => {
   // TODO: لغو دسترسی کاربر
-  console.log('لغو دسترسی کاربر:', user)
+
 }
 </script>
 

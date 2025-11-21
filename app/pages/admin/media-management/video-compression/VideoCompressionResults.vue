@@ -302,7 +302,7 @@ interface ApiResponse<T> {
   message?: string
 }
 
-interface CompressionJobDisplay {
+interface _CompressionJobDisplay {
   id: string
   filename: string
   originalSize: number

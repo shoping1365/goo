@@ -177,7 +177,7 @@
 </template>
 
 <script setup>
-const emit = defineEmits(['close'])
+defineEmits(['close'])
 
 // متغیرهای reactive
 const filters = ref({
@@ -257,7 +257,6 @@ const getTypeText = (type) => {
 // توابع عملیات
 const applyFilters = () => {
   // در اینجا فیلترها اعمال می‌شوند
-  console.log('فیلترها اعمال شدند:', filters.value)
 }
 
 const exportReport = () => {

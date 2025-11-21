@@ -98,9 +98,6 @@ const handleSelectChange = (event: Event) => {
   emit('per-page-changed', value)
 }
 
-// گزینه‌های تعداد آیتم در هر صفحه
-const itemsPerPageOptions = [5, 10, 20, 50, 100]
-
 // محاسبه صفحات قابل مشاهده
 const visiblePages = computed(() => {
   const pages = []
@@ -117,14 +114,6 @@ const visiblePages = computed(() => {
   }
   
   return pages
-})
-
-// اطلاعات صفحه‌بندی
-const paginationInfo = computed(() => {
-  const ipp = props.perPage || 10
-  const from = (props.currentPage - 1) * ipp + 1
-  const to = Math.min(props.currentPage * ipp, props.total)
-  return { from, to }
 })
 
 // متدهای صفحه‌بندی

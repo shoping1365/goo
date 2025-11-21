@@ -392,7 +392,7 @@ const generateReport = () => {
 
 // صادرات گزارش
 const exportReport = () => {
-  console.log('صادرات گزارش به فرمت:', exportFormat.value)
+
   alert(`گزارش با موفقیت به فرمت ${exportFormat.value} صادر شد`)
 }
 
@@ -402,8 +402,8 @@ const printReport = () => {
 }
 
 // دانلود گزارش
-const downloadReport = (reportId: number) => {
-  console.log('دانلود گزارش:', reportId)
+const downloadReport = (_reportId: number) => {
+
   alert('گزارش با موفقیت دانلود شد')
 }
 

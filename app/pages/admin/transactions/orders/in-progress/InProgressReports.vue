@@ -410,12 +410,10 @@ const resetReportFilters = () => {
 }
 
 const exportFilteredReports = () => {
-  // console.log('خروجی Excel گزارشات فیلتر شده:', reportFilters.value)
   // اینجا می‌توانید منطق خروجی Excel را پیاده‌سازی کنید
 }
 
 const exportFilteredReportsPDF = () => {
-  // console.log('خروجی PDF گزارشات فیلتر شده:', reportFilters.value)
   // اینجا می‌توانید منطق خروجی PDF را پیاده‌سازی کنید
 }
 
@@ -436,11 +434,9 @@ const handleReportItemsPerPageChange = (newItemsPerPage) => {
 
 // متدهای عملیات گزارشات
 const viewReportDetails = (_report) => {
-  // console.log('مشاهده جزئیات گزارش:', report)
 }
 
 const exportReport = (_report) => {
-  // console.log('خروجی گزارش:', report)
 }
 
 // متدهای کمکی

@@ -119,8 +119,15 @@
 <script setup lang="ts">
 import { inject } from 'vue'
 
+interface FooterItem {
+  id: string
+  name: string
+  icon: string
+  [key: string]: unknown
+}
+
 interface Props {
-  availableFooterItems?: any[]
+  availableFooterItems?: FooterItem[]
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -128,7 +135,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // دریافت آیتم‌های قابل استفاده
-const availableFooterItems = inject('availableItems', props.availableFooterItems)
+const availableFooterItems = inject<FooterItem[]>('availableItems', props.availableFooterItems)
 
 // Emit events
 const emit = defineEmits<{

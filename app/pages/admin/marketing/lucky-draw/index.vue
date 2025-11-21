@@ -205,7 +205,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // متغیرهای reactive
 const showLuckyDrawForm = ref(false)

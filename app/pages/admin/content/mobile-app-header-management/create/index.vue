@@ -431,10 +431,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'nuxt/app'
-import ClassicTemplate from '../templates/classic-template.vue'
-import BannerTemplate from '../templates/banner-template.vue'
-import MinimalTemplate from '../templates/minimal-template.vue'
-import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
+// Templates and MediaLibraryModal are not used in this component
 
 // @ts-ignore
 definePageMeta({
@@ -489,35 +486,31 @@ const selectTemplate = (templateId: string) => {
 }
 
 // مدیریت انتخاب تصویر از مودال
-const handleImageSelect = (image: any) => {
-  console.log('عکس انتخاب شد:', image) // Debug log
-  uploadedImage.value = image
-  showMediaModal.value = false
-  showPositionOptions.value = true
-  console.log('showPositionOptions تنظیم شد:', showPositionOptions.value) // Debug log
+interface ImageData {
+  url: string
+  alt?: string
+  [key: string]: unknown
+}
+
+const _handleImageSelect = (_image: ImageData) => {
+  // Image selection handler - not currently used
 }
 
 // تنظیم موقعیت عکس
 const setImagePosition = (position: string) => {
   if (!uploadedImage.value) return
   
-  console.log('تنظیم موقعیت عکس:', position, uploadedImage.value) // Debug log
-  
   if (position === 'top') {
     formData.value.top_image_url = uploadedImage.value.url
     formData.value.top_image_alt = uploadedImage.value.alt || 'عکس بالای هدر'
-    console.log('عکس بالای هدر تنظیم شد:', formData.value.top_image_url) // Debug log
   } else if (position === 'bottom') {
     formData.value.bottom_image_url = uploadedImage.value.url
     formData.value.bottom_image_alt = uploadedImage.value.alt || 'عکس پایین هدر'
-    console.log('عکس پایین هدر تنظیم شد:', formData.value.bottom_image_url) // Debug log
   }
   
   // ریست کردن حالت‌ها
   uploadedImage.value = null
   showPositionOptions.value = false
-  
-  console.log('formData بعد از تنظیم عکس:', formData.value) // Debug log
 }
 
 // لغو آپلود
@@ -550,15 +543,16 @@ const createMobileAppHeader = async () => {
   loading.value = true
   
   try {
-    const response = await $fetch('/api/admin/mobile-app-header-settings', {
+    const _response = await $fetch('/api/admin/mobile-app-header-settings', {
       method: 'POST',
       body: formData.value
     })
     
     alert('هدر موبایل و اپلیکیشن با موفقیت ایجاد شد')
     router.push('/admin/content/mobile-app-header-management')
-  } catch (err: any) {
-    alert(err.data?.message || 'خطا در ایجاد هدر موبایل و اپلیکیشن')
+  } catch (err: unknown) {
+    const errorData = err && typeof err === 'object' && 'data' in err ? (err as { data?: { message?: string } }).data : null
+    alert(errorData?.message || 'خطا در ایجاد هدر موبایل و اپلیکیشن')
     console.error('Error creating mobile app header:', err)
   } finally {
     loading.value = false

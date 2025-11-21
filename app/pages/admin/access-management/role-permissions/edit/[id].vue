@@ -496,7 +496,7 @@ function togglePermission(itemId: string, permKey: string) {
 }
 
 // محاسبه تعداد مجوزهای فعال هر گروه
-function getGroupPermissionStatus(group: any) {
+function getGroupPermissionStatus(group: { items: Array<{ id: number | string; [key: string]: unknown }>; [key: string]: unknown }) {
   const total = group.items.length * defaultPermissions.length
   let count = 0
   for (const item of group.items) {
@@ -510,14 +510,14 @@ function getGroupPermissionStatus(group: any) {
 }
 
 // توابع انتخاب همه و حذف همه برای هر گروه
-function selectAllGroup(group: any) {
+function selectAllGroup(group: { items: Array<{ id: number | string; [key: string]: unknown }>; [key: string]: unknown }) {
   for (const item of group.items) {
     for (const perm of defaultPermissions) {
       selectedPermissions.value.add(getPermissionName(item.id, perm.key))
     }
   }
 }
-function deselectAllGroup(group: any) {
+function deselectAllGroup(group: { items: Array<{ id: number | string; [key: string]: unknown }>; [key: string]: unknown }) {
   for (const item of group.items) {
     for (const perm of defaultPermissions) {
       selectedPermissions.value.delete(getPermissionName(item.id, perm.key))
@@ -535,7 +535,7 @@ async function savePermissions() {
       headers: { 'Content-Type': 'application/json' }
     })
     alert('مجوزها با موفقیت ذخیره شدند')
-  } catch (e) {
+  } catch (_e) {
     alert('خطا در ذخیره مجوزها')
   }
 }

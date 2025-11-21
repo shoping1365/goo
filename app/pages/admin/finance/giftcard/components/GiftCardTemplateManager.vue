@@ -322,18 +322,7 @@ class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                   <!-- لایه متن -->
                   <div 
                     v-if="layer.type === 'text'"
-                    :style="{
-                      color: layer.color,
-                      fontSize: layer.fontSize + 'px',
-                      fontFamily: layer.fontFamily,
-                      fontWeight: layer.fontWeight || 'normal',
-                      textShadow: layer.effects?.shadow ? `${layer.effects.shadowColor} 2px 2px 4px` : 'none',
-                      textDecoration: layer.effects?.outline ? 'underline' : 'none',
-                      textDecorationColor: layer.effects?.outlineColor,
-                      background: layer.effects?.gradient ? `linear-gradient(to right, ${layer.color}, ${layer.effects.outlineColor})` : 'none',
-                      WebkitBackgroundClip: layer.effects?.gradient ? 'text' : 'initial',
-                      WebkitTextFillColor: layer.effects?.gradient ? 'transparent' : 'initial'
-                    }"
+                    :style="getLayerStyle(layer)"
                   >
                     {{ layer.text || 'متن نمونه' }}
                   </div>
@@ -379,18 +368,7 @@ class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                 >
                   <div 
                     v-if="layer.type === 'text'"
-                    :style="{
-                      color: layer.color,
-                      fontSize: layer.fontSize + 'px',
-                      fontFamily: layer.fontFamily,
-                      fontWeight: layer.fontWeight || 'normal',
-                      textShadow: layer.effects?.shadow ? `${layer.effects.shadowColor} 2px 2px 4px` : 'none',
-                      textDecoration: layer.effects?.outline ? 'underline' : 'none',
-                      textDecorationColor: layer.effects?.outlineColor,
-                      background: layer.effects?.gradient ? `linear-gradient(to right, ${layer.color}, ${layer.effects.outlineColor})` : 'none',
-                      WebkitBackgroundClip: layer.effects?.gradient ? 'text' : 'initial',
-                      WebkitTextFillColor: layer.effects?.gradient ? 'transparent' : 'initial'
-                    }"
+                    :style="getLayerStyle(layer)"
                   >
                     {{ layer.text || 'متن نمونه' }}
                   </div>
@@ -439,27 +417,56 @@ class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { computed, ref } from "vue"
+
+// تعریف interface ها (Rule 67 - Interface Organization and Reusability)
+interface Template {
+  id?: number
+  name: string
+  image: string
+  layers?: Layer[]
+}
+
+interface Layer {
+  id: number
+  name: string
+  type: string
+  text?: string
+  color?: string
+  fontSize?: number
+  fontFamily?: string
+  fontWeight?: string
+  rotation?: number
+  position?: { x: number; y: number }
+  opacity?: number
+  effects?: Record<string, unknown>
+  locked?: boolean
+  visible?: boolean
+  imageUrl?: string
+}
+
 const showAddModal = ref(false)
 const showEditor = ref(false)
 const showTemplatesModal = ref(false)
 const selectedTemplateId = ref(1)
-const defaultTemplates = ref([
+const defaultTemplates = ref<Template[]>([
   { id: 1, name: 'کلاسیک', image: '/statics/images/giftcard-default-1.png' },
   { id: 2, name: 'مدرن', image: '/statics/images/giftcard-default-2.png' }
 ])
-const customTemplates = ref([
+const customTemplates = ref<Template[]>([
   // نمونه اولیه
 ])
-const newTemplate = ref({ name: '', image: '' })
+const newTemplate = ref<Template>({ name: '', image: '' })
 
 // متغیرهای ویرایشگر
-const editorTemplate = ref({
+const editorTemplate = ref<Template>({
+  id: undefined,
   name: '',
   image: '/default-product.svg'
 })
 
-const layers = ref([
+const layers = ref<Layer[]>([
   {
     id: 1,
     name: 'متن اصلی',
@@ -667,6 +674,22 @@ const isDefaultTemplate = computed(() => {
   return defaultTemplates.value.some(t => t.id === selectedTemplateId.value)
 })
 
+// تابع helper برای ساخت style object (رفع خطاهای TypeScript)
+const getLayerStyle = (layer: Layer): Record<string, string | number> => {
+  return {
+    color: layer.color || '#000000',
+    fontSize: `${layer.fontSize || 18}px`,
+    fontFamily: layer.fontFamily || 'IRANSans',
+    fontWeight: layer.fontWeight || 'normal',
+    textShadow: layer.effects?.shadow ? `${layer.effects.shadowColor} 2px 2px 4px` : 'none',
+    textDecoration: layer.effects?.outline ? 'underline' : 'none',
+    textDecorationColor: layer.effects?.outlineColor as string || '',
+    background: layer.effects?.gradient ? `linear-gradient(to right, ${layer.color}, ${layer.effects.outlineColor})` : 'none',
+    WebkitBackgroundClip: layer.effects?.gradient ? 'text' : 'initial',
+    WebkitTextFillColor: layer.effects?.gradient ? 'transparent' : 'initial'
+  } as Record<string, string | number>
+}
+
 function selectTemplate(tpl) {
   selectedTemplateId.value = tpl.id
 }
@@ -701,7 +724,9 @@ function onImageChange(e) {
   if (!file) return
   const reader = new FileReader()
   reader.onload = (ev) => {
-    newTemplate.value.image = ev.target.result
+    if (ev.target?.result && typeof ev.target.result === 'string') {
+      newTemplate.value.image = ev.target.result
+    }
   }
   reader.readAsDataURL(file)
 }
@@ -853,8 +878,10 @@ const onLayerImageChange = (event) => {
   if (file && currentLayer.value) {
     const reader = new FileReader()
     reader.onload = (e) => {
-      currentLayer.value.imageUrl = e.target.result
-      currentLayer.value.type = 'image'
+      if (e.target?.result && typeof e.target.result === 'string') {
+        currentLayer.value.imageUrl = e.target.result
+        currentLayer.value.type = 'image'
+      }
     }
     reader.readAsDataURL(file)
   }
@@ -935,12 +962,12 @@ const redoAction = () => {
 }
 
 // تابع برای ذخیره عملیات
-const saveAction = (type, layer, index, newIndex = null) => {
+const _saveAction = (type: string, layer: string, index: number, newIndex: number | null = null) => {
   const action = {
-    type: type,
-    layer: layer,
-    index: index,
-    newIndex: newIndex
+    type,
+    layer,
+    index,
+    newIndex
   }
   undoStack.value.push(action)
   redoStack.value = [] // هر عملیات جدید، تاریخچه را پاک می‌کند

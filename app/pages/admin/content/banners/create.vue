@@ -79,7 +79,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission: _hasPermission } = useAuth()
 
 // State
 const loading = ref(false)
@@ -126,7 +126,7 @@ const handleWidgetCreate = async () => {
     } else {
       error.value = 'نوع ابزارک انتخاب شده پشتیبانی نمی‌شود.'
     }
-  } catch (err) {
+  } catch (_err) {
     // خطا در ایجاد ابزارک
     error.value = 'خطا در ایجاد ابزارک. لطفاً دوباره تلاش کنید.'
     loading.value = false

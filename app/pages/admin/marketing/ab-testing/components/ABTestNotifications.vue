@@ -77,7 +77,7 @@ const alerts = ref([
     message: 'تست "دکمه خرید صفحه محصول" تا 2 روز دیگر به پایان می‌رسد.',
     action: {
       text: 'مشاهده تست',
-      handler: () => console.log('مشاهده تست')
+      handler: () => {}
     }
   },
   {
@@ -87,7 +87,7 @@ const alerts = ref([
     message: 'تست "قیمت محصولات" نتایج آماری معنادار نشان می‌دهد.',
     action: {
       text: 'مشاهده نتایج',
-      handler: () => console.log('مشاهده نتایج')
+      handler: () => {}
     }
   },
   {
@@ -97,7 +97,7 @@ const alerts = ref([
     message: 'تست "تصویر صفحه اصلی" با خطا مواجه شده است.',
     action: {
       text: 'بررسی خطا',
-      handler: () => console.log('بررسی خطا')
+      handler: () => {}
     }
   }
 ])
@@ -198,16 +198,34 @@ const removeNotification = (id: number) => {
   notifications.value = notifications.value.filter(notification => notification.id !== id)
 }
 
+interface AlertAction {
+  handler?: () => void
+  [key: string]: unknown
+}
+
+interface Alert {
+  id?: number | string
+  action?: AlertAction
+  [key: string]: unknown
+}
+
+interface Notification {
+  id?: number | string
+  [key: string]: unknown
+}
+
 // اجرای عملیات هشدار
-const handleAlertAction = (alert: any) => {
+const handleAlertAction = (alert: Alert) => {
   if (alert.action && alert.action.handler) {
     alert.action.handler()
   }
-  removeAlert(alert.id)
+  if (alert.id) {
+    removeAlert(alert.id)
+  }
 }
 
 // اضافه کردن هشدار جدید
-const addAlert = (alert: any) => {
+const addAlert = (alert: Alert) => {
   const newAlert = {
     id: Date.now(),
     ...alert
@@ -216,12 +234,14 @@ const addAlert = (alert: any) => {
   
   // حذف خودکار بعد از 10 ثانیه
   setTimeout(() => {
-    removeAlert(newAlert.id)
+    if (newAlert.id) {
+      removeAlert(newAlert.id)
+    }
   }, 10000)
 }
 
 // اضافه کردن اعلان جدید
-const addNotification = (notification: any) => {
+const addNotification = (notification: Notification) => {
   const newNotification = {
     id: Date.now(),
     timestamp: new Date(),

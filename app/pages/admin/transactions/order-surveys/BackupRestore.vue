@@ -374,12 +374,10 @@ function getStatusText(status) {
 
 function createBackup() {
   isBackingUp.value = true
-  // console.log('Creating backup with options:', backupOptions)
   
   // Simulate backup process
   setTimeout(() => {
     isBackingUp.value = false
-    // console.log('Backup completed successfully')
   }, 3000)
 }
 
@@ -401,46 +399,37 @@ function restoreBackup() {
   if (!selectedFile.value) return
   
   isRestoring.value = true
-  // console.log('Restoring from file:', selectedFile.value.name)
   
   // Simulate restore process
   setTimeout(() => {
     isRestoring.value = false
     clearSelectedFile()
-    // console.log('Restore completed successfully')
   }, 5000)
 }
 
 function saveAutoSettings() {
-  // console.log('Saving auto backup settings:', autoBackup)
 }
 
 function downloadBackup(backup) {
-  // console.log('Downloading backup:', backup.id)
 }
 
 function deleteBackup(id) {
   if (confirm('آیا از حذف این پشتیبان اطمینان دارید؟')) {
-    // console.log('Deleting backup:', id)
   }
 }
 
 function viewBackupDetails(backup) {
-  // console.log('Viewing backup details:', backup)
 }
 
 function cleanupOldBackups() {
   if (confirm('آیا از پاکسازی پشتیبان‌های قدیمی اطمینان دارید؟')) {
-    // console.log('Cleaning up old backups')
   }
 }
 
 function optimizeStorage() {
-  // console.log('Optimizing storage')
 }
 
 onMounted(() => {
-  // console.log('BackupRestore component mounted')
 })
 </script>
 

@@ -466,8 +466,6 @@ const saveStatusChanges = async () => {
       notes: orderStatus.value.internalNotes || ''
     }
     
-    // console.log('ارسال درخواست به‌روزرسانی وضعیت:', updateData)
-    
     const response = await $fetch(`/api/admin/orders/${props.orderId}/status`, {
       method: 'PUT',
       body: updateData
@@ -492,8 +490,6 @@ const saveStatusChanges = async () => {
         paymentStatus: orderStatus.value.paymentStatus,
         updatedAt: new Date().toISOString()
       })
-      
-      // console.log('وضعیت سفارش با موفقیت به‌روزرسانی شد')
     } else {
       throw new Error('پاسخ نامعتبر از سرور')
     }

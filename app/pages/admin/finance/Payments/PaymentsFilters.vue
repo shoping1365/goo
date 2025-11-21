@@ -281,9 +281,13 @@ const props = withDefaults(defineProps<Props>(), {
   totalResults: 0
 })
 
+interface Filters {
+  [key: string]: unknown
+}
+
 // Emits
 const emit = defineEmits<{
-  filter: [filters: any]
+  filter: [filters: Filters]
 }>()
 
 // Reactive data
@@ -350,7 +354,7 @@ const toggleAdvanced = () => {
 
 const saveFilterPreset = () => {
   // TODO: ذخیره فیلتر به عنوان پیش‌فرض
-  console.log('Saving filter preset:', filters.value)
+
 }
 
 // Watch for prop changes

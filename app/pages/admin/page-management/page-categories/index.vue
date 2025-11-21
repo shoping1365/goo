@@ -332,13 +332,13 @@ const inactiveCategories = computed(() => categories.value.filter(cat => !cat.is
 const totalPages = computed(() => categories.value.reduce((sum, cat) => sum + cat.pageCount, 0))
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission } = useAuth()
 
 // Computed برای چک کردن پرمیژن حذف
 const canDeletePageCategory = computed(() => hasPermission('page-category.delete'))
 
 // باز کردن مودال افزودن
-const openAddModal = () => {
+const _openAddModal = () => {
   showAddModal.value = true
   resetForm()
 }
@@ -397,9 +397,7 @@ const saveCategory = async () => {
     }
     
     closeModal()
-    console.log('دسته‌بندی ذخیره شد:', categoryForm.value)
-  } catch (error) {
-    console.error('خطا در ذخیره دسته‌بندی:', error)
+  } catch {
   }
 }
 
@@ -408,7 +406,6 @@ const toggleCategoryStatus = (categoryId: number) => {
   const category = categories.value.find(cat => cat.id === categoryId)
   if (category) {
     category.isActive = !category.isActive
-    console.log('وضعیت دسته‌بندی تغییر کرد:', category.name, category.isActive)
   }
 }
 
@@ -418,7 +415,6 @@ const deleteCategory = (categoryId: number) => {
     const index = categories.value.findIndex(cat => cat.id === categoryId)
     if (index !== -1) {
       categories.value.splice(index, 1)
-      console.log('دسته‌بندی حذف شد:', categoryId)
     }
   }
 }

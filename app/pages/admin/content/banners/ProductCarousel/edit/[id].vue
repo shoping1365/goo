@@ -70,7 +70,7 @@
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useWidget } from '~/composables/useWidget'
-import type { ProductCarouselConfig } from '~/types/widget'
+import type { ProductCarouselConfig, Widget, WidgetType, WidgetStatus, WidgetPage, CategoryItem } from '~/types/widget'
 import ProductCarouselPreview from '../create/components/ProductCarouselPreview.vue'
 import ProductCarouselSettings from '../create/components/ProductCarouselSettings.vue'
 
@@ -93,16 +93,16 @@ const widgetId = parseInt(route.params.id as string)
 const loading = ref(true)
 const isSaving = ref(false)
 const error = ref<string | null>(null)
-const widget = ref<any>(null)
-const categories = ref<any[]>([])
+const widget = ref<Widget | null>(null)
+const categories = ref<CategoryItem[]>([])
 
 // فرم داده‌ها
 const formData = ref({
   title: '',
   description: '',
-  type: 'product-carousel' as any,
-  status: 'active' as any,
-  page: 'home' as any
+  type: 'product-carousel' as WidgetType,
+  status: 'active' as WidgetStatus,
+  page: 'home' as WidgetPage
 })
 
 // تنظیمات ویجت
@@ -160,8 +160,9 @@ const loadWidget = async () => {
       }
     }
     
-  } catch (err: any) {
-    error.value = err.message || 'خطا در بارگذاری ویجت'
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'خطا در بارگذاری ویجت'
+    error.value = errorMessage
     console.error('خطا در بارگذاری ویجت:', err)
   } finally {
     loading.value = false
@@ -214,9 +215,10 @@ const saveWidget = async () => {
       widget.value = updatedWidget
     }
 
-  } catch (error: any) {
-    console.error('خطا در ذخیره ویجت:', error)
-    alert('خطا در ذخیره ویجت: ' + (error.message || 'خطای نامشخص'))
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'خطای نامشخص'
+    console.error('خطا در ذخیره ویجت:', err)
+    alert('خطا در ذخیره ویجت: ' + errorMessage)
   } finally {
     isSaving.value = false
   }

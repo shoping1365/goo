@@ -215,8 +215,8 @@
                       <button 
                         class="inline-flex items-center px-2 py-1 border border-blue-300 text-xs font-medium rounded-sm text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors"
                         @click="() => { 
-                          console.log('🖱️ Edit button clicked for group:', group.name, 'ID:', group.id); 
-                          console.log('📍 Current route:', $route.path);
+
+
                           navigateToEdit(group.id); 
                         }"
                       >

@@ -377,47 +377,47 @@
 import { ref, onMounted } from 'vue'
 
 // متغیرهای کامپوننت
-const botDetectionStats = ref({
+const _botDetectionStats = ref({
   detectedBots: 234,
   accuracy: 96.8,
   avgDetectionTime: 1.2
 })
 
-const fakePurchaseStats = ref({
+const _fakePurchaseStats = ref({
   totalChecked: 15678,
   suspiciousPurchases: 123,
   confirmedFake: 89,
   accuracy: 92.3
 })
 
-const fakeReviewStats = ref({
+const _fakeReviewStats = ref({
   blockedFakeReviews: 456,
   accuracy: 98.7,
   avgCheckTime: 0.8
 })
 
-const attackStats = ref({
+const _attackStats = ref({
   ddosAttacks: 23,
   bruteForceAttacks: 156,
   sqlInjectionAttacks: 45,
   xssAttacks: 67
 })
 
-const securityStatus = ref({
+const _securityStatus = ref({
   overallSecurityLevel: 'عالی',
   lastUpdate: '۲ ساعت پیش',
   activeRules: 234,
   blockRate: 99.8
 })
 
-const anomalyStats = ref({
+const _anomalyStats = ref({
   abnormalUserBehavior: 89,
   unusualPurchasePattern: 123,
   suspiciousActivity: 67,
   unauthorizedAccess: 34
 })
 
-const anomalyPerformance = ref({
+const _anomalyPerformance = ref({
   accuracy: 94.2,
   falsePositiveRate: 5.8,
   detectionTime: 0.5,
@@ -425,33 +425,27 @@ const anomalyPerformance = ref({
 })
 
 // توابع کامپوننت
-const updateBotDetection = () => {
+const _updateBotDetection = () => {
   // به‌روزرسانی تشخیص بوت
-  console.log('به‌روزرسانی تشخیص بوت')
 }
 
-const updateFakePurchaseDetection = () => {
+const _updateFakePurchaseDetection = () => {
   // به‌روزرسانی تشخیص خرید جعلی
-  console.log('به‌روزرسانی تشخیص خرید جعلی')
 }
 
-const updateFakeReviewDetection = () => {
+const _updateFakeReviewDetection = () => {
   // به‌روزرسانی تشخیص نظرات جعلی
-  console.log('به‌روزرسانی تشخیص نظرات جعلی')
 }
 
-const updateAttackDetection = () => {
+const _updateAttackDetection = () => {
   // به‌روزرسانی تشخیص حملات
-  console.log('به‌روزرسانی تشخیص حملات')
 }
 
-const updateAnomalyDetection = () => {
+const _updateAnomalyDetection = () => {
   // به‌روزرسانی تشخیص ناهنجاری
-  console.log('به‌روزرسانی تشخیص ناهنجاری')
 }
 
 onMounted(() => {
   // مقداردهی اولیه کامپوننت
-  console.log('کامپوننت تشخیص تقلب و امنیت بارگذاری شد')
 })
 </script> 

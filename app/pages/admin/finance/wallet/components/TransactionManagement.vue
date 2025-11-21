@@ -247,7 +247,20 @@ const transactionStats = reactive({
   pendingAmount: '0 تومان'
 })
 
-const transactions = ref<any[]>([])
+interface TransactionDisplayItem {
+  id?: number | string
+  transactionId?: number | string
+  userName: string | number
+  userEmail: string
+  userInitials: string
+  type: string
+  amount: number
+  date?: string
+  status: string
+  description: string
+}
+
+const transactions = ref<TransactionDisplayItem[]>([])
 const paginationInfo = reactive({ start: 1, end: 0, total: 0 })
 const page = ref(1)
 const pageSize = ref(20)
@@ -272,11 +285,20 @@ const { data, refresh } = await useFetch('/api/admin/wallet/transactions', {
   swr: true,
 })
 
+interface TransactionItem {
+  id?: number | string
+  transactionId?: number | string
+  [key: string]: unknown
+}
+interface TransactionsResponse {
+  items?: TransactionItem[]
+  [key: string]: unknown
+}
 watchEffect(() => {
-  const res: any = data.value
+  const res = data.value as TransactionsResponse | null
   if (!res) return
   const items = Array.isArray(res.items) ? res.items : []
-  transactions.value = items.map((r: any) => ({
+  transactions.value = items.map((r: TransactionItem) => ({
     id: r.id,
     transactionId: r.id,
     userName: r.username || r.user_id,
@@ -294,9 +316,9 @@ watchEffect(() => {
 
   // آمار ساده
   transactionStats.totalTransactions = paginationInfo.total
-  const succ = items.filter((it: any) => it.status === 'success').length
-  const fail = items.filter((it: any) => it.status === 'failed').length
-  const pend = items.filter((it: any) => it.status === 'pending').length
+  const succ = items.filter((it: TransactionItem) => it.status === 'success').length
+  const fail = items.filter((it: TransactionItem) => it.status === 'failed').length
+  const pend = items.filter((it: TransactionItem) => it.status === 'pending').length
   const totalShown = Math.max(1, items.length)
   transactionStats.successfulTransactions = succ
   transactionStats.failedTransactions = fail
@@ -336,7 +358,7 @@ async function updateStatus(id: number, status: 'success' | 'failed') {
 function exportCsv() {
   const rows = [
     ['id','user','type','amount','date','status','desc'],
-    ...transactions.value.map((t:any)=>[
+    ...transactions.value.map((t: TransactionDisplayItem)=>[
       t.id,
       t.userName,
       t.type,
@@ -357,7 +379,7 @@ function exportCsv() {
 }
 
 const transactionTypes = computed(() => {
-  const items: any[] = transactions.value
+  const items: TransactionDisplayItem[] = transactions.value
   const count = (name: string) => items.filter((t) => (name === 'شارژ' ? t.amount > 0 : t.amount < 0)).length
   const total = Math.max(1, items.length)
   return [
@@ -367,7 +389,7 @@ const transactionTypes = computed(() => {
 })
 
 const transactionStatuses = computed(() => {
-  const items: any[] = transactions.value
+  const items: TransactionDisplayItem[] = transactions.value
   const succ = items.filter((it) => it.status === 'موفق').length
   const fail = items.filter((it) => it.status === 'ناموفق').length
   const pend = items.filter((it) => it.status === 'در انتظار').length

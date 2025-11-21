@@ -408,7 +408,6 @@ const getCategoryColor = (category: string) => {
 // Watch for period changes
 watch(selectedPeriod, () => {
   // Update stats based on selected period
-  // console.log('Period changed to:', selectedPeriod.value)
 })
 </script>
 

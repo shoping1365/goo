@@ -178,7 +178,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 // قوانین امتیازدهی
 const pointRules = ref([
@@ -293,8 +293,13 @@ function getRuleIcon(type: string) {
   return icons[type] || 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'
 }
 
+interface Rule {
+  active?: boolean
+  [key: string]: unknown
+}
+
 // تغییر وضعیت قانون
-function toggleRuleStatus(rule: any) {
+function toggleRuleStatus(rule: Rule) {
   rule.active = !rule.active
   // TODO: فراخوانی API برای تغییر وضعیت
 }

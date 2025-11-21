@@ -189,7 +189,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 // پاداش‌ها
 const rewards = ref([
@@ -312,12 +312,19 @@ function getRewardTypeName(type: string) {
   return names[type] || 'نامشخص'
 }
 
+interface Reward {
+  type?: string
+  value?: number
+  active?: boolean
+  [key: string]: unknown
+}
+
 // فرمت ارزش پاداش
-function formatRewardValue(reward: any) {
+function formatRewardValue(reward: Reward) {
   if (reward.type === 'discount_percent') {
     return `${reward.value}%`
   } else if (reward.type === 'discount_amount') {
-    return `${reward.value.toLocaleString()} تومان`
+    return `${reward.value?.toLocaleString()} تومان`
   } else if (reward.type === 'free_shipping') {
     return 'رایگان'
   } else if (reward.type === 'gift') {
@@ -329,7 +336,7 @@ function formatRewardValue(reward: any) {
 }
 
 // تغییر وضعیت پاداش
-function toggleRewardStatus(reward: any) {
+function toggleRewardStatus(reward: Reward) {
   reward.active = !reward.active
   // TODO: فراخوانی API برای تغییر وضعیت
 }

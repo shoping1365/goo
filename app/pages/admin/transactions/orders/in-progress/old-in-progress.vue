@@ -369,34 +369,28 @@ const paginatedOrders = computed(() => {
 
 // متدهای عملیاتی
 const exportOrders = () => {
-  // console.log('خروجی Excel سفارشات...')
 }
 
 const printOrders = () => {
-  // console.log('چاپ سفارشات...')
 }
 
 const handleFiltersChange = (_filters) => {
-  // console.log('فیلترها تغییر کردند:', filters)
   currentPage.value = 1
 }
 
 const executeBulkAction = () => {
   if (!bulkAction.value) return
   
-  // console.log('اجرای عملیات گروهی:', bulkAction.value, 'برای سفارشات:', selectedOrders.value)
   bulkAction.value = ''
   selectedOrders.value = []
 }
 
 const openOrderDetail = (order) => {
   selectedOrder.value = order
-  // console.log('نمایش جزئیات سفارش:', order)
 }
 
 const openQuickActions = (order) => {
   selectedOrder.value = order
-  // console.log('عملیات سریع برای سفارش:', order)
 }
 
 const handlePageChange = (page) => {
@@ -409,6 +403,5 @@ const handleItemsPerPageChange = (newItemsPerPage) => {
 }
 
 const loadOrders = () => {
-  // console.log('بارگذاری مجدد سفارشات...')
 }
 </script> 

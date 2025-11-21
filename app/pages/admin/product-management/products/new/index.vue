@@ -162,9 +162,13 @@ const brands = ref<Brand[]>([])
 async function loadBrands(){
   try {
     const res = await $fetch<Brand[] | { data: Brand[] }>('/api/admin/brands')
+    interface Brand {
+      id: number | string
+      name: string
+      [key: string]: unknown
+    }
     const raw = Array.isArray(res) ? res : (res?.data || [])
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    brands.value = raw.map((b: any) => ({ id: Number(b.id), name: b.name }))
+    brands.value = (raw as Brand[]).map((b) => ({ id: Number(b.id), name: b.name }))
   } catch(e){ brands.value = [] }
 }
 provide('brands', brands)
@@ -319,9 +323,12 @@ async function saveProduct() {
     // If we are in "edit mode" (because of save & continue), we should update.
     // Otherwise, we create a new product.
       if (pStore.isEditMode && pStore.editingProductId) {
-        const product = await pStore.updateProduct(pStore.editingProductId);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        if (product && (product as any).id) {
+        interface Product {
+          id?: number | string
+          [key: string]: unknown
+        }
+        const product = await pStore.updateProduct(pStore.editingProductId) as Product | null
+        if (product && product.id) {
           notifier.success('تغییرات با موفقیت ذخیره شد')
           navigateTo('/admin/product-management/products')
         }

@@ -486,7 +486,7 @@ const visiblePages = computed(() => {
 const applyFilters = () => {
   currentPage.value = 1
   // اعمال فیلترها
-  console.log('فیلترها اعمال شد:', filters)
+
 }
 
 const clearFilters = () => {
@@ -548,12 +548,25 @@ const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat('fa-IR').format(date)
 }
 
-const viewTransactionDetails = (transaction: any) => {
+interface Transaction {
+  id?: number | string
+  status?: string
+  date?: Date
+  [key: string]: unknown
+}
+
+interface RefundData {
+  cardCode?: string
+  amount?: number
+  [key: string]: unknown
+}
+
+const viewTransactionDetails = (transaction: Transaction) => {
   selectedTransaction.value = transaction
   showDetailsModal.value = true
 }
 
-const retryTransaction = async (transaction: any) => {
+const retryTransaction = async (transaction: Transaction) => {
   if (confirm('آیا مطمئن هستید که می‌خواهید این تراکنش را دوباره تلاش کنید؟')) {
     try {
       // شبیه‌سازی retry
@@ -564,29 +577,29 @@ const retryTransaction = async (transaction: any) => {
       transaction.date = new Date()
       
       alert('تراکنش با موفقیت انجام شد')
-    } catch (error) {
+    } catch (_error) {
       alert('خطا در انجام تراکنش')
     }
   }
 }
 
-const openRefundModal = (transaction: any) => {
+const openRefundModal = (transaction: Transaction) => {
   selectedTransaction.value = transaction
   showRefundModal.value = true
 }
 
 const exportTransactions = () => {
   // شبیه‌سازی export
-  console.log('خروجی Excel در حال آماده‌سازی...')
+
   alert('فایل Excel آماده شد')
 }
 
-const handleTransactionCreated = (transaction: any) => {
+const handleTransactionCreated = (transaction: Transaction) => {
   transactions.value.unshift(transaction)
   showCreateModal.value = false
 }
 
-const handleRefundRequested = (refundData: any) => {
+const handleRefundRequested = (refundData: RefundData) => {
   // ایجاد تراکنش بازپرداخت
   const refundTransaction = {
     id: transactions.value.length + 1,
@@ -627,7 +640,7 @@ const goToPage = (page: number) => {
 
 // Lifecycle
 onMounted(() => {
-  console.log('Gift card transactions component mounted')
+
 })
 </script>
 

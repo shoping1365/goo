@@ -144,7 +144,7 @@ const generateSeo = async () => {
     if (preview) {
       previewData.value = preview.preview
     }
-  } catch (error) {
+  } catch (_error) {
     // خطا در تولید SEO
   } finally {
     isLoading.value = false

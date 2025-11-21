@@ -330,10 +330,18 @@
 <script setup lang="ts">
 // Vue composables
 import { computed, ref } from 'vue'
+import type { BannerConfig } from '~/types/widget'
+
+interface ImageCropResponse {
+  success: boolean
+  data?: {
+    cropped_url: string
+  }
+}
 
 // Props
 interface Props {
-  bannerConfig: any
+  bannerConfig: BannerConfig
   currentPreviewBanner: number
   openAddBannerModal: () => void
   editBanner: (index: number) => void
@@ -369,7 +377,7 @@ const localBannerConfig = computed({
   }
 })
 
-const mobileBannerHeight = computed({
+const _mobileBannerHeight = computed({
   get: () => localBannerConfig.value.mobile_height,
   set: val => {
     if (localBannerConfig.value) {
@@ -405,7 +413,7 @@ const applyMobileCrop = async () => {
         device: 'mobile',
         quality: 85
       }
-    }) as any
+    }) as ImageCropResponse
     
     if (response.success) {
       localBannerConfig.value.mobile_cropped_image = response.data.cropped_url

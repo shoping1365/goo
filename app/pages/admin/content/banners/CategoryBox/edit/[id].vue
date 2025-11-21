@@ -195,8 +195,8 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import type { CategoryConfig, CategoryItem } from '~/types/widget'
-import { useWidgetRegistry } from '~/composables/useWidgetRegistry'
+import type { CategoryConfig } from '~/types/widget'
+// useWidgetRegistry is not used in this component
 import { useWidget } from '~/composables/useWidget'
 import CategoryBoxPreview from '~/components/admin/CategoryBoxPreview.vue'
 import CategoryBoxSettings from './components/CategoryBoxSettings.vue'
@@ -204,9 +204,8 @@ import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
 
 import { useRoute, useRouter } from 'vue-router'
 
-// تعریف definePageMeta و navigateTo برای Nuxt 3
+// تعریف definePageMeta برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
-declare const navigateTo: (to: string) => Promise<void>
 
 const router = useRouter()
 
@@ -228,8 +227,17 @@ const showMediaModal = ref(false)
 const selectedCategoryIndex = ref<number | null>(null)
 const isLoading = ref(true)
 
+interface Category {
+  id: number | string
+  name: string
+  slug?: string
+  parent_id?: number | string
+  parent_name?: string
+  [key: string]: unknown
+}
+
 // All categories for search
-const allCategories = ref<any[]>([])
+const allCategories = ref<Category[]>([])
 
 // Computed filtered categories
 const filteredCategories = computed(() => {
@@ -296,7 +304,7 @@ const addCategory = () => {
         searchTerm: '',
         showDropdown: false,
         selectedCategory: null
-      } as any)
+      } as CategoryItem)
       break
     case 'user_search':
       // بر اساس سرچ کاربر
@@ -310,7 +318,7 @@ const addCategory = () => {
         searchTerm: '',
         showDropdown: false,
         selectedCategory: null
-      } as any)
+      } as CategoryItem)
       break
     case 'user_interests':
       // بر اساس علایق کاربر
@@ -324,7 +332,7 @@ const addCategory = () => {
         searchTerm: '',
         showDropdown: false,
         selectedCategory: null
-      } as any)
+      } as CategoryItem)
       break
     case 'manual':
     default:
@@ -339,20 +347,19 @@ const addCategory = () => {
         searchTerm: '',
         showDropdown: false,
         selectedCategory: null
-      } as any)
+      } as CategoryItem)
       break
   }
 }
 
 // Select category for specific item
-const selectCategoryForItem = (index: number, category: any) => {
+const selectCategoryForItem = (index: number, category: Category) => {
   const item = config.value.categories[index]
   item.selectedCategory = category
   item.title = category.name
   item.link = category.slug || category.name
   item.searchTerm = category.name
   item.showDropdown = false
-  console.log('دسته‌بندی انتخاب شد:', category)
 }
 
 // Hide category dropdown with delay
@@ -365,13 +372,22 @@ const hideCategoryDropdown = (index: number) => {
 // Load widget data
 const loadWidget = async () => {
   try {
-    console.log('در حال لود ویجت با ID:', widgetId)
-    const response = await $fetch(`/api/admin/widgets/${widgetId}`) as any
-    console.log('پاسخ API:', response)
+    interface WidgetResponse {
+      data?: {
+        title?: string
+        page?: string
+        config?: CategoryConfig
+      }
+      title?: string
+      page?: string
+      config?: CategoryConfig
+      [key: string]: unknown
+    }
+
+    const response = await $fetch<WidgetResponse>(`/api/admin/widgets/${widgetId}`)
     
     if (response && response.data) {
       const widget = response.data
-      console.log('داده‌های ویجت:', widget)
       
       // Load form data
       formData.value.title = widget.title || ''
@@ -382,8 +398,6 @@ const loadWidget = async () => {
         ...config.value,
         ...widget.config
       }
-      
-      console.log('config لود شده:', config.value)
     } else if (response && response.config) {
       // Load form data
       formData.value.title = response.title || ''
@@ -394,10 +408,6 @@ const loadWidget = async () => {
         ...config.value,
         ...response.config
       }
-      
-      console.log('config لود شده (fallback):', config.value)
-    } else {
-      console.log('هیچ داده‌ای دریافت نشد')
     }
   } catch (error) {
     console.error('خطا در دریافت ویجت:', error)
@@ -412,20 +422,25 @@ onMounted(async () => {
     await loadWidget()
     
     // Then load categories
-    const response = await $fetch('/api/admin/product-categories?all=1')
-    let raw = []
+    interface CategoriesResponse {
+      data?: Category[]
+      [key: string]: unknown
+    }
+
+    const response = await $fetch<Category[] | CategoriesResponse>('/api/admin/product-categories?all=1')
+    let raw: Category[] = []
     if (Array.isArray(response)) {
       raw = response
-    } else if (Array.isArray((response as any)?.data)) {
-      raw = (response as any).data
+    } else if (Array.isArray((response as CategoriesResponse)?.data)) {
+      raw = (response as CategoriesResponse).data as Category[]
     } else {
       raw = []
     }
     
     // Add parent_name for display
-    raw.forEach((cat: any) => {
+    raw.forEach((cat: Category) => {
       if (cat.parent_id) {
-        const parent = raw.find((c: any) => c.id === cat.parent_id)
+        const parent = raw.find((c: Category) => c.id === cat.parent_id)
         cat.parent_name = parent ? parent.name : '-'
       } else {
         cat.parent_name = '-'
@@ -452,7 +467,12 @@ const closeMediaModal = () => {
   selectedCategoryIndex.value = null
 }
 
-const onMediaSelected = (selectedMedia: any[]) => {
+interface MediaFile {
+  url: string
+  [key: string]: unknown
+}
+
+const onMediaSelected = (selectedMedia: MediaFile[]) => {
   if (selectedCategoryIndex.value !== null && selectedMedia.length > 0) {
     const media = selectedMedia[0]
     config.value.categories[selectedCategoryIndex.value].image = media.url
@@ -464,7 +484,7 @@ const removeCategory = (index: number) => {
   config.value.categories.splice(index, 1)
 }
 
-const editCategory = (index: number) => {
+const _editCategory = (_index: number) => {
   const category = config.value.categories[index]
   
   // باز کردن dropdown برای ویرایش
@@ -525,7 +545,7 @@ const saveWidget = async () => {
   }
 }
 
-const saveAsDraft = async () => {
+const _saveAsDraft = async () => {
   try {
     isSaving.value = true
 

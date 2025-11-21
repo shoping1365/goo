@@ -301,9 +301,11 @@
 // Vue composables
 import { computed, ref } from 'vue'
 
+import type { BannerConfig } from '~/types/widget'
+
 // Props
 interface Props {
-  bannerConfig: any
+  bannerConfig: BannerConfig
   currentPreviewBanner: number
   openAddBannerModal: () => void
   editBanner: (index: number) => void

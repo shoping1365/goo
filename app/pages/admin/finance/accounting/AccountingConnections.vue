@@ -346,7 +346,7 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission: _hasPermission } = useAuth()
 
 // Computed برای چک کردن پرمیژن حذف
 const canDeleteConnection = computed(() => {
@@ -467,7 +467,7 @@ const getStatusLabel = (status: string) => {
 // فیلتر کردن اتصالات
 const filterConnections = () => {
   // TODO: اعمال فیلترها
-  console.log('فیلترهای اتصال اعمال شد:', connectionFilters.value)
+
 }
 
 // پاک کردن فیلترها
@@ -482,15 +482,14 @@ const clearFilters = () => {
 // بروزرسانی اطلاعات نرم‌افزار
 const updateSoftwareInfo = () => {
   // TODO: بروزرسانی اطلاعات نرم‌افزار بر اساس نوع انتخاب شده
-  console.log('نوع نرم‌افزار انتخاب شد:', newConnection.value.softwareType)
+
 }
 
 // افزودن اتصال جدید
 const addConnection = async () => {
   try {
     // TODO: ارسال درخواست به API
-    console.log('اتصال جدید اضافه شد:', newConnection.value)
-    
+
     // ریست فرم
     newConnection.value = {
       softwareType: '',
@@ -511,38 +510,51 @@ const addConnection = async () => {
   }
 }
 
+interface Connection {
+  id: number | string
+  softwareType?: string
+  softwareName?: string
+  version?: string
+  connectionName?: string
+  serverUrl?: string
+  status?: string
+  lastSync?: string
+  logo?: string
+  [key: string]: unknown
+}
+
 // تست اتصال
-const testConnection = async (connection: any) => {
+const testConnection = async (_connection: Connection) => {
   try {
     // TODO: تست اتصال
-    console.log('تست اتصال شروع شد:', connection)
+
   } catch (error) {
     console.error('خطا در تست اتصال:', error)
   }
 }
 
 // ویرایش اتصال
-const editConnection = (connection: any) => {
+const editConnection = (_connection: Connection) => {
   // TODO: ویرایش اتصال
-  console.log('ویرایش اتصال:', connection)
+
 }
 
 // تغییر وضعیت اتصال
-const toggleConnection = async (connection: any) => {
+const toggleConnection = async (_connection: Connection) => {
   try {
     // TODO: تغییر وضعیت اتصال
-    console.log('تغییر وضعیت اتصال:', connection)
+
   } catch (error) {
     console.error('خطا در تغییر وضعیت اتصال:', error)
   }
 }
 
 // حذف اتصال
-const deleteConnection = async (connection: any) => {
+const deleteConnection = async (_connection: Connection) => {
   if (confirm('آیا از حذف این اتصال اطمینان دارید؟')) {
     try {
       // TODO: حذف اتصال
-      console.log('اتصال حذف شد:', connection)
+
     } catch (error) {
       console.error('خطا در حذف اتصال:', error)
     }

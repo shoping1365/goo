@@ -23,17 +23,19 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
+interface SocialItem {
+  platform?: string
+  label?: string
+  title?: string
+  href?: string
+  url?: string
+  enabled?: boolean
+}
+
 const props = withDefaults(defineProps<{
   title?: string
-  links?: Array<any>
-  socials?: Array<{
-    platform?: string
-    label?: string
-    title?: string
-    href?: string
-    url?: string
-    enabled?: boolean
-  }>
+  links?: Array<SocialItem>
+  socials?: Array<SocialItem>
   emptyText?: string
 }>(), {
   title: 'شبکه‌های اجتماعی',
@@ -61,17 +63,14 @@ const platformIcons: Record<string, string> = {
 
 const visibleLinks = computed(() => {
   const source = props.socials || props.links || []
-  // console.log('⚡️ Computing visibleLinks from:', JSON.parse(JSON.stringify(source)))
 
   if (!Array.isArray(source) || source.length === 0) {
-    // console.log('⚠️ Source is empty or not an array.')
     return []
   }
 
   const result = source
     .filter(item => {
       const isEnabled = item && (item.enabled !== false)
-      // console.log(`  - Filtering ${item.platform}: enabled=${isEnabled}`)
       return isEnabled
     })
     .map(item => {
@@ -85,11 +84,9 @@ const visibleLinks = computed(() => {
         href: href || '#',
         iconClass: platformIcons[platform] || 'i-mdi-link'
       }
-      // console.log(`  - Mapping ${item.platform} to:`, mappedItem)
       return mappedItem
     })
   
-  // console.log('✅ Computed visibleLinks result:', JSON.parse(JSON.stringify(result)))
   return result
 })
 </script>

@@ -269,7 +269,7 @@ const selectedPeriod = ref('month')
 const selectedChartType = ref('transactions')
 
 // نوع‌های نمودار
-const chartTypes = [
+const _chartTypes = [
   { value: 'transactions', label: 'تعداد تراکنش‌ها' },
   { value: 'amounts', label: 'مبالغ' }
 ]
@@ -306,8 +306,12 @@ const gatewayGridCols = computed(() => {
   return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' // پیش‌فرض
 })
 
+interface Transaction {
+  [key: string]: unknown
+}
+
 // تراکنش‌های واقعی از API
-const allTransactions = ref<any[]>([])
+const allTransactions = ref<Transaction[]>([])
 const loadingTransactions = ref(false)
 
 // درگاه‌های واقعی از API - دقیقاً همان API داشبورد
@@ -318,14 +322,12 @@ const loadingGateways = ref(true)
 const fetchActualGateways = async () => {
   try {
     loadingGateways.value = true
-    const response: any = await $fetch('/api/payment-gateways')
+    const response = await $fetch('/api/payment-gateways') as { data?: unknown[] }
     actualGateways.value = response.data || []
-    
-    console.log('🔍 درگاه‌های دریافت شده از API:', actualGateways.value)
-    
+
     // اگر API در دسترس نباشد، از داده‌های نمونه استفاده کن
     if (!actualGateways.value.length) {
-      console.log('⚠️ API در دسترس نیست، استفاده از داده‌های نمونه')
+
       actualGateways.value = [
         {
           id: 1,
@@ -433,7 +435,7 @@ const activeRealGateways = computed(() => {
 const fetchAllTransactions = async () => {
   try {
     loadingTransactions.value = true
-    const response: any = await $fetch('/api/payments/admin/transactions', {
+    const response = await $fetch('/api/payments/admin/transactions', {
       query: {
         limit: 100 // دریافت 100 تراکنش اخیر
       }
@@ -463,7 +465,7 @@ const formatCurrency = (amount: number): string => {
   }).format(amount)
 }
 
-const formatDate = (dateString: string): string => {
+const _formatDate = (dateString: string): string => {
   return new Date(dateString).toLocaleDateString('fa-IR', {
     year: 'numeric',
     month: 'short',
@@ -473,7 +475,7 @@ const formatDate = (dateString: string): string => {
   })
 }
 
-const getStatusText = (status: string): string => {
+const _getStatusText = (status: string): string => {
   const statusMap = {
     success: 'موفق',
     failed: 'ناموفق',
@@ -484,7 +486,7 @@ const getStatusText = (status: string): string => {
   return statusMap[status] || status
 }
 
-const getStatusClass = (status: string): string => {
+const _getStatusClass = (status: string): string => {
   switch (status) {
     case 'success':
       return 'bg-green-100 text-green-800'
@@ -501,7 +503,7 @@ const getStatusClass = (status: string): string => {
   }
 }
 
-const getGatewayColor = (type: string): string => {
+const _getGatewayColor = (type: string): string => {
   switch (type) {
     case 'zarinpal':
       return 'bg-purple-600'
@@ -518,7 +520,7 @@ const getGatewayColor = (type: string): string => {
   }
 }
 
-const getGatewayIcon = (type: string): string => {
+const _getGatewayIcon = (type: string): string => {
   switch (type) {
     case 'zarinpal':
       return 'زر'
@@ -538,28 +540,28 @@ const getGatewayIcon = (type: string): string => {
 // توابع عملیات
 const exportReport = () => {
   // منطق خروجی اکسل
-  console.log('خروجی گزارش برای دوره:', selectedPeriod.value)
+
 }
 
-const viewAllTransactions = () => {
+const _viewAllTransactions = () => {
   // هدایت به صفحه همه تراکنش‌ها
-  console.log('مشاهده همه تراکنش‌ها')
+
 }
 
-const viewTransaction = (transaction: any) => {
+const _viewTransaction = (_transaction: Transaction) => {
   // نمایش جزئیات تراکنش
-  console.log('جزئیات تراکنش:', transaction)
+
 }
 
 // تابع برای دریافت تراکنش‌های یک درگاه خاص
-const getGatewayTransactions = (gatewayId: number) => {
+const _getGatewayTransactions = (gatewayId: number) => {
   return allTransactions.value.filter(
     (transaction) => transaction.gateway_id === gatewayId
   )
 }
 
 // تراکنش‌های اخیر برای نمایش در جدول بالا
-const recentTransactions = computed(() => {
+const _recentTransactions = computed(() => {
   return allTransactions.value.slice(0, 10) // 10 تراکنش اخیر
 })
 

@@ -208,21 +208,21 @@
                 <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600 mx-auto"></div>
                 <p class="mt-2 text-gray-500">در حال بارگذاری...</p>
               </div>
-              <div v-else-if="orderItems && (orderItems as any).length > 0" class="space-y-4">
+              <div v-else-if="orderItems && orderItems.length > 0" class="space-y-4">
                 <div v-for="(item, index) in orderItems" :key="index" class="flex items-center space-x-4 px-4 py-4 bg-gray-50 rounded-lg">
                   <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
-                    <img v-if="(item as any).image || (item as any).product_image" :src="(item as any).image || (item as any).product_image" :alt="(item as any).name || (item as any).product_name" class="w-full h-full object-cover" />
+                    <img v-if="item.image || item.product_image" :src="item.image || item.product_image" :alt="item.name || item.product_name || 'محصول'" class="w-full h-full object-cover" />
                     <svg v-else class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                     </svg>
                   </div>
                   <div class="flex-1">
-                    <h5 class="font-medium text-gray-900">{{ (item as any).name || (item as any).product_name || `محصول ${(item as any).productId || (item as any).product_id}` }}</h5>
-                    <p class="text-sm text-gray-500">SKU: {{ (item as any).sku || (item as any).product_sku || 'نامشخص' }}</p>
+                    <h5 class="font-medium text-gray-900">{{ item.name || item.product_name || `محصول ${item.productId || item.product_id || index + 1}` }}</h5>
+                    <p class="text-sm text-gray-500">SKU: {{ item.sku || item.product_sku || 'نامشخص' }}</p>
                   </div>
                   <div class="text-right">
-                    <p class="font-medium text-gray-900">{{ formatPrice((item as any).finalPrice || (item as any).final_price) }} تومان</p>
-                    <p class="text-sm text-gray-500">تعداد: {{ (item as any).quantity }}</p>
+                    <p class="font-medium text-gray-900">{{ formatPrice(item.finalPrice || item.final_price || 0) }} تومان</p>
+                    <p class="text-sm text-gray-500">تعداد: {{ item.quantity || 0 }}</p>
                   </div>
                 </div>
               </div>
@@ -415,16 +415,11 @@ const fetchOrderItems = async () => {
   orderItemsLoading.value = true
   
   try {
-    // console.log('🔍 در حال دریافت آیتم‌های سفارش برای ID:', orderId);
     const response: ApiResponse<OrderItemsResponse> = await $fetch(`/api/admin/orders/${orderId}/items`)
-    
-    // console.log('📦 پاسخ API آیتم‌ها:', response);
     
     if (response && response.success && response.data && response.data.items) {
       orderItems.value = response.data.items
-      // console.log('✅ آیتم‌ها تنظیم شدند:', orderItems.value);
     } else {
-      // console.log('❌ پاسخ نامعتبر یا خالی');
       orderItems.value = []
     }
   } catch (error) {

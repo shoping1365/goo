@@ -235,11 +235,19 @@ const brands = ref([])
 // Fetch brands data
 const fetchBrands = async () => {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const response = await $fetch('/api/brands') as any
+    interface Brand {
+      id?: number | string
+      name?: string
+      order?: number | null
+      [key: string]: unknown
+    }
+    interface BrandsResponse {
+      data?: Brand[]
+      [key: string]: unknown
+    }
+    const response = await $fetch<Brand[] | BrandsResponse>('/api/brands')
     const raw = Array.isArray(response) ? response : (response.data || [])
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    raw.forEach((b: any, idx: number) => {
+    raw.forEach((b: Brand, idx: number) => {
       if (b.order === undefined || b.order === null) b.order = idx + 1
     })
     brands.value = raw

@@ -55,14 +55,24 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-const taxAccounts = ref([
+
+interface TaxAccount {
+  id?: number | string | null
+  name?: string
+  code?: string
+  description?: string
+  [key: string]: unknown
+}
+
+const taxAccounts = ref<TaxAccount[]>([
   { id: 1, name: 'مالیات بر ارزش افزوده', code: '2201', description: 'حساب مالیات بر ارزش افزوده' },
   { id: 2, name: 'مالیات عملکرد', code: '2202', description: 'حساب مالیات عملکرد' }
 ])
 const showAddModal = ref(false)
+
 const showEditModal = ref(false)
-const form = ref({ id: null, name: '', code: '', description: '' })
-const editAccount = (account: any) => {
+const form = ref<TaxAccount>({ id: null, name: '', code: '', description: '' })
+const editAccount = (account: TaxAccount) => {
   form.value = { ...account }
   showEditModal.value = true
 }
@@ -75,7 +85,8 @@ const updateAccount = () => {
   if (idx !== -1) taxAccounts.value[idx] = { ...form.value }
   closeModal()
 }
-const deleteAccount = (account: any) => {
+
+const deleteAccount = (account: TaxAccount) => {
   if (confirm('آیا از حذف این حساب اطمینان دارید؟'))
     taxAccounts.value = taxAccounts.value.filter(a => a.id !== account.id)
 }

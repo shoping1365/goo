@@ -50,7 +50,9 @@
               @click="activeTab = tab.id"
             >
               <div class="flex items-center space-x-2 space-x-reverse">
-                <component :is="tab.icon" class="w-5 h-5" />
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
                 <span>{{ tab.name }}</span>
                 <span v-if="tab.badge" class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                   {{ tab.badge }}
@@ -139,7 +141,7 @@
 </template>
 
 <script setup>
-import { ref, defineComponent } from 'vue'
+import { ref } from 'vue'
 import WebsiteTrafficMonitoring from './components/WebsiteTrafficMonitoring.vue'
 import SeoAnalysis from './components/SeoAnalysis.vue'
 import DigitalAdvertising from './components/DigitalAdvertising.vue'
@@ -152,80 +154,33 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
-
-// آیکون‌های تب‌ها
-const TrafficIcon = defineComponent({
-  template: `
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-    </svg>
-  `
-})
-
-const SeoIcon = defineComponent({
-  template: `
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-    </svg>
-  `
-})
-
-const AdvertisingIcon = defineComponent({
-  template: `
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
-    </svg>
-  `
-})
-
-const SocialIcon = defineComponent({
-  template: `
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
-    </svg>
-  `
-})
-
-const ContentIcon = defineComponent({
-  template: `
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      
-    </svg>
-  `
-})
+const { user: _user, hasPermission: _hasPermission } = useAuth()
 
 // تعریف تب‌های مختلف
 const tabs = [
   {
     id: 'traffic',
     name: 'ترافیک وب‌سایت',
-    icon: TrafficIcon,
     badge: null
   },
   {
     id: 'seo',
     name: 'تحلیل SEO',
-    icon: SeoIcon,
     badge: 'جدید'
   },
   {
     id: 'advertising',
     name: 'تبلیغات دیجیتال',
-    icon: AdvertisingIcon,
     badge: null
   },
   {
     id: 'social',
     name: 'شبکه‌های اجتماعی',
-    icon: SocialIcon,
     badge: null
   },
   {
     id: 'content',
     name: 'تحلیل محتوا',
-    icon: ContentIcon,
     badge: null
   }
 ]
@@ -239,12 +194,12 @@ const showNotifications = ref(true)
 // توابع
 const refreshData = () => {
   // به‌روزرسانی داده‌ها
-  console.log('Refreshing digital footprint data...')
+
 }
 
 const saveSettings = () => {
   // ذخیره تنظیمات
-  console.log('Saving settings...', { updateInterval: updateInterval.value, showNotifications: showNotifications.value })
+
   showSettings.value = false
 }
 </script>

@@ -295,9 +295,14 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 // Props
+interface TestData {
+  id?: number | string
+  [key: string]: unknown
+}
+
 const props = defineProps<{
   isOpen: boolean
-  editingTest?: any
+  editingTest?: TestData
 }>()
 
 // Events

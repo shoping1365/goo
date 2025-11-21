@@ -267,7 +267,14 @@ class="w-full bg-gradient-to-t from-green-500 to-blue-500 rounded-t transition-a
 <script setup lang="ts">
 import { computed, ref, watchEffect } from 'vue';
 declare const useFetch: <T>(url: string, options?: unknown) => Promise<{ data: { value: T }; refresh: () => Promise<void> }>
-const summary = ref<any>(null)
+
+interface SummaryData {
+  totalBalance?: number
+  todayTxCount?: number
+  [key: string]: unknown
+}
+
+const summary = ref<SummaryData | null>(null)
 const days = ref(30)
 const { data: summaryData } = await useFetch('/api/admin/wallet/summary', {
   credentials: 'include',
@@ -294,15 +301,20 @@ const financialStats = computed(() => ({
   expensePercentage: 0,
 }))
 
+interface TrendItem {
+  Day?: string
+  Net?: number | string
+  [key: string]: unknown
+}
 const dailyRevenue = computed(() => {
-  const trend = trendData.value as { items?: any[] } | undefined
-  const items: any[] = trend?.items || []
-  return items.slice(-7).map((it:any) => ({ date: it.Day, revenue: Number(it.Net), transactions: undefined }))
+  const trend = trendData.value as { items?: TrendItem[] } | undefined
+  const items: TrendItem[] = trend?.items || []
+  return items.slice(-7).map((it: TrendItem) => ({ date: it.Day || '', revenue: Number(it.Net || 0), transactions: undefined }))
 })
 
 const monthlyRevenue = computed(() => {
-  const trend = trendData.value as { items?: any[] } | undefined
-  const items: any[] = trend?.items || []
+  const trend = trendData.value as { items?: TrendItem[] } | undefined
+  const items: TrendItem[] = trend?.items || []
   return [
     { month: '۳ ماه اخیر', revenue: sumRange(items, 0, 30), growth: 0 },
     { month: '۶ ماه اخیر', revenue: sumRange(items, 0, 30), growth: 0 },
@@ -310,9 +322,9 @@ const monthlyRevenue = computed(() => {
 })
 
 const revenueTrend = computed(() => {
-  const trend = trendData.value as { items?: any[] } | undefined
-  const items: any[] = trend?.items || []
-  return items.map((it:any) => ({ date: it.Day?.slice(5), revenue: Number(it.Net) }))
+  const trend = trendData.value as { items?: TrendItem[] } | undefined
+  const items: TrendItem[] = trend?.items || []
+  return items.map((it: TrendItem) => ({ date: it.Day?.slice(5) || '', revenue: Number(it.Net || 0) }))
 })
 
 const revenueSources = ref([
@@ -350,18 +362,23 @@ watchEffect(()=>{
   if (summaryData.value) summary.value = summaryData.value
 })
 
-function sumRange(items:any[], start:number, count:number){
-  return items.slice(start, start+count).reduce((acc, it:any)=>acc + Number(it.Net||0), 0)
+function sumRange(items: TrendItem[], start:number, count:number){
+  return items.slice(start, start+count).reduce((acc, it: TrendItem)=>acc + Number(it.Net||0), 0)
 }
 
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat('fa-IR').format(amount) + ' تومان'
 }
 
+interface RevenueItem {
+  date: string
+  revenue: number
+}
+
 const getChartHeight = (revenue: number) => {
   const arr = revenueTrend.value
-  const maxRevenue = Math.max(...arr.map((item:any) => item.revenue), 0)
-  const minRevenue = Math.min(...arr.map((item:any) => item.revenue), 0)
+  const maxRevenue = Math.max(...arr.map((item: RevenueItem) => item.revenue), 0)
+  const minRevenue = Math.min(...arr.map((item: RevenueItem) => item.revenue), 0)
   const range = maxRevenue - minRevenue
   const height = 200
   if (range === 0) return height

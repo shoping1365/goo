@@ -298,7 +298,20 @@ const withdrawalSettings = {
 }
 
 // درخواست‌های برداشت از API تراکنش‌ها (method=withdraw)
-const withdrawals = ref<any[]>([])
+interface WithdrawalItem {
+  id?: number | string
+  requestId?: number | string
+  userName: string | number
+  userEmail: string
+  userInitials: string
+  amount: number
+  bankName: string
+  accountNumber: string
+  requestDate?: string
+  status: string
+}
+
+const withdrawals = ref<WithdrawalItem[]>([])
 const page = ref(1)
 const pageSize = ref(20)
 const statusFilter = ref('')
@@ -309,11 +322,20 @@ const { data: txs, refresh } = await useFetch('/api/admin/wallet/transactions', 
   key: () => `admin-wallet-withdraw-${page.value}-${pageSize.value}-${statusFilter.value}`,
   defaultCache: true,
 })
-const { data: summary } = await useFetch('/api/admin/wallet/summary', { method:'GET', credentials:'include', key:'admin-wallet-summary', defaultCache:true })
+const { data: _summary } = await useFetch('/api/admin/wallet/summary', { method:'GET', credentials:'include', key:'admin-wallet-summary', defaultCache:true })
+interface TransactionItem {
+  id?: number | string
+  amount?: number
+  [key: string]: unknown
+}
+interface TransactionsResponse {
+  items?: TransactionItem[]
+  [key: string]: unknown
+}
 watchEffect(()=>{
-  const res: any = txs.value
+  const res = txs.value as TransactionsResponse | null
   if (res && Array.isArray(res.items)) {
-    withdrawals.value = res.items.map((r:any)=>({
+    withdrawals.value = res.items.map((r: TransactionItem)=>({
       id: r.id,
       requestId: r.id,
       userName: r.username || r.user_id,
@@ -327,14 +349,14 @@ watchEffect(()=>{
     }))
     // آمار ساده از لیست
     const list = withdrawals.value
-    withdrawalStats.newRequests = list.filter((x:any)=>x.status==='جدید').length
-    withdrawalStats.pendingApproval = list.filter((x:any)=>x.status==='در انتظار تأیید').length
-    withdrawalStats.approved = list.filter((x:any)=>x.status==='تأیید شده').length
-    withdrawalStats.rejected = list.filter((x:any)=>x.status==='رد شده').length
-    withdrawalStats.newAmount = list.filter((x:any)=>x.status==='جدید').reduce((s:number,x:any)=>s+x.amount,0)
-    withdrawalStats.pendingAmount = list.filter((x:any)=>x.status==='در انتظار تأیید').reduce((s:number,x:any)=>s+x.amount,0)
-    withdrawalStats.approvedAmount = list.filter((x:any)=>x.status==='تأیید شده').reduce((s:number,x:any)=>s+x.amount,0)
-    withdrawalStats.rejectedAmount = list.filter((x:any)=>x.status==='رد شده').reduce((s:number,x:any)=>s+x.amount,0)
+    withdrawalStats.newRequests = list.filter((x: WithdrawalItem)=>x.status==='جدید').length
+    withdrawalStats.pendingApproval = list.filter((x: WithdrawalItem)=>x.status==='در انتظار تأیید').length
+    withdrawalStats.approved = list.filter((x: WithdrawalItem)=>x.status==='تأیید شده').length
+    withdrawalStats.rejected = list.filter((x: WithdrawalItem)=>x.status==='رد شده').length
+    withdrawalStats.newAmount = list.filter((x: WithdrawalItem)=>x.status==='جدید').reduce((s:number,x: WithdrawalItem)=>s+x.amount,0)
+    withdrawalStats.pendingAmount = list.filter((x: WithdrawalItem)=>x.status==='در انتظار تأیید').reduce((s:number,x: WithdrawalItem)=>s+x.amount,0)
+    withdrawalStats.approvedAmount = list.filter((x: WithdrawalItem)=>x.status==='تأیید شده').reduce((s:number,x: WithdrawalItem)=>s+x.amount,0)
+    withdrawalStats.rejectedAmount = list.filter((x: WithdrawalItem)=>x.status==='رد شده').reduce((s:number,x: WithdrawalItem)=>s+x.amount,0)
     const total = Math.max(1, list.length)
     withdrawalStats.approvalRate = Math.round((withdrawalStats.approved/total)*1000)/10
     withdrawalStats.rejectionRate = Math.round((withdrawalStats.rejected/total)*1000)/10
@@ -348,8 +370,8 @@ async function updateStatus(id: number, status: 'success'|'failed'|'pending') {
 
 async function bulkUpdate(status: 'success'|'failed') {
   const ids = withdrawals.value
-    .filter((w:any)=> w.status==='new' || w.status==='در انتظار تأیید')
-    .map((w:any)=> w.id)
+    .filter((w: WithdrawalItem)=> w.status==='new' || w.status==='در انتظار تأیید')
+    .map((w: WithdrawalItem)=> w.id)
   for (const id of ids) {
     try { await $fetch(`/api/admin/wallet/transactions/${id}/status`, { method: 'POST', body: { status }, credentials: 'include' }) } catch {}
   }
@@ -359,7 +381,7 @@ async function bulkUpdate(status: 'success'|'failed') {
 // اطلاعات صفحه‌بندی
 const paginationInfo = reactive({ start:1, end:0, total:0 })
 watchEffect(()=>{
-  const res:any = txs.value
+  const res = txs.value as TransactionsResponse | null
   if (!res) return
   paginationInfo.total = Number(res.total||0)
   paginationInfo.start = (page.value-1)*pageSize.value + 1

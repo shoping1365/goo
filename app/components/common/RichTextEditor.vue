@@ -21,6 +21,47 @@ import Editor from '@tinymce/tinymce-vue'
 import { computed, onMounted, ref } from 'vue'
 import MediaLibraryModal from '@/components/media/MediaLibraryModal.vue'
 
+// Type definitions
+interface MediaFile {
+  id: number
+  url: string
+  thumbnail: string
+  type: 'image' | 'video' | 'file' | string
+  name: string
+  size: number
+  category: string
+}
+
+interface TinyMCEEditor {
+  insertContent: (content: string) => void
+  ui: {
+    registry: {
+      addButton: (name: string, config: { icon: string; tooltip: string; onAction: () => void }) => void
+    }
+  }
+  on: (event: string, callback: (e: TinyMCENodeChangeEvent) => void) => void
+}
+
+interface TinyMCENodeChangeEvent {
+  element: Node | null
+  clientX?: number
+  clientY?: number
+}
+
+interface TinyMCEFilePickerMeta {
+  filetype?: 'image' | 'media' | string
+  [key: string]: unknown
+}
+
+interface TinyMCEFilePickerCallback {
+  (url: string, meta?: TinyMCEFilePickerMeta): void
+}
+
+interface PendingPicker {
+  cb: TinyMCEFilePickerCallback
+  meta: TinyMCEFilePickerMeta
+}
+
 const props = defineProps({
   modelValue: { type: String, default: '' },
   direction: { type: String, default: 'rtl' }, // rtl یا ltr
@@ -34,12 +75,10 @@ const emit = defineEmits(['update:modelValue', 'h-tag-selected'])
 // state for file picker → media library
 const showMediaModal = ref(false)
 const requestedFileType = ref<'image' | 'video' | 'file' | null>(null)
-const pendingPicker = ref<{ cb: (url: string, meta?: any) => void; meta: any } | null>(null)
-let activeEditor: any = null
-// پیش‌فرض سراسری برای ادیتور: محصولات
-const mediaDefaultCategory = ref<'library' | 'products' | 'customer' | 'product-categories' | 'brands' | 'banners'>('product-categories')
+const pendingPicker = ref<PendingPicker | null>(null)
+let activeEditor: TinyMCEEditor | null = null
 
-function onMediaPicked(files: any[]) {
+function onMediaPicked(files: MediaFile[]) {
   if (!files || files.length === 0) {
     showMediaModal.value = false
     requestedFileType.value = null
@@ -49,9 +88,9 @@ function onMediaPicked(files: any[]) {
   const metaType = requestedFileType.value
   // اولویت با نوع درخواستی از ادیتور است
   const picked = (metaType === 'image')
-    ? files.find((f: any) => f.type === 'image') || files[0]
+    ? files.find((f: MediaFile) => f.type === 'image') || files[0]
     : (metaType === 'video')
-      ? files.find((f: any) => f.type === 'video') || files[0]
+      ? files.find((f: MediaFile) => f.type === 'video') || files[0]
       : files[0]
 
   try {
@@ -133,14 +172,14 @@ const editorConfig = computed(() => ({
   // یکپارچه‌سازی با کتابخانه رسانه پروژه
   file_picker_types: 'image media',
   automatic_uploads: false,
-  file_picker_callback: (cb: (url: string, meta?: any) => void, _value: any, meta: any) => {
+  file_picker_callback: (cb: TinyMCEFilePickerCallback, _value: unknown, meta: TinyMCEFilePickerMeta) => {
     pendingPicker.value = { cb, meta }
     requestedFileType.value = meta?.filetype === 'image' ? 'image' : (meta?.filetype === 'media' ? 'video' : 'file')
     showMediaModal.value = true
   },
   autoresize_bottom_margin: 20,
   resize: true,
-  setup: (editor: any) => {
+  setup: (editor: TinyMCEEditor) => {
     activeEditor = editor
     // دکمه‌های سفارشی برای درج از کتابخانه
     editor.ui.registry.addButton('myimage', {
@@ -154,7 +193,7 @@ const editorConfig = computed(() => ({
       onAction: () => { requestedFileType.value = 'video'; pendingPicker.value = null; showMediaModal.value = true }
     })
     // اضافه کردن event listener برای انتخاب تگ‌های h
-    editor.on('NodeChange', (e: any) => {
+    editor.on('NodeChange', (e: TinyMCENodeChangeEvent) => {
       const node = e.element
       if (node && (node.nodeName === 'H1' || node.nodeName === 'H2' || node.nodeName === 'H3' || 
                    node.nodeName === 'H4' || node.nodeName === 'H5' || node.nodeName === 'H6')) {

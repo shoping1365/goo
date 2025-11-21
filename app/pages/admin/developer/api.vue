@@ -413,7 +413,7 @@
 definePageMeta({ layout: 'admin-main' })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // Reactive data
 const activeTab = ref('documentation')
@@ -682,7 +682,7 @@ const sendTestRequest = async () => {
         }
       }, null, 2)
     }
-  } catch (error) {
+  } catch {
     testResponse.value = {
       status: 500,
       duration: 0,
@@ -739,7 +739,7 @@ const refreshApiStatus = async () => {
     }
     
     alert('آمار API به‌روزرسانی شد')
-  } catch (error) {
+  } catch {
     alert('خطا در به‌روزرسانی آمار')
   }
 }

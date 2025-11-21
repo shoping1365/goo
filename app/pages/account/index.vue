@@ -109,9 +109,9 @@ class="inline-flex items-center px-2 py-0.5 rounded-full text-xs border"
 import { ref, onMounted } from 'vue'
 import AccountSidebar from '~/components/account/AccountSidebar.vue'
 // احراز هویت - غیرفعال شده
-const user = null
-const isAuthenticated = false
-const checkAuth = null
+// const user = null
+// const isAuthenticated = false
+// const checkAuth = null
 
 // تعریف متا صفحه
 definePageMeta({

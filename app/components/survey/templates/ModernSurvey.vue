@@ -127,9 +127,17 @@ interface Props {
   order: Order
 }
 
-const props = defineProps<Props>()
+interface SurveyData {
+  rating: number
+  qualityRating: string
+  deliveryRating: string
+  comment: string
+  submittedAt: string
+}
+
+defineProps<Props>()
 const emit = defineEmits<{
-  submit: [data: any]
+  submit: [data: SurveyData]
 }>()
 
 const selectedRating = ref(0)

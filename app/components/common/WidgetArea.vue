@@ -56,10 +56,11 @@ const loadWidgets = async () => {
     const pageWidgets = await fetchWidgetsByPage(props.page as WidgetPage)
 
     widgets.value = pageWidgets
-  } catch (err: any) {
+  } catch (err: unknown) {
     // خطا در بارگذاری ابزارک‌ها
     widgets.value = []
-    error.value = err.message || 'خطا در بارگذاری ویجت‌ها'
+    const errorMessage = err instanceof Error ? err.message : 'خطا در بارگذاری ویجت‌ها'
+    error.value = errorMessage
   }
 }
 

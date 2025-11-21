@@ -620,12 +620,10 @@ const createBackup = async () => {
   try {
     isCreatingBackup.value = true
     // TODO: ایجاد پشتیبان
-    console.log('ایجاد پشتیبان')
-    
+
     // شبیه‌سازی ایجاد پشتیبان
     await new Promise(resolve => setTimeout(resolve, 3000))
-    
-    console.log('پشتیبان با موفقیت ایجاد شد')
+
   } catch (error) {
     console.error('خطا در ایجاد پشتیبان:', error)
   } finally {
@@ -636,25 +634,30 @@ const createBackup = async () => {
 // ذخیره تنظیمات پشتیبان‌گیری
 const saveBackupSettings = () => {
   // TODO: ذخیره تنظیمات پشتیبان‌گیری
-  console.log('ذخیره تنظیمات پشتیبان‌گیری:', backupSettings.value)
+
+}
+
+interface Backup {
+  id?: number | string
+  [key: string]: unknown
 }
 
 // دانلود پشتیبان
-const downloadBackup = (backup: any) => {
+const downloadBackup = (_backup: Backup) => {
   // TODO: دانلود پشتیبان
-  console.log('دانلود پشتیبان:', backup)
+
 }
 
 // بازیابی پشتیبان
-const restoreBackup = (backup: any) => {
+const restoreBackup = (_backup: Backup) => {
   // TODO: بازیابی پشتیبان
-  console.log('بازیابی پشتیبان:', backup)
+
 }
 
 // حذف پشتیبان
-const deleteBackup = (backup: any) => {
+const deleteBackup = (_backup: Backup) => {
   // TODO: حذف پشتیبان
-  console.log('حذف پشتیبان:', backup)
+
 }
 </script>
 

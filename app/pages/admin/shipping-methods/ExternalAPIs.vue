@@ -465,7 +465,6 @@ const testAPI = async (apiId: string) => {
 
 const editAPI = (_apiId: string) => {
   // Implementation for editing API
-  // console.log('Edit API:', apiId)
 }
 
 const toggleAPI = (apiId: string) => {
@@ -541,12 +540,10 @@ const formatDateTime = (date: Date): string => {
 
 const viewLogDetails = (_logId: string) => {
   // Implementation for viewing log details
-  // console.log('View log details:', logId)
 }
 
 const refreshLogs = () => {
   // Implementation for refreshing logs
-  // console.log('Refreshing logs...')
 }
 
 // Lifecycle

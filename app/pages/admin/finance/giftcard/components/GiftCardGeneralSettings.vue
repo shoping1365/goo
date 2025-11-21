@@ -119,7 +119,7 @@ const handleSubmit = async () => {
     // شبیه‌سازی ذخیره تنظیمات
     await new Promise(resolve => setTimeout(resolve, 1000))
     alert('تنظیمات با موفقیت ذخیره شد.')
-  } catch (e) {
+  } catch (_e) {
     alert('خطا در ذخیره تنظیمات. لطفاً دوباره تلاش کنید.')
   } finally {
     isSubmitting.value = false

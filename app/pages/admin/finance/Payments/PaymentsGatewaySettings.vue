@@ -160,11 +160,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { } from 'vue'
 
 const addGateway = () => {
   // TODO: باز کردن مودال افزودن درگاه جدید
-  console.log('Adding new gateway...')
+
 }
 </script>
 

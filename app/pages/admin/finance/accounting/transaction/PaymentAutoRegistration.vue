@@ -410,34 +410,43 @@ const toggleAutoRegistration = () => {
   // TODO: ذخیره در سرور
 }
 
+interface Mapping {
+  id?: number | string
+  name?: string
+  [key: string]: unknown
+}
+
+interface Rule {
+  id?: number | string
+  active?: boolean
+  [key: string]: unknown
+}
+
 // ویرایش نگاشت
-const editMapping = (mapping: any) => {
+const editMapping = (_mapping: Mapping) => {
   // TODO: باز کردن فرم ویرایش
-  console.log('ویرایش نگاشت:', mapping)
 }
 
 // تغییر وضعیت نگاشت
-const toggleMapping = (mapping: any) => {
+const toggleMapping = (mapping: Mapping) => {
   mapping.active = !mapping.active
   // TODO: ذخیره در سرور
 }
 
 // ویرایش قانون
-const editRule = (rule: any) => {
+const editRule = (_rule: Rule) => {
   // TODO: باز کردن فرم ویرایش
-  console.log('ویرایش قانون:', rule)
 }
 
 // تغییر وضعیت قانون
-const toggleRule = (rule: any) => {
+const toggleRule = (rule: Rule) => {
   rule.active = !rule.active
   // TODO: ذخیره در سرور
 }
 
 // حذف قانون
-const deleteRule = (rule: any) => {
+const deleteRule = (_rule: Rule) => {
   // TODO: حذف قانون
-  console.log('حذف قانون:', rule)
 }
 </script>
 

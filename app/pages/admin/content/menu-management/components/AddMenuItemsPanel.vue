@@ -39,7 +39,7 @@ import { ref } from 'vue'
 import CustomLinkPanel from './CustomLinkPanel.vue'
 import ContentPanels from './ContentPanels.vue'
 
-const props = defineProps({
+const _props = defineProps({
   customLink: {
     type: Object,
     required: true,

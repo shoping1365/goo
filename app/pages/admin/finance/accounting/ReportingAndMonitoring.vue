@@ -109,13 +109,13 @@ const activeTab = ref('connection')
 // بروزرسانی داده‌ها
 const refreshData = () => {
   // TODO: بروزرسانی داده‌ها از سرور
-  console.log('بروزرسانی داده‌های گزارش‌گیری و نظارت')
+
 }
 
 // صادر کردن گزارش
 const exportReport = () => {
   // TODO: صادر کردن گزارش
-  console.log('صادر کردن گزارش')
+
 }
 </script>
 

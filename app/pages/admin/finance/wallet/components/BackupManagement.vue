@@ -601,21 +601,21 @@ const getRestoreStatusIcon = (status: string) => {
 
 // توابع عملیاتی
 const createManualBackup = () => {
-  console.log('ایجاد پشتیبان دستی:', manualBackup.value)
+
 }
 
 const startRestore = () => {
-  console.log('شروع بازیابی:', restoreBackup.value)
+
 }
 
 const handleFileUpload = (event: Event) => {
   const target = event.target as HTMLInputElement
   if (target.files && target.files[0]) {
-    console.log('فایل انتخاب شد:', target.files[0].name)
+
   }
 }
 
 const saveBackupSettings = () => {
-  console.log('ذخیره تنظیمات پشتیبان‌گیری:', backupSettings.value)
+
 }
 </script> 
