@@ -44,7 +44,7 @@ declare const $fetch: <T = unknown>(url: string, options?: { credentials?: strin
 import { ref, watch } from 'vue';
 import type { User } from '~/types/user';
 
-defineProps<{ user: User }>()
+const props = defineProps<{ user: User }>()
 defineEmits(['view-all-transactions'])
 
 const balance = ref<number>(0)

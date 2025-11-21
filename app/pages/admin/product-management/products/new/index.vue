@@ -152,12 +152,19 @@ const isSaving = computed(() => pStore.isSaving)
 const notifier = useNotifier()
 const { buildProductLink } = useProductLink()
 
+interface Brand {
+  id: number
+  name: string
+}
+
 // Brands
-const brands = ref<any[]>([])
+const brands = ref<Brand[]>([])
 async function loadBrands(){
   try {
-    const res = await $fetch('/api/admin/brands') as any[]
-    brands.value = Array.isArray(res) ? res.map(b=>({ id:Number((b as any).id), name:(b as any).name })) : []
+    const res = await $fetch<Brand[] | { data: Brand[] }>('/api/admin/brands')
+    const raw = Array.isArray(res) ? res : (res?.data || [])
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    brands.value = raw.map((b: any) => ({ id: Number(b.id), name: b.name }))
   } catch(e){ brands.value = [] }
 }
 provide('brands', brands)
@@ -167,7 +174,7 @@ const router = useRouter()
 const route = useRoute()
 
 // Provide confirm dialog for children that use useConfirmDialog composable
-const confirmDialogRef = ref<any>(null)
+const confirmDialogRef = ref<unknown>(null)
 provide('confirmDialogRef', confirmDialogRef)
 
 // Tabs Management

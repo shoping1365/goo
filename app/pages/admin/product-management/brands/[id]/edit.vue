@@ -245,6 +245,7 @@ function previewBrand() {
 onMounted(async () => {
   const { data } = await useFetch(`/api/brands`);
   const list = Array.isArray(data.value) ? data.value : [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const b = list.find((x:any) => String(x.id) === String(route.params.id));
   if(b){
     name.value = b.name;
@@ -271,6 +272,7 @@ async function saveBrand(){
   const id = route.params.id;
   try{
     await $fetch(`/api/brands/${id}`,{
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       method:'PUT' as any,
       body:{
         name: name.value,

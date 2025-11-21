@@ -48,7 +48,7 @@
           <div class="flex items-center gap-2 border-2 border-blue-200 rounded-lg p-1 bg-blue-50">
             <input
               id="easyLoadMobile"
-              v-model="props.sliderConfig.easy_load_enabled"
+              v-model="localSliderConfig.easy_load_enabled"
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-blue-100 border-blue-300 rounded focus:ring-blue-500 focus:ring-2"
             />
@@ -62,12 +62,12 @@
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ بالا (px)</label>
             <input
               type="number"
-              :value="props.sliderConfig.mobile_padding_top !== undefined ? props.sliderConfig.mobile_padding_top : ''"
+              :value="localSliderConfig.mobile_padding_top !== undefined ? localSliderConfig.mobile_padding_top : ''"
               min="0"
               max="100"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
               placeholder="0"
-              @input="e => props.sliderConfig.mobile_padding_top = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+              @input="e => localSliderConfig.mobile_padding_top = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             />
           </div>
 
@@ -76,12 +76,12 @@
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ پایین (px)</label>
             <input
               type="number"
-              :value="props.sliderConfig.mobile_padding_bottom !== undefined ? props.sliderConfig.mobile_padding_bottom : ''"
+              :value="localSliderConfig.mobile_padding_bottom !== undefined ? localSliderConfig.mobile_padding_bottom : ''"
               min="0"
               max="100"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
               placeholder="0"
-              @input="e => props.sliderConfig.mobile_padding_bottom = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+              @input="e => localSliderConfig.mobile_padding_bottom = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             />
           </div>
 
@@ -90,12 +90,12 @@
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین راست (px)</label>
             <input
               type="number"
-              :value="props.sliderConfig.mobile_margin_right !== undefined ? props.sliderConfig.mobile_margin_right : ''"
+              :value="localSliderConfig.mobile_margin_right !== undefined ? localSliderConfig.mobile_margin_right : ''"
               min="0"
               max="100"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
               placeholder="0"
-              @input="e => props.sliderConfig.mobile_margin_right = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+              @input="e => localSliderConfig.mobile_margin_right = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             />
           </div>
 
@@ -104,12 +104,12 @@
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین چپ (px)</label>
             <input
               type="number"
-              :value="props.sliderConfig.mobile_margin_left !== undefined ? props.sliderConfig.mobile_margin_left : ''"
+              :value="localSliderConfig.mobile_margin_left !== undefined ? localSliderConfig.mobile_margin_left : ''"
               min="0"
               max="100"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
               placeholder="0"
-              @input="e => props.sliderConfig.mobile_margin_left = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+              @input="e => localSliderConfig.mobile_margin_left = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             />
           </div>
 
@@ -117,7 +117,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پخش خودکار</label>
             <select
-              v-model="props.sliderConfig.mobile_autoplay_enabled"
+              v-model="localSliderConfig.mobile_autoplay_enabled"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">فعال</option>
@@ -129,7 +129,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">تاخیر پخش خودکار (ثانیه)</label>
             <select
-              v-model="props.sliderConfig.mobile_autoplay_delay"
+              v-model="localSliderConfig.mobile_autoplay_delay"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="3">3 ثانیه</option>
@@ -144,7 +144,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">حلقه اسلایدر</label>
             <select
-              v-model="props.sliderConfig.mobile_loop_enabled"
+              v-model="localSliderConfig.mobile_loop_enabled"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">فعال</option>
@@ -156,7 +156,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">نمایش دکمه‌های ناوبری</label>
             <select
-              v-model="props.sliderConfig.mobile_show_navigation"
+              v-model="localSliderConfig.mobile_show_navigation"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">نمایش</option>
@@ -168,7 +168,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">نمایش نقطه‌های ناوبری</label>
             <select
-              v-model="props.sliderConfig.mobile_show_pagination"
+              v-model="localSliderConfig.mobile_show_pagination"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">نمایش</option>
@@ -180,7 +180,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پس‌زمینه فعال</label>
             <select
-              v-model="props.sliderConfig.bg_enabled"
+              v-model="localSliderConfig.bg_enabled"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">فعال</option>
@@ -189,10 +189,10 @@
           </div>
 
           <!-- عریض پس‌زمینه -->
-          <div v-if="props.sliderConfig.bg_enabled">
+          <div v-if="localSliderConfig.bg_enabled">
             <label class="block mb-2 text-sm font-medium text-gray-700">عریض پس‌زمینه</label>
             <select
-              v-model="props.sliderConfig.wide_bg"
+              v-model="localSliderConfig.wide_bg"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">بله</option>
@@ -201,10 +201,10 @@
           </div>
 
           <!-- رنگ پس‌زمینه -->
-                    <div v-if="props.sliderConfig.bg_enabled">
+                    <div v-if="localSliderConfig.bg_enabled">
                     <label class="block mb-2 text-sm font-medium text-gray-700">رنگ پس‌زمینه</label>
                     <input
-                    v-model="props.sliderConfig.bg_color"
+                    v-model="localSliderConfig.bg_color"
                     type="color"
                     class="w-full h-10 border border-gray-300 rounded-md"
                     />
@@ -214,7 +214,7 @@
                     <div>
                       <label class="block mb-2 text-sm font-medium text-gray-700">عرض اسلایدر در موبایل</label>
                       <select
-                        v-model="props.sliderConfig.mobile_slider_width"
+                        v-model="localSliderConfig.mobile_slider_width"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                       >
                         <option value="auto">اتوماتیک</option>
@@ -228,7 +228,7 @@
                     <div>
                       <label class="block mb-2 text-sm font-medium text-gray-700">عرض بنر در موبایل</label>
                       <select
-                        v-model="props.sliderConfig.mobile_banner_width"
+                        v-model="localSliderConfig.mobile_banner_width"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-purple-400"
                       >
                         <option value="auto">اتوماتیک</option>
@@ -242,7 +242,7 @@
                     <div>
                     <label class="block mb-2 text-sm font-medium text-gray-700">ارتفاع اسلایدر (پیکسل)</label>
                     <select
-                         v-model="props.sliderConfig.mobile_height"
+                         v-model="localSliderConfig.mobile_height"
                          class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                     >
                          <option value="auto">اتوماتیک</option>
@@ -257,7 +257,7 @@
                     <div>
                     <label class="block mb-2 text-sm font-medium text-gray-700">ارتفاع بنر در موبایل (پیکسل)</label>
                     <select
-                         v-model="props.sliderConfig.mobile_banner_height"
+                         v-model="localSliderConfig.mobile_banner_height"
                          class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                     >
                          <option value="auto">اتوماتیک</option>
@@ -303,17 +303,17 @@
                     :class="mobileSliderImageClass"
                     />
                                         <div
-                                        v-if="props.sliderConfig.show_title || props.sliderConfig.show_description"
+                                        v-if="localSliderConfig.show_title || localSliderConfig.show_description"
                                         class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3"
                                         >
                                         <h4
-                                              v-if="props.sliderConfig.show_title && slide.title && (slide.showTitle !== false)"
+                                              v-if="localSliderConfig.show_title && slide.title && (slide.showTitle !== false)"
                                               class="text-white text-base font-bold mb-1"
                                         >
                                               {{ slide.title }}
                                         </h4>
                                         <p
-                                              v-if="props.sliderConfig.show_description && slide.description"
+                                              v-if="localSliderConfig.show_description && slide.description"
                                               class="text-white/90 text-xs"
                                         >
                                               {{ slide.description }}
@@ -322,7 +322,7 @@
                                     </div>
                                     
                                     <!-- دکمه‌های ناوبری - کوچکتر برای موبایل -->
-                                    <div v-if="props.sliderConfig.show_navigation" class="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-2">
+                                    <div v-if="localSliderConfig.show_navigation" class="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-2">
                                         <button class="bg-white/20 hover:bg-white/30 text-white rounded-full p-1.5 transition-colors">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -336,7 +336,7 @@
                                     </div>
                                     
                                     <!-- نقطه‌های ناوبری - کوچکتر برای موبایل -->
-                  <div v-if="props.sliderConfig.show_pagination" class="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1.5">
+                  <div v-if="localSliderConfig.show_pagination" class="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1.5">
                     <div 
                     v-for="(slide, index) in mobileSlides" 
                     :key="slide.id || slide.order || index"
@@ -401,9 +401,9 @@
 
                                                             <!-- اطلاعات تنظیمات موبایل -->
                                     <div class="mt-4 text-sm text-gray-600 text-center border-t border-gray-200 pt-4">
-                  <p>ارتفاع اسلایدر: {{ props.sliderConfig.mobile_height === 'auto' ? 'اتوماتیک' : `${props.sliderConfig.mobile_height || 150}px` }} |
-                ارتفاع بنر: {{ props.sliderConfig.mobile_banner_height === 'auto' ? 'اتوماتیک' : `${props.sliderConfig.mobile_banner_height || 80}px` }} |
-                                        پس‌زمینه: {{ props.sliderConfig.bg_enabled ? 'فعال' : 'غیرفعال' }}</p>
+                  <p>ارتفاع اسلایدر: {{ localSliderConfig.mobile_height === 'auto' ? 'اتوماتیک' : `${localSliderConfig.mobile_height || 150}px` }} |
+                ارتفاع بنر: {{ localSliderConfig.mobile_banner_height === 'auto' ? 'اتوماتیک' : `${localSliderConfig.mobile_banner_height || 80}px` }} |
+                                        پس‌زمینه: {{ localSliderConfig.bg_enabled ? 'فعال' : 'غیرفعال' }}</p>
                                     </div>
                                     </div>
 
@@ -537,12 +537,13 @@
 
           <script setup lang="ts">
           // Vue composables
-          import { ref, computed, onMounted, watch, watchEffect, nextTick } from 'vue'
           import type { CSSProperties } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
+import type { BannerConfig } from '~/types/widget'
 
           // Props
           interface Props {
-          sliderConfig: any
+          sliderConfig: BannerConfig
           currentPreviewSlide: number
           isMobileEnabled: boolean
           openAddSliderModal: () => void
@@ -559,13 +560,27 @@
 
           const props = defineProps<Props>()
 
-          const emit = defineEmits<{ (e: 'change-device', value: 'desktop' | 'mobile'): void }>()
+          const emit = defineEmits<{
+            (e: 'change-device', value: 'desktop' | 'mobile'): void
+            (e: 'update:sliderConfig', value: BannerConfig): void
+          }>()
+
+          // Proxy for sliderConfig to avoid mutating props
+          const localSliderConfig = computed({
+            get: () => new Proxy(props.sliderConfig, {
+              set(obj, prop, value) {
+                emit('update:sliderConfig', { ...obj, [prop]: value })
+                return true
+              }
+            }),
+            set: (val) => emit('update:sliderConfig', val)
+          })
 
 // Ensure select inputs have sensible defaults even if backend omits them
 const hasInitialized = ref(false)
 
 const ensureAutoDefaults = () => {
-  if (!props.sliderConfig) {
+  if (!localSliderConfig.value) {
     return
   }
 
@@ -577,9 +592,9 @@ const ensureAutoDefaults = () => {
   ]
 
   for (const key of keys) {
-    const value = props.sliderConfig[key]
+    const value = localSliderConfig.value[key]
     if (value === undefined || value === null || value === '') {
-      props.sliderConfig[key] = 'auto'
+      localSliderConfig.value[key] = 'auto'
     }
   }
   

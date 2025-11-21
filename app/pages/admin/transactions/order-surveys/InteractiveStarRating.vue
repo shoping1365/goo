@@ -61,7 +61,11 @@
    
    const props = defineProps<Props>()
    
-   const emit = defineEmits(['update:modelValue', 'change', 'hover'])
+   const emit = defineEmits<{
+     (e: 'update:modelValue', value: number): void
+     (e: 'change', value: number): void
+     (e: 'hover', value: number): void
+   }>()
    
    const rating = ref(props.modelValue)
    const hoverRating = ref(0)
@@ -116,7 +120,7 @@
      }
    }
    
-   const getStarClass = () => {
+   const getStarClass = (_index: number) => {
      const baseClasses = [
        'star-button',
        'transition-all',
@@ -142,7 +146,7 @@
      return [...baseClasses, sizeClasses[props.size], stateClasses].join(' ')
    }
    
-   const getStarIconClass = () => {
+   const getStarIconClass = (_index: number) => {
      const sizeClasses = {
        sm: 'w-5 h-5',
        md: 'w-6 h-6',

@@ -328,8 +328,8 @@ type="button"
                 + افزودن طرح
               </button>
             </div>
-            <div v-if="(specialOffers && specialOffers.value ? specialOffers.value.length : 0) === 0" class="text-xs text-gray-500">هنوز طرحی اضافه نشده است.</div>
-            <div v-for="(offer, idx) in (specialOffers?.value || [])" :key="idx" class="grid grid-cols-1 md:grid-cols-6 gap-3 items-end mb-3">
+            <div v-if="(specialOffers ? specialOffers.length : 0) === 0" class="text-xs text-gray-500">هنوز طرحی اضافه نشده است.</div>
+            <div v-for="(offer, idx) in (specialOffers || [])" :key="idx" class="grid grid-cols-1 md:grid-cols-6 gap-3 items-end mb-3">
               <div class="md:col-span-2">
                 <label class="text-xs font-semibold text-gray-700">قیمت فروش</label>
                 <input v-model.number="offer.base_price" type="number" min="0" class="w-full border-2 border-green-200 rounded-lg px-3 py-2" placeholder="مثال: 900000" />
@@ -687,6 +687,7 @@ type="button"
 
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { computed, ref, watch } from 'vue'
 import { useProductCreateStore } from '~/stores/productCreate'
 
@@ -713,20 +714,8 @@ const props = defineProps({
 })
 
 const store = useProductCreateStore()
-const specialOffers = store.specialOffers
-// پیش‌پر کردن تاریخ با امروز در صورت خالی بودن ورودی هنگام فوکوس
-// const prefillIfEmpty = (which) => {
-//   const now = new Date()
-//   const dateFmt = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year: 'numeric', month: '2-digit', day: '2-digit' })
-//   const timeFmt = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { hour: '2-digit', minute: '2-digit' })
-//   const formatted = `${dateFmt.format(now)} ${timeFmt.format(now)}`
-//   if (which === 'start' && !store.pricingForm.sale_start_jalali) {
-//     store.pricingForm.sale_start_jalali = formatted
-//   }
-//   if (which === 'end' && !store.pricingForm.sale_end_jalali) {
-//     store.pricingForm.sale_end_jalali = formatted
-//   }
-// }
+const { specialOffers } = storeToRefs(store)
+
 
 // افزودن/حذف طرح فروش ویژه
 const addSpecialOffer = () => {
@@ -736,13 +725,15 @@ const addSpecialOffer = () => {
   const defaultBase = specialOffers.value.length === 0 ? store.pricingForm.price : (specialOffers.value[specialOffers.value.length - 1].price || store.pricingForm.price)
   specialOffers.value.push({ base_price: defaultBase, price: 0, quantity: 1 })
 }
-const removeSpecialOffer = (idx) => {
-  specialOffers.value.splice(idx, 1)
+const removeSpecialOffer = (idx: number) => {
+  if (specialOffers.value) {
+    specialOffers.value.splice(idx, 1)
+  }
 }
 
 // آیا کمپین فروش ویژه فعال در نظر گرفته شود؟
 const isSaleActive = computed(() => {
-  const offers = specialOffers?.value || []
+  const offers = specialOffers.value || []
   return !!(offers.length > 0 || (store.pricingForm.sale_price && store.pricingForm.sale_price > 0))
 })
 
@@ -754,22 +745,15 @@ const sections = store.sections
 const toggleSection = store.toggleSection
 
 // Helper function to format price
-const formatPrice = (price) => {
+const formatPrice = (price: number | string | null | undefined) => {
   if (!price || price === 0) return '0'
   return Number(price).toLocaleString('en-US').replace(/,/g, '،')
 }
 
 // Helper function to format number with Persian commas
-const formatNumber = (val) => {
+const formatNumber = (val: number | string | null | undefined) => {
   if (!val) return ''
   return Number(val).toLocaleString('en-US').replace(/,/g, '،')
-}
-
-// Helper function to parse number from formatted string
-const parseNumber = (str) => {
-  if (!str) return 0
-  const num = Number(String(str).replace(/[,،]/g, ''))
-  return isNaN(num) ? 0 : num
 }
 
 // ---------------------------
@@ -835,7 +819,13 @@ watch(() => [store.productForm.name, store.productForm.englishName], () => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const updatePricingField = (field: string, event: any) => {
   const raw = event.target.value
-  const newValue = parseNumber(raw)
+  
+  let newValue = 0
+  if (raw) {
+    const s = String(raw).replace(/[,،]/g, '')
+    const num = parseFloat(s)
+    newValue = isNaN(num) ? 0 : num
+  }
   
   // Update the store value first
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -843,7 +833,7 @@ const updatePricingField = (field: string, event: any) => {
   
   // Format the input field if it's not a number type
   if (event.target.type !== 'number') {
-    event.target.value = formatNumber(newValue)
+    event.target.value = formatNumber(Number(newValue))
   }
 
   const { price, old_price, discount_percent, discount_amount } = store.pricingForm
@@ -941,21 +931,25 @@ const formattedOldPrice = computed(() => formatPrice(store.pricingForm.old_price
 const formattedCost = computed(() => formatPrice(store.pricingForm.cost))
 
 // Auto-save pricing when in edit mode
+let saveTimeout: ReturnType<typeof setTimeout> | null = null
 watch(() => [
   store.pricingForm.price,
   store.pricingForm.old_price,
   store.pricingForm.cost,
   store.pricingForm.discount_percent,
   store.pricingForm.discount_amount
-], async () => {
-  if (props.isEditMode && props.productId) {
-    try {
-      await store.savePricingData(props.productId)
-    } catch (error: unknown) {
-      console.error('خطا در ذخیره خودکار قیمت:', error)
+], () => {
+  if (saveTimeout) clearTimeout(saveTimeout)
+  saveTimeout = setTimeout(async () => {
+    if (props.isEditMode && props.productId) {
+      try {
+        await store.savePricingData(props.productId)
+      } catch (error: unknown) {
+        console.error('خطا در ذخیره خودکار قیمت:', error)
+      }
     }
-  }
-}, { debounce: 1000 })
+  }, 1000)
+})
 
 // Load pricing data when in edit mode
 if (props.isEditMode && props.productId) {

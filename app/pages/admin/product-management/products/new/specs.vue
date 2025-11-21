@@ -364,7 +364,7 @@ interface Attribute {
   name: string
   display_name?: string
   unit?: string
-  type: string
+  type?: string
   controlType?: string
   isRequired?: boolean
   values?: AttributeValue[]
@@ -398,7 +398,7 @@ const { confirm } = useConfirmDialog()
 const attributeGroups = ref<AttributeGroup[]>([])
 const loadingGroups = ref(false)
 const showGroupContainer = ref(false)
-const selectedGroupId = ref('')
+const selectedGroupId = ref<number | string>('')
 const selectedGroupName = ref('')
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -533,7 +533,7 @@ function handleKeypress(e: KeyboardEvent) {
 }
 
 async function selectGroup(g: AttributeGroup){
-  selectedGroupId.value = g.id
+  selectedGroupId.value = String(g.id)
   selectedGroupName.value = g.name
   await loadGroup(g.id)
   // Prefill selections right after data loaded

@@ -4,6 +4,7 @@ export interface Product {
   slug?: string
   name: string
   description?: string
+  full_description?: string
   meta_description?: string
   seo_title?: string
   price: number

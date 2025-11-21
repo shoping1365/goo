@@ -281,11 +281,38 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
-// Props
-defineProps<{
-  initialSettings?: Record<string, unknown>
+interface ScoringSettings {
+  loginScore: number;
+  activityTimeScore: number;
+  profileCompletionScore: number;
+  purchaseScore: number;
+  referralScore: number;
+  surveyScore: number;
+  reviewScore: number;
+  productRatingScore: number;
+  answerScore: number;
+  discussionScore: number;
+  positiveFeedbackScore: number;
+  shareScore: number;
+  inappropriateBehaviorPenalty: number;
+  inappropriateReviewPenalty: number;
+  inactivityPenalty: number;
+  violationPenalty: number;
+  dailyScoreLimit: number;
+  dailyReviewLimit: number;
+  dailyReferralLimit: number;
+}
+
+interface AutoScoringProps {
+  isEnabled?: boolean;
+  scoringRules?: Partial<ScoringSettings>;
+}
+
+// Props definition
+const props = defineProps<{
+  initialSettings?: AutoScoringProps
 }>()
 
 // Emits

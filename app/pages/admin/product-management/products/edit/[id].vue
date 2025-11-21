@@ -235,7 +235,7 @@ async function previewProduct() {
     const slug = (pStore.productForm.slug || '').toString().trim()
     const link = sku ? buildProductLink({ sku, slug }) : buildProductLink(String(productId))
     window.open(link, '_blank')
-  } catch (error) {}
+  } catch {}
 }
 
 provide('sectionSettings', sectionSettings)

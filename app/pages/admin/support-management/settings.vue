@@ -1631,7 +1631,7 @@ interface Form {
   isRequired: boolean
   sendBeforeFirstMessage: boolean
   isDisabled: boolean
-  fields: unknown[]
+  fields: { type: string; label: string; required: boolean }[]
 }
 
 declare const definePageMeta: (meta: { layout?: string }) => void
@@ -2452,7 +2452,7 @@ function saveForm() {
       isRequired: formData.isRequired || false,
       sendBeforeFirstMessage: formData.sendBeforeFirstMessage || false,
       isDisabled: formData.isDisabled || false,
-      fields: formData.fields || [],
+      fields: (formData.fields || []) as { type: string; label: string; required: boolean }[],
       fieldCount: formData.fieldCount || 0,
       lastUpdate: formData.lastUpdate || new Date().toLocaleDateString('fa-IR')
     }

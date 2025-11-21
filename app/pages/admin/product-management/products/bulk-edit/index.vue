@@ -137,6 +137,10 @@ v-if="notification.show" :class="[
   </ClientOnly>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue';
 import Pagination from '~/components/admin/common/Pagination.vue';
@@ -149,7 +153,7 @@ definePageMeta({
 });
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 const bulkEditTableRef = ref(null)
 const products = ref([])
@@ -233,7 +237,7 @@ async function loadColumnSettings() {
         }
       })
     }
-  } catch (error) {
+  } catch {
 
     // Fallback to default if loading fails
     productTableVisibleColumns.value = [
@@ -368,4 +372,4 @@ onMounted(async () => {
   outline: none;
   box-shadow: 0 0 0 1px #60a5fa;
 }
-</style> 
+</style>

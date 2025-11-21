@@ -291,26 +291,6 @@ const otherTabSections = ref({
       description: 'نمایش و مدیریت ویدیوهای آپارات مرتبط با این محصول'
     }
   ],
-  inventoryReports: true,
-  inventoryMovements: true,
-  inventoryForecast: true,
-  mainShipping: true,
-  shippingCosts: true,
-  shippingSchedule: true,
-  shippingSpecial: true,
-  packagingLabeling: true,
-  gallerySettings: true,
-  variantManagement: true,
-  variantPricing: true,
-  variantImages: true,
-  newSpecsManagement: true,
-  openGraphSocial: true,
-  schemaStructuredData: true,
-  seoAnalytics: true,
-  relatedProductsDisplay: true,
-  aparatVideos: true
-})
-
 // تنظیمات پیش‌فرض - بخش‌های اجباری همیشه فعال، بخش‌های اختیاری قابل تنظیم
 const sections = ref({
   // بخش‌های اجباری اطلاعات محصول (همیشه فعال)
@@ -379,7 +359,7 @@ function loadSettings() {
           mainInfo: true,
           technicalInfo: true
         }
-      } catch (error) {
+      } catch {
         // خطا در بارگذاری تنظیمات
       }
     }

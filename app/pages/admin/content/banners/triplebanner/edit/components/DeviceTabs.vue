@@ -167,7 +167,7 @@
         <div class="mb-6">
           <label class="block text-sm font-medium text-gray-700 mb-2">ارتفاع موبایل (پیکسل)</label>
           <input
-            v-model.number="bannerConfig.mobile_height"
+            v-model.number="localBannerConfig.mobile_height"
             type="number"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
             placeholder="150"
@@ -179,7 +179,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">فاصله بالا (پیکسل)</label>
             <input
-              v-model.number="bannerConfig.mobile_padding_top"
+              v-model.number="localBannerConfig.mobile_padding_top"
               type="number"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
               placeholder="0"
@@ -188,7 +188,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">فاصله پایین (پیکسل)</label>
             <input
-              v-model.number="bannerConfig.mobile_padding_bottom"
+              v-model.number="localBannerConfig.mobile_padding_bottom"
               type="number"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
               placeholder="0"
@@ -202,7 +202,7 @@
 
 <script setup lang="ts">
 // Vue composables
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 
 // Props
 interface Props {
@@ -216,6 +216,8 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
+const emit = defineEmits(['update:bannerConfig'])
 
 // Tab state
 const activeTab = ref<'desktop' | 'mobile'>('desktop')
@@ -232,4 +234,16 @@ const activeBanners = computed(() => {
   return props.bannerConfig?.banners || []
 })
 
+// Computed values with default fallbacks
+const localBannerConfig = computed({
+  get: () => new Proxy(props.bannerConfig, {
+    set(target, key, value) {
+      emit('update:bannerConfig', { ...target, [key]: value })
+      return true
+    }
+  }),
+  set: (val) => {
+    emit('update:bannerConfig', val)
+  }
+})
 </script>

@@ -114,7 +114,7 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                <tr v-for="(attribute, index) in attributes" :key="attribute.id" class="hover:bg-gray-50 transition-colors">
+                <tr v-for="attribute in attributes" :key="attribute.id" class="hover:bg-gray-50 transition-colors">
 
                   <!-- Editing Mode -->
                   <template v-if="editingAttributeId === attribute.id">
@@ -354,12 +354,12 @@ declare const useHead: (head: { title?: string }) => void
 </script>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch, provide } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import Pagination from '@/components/admin/common/Pagination.vue'
+import { faControl, faType, slugControl, slugType } from '@/utils/attributeLabels'
+import { computed, onMounted, onUnmounted, provide, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useConfirmDialog } from '~/composables/useConfirmDialog'
 import { useNotifier } from '~/composables/useNotifier'
-import Pagination from '@/components/admin/common/Pagination.vue'
-import { faType, faControl, slugType, slugControl } from '@/utils/attributeLabels'
 
 definePageMeta({
   layout: 'admin-main'
@@ -383,6 +383,11 @@ interface Attribute {
 
 interface Category { id: number; name: string }
 
+interface ApiResponse<T> {
+  data?: T
+  [key: string]: unknown
+}
+
 const route = useRoute()
 const router = useRouter()
 interface ConfirmDialogOptions {
@@ -401,21 +406,44 @@ const groupId = computed(() => route.params.id as string)
 
 const groupName = ref('')
 const selectedCategory = ref<number | ''>('')
-const categories = ref<{id:number,name:string}[]>([])
+const categories = ref<Category[]>([])
+
+interface GroupAttributeRecord {
+  attribute_id: number
+  attribute?: { name: string }
+  attribute_name?: string
+  sort_order?: number
+  type?: string
+  control_type?: string
+  has_filter?: boolean
+  is_key?: boolean
+  show_on_product?: boolean
+  is_required?: boolean
+}
+
+interface GroupDetail {
+  name?: string
+  category_id?: number
+  attributes?: GroupAttributeRecord[]
+}
 
 onMounted(async () => {
   try {
-    const catData:any = await $fetch('/api/product-categories')
-    categories.value = (catData as any[])
+    const catData = await $fetch<Category[] | ApiResponse<Category[]>>('/api/product-categories')
+    if (Array.isArray(catData)) {
+      categories.value = catData
+    } else if (catData && Array.isArray(catData.data)) {
+      categories.value = catData.data
+    }
   } catch {}
 
   try {
-    const g:any = await $fetch(`/api/attribute-groups/${groupId.value}`)
+    const g = await $fetch<GroupDetail>(`/api/attribute-groups/${groupId.value}`)
     groupName.value = g.name || ''
     selectedCategory.value = g.category_id || ''
     // Map backend join records -> UI friendly objects
     if (Array.isArray(g.attributes)) {
-      attributes.value = g.attributes.map((rec: any) => ({
+      attributes.value = g.attributes.map((rec) => ({
         id: rec.attribute_id,
         name: rec.attribute?.name || rec.attribute_name || '',
         display_order: rec.sort_order ?? 1,
@@ -432,8 +460,12 @@ onMounted(async () => {
   } catch {}
 
   try {
-    const res:any = await $fetch('/api/attributes')
-    availableAttributes.value = res.data || res
+    const res = await $fetch<{id:number,name:string}[] | ApiResponse<{id:number,name:string}[]>>('/api/attributes')
+    if (Array.isArray(res)) {
+      availableAttributes.value = res
+    } else if (res && Array.isArray(res.data)) {
+      availableAttributes.value = res.data
+    }
   } catch {}
 })
 
@@ -560,25 +592,33 @@ const promptNewAttribute = async () => {
     return
   }
   try {
-    const res:any = await $fetch('/api/attributes', {method:'POST' as any, body:{name,display_name:name,data_type:'text'}})
-    const newAttr = {id: res.id || res.data?.id, name}
-    availableAttributes.value.push(newAttr)
-    attributes.value.push({
-      id: newAttr.id,
-      name,
-      display_order: attributes.value.length + 1,
-      type: 'انتخاب',
-      control_type: 'لیست باز شونده تک انتخابی',
-      has_filter: false,
-      is_key: false,
-      show_on_product: true,
-      is_required: false
-    })
-  } catch(err:any){console.error('Failed to create attribute',err)}
+    const res = await $fetch<ApiResponse<{id: number}>>('/api/attributes', {method:'POST', body:{name,display_name:name,data_type:'text'}})
+    let newId = 0
+    if (res.data && res.data.id) {
+      newId = res.data.id
+    } else if ('id' in res && typeof res.id === 'number') {
+      newId = res.id
+    }
+
+    if (newId) {
+      const newAttr = {id: newId, name}
+      availableAttributes.value.push(newAttr)
+      attributes.value.push({
+        id: newAttr.id,
+        name,
+        display_order: attributes.value.length + 1,
+        type: 'انتخاب',
+        control_type: 'لیست باز شونده تک انتخابی',
+        has_filter: false,
+        is_key: false,
+        show_on_product: true,
+        is_required: false
+      })
+    }
+  } catch(err){}
 }
 
 const editAttribute = (attribute: Attribute) => {
-  console.log('Editing attribute:', attribute)
   editingAttributeId.value = attribute.id
   editingAttribute.value = { ...attribute } // Create a copy to avoid direct mutation
 }
@@ -601,7 +641,6 @@ const saveAttribute = async () => {
     if (index > -1) {
       attributes.value[index] = { ...editingAttribute.value }
     }
-    console.log('Attribute saved:', editingAttribute.value)
     await upsertGroupAttributes()
   }
   editingAttributeId.value = null
@@ -609,7 +648,6 @@ const saveAttribute = async () => {
 }
 
 const cancelEdit = () => {
-  console.log('Edit canceled')
   editingAttributeId.value = null
   editingAttribute.value = null
 }
@@ -632,8 +670,6 @@ const CONTROL_TYPE_MAP: Record<string, string[]> = {
   'متن سفارشی': ['تکست باکس متنی تک خطی', 'تکست باکس متنی چند خطی']
 }
 
-const getDefaultControl = (type: string) => (CONTROL_TYPE_MAP[type] || [])[0] || ''
-
 const controlOptions = (type: string) => CONTROL_TYPE_MAP[type] || []
 
 watch(
@@ -650,46 +686,6 @@ watch(
 
 // Computed properties for pagination
 const totalPages = computed(() => Math.ceil(attributes.value.length / itemsPerPage.value))
-
-const paginationInfo = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value + 1
-  const end = Math.min(start + itemsPerPage.value - 1, attributes.value.length)
-  return {
-    start,
-    end,
-    total: attributes.value.length
-  }
-})
-
-const visiblePages = computed(() => {
-  const pages = []
-  const total = totalPages.value
-  const current = currentPage.value
-
-  if (total <= 7) {
-    for (let i = 1; i <= total; i++) {
-      pages.push(i)
-    }
-  } else {
-    if (current <= 4) {
-      for (let i = 1; i <= 5; i++) pages.push(i)
-      pages.push('...')
-      pages.push(total)
-    } else if (current >= total - 3) {
-      pages.push(1)
-      pages.push('...')
-      for (let i = total - 4; i <= total; i++) pages.push(i)
-    } else {
-      pages.push(1)
-      pages.push('...')
-      for (let i = current - 1; i <= current + 1; i++) pages.push(i)
-      pages.push('...')
-      pages.push(total)
-    }
-  }
-
-  return pages
-})
 
 const selectedNames = computed(() => attributes.value.map(a => a.name))
 
@@ -718,26 +714,26 @@ const upsertGroupAttributes = async () => {
       is_required: a.is_required
     }))
   }
-  await $fetch(`/api/attribute-groups/${groupId.value}/attributes`, { method: 'PUT' as any, body: payload })
+  await $fetch(`/api/attribute-groups/${groupId.value}/attributes`, { method: 'PUT', body: payload })
 }
 
 const saveAndContinue = async () => {
   if (!validateGroup()) return
   try {
     // update group basic info
-    await $fetch(`/api/attribute-groups/${groupId.value}`, {method:'PUT' as any, body:{name:groupName.value.trim(), description:''}})
+    await $fetch(`/api/attribute-groups/${groupId.value}`, {method:'PUT', body:{name:groupName.value.trim(), description:''}})
     await upsertGroupAttributes()
     useNotifier().success('تغییرات ذخیره شد')
-  }catch(err){console.error(err);useNotifier().error('خطا در ذخیره')}
+  }catch(err){useNotifier().error('خطا در ذخیره')}
 }
 
 const saveAndExit = async () => {
   if (!validateGroup()) return
   try {
-    await $fetch(`/api/attribute-groups/${groupId.value}`, {method:'PUT' as any, body:{name:groupName.value.trim(), description:''}})
+    await $fetch(`/api/attribute-groups/${groupId.value}`, {method:'PUT', body:{name:groupName.value.trim(), description:''}})
     await upsertGroupAttributes()
-    router.push('/admin/attribute-groups')
-  }catch(err){console.error(err);useNotifier().error('خطا در ذخیره')}
+    router.push('/admin/product-management/attribute-groups')
+  }catch(err){useNotifier().error('خطا در ذخیره')}
 }
 </script> 
 

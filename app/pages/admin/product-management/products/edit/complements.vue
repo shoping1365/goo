@@ -319,7 +319,7 @@ async function searchProducts(){
       return {
         id: p.id,
         name: p.name,
-        category: p?.category?.name || '',
+        category: (p.category && typeof p.category === 'object' && 'name' in p.category) ? (p.category as { name: string }).name : '',
         price: p.price,
         sku: p.sku,
         slug: p.slug,

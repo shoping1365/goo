@@ -366,7 +366,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 
 // متغیر محلی
-const paymentGateways = ref({ ...props.modelValue })
+const paymentGateways = ref(JSON.parse(JSON.stringify(props.modelValue)))
 
 // توابع کمکی
 const getLogStatusColor = (status) => {

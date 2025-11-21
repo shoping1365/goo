@@ -43,7 +43,7 @@
           <div class="flex items-center gap-2 border-2 border-blue-200 rounded-lg p-1 bg-blue-50">
             <input
               id="easyLoadMobile"
-              v-model="props.bannerConfig.easy_load_enabled"
+              v-model="localBannerConfig.easy_load_enabled"
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-blue-100 border-blue-300 rounded focus:ring-blue-500 focus:ring-2"
             />
@@ -56,7 +56,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پس‌زمینه فعال</label>
             <select
-              v-model="props.bannerConfig.bg_enabled"
+              v-model="localBannerConfig.bg_enabled"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">فعال</option>
@@ -65,10 +65,10 @@
           </div>
 
           <!-- عریض پس‌زمینه -->
-          <div v-if="props.bannerConfig.bg_enabled">
+          <div v-if="localBannerConfig.bg_enabled">
             <label class="block mb-2 text-sm font-medium text-gray-700">عریض پس‌زمینه</label>
             <select
-              v-model="props.bannerConfig.wide_bg"
+              v-model="localBannerConfig.wide_bg"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">بله</option>
@@ -77,10 +77,10 @@
           </div>
 
           <!-- رنگ پس‌زمینه -->
-          <div v-if="props.bannerConfig.bg_enabled">
+          <div v-if="localBannerConfig.bg_enabled">
             <label class="block mb-2 text-sm font-medium text-gray-700">رنگ پس‌زمینه</label>
             <input
-              v-model="props.bannerConfig.bg_color"
+              v-model="localBannerConfig.bg_color"
               type="color"
               class="w-full h-10 border border-gray-300 rounded-md"
             />
@@ -90,7 +90,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ بالا (px)</label>
             <input
-              v-model="props.bannerConfig.padding_top"
+              v-model="localBannerConfig.padding_top"
               type="number"
               min="0"
               max="100"
@@ -103,7 +103,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ پایین (px)</label>
             <input
-              v-model="props.bannerConfig.padding_bottom"
+              v-model="localBannerConfig.padding_bottom"
               type="number"
               min="0"
               max="100"
@@ -116,7 +116,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین راست (px)</label>
             <input
-              v-model="props.bannerConfig.margin_right"
+              v-model="localBannerConfig.margin_right"
               type="number"
               min="0"
               max="100"
@@ -129,7 +129,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین چپ (px)</label>
             <input
-              v-model="props.bannerConfig.margin_left"
+              v-model="localBannerConfig.margin_left"
               type="number"
               min="0"
               max="100"
@@ -142,7 +142,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">عرض بنر (پیکسل)</label>
             <select
-              v-model="props.bannerConfig.mobile_banner_width"
+              v-model="localBannerConfig.mobile_banner_width"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="400">400px</option>
@@ -156,7 +156,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">ارتفاع بنر (پیکسل)</label>
             <select
-              v-model="props.bannerConfig.mobile_height"
+              v-model="localBannerConfig.mobile_height"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="100">100px</option>
@@ -312,11 +312,12 @@
 
 <script setup lang="ts">
 // Vue composables
-import { ref, computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
+import type { BannerConfig } from '~/types/widget'
 
 // Props
 interface Props {
-  bannerConfig: any
+  bannerConfig: BannerConfig
   currentPreviewBanner: number
   openAddBannerModal: () => void
   editBanner: (index: number) => void
@@ -333,7 +334,18 @@ const props = withDefaults(defineProps<Props>(), {
 // Emits
 const emit = defineEmits<{
   'update:activeTab': [value: 'desktop' | 'mobile']
+  'update:bannerConfig': [value: BannerConfig]
 }>()
+
+const localBannerConfig = computed({
+  get: () => new Proxy(props.bannerConfig, {
+    set(obj, prop, value) {
+      emit('update:bannerConfig', { ...obj, [prop]: value })
+      return true
+    }
+  }),
+  set: (val) => emit('update:bannerConfig', val)
+})
 
 // Tab state - synced with parent
 const activeTab = ref<'desktop' | 'mobile'>(props.activeTab)
@@ -354,11 +366,11 @@ defineExpose({
 })
 
 // Collections split per device
-const desktopBanners = computed(() => (props.bannerConfig?.banners ?? []))
-const mobileBanners = computed(() => (props.bannerConfig?.mobile_banners ?? []))
+const _desktopBanners = computed(() => (localBannerConfig.value?.banners ?? []))
+const mobileBanners = computed(() => (localBannerConfig.value?.mobile_banners ?? []))
 
 // Helper functions for image handling
-const getMobileImageUrl = (banner) => {
+const getMobileImageUrl = (banner: any) => {
   // این تابع فقط برای پیش‌نمایش موبایل استفاده میشه
   // اگر عکس موبایل وجود دارد، استفاده کن
   if (banner.mobile_image) {
@@ -374,12 +386,10 @@ const getMobileImageClass = () => {
 }
 
 // Computed values with default fallbacks
-const mobileBannerHeight = computed({
-  get: () => props.bannerConfig.mobile_height,
+const _mobileBannerHeight = computed({
+  get: () => localBannerConfig.value.mobile_height,
   set: val => {
-    if (props.bannerConfig) {
-      props.bannerConfig.mobile_height = val
-    }
+    localBannerConfig.value.mobile_height = val
   }
 })
 </script>

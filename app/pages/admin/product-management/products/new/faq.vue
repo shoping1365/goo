@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import RichTextEditor from '~/components/common/RichTextEditor.vue'
-import { useConfirmDialog } from '~/composables/useConfirmDialog'
-
-const tinyApiKey = 'qwa4j6x5mh2e3241igpyi345b4uhe2d5qeq6f8hy9qfkw2ro'
+import { computed, reactive, ref } from 'vue';
+import RichTextEditor from '~/components/common/RichTextEditor.vue';
+import { useConfirmDialog } from '~/composables/useConfirmDialog';
 
 // Section collapse/expand states for FAQ tab
 const sections = reactive({
@@ -34,7 +33,6 @@ const newFaq = ref({
 
 const editingIndex = ref(-1)
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const faqStats = computed(() => ({
   total: faqs.value.length,
   published: faqs.value.filter(f => f.status === 'published').length,

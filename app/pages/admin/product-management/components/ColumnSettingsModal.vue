@@ -113,7 +113,7 @@ const selectedColumns = ref([])
 watch(() => props.isOpen, (newValue) => {
   if (newValue) {
     selectedColumns.value = [...props.visibleColumns]
-    console.log('[DEBUG] Modal opened, selectedColumns initialized to:', selectedColumns.value)
+    // console.log('[DEBUG] Modal opened, selectedColumns initialized to:', selectedColumns.value)
   }
 })
 
@@ -127,9 +127,9 @@ const saveSettings = async () => {
   try {
     isLoading.value = true
     
-    console.log('[DEBUG] Saving settings, selectedColumns:', selectedColumns.value)
+    // console.log('[DEBUG] Saving settings, selectedColumns:', selectedColumns.value)
     // ارسال تنظیمات به سرور
-    const response = await $fetch('/api/admin/admin-settings/bulk-edit-columns', {
+    await $fetch('/api/admin/admin-settings/bulk-edit-columns', {
       method: 'PUT',
       body: {
         value: JSON.stringify(selectedColumns.value)

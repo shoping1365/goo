@@ -18,7 +18,7 @@
         :style="borderStyle"
       >
         <div 
-          v-for="(category, index) in displayCategories" 
+          v-for="category in displayCategories" 
           :key="category.id"
           class="w-full min-w-0 flex-shrink-0"
           @click="navigateToCategory(category.link)"
@@ -103,11 +103,6 @@ const containerClasses = computed(() => {
   }
   
   return classes.join(' ')
-})
-
-// کلاس‌های داینامیک برای grid container
-const gridContainerClasses = computed(() => {
-  return 'grid gap-6'
 })
 
 // کلاس‌های داینامیک برای grid

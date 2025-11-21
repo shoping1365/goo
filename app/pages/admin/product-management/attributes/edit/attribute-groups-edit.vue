@@ -102,7 +102,7 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                <tr v-for="(attribute, index) in attributes" :key="attribute.id" class="hover:bg-gray-50 transition-colors">
+                <tr v-for="attribute in attributes" :key="attribute.id" class="hover:bg-gray-50 transition-colors">
                   
                   <!-- Editing Mode -->
                   <template v-if="editingAttributeId === attribute.id">
@@ -369,14 +369,11 @@
   </ClientOnly>
 </template>
 
-<script lang="ts">
-declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
-declare const useHead: (head: { title?: string }) => void
-</script>
-
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useConfirmDialog } from '~/composables/useConfirmDialog';
+import { useNotifier } from '~/composables/useNotifier';
 
 definePageMeta({
   layout: 'admin-main'
@@ -396,6 +393,18 @@ interface Attribute {
   is_key: boolean
   show_on_product: boolean
   is_required: boolean
+}
+
+interface Category {
+  id: number
+  name: string
+  parent_id?: number | null
+}
+
+interface AttributeGroup {
+  id: number
+  name: string
+  category_id?: number | null
 }
 
 const route = useRoute()
@@ -458,35 +467,47 @@ const visiblePages = computed(() => {
 })
 
 // Methods
-const deleteGroup = () => {
-  if (confirm('آیا از حذف این گروه اطمینان دارید؟')) {
+const deleteGroup = async () => {
+  const { confirm } = useConfirmDialog()
+  const ok = await confirm({
+    title: 'حذف گروه',
+    message: 'آیا از حذف این گروه اطمینان دارید؟',
+    confirmText: 'حذف',
+    cancelText: 'انصراف',
+    type: 'danger'
+  })
+  if (ok) {
     router.push('/admin/attribute-groups')
   }
 }
 
 const saveAndContinue = () => {
-  console.log('Saving and continuing edit...')
-  alert('تغییرات ذخیره شد')
+  useNotifier().success('تغییرات ذخیره شد')
 }
 
 const saveAndExit = () => {
-  console.log('Saving and exiting...')
   router.push('/admin/attribute-groups')
 }
 
 const addNewAttribute = () => {
-  console.log('Adding new attribute...')
   // Open modal or navigate to add form
 }
 
 const editAttribute = (attribute: Attribute) => {
-  console.log('Editing attribute:', attribute)
   editingAttributeId.value = attribute.id
   editingAttribute.value = { ...attribute } // Create a copy to avoid direct mutation
 }
 
-const deleteAttribute = (attributeId: number) => {
-  if (confirm('آیا از حذف این مشخصه اطمینان دارید؟')) {
+const deleteAttribute = async (attributeId: number) => {
+  const { confirm } = useConfirmDialog()
+  const ok = await confirm({
+    title: 'حذف مشخصه',
+    message: 'آیا از حذف این مشخصه اطمینان دارید؟',
+    confirmText: 'حذف',
+    cancelText: 'انصراف',
+    type: 'danger'
+  })
+  if (ok) {
     const index = attributes.value.findIndex(attr => attr.id === attributeId)
     if (index > -1) {
       attributes.value.splice(index, 1)
@@ -500,7 +521,6 @@ const saveAttribute = () => {
     if (index > -1) {
       attributes.value[index] = { ...editingAttribute.value }
     }
-    console.log('Attribute saved:', editingAttribute.value)
   }
   editingAttributeId.value = null
   editingAttribute.value = null
@@ -525,17 +545,19 @@ const updatePagination = () => {
 // New refs
 const groupName = ref('')
 const selectedCategory = ref<number | ''>('')
-const categories = ref<{id:number,name:string}[]>([])
+const categories = ref<Category[]>([])
 
 onMounted(async () => {
   try {
-    const catData:any = await $fetch('/api/product-categories')
-    categories.value = (catData as any[]).filter((c:any)=>!c.parent_id)
+    const catData = await $fetch<Category[]>('/api/product-categories')
+    if (Array.isArray(catData)) {
+      categories.value = catData.filter((c) => !c.parent_id)
+    }
   } catch {}
 
   if (groupId.value) {
     try {
-      const g:any = await $fetch(`/api/attribute-groups/${groupId.value}`)
+      const g = await $fetch<AttributeGroup>(`/api/attribute-groups/${groupId.value}`)
       groupName.value = g.name || ''
       selectedCategory.value = g.category_id || ''
     } catch {}

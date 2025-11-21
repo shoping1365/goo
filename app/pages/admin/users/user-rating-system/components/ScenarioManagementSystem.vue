@@ -308,10 +308,10 @@ interface Scenario {
   [key: string]: unknown;
 }
 
-// Props and Emits
-defineProps<{
+// Props and Emits definition
+const props = defineProps<{
   scenarios?: Scenario[]
-}>()
+}>() // Defined props
 
 defineEmits<{
   saveScenario: [scenario: Record<string, unknown>]

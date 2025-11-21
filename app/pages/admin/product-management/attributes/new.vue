@@ -336,11 +336,13 @@
 </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { navigateTo } from '#app'
 import { computed, onMounted, ref, watch } from 'vue'
 import Pagination from '~/components/admin/common/Pagination.vue'
 import UnitManagerModal from '~/components/admin/modals/UnitManagerModal.vue'
+import { useConfirmDialog } from '~/composables/useConfirmDialog'
+import { useNotifier } from '~/composables/useNotifier'
 
 definePageMeta({
   layout: 'admin-main',
@@ -348,19 +350,73 @@ definePageMeta({
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { } = useAuth()
+// const { user, hasPermission } = useAuth()
 
 // Get route for query parameters
 const route = useRoute()
 
+interface AttributeFormData {
+  name: string
+  displayText: string
+  code: string
+  unit: string
+}
+
+interface AttributeOption {
+  id: number
+  name: string
+  hasColor: boolean
+  colorValue: string | null
+  colorName: string | null
+}
+
+interface UnitOption {
+  value: string
+  label: string
+}
+
+interface UsedProduct {
+  id: number
+  name: string
+  published: boolean
+}
+
+interface RawAttributeValue {
+  id: number | string
+  value: string
+  meta?: string | Record<string, unknown>
+}
+
+interface AttributeResponse {
+  id: number
+  name: string
+  display_name: string
+  data_type: string
+  unit: string
+  code?: string
+  [key: string]: unknown
+}
+
 // Form data - will be populated dynamically
-const formData = ref({
+const formData = ref<AttributeFormData>({
   name: '',
   displayText: '',
   code: '',
   unit: '',
-  // remove obsolete fields
 })
+
+const unitSelection = ref('')
+const customUnit = ref('')
+const unitOptions = ref([
+  { label: 'بدون واحد', value: '' },
+  { label: 'سانتی‌متر (cm)', value: 'cm' },
+  { label: 'کیلوگرم (kg)', value: 'kg' },
+  { label: 'گرم (g)', value: 'g' },
+  { label: 'لیتر (L)', value: 'L' },
+  { label: 'میلی‌لیتر (ml)', value: 'ml' },
+  { label: 'تعداد', value: 'count' },
+  { label: 'سفارشی...', value: '_custom' }
+])
 
 // Expanded sections state with persistence in localStorage
 const SECTION_KEY = 'attributeNewExpandedSections'
@@ -381,7 +437,7 @@ if (typeof window !== 'undefined') {
     if (saved) {
       initialExpanded = { ...defaultExpanded, ...JSON.parse(saved) }
     }
-  } catch (e) {
+  } catch {
     // Failed to parse saved expanded sections
   }
 }
@@ -390,7 +446,7 @@ const expandedSections = ref(initialExpanded)
 
 // Modal state
 const showAddOptionModal = ref(false)
-const editingIndex = ref(null) // null برای افزودن، اندیس برای ویرایش
+const editingIndex = ref<number | null>(null) // null برای افزودن، اندیس برای ویرایش
 
 // New option form data
 const newOption = ref({
@@ -401,8 +457,8 @@ const newOption = ref({
 })
 
 // Options pagination
-const options = ref([]) // will hold option objects when loaded
-const originalOptionIds = ref(new Set()) // نگه‌داری آیدی‌های اولیه گزینه‌ها
+const options = ref<AttributeOption[]>([]) // will hold option objects when loaded
+const originalOptionIds = ref(new Set<number>()) // نگه‌داری آیدی‌های اولیه گزینه‌ها
 const optionsPage = ref(1)
 const optionsPerPage = ref(10)
 
@@ -414,14 +470,14 @@ const paginatedOptions = computed(() => {
   return options.value.slice(start, start + optionsPerPage.value)
 })
 
-const handleOptionsPageChange = (page) => {
+const handleOptionsPageChange = (page: number) => {
   if (page >= 1 && page <= optionsTotalPages.value) {
     optionsPage.value = page
   }
 }
 
 // UsedByProducts pagination
-const usedProducts = ref([])
+const usedProducts = ref<UsedProduct[]>([])
 const usedProductsPage = ref(1)
 const usedProductsPerPage = ref(10)
 
@@ -433,15 +489,15 @@ const paginatedUsedProducts = computed(() => {
   return usedProducts.value.slice(start, start + usedProductsPerPage.value)
 })
 
-const handleUsedProductsPageChange = (page) => {
+const handleUsedProductsPageChange = (page: number) => {
   if (page >= 1 && page <= usedProductsTotalPages.value) {
     usedProductsPage.value = page
   }
 }
 
 // تبدیل کد رنگ به نام فارسی
-const getColorName = (hexColor) => {
-  const colorMap = {
+const getColorName = (hexColor: string) => {
+  const colorMap: Record<string, string> = {
     '#000000': 'مشکی',
     '#ffffff': 'سفید',
     '#ff0000': 'قرمز',
@@ -464,7 +520,7 @@ const getColorName = (hexColor) => {
 }
 
 // تابع نرمال‌سازی برای تشخیص تکراری بودن
-const normalizeValue = (str) => String(str).trim().replace(/\s+/g, ' ').toLowerCase()
+const normalizeValue = (str: string) => String(str).trim().replace(/\s+/g, ' ').toLowerCase()
 
 // نظارت بر تغییر رنگ
 watch(() => newOption.value.colorValue, (newColor) => {
@@ -476,7 +532,7 @@ watch(() => newOption.value.colorValue, (newColor) => {
 // Computed property for dynamic title
 const pageTitle = computed(() => {
   // Only show 'ویرایش ویژگی' if editing (id exists)
-  if (route.query.id || (typeof attributeId !== 'undefined' && attributeId.value)) {
+  if (route.query.id) {
     return formData.value.name ? `ویرایش ویژگی: ${formData.value.name}` : 'ویرایش ویژگی'
   }
   return 'ایجاد ویژگی جدید'
@@ -500,7 +556,7 @@ onMounted(async () => {
       if (parsed.formData) Object.assign(formData.value, parsed.formData)
       if (Array.isArray(parsed.options)) options.value = parsed.options
     }
-  } catch (e) {
+  } catch {
     // Failed to load attribute draft
   }
 
@@ -513,7 +569,7 @@ onMounted(async () => {
   if (route.query.id) {
     try {
       const attrId = route.query.id
-      const attribute = await $fetch(`/api/attributes/${attrId}`)
+      const attribute = await $fetch<AttributeResponse>(`/api/attributes/${attrId}`)
       if (attribute) {
         formData.value.name = attribute.name || ''
         formData.value.displayText = attribute.display_name || ''
@@ -527,8 +583,8 @@ onMounted(async () => {
         }
       }
 
-      await fetchAttributeValues(attrId)
-    } catch (e) {
+      await fetchAttributeValues(String(attrId))
+    } catch {
       // Failed to load attribute for edit
     }
   }
@@ -543,7 +599,7 @@ watch([formData, options], () => {
   }
   try {
     localStorage.setItem(DRAFT_KEY, JSON.stringify(draft))
-  } catch (e) {
+  } catch {
     // Cannot save draft to localStorage
   }
 }, { deep: true })
@@ -552,9 +608,10 @@ const clearDraft = () => {
   if (typeof window !== 'undefined') localStorage.removeItem(DRAFT_KEY)
 }
 
-const showToast = (msg) => {
-  // You can replace with your own toast library
-  alert(msg)
+const showToast = (msg: string, type: 'success' | 'error' | 'warning' | 'info' = 'success') => {
+  if (type === 'error') useNotifier().error(msg)
+  else if (type === 'warning') useNotifier().warning(msg)
+  else useNotifier().success(msg)
 }
 
 const editingId = computed(() => route.query.id || null)
@@ -570,44 +627,44 @@ const preparePayload = () => ({
   is_active: true
 })
 
-const fetchAttributeValues = async (attrId) => {
+const fetchAttributeValues = async (attrId: string) => {
   try {
-    const vals = await $fetch(`/api/attribute-values/by-attribute/${attrId}`)
+    const vals = await $fetch<RawAttributeValue[]>(`/api/attribute-values/by-attribute/${attrId}`)
     if (Array.isArray(vals)) {
       options.value = vals.map(v => {
-        let metaObj = {}
+        let metaObj: Record<string, unknown> = {}
         if (v.meta) {
-          try { metaObj = typeof v.meta === 'string' ? JSON.parse(v.meta) : v.meta } catch (_) { metaObj = {} }
+          try { metaObj = typeof v.meta === 'string' ? JSON.parse(v.meta) : v.meta as Record<string, unknown> } catch { metaObj = {} }
         }
         return {
           id: Number(v.id),
           name: v.value,
           hasColor: !!metaObj.color,
-          colorValue: metaObj.color || '#000000',
-          colorName: metaObj.color_name || ''
+          colorValue: (metaObj.color as string) || '#000000',
+          colorName: (metaObj.color_name as string) || ''
         }
       })
       originalOptionIds.value = new Set(vals.map(v => Number(v.id)))
     }
-  } catch (e) {
+  } catch {
     // Failed to fetch attribute values
   }
 }
 
-const syncOptions = async (attrId) => {
+const syncOptions = async (attrId: string | number) => {
   if (!attrId) return
 
-  const currentIds = new Set()
+  const currentIds = new Set<number>()
 
   for (const [idx, opt] of options.value.entries()) {
-    const metaObj = {}
+    const metaObj: Record<string, unknown> = {}
     if (opt.hasColor) {
       metaObj.color = opt.colorValue
       if (opt.colorName) metaObj.color_name = opt.colorName
     }
 
     // تابع داخلی برای ساخت slug سازگار بدون وابستگی خارجی
-    const makeSlug = (s) => {
+    const makeSlug = (s: string) => {
       if (!s) return ''
       return String(s)
         .normalize('NFKD')
@@ -629,7 +686,7 @@ const syncOptions = async (attrId) => {
       currentIds.add(opt.id)
       await $fetch(`/api/attribute-values/${opt.id}`, { method: 'PUT', body: payload })
     } else {
-      const created = await $fetch(`/api/attribute-values/by-attribute/${attrId}`, { method: 'POST', body: payload })
+      const created = await $fetch<{ id: number }>(`/api/attribute-values/by-attribute/${attrId}`, { method: 'POST', body: payload })
       if (created?.id) {
         opt.id = Number(created.id)
         currentIds.add(Number(created.id))
@@ -643,7 +700,7 @@ const syncOptions = async (attrId) => {
       if (!currentIds.has(oldId)) {
         try {
           await $fetch(`/api/attribute-values/${oldId}`, { method: 'DELETE' })
-        } catch (e) {
+        } catch {
           // Failed to delete option
         }
       }
@@ -652,7 +709,7 @@ const syncOptions = async (attrId) => {
   }
 
   // --- sync from backend ---
-  await fetchAttributeValues(attrId)
+  await fetchAttributeValues(String(attrId))
 }
 
 const savedContinue = ref(false)
@@ -663,7 +720,7 @@ const saveChanges = async () => {
     const payload = preparePayload()
     const url = editingId.value ? `/api/attributes/${editingId.value}` : '/api/attributes'
     const method = editingId.value ? 'PUT' : 'POST'
-    const resp = await $fetch(url, { method, body: payload })
+    const resp = await $fetch<{ id: number }>(url, { method, body: payload })
 
     const attrId = editingId.value || resp?.id
     await syncOptions(attrId)
@@ -671,15 +728,10 @@ const saveChanges = async () => {
     clearDraft()
     showToast('✅ ویژگی با موفقیت ایجاد شد')
     navigateTo('/admin/product-management/attributes')
-  } catch (err) {
-    // Save error
-    try {
-      // Error JSON
-    } catch (e) {
-      // Could not stringify err
-    }
-    const backendMsg = err?.data?.message || err?.data?.msg || err?.data?.error
-    const msg = backendMsg || err?.message || 'خطا در ذخیره ویژگی'
+  } catch (err: unknown) {
+    const e = err as { data?: { message?: string, msg?: string, error?: string }, message?: string }
+    const backendMsg = e?.data?.message || e?.data?.msg || e?.data?.error
+    const msg = backendMsg || e?.message || 'خطا در ذخیره ویژگی'
     showToast(msg, 'error')
   }
 }
@@ -689,7 +741,7 @@ const saveAndContinueEdit = async () => {
     const payload = preparePayload()
     const url = editingId.value ? `/api/attributes/${editingId.value}` : '/api/attributes'
     const method = editingId.value ? 'PUT' : 'POST'
-    const resp = await $fetch(url, { method, body: payload })
+    const resp = await $fetch<{ id: number }>(url, { method, body: payload })
     const attrId = editingId.value || resp?.id
     await syncOptions(attrId)
 
@@ -697,34 +749,31 @@ const saveAndContinueEdit = async () => {
     clearDraft()
     showToast('✅ ویژگی ذخیره شد، می‌توانید ادامه دهید')
     // optionally set formData.id etc.
-  } catch (err) {
-    // Save error
-    try {
-      // Error JSON
-    } catch (e) {
-      // Could not stringify err
-    }
-    const backendMsg = err?.data?.message || err?.data?.msg || err?.data?.error
-    const msg = backendMsg || err?.message || 'خطا در ذخیره ویژگی'
+  } catch (err: unknown) {
+    const e = err as { data?: { message?: string, msg?: string, error?: string }, message?: string }
+    const backendMsg = e?.data?.message || e?.data?.msg || e?.data?.error
+    const msg = backendMsg || e?.message || 'خطا در ذخیره ویژگی'
     showToast(msg, 'error')
   }
 }
 
 const deleteAttribute = async () => {
   if (!editingId.value) return
-  if (confirm('آیا از حذف این ویژگی اطمینان دارید؟')) {
+  const { confirm } = useConfirmDialog()
+  const ok = await confirm({ title:'تأیید حذف', message:'آیا از حذف این ویژگی اطمینان دارید؟', confirmText:'حذف', cancelText:'انصراف', type:'danger' })
+  if (ok) {
     try {
       await $fetch(`/api/attributes/${editingId.value}`, { method: 'DELETE' })
       showToast('🗑️ ویژگی با موفقیت حذف شد!')
       clearDraft()
       navigateTo('/admin/product-management/attributes')
-    } catch (e) {
+    } catch {
       showToast('خطا در حذف ویژگی', 'error')
     }
   }
 }
 
-const toggleSection = (section) => {
+const toggleSection = (section: keyof typeof expandedSections.value) => {
   expandedSections.value[section] = !expandedSections.value[section]
   localStorage.setItem(SECTION_KEY, JSON.stringify(expandedSections.value))
 }
@@ -747,7 +796,7 @@ const closeAddOptionModal = () => {
 const saveNewOption = () => {
   const name = newOption.value.name.trim()
   if (!name) {
-    alert('لطفاً نام گزینه را وارد کنید')
+    useNotifier().warning('لطفاً نام گزینه را وارد کنید')
     return
   }
 
@@ -755,11 +804,11 @@ const saveNewOption = () => {
   const normName = normalizeValue(name)
   const duplicate = options.value.some((o, idx) => idx !== editingIndex.value && normalizeValue(o.name) === normName)
   if (duplicate) {
-    alert('این مقدار قبلاً ثبت شده است')
+    useNotifier().warning('این مقدار قبلاً ثبت شده است')
     return
   }
 
-  const optionObj = {
+  const optionObj: AttributeOption = {
     id: editingIndex.value !== null ? options.value[editingIndex.value].id : Date.now(),
     name,
     hasColor: newOption.value.hasColor,
@@ -784,26 +833,34 @@ const saveNewOption = () => {
   showAddOptionModal.value = false
 }
 
-const deleteOption = (optionName) => {
-  if (confirm(`آیا از حذف گزینه "${optionName}" اطمینان دارید؟`)) {
+const deleteOption = async (optionName: string) => {
+  const { confirm } = useConfirmDialog()
+  const ok = await confirm({ title:'تأیید حذف', message:`آیا از حذف گزینه "${optionName}" اطمینان دارید؟`, confirmText:'حذف', cancelText:'انصراف', type:'danger' })
+  if (ok) {
     options.value = options.value.filter(o => o.name !== optionName)
   }
 }
 
-const editOption = (optionName) => {
+const editOption = (optionName: string) => {
   const index = options.value.findIndex(o => o.name === optionName)
   if (index === -1) return
   editingIndex.value = index
-  newOption.value = { ...options.value[index] }
+  const opt = options.value[index]
+  newOption.value = {
+    name: opt.name,
+    hasColor: opt.hasColor,
+    colorValue: opt.colorValue || '#000000',
+    colorName: opt.colorName || ''
+  }
   showAddOptionModal.value = true
 }
 
-const viewProduct = (productName) => {
-  alert(`مشاهده محصول "${productName}" (نمونه)`) // TODO: implement
+const viewProduct = (productName: string) => {
+  useNotifier().info(`مشاهده محصول "${productName}" (نمونه)`) // TODO: implement
 }
 
 // in <script> section additions
-const DEFAULT_UNITS = [
+const DEFAULT_UNITS: UnitOption[] = [
   { value: 'kg', label: 'کیلوگرم' },
   { value: 'g', label: 'گرم' },
   { value: 'mg', label: 'میلی‌گرم' },
@@ -826,7 +883,6 @@ const DEFAULT_UNITS = [
   { value: 'ppm', label: 'قسمت در میلیون (ppm)' }
 ]
 
-const unitOptions = ref([])
 const loadUnits = () => {
   try {
     const saved = localStorage.getItem('measurementUnits')
@@ -845,9 +901,6 @@ const refreshUnits = () => {
 onMounted(() => { loadUnits() })
 
 const showUnitModal = ref(false)
-
-const unitSelection = ref(formData.value.unit || '')
-const customUnit = ref('')
 
 watch(unitSelection, (val) => {
   if (val === '_custom') {

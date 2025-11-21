@@ -939,15 +939,15 @@
 </template>
 
 <script setup lang="ts">
-import { WIDGET_TYPE_LABELS } from '~/types/widget'
-import type { Widget, BannerConfig, BannerItem } from '~/types/widget'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import SlideModal from '~/components/common/SlideModal.vue'
 import TemplateButton from '~/components/common/TemplateButton.vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
-import SlideModal from '~/components/common/SlideModal.vue'
-import DeviceTabs from './components/DeviceTabs.vue'
-import { ref, computed, onMounted, watch } from 'vue'
-import { useRoute } from 'vue-router'
 import { useWidget } from '~/composables/useWidget'
+import type { BannerConfig, BannerItem, Widget } from '~/types/widget'
+import { WIDGET_TYPE_LABELS } from '~/types/widget'
+import DeviceTabs from './components/DeviceTabs.vue'
 
 // تعریف definePageMeta و useHead برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
@@ -961,7 +961,7 @@ const route = useRoute()
 const widgetId = parseInt(route.params.id as string)
 
 // Composables
-const { fetchWidget, updateWidget, loading, error, clearError, widget } = useWidget()
+const { fetchWidget, updateWidget, loading, error, clearError, widget: fetchedWidget } = useWidget()
 
 // Props
 interface Props {
@@ -1022,31 +1022,31 @@ const formData = ref({
 
 // Initialize form data when widget is available
 const initializeFormData = () => {
-  if (widget.value) {
-    console.log('Widget data:', widget.value) // Debug log
+  if (fetchedWidget.value) {
+    console.log('Widget data:', fetchedWidget.value) // Debug log
     formData.value = {
-      title: widget.value.title || '',
-      description: widget.value.description || '',
-      type: widget.value.type || 'penta-banner',
-      status: widget.value.status || 'active',
-      page: widget.value.page || 'home'
+      title: fetchedWidget.value.title || '',
+      description: fetchedWidget.value.description || '',
+      type: fetchedWidget.value.type || 'penta-banner',
+      status: fetchedWidget.value.status || 'active',
+      page: fetchedWidget.value.page || 'home'
     }
     console.log('Form data initialized:', formData.value) // Debug log
   }
 }
 
 // Watch for widget changes
-watch(widget, (newWidget) => {
+watch(fetchedWidget, (newWidget) => {
   if (newWidget) {
     initializeFormData()
   }
 }, { immediate: true })
 
 // Computed properties for reactive form data
-const widgetTitle = computed(() => widget.value?.title || '')
-const widgetType = computed(() => widget.value?.type || 'single-slider-side')
-const widgetStatus = computed(() => widget.value?.status || 'active')
-const widgetPage = computed(() => widget.value?.page || 'home')
+const widgetTitle = computed(() => fetchedWidget.value?.title || '')
+const widgetType = computed(() => fetchedWidget.value?.type || 'penta-banner')
+const widgetStatus = computed(() => fetchedWidget.value?.status || 'active')
+const widgetPage = computed(() => fetchedWidget.value?.page || 'home')
 
 // Banner config
 const bannerConfig = ref<BannerConfig>({
@@ -1370,8 +1370,8 @@ onMounted(async () => {
   initializeFormData()
   
   // Only copy specific config fields, don't overwrite defaults
-  if (widget.value?.config) {
-    const config = widget.value.config as BannerConfig
+  if (fetchedWidget.value?.config) {
+    const config = fetchedWidget.value.config as BannerConfig
     if (config.banners) bannerConfig.value.banners = config.banners
     if (config.height) bannerConfig.value.height = config.height
     if (config.bg_enabled !== undefined) bannerConfig.value.bg_enabled = config.bg_enabled

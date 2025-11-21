@@ -153,7 +153,7 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
-declare const navigateTo: (to: string) => Promise<void>
+// declare const navigateTo: (to: string) => Promise<void>
 </script>
 
 <script setup lang="ts">

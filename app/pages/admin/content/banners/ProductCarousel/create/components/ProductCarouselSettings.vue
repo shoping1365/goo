@@ -11,7 +11,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-900 mb-2">عنوان ویجت</label>
             <input
-              v-model="formData.title"
+              v-model="localFormData.title"
               type="text"
               placeholder="عنوان ویجت را وارد کنید"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-900 placeholder-gray-600 font-medium"
@@ -21,7 +21,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-900 mb-2">توضیحات</label>
             <textarea
-              v-model="formData.description"
+              v-model="localFormData.description"
               rows="3"
               placeholder="توضیحات ویجت (اختیاری)"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-900 placeholder-gray-600 font-medium"
@@ -30,7 +30,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-900 mb-2">صفحه نمایش</label>
             <select
-              v-model="formData.page"
+              v-model="localFormData.page"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-900 placeholder-gray-600 font-medium"
             >
               <option value="home">صفحه اصلی</option>
@@ -47,7 +47,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-900 mb-2">عنوان کاروسل</label>
             <input
-              v-model="config.title"
+              v-model="localConfig.title"
               type="text"
               placeholder="عنوان کاروسل را وارد کنید"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-900 placeholder-gray-600 font-medium"
@@ -56,7 +56,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-900 mb-2">زیرعنوان</label>
             <input
-              v-model="config.subtitle"
+              v-model="localConfig.subtitle"
               type="text"
               placeholder="زیرعنوان کاروسل (اختیاری)"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-900 placeholder-gray-600 font-medium"
@@ -65,7 +65,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-900 mb-2">دسته‌بندی محصولات</label>
             <CategorySelector
-              v-model="config.categoryId"
+              v-model="localConfig.categoryId"
               :categories="props.categories"
               placeholder="همه محصولات"
             />
@@ -78,7 +78,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-900 mb-2">تعداد محصولات</label>
             <input
-              v-model.number="config.productCount"
+              v-model.number="localConfig.productCount"
               type="number"
               min="1"
               max="50"
@@ -94,7 +94,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-900 mb-2">تعداد اسلاید در هر صفحه</label>
             <select
-              v-model.number="config.slidesPerView"
+              v-model.number="localConfig.slidesPerView"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-900 placeholder-gray-600 font-medium"
             >
               <option :value="1">1 اسلاید</option>
@@ -109,7 +109,7 @@
           <div class="space-y-3">
             <div class="flex items-center">
               <input
-                v-model="config.showPrice"
+                v-model="localConfig.showPrice"
                 type="checkbox"
                 class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
               />
@@ -117,7 +117,7 @@
             </div>
             <div class="flex items-center">
               <input
-                v-model="config.showRating"
+                v-model="localConfig.showRating"
                 type="checkbox"
                 class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
               />
@@ -125,7 +125,7 @@
             </div>
             <div class="flex items-center">
               <input
-                v-model="config.showDiscount"
+                v-model="localConfig.showDiscount"
                 type="checkbox"
                 class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
               />
@@ -142,7 +142,7 @@
           <div class="space-y-3">
             <div class="flex items-center">
               <input
-                v-model="config.showNavigation"
+                v-model="localConfig.showNavigation"
                 type="checkbox"
                 class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
               />
@@ -150,7 +150,7 @@
             </div>
             <div class="flex items-center">
               <input
-                v-model="config.showIndicators"
+                v-model="localConfig.showIndicators"
                 type="checkbox"
                 class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
               />
@@ -158,7 +158,7 @@
             </div>
             <div class="flex items-center">
               <input
-                v-model="config.showControls"
+                v-model="localConfig.showControls"
                 type="checkbox"
                 class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
               />
@@ -168,17 +168,17 @@
 
           <div class="flex items-center">
             <input
-              v-model="config.autoplay"
+              v-model="localConfig.autoplay"
               type="checkbox"
               class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
             />
             <label class="mr-2 text-sm text-gray-900">پخش خودکار</label>
           </div>
 
-          <div v-if="config.autoplay">
+          <div v-if="localConfig.autoplay">
             <label class="block text-sm font-medium text-gray-900 mb-2">تاخیر پخش خودکار (میلی‌ثانیه)</label>
             <input
-              v-model.number="config.autoplayDelay"
+              v-model.number="localConfig.autoplayDelay"
               type="number"
               min="1000"
               max="10000"
@@ -190,7 +190,7 @@
 
           <div class="flex items-center">
             <input
-              v-model="config.wide_bg"
+              v-model="localConfig.wide_bg"
               type="checkbox"
               class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
             />
@@ -200,7 +200,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-900 mb-2">رنگ پس‌زمینه</label>
             <input
-              v-model="config.bg_color"
+              v-model="localConfig.bg_color"
               type="color"
               class="w-full h-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
@@ -208,7 +208,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-900 mb-2">فاصله داخلی</label>
             <input
-              v-model="config.padding"
+              v-model="localConfig.padding"
               type="text"
               placeholder="مثال: 24px"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-900 placeholder-gray-600 font-medium"
@@ -217,7 +217,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-900 mb-2">فاصله خارجی</label>
             <input
-              v-model="config.margin"
+              v-model="localConfig.margin"
               type="text"
               placeholder="مثال: 0px"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-900 placeholder-gray-600 font-medium"
@@ -230,7 +230,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 import type { ProductCarouselConfig } from '~/types/widget'
 import CategorySelector from './CategorySelector.vue'
 
@@ -246,54 +246,41 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const emit = defineEmits<{
+  (e: 'update:formData', value: Props['formData']): void
+  (e: 'update:config', value: ProductCarouselConfig): void
+}>()
+
+// Proxy for formData
+const localFormData = computed({
+  get: () => new Proxy(props.formData, {
+    set(obj, prop, value) {
+      emit('update:formData', { ...obj, [prop]: value })
+      return true
+    }
+  }),
+  set: (val) => emit('update:formData', val)
+})
+
+// Proxy for config
+const localConfig = computed({
+  get: () => new Proxy(props.config, {
+    set(obj, prop, value) {
+      emit('update:config', { ...obj, [prop]: value })
+      return true
+    }
+  }),
+  set: (val) => emit('update:config', val)
+})
+
 // State برای dropdown دسته‌بندی (در صورت نیاز)
 const showCategoryDropdown = ref(false)
 const categorySearch = ref('')
 
-// محاسبه دسته‌بندی فیلتر شده (در صورت نیاز)
-const filteredCategories = computed(() => {
-  if (!categorySearch.value) {
-    return props.categories
-  }
-
-  const search = categorySearch.value.toLowerCase()
-  return props.categories.filter(category =>
-    category.name.toLowerCase().includes(search) ||
-    (category.description && category.description.toLowerCase().includes(search))
-  )
-})
-
-// محاسبه نام دسته‌بندی انتخاب شده
-const selectedCategoryName = computed(() => {
-  if (props.config.categoryId === null) {
-    return 'همه محصولات'
-  }
-
-  const category = props.categories.find(c => c.id === props.config.categoryId)
-  return category ? category.name : 'دسته‌بندی نامشخص'
-})
-
-// محاسبه دسته‌بندی انتخاب شده
-const selectedCategory = computed(() => {
-  return props.categories.find(c => c.id === props.config.categoryId)
-})
-
 // متدهای مدیریت dropdown (در صورت نیاز)
-const toggleCategoryDropdown = () => {
-  showCategoryDropdown.value = !showCategoryDropdown.value
-  if (showCategoryDropdown.value) {
-    categorySearch.value = ''
-  }
-}
-
 const closeCategoryDropdown = () => {
   showCategoryDropdown.value = false
   categorySearch.value = ''
-}
-
-const selectCategory = (categoryId: number | null) => {
-  props.config.categoryId = categoryId
-  closeCategoryDropdown()
 }
 </script>
 

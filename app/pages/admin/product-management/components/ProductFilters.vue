@@ -142,7 +142,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed, watch } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import SearchableSelect from '~/components/admin/common/SearchableSelect.vue'
 
 const emit = defineEmits(['filtersChanged'])
@@ -255,18 +255,18 @@ const clearAllFilters = () => {
 onMounted(async () => {
   isLoading.value = true
   try {
-    console.log('🔄 شروع بارگذاری دسته‌بندی‌ها و برندها...')
-    console.log('🔧 SearchableSelect component:', typeof SearchableSelect)
+    // console.log('🔄 شروع بارگذاری دسته‌بندی‌ها و برندها...')
+    // console.log('🔧 SearchableSelect component:', typeof SearchableSelect)
     
     await Promise.all([
       loadCategories(),
       loadBrands()
     ])
     
-    console.log('✅ دسته‌بندی‌ها:', categories.value.length, categories.value)
-    console.log('✅ برندها:', brands.value.length, brands.value)
-    console.log('✅ گزینه‌های دسته‌بندی:', categoryOptions.value)
-    console.log('✅ گزینه‌های برند:', brandOptions.value)
+    // console.log('✅ دسته‌بندی‌ها:', categories.value.length, categories.value)
+    // console.log('✅ برندها:', brands.value.length, brands.value)
+    // console.log('✅ گزینه‌های دسته‌بندی:', categoryOptions.value)
+    // console.log('✅ گزینه‌های برند:', brandOptions.value)
     
   } catch (error) {
     console.error('❌ خطا در بارگذاری داده‌ها:', error)

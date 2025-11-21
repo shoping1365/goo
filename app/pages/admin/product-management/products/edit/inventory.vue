@@ -824,7 +824,7 @@ async function ensureDefaultRow(productId: string | number) {
     if (!defaultWarehouseId.value && warehouses.value.length > 0) {
       const d = getDefaultWarehouseId()
       if (d) {
-        defaultWarehouseId.value = d as any
+        defaultWarehouseId.value = d
         store.inventoryForm.warehouse_id = d
       }
     }

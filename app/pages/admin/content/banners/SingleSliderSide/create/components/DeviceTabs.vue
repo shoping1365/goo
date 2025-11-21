@@ -43,7 +43,7 @@
           <div class="flex items-center gap-2 border-2 border-blue-200 rounded-lg p-1 bg-blue-50">
             <input
               id="easyLoadMobile"
-              v-model="props.sliderConfig.easy_load_enabled"
+              v-model="localSliderConfig.easy_load_enabled"
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-blue-100 border-blue-300 rounded focus:ring-blue-500 focus:ring-2"
             />
@@ -56,7 +56,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ بالا (px)</label>
             <input
-              v-model="props.sliderConfig.padding_top"
+              v-model="localSliderConfig.padding_top"
               type="number"
               min="0"
               max="100"
@@ -69,7 +69,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ پایین (px)</label>
             <input
-              v-model="props.sliderConfig.padding_bottom"
+              v-model="localSliderConfig.padding_bottom"
               type="number"
               min="0"
               max="100"
@@ -82,7 +82,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین راست (px)</label>
             <input
-              v-model="props.sliderConfig.margin_right"
+              v-model="localSliderConfig.margin_right"
               type="number"
               min="0"
               max="100"
@@ -95,7 +95,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین چپ (px)</label>
             <input
-              v-model="props.sliderConfig.margin_left"
+              v-model="localSliderConfig.margin_left"
               type="number"
               min="0"
               max="100"
@@ -108,7 +108,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پخش خودکار</label>
             <select
-              v-model="props.sliderConfig.autoplay_enabled"
+              v-model="localSliderConfig.autoplay_enabled"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">فعال</option>
@@ -120,7 +120,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">تاخیر پخش خودکار (ثانیه)</label>
             <select
-              v-model="props.sliderConfig.autoplay_delay"
+              v-model="localSliderConfig.autoplay_delay"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="3">3 ثانیه</option>
@@ -135,7 +135,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">حلقه اسلایدر</label>
             <select
-              v-model="props.sliderConfig.loop_enabled"
+              v-model="localSliderConfig.loop_enabled"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">فعال</option>
@@ -147,7 +147,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">نمایش دکمه‌های ناوبری</label>
             <select
-              v-model="props.sliderConfig.show_navigation"
+              v-model="localSliderConfig.show_navigation"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">نمایش</option>
@@ -159,7 +159,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">نمایش نقطه‌های ناوبری</label>
             <select
-              v-model="props.sliderConfig.show_pagination"
+              v-model="localSliderConfig.show_pagination"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">نمایش</option>
@@ -171,7 +171,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">عرض اسلایدر در موبایل</label>
             <select
-              v-model="props.sliderConfig.mobile_slider_width"
+              v-model="localSliderConfig.mobile_slider_width"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="100">کوچک (100px)</option>
@@ -351,11 +351,12 @@
 
 <script setup lang="ts">
 // Vue composables
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
+import type { BannerConfig } from '~/types/widget'
 
 // Props
 interface Props {
-  sliderConfig: any
+  sliderConfig: BannerConfig
   currentPreviewSlide: number
   openAddSliderModal: () => void
   editSlide: (index: number) => void
@@ -365,6 +366,21 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
+const emit = defineEmits<{
+  (e: 'update:sliderConfig', value: BannerConfig): void
+}>()
+
+// Proxy for sliderConfig
+const localSliderConfig = computed({
+  get: () => new Proxy(props.sliderConfig, {
+    set(obj, prop, value) {
+      emit('update:sliderConfig', { ...obj, [prop]: value })
+      return true
+    }
+  }),
+  set: (val) => emit('update:sliderConfig', val)
+})
 
 // Tab state
 const activeTab = ref<'desktop' | 'mobile'>('desktop')
@@ -376,10 +392,10 @@ defineExpose({
 
 // Computed values with default fallbacks
 const mobileSliderHeight = computed({
-  get: () => props.sliderConfig.mobile_height,
+  get: () => localSliderConfig.value.mobile_height,
   set: val => {
-    if (props.sliderConfig) {
-      props.sliderConfig.mobile_height = val
+    if (localSliderConfig.value) {
+      localSliderConfig.value.mobile_height = val
     }
   }
 })

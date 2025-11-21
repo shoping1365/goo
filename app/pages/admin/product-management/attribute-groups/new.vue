@@ -150,7 +150,7 @@ v-for="attr in filteredModalAttributes" :key="attr.id"
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                <tr v-for="(attribute, index) in attributes" :key="attribute.id" class="hover:bg-gray-50 transition-colors">
+                <tr v-for="attribute in attributes" :key="attribute.id" class="hover:bg-gray-50 transition-colors">
 
                   <!-- Editing Mode -->
                   <template v-if="editingAttributeId === attribute.id">
@@ -360,7 +360,7 @@ declare const useHead: (head: { title?: string }) => void
 import Pagination from '@/components/admin/common/Pagination.vue'
 import { slugControl, slugType } from '@/utils/attributeLabels'
 import { computed, onMounted, provide, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useConfirmDialog } from '~/composables/useConfirmDialog'
 import { useNotifier } from '~/composables/useNotifier'
 
@@ -387,9 +387,19 @@ interface Attribute {
   is_required: boolean
 }
 
-interface Category { id: number; name: string }
+interface Category { id: number; name: string; parent_id?: number | null }
 
-const route = useRoute()
+interface AttributeGroupItem {
+  id?: number
+  name: string
+  category_id: number
+}
+
+interface ApiResponse<T> {
+  data?: T
+  [key: string]: unknown
+}
+
 const router = useRouter()
 interface ConfirmDialogOptions {
   title?: string
@@ -404,8 +414,6 @@ interface ConfirmDialogInstance {
 const confirmDialogRef = ref<ConfirmDialogInstance | null>(null)
 provide('confirmDialogRef', confirmDialogRef)
 
-const groupId = computed(() => (route.params.id as string) || (route.query.id as string) || '')
-
 // Pagination variables
 const currentPage = ref(1)
 const itemsPerPage = ref(10)
@@ -419,46 +427,6 @@ const attributes = ref<Attribute[]>([])
 
 // Computed properties for pagination
 const totalPages = computed(() => Math.ceil(attributes.value.length / itemsPerPage.value))
-
-const paginationInfo = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value + 1
-  const end = Math.min(start + itemsPerPage.value - 1, attributes.value.length)
-  return {
-    start,
-    end,
-    total: attributes.value.length
-  }
-})
-
-const visiblePages = computed(() => {
-  const pages = []
-  const total = totalPages.value
-  const current = currentPage.value
-
-  if (total <= 7) {
-    for (let i = 1; i <= total; i++) {
-      pages.push(i)
-    }
-  } else {
-    if (current <= 4) {
-      for (let i = 1; i <= 5; i++) pages.push(i)
-      pages.push('...')
-      pages.push(total)
-    } else if (current >= total - 3) {
-      pages.push(1)
-      pages.push('...')
-      for (let i = total - 4; i <= total; i++) pages.push(i)
-    } else {
-      pages.push(1)
-      pages.push('...')
-      for (let i = current - 1; i <= current + 1; i++) pages.push(i)
-      pages.push('...')
-      pages.push(total)
-    }
-  }
-
-  return pages
-})
 
 // Methods
 const deleteGroup = async () => {
@@ -476,7 +444,7 @@ const deleteGroup = async () => {
 const groupName = ref('')
 const selectedCategory = ref<number | ''>('')
 const categories = ref<Category[]>([])
-const existingGroups = ref<{ id?: number; name: string; category_id: number }[]>([])
+const existingGroups = ref<AttributeGroupItem[]>([])
 
 // نشان می‌دهد که آیا گروه حداقل یکبار ذخیره شده است یا خیر
 const isSaved = ref(false)
@@ -484,8 +452,12 @@ const createdGroupId = ref<number | null>(null)
 
 onMounted(async () => {
   try {
-    const catData: any = await $fetch('/api/product-categories')
-    categories.value = (catData as any[]).filter((c: any) => !c.parent_id)
+    const catData = await $fetch<Category[] | ApiResponse<Category[]>>('/api/product-categories')
+    if (Array.isArray(catData)) {
+      categories.value = catData.filter(c => !c.parent_id)
+    } else if (catData && Array.isArray(catData.data)) {
+      categories.value = catData.data.filter(c => !c.parent_id)
+    }
   } catch (err) {
     // در صورت خطا، لیست خالی می‌ماند تا کاربر نتواند ذخیره کند
     categories.value = []
@@ -493,8 +465,12 @@ onMounted(async () => {
 
   // Fetch existing groups list for duplicate checks
   try {
-    const groupsRes: any = await $fetch('/api/attribute-groups', { params: { per_page: 1000, page: 1 } })
-    existingGroups.value = Array.isArray(groupsRes.data) ? groupsRes.data : groupsRes
+    const groupsRes = await $fetch<AttributeGroupItem[] | ApiResponse<AttributeGroupItem[]>>('/api/attribute-groups', { params: { per_page: 1000, page: 1 } })
+    if (Array.isArray(groupsRes)) {
+      existingGroups.value = groupsRes
+    } else if (groupsRes && Array.isArray(groupsRes.data)) {
+      existingGroups.value = groupsRes.data
+    }
   } catch (err) {
     existingGroups.value = []
   }
@@ -504,8 +480,12 @@ onMounted(async () => {
 
   // بارگذاری لیست ویژگی‌ها
   try {
-    const res: any = await $fetch('/api/attributes')
-    availableAttributes.value = res.data || res
+    const res = await $fetch<{id:number,name:string}[] | ApiResponse<{id:number,name:string}[]>>('/api/attributes')
+    if (Array.isArray(res)) {
+      availableAttributes.value = res
+    } else if (res && Array.isArray(res.data)) {
+      availableAttributes.value = res.data
+    }
   } catch {}
 })
 
@@ -540,8 +520,8 @@ const createGroup = async () => {
     category_id: Number(selectedCategory.value),
     description: ''
   }
-  const res: any = await $fetch('/api/attribute-groups', {
-    method: 'POST' as any,
+  const res = await $fetch<ApiResponse<{id: number}>>('/api/attribute-groups', {
+    method: 'POST',
     body: payload
   })
   return res
@@ -554,7 +534,7 @@ const updateGroup = async () => {
     description: ''
   }
   await $fetch(`/api/attribute-groups/${createdGroupId.value}`, {
-    method: 'PUT' as any,
+    method: 'PUT',
     body: payload
   })
 }
@@ -574,7 +554,7 @@ const upsertGroupAttributes = async () => {
     }))
   }
   await $fetch(`/api/attribute-groups/${createdGroupId.value}/attributes`, {
-    method: 'PUT' as any,
+    method: 'PUT',
     body: payload
   })
 }
@@ -587,7 +567,11 @@ const saveAndContinue = async () => {
 
     if (firstTimeSave) {
       const res = await createGroup()
-      createdGroupId.value = res.id || res.data?.id || null
+      if (res.data && res.data.id) {
+        createdGroupId.value = res.data.id
+      } else if ('id' in res && typeof res.id === 'number') {
+        createdGroupId.value = res.id
+      }
     } else {
       await updateGroup()
     }
@@ -616,7 +600,11 @@ const saveAndExit = async () => {
   try {
     if (!isSaved.value) {
       const res = await createGroup()
-      createdGroupId.value = res.id || res.data?.id || null
+      if (res.data && res.data.id) {
+        createdGroupId.value = res.data.id
+      } else if ('id' in res && typeof res.id === 'number') {
+        createdGroupId.value = res.id
+      }
     } else {
       await updateGroup()
     }
@@ -625,7 +613,6 @@ const saveAndExit = async () => {
 
     router.push('/admin/product-management/attribute-groups')
   } catch (err) {
-    console.error('خطا در ذخیره گروه مشخصات:', err)
     useNotifier().error('خطا در ذخیره گروه مشخصات')
   }
 }
@@ -636,7 +623,6 @@ const addNewAttribute = () => {
 }
 
 const editAttribute = (attribute: Attribute) => {
-  console.log('Editing attribute:', attribute)
   editingAttributeId.value = attribute.id
   editingAttribute.value = { ...attribute } // Create a copy to avoid direct mutation
 }
@@ -658,14 +644,12 @@ const saveAttribute = () => {
     if (index > -1) {
       attributes.value[index] = { ...editingAttribute.value }
     }
-    console.log('Attribute saved:', editingAttribute.value)
   }
   editingAttributeId.value = null
   editingAttribute.value = null
 }
 
 const cancelEdit = () => {
-  console.log('Edit canceled')
   editingAttributeId.value = null
   editingAttribute.value = null
 }
@@ -794,26 +778,35 @@ const promptNewAttribute = async () => {
     return
   }
   try {
-    const res: any = await $fetch('/api/attributes', {
-      method: 'POST' as any,
+    const res = await $fetch<ApiResponse<{id: number}>>('/api/attributes', {
+      method: 'POST',
       body: { name, display_name: name, data_type: 'text' }
     })
     // Add to local lists
-    const newAttr = { id: res.id || res.data?.id, name }
-    availableAttributes.value.push(newAttr)
-    attributes.value.push({
-      id: newAttr.id,
-      name,
-      display_order: attributes.value.length + 1,
-      type: 'انتخاب',
-      control_type: getDefaultControl('انتخاب'),
-      has_filter: false,
-      is_key: false,
-      show_on_product: true,
-      is_required: false
-    })
-  } catch (err: any) {
-    console.error('Failed to create attribute on server', err)
+    let newId = 0
+    if (res.data && res.data.id) {
+      newId = res.data.id
+    } else if ('id' in res && typeof res.id === 'number') {
+      newId = res.id
+    }
+    
+    if (newId) {
+      const newAttr = { id: newId, name }
+      availableAttributes.value.push(newAttr)
+      attributes.value.push({
+        id: newAttr.id,
+        name,
+        display_order: attributes.value.length + 1,
+        type: 'انتخاب',
+        control_type: getDefaultControl('انتخاب'),
+        has_filter: false,
+        is_key: false,
+        show_on_product: true,
+        is_required: false
+      })
+    }
+  } catch (err) {
+    // Failed to create attribute on server
   }
 }
 
@@ -840,5 +833,5 @@ const finishButtonClass = computed(() => {
   appearance: none;
   direction: rtl;
 }
-</style> 
+</style>
 

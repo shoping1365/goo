@@ -36,11 +36,11 @@
       <UserStatsCards 
         :users="users" 
         :filters="filters" 
-        @update:filters="filters = $event"
+        @update:filters="filters = $event as FilterType"
         @export-excel="exportExcel"
       />
 
-      <UserFilterBar :filters="filters" @update:filters="filters = $event" />
+      <UserFilterBar :filters="filters" @update:filters="filters = $event as FilterType" />
 
       <!-- باکس عملیات زیر فیلترها -->
       <div class="w-full my-2">
@@ -147,11 +147,19 @@ const users = ref<User[]>([]);
 const settingsOpen = ref(false);
 const onlineThresholdSec = ref<number>(120);
 const loading = ref(false);
-const filters = ref({
+const filters = ref<{
+  status: string;
+  role: string;
+  onlineOnly: boolean;
+  search: string;
+}>({
   status: '',
   role: '',
-  onlineOnly: false
+  onlineOnly: false,
+  search: ''
 });
+
+type FilterType = typeof filters.value;
 const selectedUser = ref(null);
 const detailOpen = ref(false);
 const adminRegisterModalOpen = ref(false);

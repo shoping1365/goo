@@ -1117,8 +1117,8 @@ const sectionSettings = inject('sectionSettings', {
 const sections = store.sections
 const productForm = store.productForm
 const tinyApiKey = store.tinyApiKey
-const categories = computed(() => store.categories as Category[])
-const brands = computed(() => store.brands as Brand[])
+const categories = computed(() => (store.categories as unknown[]).map(c => c as Category))
+const brands = computed(() => (store.brands as unknown[]).map(b => b as Brand))
 
 // دسته‌بندی‌های اصلی (parent_id == null)
 const mainCategories = computed(() => categories.value.filter(c => !c.parent_id))

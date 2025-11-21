@@ -429,7 +429,6 @@ declare const navigateTo: (to: string) => Promise<void>
 
 <script setup lang="ts">
 import { computed, onActivated, onMounted, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
 import Pagination from '~/components/admin/common/Pagination.vue'
 import DeleteConfirmModal from '~/components/common/DeleteConfirmModal.vue'
 import { useAuth } from '~/composables/useAuth'
@@ -468,11 +467,10 @@ interface DeleteModalRef {
   openDeleteConfirm?: (id: number | string) => void
 }
 
-const { user, hasPermission } = useAuth()
+const { hasPermission } = useAuth()
 
 const canDeleteCategory = computed(() => hasPermission('categories_manage'))
 
-const router = useRouter()
 const deleteModalRef = ref<DeleteModalRef | null>(null)
 const deleteMessage = ref('')
 const categoryToDelete = ref<Category | null>(null)
@@ -573,10 +571,6 @@ function handleOrderInputKey(e: KeyboardEvent, cat: Category) {
     editingOrderId.value = null
     editingOrderValue.value = ''
   }
-}
-
-const handleExport = () => {
-      navigateTo('/admin/product-management/product-categories')
 }
 
 function createMain() {
@@ -705,11 +699,6 @@ const goToPage = (page: number) => {
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page
   }
-}
-
-function imgSrc(cat: Category){
-  const url = (cat.image_url || cat.banner_url || '').toString().trim()
-  return url ? url : '/statics/images/default-image_100.png'
 }
 
 function onImgError(e: Event){

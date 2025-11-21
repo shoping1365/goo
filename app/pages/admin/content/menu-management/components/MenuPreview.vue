@@ -87,7 +87,7 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import MenuItemFlat from './MenuItemFlat.vue'
 
 const props = defineProps({
@@ -95,14 +95,19 @@ const props = defineProps({
   isSaving: Boolean,
 })
 
+const emit = defineEmits(['update-slug', 'update-item', 'remove-item', 'toggle-expanded', 'save', 'update:menu'])
+
 const menu = computed({
-  get: () => props.menu ?? { items: [] },
+  get: () => new Proxy(props.menu ?? { items: [] }, {
+    set(target, key, value) {
+      emit('update:menu', { ...target, [key]: value })
+      return true
+    }
+  }),
   set: (value) => {
-    if (props.menu && value) Object.assign(props.menu, value)
+    emit('update:menu', value)
   },
 })
-
-const emit = defineEmits(['update-slug', 'update-item', 'remove-item', 'toggle-expanded', 'save'])
 
 // تبدیل tree به flat list
 const flatItems = computed(() => {

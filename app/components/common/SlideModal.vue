@@ -23,7 +23,7 @@
               <label class="block text-sm font-medium text-gray-700 mb-1" style="font-family: 'Yekan', sans-serif;">عنوان اسلاید *</label>
               <input
                 ref="titleInputRef"
-                v-model="slideData.title"
+                v-model="localSlideData.title"
                 type="text"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 placeholder="عنوان اسلاید را وارد کنید"
@@ -42,7 +42,7 @@
                     <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1" style="font-family: 'Yekan', sans-serif;">توضیحات</label>
                     <textarea
-                    v-model="slideData.description"
+                    v-model="localSlideData.description"
                     rows="3"
                     class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     placeholder="توضیحات اسلاید را وارد کنید"
@@ -129,7 +129,7 @@ class="border-2 border-dashed rounded-lg px-4 py-4 text-center transition-colors
                     <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1" style="font-family: 'Yekan', sans-serif;">لینک (اختیاری)</label>
                     <input
-                      v-model="slideData.link"
+                      v-model="localSlideData.link"
                       type="url"
                       class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                       placeholder="https://example.com"
@@ -138,10 +138,10 @@ class="border-2 border-dashed rounded-lg px-4 py-4 text-center transition-colors
                     </div>
 
                     <!-- باز کردن در صفحه جدید -->
-                    <div v-if="slideData.link" class="flex items-center gap-3">
+                    <div v-if="localSlideData.link" class="flex items-center gap-3">
                     <input
                       id="openInNewTabCheckbox"
-                      v-model="slideData.openInNewTab"
+                      v-model="localSlideData.openInNewTab"
                       type="checkbox"
                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                     />
@@ -156,7 +156,7 @@ class="border-2 border-dashed rounded-lg px-4 py-4 text-center transition-colors
                     <div class="flex items-center gap-3">
                     <input
                          id="showTitleCheckbox"
-                         v-model="showTitleValue"
+                         v-model="localShowTitle"
                          type="checkbox"
                          class="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 focus:ring-2"
                     />
@@ -191,15 +191,15 @@ class="border-2 border-dashed rounded-lg px-4 py-4 text-center transition-colors
           </template>
 
           <script setup lang="ts">
-          import { ref, computed } from 'vue'
-          import type { SlideItem } from '~/types/widget'
+          import { computed, ref, watch } from 'vue'
+import type { SlideItem } from '~/types/widget'
 
           // Props
           interface Props {
-          isVisible: boolean
-          isEditing: boolean
-          slideData: SlideItem
-          showTitle: boolean
+          isVisible?: boolean
+          isEditing?: boolean
+          slideData?: SlideItem
+          showTitle?: boolean
           deviceType?: 'desktop' | 'mobile'
           }
 
@@ -229,6 +229,19 @@ const emit = defineEmits<{
   'remove-image': []
 }>()
 
+          // Local state
+          const localSlideData = ref<SlideItem>({ ...props.slideData })
+          const localShowTitle = ref(props.showTitle)
+
+          // Watch for prop changes
+          watch(() => props.slideData, (newValue) => {
+            localSlideData.value = { ...newValue }
+          }, { deep: true })
+
+          watch(() => props.showTitle, (newValue) => {
+            localShowTitle.value = newValue
+          })
+
           // Refs for form elements
           const titleInputRef = ref<HTMLInputElement | null>(null)
 
@@ -238,13 +251,7 @@ const emit = defineEmits<{
 
           // Computed property for current image based on device type
           const currentImage = computed(() => {
-            return props.deviceType === 'mobile' ? props.slideData.mobile_image : props.slideData.image
-          })
-
-          // Computed property for showTitle with getter/setter
-          const showTitleValue = computed({
-          get: () => props.showTitle,
-          set: (value: boolean) => emit('update:showTitle', value)
+            return props.deviceType === 'mobile' ? localSlideData.value.mobile_image : localSlideData.value.image
           })
 
           // Methods
@@ -256,7 +263,7 @@ const emit = defineEmits<{
           }
 
           const validateTitle = () => {
-            if (!props.slideData.title?.trim()) {
+            if (!localSlideData.value.title?.trim()) {
               titleError.value = 'لطفاً عنوان اسلاید را وارد کنید.'
             } else {
               titleError.value = ''
@@ -288,7 +295,7 @@ const emit = defineEmits<{
               return
             }
 
-            emit('save', props.slideData, props.showTitle)
+            emit('save', localSlideData.value, localShowTitle.value)
             closeModal()
           }
 
@@ -300,43 +307,4 @@ const emit = defineEmits<{
             imageError.value = ''
             emit('remove-image')
           }
-
-// Handle custom file selection
-const handleFileSelect = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  const file = target.files?.[0]
-
-  if (file) {
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      imageError.value = 'لطفا یک فایل تصویر انتخاب کنید'
-      return
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      imageError.value = 'حجم فایل نباید بیشتر از 5 مگابایت باشد'
-      return
-    }
-
-    // Clear any previous errors
-    imageError.value = ''
-
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      const result = e.target?.result as string
-      // Create updated slide data with new image based on device type
-      const updatedSlideData = {
-        ...props.slideData,
-        // بر اساس deviceType، فیلد مناسب را تغییر بده
-        ...(props.deviceType === 'mobile' 
-          ? { mobile_image: result }
-          : { image: result }
-        )
-      }
-      emit('update:slideData', updatedSlideData)
-    }
-    reader.readAsDataURL(file)
-  }
-}
           </script>

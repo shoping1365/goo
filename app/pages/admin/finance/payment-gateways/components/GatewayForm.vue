@@ -68,7 +68,7 @@ v-for="(error, index) in validationErrors" :key="index"
         <!-- تب‌های فرم با طراحی مدرن -->
         <div class="flex bg-white rounded-2xl p-2 shadow-lg border border-gray-100 mb-8">
           <button
-v-for="(tab, index) in formTabs" :key="tab.value" type="button" :class="[
+v-for="tab in formTabs" :key="tab.value" type="button" :class="[
               'px-8 py-4 font-semibold text-sm focus:outline-none transition-all rounded-xl relative flex-1 flex items-center justify-center',
               activeTab === tab.value 
                 ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg transform scale-105' 
@@ -494,7 +494,7 @@ v-model.number="form.testAmount" type="number" min="1000"
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import TemplateButton from '~/components/common/TemplateButton.vue'
 
 // تعریف interface برای فرم درگاه

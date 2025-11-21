@@ -275,6 +275,7 @@ import Pagination from '~/components/admin/common/Pagination.vue'
 import DeleteConfirmModal from '~/components/common/DeleteConfirmModal.vue'
 import { useAuth } from '~/composables/useAuth'
 import { useDeleteConfirmModal } from '~/composables/useDeleteConfirmModal'
+import { useNotifier } from '~/composables/useNotifier'
 
 // استفاده از useAuth برای چک کردن پرمیژن
 const { hasPermission } = useAuth()
@@ -295,6 +296,25 @@ interface Attribute {
   createdAt: string
 }
 
+interface AttributeResponse {
+  id: number | string
+  name: string
+  sort_order?: number
+  order?: number
+  display_name?: string
+  is_active?: boolean
+  created_at?: string
+}
+
+interface ApiResponse {
+  data?: AttributeResponse[]
+  attributes?: AttributeResponse[]
+  items?: AttributeResponse[]
+  meta?: { total: number; per_page: number; total_pages: number }
+  pagination?: { total: number; per_page: number; total_pages: number }
+  [key: string]: unknown
+}
+
 // State
 const attributes = ref<Attribute[]>([])
 const searchQuery = ref('')
@@ -311,8 +331,8 @@ const openBulkDeleteModal = deleteModalCtl.openBulkDeleteConfirm
 
 // ───────────────────────────────────────────────────────────────
 // Fetch data from backend (Go API via Nuxt server proxy)
-const fetched = ref<any>(null)
-const fetchError = ref<any>(null)
+const fetched = ref<ApiResponse | null>(null)
+const fetchError = ref<unknown>(null)
 const isLoading = ref(false)
 
 const refresh = async () => {
@@ -326,10 +346,10 @@ const refresh = async () => {
     // اضافه کردن timestamp برای جلوگیری از cache
     params.set('_t', String(Date.now()))
     
-    const res: any = await $fetch(`/api/attributes?${params.toString()}`)
+    const res = await $fetch<ApiResponse>(`/api/attributes?${params.toString()}`)
     fetched.value = res
     fetchError.value = null
-  } catch (e: any) {
+  } catch (e) {
     fetchError.value = e
     fetched.value = null
   } finally {
@@ -340,7 +360,7 @@ const refresh = async () => {
 // بارگذاری اولیه داده‌ها
 await refresh()
 
-watch(fetched, (val: any) => {
+watch(fetched, (val) => {
   if (fetchError.value) {
     // Failed to fetch attributes
     attributes.value = []
@@ -355,20 +375,18 @@ watch(fetched, (val: any) => {
   }
 
   // Normalize response shape
-  let list: any = val
-  if (!Array.isArray(list)) {
-    if (Array.isArray(list?.data)) {
-      list = list.data
-    } else if (Array.isArray(list?.attributes)) {
-      list = list.attributes
-    } else if (Array.isArray(list?.items)) {
-      list = list.items
-    } else {
-      list = []
-    }
+  let list: AttributeResponse[] = []
+  if (Array.isArray(val)) {
+    list = val
+  } else if (val.data && Array.isArray(val.data)) {
+    list = val.data
+  } else if (val.attributes && Array.isArray(val.attributes)) {
+    list = val.attributes
+  } else if (val.items && Array.isArray(val.items)) {
+    list = val.items
   }
 
-  const normalized: Attribute[] = (list as any[]).map((attr: any) => ({
+  const normalized: Attribute[] = list.map((attr) => ({
     id: String(attr?.id ?? ''),
     name: String(attr?.name ?? ''),
     order: Number(attr?.sort_order ?? attr?.order ?? 0),
@@ -382,13 +400,13 @@ watch(fetched, (val: any) => {
 
   // Capture server-side pagination meta if present
   if (val && typeof val === 'object' && val.meta) {
-    const meta = val.meta as any
+    const meta = val.meta
     const total = Number(meta.total ?? 0)
     const per_page = Number(meta.per_page ?? itemsPerPage.value)
     const total_pages = Number(meta.total_pages ?? Math.ceil(total / Math.max(per_page, 1)))
     serverMeta.value = { total, per_page, total_pages }
   } else if (val && typeof val === 'object' && val.pagination) {
-    const pagination = val.pagination as any
+    const pagination = val.pagination
     const total = Number(pagination.total ?? 0)
     const per_page = Number(pagination.per_page ?? itemsPerPage.value)
     const total_pages = Number(pagination.total_pages ?? Math.ceil(total / Math.max(per_page, 1)))
@@ -420,10 +438,10 @@ interface AttributeStats { total: number; active: number; totalValues: number; u
 const attributeStats = computed<AttributeStats>(() => {
   if (!statsError.value && statsData.value) {
     return {
-      total: (statsData.value as any).total || 0,
-      active: (statsData.value as any).active || 0,
-      totalValues: (statsData.value as any).total_values || 0,
-      used: (statsData.value as any).used || 0
+      total: statsData.value.total || 0,
+      active: statsData.value.active || 0,
+      totalValues: statsData.value.total_values || 0,
+      used: statsData.value.used || 0
     }
   }
   // Fallback using attributes list (less precise)
@@ -503,7 +521,7 @@ const handleSingleDelete = async (attributeId: number | string) => {
   try {
     const numericId = parseInt(String(attributeId), 10)
     if (isNaN(numericId)) return
-    await $fetch(`/api/attributes/${numericId}`, { method: 'DELETE' as any })
+    await $fetch(`/api/attributes/${numericId}`, { method: 'DELETE' })
     localStorage.removeItem('attributeNewDraft')
     
     // Refresh the list after deletion
@@ -512,7 +530,7 @@ const handleSingleDelete = async (attributeId: number | string) => {
     // cleanup selection
     selectedAttributes.value = selectedAttributes.value.filter(id => id !== String(numericId))
   } catch (e) {
-    alert('خطا در حذف ویژگی')
+    useNotifier().error('خطا در حذف ویژگی')
   }
 }
 
@@ -534,7 +552,7 @@ const handleBulkDelete = async () => {
   try {
     const numericIds = selectedAttributes.value.map(id => parseInt(String(id), 10)).filter(id => !isNaN(id))
     if (numericIds.length === 0) return
-    await $fetch('/api/attributes/bulk-delete', { method: 'POST' as any, body: { ids: numericIds } })
+    await $fetch('/api/attributes/bulk-delete', { method: 'POST', body: { ids: numericIds } })
     localStorage.removeItem('attributeNewDraft')
     
     // Refresh the list after bulk deletion
@@ -542,7 +560,7 @@ const handleBulkDelete = async () => {
     
     selectedAttributes.value = []
   } catch (e) {
-    alert('خطا در حذف گروهی ویژگی‌ها')
+    useNotifier().error('خطا در حذف گروهی ویژگی‌ها')
   }
 }
 
@@ -551,7 +569,7 @@ const openBulkDeleteConfirm = () => {
   openBulkDeleteModal()
 }
 
-const navigateToEdit = (attr) => {
+const navigateToEdit = (attr: Attribute) => {
   if (!attr || !attr.id) return
   // Navigating to edit id
   navigateTo(`/admin/product-management/attributes/edit/${attr.id}`)

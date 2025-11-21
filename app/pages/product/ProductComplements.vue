@@ -154,7 +154,7 @@ async function remove(productId:number){
 
 function cartItem(productId:number){
   const { cartItems } = useCart()
-  return cartItems.value.find((i: any)=> i.product_id === productId)
+  return cartItems.value.find((i)=> i.product_id === productId)
 }
 
 // موجود بودن برای خرید در کارت مکمل

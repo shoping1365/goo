@@ -43,7 +43,7 @@
           <div class="flex items-center gap-2 border-2 border-blue-200 rounded-lg p-1 bg-blue-50">
             <input
               id="easyLoadMobile"
-              v-model="props.sliderConfig.easy_load_enabled"
+              v-model="localSliderConfig.easy_load_enabled"
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-blue-100 border-blue-300 rounded focus:ring-blue-500 focus:ring-2"
             />
@@ -56,7 +56,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پس‌زمینه فعال</label>
             <select
-              v-model="props.sliderConfig.bg_enabled"
+              v-model="localSliderConfig.bg_enabled"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">فعال</option>
@@ -65,10 +65,10 @@
           </div>
 
           <!-- عریض پس‌زمینه -->
-          <div v-if="props.sliderConfig.bg_enabled">
+          <div v-if="localSliderConfig.bg_enabled">
             <label class="block mb-2 text-sm font-medium text-gray-700">عریض پس‌زمینه</label>
             <select
-              v-model="props.sliderConfig.wide_bg"
+              v-model="localSliderConfig.wide_bg"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">بله</option>
@@ -77,10 +77,10 @@
           </div>
 
           <!-- رنگ پس‌زمینه -->
-          <div v-if="props.sliderConfig.bg_enabled">
+          <div v-if="localSliderConfig.bg_enabled">
             <label class="block mb-2 text-sm font-medium text-gray-700">رنگ پس‌زمینه</label>
             <input
-              v-model="props.sliderConfig.bg_color"
+              v-model="localSliderConfig.bg_color"
               type="color"
               class="w-full h-10 border border-gray-300 rounded-md"
             />
@@ -90,7 +90,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ بالا (px)</label>
             <input
-              v-model="props.sliderConfig.padding_top"
+              v-model="localSliderConfig.padding_top"
               type="number"
               min="0"
               max="100"
@@ -103,7 +103,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ پایین (px)</label>
             <input
-              v-model="props.sliderConfig.padding_bottom"
+              v-model="localSliderConfig.padding_bottom"
               type="number"
               min="0"
               max="100"
@@ -116,7 +116,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین راست (px)</label>
             <input
-              v-model="props.sliderConfig.margin_right"
+              v-model="localSliderConfig.margin_right"
               type="number"
               min="0"
               max="100"
@@ -129,7 +129,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین چپ (px)</label>
             <input
-              v-model="props.sliderConfig.margin_left"
+              v-model="localSliderConfig.margin_left"
               type="number"
               min="0"
               max="100"
@@ -144,7 +144,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">عرض اسلایدر در موبایل</label>
             <select
-              v-model="props.sliderConfig.mobile_slider_width"
+              v-model="localSliderConfig.mobile_slider_width"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="100">کوچک (100px)</option>
@@ -179,19 +179,19 @@
             <!-- Layout container for mobile - vertical stack -->
             <div class="flex flex-col gap-3 p-2 min-h-[500px] relative w-64 mx-auto">
               <!-- بنرهای دوتایی در موبایل - عمودی -->
-              <div v-if="props.sliderConfig.mobile_vertical_display" class="flex flex-col gap-3">
+              <div v-if="localSliderConfig.mobile_vertical_display" class="flex flex-col gap-3">
                 <!-- بنر اول -->
                 <div
                   class="relative overflow-hidden rounded-lg w-full"
                   :style="{
-                    height: `${props.sliderConfig.mobile_height || 150}px`,
-                    backgroundColor: props.sliderConfig.bg_enabled ? props.sliderConfig.bg_color : 'transparent'
+                    height: `${localSliderConfig.mobile_height || 150}px`,
+                    backgroundColor: localSliderConfig.bg_enabled ? localSliderConfig.bg_color : 'transparent'
                   }"
                 >
                   <img
-                    v-if="props.sliderConfig.slides && props.sliderConfig.slides.length > 0"
-                    :src="props.sliderConfig.slides[0].image"
-                    :alt="props.sliderConfig.slides[0].title"
+                    v-if="localSliderConfig.slides && localSliderConfig.slides.length > 0"
+                    :src="localSliderConfig.slides[0].image"
+                    :alt="localSliderConfig.slides[0].title"
                     class="w-full h-full object-cover"
                   />
                   <div v-else class="flex items-center justify-center h-full text-gray-400">
@@ -203,20 +203,20 @@
                     </div>
                   </div>
                   <div
-                    v-if="props.sliderConfig.show_title || props.sliderConfig.show_description"
+                    v-if="localSliderConfig.show_title || localSliderConfig.show_description"
                     class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2"
                   >
                     <h4
-                      v-if="props.sliderConfig.show_title && props.sliderConfig.slides && props.sliderConfig.slides[0] && props.sliderConfig.slides[0].title"
+                      v-if="localSliderConfig.show_title && localSliderConfig.slides && localSliderConfig.slides[0] && localSliderConfig.slides[0].title"
                       class="text-white text-sm font-bold mb-1"
                     >
-                      {{ props.sliderConfig.slides[0].title }}
+                      {{ localSliderConfig.slides[0].title }}
                     </h4>
                     <p
-                      v-if="props.sliderConfig.show_description && props.sliderConfig.slides && props.sliderConfig.slides[0] && props.sliderConfig.slides[0].description"
+                      v-if="localSliderConfig.show_description && localSliderConfig.slides && localSliderConfig.slides[0] && localSliderConfig.slides[0].description"
                       class="text-white/90 text-xs"
                     >
-                      {{ props.sliderConfig.slides[0].description }}
+                      {{ localSliderConfig.slides[0].description }}
                     </p>
                   </div>
                 </div>
@@ -225,14 +225,14 @@
                 <div
                   class="relative overflow-hidden rounded-lg w-full"
                   :style="{
-                    height: `${props.sliderConfig.mobile_height || 150}px`,
-                    backgroundColor: props.sliderConfig.bg_enabled ? props.sliderConfig.bg_color : 'transparent'
+                    height: `${localSliderConfig.mobile_height || 150}px`,
+                    backgroundColor: localSliderConfig.bg_enabled ? localSliderConfig.bg_color : 'transparent'
                   }"
                 >
                   <img
-                    v-if="props.sliderConfig.slides && props.sliderConfig.slides.length > 1"
-                    :src="props.sliderConfig.slides[1].image"
-                    :alt="props.sliderConfig.slides[1].title"
+                    v-if="localSliderConfig.slides && localSliderConfig.slides.length > 1"
+                    :src="localSliderConfig.slides[1].image"
+                    :alt="localSliderConfig.slides[1].title"
                     class="w-full h-full object-cover"
                   />
                   <div v-else class="flex items-center justify-center h-full text-gray-400">
@@ -244,20 +244,20 @@
                     </div>
                   </div>
                   <div
-                    v-if="props.sliderConfig.show_title || props.sliderConfig.show_description"
+                    v-if="localSliderConfig.show_title || localSliderConfig.show_description"
                     class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2"
                   >
                     <h4
-                      v-if="props.sliderConfig.show_title && props.sliderConfig.slides && props.sliderConfig.slides[1] && props.sliderConfig.slides[1].title"
+                      v-if="localSliderConfig.show_title && localSliderConfig.slides && localSliderConfig.slides[1] && localSliderConfig.slides[1].title"
                       class="text-white text-sm font-bold mb-1"
                     >
-                      {{ props.sliderConfig.slides[1].title }}
+                      {{ localSliderConfig.slides[1].title }}
                     </h4>
                     <p
-                      v-if="props.sliderConfig.show_description && props.sliderConfig.slides && props.sliderConfig.slides[1] && props.sliderConfig.slides[1].description"
+                      v-if="localSliderConfig.show_description && localSliderConfig.slides && localSliderConfig.slides[1] && localSliderConfig.slides[1].description"
                       class="text-white/90 text-xs"
                     >
-                      {{ props.sliderConfig.slides[1].description }}
+                      {{ localSliderConfig.slides[1].description }}
                     </p>
                   </div>
                 </div>
@@ -269,14 +269,14 @@
                 <div
                   class="relative overflow-hidden rounded-lg w-full"
                   :style="{
-                    height: `${props.sliderConfig.mobile_height || 150}px`,
-                    backgroundColor: props.sliderConfig.bg_enabled ? props.sliderConfig.bg_color : 'transparent'
+                    height: `${localSliderConfig.mobile_height || 150}px`,
+                    backgroundColor: localSliderConfig.bg_enabled ? localSliderConfig.bg_color : 'transparent'
                   }"
                 >
                   <img
-                    v-if="props.sliderConfig.slides && props.sliderConfig.slides.length > 0"
-                    :src="props.sliderConfig.slides[0].image"
-                    :alt="props.sliderConfig.slides[0].title"
+                    v-if="localSliderConfig.slides && localSliderConfig.slides.length > 0"
+                    :src="localSliderConfig.slides[0].image"
+                    :alt="localSliderConfig.slides[0].title"
                     class="w-full h-full object-cover"
                   />
                   <div v-else class="flex items-center justify-center h-full text-gray-400">
@@ -293,14 +293,14 @@
                 <div
                   class="relative overflow-hidden rounded-lg w-full"
                   :style="{
-                    height: `${props.sliderConfig.mobile_height || 150}px`,
-                    backgroundColor: props.sliderConfig.bg_enabled ? props.sliderConfig.bg_color : 'transparent'
+                    height: `${localSliderConfig.mobile_height || 150}px`,
+                    backgroundColor: localSliderConfig.bg_enabled ? localSliderConfig.bg_color : 'transparent'
                   }"
                 >
                   <img
-                    v-if="props.sliderConfig.slides && props.sliderConfig.slides.length > 1"
-                    :src="props.sliderConfig.slides[1].image"
-                    :alt="props.sliderConfig.slides[1].title"
+                    v-if="localSliderConfig.slides && localSliderConfig.slides.length > 1"
+                    :src="localSliderConfig.slides[1].image"
+                    :alt="localSliderConfig.slides[1].title"
                     class="w-full h-full object-cover"
                   />
                   <div v-else class="flex items-center justify-center h-full text-gray-400">
@@ -318,9 +318,9 @@
 
           <!-- اطلاعات تنظیمات موبایل -->
           <div class="mt-4 text-sm text-gray-600 text-center border-t border-gray-200 pt-4">
-            <p>ارتفاع: {{ props.sliderConfig.mobile_height || 150 }}px |
-              نمایش: {{ props.sliderConfig.mobile_vertical_display ? 'عمودی' : 'افقی' }} |
-              پس‌زمینه: {{ props.sliderConfig.bg_enabled ? 'فعال' : 'غیرفعال' }}</p>
+            <p>ارتفاع: {{ localSliderConfig.mobile_height || 150 }}px |
+              نمایش: {{ localSliderConfig.mobile_vertical_display ? 'عمودی' : 'افقی' }} |
+              پس‌زمینه: {{ localSliderConfig.bg_enabled ? 'فعال' : 'غیرفعال' }}</p>
           </div>
         </div>
 
@@ -336,13 +336,13 @@
             </button>
           </div>
 
-          <div v-if="props.sliderConfig.slides.length === 0" class="text-gray-400 text-center py-8">
+          <div v-if="localSliderConfig.slides.length === 0" class="text-gray-400 text-center py-8">
             چیزی برای نمایش وجود ندارد!
           </div>
 
           <div v-else class="flex flex-col gap-6">
             <div
-              v-for="(slide, idx) in props.sliderConfig.slides"
+              v-for="(slide, idx) in localSliderConfig.slides"
               :key="idx"
               class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 w-full"
             >
@@ -384,11 +384,12 @@
 
 <script setup lang="ts">
 // Vue composables
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
+import type { SliderConfig } from '~/types/widget'
 
 // Props
 interface Props {
-  sliderConfig: any
+  sliderConfig: SliderConfig
   currentPreviewSlide: number
   openAddSliderModal: () => void
   editSlide: (index: number) => void
@@ -404,6 +405,21 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const emit = defineEmits<{
+  'update:sliderConfig': [value: SliderConfig]
+}>()
+
+// Proxy for sliderConfig to avoid mutating props
+const localSliderConfig = computed({
+  get: () => new Proxy(props.sliderConfig, {
+    set(obj, prop, value) {
+      emit('update:sliderConfig', { ...obj, [prop]: value })
+      return true
+    }
+  }),
+  set: (val) => emit('update:sliderConfig', val)
+})
+
 // Tab state
 const activeTab = ref<'desktop' | 'mobile'>('desktop')
 
@@ -414,11 +430,9 @@ defineExpose({
 
 // Computed values with default fallbacks
 const mobileSliderHeight = computed({
-  get: () => props.sliderConfig.mobile_height,
+  get: () => localSliderConfig.value.mobile_height,
   set: val => {
-    if (props.sliderConfig) {
-      props.sliderConfig.mobile_height = val
-    }
+    localSliderConfig.value.mobile_height = val
   }
 })
 </script>

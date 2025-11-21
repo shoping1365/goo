@@ -646,7 +646,7 @@ const normalizePriceValue = (value: unknown): number | null => {
       return normalizePriceValue(parsedStructure)
     }
 
-    const digits = trimmed.replace(/[^ -9\.\-٬٬۰-۹]/g, '').replace(/[٬,]/g, '')
+    const digits = trimmed.replace(/[^0-9\.\-٬٬۰-۹]/g, '').replace(/[٬,]/g, '')
     if (!digits) return null
     const formatted = digits.replace(/[۰-۹]/g, ch => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(ch)))
     const numeric = parseFloat(formatted)

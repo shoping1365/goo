@@ -31,7 +31,8 @@ const emit = defineEmits([
   'update:ogType',
   'update:ogSiteName',
   'update:ogImage',
-  'update:robotsMeta'
+  'update:robotsMeta',
+  'update:postForm'
 ])
 
 // Local reactive slug linked to input
@@ -48,7 +49,7 @@ const isCheckingSlug = ref(false)
 const isGeneratingSlug = ref(false)
 
 // استفاده از composable
-const { slugify, checkSlugUnique: checkSlugUniqueAPI, generateUniqueSlug: generateUniqueSlugAPI, generateSlugFromTitle } = useSlugManagement()
+const { checkSlugUnique: checkSlugUniqueAPI, generateUniqueSlug: generateUniqueSlugAPI, generateSlugFromTitle } = useSlugManagement()
 
 // Try to get title provided by parent via provide('pageTitle')
 const providedTitle = inject<any>('pageTitle', null)
@@ -180,7 +181,7 @@ const titleColor = computed(()=>{
 })
 
 // slug length
-const slugLength = computed(()=> slug.value.length)
+// const slugLength = computed(()=> slug.value.length)
 
 
 
@@ -255,7 +256,7 @@ const ogSiteName = ref(props.ogSiteName ?? '')
 const ogImage = ref(props.ogImage ?? '')
 
 // متغیر برای نمایش در شبکه‌های اجتماعی (پیش‌فرض فعال)
-const showSocialMedia = ref(true)
+// const showSocialMedia = ref(true)
 
 // Interface for ShopSettings
 interface ShopSettings {
@@ -288,7 +289,7 @@ const fetchShopSettings = async () => {
 }
 
 // Determine if OG type should be shown
-const showOgType = computed(() => props.enableOgType !== false)
+// const showOgType = computed(() => props.enableOgType !== false)
 
 // همگام‌سازی ogTitle داخلی با prop ogTitle
 watch(() => props.ogTitle, (val) => {
@@ -405,6 +406,12 @@ const schemaType = ref('Article')
 watch(schemaType, (val) => {
   ogType.value = val
   emit('update:ogType', val)
+})
+
+// Computed for tags input to avoid prop mutation
+const tagsInput = computed({
+  get: () => props.postForm.tagsInput,
+  set: (val) => emit('update:postForm', { ...props.postForm, tagsInput: val })
 })
 </script>
 
@@ -615,7 +622,7 @@ watch(schemaType, (val) => {
             </div>
             <div class="flex items-center gap-2 mb-2">
               <input 
-                v-model="props.postForm.tagsInput"
+                v-model="tagsInput"
                 type="text"
                 placeholder="تگ جدید..."
                 class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -726,7 +733,7 @@ watch(schemaType, (val) => {
                     <div v-if="ogImage" class="w-full h-full bg-cover bg-center" :style="{ backgroundImage: `url(${ogImage})` }"></div>
                     <div v-else class="text-gray-400 text-center">
                       <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 012 2z"></path>
                       </svg>
                       <p class="text-sm">تصویر Open Graph</p>
                     </div>
@@ -1010,6 +1017,7 @@ select {
 /* Line clamp utilities */
 .line-clamp-2 {
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -1017,6 +1025,7 @@ select {
 
 .line-clamp-3 {
   display: -webkit-box;
+  line-clamp: 3;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;

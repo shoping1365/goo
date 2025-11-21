@@ -235,8 +235,10 @@ const brands = ref([])
 // Fetch brands data
 const fetchBrands = async () => {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = await $fetch('/api/brands') as any
     const raw = Array.isArray(response) ? response : (response.data || [])
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     raw.forEach((b: any, idx: number) => {
       if (b.order === undefined || b.order === null) b.order = idx + 1
     })
@@ -314,6 +316,7 @@ async function finishEditOrder(b) {
 function handleOrderInputKey(e,b){ if(e.key==='Enter') finishEditOrder(b); else if(e.key==='Escape'){ editingOrderId.value=null; editingOrderValue.value=''} }
 
 // Auth disabled
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const confirmDialogRef = ref<any>(null)
 provide('confirmDialogRef', confirmDialogRef)
 

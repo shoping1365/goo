@@ -126,7 +126,7 @@
               <div class="flex justify-between">
                 <span>امتیاز جدید:</span>
                 <span :class="getScoreChangeClass()" class="font-medium">
-                  {{ selectedUser.currentScore + scoreValueNumber }}
+                  {{ (Number(selectedUser.currentScore) || 0) + scoreValueNumber }} 
                 </span>
               </div>
               <div class="flex justify-between">
@@ -290,13 +290,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 interface User {
   id: number;
   name: string;
   email: string;
   avatar: string;
+  currentScore?: number;
   [key: string]: unknown;
 }
 

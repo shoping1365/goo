@@ -143,10 +143,22 @@ import { onMounted, ref } from 'vue'
 import ImagePreviewModal from '~/components/media/ImagePreviewModal.vue'
 import { useProductCreateStore } from '~/stores/productCreate'
 
+interface ComplementProduct {
+  id: number
+  name: string
+  sku?: string
+  price?: number
+  thumbnail?: string | null
+  images?: { image_url: string }[]
+  image?: string
+  main_image?: string
+  [key: string]: unknown
+}
+
 const store = useProductCreateStore()
 const q = ref('')
-const results = ref<any[]>([])
-const selected = ref<any[]>([])
+const results = ref<ComplementProduct[]>([])
+const selected = ref<ComplementProduct[]>([])
 
 // Sections state
 const sections = ref({
@@ -172,9 +184,9 @@ async function searchProducts(){
     return 
   }
   try {
-    const res = await $fetch(`/api/admin/products?search=${encodeURIComponent(q.value)}&limit=10`) as any[]
-    const arr = Array.isArray(res) ? res : []
-    results.value = arr.map((p: any) => {
+    const res = await $fetch<ComplementProduct[] | { data: ComplementProduct[] }>(`/api/admin/products?search=${encodeURIComponent(q.value)}&limit=10`)
+    const arr = Array.isArray(res) ? res : (res?.data || [])
+    results.value = arr.map((p) => {
       const firstImage = (p?.images && p.images.length > 0 && p.images[0]?.image_url) || p.image || p.main_image || p.thumbnail
       const thumb = toThumbnail(firstImage as string)
       return {

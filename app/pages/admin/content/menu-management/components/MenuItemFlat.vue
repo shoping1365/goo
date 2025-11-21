@@ -42,7 +42,7 @@
           type="button"
           :class="item.enabled ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
           class="px-2 py-1 text-xs rounded-full font-medium transition-colors"
-          @click.stop="item.enabled = !item.enabled"
+          @click.stop="$emit('update-item', { ...item, enabled: !item.enabled })"
         >
           {{ item.enabled ? 'فعال' : 'غیرفعال' }}
         </button>
@@ -91,7 +91,7 @@
 </template>
 
 <script setup>
-import { onBeforeUnmount, onMounted, ref, computed } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import MenuItemSettings from './MenuItemSettings.vue'
 
 const props = defineProps({

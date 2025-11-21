@@ -3,7 +3,7 @@
     <!-- Title Section -->
     <div class="bg-white w-full shadow-sm border-2 border-blue-200 rounded-lg mt-4">
       <div class="flex justify-between items-center px-8 py-6">
-        <h1 class="text-2xl font-bold text-gray-800">ایجاد {{ widget?.title || 'ابزارک' }}</h1>
+        <h1 class="text-2xl font-bold text-gray-800">ایجاد {{ fetchedWidget?.title || 'ابزارک' }}</h1>
         <div class="flex items-center gap-6">
           <button
             :disabled="isSaving"
@@ -498,21 +498,20 @@
 </template>
 
 <script setup lang="ts">
-import { WIDGET_TYPE_LABELS } from '~/types/widget'
-import type { Widget, BannerConfig, BannerItem } from '~/types/widget'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import BannerModal from '~/components/common/BannerModal.vue'
 import TemplateButton from '~/components/common/TemplateButton.vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
-import BannerModal from '~/components/common/BannerModal.vue'
-import DeviceTabs from './components/DeviceTabs.vue'
 import { useToast } from '~/composables/useToast'
-import { ref, computed, onMounted, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 import { useWidget } from '~/composables/useWidget'
+import type { BannerConfig, BannerItem, Widget } from '~/types/widget'
+import { WIDGET_TYPE_LABELS } from '~/types/widget'
+import DeviceTabs from './components/DeviceTabs.vue'
 
 // تعریف definePageMeta، useHead و navigateTo برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 declare const useHead: (head: { title?: string }) => void
-declare const navigateTo: (to: string) => Promise<void>
 
 definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
@@ -524,7 +523,7 @@ const router = useRouter()
 const widgetId = parseInt(route.params.id as string)
 
 // Composables
-const { fetchWidget, createWidget, updateWidget, loading, error, clearError, widget } = useWidget()
+const { fetchWidget, createWidget, loading, error, clearError, widget: fetchedWidget } = useWidget()
 const { showSuccess, showError } = useToast()
 
 // Props
@@ -589,22 +588,22 @@ const formData = ref({
 
 // Initialize form data when widget is available
 const initializeFormData = () => {
-  if (widget.value) {
-    console.log('Widget data:', widget.value) // Debug log
+  if (fetchedWidget.value) {
+    console.log('Widget data:', fetchedWidget.value) // Debug log
     formData.value = {
-      title: widget.value.title || '',
-      description: widget.value.description || '',
-      type: widget.value.type || 'double-banner',
-      status: widget.value.status || 'active',
-      page: widget.value.page || 'home',
-      show_on_mobile: widget.value.show_on_mobile !== undefined ? widget.value.show_on_mobile : true
+      title: fetchedWidget.value.title || '',
+      description: fetchedWidget.value.description || '',
+      type: fetchedWidget.value.type || 'double-banner',
+      status: fetchedWidget.value.status || 'active',
+      page: fetchedWidget.value.page || 'home',
+      show_on_mobile: fetchedWidget.value.show_on_mobile !== undefined ? fetchedWidget.value.show_on_mobile : true
     }
     console.log('Form data initialized:', formData.value) // Debug log
   }
 }
 
 // Watch for widget changes
-watch(widget, (newWidget) => {
+watch(fetchedWidget, (newWidget) => {
   if (newWidget) {
     initializeFormData()
   }
@@ -618,10 +617,10 @@ watch(() => deviceTabsRef.value?.activeTab, (newTab) => {
 })
 
 // Computed properties for reactive form data
-const widgetTitle = computed(() => widget.value?.title || '')
-const widgetType = computed(() => widget.value?.type || 'double-banner')
-const widgetStatus = computed(() => widget.value?.status || 'active')
-const widgetPage = computed(() => widget.value?.page || 'home')
+const widgetTitle = computed(() => fetchedWidget.value?.title || '')
+const widgetType = computed(() => fetchedWidget.value?.type || 'double-banner')
+const widgetStatus = computed(() => fetchedWidget.value?.status || 'active')
+const widgetPage = computed(() => fetchedWidget.value?.page || 'home')
 
 // Banner config
 const bannerConfig = ref<BannerConfig>({
@@ -897,8 +896,8 @@ onMounted(async () => {
   initializeFormData()
   
   // Only copy specific config fields, don't overwrite defaults
-  if (widget.value?.config) {
-    const config = widget.value.config as BannerConfig
+  if (fetchedWidget.value?.config) {
+    const config = fetchedWidget.value.config as BannerConfig
     if (config.banners) bannerConfig.value.banners = config.banners
     if (config.height) bannerConfig.value.height = config.height
     if (config.banner_width) bannerConfig.value.banner_width = config.banner_width

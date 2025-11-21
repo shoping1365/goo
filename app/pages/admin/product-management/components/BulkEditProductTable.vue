@@ -208,13 +208,12 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed, watch, nextTick } from 'vue'
+import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue'
 import ImagePreviewModal from '~/components/media/ImagePreviewModal.vue'
 
 const props = defineProps({
   products: {
     type: Array,
-    required: true,
     default: () => []
   },
   visibleColumns: {
@@ -225,7 +224,6 @@ const props = defineProps({
 
 const emit = defineEmits(['stats-updated'])
 
-const products = ref([])
 const isEditing = reactive({})
 const editedProducts = reactive({})
 const modalProductId = ref(null)
@@ -400,7 +398,7 @@ function stopEditing(productId, field) {
   }
 }
 
-function saveEdit(productId, field) {
+function saveEdit(_productId, _field) {
   // تغییرات در editedProducts ذخیره می‌شود
   emitStats()
 }
@@ -572,6 +570,7 @@ const bulkCallForPrice = () => {
   emitStats()
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const bulkClearFlags = () => {
   const selectedProductIds = Object.keys(selectedProducts).filter(id => selectedProducts[id])
   selectedProductIds.forEach(id => {
@@ -616,7 +615,7 @@ const bulkIncreasePrice = async () => {
     priceIncreasePercent.value = null
     hasChanges.value = false
     
-  } catch (error) {
+  } catch {
     // Show error message (you can add a toast notification here)
   }
 }
@@ -648,7 +647,7 @@ const bulkDecreasePrice = async () => {
     priceDecreasePercent.value = null
     hasChanges.value = false
     
-  } catch (error) {
+  } catch {
     // Show error message (you can add a toast notification here)
   }
 }

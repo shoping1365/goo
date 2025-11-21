@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import TemplateButton from '@/components/common/TemplateButton.vue'
 import TemplateCard from '@/components/common/TemplateCard.vue'
-import { useRuntimeConfig } from 'nuxt/app'
 import { useNotifyRequests } from '~/composables/useNotifyRequests'
 
 interface Props {
@@ -17,8 +16,6 @@ const {
   successRate,
   todayRequests
 } = useNotifyRequests()
-
-const config = useRuntimeConfig()
 </script>
 
 <template>

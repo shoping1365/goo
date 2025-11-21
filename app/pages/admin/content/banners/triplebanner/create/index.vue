@@ -123,7 +123,7 @@
     <!-- تنظیمات بنر -->
     <DeviceTabs
       ref="deviceTabsRef"
-      :banner-config="bannerConfig"
+      v-model:bannerConfig="bannerConfig"
       :current-preview-banner="currentPreviewBanner"
       :open-add-banner-modal="openAddBannerModal"
       :edit-banner="editBanner"
@@ -590,16 +590,16 @@
 </template>
 
 <script setup lang="ts">
-import { WIDGET_TYPE_LABELS } from '~/types/widget'
-import type { Widget, BannerConfig, BannerItem } from '~/types/widget'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import BannerModal from '~/components/common/BannerModal.vue'
 import TemplateButton from '~/components/common/TemplateButton.vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
-import BannerModal from '~/components/common/BannerModal.vue'
-import DeviceTabs from './components/DeviceTabs.vue'
 import { useToast } from '~/composables/useToast'
-import { ref, computed, onMounted, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 import { useWidget } from '~/composables/useWidget'
+import type { BannerConfig, BannerItem, Widget } from '~/types/widget'
+import { WIDGET_TYPE_LABELS } from '~/types/widget'
+import DeviceTabs from './components/DeviceTabs.vue'
 
 // تعریف definePageMeta و useHead برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
@@ -613,7 +613,7 @@ const route = useRoute()
 const router = useRouter()
 
 // Composables
-const { fetchWidget, createWidget, updateWidget, loading, error, clearError, widget } = useWidget()
+const { fetchWidget, createWidget, updateWidget, loading: _loading, error: _error, clearError, widget: fetchedWidget } = useWidget()
 const { showSuccess } = useToast()
 
 // Props
@@ -621,10 +621,10 @@ interface Props {
   widget?: Widget
 }
 
-const props = defineProps<Props>()
+const _props = defineProps<Props>()
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   updated: [widget: Widget]
 }>()
 

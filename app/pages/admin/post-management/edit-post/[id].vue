@@ -281,7 +281,7 @@ declare const navigateTo: (to: string) => Promise<void>
 </script>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import RichTextEditor from '~/components/common/RichTextEditor.vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
@@ -349,6 +349,11 @@ interface Category {
   slug: string
 }
 
+interface MediaFile {
+  url: string
+  [key: string]: unknown
+}
+
 definePageMeta({
   layout: 'admin-main'
 })
@@ -368,11 +373,6 @@ const showMediaLibrary = ref(false)
 const showOgImageModal = ref(false) // Modal برای انتخاب تصویر Open Graph
 const showTitleDropdown = ref(false) // برای نمایش dropdown پیشنهاد عناوین
 const dropdownPosition = ref({ x: 0, y: 0 }) // موقعیت dropdown
-
-
-// متغیرهای جدید
-const tagsInput = ref('')
-const helpField = ref('')
 
 // استفاده از composable
 const { slugify } = useSlugManagement()
@@ -610,11 +610,7 @@ const fetchPost = async () => {
   }
 }
 
-const selectFeaturedImage = () => {
-  showMediaLibrary.value = true
-}
-
-const onImageSelected = (selectedFiles: any[]) => {
+const onImageSelected = (selectedFiles: MediaFile[]) => {
   if (selectedFiles.length > 0) {
     postForm.featured_image = selectedFiles[0].url
   }
@@ -630,28 +626,12 @@ const removeFeaturedImage = () => {
 }
 
 // انتخاب تصویر Open Graph
-const onOgImageSelected = (selectedFiles: any[]) => {
+const onOgImageSelected = (selectedFiles: MediaFile[]) => {
   if (selectedFiles.length > 0) {
     postForm.og_image = selectedFiles[0].url
     ogImageTouched.value = true // کاربر دستی og_image را تغییر داد
   }
   showOgImageModal.value = false
-}
-
-// توابع مربوط به تگ‌ها
-const addTag = () => {
-  const tag = tagsInput.value.trim()
-  if (tag && !postForm.tags?.includes(tag)) {
-    if (!postForm.tags) postForm.tags = []
-    postForm.tags.push(tag)
-    tagsInput.value = ''
-  }
-}
-
-const removeTag = (index: number) => {
-  if (postForm.tags) {
-    postForm.tags.splice(index, 1)
-  }
 }
 
 // تابع محاسبه تعداد کلمات و زمان مطالعه
@@ -671,41 +651,12 @@ const calculateWordCountAndReadingTime = () => {
   postForm.reading_time = Math.ceil(words.length / 200)
 }
 
-// داده‌های SEO برای پیش‌نمایش
-const seoDataForPreview = computed(() => ({
-  title: postForm.title,
-  excerpt: postForm.excerpt,
-  content: postForm.content,
-  slug: postForm.slug,
-  meta_title: postForm.meta_title,
-  meta_description: postForm.meta_description,
-  meta_keywords: postForm.meta_keywords,
-  og_image: postForm.og_image,
-  og_type: postForm.og_type,
-  schema_type: 'Article',
-  index_status: postForm.index_status,
-  follow_status: postForm.follow_status,
-  author_name: 'نویسنده', // این مقدار باید از سیستم احراز هویت گرفته شود
-  category_name: categories.value.find(c => c.id === postForm.category_id)?.name || '',
-  word_count: postForm.word_count,
-  reading_time: postForm.reading_time,
-  tags: postForm.tags,
-  language: postForm.language,
-  site_url: 'https://example.com' // این مقدار باید از تنظیمات گرفته شود
-}))
-
 const updateSlug = (newSlug: string) => {
   postForm.slug = newSlug
 }
 
 const updateOgImage = (newOgImage: string) => {
   postForm.og_image = newOgImage
-}
-
-
-
-function showHelp(field: string) {
-  helpField.value = helpField.value === field ? '' : field
 }
 
 const savePost = async (): Promise<{ id?: number } | null> => {
@@ -730,7 +681,7 @@ const savePost = async (): Promise<{ id?: number } | null> => {
   
   try {
     // آماده‌سازی داده‌ها برای ارسال
-    const postData: any = {
+    const postData: Record<string, unknown> = {
       title: postForm.title,
       excerpt: postForm.excerpt,
       content: postForm.content,

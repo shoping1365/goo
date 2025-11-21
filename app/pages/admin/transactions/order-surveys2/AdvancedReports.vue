@@ -227,8 +227,8 @@ const genderResponseData = ref({
 })
 
 const genderDetailData = ref([
-  { gender: 'مرد', total: 1250, responded: 975, rate: '78%', avgRating: 4.2 },
-  { gender: 'زن', total: 850, responded: 697, rate: '82%', avgRating: 4.5 }
+  { gender: 'مرد', totalOrders: 1250, sentSMS: 1250, responses: 975, responseRate: '78%', averageRating: 4.2 },
+  { gender: 'زن', totalOrders: 850, sentSMS: 850, responses: 697, responseRate: '82%', averageRating: 4.5 }
 ])
 
 // Product-based data
@@ -253,11 +253,11 @@ const productRatingData = ref({
 })
 
 const productRankingData = ref([
-  { rank: 1, product: 'لپ‌تاپ اپل مک‌بوک پرو', rating: 4.8, reviews: 156, satisfaction: '95%' },
-  { rank: 2, product: 'گوشی سامسونگ گلکسی S24', rating: 4.6, reviews: 142, satisfaction: '92%' },
-  { rank: 3, product: 'تبلت اپل iPad Pro', rating: 4.5, reviews: 98, satisfaction: '89%' },
-  { rank: 4, product: 'ساعت اپل Apple Watch', rating: 4.3, reviews: 87, satisfaction: '85%' },
-  { rank: 5, product: 'هدفون Sony WH-1000XM4', rating: 4.2, reviews: 73, satisfaction: '82%' }
+  { rank: 1, product: 'لپ‌تاپ اپل مک‌بوک پرو', averageRating: 4.8, totalOrders: 156, responseRate: '95%' },
+  { rank: 2, product: 'گوشی سامسونگ گلکسی S24', averageRating: 4.6, totalOrders: 142, responseRate: '92%' },
+  { rank: 3, product: 'تبلت اپل iPad Pro', averageRating: 4.5, totalOrders: 98, responseRate: '89%' },
+  { rank: 4, product: 'ساعت اپل Apple Watch', averageRating: 4.3, totalOrders: 87, responseRate: '85%' },
+  { rank: 5, product: 'هدفون Sony WH-1000XM4', averageRating: 4.2, totalOrders: 73, responseRate: '82%' }
 ])
 
 // Error-based data
@@ -282,9 +282,9 @@ const errorTrendData = ref({
 })
 
 const errorDetailData = ref([
-  { id: 1, phone: '09123456789', error: 'شماره نامعتبر', date: '1403/01/15', status: 'حل نشده' },
-  { id: 2, phone: '09187654321', error: 'خطای شبکه', date: '1403/01/14', status: 'حل شده' },
-  { id: 3, phone: '09111111111', error: 'محدودیت ارسال', date: '1403/01/13', status: 'در حال بررسی' }
+  { orderNumber: 1, phoneNumber: '09123456789', customerName: 'کاربر ناشناس', errorType: 'شماره نامعتبر', errorDate: '1403/01/15', status: 'حل نشده', retryCount: 0 },
+  { orderNumber: 2, phoneNumber: '09187654321', customerName: 'کاربر ناشناس', errorType: 'خطای شبکه', errorDate: '1403/01/14', status: 'حل شده', retryCount: 1 },
+  { orderNumber: 3, phoneNumber: '09111111111', customerName: 'کاربر ناشناس', errorType: 'محدودیت ارسال', errorDate: '1403/01/13', status: 'در حال بررسی', retryCount: 2 }
 ])
 
 // Regional data

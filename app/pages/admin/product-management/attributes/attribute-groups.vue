@@ -392,7 +392,7 @@ const currentPage = ref(1)
 const itemsPerPage = ref(5)
 const router = useRouter()
 
-const { user, hasPermission } = useAuth()
+const { hasPermission } = useAuth()
 
 const canDeleteAttributeGroup = computed(() => hasPermission('attribute-group.delete'))
 
@@ -485,7 +485,6 @@ const confirmDelete = (group: AttributeGroup) => {
     if (selectedGroups.value && Array.isArray(selectedGroups.value)) {
       selectedGroups.value = selectedGroups.value.filter(id => id !== group.id)
     }
-    console.log(`گروه "${group.name}" حذف شد`)
   }
 }
 
@@ -516,32 +515,24 @@ const bulkDelete = () => {
       )
     }
     selectedGroups.value = []
-    console.log(`${selectedCount} مورد حذف شد`)
   }
 }
 
 const navigateToEdit = (groupId: string) => {
-  console.log(`🔄 Navigating to edit group with ID: ${groupId}`)
-  
   // Navigate to the simple edit page with query parameter
   const editRoute = `/admin/attribute-groups-edit?id=${groupId}`
-  console.log(`🎯 Target route: ${editRoute}`)
   
   try {
     // Use router.push instead of navigateTo for better debugging
     router.push(editRoute)
-    console.log('✅ Router.push called successfully')
   } catch (error) {
     console.error('❌ Router.push failed:', error)
     // Fallback to window.location
-    console.log('🔄 Trying window.location.href as fallback')
     window.location.href = editRoute
   }
 }
 
 const createNewGroup = () => {
-  console.log('🔄 Navigating to create new group')
-  
   // Clear any previously stored group name
   localStorage.removeItem('selectedGroupName')
   
@@ -550,7 +541,6 @@ const createNewGroup = () => {
 }
 
 const performSearch = () => {
-  console.log('🔍 Performing search with query:', searchQuery.value)
   // Focus on search input if it exists
   const searchInput = document.querySelector('input[placeholder="جستجو نام گروه"]')
   if (searchInput) {
@@ -595,20 +585,5 @@ watch(itemsPerPage, () => {
 // Lifecycle
 onMounted(() => {
   loadGroups()
-  console.log('🔄 Groups loaded:', groups.value.length)
-  console.log('📊 Stats:', groupStats.value)
-  
-  // Watch for changes
-  watch(() => groups.value.length, (newLength) => {
-    console.log('📈 Groups length changed to:', newLength)
-  })
-  
-  watch(() => filteredGroups.value.length, (newLength) => {
-    console.log('🔍 Filtered groups length:', newLength)
-  })
-  
-  watch(() => totalPages.value, (newTotal) => {
-    console.log('📄 Total pages:', newTotal)
-  })
 })
 </script> 

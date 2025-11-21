@@ -199,8 +199,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useAuth } from '~/composables/useAuth'
+import { computed, ref } from 'vue';
+import { useAuth } from '~/composables/useAuth';
 
 // تعریف definePageMeta و useHead برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
@@ -209,7 +209,7 @@ declare const useHead: (head: { title?: string }) => void
 definePageMeta({ layout: 'admin', middleware: 'admin' })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { user, hasPermission } = useAuth()
+const { user: _user, hasPermission: _hasPermission } = useAuth()
 
 useHead({ title: 'مدیریت بنرهای تمام عرض - پنل ادمین' })
 

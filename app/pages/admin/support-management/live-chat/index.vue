@@ -396,7 +396,7 @@ v-for="session in filteredSessions" :key="session.id"
 </template>
 
 <script lang="ts">
-import type { Ref } from 'vue'
+import type { Ref } from 'vue';
 
 interface ChatSession {
   id: string | number;
@@ -467,6 +467,9 @@ const {
   markAsRead,
   // getRealTimeMetrics
 } = useLiveChat()
+
+const realTimeMetrics = ref(null)
+const getRealTimeMetrics = async () => null
 
 // Local state
 const currentTab = ref('active') // active, waiting, closed
@@ -595,7 +598,7 @@ const stopMetricsRefresh = () => {
 onMounted(async () => {
   await fetchChatSessions('active')
   // موقت: فقط Polling فعال است و وب‌سوکت غیرفعال می‌باشد
-  startPolling('active', 5000)
+  startPolling()
   startMetricsRefresh()
 })
 

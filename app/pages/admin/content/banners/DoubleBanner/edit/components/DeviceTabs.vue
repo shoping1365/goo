@@ -43,7 +43,7 @@
           <div class="flex items-center gap-2 border-2 border-blue-200 rounded-lg p-1 bg-blue-50">
             <input
               id="easyLoadMobile"
-              v-model="props.sliderConfig.easy_load_enabled"
+              v-model="localSliderConfig.easy_load_enabled"
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-blue-100 border-blue-300 rounded focus:ring-blue-500 focus:ring-2"
             />
@@ -56,7 +56,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پس‌زمینه فعال</label>
             <select
-              v-model="props.sliderConfig.bg_enabled"
+              v-model="localSliderConfig.bg_enabled"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">فعال</option>
@@ -65,10 +65,10 @@
           </div>
 
           <!-- عریض پس‌زمینه -->
-          <div v-if="props.sliderConfig.bg_enabled">
+          <div v-if="localSliderConfig.bg_enabled">
             <label class="block mb-2 text-sm font-medium text-gray-700">عریض پس‌زمینه</label>
             <select
-              v-model="props.sliderConfig.wide_bg"
+              v-model="localSliderConfig.wide_bg"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">بله</option>
@@ -77,10 +77,10 @@
           </div>
 
           <!-- رنگ پس‌زمینه -->
-          <div v-if="props.sliderConfig.bg_enabled">
+          <div v-if="localSliderConfig.bg_enabled">
             <label class="block mb-2 text-sm font-medium text-gray-700">رنگ پس‌زمینه</label>
             <input
-              v-model="props.sliderConfig.bg_color"
+              v-model="localSliderConfig.bg_color"
               type="color"
               class="w-full h-10 border border-gray-300 rounded-md"
             />
@@ -91,12 +91,12 @@
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ بالا (px)</label>
             <input
               type="number"
-              :value="props.sliderConfig.padding_top !== undefined ? props.sliderConfig.padding_top : ''"
+              :value="localSliderConfig.padding_top !== undefined ? localSliderConfig.padding_top : ''"
               min="0"
               max="100"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
               placeholder="0"
-              @input="(e) => props.sliderConfig.padding_top = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+              @input="(e) => localSliderConfig.padding_top = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             />
           </div>
 
@@ -105,12 +105,12 @@
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ پایین (px)</label>
             <input
               type="number"
-              :value="props.sliderConfig.padding_bottom !== undefined ? props.sliderConfig.padding_bottom : ''"
+              :value="localSliderConfig.padding_bottom !== undefined ? localSliderConfig.padding_bottom : ''"
               min="0"
               max="100"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
               placeholder="0"
-              @input="(e) => props.sliderConfig.padding_bottom = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+              @input="(e) => localSliderConfig.padding_bottom = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             />
           </div>
 
@@ -119,12 +119,12 @@
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین راست (px)</label>
             <input
               type="number"
-              :value="props.sliderConfig.margin_right !== undefined ? props.sliderConfig.margin_right : ''"
+              :value="localSliderConfig.margin_right !== undefined ? localSliderConfig.margin_right : ''"
               min="0"
               max="100"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
               placeholder="0"
-              @input="(e) => props.sliderConfig.margin_right = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+              @input="(e) => localSliderConfig.margin_right = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             />
           </div>
 
@@ -133,12 +133,12 @@
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین چپ (px)</label>
             <input
               type="number"
-              :value="props.sliderConfig.margin_left !== undefined ? props.sliderConfig.margin_left : ''"
+              :value="localSliderConfig.margin_left !== undefined ? localSliderConfig.margin_left : ''"
               min="0"
               max="100"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
               placeholder="0"
-              @input="(e) => props.sliderConfig.margin_left = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
+              @input="(e) => localSliderConfig.margin_left = (e.target as HTMLInputElement).value === '' ? undefined : Number((e.target as HTMLInputElement).value)"
             />
           </div>
 
@@ -148,7 +148,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">عرض اسلایدر در موبایل</label>
             <select
-              v-model="props.sliderConfig.mobile_slider_width"
+              v-model="localSliderConfig.mobile_slider_width"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="100">کوچک (100px)</option>
@@ -183,12 +183,12 @@
             <!-- Layout container for mobile - vertical stack -->
             <div class="flex flex-col gap-3 p-2 relative w-64 mx-auto">
               <!-- بنرهای دوتایی در موبایل - عمودی -->
-              <div v-if="props.sliderConfig.mobile_vertical_display" class="flex flex-col gap-3">
+              <div v-if="localSliderConfig.mobile_vertical_display" class="flex flex-col gap-3">
                 <!-- بنر اول -->
                 <div
                   class="relative overflow-hidden rounded-lg w-full"
                   :style="{
-                    height: `${props.sliderConfig.mobile_height || 150}px`
+                    height: `${localSliderConfig.mobile_height || 150}px`
                   }"
                 >
                   <img
@@ -206,17 +206,17 @@
                     </div>
                   </div>
                   <div
-                    v-if="props.sliderConfig.show_title || props.sliderConfig.show_description"
+                    v-if="localSliderConfig.show_title || localSliderConfig.show_description"
                     class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 z-10"
                   >
                     <h4
-                      v-if="props.sliderConfig.show_title && activeBanners[0] && activeBanners[0].title"
+                      v-if="localSliderConfig.show_title && activeBanners[0] && activeBanners[0].title"
                       class="text-white text-sm font-bold mb-1"
                     >
                       {{ activeBanners[0].title }}
                     </h4>
                     <p
-                      v-if="props.sliderConfig.show_description && activeBanners[0] && activeBanners[0].description"
+                      v-if="localSliderConfig.show_description && activeBanners[0] && activeBanners[0].description"
                       class="text-white/90 text-xs"
                     >
                       {{ activeBanners[0].description }}
@@ -228,7 +228,7 @@
                 <div
                   class="relative overflow-hidden rounded-lg w-full"
                   :style="{
-                    height: `${props.sliderConfig.mobile_height || 150}px`
+                    height: `${localSliderConfig.mobile_height || 150}px`
                   }"
                 >
                   <img
@@ -246,17 +246,17 @@
                     </div>
                   </div>
                   <div
-                    v-if="props.sliderConfig.show_title || props.sliderConfig.show_description"
+                    v-if="localSliderConfig.show_title || localSliderConfig.show_description"
                     class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 z-10"
                   >
                     <h4
-                      v-if="props.sliderConfig.show_title && activeBanners[1] && activeBanners[1].title"
+                      v-if="localSliderConfig.show_title && activeBanners[1] && activeBanners[1].title"
                       class="text-white text-sm font-bold mb-1"
                     >
                       {{ activeBanners[1].title }}
                     </h4>
                     <p
-                      v-if="props.sliderConfig.show_description && activeBanners[1] && activeBanners[1].description"
+                      v-if="localSliderConfig.show_description && activeBanners[1] && activeBanners[1].description"
                       class="text-white/90 text-xs"
                     >
                       {{ activeBanners[1].description }}
@@ -271,7 +271,7 @@
                 <div
                   class="relative overflow-hidden rounded-lg w-full"
                   :style="{
-                    height: `${props.sliderConfig.mobile_height || 150}px`
+                    height: `${localSliderConfig.mobile_height || 150}px`
                   }"
                 >
                   <img
@@ -294,7 +294,7 @@
                 <div
                   class="relative overflow-hidden rounded-lg w-full"
                   :style="{
-                    height: `${props.sliderConfig.mobile_height || 150}px`
+                    height: `${localSliderConfig.mobile_height || 150}px`
                   }"
                 >
                   <img
@@ -318,9 +318,9 @@
 
           <!-- اطلاعات تنظیمات موبایل -->
           <div class="mt-4 text-sm text-gray-600 text-center border-t border-gray-200 pt-4">
-            <p>ارتفاع: {{ props.sliderConfig.mobile_height || 150 }}px |
-              نمایش: {{ props.sliderConfig.mobile_vertical_display ? 'عمودی' : 'افقی' }} |
-              پس‌زمینه: {{ props.sliderConfig.bg_enabled ? 'فعال' : 'غیرفعال' }}</p>
+            <p>ارتفاع: {{ localSliderConfig.mobile_height || 150 }}px |
+              نمایش: {{ localSliderConfig.mobile_vertical_display ? 'عمودی' : 'افقی' }} |
+              پس‌زمینه: {{ localSliderConfig.bg_enabled ? 'فعال' : 'غیرفعال' }}</p>
           </div>
         </div>
 
@@ -384,11 +384,12 @@
 
 <script setup lang="ts">
 // Vue composables
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
+import type { BannerConfig } from '~/types/widget'
 
 // Props
 interface Props {
-  sliderConfig: any
+  sliderConfig: BannerConfig
   currentPreviewSlide: number
   openAddSliderModal: () => void
   editSlide: (index: number) => void
@@ -403,6 +404,17 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const emit = defineEmits(['update:sliderConfig'])
+
+const localSliderConfig = computed({
+  get: () => new Proxy(props.sliderConfig, {
+    set(obj, prop, value) {
+      emit('update:sliderConfig', { ...obj, [prop]: value })
+      return true
+    }
+  }),
+  set: (val) => emit('update:sliderConfig', val)
+})
 
 // Tab state
 const activeTab = ref<'desktop' | 'mobile'>('desktop')
@@ -415,18 +427,16 @@ defineExpose({
 // Computed برای بنرهای دسکتاپ و موبایل
 const activeBanners = computed(() => {
   if (activeTab.value === 'mobile') {
-    return props.sliderConfig.mobile_banners || []
+    return localSliderConfig.value.mobile_banners || []
   }
-  return props.sliderConfig.banners || []
+  return localSliderConfig.value.banners || []
 })
 
 // Computed values with default fallbacks
 const mobileSliderHeight = computed({
-  get: () => props.sliderConfig.mobile_height,
+  get: () => localSliderConfig.value.mobile_height,
   set: val => {
-    if (props.sliderConfig) {
-      props.sliderConfig.mobile_height = val
-    }
+    localSliderConfig.value.mobile_height = val
   }
 })
 </script>

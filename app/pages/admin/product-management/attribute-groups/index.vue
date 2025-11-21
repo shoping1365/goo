@@ -10,6 +10,16 @@
           </div>
           <div class="flex space-x-2 space-x-reverse">
             <button 
+              v-if="selectedGroups.length > 0 && hasPermission('attribute-group.delete')"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 shadow-md transition-all duration-200"
+              @click="bulkDelete"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+              </svg>
+              حذف ({{ selectedGroups.length }})
+            </button>
+            <button 
               v-if="hasPermission('attribute-group.create')"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
               @click="createNewGroup"
@@ -295,6 +305,11 @@ interface GroupStats {
   used: number
 }
 
+interface ApiResponse {
+  data: AttributeGroup[]
+  meta?: Record<string, unknown>
+}
+
 // State
 const groups = ref<AttributeGroup[]>([])
 const searchQuery = ref('')
@@ -347,14 +362,6 @@ const paginatedGroups = computed((): AttributeGroup[] => {
   return filteredGroups.value.slice(start, end)
 })
 
-const paginationInfo = computed(() => {
-  const total = filteredGroups.value?.length || 0
-  const start = total === 0 ? 0 : (currentPage.value - 1) * itemsPerPage.value + 1
-  const end = Math.min(currentPage.value * itemsPerPage.value, total)
-  
-  return { start, end, total }
-})
-
 const isAllSelected = computed(() => {
   if (!paginatedGroups.value || !Array.isArray(paginatedGroups.value) || 
       !selectedGroups.value || !Array.isArray(selectedGroups.value)) {
@@ -369,15 +376,15 @@ const isAllSelected = computed(() => {
 const loadGroups = async (): Promise<void> => {
   try {
     // Call Nuxt server proxy → Go backend
-    const res: any = await $fetch('/api/attribute-groups', {
+    const res = await $fetch<ApiResponse | AttributeGroup[]>('/api/attribute-groups', {
       params: { per_page: 100, page: 1 },
     })
 
-    if (res && res.data) {
-      groups.value = res.data as AttributeGroup[]
+    if (res && 'data' in res && Array.isArray(res.data)) {
+      groups.value = res.data
     } else if (Array.isArray(res)) {
       // In case backend returns raw array (no meta wrapper)
-      groups.value = res as AttributeGroup[]
+      groups.value = res
     } else {
       groups.value = []
     }
@@ -395,7 +402,7 @@ const confirmDelete = async (group: AttributeGroup): Promise<void> => {
   if (!ok) return
 
   try {
-    await $fetch(`/api/attribute-groups/${group.id}` , { method: 'DELETE' as any })
+    await $fetch(`/api/attribute-groups/${group.id}` , { method: 'DELETE' })
     // حذف از لیست محلی پس از موفقیت
     groups.value = groups.value.filter(g => g && g.id !== group.id)
     selectedGroups.value = selectedGroups.value.filter(id => id !== group.id)
@@ -419,6 +426,7 @@ const toggleSelectAll = (): void => {
   }
 }
 
+ 
 const bulkDelete = async (): Promise<void> => {
   if (!selectedGroups.value || selectedGroups.value.length === 0) return
 
@@ -429,7 +437,7 @@ const bulkDelete = async (): Promise<void> => {
 
   try {
     // استفاده از endpoint bulk-delete اگر وجود دارد در غیر اینصورت حلقه
-    await Promise.all(selectedGroups.value.map(id => $fetch(`/api/attribute-groups/${id}`, { method:'DELETE' as any }).catch(()=>null)))
+    await Promise.all(selectedGroups.value.map(id => $fetch(`/api/attribute-groups/${id}`, { method:'DELETE' }).catch(()=>null)))
     groups.value = groups.value.filter(group => group && !selectedGroups.value.includes(group.id))
     selectedGroups.value = []
     useNotifier().success('حذف انجام شد')

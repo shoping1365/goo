@@ -23,7 +23,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-1" style="font-family: 'Yekan', sans-serif;">عنوان بنر *</label>
             <input
               ref="titleInputRef"
-              v-model="bannerData.title"
+              v-model="localBannerData.title"
               type="text"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="عنوان بنر را وارد کنید"
@@ -42,7 +42,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1" style="font-family: 'Yekan', sans-serif;">توضیحات</label>
             <textarea
-              v-model="bannerData.description"
+              v-model="localBannerData.description"
               rows="3"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="توضیحات بنر را وارد کنید"
@@ -122,7 +122,7 @@ class="border-2 border-dashed rounded-lg p-6 text-center transition-colors"
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1" style="font-family: 'Yekan', sans-serif;">لینک (اختیاری)</label>
             <input
-              v-model="bannerData.link"
+              v-model="localBannerData.link"
               type="url"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="https://example.com"
@@ -131,10 +131,10 @@ class="border-2 border-dashed rounded-lg p-6 text-center transition-colors"
           </div>
 
           <!-- باز کردن در صفحه جدید -->
-          <div v-if="bannerData.link" class="flex items-center gap-3">
+          <div v-if="localBannerData.link" class="flex items-center gap-3">
             <input
               id="openInNewTabBannerCheckbox"
-              v-model="bannerData.openInNewTab"
+              v-model="localBannerData.openInNewTab"
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
             />
@@ -184,15 +184,15 @@ class="border-2 border-dashed rounded-lg p-6 text-center transition-colors"
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import type { BannerItem } from '~/types/widget'
 
 // Props
 interface Props {
-  isVisible: boolean
-  isEditing: boolean
-  bannerData: BannerItem
-  showTitle: boolean
+  isVisible?: boolean
+  isEditing?: boolean
+  bannerData?: BannerItem
+  showTitle?: boolean
   deviceType?: 'desktop' | 'mobile'
 }
 
@@ -222,6 +222,14 @@ const emit = defineEmits<{
   'remove-image': []
 }>()
 
+// Local state
+const localBannerData = ref<BannerItem>({ ...props.bannerData })
+
+// Watch for prop changes
+watch(() => props.bannerData, (newValue) => {
+  localBannerData.value = { ...newValue }
+}, { deep: true })
+
 // Methods
 const closeModal = () => {
   // Clear errors when closing
@@ -242,11 +250,11 @@ const imageError = ref<string>('')
 
 // Computed property for current image based on device type
 const currentImage = computed(() => {
-  return props.deviceType === 'mobile' ? props.bannerData.mobile_image : props.bannerData.image
+  return props.deviceType === 'mobile' ? localBannerData.value.mobile_image : localBannerData.value.image
 })
 
 const validateTitle = () => {
-  if (!props.bannerData.title?.trim()) {
+  if (!localBannerData.value.title?.trim()) {
     titleError.value = 'لطفاً عنوان بنر را وارد کنید.'
   } else {
     titleError.value = ''
@@ -277,7 +285,7 @@ const handleSave = () => {
     return
   }
 
-  emit('save', props.bannerData, showTitleInBanner.value)
+  emit('save', localBannerData.value, showTitleInBanner.value)
   closeModal()
 }
 
@@ -288,41 +296,6 @@ const handleOpenMediaLibrary = () => {
 const handleRemoveImage = () => {
   imageError.value = ''
   emit('remove-image')
-}
-
-// Handle custom file selection
-const handleFileSelect = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  const file = target.files?.[0]
-
-  if (file) {
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      imageError.value = 'لطفا یک فایل تصویر انتخاب کنید'
-      return
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      imageError.value = 'حجم فایل نباید بیشتر از 5 مگابایت باشد'
-      return
-    }
-
-    // Clear any previous errors
-    imageError.value = ''
-
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      const result = e.target?.result as string
-      // Create updated banner data with new image
-      const updatedBannerData = {
-        ...props.bannerData,
-        image: result
-      }
-      emit('update:bannerData', updatedBannerData)
-    }
-    reader.readAsDataURL(file)
-  }
 }
 
 // Initialize showTitleInBanner when component mounts

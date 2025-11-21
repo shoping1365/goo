@@ -6,7 +6,7 @@
         <div class="flex items-center space-x-8">
           <div class="flex items-center">
             <input
-              v-model="config.show_title"
+              v-model="localConfig.show_title"
               type="checkbox"
               class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
             />
@@ -14,7 +14,7 @@
           </div>
           <div class="flex items-center">
             <input
-              v-model="config.show_product_count"
+              v-model="localConfig.show_product_count"
               type="checkbox"
               class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
             />
@@ -30,7 +30,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">عنوان ویجت</label>
             <input
-              v-model="formData.title"
+              v-model="localFormData.title"
               type="text"
               placeholder="عنوان ویجت را وارد کنید"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -40,7 +40,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">صفحه نمایش</label>
             <select
-              v-model="formData.page"
+              v-model="localFormData.page"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="home">صفحه اصلی</option>
@@ -52,7 +52,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">فاصله داخلی (Padding)</label>
             <input
-              v-model="config.padding"
+              v-model="localConfig.padding"
               type="text"
               placeholder="مثال: 24px"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -61,25 +61,25 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">فاصله داخلی بالا (Padding Top)</label>
             <input
-              v-model="config.padding_top"
+              v-model="localConfig.padding_top"
               type="text"
               placeholder="مثال: 12px"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
-          <div v-if="config.show_background">
+          <div v-if="localConfig.show_background">
             <label class="block text-sm font-medium text-gray-700 mb-2">رنگ پس‌زمینه</label>
             <input
-              v-model="config.background_color"
+              v-model="localConfig.background_color"
               type="color"
               class="w-full h-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
-          <div v-if="config.show_border">
+          <div v-if="localConfig.show_border">
             <label class="block text-sm font-medium text-gray-700 mb-2">رنگ خط</label>
             <input
-              v-model="config.border_color"
+              v-model="localConfig.border_color"
               type="color"
               class="w-full h-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
@@ -88,10 +88,10 @@
 
         <!-- تنظیمات عنوان و محتوا -->
         <div class="space-y-3">
-          <div v-if="config.show_title">
+          <div v-if="localConfig.show_title">
             <label class="block text-sm font-medium text-gray-700 mb-2">عنوان بخش</label>
             <input
-              v-model="config.title"
+              v-model="localConfig.title"
               type="text"
               placeholder="عنوان بخش را وارد کنید"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -101,7 +101,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">منبع دسته‌بندی‌ها</label>
             <select
-              v-model="config.category_source"
+              v-model="localConfig.category_source"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="manual">دلخواه (انتخاب دستی)</option>
@@ -111,19 +111,19 @@
             </select>
           </div>
           
-          <div v-if="config.show_title">
+          <div v-if="localConfig.show_title">
             <label class="block text-sm font-medium text-gray-700 mb-2">رنگ عنوان</label>
             <input
-              v-model="config.title_color"
+              v-model="localConfig.title_color"
               type="color"
               class="w-full h-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           
-          <div v-if="config.show_title">
+          <div v-if="localConfig.show_title">
             <label class="block text-sm font-medium text-gray-700 mb-2">محل قرار گیری عنوان</label>
             <select
-              v-model="config.title_alignment"
+              v-model="localConfig.title_alignment"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="left">چپ</option>
@@ -135,7 +135,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">فاصله خارجی (Margin)</label>
             <input
-              v-model="config.margin"
+              v-model="localConfig.margin"
               type="text"
               placeholder="مثال: 0px"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -145,7 +145,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">گردی گوشه‌های باکس</label>
             <select
-              v-model="config.border_radius"
+              v-model="localConfig.border_radius"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="none">بدون گردی</option>
@@ -156,20 +156,20 @@
           </div>
 
           
-          <div v-if="!config.show_title">
+          <div v-if="!localConfig.show_title">
             <label class="block text-sm font-medium text-gray-700 mb-2">فاصله داخلی پایین (Padding Bottom)</label>
             <input
-              v-model="config.padding_bottom"
+              v-model="localConfig.padding_bottom"
               type="text"
               placeholder="مثال: 12px"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           
-          <div v-if="!config.show_title">
+          <div v-if="!localConfig.show_title">
             <label class="block text-sm font-medium text-gray-700 mb-2">تراز متن</label>
             <select
-              v-model="config.text_alignment"
+              v-model="localConfig.text_alignment"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="left">چپ</option>
@@ -184,7 +184,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">چیدمان</label>
             <select
-              v-model="config.layout"
+              v-model="localConfig.layout"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="grid">شبکه‌ای</option>
@@ -192,10 +192,10 @@
             </select>
           </div>
 
-          <div v-if="config.layout === 'grid'">
+          <div v-if="localConfig.layout === 'grid'">
             <label class="block text-sm font-medium text-gray-700 mb-2">تعداد ستون‌ها</label>
             <select
-              v-model="config.columns"
+              v-model="localConfig.columns"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option :value="1">1 ستون</option>
@@ -207,10 +207,10 @@
             </select>
           </div>
 
-          <div v-if="config.layout === 'grid'">
+          <div v-if="localConfig.layout === 'grid'">
             <label class="block text-sm font-medium text-gray-700 mb-2">تعداد ستون در موبایل</label>
             <select
-              v-model="config.mobile_columns"
+              v-model="localConfig.mobile_columns"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option :value="1">1 ستون</option>
@@ -223,7 +223,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">تراز متن</label>
             <select
-              v-model="config.text_alignment"
+              v-model="localConfig.text_alignment"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="left">چپ</option>
@@ -232,10 +232,10 @@
             </select>
           </div>
 
-          <div v-if="config.show_border">
+          <div v-if="localConfig.show_border">
             <label class="block text-sm font-medium text-gray-700 mb-2">ضخامت خط</label>
             <select
-              v-model="config.border_width"
+              v-model="localConfig.border_width"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
             >
               <option value="thin">نازک</option>
@@ -244,10 +244,10 @@
             </select>
           </div>
 
-          <div v-if="config.show_background">
+          <div v-if="localConfig.show_background">
             <label class="block text-sm font-medium text-gray-700 mb-2">پس زمینه تمام عرض</label>
             <select
-              v-model="config.full_width_background"
+              v-model="localConfig.full_width_background"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
             >
               <option :value="false">خاموش</option>
@@ -262,7 +262,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">چیدمان عمودی</label>
             <select
-              v-model="config.vertical_layout"
+              v-model="localConfig.vertical_layout"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
             >
               <option :value="false">خاموش</option>
@@ -273,7 +273,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">استایل کارت</label>
             <select
-              v-model="config.card_style"
+              v-model="localConfig.card_style"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="default">پیش‌فرض</option>
@@ -285,7 +285,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">اندازه تصویر</label>
             <select
-              v-model="config.image_size"
+              v-model="localConfig.image_size"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="small">کوچک</option>
@@ -297,7 +297,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">پس زمینه فعال</label>
             <select
-              v-model="config.show_background"
+              v-model="localConfig.show_background"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
             >
               <option :value="false">خاموش</option>
@@ -308,7 +308,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">خط دور دسته‌بندی‌ها</label>
             <select
-              v-model="config.show_border"
+              v-model="localConfig.show_border"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
             >
               <option :value="false">خاموش</option>
@@ -319,7 +319,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">اندازه باکس</label>
             <select
-              v-model="config.box_width"
+              v-model="localConfig.box_width"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="full">تمام عرض</option>
@@ -334,6 +334,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { CategoryConfig } from '~/types/widget'
 
 interface Props {
@@ -344,5 +345,26 @@ interface Props {
   config: CategoryConfig
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+const emit = defineEmits(['update:formData', 'update:config'])
+
+const localFormData = computed({
+  get: () => new Proxy(props.formData, {
+    set(obj, prop, value) {
+      emit('update:formData', { ...obj, [prop]: value })
+      return true
+    }
+  }),
+  set: (val) => emit('update:formData', val)
+})
+
+const localConfig = computed({
+  get: () => new Proxy(props.config, {
+    set(obj, prop, value) {
+      emit('update:config', { ...obj, [prop]: value })
+      return true
+    }
+  }),
+  set: (val) => emit('update:config', val)
+})
 </script>

@@ -253,7 +253,7 @@ declare const useAuth: () => { user: { id?: number; name?: string; email?: strin
 import { computed, onMounted, reactive, ref } from 'vue';
 
 // استفاده از کامپوزابل احراز هویت
-useAuth()
+const { hasPermission } = useAuth()
 const restoreFile = ref<HTMLInputElement | null>(null)
 
 

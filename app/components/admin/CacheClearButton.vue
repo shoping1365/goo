@@ -60,7 +60,8 @@ const clearCache = async () => {
       message.value = ''
     }, 3000)
     
-  } catch (error: any) {
+  } catch (err: unknown) {
+    const error = err as { data?: { message?: string } }
     console.error('خطا در پاک کردن کش:', error)
     message.value = error.data?.message || 'خطا در پاک کردن کش'
     messageType.value = 'error'

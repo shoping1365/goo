@@ -112,7 +112,7 @@
         <!-- Categories List -->
         <div class="divide-y divide-gray-200">
           <div
-            v-for="(category, idx) in filteredCategories"
+            v-for="category in filteredCategories"
             :key="category.id"
             class="px-6 py-4 hover:bg-gray-50 transition-colors duration-200"
           >
@@ -238,7 +238,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue';
 
 // تعریف definePageMeta و useHead برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
@@ -381,7 +381,7 @@ const updateOrder = async (id: number, event: Event) => {
   //   console.error('خطا در بروزرسانی ترتیب:', err)
   // }
 
-  console.log('Updating order for category:', id, 'to:', newOrder)
+  // console.log('Updating order for category:', id, 'to:', newOrder)
 }
 
 const toggleStatus = async (id: number) => {
@@ -403,7 +403,7 @@ const toggleStatus = async (id: number) => {
   //   console.error('خطا در تغییر وضعیت:', err)
   // }
 
-  console.log('Toggling status for category:', id)
+  // console.log('Toggling status for category:', id)
 }
 
 const duplicateCategory = async (id: number) => {
@@ -434,7 +434,7 @@ const duplicateCategory = async (id: number) => {
   //   console.error('خطا در کپی کردن:', err)
   // }
 
-  console.log('Duplicating category:', id)
+  // console.log('Duplicating category:', id)
 }
 
 const confirmDelete = async (id: number) => {
@@ -450,10 +450,10 @@ const confirmDelete = async (id: number) => {
     //     }
     //   })
     // } catch (err) {
-    //   console.error('خطا در حذف:', err)
-    // }
+  //   console.error('خطا در حذف:', err)
+  // }
 
-    console.log('Deleting category:', id)
+  // console.log('Deleting category:', id)
   }
 }
 

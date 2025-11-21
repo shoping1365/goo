@@ -504,7 +504,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useNotifier } from '~/composables/useNotifier'
 import { useProductCreateStore } from '~/stores/productCreate'
 
@@ -526,8 +526,6 @@ const variantValue = ref('')
 const variantPrice = ref<number | null>(null)
 const variantStock = ref<number | null>(null)
 const variants = ref<Variant[]>([])
-
-const productId = computed(()=> store.editingProductId)
 
 async function loadVariants(){
   if (!store.isEditMode || !store.editingProductId) { variants.value = []; return }

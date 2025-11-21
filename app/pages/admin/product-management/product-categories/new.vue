@@ -337,12 +337,28 @@ import ProductSeoTab from '~/components/product/ProductSeoTab.vue';
 import ProductVideoTab from '~/components/product/ProductVideoTab.vue';
 import { useNotifier } from '~/composables/useNotifier';
 import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue';
+// import { useConfirmDialog } from '~/composables/useConfirmDialog'
     
       
     definePageMeta({
       layout: 'admin-main'
     });
       
+    interface Category {
+      id?: number
+      name?: string
+      slug?: string
+      parent_id?: number | null
+      order?: number
+      published?: boolean
+      image_url?: string
+      banner_url?: string
+      product_count?: number
+      parent_name?: string
+      parent_slug?: string
+      [key: string]: unknown
+    }
+    
     const activeTab = ref('info');
       
     const selectTab = (tabName: string) => {
@@ -352,7 +368,7 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
     const categoryName = ref('');
     const categoryNameEn = ref('');
     // Categories list (loaded later) declared early for TS reference
-    const categories = ref<any[]>([]);
+    const categories = ref<Category[]>([]);
       
     const duplicateName = computed(() => {
       const n = categoryName.value.trim().replace(/\s+/g,' ').toLowerCase()

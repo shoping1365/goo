@@ -248,10 +248,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue'
-import { useProductLink } from '~/composables/useProductLink'
-import ImagePreviewModal from '~/components/media/ImagePreviewModal.vue'
-import Pagination from '~/components/admin/common/Pagination.vue'
+import { computed, onMounted, ref, watch } from 'vue';
+import Pagination from '~/components/admin/common/Pagination.vue';
+import ImagePreviewModal from '~/components/media/ImagePreviewModal.vue';
+import { useProductLink } from '~/composables/useProductLink';
 
 // Import useAuth for permission checking
 // Auth disabled
@@ -270,7 +270,8 @@ const props = defineProps<{
 const emit = defineEmits(['stats-updated'])
 
 // استفاده از سیستم پرمیژن محلی
-const hasPermission = (permission: string) => true
+ 
+const hasPermission = (_permission: string) => true
 const { buildProductLink: productLink } = useProductLink()
 
 // تابع برای ساخت لینک دسته‌بندی
@@ -281,6 +282,7 @@ function buildCategoryLink(category) {
   return `/product-category/${category.slug}`
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const products = ref<any[]>([])
 const isLoading = ref(false)
 const modalProductId = ref(null)
@@ -298,6 +300,7 @@ const selectAll = computed({
   },
   set(value) {
     if (value) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       selectedProducts.value = products.value.map((p: any) => p.id as number)
     } else {
       selectedProducts.value = []
@@ -384,6 +387,7 @@ const fetchProducts = async () => {
     
     // درخواست محصولات با pagination سرور
     const url = `/api/admin/products?${params.toString()}`
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response: any = await $fetch(url)
     
     // بررسی فرمت پاسخ
@@ -401,7 +405,7 @@ const fetchProducts = async () => {
     
     // آپدیت کردن آمار
     updateStats()
-  } catch (error) {
+  } catch {
     products.value = []
     totalItems.value = 0
   } finally {
@@ -442,13 +446,16 @@ const formatPrice = (price) => {
 
 // نوتیفایر داخلی پروژه
 const notifier = {
-  success: (message: string) => {
+   
+  success: (_message: string) => {
     // TODO: پیاده‌سازی نوتیفایر واقعی
   },
-  error: (message: string) => {
+   
+  error: (_message: string) => {
     // خطا را بدون چاپ کنسول مدیریت کن
   },
-  warning: (message: string) => {
+   
+  warning: (_message: string) => {
     // TODO: پیاده‌سازی نوتیفایر واقعی
   }
 }
@@ -480,7 +487,7 @@ async function performDelete(productId: number) {
     await $fetch(`/api/admin/products/${productId}`, { method: 'DELETE' })
     await fetchProducts()
     notifier.success('محصول با موفقیت حذف شد')
-  } catch (error) {
+  } catch {
     notifier.error('خطا در حذف محصول')
   }
 }
@@ -526,7 +533,7 @@ async function confirmBulkDelete() {
     closeBulkDeleteConfirm()
     if (deletedCount > 0) notifier.success(`${deletedCount} محصول با موفقیت حذف شد`)
     if (failedCount > 0) notifier.warning(`${failedCount} حذف ناموفق بود`)
-  } catch (e) {
+  } catch {
     notifier.error('خطا در حذف گروهی محصولات')
   } finally {
     deletingBulk.value = false

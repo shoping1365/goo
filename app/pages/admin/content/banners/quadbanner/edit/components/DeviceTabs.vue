@@ -50,14 +50,14 @@
               <div 
                 class="relative"
                 :style="{
-                  height: `${bannerConfig.mobile_height || 150}px`,
-                  backgroundColor: bannerConfig.bg_enabled ? bannerConfig.bg_color : 'transparent'
+                  height: `${localBannerConfig.mobile_height || 150}px`,
+                  backgroundColor: localBannerConfig.bg_enabled ? localBannerConfig.bg_color : 'transparent'
                 }"
               >
                 <img
-                  v-if="bannerConfig.banners && bannerConfig.banners.length > 0"
-                  :src="getMobileImageUrl(bannerConfig.banners[0])"
-                  :alt="bannerConfig.banners[0].title"
+                  v-if="localBannerConfig.banners && localBannerConfig.banners.length > 0"
+                  :src="getMobileImageUrl(localBannerConfig.banners[0])"
+                  :alt="localBannerConfig.banners[0].title"
                   class="w-full h-full object-cover"
                 />
                 <div v-else class="flex items-center justify-center h-full text-gray-400">
@@ -69,122 +69,122 @@
                   </div>
                 </div>
                 <div
-                  v-if="bannerConfig.show_title || bannerConfig.show_description"
+                  v-if="localBannerConfig.show_title || localBannerConfig.show_description"
                   class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6"
                 >
                   <h4
-                    v-if="bannerConfig.show_title && bannerConfig.banners && bannerConfig.banners[0] && bannerConfig.banners[0].title"
+                    v-if="localBannerConfig.show_title && localBannerConfig.banners && localBannerConfig.banners[0] && localBannerConfig.banners[0].title"
                     class="text-white text-lg font-bold mb-2"
                   >
-                    {{ bannerConfig.banners[0].title }}
+                    {{ localBannerConfig.banners[0].title }}
                   </h4>
                   <p
-                    v-if="bannerConfig.show_description && bannerConfig.banners && bannerConfig.banners[0] && bannerConfig.banners[0].description"
+                    v-if="localBannerConfig.show_description && localBannerConfig.banners && localBannerConfig.banners[0] && localBannerConfig.banners[0].description"
                     class="text-white/90 text-sm"
                   >
-                    {{ bannerConfig.banners[0].description }}
+                    {{ localBannerConfig.banners[0].description }}
                   </p>
                 </div>
               </div>
             </div>
 
             <!-- بنر دوم -->
-            <div v-if="bannerConfig.banners && bannerConfig.banners.length > 1" class="relative overflow-hidden rounded-lg shadow-lg">
+            <div v-if="localBannerConfig.banners && localBannerConfig.banners.length > 1" class="relative overflow-hidden rounded-lg shadow-lg">
               <div 
                 class="relative"
                 :style="{
-                  height: `${bannerConfig.mobile_height || 150}px`,
-                  backgroundColor: bannerConfig.bg_enabled ? bannerConfig.bg_color : 'transparent'
+                  height: `${localBannerConfig.mobile_height || 150}px`,
+                  backgroundColor: localBannerConfig.bg_enabled ? localBannerConfig.bg_color : 'transparent'
                 }"
               >
                 <img
-                  :src="getMobileImageUrl(bannerConfig.banners[1])"
-                  :alt="bannerConfig.banners[1].title"
+                  :src="getMobileImageUrl(localBannerConfig.banners[1])"
+                  :alt="localBannerConfig.banners[1].title"
                   class="w-full h-full object-cover"
                 />
                 <div
-                  v-if="bannerConfig.show_title || bannerConfig.show_description"
+                  v-if="localBannerConfig.show_title || localBannerConfig.show_description"
                   class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6"
                 >
                   <h4
-                    v-if="bannerConfig.show_title && bannerConfig.banners[1].title"
+                    v-if="localBannerConfig.show_title && localBannerConfig.banners[1].title"
                     class="text-white text-lg font-bold mb-2"
                   >
-                    {{ bannerConfig.banners[1].title }}
+                    {{ localBannerConfig.banners[1].title }}
                   </h4>
                   <p
-                    v-if="bannerConfig.show_description && bannerConfig.banners[1].description"
+                    v-if="localBannerConfig.show_description && localBannerConfig.banners[1].description"
                     class="text-white/90 text-sm"
                   >
-                    {{ bannerConfig.banners[1].description }}
+                    {{ localBannerConfig.banners[1].description }}
                   </p>
                 </div>
               </div>
             </div>
 
             <!-- بنر سوم -->
-            <div v-if="bannerConfig.banners && bannerConfig.banners.length > 2" class="relative overflow-hidden rounded-lg shadow-lg">
+            <div v-if="localBannerConfig.banners && localBannerConfig.banners.length > 2" class="relative overflow-hidden rounded-lg shadow-lg">
               <div 
                 class="relative"
                 :style="{
-                  height: `${bannerConfig.mobile_height || 150}px`,
-                  backgroundColor: bannerConfig.bg_enabled ? bannerConfig.bg_color : 'transparent'
+                  height: `${localBannerConfig.mobile_height || 150}px`,
+                  backgroundColor: localBannerConfig.bg_enabled ? localBannerConfig.bg_color : 'transparent'
                 }"
               >
                 <img
-                  :src="getMobileImageUrl(bannerConfig.banners[2])"
-                  :alt="bannerConfig.banners[2].title"
+                  :src="getMobileImageUrl(localBannerConfig.banners[2])"
+                  :alt="localBannerConfig.banners[2].title"
                   class="w-full h-full object-cover"
                 />
                 <div
-                  v-if="bannerConfig.show_title || bannerConfig.show_description"
+                  v-if="localBannerConfig.show_title || localBannerConfig.show_description"
                   class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6"
                 >
                   <h4
-                    v-if="bannerConfig.show_title && bannerConfig.banners[2].title"
+                    v-if="localBannerConfig.show_title && localBannerConfig.banners[2].title"
                     class="text-white text-lg font-bold mb-2"
                   >
-                    {{ bannerConfig.banners[2].title }}
+                    {{ localBannerConfig.banners[2].title }}
                   </h4>
                   <p
-                    v-if="bannerConfig.show_description && bannerConfig.banners[2].description"
+                    v-if="localBannerConfig.show_description && localBannerConfig.banners[2].description"
                     class="text-white/90 text-sm"
                   >
-                    {{ bannerConfig.banners[2].description }}
+                    {{ localBannerConfig.banners[2].description }}
                   </p>
                 </div>
               </div>
             </div>
 
             <!-- بنر چهارم -->
-            <div v-if="bannerConfig.banners && bannerConfig.banners.length > 3" class="relative overflow-hidden rounded-lg shadow-lg">
+            <div v-if="localBannerConfig.banners && localBannerConfig.banners.length > 3" class="relative overflow-hidden rounded-lg shadow-lg">
               <div 
                 class="relative"
                 :style="{
-                  height: `${bannerConfig.mobile_height || 150}px`,
-                  backgroundColor: bannerConfig.bg_enabled ? bannerConfig.bg_color : 'transparent'
+                  height: `${localBannerConfig.mobile_height || 150}px`,
+                  backgroundColor: localBannerConfig.bg_enabled ? localBannerConfig.bg_color : 'transparent'
                 }"
               >
                 <img
-                  :src="getMobileImageUrl(bannerConfig.banners[3])"
-                  :alt="bannerConfig.banners[3].title"
+                  :src="getMobileImageUrl(localBannerConfig.banners[3])"
+                  :alt="localBannerConfig.banners[3].title"
                   class="w-full h-full object-cover"
                 />
                 <div
-                  v-if="bannerConfig.show_title || bannerConfig.show_description"
+                  v-if="localBannerConfig.show_title || localBannerConfig.show_description"
                   class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6"
                 >
                   <h4
-                    v-if="bannerConfig.show_title && bannerConfig.banners[3].title"
+                    v-if="localBannerConfig.show_title && localBannerConfig.banners[3].title"
                     class="text-white text-lg font-bold mb-2"
                   >
-                    {{ bannerConfig.banners[3].title }}
+                    {{ localBannerConfig.banners[3].title }}
                   </h4>
                   <p
-                    v-if="bannerConfig.show_description && bannerConfig.banners[3].description"
+                    v-if="localBannerConfig.show_description && localBannerConfig.banners[3].description"
                     class="text-white/90 text-sm"
                   >
-                    {{ bannerConfig.banners[3].description }}
+                    {{ localBannerConfig.banners[3].description }}
                   </p>
                 </div>
               </div>
@@ -203,7 +203,7 @@
           <div class="space-y-3">
             <label class="flex items-center">
               <input
-                v-model="bannerConfig.mobile_image_mode"
+                v-model="localBannerConfig.mobile_image_mode"
                 type="radio"
                 value="auto"
                 class="mr-3 text-purple-600 focus:ring-purple-500"
@@ -212,7 +212,7 @@
             </label>
             <label class="flex items-center">
               <input
-                v-model="bannerConfig.mobile_image_mode"
+                v-model="localBannerConfig.mobile_image_mode"
                 type="radio"
                 value="separate"
                 class="mr-3 text-purple-600 focus:ring-purple-500"
@@ -223,12 +223,12 @@
         </div>
 
         <!-- تنظیمات برش عکس -->
-        <div v-if="bannerConfig.mobile_image_mode === 'auto'" class="mb-6">
+        <div v-if="localBannerConfig.mobile_image_mode === 'auto'" class="mb-6">
           <div class="grid grid-cols-2 gap-6">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">عرض برش (پیکسل)</label>
               <input
-                v-model.number="bannerConfig.mobile_crop_width"
+                v-model.number="localBannerConfig.mobile_crop_width"
                 type="number"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
                 placeholder="400"
@@ -237,7 +237,7 @@
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">ارتفاع برش (پیکسل)</label>
               <input
-                v-model.number="bannerConfig.mobile_crop_height"
+                v-model.number="localBannerConfig.mobile_crop_height"
                 type="number"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
                 placeholder="200"
@@ -248,7 +248,7 @@
           <!-- دکمه اعمال برش -->
           <div class="mt-4">
             <button
-              :disabled="!bannerConfig.banners || bannerConfig.banners.length === 0"
+              :disabled="!localBannerConfig.banners || localBannerConfig.banners.length === 0"
               class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
               @click="applyMobileCrop"
             >
@@ -258,12 +258,12 @@
         </div>
 
         <!-- آپلود عکس موبایل جداگانه -->
-        <div v-if="bannerConfig.mobile_image_mode === 'separate'" class="mb-6">
+        <div v-if="localBannerConfig.mobile_image_mode === 'separate'" class="mb-6">
           <label class="block text-sm font-medium text-gray-700 mb-3">عکس موبایل</label>
           <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-            <div v-if="bannerConfig.mobile_image" class="mb-4">
+            <div v-if="localBannerConfig.mobile_image" class="mb-4">
               <img
-                :src="bannerConfig.mobile_image"
+                :src="localBannerConfig.mobile_image"
                 alt="عکس موبایل"
                 class="max-h-32 mx-auto rounded-lg shadow-sm"
               />
@@ -281,7 +281,7 @@
               انتخاب عکس موبایل
             </button>
             <button
-              v-if="bannerConfig.mobile_image"
+              v-if="localBannerConfig.mobile_image"
               class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 mr-2"
               @click="removeMobileImage"
             >
@@ -294,7 +294,7 @@
         <div class="mb-6">
           <label class="block text-sm font-medium text-gray-700 mb-2">ارتفاع موبایل (پیکسل)</label>
           <input
-            v-model.number="bannerConfig.mobile_height"
+            v-model.number="localBannerConfig.mobile_height"
             type="number"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
             placeholder="150"
@@ -306,7 +306,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">فاصله بالا (پیکسل)</label>
             <input
-              v-model.number="bannerConfig.mobile_padding_top"
+              v-model.number="localBannerConfig.mobile_padding_top"
               type="number"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
               placeholder="0"
@@ -315,7 +315,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">فاصله پایین (پیکسل)</label>
             <input
-              v-model.number="bannerConfig.mobile_padding_bottom"
+              v-model.number="localBannerConfig.mobile_padding_bottom"
               type="number"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
               placeholder="0"
@@ -329,7 +329,7 @@
 
 <script setup lang="ts">
 // Vue composables
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 
 // Props
 interface Props {
@@ -346,6 +346,8 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const emit = defineEmits(['update:bannerConfig'])
+
 // Tab state
 const activeTab = ref<'desktop' | 'mobile'>('desktop')
 
@@ -355,25 +357,37 @@ defineExpose({
 })
 
 // Computed values with default fallbacks
+const localBannerConfig = computed({
+  get: () => new Proxy(props.bannerConfig, {
+    set(target, key, value) {
+      emit('update:bannerConfig', { ...target, [key]: value })
+      return true
+    }
+  }),
+  set: (val) => {
+    emit('update:bannerConfig', val)
+  }
+})
+
 const mobileBannerHeight = computed({
-  get: () => props.bannerConfig.mobile_height,
+  get: () => localBannerConfig.value.mobile_height,
   set: val => {
-    if (props.bannerConfig) {
-      props.bannerConfig.mobile_height = val
+    if (localBannerConfig.value) {
+      localBannerConfig.value.mobile_height = val
     }
   }
 })
 
 // Mobile crop function
 const applyMobileCrop = async () => {
-  if (!props.bannerConfig.banners || props.bannerConfig.banners.length === 0) {
+  if (!localBannerConfig.value.banners || localBannerConfig.value.banners.length === 0) {
     alert('ابتدا باید حداقل یک بنر اضافه کنید')
     return
   }
 
-  const banner = props.bannerConfig.banners[0] // استفاده از اولین بنر
-  const cropWidth = props.bannerConfig.mobile_crop_width || 400
-  const cropHeight = props.bannerConfig.mobile_crop_height || 200
+  const banner = localBannerConfig.value.banners[0] // استفاده از اولین بنر
+  const cropWidth = localBannerConfig.value.mobile_crop_width || 400
+  const cropHeight = localBannerConfig.value.mobile_crop_height || 200
 
   if (!banner.image) {
     alert('بنر باید عکس داشته باشد')
@@ -394,7 +408,7 @@ const applyMobileCrop = async () => {
     }) as any
     
     if (response.success) {
-      props.bannerConfig.mobile_cropped_image = response.data.cropped_url
+      localBannerConfig.value.mobile_cropped_image = response.data.cropped_url
       alert('برش عکس موبایل با موفقیت اعمال شد!')
     } else {
       throw new Error('API response failed')
@@ -408,13 +422,13 @@ const applyMobileCrop = async () => {
 // Helper functions for mobile image handling
 const getMobileImageUrl = (banner) => {
   // اگر حالت عکس جداگانه انتخاب شده و عکس موبایل وجود دارد
-  if (props.bannerConfig.mobile_image_mode === 'separate' && banner.mobile_image) {
+  if (localBannerConfig.value.mobile_image_mode === 'separate' && banner.mobile_image) {
     return banner.mobile_image
   }
   
   // اگر حالت برش خودکار انتخاب شده و عکس برش شده وجود دارد
-  if (props.bannerConfig.mobile_image_mode === 'auto' && props.bannerConfig.mobile_cropped_image) {
-    return props.bannerConfig.mobile_cropped_image
+  if (localBannerConfig.value.mobile_image_mode === 'auto' && localBannerConfig.value.mobile_cropped_image) {
+    return localBannerConfig.value.mobile_cropped_image
   }
   
   // در غیر این صورت از عکس اصلی استفاده کن
@@ -434,7 +448,7 @@ const removeMobileImage = () => {
   if (props.removeMobileImage) {
     props.removeMobileImage()
   } else {
-    props.bannerConfig.mobile_image = ''
+    localBannerConfig.value.mobile_image = ''
   }
 }
 </script>

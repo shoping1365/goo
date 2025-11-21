@@ -43,7 +43,7 @@
           <div class="flex items-center gap-2 border-2 border-blue-200 rounded-lg p-1 bg-blue-50">
             <input
               id="easyLoadMobile"
-              v-model="props.bannerConfig.easy_load_enabled"
+              v-model="localBannerConfig.easy_load_enabled"
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-blue-100 border-blue-300 rounded focus:ring-blue-500 focus:ring-2"
             />
@@ -56,7 +56,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پس‌زمینه فعال</label>
             <select
-              v-model="props.bannerConfig.bg_enabled"
+              v-model="localBannerConfig.bg_enabled"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">فعال</option>
@@ -65,10 +65,10 @@
           </div>
 
           <!-- عریض پس‌زمینه -->
-          <div v-if="props.bannerConfig.bg_enabled">
+          <div v-if="localBannerConfig.bg_enabled">
             <label class="block mb-2 text-sm font-medium text-gray-700">عریض پس‌زمینه</label>
             <select
-              v-model="props.bannerConfig.wide_bg"
+              v-model="localBannerConfig.wide_bg"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">بله</option>
@@ -77,10 +77,10 @@
           </div>
 
           <!-- رنگ پس‌زمینه -->
-          <div v-if="props.bannerConfig.bg_enabled">
+          <div v-if="localBannerConfig.bg_enabled">
             <label class="block mb-2 text-sm font-medium text-gray-700">رنگ پس‌زمینه</label>
             <input
-              v-model="props.bannerConfig.bg_color"
+              v-model="localBannerConfig.bg_color"
               type="color"
               class="w-full h-10 border border-gray-300 rounded-md"
             />
@@ -90,7 +90,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ بالا (px)</label>
             <input
-              v-model="props.bannerConfig.padding_top"
+              v-model="localBannerConfig.padding_top"
               type="number"
               min="0"
               max="100"
@@ -103,7 +103,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ پایین (px)</label>
             <input
-              v-model="props.bannerConfig.padding_bottom"
+              v-model="localBannerConfig.padding_bottom"
               type="number"
               min="0"
               max="100"
@@ -116,7 +116,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین راست (px)</label>
             <input
-              v-model="props.bannerConfig.margin_right"
+              v-model="localBannerConfig.margin_right"
               type="number"
               min="0"
               max="100"
@@ -129,7 +129,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین چپ (px)</label>
             <input
-              v-model="props.bannerConfig.margin_left"
+              v-model="localBannerConfig.margin_left"
               type="number"
               min="0"
               max="100"
@@ -142,7 +142,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">عرض بنر در موبایل</label>
             <select
-              v-model="props.bannerConfig.mobile_banner_width"
+              v-model="localBannerConfig.mobile_banner_width"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="100">کوچک (100px)</option>
@@ -180,14 +180,14 @@
               <div
                 class="relative overflow-hidden rounded-lg w-full"
                 :style="{
-                  height: `${props.bannerConfig.mobile_height || 150}px`,
+                  height: `${localBannerConfig.mobile_height || 150}px`,
                   position: 'relative',
                 }"
               >
                 <!-- نمایش بنرها -->
-                <div v-if="props.bannerConfig.banners.length > 0" class="relative h-full">
+                <div v-if="localBannerConfig.banners.length > 0" class="relative h-full">
                   <div 
-                    v-for="(banner, index) in props.bannerConfig.banners" 
+                    v-for="(banner, index) in localBannerConfig.banners" 
                     :key="index"
                     class="absolute inset-0 transition-opacity duration-500"
                     :class="{ 'opacity-100': index === props.currentPreviewBanner, 'opacity-0': index !== props.currentPreviewBanner }"
@@ -198,17 +198,17 @@
                       class="w-full h-full object-cover"
                     />
                     <div
-                      v-if="props.bannerConfig.show_title || props.bannerConfig.show_description"
+                      v-if="localBannerConfig.show_title || localBannerConfig.show_description"
                       class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3"
                     >
                       <h4
-                        v-if="props.bannerConfig.show_title && banner.title && (banner.showTitle !== false)"
+                        v-if="localBannerConfig.show_title && banner.title && (banner.showTitle !== false)"
                         class="text-white text-base font-bold mb-1"
                       >
                         {{ banner.title }}
                       </h4>
                       <p
-                        v-if="props.bannerConfig.show_description && banner.description"
+                        v-if="localBannerConfig.show_description && banner.description"
                         class="text-white/90 text-xs"
                       >
                         {{ banner.description }}
@@ -233,8 +233,8 @@
 
           <!-- اطلاعات تنظیمات موبایل -->
           <div class="mt-4 text-sm text-gray-600 text-center border-t border-gray-200 pt-4">
-            <p>ارتفاع بنر: {{ props.bannerConfig.mobile_height || 150 }}px |
-              پس‌زمینه: {{ props.bannerConfig.bg_enabled ? 'فعال' : 'غیرفعال' }}</p>
+            <p>ارتفاع بنر: {{ localBannerConfig.mobile_height || 150 }}px |
+              پس‌زمینه: {{ localBannerConfig.bg_enabled ? 'فعال' : 'غیرفعال' }}</p>
           </div>
         </div>
 
@@ -250,13 +250,13 @@
             </button>
           </div>
 
-          <div v-if="props.bannerConfig.banners.length === 0" class="text-gray-400 text-center py-8">
+          <div v-if="localBannerConfig.banners.length === 0" class="text-gray-400 text-center py-8">
             چیزی برای نمایش وجود ندارد!
           </div>
 
           <div v-else class="flex flex-col gap-6">
             <div
-              v-for="(banner, idx) in props.bannerConfig.banners"
+              v-for="(banner, idx) in localBannerConfig.banners"
               :key="idx"
               class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 w-full"
             >
@@ -298,7 +298,7 @@
 
 <script setup lang="ts">
 // Vue composables
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 
 // Props
 interface Props {
@@ -322,11 +322,23 @@ defineExpose({
 })
 
 // Computed values with default fallbacks
+const localBannerConfig = computed({
+  get: () => new Proxy(props.bannerConfig, {
+    set(target, key, value) {
+      target[key] = value
+      return true
+    }
+  }),
+  set: (val) => {
+    Object.assign(props.bannerConfig, val)
+  }
+})
+
 const mobileBannerHeight = computed({
-  get: () => props.bannerConfig.mobile_height,
+  get: () => localBannerConfig.value.mobile_height,
   set: val => {
-    if (props.bannerConfig) {
-      props.bannerConfig.mobile_height = val
+    if (localBannerConfig.value) {
+      localBannerConfig.value.mobile_height = val
     }
   }
 })

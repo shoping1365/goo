@@ -314,9 +314,43 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 
+interface SystemSettingsState {
+  isSystemEnabled: boolean;
+  autoScoringEnabled: boolean;
+  autoNotifications: boolean;
+  showScoreToUsers: boolean;
+  showLevelToUsers: boolean;
+  warningSystemEnabled: boolean;
+  minTopUserScore: number;
+  autoUpgradeThreshold: number;
+  blockThreshold: number;
+  warningThreshold: number;
+  dailyScoreLimit: number;
+  dailyReviewLimit: number;
+  dailyReferralLimit: number;
+  monthlyScoreLimit: number;
+  monthlyPurchaseLimit: number;
+  monthlyActivityLimit: number;
+  maxTotalScore: number;
+  minAccountAge: number;
+  minActivities: number;
+  notifications: {
+    scoreChange: boolean;
+    levelUpgrade: boolean;
+    warning: boolean;
+    blocking: boolean;
+  };
+  adminNotifications: {
+    newTopUser: boolean;
+    userBlocked: boolean;
+    systemAlert: boolean;
+    dailyReport: boolean;
+  };
+}
+
 // Props
 const props = defineProps<{
-  initialSettings?: Record<string, unknown>
+  initialSettings?: Partial<SystemSettingsState>
 }>()
 
 // Emits
@@ -419,15 +453,16 @@ const levelSettings = ref([
 const saveSettings = () => {
   const allSettings = {
     ...settings.value,
-    levels: levelSettings.value
+    levels: levelSettings.value,
+    maxScore: settings.value.maxTotalScore
   }
   emit('saveSettings', allSettings)
 }
 
 const resetSettings = () => {
-  // بازنشانی به تنظیمات پیش‌فرض
+  // بازنشانی به تنظیمات پیش‌فرض (reset to default)
   if (props.initialSettings) {
-    settings.value = { ...props.initialSettings }
+    settings.value = { ...settings.value, ...props.initialSettings }
   }
 }
 
