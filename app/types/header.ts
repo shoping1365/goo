@@ -14,6 +14,7 @@ export interface HeaderLayer {
   items: string[]
   createdAt?: string
   updatedAt?: string
+  [key: string]: unknown
 }
 
 export interface Header {
@@ -27,4 +28,5 @@ export interface Header {
   is_active?: boolean
   createdAt?: string
   updatedAt?: string
+  [key: string]: unknown
 } 

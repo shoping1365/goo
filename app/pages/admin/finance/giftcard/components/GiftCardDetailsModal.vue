@@ -22,25 +22,25 @@
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">مبلغ:</span>
-                <span class="font-medium">{{ formatAmount(giftCard.amount) }} تومان</span>
+                <span class="font-medium">{{ formatAmount(Number(giftCard.amount ?? 0)) }} تومان</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">باقی‌مانده:</span>
-                <span class="font-medium">{{ formatAmount(giftCard.remainingAmount) }} تومان</span>
+                <span class="font-medium">{{ formatAmount(Number(giftCard.remainingAmount ?? 0)) }} تومان</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">وضعیت:</span>
-                <span :class="getStatusClasses(giftCard.status)" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
-                  {{ getStatusText(giftCard.status) }}
+                <span :class="getStatusClasses(String(giftCard.status ?? ''))" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
+                  {{ getStatusText(String(giftCard.status ?? '')) }}
                 </span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">نوع:</span>
-                <span class="font-medium">{{ getTypeText(giftCard.type) }}</span>
+                <span class="font-medium">{{ getTypeText(String(giftCard.type ?? '')) }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">دسته‌بندی:</span>
-                <span class="font-medium">{{ getCategoryText(giftCard.category) }}</span>
+                <span class="font-medium">{{ getCategoryText(String(giftCard.category ?? '')) }}</span>
               </div>
             </div>
           </div>
@@ -50,23 +50,23 @@
             <div class="space-y-2 text-sm">
               <div class="flex justify-between">
                 <span class="text-gray-600">نام:</span>
-                <span class="font-medium">{{ giftCard.recipientName || giftCard.recipient }}</span>
+                <span class="font-medium">{{ String(giftCard.recipientName ?? giftCard.recipient ?? '') }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">ایمیل:</span>
-                <span class="font-medium">{{ giftCard.recipientEmail }}</span>
+                <span class="font-medium">{{ String(giftCard.recipientEmail ?? '') }}</span>
               </div>
               <div v-if="giftCard.recipientPhone" class="flex justify-between">
                 <span class="text-gray-600">تلفن:</span>
-                <span class="font-medium">{{ giftCard.recipientPhone }}</span>
+                <span class="font-medium">{{ String(giftCard.recipientPhone ?? '') }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">روش ارسال:</span>
-                <span class="font-medium">{{ getDeliveryMethodText(giftCard.deliveryMethod) }}</span>
+                <span class="font-medium">{{ getDeliveryMethodText(String(giftCard.deliveryMethod ?? '')) }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">تاریخ ارسال:</span>
-                <span class="font-medium">{{ formatDate(giftCard.deliveryDate) }}</span>
+                <span class="font-medium">{{ formatDate(String(giftCard.deliveryDate ?? '') || new Date()) }}</span>
               </div>
             </div>
           </div>
@@ -75,7 +75,7 @@
         <!-- پیام شخصی -->
         <div v-if="giftCard.personalMessage" class="bg-blue-50 rounded-lg p-6">
           <h4 class="font-medium text-blue-900 mb-2">پیام شخصی</h4>
-          <p class="text-blue-800">{{ giftCard.personalMessage }}</p>
+          <p class="text-blue-800">{{ String(giftCard.personalMessage ?? '') }}</p>
         </div>
 
         <!-- تنظیمات استفاده -->
@@ -85,19 +85,19 @@
             <div class="space-y-2 text-sm">
               <div class="flex justify-between">
                 <span class="text-gray-600">محدودیت استفاده:</span>
-                <span class="font-medium">{{ getUsageLimitText(giftCard.usageLimit) }}</span>
+                <span class="font-medium">{{ getUsageLimitText(String(giftCard.usageLimit ?? '')) }}</span>
               </div>
-              <div v-if="giftCard.usageLimit === 'multiple'" class="flex justify-between">
+              <div v-if="String(giftCard.usageLimit ?? '') === 'multiple'" class="flex justify-between">
                 <span class="text-gray-600">تعداد استفاده مجاز:</span>
-                <span class="font-medium">{{ giftCard.maxUsageCount }}</span>
+                <span class="font-medium">{{ Number(giftCard.maxUsageCount ?? 0) }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">حداقل مبلغ سفارش:</span>
-                <span class="font-medium">{{ giftCard.minOrderAmount ? formatAmount(giftCard.minOrderAmount) + ' تومان' : 'بدون محدودیت' }}</span>
+                <span class="font-medium">{{ giftCard.minOrderAmount ? formatAmount(Number(giftCard.minOrderAmount ?? 0)) + ' تومان' : 'بدون محدودیت' }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">حداکثر مبلغ سفارش:</span>
-                <span class="font-medium">{{ giftCard.maxOrderAmount ? formatAmount(giftCard.maxOrderAmount) + ' تومان' : 'بدون محدودیت' }}</span>
+                <span class="font-medium">{{ giftCard.maxOrderAmount ? formatAmount(Number(giftCard.maxOrderAmount ?? 0)) + ' تومان' : 'بدون محدودیت' }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">استفاده جزئی:</span>
@@ -119,50 +119,50 @@
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">تاریخ انقضا:</span>
-                <span class="font-medium">{{ formatDate(giftCard.expiryDate) }}</span>
+                <span class="font-medium">{{ formatDate(String(giftCard.expiryDate ?? '') || new Date()) }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">تاریخ ایجاد:</span>
-                <span class="font-medium">{{ formatDate(giftCard.createdAt) }}</span>
+                <span class="font-medium">{{ formatDate(String(giftCard.createdAt ?? '') || new Date()) }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">ایجاد شده توسط:</span>
-                <span class="font-medium">{{ giftCard.createdBy }}</span>
+                <span class="font-medium">{{ String(giftCard.createdBy ?? '') }}</span>
               </div>
             </div>
           </div>
         </div>
 
         <!-- دسته‌بندی‌های مجاز -->
-        <div v-if="giftCard.allowedCategories && giftCard.allowedCategories.length > 0" class="bg-gray-50 rounded-lg p-6">
+        <div v-if="Array.isArray(giftCard.allowedCategories) && (giftCard.allowedCategories as Array<unknown>).length > 0" class="bg-gray-50 rounded-lg p-6">
           <h4 class="font-medium text-gray-900 mb-3">دسته‌بندی‌های مجاز</h4>
           <div class="flex flex-wrap gap-2">
             <span 
-              v-for="category in giftCard.allowedCategories" 
-              :key="category"
+              v-for="category in (Array.isArray(giftCard.allowedCategories) ? (giftCard.allowedCategories as Array<unknown>) : [])" 
+              :key="String(category)"
               class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
             >
-              {{ getCategoryText(category) }}
+              {{ getCategoryText(String(category)) }}
             </span>
           </div>
         </div>
 
         <!-- تاریخچه استفاده -->
-        <div v-if="giftCard.usageHistory && giftCard.usageHistory.length > 0" class="bg-gray-50 rounded-lg p-6">
+        <div v-if="Array.isArray(giftCard.usageHistory) && (giftCard.usageHistory as Array<unknown>).length > 0" class="bg-gray-50 rounded-lg p-6">
           <h4 class="font-medium text-gray-900 mb-3">تاریخچه استفاده</h4>
           <div class="space-y-3">
             <div 
-              v-for="usage in giftCard.usageHistory" 
-              :key="usage.id"
+              v-for="(usage, idx) in (Array.isArray(giftCard.usageHistory) ? (giftCard.usageHistory as Array<Record<string, unknown>>) : [])" 
+              :key="String(usage.id ?? idx)"
               class="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-200"
             >
               <div>
-                <div class="font-medium text-gray-900">{{ formatAmount(usage.amount) }} تومان</div>
-                <div class="text-sm text-gray-600">{{ usage.description || 'استفاده از گیفت کارت' }}</div>
-                <div class="text-xs text-gray-500">{{ formatDate(usage.date) }}</div>
+                <div class="font-medium text-gray-900">{{ formatAmount(Number(usage.amount ?? 0)) }} تومان</div>
+                <div class="text-sm text-gray-600">{{ String(usage.description ?? 'استفاده از گیفت کارت') }}</div>
+                <div class="text-xs text-gray-500">{{ formatDate(String(usage.date ?? '') || new Date()) }}</div>
               </div>
               <div class="text-right">
-                <div class="text-sm font-medium text-gray-900">سفارش: {{ usage.orderId }}</div>
+                <div class="text-sm font-medium text-gray-900">سفارش: {{ String(usage.orderId ?? '') }}</div>
               </div>
             </div>
           </div>
@@ -295,7 +295,7 @@ const getUsageLimitText = (limit: string) => {
 
 const copyCode = async () => {
   try {
-    await navigator.clipboard.writeText(giftCard.value.code)
+    await navigator.clipboard.writeText(String(giftCard.value.code ?? ''))
     alert('کد کپی شد')
   } catch (err) {
     console.error('خطا در کپی کردن کد:', err)
@@ -303,7 +303,7 @@ const copyCode = async () => {
 }
 
 const resendGiftCard = async () => {
-  if (confirm(`آیا می‌خواهید گیفت کارت ${giftCard.value.code} مجدداً ارسال شود؟`)) {
+  if (confirm(`آیا می‌خواهید گیفت کارت ${String(giftCard.value.code ?? '')} مجدداً ارسال شود؟`)) {
     try {
       // در نسخه واقعی: ارسال به API
 

@@ -27,7 +27,7 @@ export default defineEventHandler(async (event): Promise<MobileAppHeaderCreateRe
                if (raw?.length) {
                     try {
                          body = JSON.parse(raw)
-                    } catch (parseErr) {
+                    } catch (_parseErr) {
                          // console.error('❌ خطا در parse بدنه هدر موبایل:', parseErr, raw)
                          throw createError({ statusCode: 400, message: 'ساخت هدر موبایل: بدنه نامعتبر است' })
                     }
@@ -37,7 +37,7 @@ export default defineEventHandler(async (event): Promise<MobileAppHeaderCreateRe
                if (typeof rawBody === 'string' && rawBody.length) {
                     try {
                          body = JSON.parse(rawBody)
-                    } catch (parseErr) {
+                    } catch (_parseErr) {
                          // console.error('❌ خطا در parse بدنه هدر موبایل:', parseErr, rawBody)
                          throw createError({ statusCode: 400, message: 'ساخت هدر موبایل: بدنه نامعتبر است' })
                     }
@@ -55,7 +55,7 @@ export default defineEventHandler(async (event): Promise<MobileAppHeaderCreateRe
                     body
                })
           } catch (fetchErr: unknown) {
-               const err = fetchErr as Record<string, any>
+               const err = fetchErr as { statusCode?: number; status?: number; message?: string; data?: { message?: string; error?: string }; response?: { status?: number; _data?: unknown } }
                // console.error('❌ fetchGo ایجاد هدر موبایل شکست خورد:', {
                //      statusCode: err?.statusCode,
                //      status: err?.status,

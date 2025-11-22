@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
       headers: { 'Authorization': getHeader(event, 'authorization') || '' }
     })
     return response
-  } catch (error: any) {
+  } catch (_error) {
     throw createError({ statusCode: 500, message: 'خطا در آزاد کردن IP' })
   }
 })

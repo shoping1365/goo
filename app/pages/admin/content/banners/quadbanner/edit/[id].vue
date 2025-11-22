@@ -941,7 +941,7 @@ const bannerConfig = ref({
   mobile_vertical_display: false,
   mobile_height: 150,
   mobile_banner_width: 500, // عرض بنر موبایل
-  mobile_image_mode: 'auto', // 'auto' or 'separate'
+  mobile_image_mode: 'auto' as 'auto' | 'separate', // 'auto' or 'separate'
   mobile_crop_width: 375, // عرض پیش‌فرض برای برش موبایل
   mobile_crop_height: 150, // ارتفاع پیش‌فرض برای برش موبایل
   mobile_cropped_image: '', // URL عکس برش داده شده برای موبایل
@@ -1237,12 +1237,12 @@ onMounted(async () => {
   
   // Only copy specific config fields, don't overwrite defaults
   if (fetchedWidget.value?.config) {
-    const config = fetchedWidget.value.config as BannerConfig
+    const config = fetchedWidget.value.config as BannerConfig & { slider_width?: number; slides?: Array<Record<string, unknown>> }
     if (config.banners) bannerConfig.value.banners = config.banners
-    else if (config.slides) bannerConfig.value.banners = config.slides
+    else if ('slides' in config && config.slides) bannerConfig.value.banners = config.slides as typeof bannerConfig.value.banners
     if (config.height) bannerConfig.value.height = config.height
     if (config.banner_width) bannerConfig.value.banner_width = config.banner_width
-    else if (config.slider_width) bannerConfig.value.banner_width = config.slider_width
+    else if ('slider_width' in config && config.slider_width) bannerConfig.value.banner_width = config.slider_width
     if (config.bg_enabled !== undefined) bannerConfig.value.bg_enabled = config.bg_enabled
     if (config.bg_color) bannerConfig.value.bg_color = config.bg_color
     if (config.wide_bg !== undefined) bannerConfig.value.wide_bg = config.wide_bg

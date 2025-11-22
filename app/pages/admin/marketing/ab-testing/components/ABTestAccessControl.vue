@@ -411,7 +411,7 @@ const refreshLogs = () => {
 }
 
 const saveUserPermissions = () => {
-  emit('permissions-changed', users.value)
+  emit('permissions-changed', users.value as unknown as Permissions)
 
 }
 

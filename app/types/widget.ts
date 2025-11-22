@@ -307,6 +307,7 @@ export interface SlideItem {
   order: number;
   status: 'active' | 'inactive';
   showTitle?: boolean; // کنترل نمایش عنوان در اسلایدر
+  [key: string]: unknown;
 }
 
 // آیتم بنر
@@ -321,6 +322,7 @@ export interface BannerItem {
   order: number;
   status: 'active' | 'inactive';
   showTitle?: boolean; // کنترل نمایش عنوان در بنر
+  [key: string]: unknown;
 }
 
 // آیتم دسته‌بندی

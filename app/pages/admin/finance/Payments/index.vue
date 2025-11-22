@@ -271,7 +271,15 @@ interface Filters {
 
 // مدیریت تغییر فیلترها
 const handleFilterChange = (filters: Filters) => {
-  currentFilters.value = { ...filters }
+  currentFilters.value = {
+    status: String(filters.status || 'all'),
+    paymentMethod: String(filters.paymentMethod || 'all'),
+    dateFrom: String(filters.dateFrom || ''),
+    dateTo: String(filters.dateTo || ''),
+    amountMin: String(filters.amountMin || ''),
+    amountMax: String(filters.amountMax || ''),
+    search: String(filters.search || '')
+  }
 }
 </script>
 

@@ -288,11 +288,11 @@ async function saveProduct() {
   try {
     // If we are in "edit mode" (because of save & continue), we should update.
     // Otherwise, we create a new product.
+    interface Product {
+      id?: number | string
+      [key: string]: unknown
+    }
     if (pStore.isEditMode && pStore.editingProductId) {
-      interface Product {
-        id?: number | string
-        [key: string]: unknown
-      }
       const product = await pStore.updateProduct(pStore.editingProductId) as Product | null
       if (product && product.id) {
         // نمایش پیام موفقیت با notifier

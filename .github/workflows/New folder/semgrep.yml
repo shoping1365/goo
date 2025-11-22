@@ -75,6 +75,6 @@ jobs:
       # Upload SARIF file generated in previous step
       # Only upload if scan was successful (verify step passed)
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@main
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: semgrep.sarif

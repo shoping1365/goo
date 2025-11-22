@@ -170,8 +170,8 @@ v-model="queryText" type="text" placeholder="شماره تراکنش یا نام
               <td class="px-4 py-3">
                 <div class="flex space-x-2 space-x-reverse">
                   <button class="text-blue-600 hover:text-blue-800 text-sm">جزئیات</button>
-                  <button v-if="transaction.status === 'pending'" class="text-green-600 hover:text-green-800 text-sm" @click="updateStatus(transaction.id, 'success')">تأیید</button>
-                  <button v-if="transaction.status === 'pending'" class="text-red-600 hover:text-red-800 text-sm" @click="updateStatus(transaction.id, 'failed')">رد</button>
+                  <button v-if="transaction.status === 'pending'" class="text-green-600 hover:text-green-800 text-sm" @click="updateStatus(Number(transaction.id), 'success')">تأیید</button>
+                  <button v-if="transaction.status === 'pending'" class="text-red-600 hover:text-red-800 text-sm" @click="updateStatus(Number(transaction.id), 'failed')">رد</button>
                 </div>
               </td>
             </tr>
@@ -288,10 +288,20 @@ const { data, refresh } = await useFetch('/api/admin/wallet/transactions', {
 interface TransactionItem {
   id?: number | string
   transactionId?: number | string
+  username?: string | number
+  user_id?: string | number
+  email?: string
+  type?: string
+  amount?: number | string
+  created_at?: string
+  status?: string
+  gateway?: string
+  method?: string
   [key: string]: unknown
 }
 interface TransactionsResponse {
   items?: TransactionItem[]
+  total?: number | string
   [key: string]: unknown
 }
 watchEffect(() => {
@@ -301,14 +311,14 @@ watchEffect(() => {
   transactions.value = items.map((r: TransactionItem) => ({
     id: r.id,
     transactionId: r.id,
-    userName: r.username || r.user_id,
-    userEmail: r.email || '-',
-    userInitials: (r.username || '-').slice(0,2),
+    userName: (r.username || r.user_id || '-') as string | number,
+    userEmail: (r.email || '-') as string,
+    userInitials: String(r.username || '-').slice(0, 2),
     type: r.type === 'credit' ? 'شارژ' : 'کسر',
-    amount: r.type === 'credit' ? Number(r.amount) : -Number(r.amount),
-    date: r.created_at,
+    amount: r.type === 'credit' ? Number(r.amount || 0) : -Number(r.amount || 0),
+    date: (r.created_at || '') as string,
     status: r.status === 'success' ? 'موفق' : (r.status === 'pending' ? 'در انتظار' : 'ناموفق'),
-    description: r.gateway || r.method || '-'
+    description: (r.gateway || r.method || '-') as string
   }))
   paginationInfo.total = Number(res.total || 0)
   paginationInfo.start = (page.value-1) * pageSize.value + 1

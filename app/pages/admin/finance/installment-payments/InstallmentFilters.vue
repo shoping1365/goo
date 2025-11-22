@@ -212,6 +212,7 @@ interface Filters {
   paymentMethod: string
   approvalMethod: string
   search: string
+  [key: string]: unknown
 }
 
 const emit = defineEmits<{
@@ -291,7 +292,7 @@ const activeFilters = computed(() => {
     if (value && key !== 'startDate' && key !== 'endDate' && key !== 'search') {
       const label = getFilterLabel(key)
       if (label) {
-        active[key] = { label, value: getFilterValue(key, value) }
+        active[key] = { label, value: getFilterValue(key, String(value)) }
       }
     }
   })

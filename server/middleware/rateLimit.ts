@@ -49,7 +49,7 @@ const rateLimitConfig: Record<string, RateLimitConfig> = {
 /**
  * Get client IP address
  */
-const getClientIp = (event: any): string => {
+const getClientIp = (event: { context?: { clientAddress?: string }; node?: { req?: { socket?: { remoteAddress?: string } } } }): string => {
   try {
     // Try to get forwarded IP
     const xForwardedFor = getRequestHeader(event, 'x-forwarded-for')
@@ -62,7 +62,7 @@ const getClientIp = (event: any): string => {
     if (xRealIp) {
       return Array.isArray(xRealIp) ? xRealIp[0] : xRealIp
     }
-  } catch (e) {
+  } catch (_e) {
     // Fallback if getRequestHeader fails
   }
 
@@ -119,7 +119,7 @@ const cleanupOldEntries = () => {
 }
 
 // Cleanup every 10 minutes
-if (typeof process !== 'undefined' && (process as any).server) {
+if (typeof process !== 'undefined' && (process as { server?: boolean }).server) {
   setInterval(cleanupOldEntries, 10 * 60 * 1000)
 }
 
@@ -139,8 +139,8 @@ const hasElevatedRole = (user: AuthUser | undefined | null): boolean => {
     return true
   }
 
-  const roleList = Array.isArray((user as any).roles) ? (user as any).roles : []
-  return roleList.some((roleEntry: any) => {
+  const roleList = Array.isArray((user as { roles?: Array<string | { name?: string; role?: string; key?: string }> }).roles) ? (user as { roles: Array<string | { name?: string; role?: string; key?: string }> }).roles : []
+  return roleList.some((roleEntry) => {
     if (!roleEntry) return false
     const value = typeof roleEntry === 'string'
       ? roleEntry
@@ -149,7 +149,7 @@ const hasElevatedRole = (user: AuthUser | undefined | null): boolean => {
   })
 }
 
-const isAdminUser = async (event: any): Promise<boolean> => {
+const isAdminUser = async (event: { node?: { req?: { url?: string } }; path?: string }): Promise<boolean> => {
   const path = event.node.req.url || ''
 
   try {
@@ -175,7 +175,7 @@ const isAdminUser = async (event: any): Promise<boolean> => {
 
     // اگر کاربر دارای فلگ‌های صریح باشد
     const flags = ['is_admin', 'isAdmin', 'is_developer', 'isDeveloper']
-    if (flags.some(flag => Boolean((user as any)?.[flag]))) {
+    if (flags.some(flag => Boolean((user as Record<string, unknown>)?.[flag]))) {
       return true
     }
 

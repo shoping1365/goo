@@ -964,7 +964,7 @@ interface WindowWithFetch extends Window {
 }
 const globalObj = globalThis as GlobalWithFetch
 const win = window as WindowWithFetch
-const $f = globalObj.$fetch || win.$fetch || $fetch
+const $f = (globalObj.$fetch || win.$fetch || $fetch) as typeof $fetch
 const loadReviews = async () => {
   try {
     const params = new URLSearchParams()

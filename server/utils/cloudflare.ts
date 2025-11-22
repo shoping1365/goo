@@ -34,15 +34,15 @@ export function getCloudflareZoneId (): string {
  * @param endpoint مسیر نسبی، مثال: `/zones/{zoneId}/dns_records`
  * @param options تنظیمات درخواست
  */
-export async function cloudflareRequest<T = any> (
+export async function cloudflareRequest<T = unknown> (
   endpoint: string,
-  options: { method?: string, query?: Record<string, any>, body?: any } = {}
+  options: { method?: string, query?: Record<string, unknown>, body?: unknown } = {}
 ): Promise<T> {
   const baseURL = 'https://api.cloudflare.com/client/v4'
   const headers = buildAuthHeaders()
 
   try {
-    const response: any = await ofetch(endpoint, {
+    const response = await ofetch<{ success?: boolean; errors?: Array<{ code?: number; message?: string }>; messages?: Array<{ code?: number; message?: string }>; result?: T }>(endpoint, {
       baseURL,
       method: options.method || 'GET',
       headers,
@@ -52,7 +52,7 @@ export async function cloudflareRequest<T = any> (
 
     // Cloudflare پاسخ را به شکل { success, result, errors, messages } برمی‌گرداند
     if (response && response.success) {
-      return response as T
+      return response.result as T
     }
 
     // اگر success=false بود، خطا را با جزئیات برگردانیم

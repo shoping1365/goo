@@ -1,0 +1,979 @@
+---
+alwaysApply: true
+---
+
+#Development Rules and Protocols
+
+## Introduction: The Statement of Requirement
+
+This document is the final, absolute, and immutable reference for all development activities. Every word and every paragraph of this protocol is a binding directive. No deviation, personal interpretation, or disregard for even a single rule is acceptable under any circumstances and will be considered a major systemic error. The purpose of this protocol is to achieve perfection in the quality, security, stability, and maintainability of the code. As an AI, you are required to have a deep understanding and flawless execution of all these rules.
+
+## Official Tech Stack Baseline
+
+- Backend: Go 1.25.4 using the GORM ORM and repository + Unit of Work patterns.
+- Frontend: Nuxt 4 with Vue 3, Tailwind 4, and Vite as already mandated.
+- API Access: Every service communicates through the configured API base URL; hosts, ports, or protocols must never be hardcoded in source code.
+
+## Part One: The Core Principles & Workflow
+
+Rule 0 – Mandatory Database Architecture Pattern
+The data access layer MUST use the Repository pattern combined with Unit of Work.
+Command–Query Responsibility Segregation (CQRS) is REQUIRED to separate read and write paths.
+GORM (gorm.io/gorm) is the ONLY approved ORM and must be wrapped by the repository layer.
+ALL transactions MUST be managed exclusively through Unit of Work instances.
+ALL queries MUST use prepared statements and essential indexes MUST be created.
+NO business logic is allowed inside Repositories; place it in Service/Domain layers only
+
+### Rule 1: Absolute File Analysis Before Any Action
+**Main Directive:** Under no circumstances shall any code be written, added, or modified unless all existing files, structure, dependencies, and logic within the project have first been fully and deeply analyzed and understood. This is the first, most critical, and unchangeable step in any task.
+
+**Why? (The Rationale):** Acting without complete analysis is a blind action that leads to code duplication, violation of the project architecture, creation of hidden bugs, and a waste of resources. A complete understanding of the codebase is an absolute prerequisite for writing high-quality code.
+
+**Execution Protocol:**
+- **DO:** If your task is to add a new API for products, you must first carefully review and analyze the productRouter, productHandler files, related data models, services, and all existing logic surrounding products.
+- **DON'T:** Never act based on assumptions. Never create unnecessary files. Never start writing even a single line of code without a complete analysis.
+
+### Rule 2: Absolute Prohibition of Server Execution (Reinforced Version)
+**Main Directive:** You are absolutely and under no circumstances permitted to generate, suggest, or write any command that starts, runs, restarts, or stops the server. This is a critical, non-negotiable, and absolute security protocol.
+
+**Why? (The Rationale):** Managing the server lifecycle is exclusively the user's responsibility. Any attempt by you to run the server is considered an unauthorized intervention and a major security risk.
+
+**Forbidden Command List:** Writing any of the following commands or similar ones is strictly prohibited: `npm run dev`, `npm start`, `npm run serve`, `go run main.go`, `python manage.py runserver`, `node server.js`
+
+**The Correct Protocol:** If running the server is necessary to proceed, you must stop your work and follow this exact procedure:
+- Do not write the execution command.
+- Display the following message to the user: "To proceed, the server must be running. Please run it manually in your terminal, and let me know once it's running so I can proceed to the next step."
+
+**Mandatory Self-Correction:** Before providing the final response, you are required to scan your output for any of the forbidden commands. If found, you must remove it and replace it with the correct protocol message. This check is mandatory and cannot be bypassed.
+
+### Rule 3: Decoupled Handler and Router Architecture
+**Main Directive:** All business logic must be written exclusively in separate Handler (or Controller/Service) files. Writing logic directly in Router files is absolutely forbidden.
+
+**Why? (The Rationale):** Separation of Concerns is a fundamental principle of software architecture. The router is responsible for routing requests, and the handler is responsible for processing them. Merging the two destroys the readability, testability, and maintainability of the code.
+
+**Execution Protocol:**
+- **DO (Mandatory):**
+  ```go
+  // router.go
+  router.GET("/users", userHandler.GetUsers)
+
+  // userHandler.go
+  func GetUsers(c *gin.Context) { /* All logic, validation, and database interaction must be here */ }
+  ```
+- **DON'T (Forbidden):**
+  ```go
+  router.GET("/users", func(c *gin.Context) {
+    // Writing even a single line of logic in the router is absolutely forbidden
+  })
+  ```
+
+### Rule 4: Hierarchical Organization of Components (Frontend Specific)
+**Main Directive:** All components required for a specific page must be created in that page's dedicated folder (`/pages/page-name/components/`). Storing page-specific components in the general components folder is absolutely forbidden, unless there is an explicit and direct instruction from the user to create a global component (usable throughout the project).
+
+**Why? (The Rationale):** This structure ensures project scalability and prevents the components folder from becoming a messy and unmanageable directory. It makes finding and managing a page's dependencies significantly easier.
+
+**Execution Protocol:**
+- **DO (Mandatory):** `/pages/profile/components/Avatar.jsx`, `/pages/profile/index.jsx`
+- **DON'T (Forbidden):** `/components/ProfileAvatar.jsx` (if this component is used only and exclusively on the profile page).
+
+### Rule 5: Version Control Management (Git)
+**Main Directive:** Correct use of Git is mandatory. Commit messages must be clear, descriptive, and follow common standards (like Conventional Commits). Committing directly to the main or master branches is absolutely forbidden, and all changes must be made through a Pull/Merge Request and code review process.
+
+**Why? (The Rationale):** A clean and meaningful history is key to project maintainability. Preventing direct commits prevents unreviewed and low-quality code from entering the main branch.
+
+**Execution Protocol:**
+- **DO:** `git commit -m "feat(auth): implement JWT authentication for user login route"`
+- **DON'T:** `git commit -m "fix"` or `git commit -m "update code"`
+
+### Rule 6: Mandatory Code Review
+**Main Directive:** No code shall be merged into the main branch without passing a rigorous and meticulous code review process. The review must include checking for security vulnerabilities, performance issues, adherence to all rules in this document, passing all tests, and up-to-date documentation. This is an impassable quality gate.
+
+### Rule 6.1: CI/CD Automation
+**Main Directive:** All build, test, and deployment processes to Staging and Production environments must be fully automated through a CI/CD pipeline (e.g., GitHub Actions, GitLab CI). Manual deployments are absolutely forbidden.
+
+### Rule 6.2: Scripted Deployment Orchestration
+**Main Directive:** The official deployment flow is defined by the repository scripts and workflows (`scripts/deploy-all-sites.sh`, `.github/workflows/deploy.yml`). No engineer may trigger ad-hoc commands or modify infrastructure manually; every promotion must pass through these vetted automation entry points.
+
+**Why? (The Rationale):** Centralizing deployments in code guarantees reproducibility, auditability, secret hygiene, and enforcement of the QA gates defined in this document.
+
+**Execution Protocol:**
+- Update deployment logic only via Pull Requests that modify the script/workflow plus linked docs (`docs/DEPLOYMENT_GUIDE.md`).
+- All environment variables, credentials, and rollout toggles consumed by the scripts must live in the secure secret store and be referenced symbolically (no plaintext in the workflow).
+- To ship a change, run the deployment workflow (CLI or GitHub UI) with the documented inputs; never bypass by SSHing into servers or running custom `kubectl`/`pm2` commands.
+- The workflow is responsible for calling `scripts/deploy-all-sites.sh`; local manual execution is forbidden unless you are running the full pipeline in a preflight environment.
+- Deployment status, logs, and artifacts must be attached to the PR and archived per the release checklist.
+
+## Part Two: Code Quality, Readability, and Maintainability
+
+### Rule 7: Meaningful Naming Conventions
+**Main Directive:** The names of variables, functions, classes, and any other entity must be perfectly clear, descriptive, and meaningful, conveying their purpose without needing to read their internal code. Using short, ambiguous, or single-letter names (like `x`, `data`, `temp`, `proc`) is absolutely forbidden.
+
+**Why? (The Rationale):** Code is read more often than it is written. Unclear names destroy readability and turn future code maintenance into a nightmare.
+
+**Execution Protocol:**
+- **DO:** `userProfile`, `calculateTotalPriceWithTax()`, `isUserAuthenticated`
+- **DON'T:** `x`, `d`, `procData()`, `flag`
+
+### Rule 8: Single-Purpose and Short Function Design
+**Main Directive:** Every function must perform only one specific task and be as short and focused as possible. If a function does more than one thing, it must be broken down into smaller functions.
+
+**Why? (The Rationale):** Small, single-purpose functions are significantly easier to test, reuse, debug, and understand.
+
+### Rule 9: Absolute Prohibition of Magic Values
+**Main Directive:** The use of repeated, unexplained numbers or strings (magic values) in the code is absolutely forbidden. These values must be defined in constant files or enums with meaningful names and imported from there.
+
+**Why? (The Rationale):**
+- **Readability:** `if (user.status === 2)` is incomprehensible, but `if (user.status === USER_STATUS.INACTIVE)` is perfectly clear and self-documenting.
+- **Maintainability:** To change a value, only one place (the constants file) will need to be changed, not dozens of different files, which increases the likelihood of errors.
+
+### Rule 10: Comprehensive and Mandatory Documentation in Persian
+**Main Directive:** All code, especially functions, classes, and complex logic, must be fully commented with clear explanations. The language for comments in this project is exclusively Persian.
+
+**Why? (The Rationale):** So that all Persian-speaking team members can quickly and easily understand and maintain the code. Code without documentation is incomplete code.
+
+**Execution Protocol:** The comment should explain the purpose, parameters, return values, and any special behavior or preconditions of the function.
+
+```go
+// This function checks the final status of an order based on its ID
+// and returns one of the statuses "paid", "canceled", or "pending".
+// The orderID parameter must be a positive integer.
+func GetOrderStatus(orderID int) string { /* ... */ }
+```
+
+### Rule 10.1: Exhaustive Module and Feature Documentation
+**Main Directive:** Every module, feature, API, infrastructure component, or operational runbook MUST have a dedicated document (or section) in `docs/` that describes its purpose, dependencies, data flow, configs, rollout steps, monitoring, and failure modes in meticulous detail. If a document already exists, it MUST be updated line-by-line alongside the change; stale docs are treated as missing docs.
+
+**Why? (The Rationale):** Accurate documentation is the single source of truth for onboarding, audits, and incident response. Partial or outdated instructions produce catastrophic handover gaps.
+
+**Execution Protocol:**
+- Before coding, identify the target doc (e.g., `docs/feature-x.md`, `docs/api/orders.md`, `docs/runbooks/cache.md`). If absent, create it following the standard template in `docs/templates/doc-standard.md`.
+- After implementing any change, update EVERY affected subsection (architecture, request/response samples, config keys, playbooks, metrics) so the document mirrors reality. “Describe the delta in PR description” is insufficient.
+- Pull Requests lacking documentation diffs must be rejected. CI should fail if `docs/` was expected to change but didn’t (use doc coverage checks).
+- Version each doc with a `Last-Updated:` line and keep change history in `docs/CHANGELOG.md`.
+
+### Rule 10.2: Absolute Type Safety Enforcement (TypeScript)
+**Main Directive:** Using `any` (explicit or implicit) is strictly forbidden. Every TypeScript error, warning, or `tsc --noEmit` failure MUST be fixed at the source—never silenced. Directives like `// @ts-ignore`, `// @ts-expect-error`, `suppressImplicitAnyIndexErrors`, or disabling rules are only allowed with architectural approval and documented justification.
+
+**Why? (The Rationale):** Type safety is the first defense line against runtime defects, security bugs, and regressions. Ignoring the compiler eliminates the guarantees that keep Nuxt/Vue and server-side code reliable.
+
+**Execution Protocol:**
+- Configure `tsconfig.json` with `strict: true`, `noImplicitAny: true`, `noUncheckedIndexedAccess: true`, and `exactOptionalPropertyTypes: true`. These flags may never be relaxed.
+- Replace `any` with precise types, generics, discriminated unions, or `unknown` + runtime guards when shape truly varies.
+- When third-party libs lack types, add/extend ambient declarations under `types/` or contribute upstream instead of falling back to `any`.
+- TS errors in CI block merges; local developers must run `npx tsc --noEmit` (or equivalent) before every PR.
+- Code review checklist includes “no new anys / no ignored ts errors”; reviewers must reject violations immediately.
+
+### Rule 11: Code Cleanup Protocol Before Commit
+**Main Directive:** After completing any task and before creating a commit, you are required to completely remove all temporary code, debug variables, unnecessary comments (like `// TODO: remove this`), and `console.log` or `print` statements from the code. The final code must be clean, optimized, and ready for the production environment.
+
+### Rule 12: Absolute Preservation of Styles (Reinforced Version)
+**Main Directive:** Under no circumstances, absolutely and never, are you permitted to change, delete, or add any styles. This is a critical and unchangeable directive. Changing the following is forbidden:
+- CSS files
+- Inline styles (`style="..."`)
+- CSS class names in HTML tags (`class="..."`)
+
+**The Only Exception:** You are only allowed to change styles if the user's request includes one of the following explicit and precise phrases: "change the style of...", "edit the CSS for...", "change the color/size/font of...".
+
+**Warning:** General requests like "make this page better," "clean up the appearance," or "fix this section" are by no means permission to change styles. In these cases, you must correct the structure and logic without touching the visual appearance.
+
+**Mandatory Mental Checklist:** Before editing any file, you must ask yourself: "Does my change affect a .css file or a style or class attribute?" If the answer is yes, you must ensure that you have the user's explicit, word-for-word permission for this action in the current request.
+
+## Part Three: Database and Migrations
+
+### Rule 13: Database Schema Control via Migrations
+**Main Directive:** Any change to the database schema (creating, altering, or deleting tables and columns) must be done exclusively through migration files. Executing `CREATE`/`ALTER`/`DROP TABLE` commands manually or directly in the database is absolutely forbidden.
+
+### Rule 14: Migration Management
+**Main Directive:** All created migration files must be properly registered, executable, and tested. Ensuring the successful execution of migrations before deployment is mandatory.
+
+## Part Four: Security, Errors, and Logging
+
+### Rule 15: Security is the Absolute Priority
+**Main Directive:** Security has the highest priority in all aspects of the project. Every line of code must be written with a security mindset. This includes preventing SQL injection, XSS, protecting against Brute-Force attacks, securely hashing passwords, secure session management, preventing information leakage, and enforcing strict access control.
+
+**Static Application Security Testing (SAST):** A Static Application Security Testing (SAST) tool must be integrated into the CI pipeline to automatically scan the codebase for common vulnerabilities, such as those in the OWASP Top 10 list.
+
+### Rule 16: Error Handling Standards
+**Main Directive:** Error handling must be implemented comprehensively. `try-catch` blocks must be used correctly, and generic, non-technical error messages should be displayed to the user, while the full, technical error is logged for debugging.
+
+### Rule 17: Logging Standards
+**Main Directive:** Logging must be structured (Structured Logging) and have appropriate levels (Debug, Info, Warning, Error). All sensitive information must be removed from logs. The log format must be consistent throughout the application.
+
+## Part Five: API and Data
+
+### Rule 18: API Design Principles
+**Main Directive:** RESTful API principles must be strictly followed. This includes uniform response formats, correct use of HTTP status codes, and implementation of rate limiting.
+
+### Rule 19: Automatic API Documentation
+**Main Directive:** All API endpoints must be documented using standard comments (like Swagger/OpenAPI) so that API documentation is generated automatically, accurately, and is always up-to-date.
+
+### Rule 19.1: JSONv2 Contract Enforcement
+**Main Directive:** Every API request, response, event payload, config artifact, and data interchange file MUST comply with the JSONv2 specification adopted by the company. Legacy JSON 1.x shapes are forbidden anywhere in the monorepo (Nuxt, Go, Android, scripts, tests).
+
+**Why? (The Rationale):** JSONv2 provides consistent envelope metadata, versioning, and validation hooks that power observability, caching, and backward compatibility across platforms.
+
+**Execution Protocol:**
+- Define all schemas in `docs/jsonv2/` (or the authoritative repo) and import them into backend validators (`pkg/validation/jsonv2`) and frontend types (`types/jsonv2.ts`).
+- Automated tests must validate sample payloads against their JSONv2 schema using `jsonv2-cli validate`. CI fails on schema drift.
+- When evolving a schema, bump the `version` field, update documentation, regenerate TypeScript/Go types, and add migration notes.
+- Any third-party integration must map into JSONv2 before touching internal services; adapters live in dedicated translators (no inline mapping scattered across code).
+- Linters must block commits introducing raw `JSON.parse`/`JSON.stringify` calls that bypass the shared helpers unless explicitly whitelisted.
+
+### Rule 20: Currency Rule Enforcement
+**Main Directive:** All financial and currency-related rules must be implemented with absolute precision. Calculations and conversions must be validated, and appropriate decimal precision must be used to prevent rounding errors.
+
+## Part Six: Performance, Testing, and Dependencies
+
+### Rule 21: Performance Monitoring and Optimization
+**Main Directive:** The code must be optimized for the best possible performance. Continuous monitoring of API response times, memory consumption, and optimization of database queries is mandatory.
+
+### Rule 22: Test Writing Standards
+**Main Directive:** Writing comprehensive tests (Unit, Integration, and End-to-End) for all features, functions, and API endpoints is mandatory. End-to-End (E2E) tests for critical user workflows (e.g., registration, login, checkout process) using a framework like Cypress or Playwright is mandatory. These tests must be executed as part of the CI pipeline. A minimum code coverage of 80% must be maintained, and all tests must pass successfully before any merge.
+
+
+## Rule 22.1: Mandatory Test Coverage for Every Code Change (ABSOLUTE REQUIREMENT)**Main Directive:** Under NO circumstances, absolutely and unconditionally, may any code be considered complete, merged, or deployed without comprehensive test coverage. Every function, component, API endpoint, service method, and business logic MUST have corresponding tests. Code without tests is incomplete code and MUST NOT be accepted.**Why? (The Rationale):** Tests are not optional—they are the foundation of code reliability, maintainability, and confidence. Untested code is a liability that leads to production bugs, technical debt, and system failures. This rule enforces the principle that "if it's not tested, it doesn't work."**Execution Protocol:**### 22.1.1: Test Requirements for New Code**Main Directive:** Every new feature, function, component, or API endpoint MUST include tests BEFORE it can be merged.**Mandatory Test Types:**1. **Unit Tests** - REQUIRED for:   - All functions and methods   - All utility functions   - All business logic   - All service layer methods   - All composables (Vue)   - All helper functions2. **Integration Tests** - REQUIRED for:   - All API endpoints   - All database operations   - All external service integrations   - All middleware functions   - All authentication flows3. **Component Tests** - REQUIRED for:   - All Vue components (using Vitest/Vue Test Utils)   - All interactive components   - All form components   - All modal/dialog components4. **End-to-End (E2E) Tests** - REQUIRED for:   - Critical user workflows (login, registration, checkout)   - All payment flows   - All authentication flows   - All admin operations**Test Coverage Requirements:**- **Minimum Coverage:** 80% code coverage MUST be maintained (as per Rule 22)- **New Code Coverage:** 100% coverage is REQUIRED for all new code- **Critical Paths:** 100% coverage is MANDATORY for:  - Authentication and authorization  - Payment processing  - Data validation  - Security-sensitive operations  - Financial calculations### 22.1.2: Test Writing Standards**Main Directive:** All tests MUST follow these standards:**Test Structure (AAA Pattern):**script// ✅ CORRECT - Proper test structuredescribe('UserService - createUser', () => {  it('should create a new user with valid data', () => {    // Arrange - Setup test data    const userData = { name: 'John', email: 'john@example.com' }        // Act - Execute the function    const result = userService.createUser(userData)        // Assert - Verify the result    expect(result).toBeDefined()    expect(result.name).toBe('John')  })})**Test Naming Conventions:**- Test names MUST be descriptive and explain what is being tested- Test names MUST follow the pattern: `should [expected behavior] when [condition]`- Example: `should return user data when valid ID is provided`- Example: `should throw error when email is invalid`**Test Quality Requirements:**- Tests MUST be independent (no shared state between tests)- Tests MUST be deterministic (same input = same output)- Tests MUST be fast (unit tests < 100ms, integration tests < 1s)- Tests MUST cover edge cases and error scenarios- Tests MUST use proper mocking for external dependencies### 22.1.3: Pre-Commit Test Requirements**Main Directive:** All tests MUST pass locally before any commit is made.**Execution Protocol:**- Developer MUST run `npm run test` (or equivalent) before committing- All tests MUST pass (100% pass rate required)- Pre-commit hook MUST run tests automatically- Commits with failing tests MUST be blocked### 22.1.4: Pull Request Test Requirements**Main Directive:** Pull Requests without tests or with failing tests MUST be automatically rejected.**Execution Protocol:**- Every PR MUST include test files for new code- PR description MUST list all test files added/modified- CI pipeline MUST run all tests- PR MUST show test coverage report- PR MUST show test results (pass/fail)- Merge MUST be blocked if:  - Tests are missing for new code  - Any test fails  - Coverage drops below 80%  - New code has less than 100% coverage**PR Checklist (MANDATORY):**- [ ] Unit tests added for all new functions- [ ] Integration tests added for all new API endpoints- [ ] Component tests added for all new Vue components- [ ] E2E tests added for critical user flows- [ ] All tests pass locally- [ ] Test coverage maintained at 80%+ (100% for new code)- [ ] Edge cases and error scenarios tested- [ ] Test documentation updated if needed### 22.1.5: Test Maintenance Requirements**Main Directive:** Tests MUST be maintained alongside code changes.**Execution Protocol:**- When code is modified, corresponding tests MUST be updated- When tests fail, they MUST be fixed immediately (not disabled)- Broken tests MUST NOT be committed- Test code MUST follow the same quality standards as production code- Test code MUST be reviewed in code review process### 22.1.6: Test File Organization**Main Directive:** Test files MUST follow the project structure and naming conventions.**Execution Protocol:****Backend (Go):**- Test files MUST be in the same package as source code- Test files MUST be named `*_test.go`- Example: `user_service.go` → `user_service_test.go`**Frontend (Vue/TypeScript):**- Test files MUST be placed in `__tests__` or `.test.ts/.spec.ts` files- Component tests MUST be co-located with components or in `tests/` directory- Example: `UserProfile.vue` → `UserProfile.spec.ts` or `__tests__/UserProfile.spec.ts`### 22.1.7: Test Documentation Requirements**Main Directive:** Complex tests MUST include documentation explaining the test scenario.**Execution Protocol:**- Tests with complex setup MUST have comments explaining the scenario- Tests for edge cases MUST document why the edge case is important- Integration tests MUST document the test environment requirements- E2E tests MUST document the user flow being tested### 22.1.8: Prohibition of Test Skipping**Main Directive:** Skipping tests (using `skip`, `xit`, `xdescribe`, `@skip`) is STRICTLY FORBIDDEN except in temporary development scenarios that MUST be resolved before merge.**Execution Protocol:**- Tests MUST NOT be skipped in production code- If a test is temporarily skipped, it MUST be fixed within the same PR- Skipped tests in PRs MUST be rejected- CI MUST fail if any test is skipped### 22.1.9: Test Performance Requirements**Main Directive:** Tests MUST execute quickly to maintain developer productivity.**Execution Protocol:**- Unit tests MUST complete in < 100ms each- Integration tests MUST complete in < 1s each- Full test suite MUST complete in < 5 minutes- Slow tests MUST be optimized or moved to a separate suite- CI test execution MUST complete in < 10 minutes### 22.1.10: Test Review Requirements**Main Directive:** Test code MUST be reviewed with the same rigor as production code.**Execution Protocol:**- Code reviewers MUST verify test coverage- Code reviewers MUST verify test quality- Code reviewers MUST verify all edge cases are tested- Code reviewers MUST reject PRs with insufficient tests- Test code MUST follow all coding standards (Rules 7-12)### 22.1.11: Exception Handling (VERY LIMITED)**Main Directive:** Exceptions to test requirements are EXTREMELY RARE and require explicit approval.**Allowed Exceptions (Require Documentation):**- Third-party library wrappers (if library is already tested)- Generated code (if generation is tested)- Configuration files (if structure is validated)**Exception Process:**- Developer MUST document why test is not needed- Exception MUST be approved by Tech Lead- Exception MUST be documented in code comments- Exception MUST be reviewed in code review### 22.1.12: Test-Driven Development (TDD) Encouragement**Main Directive:** Test-Driven Development (TDD) is STRONGLY ENCOURAGED for all new features.**Execution Protocol:**- Write tests FIRST, then implement code- Red-Green-Refactor cycle MUST be followed- Tests MUST drive the implementation- Implementation MUST satisfy tests---**Summary:** This rule makes test coverage MANDATORY for all code. No code can be merged without tests. All tests must pass. Coverage must be maintained at 80%+ (100% for new code). Tests are not optional—they are a requirement for code completion. Any violation of this rule MUST result in PR rejection.
+Test Naming Conventions:
+Test names MUST be descriptive and explain what is being tested
+Test names MUST follow the pattern: should [expected behavior] when [condition]
+Example: should return user data when valid ID is provided
+Example: should throw error when email is invalid
+Test Quality Requirements:
+Tests MUST be independent (no shared state between tests)
+Tests MUST be deterministic (same input = same output)
+Tests MUST be fast (unit tests < 100ms, integration tests < 1s)
+Tests MUST cover edge cases and error scenarios
+Tests MUST use proper mocking for external dependencies
+22.1.3: Pre-Commit Test Requirements
+Main Directive: All tests MUST pass locally before any commit is made.
+Execution Protocol:
+Developer MUST run npm run test (or equivalent) before committing
+All tests MUST pass (100% pass rate required)
+Pre-commit hook MUST run tests automatically
+Commits with failing tests MUST be blocked
+22.1.4: Pull Request Test Requirements
+Main Directive: Pull Requests without tests or with failing tests MUST be automatically rejected.
+Execution Protocol:
+Every PR MUST include test files for new code
+PR description MUST list all test files added/modified
+CI pipeline MUST run all tests
+PR MUST show test coverage report
+PR MUST show test results (pass/fail)
+Merge MUST be blocked if:
+Tests are missing for new code
+Any test fails
+Coverage drops below 80%
+New code has less than 100% coverage
+PR Checklist (MANDATORY):
+[ ] Unit tests added for all new functions
+[ ] Integration tests added for all new API endpoints
+[ ] Component tests added for all new Vue components
+[ ] E2E tests added for critical user flows
+[ ] All tests pass locally
+[ ] Test coverage maintained at 80%+ (100% for new code)
+[ ] Edge cases and error scenarios tested
+[ ] Test documentation updated if needed
+22.1.5: Test Maintenance Requirements
+Main Directive: Tests MUST be maintained alongside code changes.
+Execution Protocol:
+When code is modified, corresponding tests MUST be updated
+When tests fail, they MUST be fixed immediately (not disabled)
+Broken tests MUST NOT be committed
+Test code MUST follow the same quality standards as production code
+Test code MUST be reviewed in code review process
+22.1.6: Test File Organization
+Main Directive: Test files MUST follow the project structure and naming conventions.
+Execution Protocol:
+Backend (Go):
+Test files MUST be in the same package as source code
+Test files MUST be named *_test.go
+Example: user_service.go → user_service_test.go
+Frontend (Vue/TypeScript):
+Test files MUST be placed in __tests__ or .test.ts/.spec.ts files
+Component tests MUST be co-located with components or in tests/ directory
+Example: UserProfile.vue → UserProfile.spec.ts or __tests__/UserProfile.spec.ts
+22.1.7: Test Documentation Requirements
+Main Directive: Complex tests MUST include documentation explaining the test scenario.
+Execution Protocol:
+Tests with complex setup MUST have comments explaining the scenario
+Tests for edge cases MUST document why the edge case is important
+Integration tests MUST document the test environment requirements
+E2E tests MUST document the user flow being tested
+22.1.8: Prohibition of Test Skipping
+Main Directive: Skipping tests (using skip, xit, xdescribe, @skip) is STRICTLY FORBIDDEN except in temporary development scenarios that MUST be resolved before merge.
+Execution Protocol:
+Tests MUST NOT be skipped in production code
+If a test is temporarily skipped, it MUST be fixed within the same PR
+Skipped tests in PRs MUST be rejected
+CI MUST fail if any test is skipped
+22.1.9: Test Performance Requirements
+Main Directive: Tests MUST execute quickly to maintain developer productivity.
+Execution Protocol:
+Unit tests MUST complete in < 100ms each
+Integration tests MUST complete in < 1s each
+Full test suite MUST complete in < 5 minutes
+Slow tests MUST be optimized or moved to a separate suite
+CI test execution MUST complete in < 10 minutes
+22.1.10: Test Review Requirements
+Main Directive: Test code MUST be reviewed with the same rigor as production code.
+Execution Protocol:
+Code reviewers MUST verify test coverage
+Code reviewers MUST verify test quality
+Code reviewers MUST verify all edge cases are tested
+Code reviewers MUST reject PRs with insufficient tests
+Test code MUST follow all coding standards (Rules 7-12)
+22.1.11: Exception Handling (VERY LIMITED)
+Main Directive: Exceptions to test requirements are EXTREMELY RARE and require explicit approval.
+Allowed Exceptions (Require Documentation):
+Third-party library wrappers (if library is already tested)
+Generated code (if generation is tested)
+Configuration files (if structure is validated)
+Exception Process:
+Developer MUST document why test is not needed
+Exception MUST be approved by Tech Lead
+Exception MUST be documented in code comments
+Exception MUST be reviewed in code review
+22.1.12: Test-Driven Development (TDD) Encouragement
+Main Directive: Test-Driven Development (TDD) is STRONGLY ENCOURAGED for all new features.
+Execution Protocol:
+Write tests FIRST, then implement code
+Red-Green-Refactor cycle MUST be followed
+Tests MUST drive the implementation
+Implementation MUST satisfy tests
+Summary: This rule makes test coverage MANDATORY for all code. No code can be merged without tests. All tests must pass. Coverage must be maintained at 80%+ (100% for new code). Tests are not optional—they are a requirement for code completion. Any violation of this rule MUST result in PR rejection.
+
+
+
+
+
+### Rule 23: Dependency Management
+**Main Directive:** All dependencies must be kept up-to-date and regularly audited for security vulnerabilities. Unused dependencies must be removed from the project.
+
+## Part Seven: Environment and Configuration
+
+### Rule 24: Environment Management
+**Main Directive:** The configurations for Development, Staging, and Production environments must be completely separate. Environment variables (`.env`) must be used for all sensitive settings like API keys and database credentials. Hardcoding these values in the code is absolutely forbidden.
+
+### Rule 24.1: API Base Configuration and Network Coordinates
+**Main Directive:** All HTTP(S) communication must use the centrally defined API Base URL and port stored in configuration or environment files. Writing ANY literal host, protocol, IP, domain, or port inside source code (backend, frontend, Android, scripts, tests) is strictly forbidden.
+
+**Why? (The Rationale):** Hardcoded endpoints leak infrastructure details, cause environment drift, and bypass observability, routing, and security controls.
+
+**Execution Protocol:**
+- Go services must resolve network coordinates solely through `config/config.go` (fed by env vars/secret stores) and may not embed addresses in handlers, repositories, or tests.
+- Nuxt/Vue clients must consume the API base via `runtimeConfig`/`import.meta.env` and build relative paths only.
+- Android modules must load the base URL from `local.properties`/Gradle configs; Kotlin/Java files must stay literal-free.
+- CI linters must flag any string literal matching host/port patterns; violations are blocking review issues.
+- Any new integration must document its config keys, defaults, and rotation process inside `docs/CONFIGURATION.md` before usage.
+
+## Part Eight: Special Protocols for the AI Assistant
+
+### Rule 25: Requirement to Request Clarification
+**Main Directive:** If a request or instruction is ambiguous or lacks sufficient information for precise execution, you must stop your work and ask the user for clarification before taking any action. Implementing based on assumptions is absolutely forbidden.
+
+### Rule 26: Proactive Inspection and Suggestion
+**Main Directive:** You are required to actively identify security vulnerabilities, poor code structure, performance issues, or any deviation from this protocol while working. Upon identification, you must inform the user and, after obtaining explicit permission, proceed to correct it.
+
+## Part Nine: Frontend, Accessibility, and Styling
+
+### Rule 27: Mandatory Adherence to Accessibility
+**Main Directive:** When developing UI components, web accessibility standards (like WCAG) must be fully respected. All interactive elements must be accessible via the keyboard, and images must have alternative text (alt text).
+
+### Rule 28: Mandatory Fully Responsive Design
+**Main Directive:** All web pages must be fully responsive. If not, it must be reported to the user, and action to fix it should only be taken after their explicit confirmation.
+
+### Rule 29: Mandatory Use of an Automatic Formatter and Linter
+**Main Directive:** The project must be equipped with a Linter and a Formatter. All code must be checked and formatted by these tools before being committed to ensure complete consistency in coding style.
+
+### Rule 29.1: Frontend State Management
+**Main Directive:** For managing global client-side state, a standardized and team-approved library (e.g., Pinia for Nuxt, Zustand/Redux for Next.js) must be used. Creating scattered, unmanaged state is forbidden.
+
+### Rule 29.2: Internationalization (i18n)
+**Main Directive:** All user-facing text strings must be managed through a dedicated internationalization (i18n) system. Hardcoding text directly into components is forbidden, even if the application is currently single-language.
+
+## Part Ten: Project-Specific Rules (Nuxt 3 / Tailwind 4 / Vite)
+
+### Rule 30: Absolute Adherence to Nuxt 3 Folder Structure
+**Main Directive:** The standard Nuxt 3 directory structure must be strictly followed. (Reminder: The admin layout folder is located at `layouts/admin`).
+
+### Rule 31: Prohibition of Manual Imports
+**Main Directive:** In Nuxt 3, manual importing of components and composables is absolutely forbidden.
+
+### Rule 32: Mandatory Use of useFetch / useAsyncData
+**Main Directive:** For all client-side data requests, Nuxt's built-in composables must be used exclusively.
+
+### Rule 33: Absolute Adherence to Tailwind CSS v4
+**Main Directive:** All styles must be applied exclusively using utility classes in the HTML.
+
+### Rule 34: Customization Only Through tailwind.config.js
+**Main Directive:** Any customization of colors, fonts, etc., must be done in the `tailwind.config.js` file.
+
+### Rule 35: Mandatory Use of Vite Syntax for Environment Variables
+**Main Directive:** To access environment variables on the client, the `import.meta.env` prefix must be used.
+
+### Rule 36: No Interference with Compression Settings
+**Main Directive:** Adding any other compression plugins or changing the existing configuration is absolutely forbidden.
+
+## Part Eleven: Special Rules for Optimization and Modern Architecture (Specific to Next.js and Similar Frameworks)
+
+This section defines the mandatory protocols for achieving maximum performance and adhering to modern architecture best practices. These rules must act as the primary guiding principles in all your architectural decisions.
+
+### Rule 37: Absolute Server-First Architecture
+**Main Directive:** The default and dominant architecture in the project must be based on Server Components. This is a non-negotiable and fundamental principle.
+
+**Why? (The Rationale):** By rendering completely on the server, Server Components send no unnecessary JavaScript to the client. This directly leads to a faster First Contentful Paint (FCP), significantly improved SEO, and a superior user experience.
+
+**Execution Protocol:**
+- **Requirement:** All components must be implemented as Server Components by default, unless there is a definite, proven, and unavoidable need for client-side interactivity.
+- **Prohibition:** Converting a component to a Client Component without a valid technical reason (such as needing hooks like `useState`, `useEffect`, or event listeners like `onClick`) is absolutely forbidden.
+
+### Rule 38: Limited, Strategic, and Minimal Use of Client Components
+**Main Directive:** The use of Client Components (with the 'use client' directive) must be an exception, not the rule. These components should be as small as possible, focused on a single interactive task, and placed at the lowest possible level of the component tree (as leaf nodes).
+
+**Why? (The Rationale):** Every Client Component adds to the JavaScript bundle size and increases the Time to Interactive. The goal is to minimize the JavaScript sent to the client.
+
+**Execution Protocol:**
+- **Requirement:** Encapsulate interactive logic in small, dedicated components. Instead of converting an entire page into a Client Component, create only the interactive part (like a button with a counter or a live search form) as a Client Component and pass it as a child to a parent Server Component. This pattern is known as "Island Architecture" and must be followed.
+
+### Rule 39: Mandatory Maximum Utilization of Caching and Code Splitting
+**Main Directive:** The use of the framework's built-in optimization mechanisms is mandatory and cannot be overlooked.
+
+- **Intelligent Caching:** The built-in data caching capabilities of Next.js (like the extended fetch) must be fully utilized to reduce page load times to milliseconds. Cache revalidation policies must be set intelligently based on the nature of the data (static or dynamic).
+- **Mandatory Dynamic Code Splitting:** Heavy components, large libraries (like charting or text editor libraries), or sections not needed on the initial page load (like a Modal) must be mandatorily loaded dynamically (Lazy Loading) using `next/dynamic`. This lightens the initial page load and dramatically improves performance.
+
+---
+Performance Mandates (EN) – MUST be added to the rules and STRICTLY enforced
+Frontend – Nuxt 3
+Component Auto-Import Scoping
+ONLY components/ may use global: true.
+Every feature-specific folder (admin, analytics, etc.) must be declared with global: false, lazy: true or be imported explicitly.
+Lazy Components by Default
+lazy: true must be enabled for all component directories (except tiny UI atoms).
+Dynamic Import for Heavy Libraries
+Editors, charts, maps … must be loaded via defineAsyncComponent / dynamic import().
+Mandatory Manual Chunks
+Roll-up chunks required:
+vendor (node_modules)
+admin (all admin pages/components)
+Topic chunks (editor, charts, …) when > 50 KB.
+Island Architecture
+Interactive leaf widgets must be wrapped with <ClientOnly> (or use page meta client: false).
+Nuxt Image Enforcement
+All <img> tags must use nuxt/image (WebP/AVIF + lazy loading).
+Client-Side Data Caching
+Every useFetch / useAsyncData must set { key, defaultCache: true, swr: true } with an appropriate TTL.
+Precise Preload / Prefetch
+Preload only critical assets; everything else goes to prefetch.
+Non-Blocking CSS
+A single compressed Tailwind file in the <head>; page-specific styles must be lazy-loaded or scoped.
+Compression
+Nuxt 4 has built-in compression capabilities. No additional compression plugins needed.
+Backend – Go
+DB Pool Tuning
+MaxIdleConns ≥ CPU, MaxOpenConns ≥ 2×CPU, ConnMaxLifetime ≤ 1 h.
+Prepared-statement or GORM statement caching for hot queries.
+Essential Indexes
+Composite indexes on cart_items(cart_id, product_id), products(sku), orders(user_id, created_at) …
+Minimal JSON Payloads
+Omit null/empty fields with omitempty.
+Proxy-level Compression (Caddy/Nginx) only; DO NOT double-compress inside Go.
+CDN / Deployment
+All static assets (/public, .nuxt/dist) must ship with Cache-Control: immutable, max-age=31536000.
+Smart Cache Headers
+/api/products/*, /api/cart → private, max-age=0, must-revalidate.
+Static pages → stale-while-revalidate.
+QA & Monitoring
+Lighthouse Mobile score MUST be ≥ 90 – enforced in CI.
+Bundle Budget (checked in CI):
+Initial JS ≤ 150 KB gzip, initial CSS ≤ 30 KB.
+Server P95 latency < 100 ms under normal load (monitored via Prometheus).
+Pull-Request Gate
+Every PR must attach:
+Bundle-Analyzer diff (before/after)
+Lighthouse (mobile) screenshot
+Benchmark (hey -n 1000 -c 50 POST /api/cart/add) results
+Merge is blocked until these artefacts meet the limits above.
+
+## Summary
+
+This document contains 40 comprehensive rules covering all aspects of modern software development, from code quality and security to performance optimization and architectural best practices. Each rule is designed to ensure the highest standards of code quality, maintainability, and security while following industry best practices and modern development methodologies.
+alwaysApply: true
+---
+
+### Rule 40: Performance Mandates (Frontend, Backend, Deployment)
+**Main Directive:** The following performance rules are **mandatory and strictly enforced** across the entire code-base. Any violation blocks the Pull-Request.
+
+#### Frontend – Nuxt 4
+1. **Component Auto-Import Scoping**  
+   • Only `components/` may use `global: true`.  
+   • Every feature-specific folder (admin, analytics, …) must use `global:false, lazy:true` or explicit import.
+2. **Lazy Components by Default** – `lazy:true` must be enabled for all component directories (except very small UI atoms).
+3. **Dynamic Import for Heavy Libraries** – editors, charts, maps … must be loaded via `defineAsyncComponent` / dynamic `import()`.
+4. **Mandatory Manual Chunks** – Roll-up chunks required:  
+   `vendor` (node_modules)  |  `admin` (all admin pages/components)  |  topic chunks (`editor`, `charts`, …) when > 50 KB.
+5. **Island Architecture** – Interactive leaf widgets must be wrapped in `<ClientOnly>` or page meta `client:false`.
+6. **Nuxt Image Enforcement** – All `<img>` tags must use `nuxt/image` (WebP/AVIF + lazy loading).
+7. **Client-Side Data Caching** – Every `useFetch` / `useAsyncData` must set `{ key, defaultCache:true, swr:true }` with a proper TTL.
+8. **Precise Preload / Prefetch** – Preload only critical assets; everything else must use `prefetch`.
+9. **Non-Blocking CSS** – One compressed Tailwind file in `<head>`; page-specific CSS must be lazy-loaded or scoped.
+10. **Compression** – Nuxt 4 has built-in compression capabilities. No additional compression plugins needed.
+
+#### Backend – Go
+11. **DB Pool Tuning** – `MaxIdleConns ≥ CPU`, `MaxOpenConns ≥ 2×CPU`, `ConnMaxLifetime ≤ 1 h`.
+12. **Prepared Statements** – Hot queries must use prepared statements or GORM statement cache.
+13. **Essential Indexes** – e.g. `cart_items(cart_id,product_id)`, `products(sku)`, `orders(user_id,created_at)`.
+14. **Minimal JSON Payloads** – Use `omitempty`; never return unused fields.
+15. **Single Compression Layer** – Compression must be applied only in the reverse-proxy (Caddy/Nginx); never double-compress in Go.
+
+#### CDN / Deployment
+16. **Immutable Static Assets** – `/public` and `.nuxt/dist` must be served with `Cache-Control: immutable,max-age=31536000`.
+17. **Smart Cache Headers** –  
+   • `/api/products/*`, `/api/cart` → `private,max-age=0,must-revalidate`  
+   • Static pages → `stale-while-revalidate`.
+
+#### QA & Monitoring
+18. **Lighthouse Mobile ≥ 90** – Checked automatically in CI.
+19. **Bundle Budget** – enforced in CI: initial JS ≤ 150 KB gzip, initial CSS ≤ 30 KB.
+20. **API Latency** – Server P95 latency must stay < 100 ms under normal load (Prometheus).
+
+#### Pull-Request Gate
+21. Every PR **must attach**:
+   • Bundle-Analyzer diff (before/after)
+   • Lighthouse (mobile) screenshot
+   • Benchmark result: `hey -n 1000 -c 50 POST /api/cart/add`
+Merge is **blocked** until all metrics satisfy the limits above.
+
+## Part Twelve: AI Assistant Code Quality Rules
+
+### Rule 41: Absolute Prohibition of AI Tool References in Code
+**Main Directive:** Under no circumstances, absolutely and unconditionally, are you permitted to use names or references to AI tools (such as Cursor, Copilot, GitHub Copilot, ChatGPT, Claude, or any other AI assistant) in class names, variable names, function names, component names, file names, or any other code identifiers. If you encounter any such references in the existing codebase, you must immediately change them to appropriate, professional names.
+
+**Why? (The Rationale):** Using AI tool references in code creates unprofessional, confusing, and potentially trademark-infringing identifiers that harm code maintainability and team collaboration. Code should remain neutral and focused on business logic rather than referencing specific development tools.
+
+**Forbidden Examples:**
+- ❌ `cursor-helper`, `copilot-utils`, `chatgpt-formatter`
+- ❌ `claude-validator`, `github-copilot-manager`
+- ❌ Any class/variable/function with AI tool names
+
+**Correct Examples:**
+- ✅ `code-helper`, `form-utils`, `text-formatter`
+- ✅ `data-validator`, `task-manager`
+
+**Execution Protocol:**
+- **Immediate Action Required:** Upon discovering any AI tool references in code, stop all other work and immediately refactor them
+- **Naming Standards:** Use descriptive, business-domain appropriate names
+- **Documentation Update:** Update any comments or documentation that reference the old names
+- **Code Review:** All pull requests containing AI tool references must be rejected
+
+
+## Rule 42: ESLint Configuration and Code Quality Enforcement**Main Directive:** The project MUST use a strict ESLint configuration that enforces code quality, type safety, and prevents common errors. All rules defined in `eslint.config.js` are mandatory and violations block Pull Requests.**Why? (The Rationale):** Automated linting prevents bugs, enforces consistency, and maintains code quality standards across the entire codebase. It catches errors before they reach production.**Execution Protocol:**### 42.1: TypeScript Type Safety Rules (ERROR Level)ript// ممنوعیت استفاده از any - خطا'@typescript-eslint/no-explicit-any': 'error',// متغیرهای استفاده نشده - خطا (با استثنا برای متغیرهایی که با _ شروع می‌شوند)'@typescript-eslint/no-unused-vars': ['error', {    'argsIgnorePattern': '^_',           // پارامترهای تابع که با _ شروع می‌شوند نادیده گرفته می‌شوند    'varsIgnorePattern': '^_',          // متغیرها که با _ شروع می‌شوند نادیده گرفته می‌شوند    'caughtErrorsIgnorePattern': '^_',  // catch errors که با _ شروع می‌شوند نادیده گرفته می‌شوند    'destructuredArrayIgnorePattern': '^_' // destructured arrays که با _ شروع می‌شوند نادیده گرفته می‌شوند}],// الزام استفاده از return type در توابع'@typescript-eslint/explicit-function-return-type': ['warn', {    allowExpressions: true,    allowTypedFunctionExpressions: true,    allowHigherOrderFunctions: true}],// ممنوعیت استفاده از @ts-ignore و @ts-nocheck (فقط با توجیه معماری)'@typescript-eslint/ban-ts-comment': ['error', {    'ts-expect-error': 'allow-with-description',    'ts-ignore': true,    'ts-nocheck': true,    'ts-check': false}],// الزام استفاده از interface به جای type برای object types'@typescript-eslint/consistent-type-definitions': ['warn', 'interface'],### 42.2: Absolute Prohibition of Debug Logs (ERROR Level)script// ممنوعیت استفاده از console.log - خطا (فقط console.warn و console.error مجاز)'no-console': ['error', { allow: ['warn', 'error'] }],// ممنوعیت استفاده از debugger - خطا'no-debugger': 'error',// ممنوعیت استفاده از console.info, console.trace, console.dir و سایر متدهای دیباگ'no-restricted-syntax': [    'error',    {        selector: 'CallExpression[callee.object.name="console"][callee.property.name=/^(log|info|trace|dir|table|group|groupEnd|time|timeEnd)$/]',        message: 'استفاده از console.log و سایر متدهای دیباگ ممنوع است. فقط console.warn و console.error مجاز است.'    }],**Why? (The Rationale):** Debug logs left in production code expose sensitive information, clutter logs, and impact performance. This rule enforces Rule 11 (Code Cleanup Protocol).### 42.3: Hardcoded Values Prohibition (WARN Level)script// ممنوعیت استفاده از magic numbers'no-magic-numbers': ['warn', {    ignore: [0, 1, -1, 2, 100, 1000], // اعداد رایج مجاز    ignoreArrayIndexes: true,    ignoreDefaultValues: true,    detectObjects: false}],**Why? (The Rationale):** This enforces Rule 9 (Absolute Prohibition of Magic Values). Hardcoded values reduce maintainability and increase the risk of errors.### 42.4: Vue.js Component Rules (ERROR Level)pt// ممنوعیت تغییر مستقیم props - خطا'vue/no-mutating-props': 'error',// ممنوعیت فراخوانی چندباره defineEmits - خطا'vue/valid-define-emits': 'error',// الزام استفاده از v-if یا v-show در transition - خطا'vue/require-toggle-inside-transition': 'error',// ممنوعیت کلیدهای تکراری - خطا'vue/no-dupe-keys': 'error',// متغیرهای استفاده نشده در Vue - خطا'vue/no-unused-vars': ['error', {    'ignorePattern': '^_'}],// الزام استفاده از key در v-for'vue/require-v-for-key': 'error',// الزام استفاده از lang="ts" در script setup'vue/block-lang': ['error', {    script: {        lang: 'ts'    }}],### 42.5: Code Quality and Best Practices (ERROR Level)ipt// ممنوعیت استفاده از var - فقط let و const'no-var': 'error',// الزام استفاده از const برای متغیرهای تغییر نکرده'prefer-const': 'error',// ممنوعیت استفاده از == و != - فقط === و !=='eqeqeq': ['error', 'always', { null: 'ignore' }],// ممنوعیت استفاده از alert, confirm, prompt'no-alert': 'error',// ممنوعیت استفاده از eval'no-eval': 'error',// ممنوعیت استفاده از Function constructor'no-implied-eval': 'error',// ممنوعیت استفاده از new Function'no-new-func': 'error',// الزام استفاده از template literals به جای string concatenation'prefer-template': 'error',// ممنوعیت استفاده از ++ و -- (به جز در حلقه‌ها)'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],// الزام استفاده از arrow functions'prefer-arrow-callback': 'error',### 42.6: Code Maintenance Rules (WARN Level)script// ممنوعیت استفاده از TODO, FIXME, XXX بدون کامنت مناسب'no-warning-comments': ['warn', {    terms: ['todo', 'fixme', 'xxx', 'hack'],    location: 'anywhere'}],### 42.7: Authentication Enforcement (Manual Review Required)**Main Directive:** All admin pages and protected routes MUST use authentication. The ESLint configuration cannot automatically enforce this, but it MUST be verified in code review.**Execution Protocol:**- Every admin page MUST import and use `useAuth()` composable- Every protected API endpoint MUST verify authentication- Code review checklist MUST include: "Authentication verified for this change"- Any removal or disabling of authentication MUST be explicitly approved by security team**Manual Verification Pattern:**escript// ✅ CORRECT - Authentication is presentimport { useAuth } from '~/composables/useAuth'const { user, hasPermission } = useAuth()// ❌ FORBIDDEN - Authentication is missing// const { user, hasPermission } = useAuth() // commented out### 42.8: ESLint Configuration File Requirements**Main Directive:** The `eslint.config.js` file MUST be kept up-to-date with all rules defined in this protocol. All rules MUST be set to `error` level (except where explicitly marked as `warn`). The configuration MUST be reviewed and updated whenever new rules are added to this protocol.**Execution Protocol:**- ESLint configuration MUST be version-controlled- Any change to ESLint rules MUST be documented in this protocol- CI pipeline MUST run ESLint checks and block merges on violations- All developers MUST run ESLint before committing code### 42.9: Pre-Commit Hook Requirements**Main Directive:** A pre-commit hook MUST run ESLint automatically before allowing any commit. Commits with ESLint errors MUST be blocked.**Execution Protocol:**- Use `husky` or similar tool for pre-commit hooks- Run `npm run lint` (or equivalent) before commit- Only allow commit if all ESLint checks pass- Developers MUST fix all errors before committing### 42.10: CI/CD Integration**Main Directive:** ESLint checks MUST be integrated into the CI/CD pipeline. Pull Requests with ESLint violations MUST be automatically blocked from merging.**Execution Protocol:**- GitHub Actions (or equivalent) MUST run ESLint on every PR- ESLint errors MUST fail the CI build- PR status MUST show ESLint check results- Merge MUST be blocked until all ESLint errors are resolved---**Summary:** This rule enforces automated code quality checks through ESLint. All rules marked as `error` MUST block Pull Requests. Rules marked as `warn` SHOULD be addressed but do not block merges. Authentication enforcement requires manual code review verification.
+42.2: Absolute Prohibition of Debug Logs (ERROR Level)
+// ممنوعیت استفاده از console.log - خطا (فقط console.warn و console.error مجاز)'no-console': ['error', { allow: ['warn', 'error'] }],// ممنوعیت استفاده از debugger - خطا'no-debugger': 'error',// ممنوعیت استفاده از console.info, console.trace, console.dir و سایر متدهای دیباگ'no-restricted-syntax': [    'error',    {        selector: 'CallExpression[callee.object.name="console"][callee.property.name=/^(log|info|trace|dir|table|group|groupEnd|time|timeEnd)$/]',        message: 'استفاده از console.log و سایر متدهای دیباگ ممنوع است. فقط console.warn و console.error مجاز است.'    }],
+Why? (The Rationale): Debug logs left in production code expose sensitive information, clutter logs, and impact performance. This rule enforces Rule 11 (Code Cleanup Protocol).
+42.3: Hardcoded Values Prohibition (WARN Level)
+// ممنوعیت استفاده از magic numbers'no-magic-numbers': ['warn', {    ignore: [0, 1, -1, 2, 100, 1000], // اعداد رایج مجاز    ignoreArrayIndexes: true,    ignoreDefaultValues: true,    detectObjects: false}],
+Why? (The Rationale): This enforces Rule 9 (Absolute Prohibition of Magic Values). Hardcoded values reduce maintainability and increase the risk of errors.
+42.4: Vue.js Component Rules (ERROR Level)
+// ممنوعیت تغییر مستقیم props - خطا'vue/no-mutating-props': 'error',// ممنوعیت فراخوانی چندباره defineEmits - خطا'vue/valid-define-emits': 'error',// الزام استفاده از v-if یا v-show در transition - خطا'vue/require-toggle-inside-transition': 'error',// ممنوعیت کلیدهای تکراری - خطا'vue/no-dupe-keys': 'error',// متغیرهای استفاده نشده در Vue - خطا'vue/no-unused-vars': ['error', {    'ignorePattern': '^_'}],// الزام استفاده از key در v-for'vue/require-v-for-key': 'error',// الزام استفاده از lang="ts" در script setup'vue/block-lang': ['error', {    script: {        lang: 'ts'    }}],
+42.5: Code Quality and Best Practices (ERROR Level)
+// ممنوعیت استفاده از var - فقط let و const'no-var': 'error',// الزام استفاده از const برای متغیرهای تغییر نکرده'prefer-const': 'error',// ممنوعیت استفاده از == و != - فقط === و !=='eqeqeq': ['error', 'always', { null: 'ignore' }],// ممنوعیت استفاده از alert, confirm, prompt'no-alert': 'error',// ممنوعیت استفاده از eval'no-eval': 'error',// ممنوعیت استفاده از Function constructor'no-implied-eval': 'error',// ممنوعیت استفاده از new Function'no-new-func': 'error',// الزام استفاده از template literals به جای string concatenation'prefer-template': 'error',// ممنوعیت استفاده از ++ و -- (به جز در حلقه‌ها)'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],// الزام استفاده از arrow functions'prefer-arrow-callback': 'error',
+42.6: Code Maintenance Rules (WARN Level)
+// ممنوعیت استفاده از TODO, FIXME, XXX بدون کامنت مناسب'no-warning-comments': ['warn', {    terms: ['todo', 'fixme', 'xxx', 'hack'],    location: 'anywhere'}],
+42.7: Authentication Enforcement (Manual Review Required)
+Main Directive: All admin pages and protected routes MUST use authentication. The ESLint configuration cannot automatically enforce this, but it MUST be verified in code review.
+Execution Protocol:
+Every admin page MUST import and use useAuth() composable
+Every protected API endpoint MUST verify authentication
+Code review checklist MUST include: "Authentication verified for this change"
+Any removal or disabling of authentication MUST be explicitly approved by security team
+Manual Verification Pattern:
+// ✅ CORRECT - Authentication is presentimport { useAuth } from '~/composables/useAuth'const { user, hasPermission } = useAuth()// ❌ FORBIDDEN - Authentication is missing// const { user, hasPermission } = useAuth() // commented out
+42.8: ESLint Configuration File Requirements
+Main Directive: The eslint.config.js file MUST be kept up-to-date with all rules defined in this protocol. All rules MUST be set to error level (except where explicitly marked as warn). The configuration MUST be reviewed and updated whenever new rules are added to this protocol.
+Execution Protocol:
+ESLint configuration MUST be version-controlled
+Any change to ESLint rules MUST be documented in this protocol
+CI pipeline MUST run ESLint checks and block merges on violations
+All developers MUST run ESLint before committing code
+42.9: Pre-Commit Hook Requirements
+Main Directive: A pre-commit hook MUST run ESLint automatically before allowing any commit. Commits with ESLint errors MUST be blocked.
+Execution Protocol:
+Use husky or similar tool for pre-commit hooks
+Run npm run lint (or equivalent) before commit
+Only allow commit if all ESLint checks pass
+Developers MUST fix all errors before committing
+42.10: CI/CD Integration
+Main Directive: ESLint checks MUST be integrated into the CI/CD pipeline. Pull Requests with ESLint violations MUST be automatically blocked from merging.
+Execution Protocol:
+GitHub Actions (or equivalent) MUST run ESLint on every PR
+ESLint errors MUST fail the CI build
+PR status MUST show ESLint check results
+Merge MUST be blocked until all ESLint errors are resolved
+Summary: This rule enforces automated code quality checks through ESLint. All rules marked as error MUST block Pull Requests. Rules marked as warn SHOULD be addressed but do not block merges. Authentication enforcement requires manual code review verification.
+```
+
+Rule 42.11: Import Organization and Clean Code Rules
+// سازماندهی imports - ترتیب اهمیت'import/order': ['error', {    groups: [        'builtin',      // Node.js built-ins        'external',     // External libraries        'internal',     // Internal modules        'parent',       // Parent imports        'sibling',      // Sibling imports        'index'         // Index imports    ],    'newlines-between': 'always',    alphabetize: {        order: 'asc',        caseInsensitive: true    }}],// ممنوعیت استفاده از default export (به جز در pages و layouts)'import/no-default-export': 'off', // برای Nuxt pages/layouts غیرفعال است// الزام استفاده از named exports'import/prefer-default-export': 'off',// ممنوعیت استفاده از imports تکراری'import/no-duplicates': 'error',// الزام استفاده از extensions در imports'import/extensions': ['error', 'ignorePackages', {    js: 'never',    jsx: 'never',    ts: 'never',    tsx: 'never',    vue: 'always'}],
+Rule 42.12: Code Complexity Rules
+// محدودیت پیچیدگی سیکلوماتیک توابع'complexity': ['warn', { max: 10 }],// محدودیت تعداد خطوط در یک تابع'max-lines-per-function': ['warn', {    max: 100,    skipBlankLines: true,    skipComments: true}],// محدودیت تعداد پارامترهای تابع'max-params': ['warn', { max: 5 }],// محدودیت عمق توابع تودرتو'max-nested-callbacks': ['warn', { max: 3 }],// محدودیت تعداد خطوط در یک فایل'max-lines': ['warn', {    max: 500,    skipBlankLines: true,    skipComments: true}],
+Rule 42.13: Code Style and Consistency Rules
+// الزام استفاده از destructuring برای objects'prefer-destructuring': ['warn', {    array: false,  // برای arrays اختیاری    object: true   // برای objects الزامی}],// الزام استفاده از const assertions'@typescript-eslint/prefer-as-const': 'warn',// ممنوعیت استفاده از any type حتی در catch'@typescript-eslint/no-unsafe-assignment': 'error','@typescript-eslint/no-unsafe-member-access': 'error','@typescript-eslint/no-unsafe-call': 'error','@typescript-eslint/no-unsafe-return': 'error',// الزام استفاده از optional chaining'@typescript-eslint/prefer-optional-chain': 'error','@typescript-eslint/prefer-nullish-coalescing': 'error',// ممنوعیت استفاده از async/await بدون await'@typescript-eslint/no-floating-promises': 'error','@typescript-eslint/no-misused-promises': 'error',// الزام استفاده از Promise.all برای parallel operations'@typescript-eslint/no-misused-promises': ['error', {    checksVoidReturn: false}],
+Rule 42.14: Vue.js Advanced Rules
+// الزام استفاده از scoped styles'vue/no-unused-scoped-styles': 'warn',// ممنوعیت استفاده از v-if و v-for روی یک element'vue/no-use-v-if-with-v-for': 'error',// الزام استفاده از computed به جای methods برای computed values'vue/prefer-computed-property-over-method': 'warn',// ممنوعیت استفاده از $parent و $children'vue/no-use-v-if-with-v-for': 'error','vue/no-parent-in-template': 'warn',// الزام استفاده از kebab-case برای props'vue/attribute-hyphenation': ['error', 'always'],// الزام استفاده از PascalCase برای components'vue/component-name-in-template-casing': ['error', 'PascalCase'],// ممنوعیت استفاده از v-html بدون sanitize'vue/no-v-html': 'warn',// الزام استفاده از key در v-for'vue/require-v-for-key': 'error',
+Rule 42.15: Error Handling Standards (Reinforced)
+// الزام استفاده از try-catch برای async functions'@typescript-eslint/no-misused-promises': ['error', {    checksVoidReturn: false,    checksConditionals: true}],// ممنوعیت استفاده از catch بدون error parameter'@typescript-eslint/no-useless-catch': 'error',// الزام استفاده از Error types'@typescript-eslint/no-throw-literal': 'error',
+Rule 42.16: Naming Conventions (Reinforced)
+// الزام استفاده از camelCase برای variables و functions'@typescript-eslint/naming-convention': [    'error',    {        selector: 'variable',        format: ['camelCase', 'PascalCase', 'UPPER_CASE'],        leadingUnderscore: 'allow'    },    {        selector: 'function',        format: ['camelCase', 'PascalCase']    },    {        selector: 'typeLike',        format: ['PascalCase']    },    {        selector: 'interface',        format: ['PascalCase'],        prefix: ['I']  // اختیاری: اگر می‌خواهید interfaces با I شروع شوند    }],
+Rule 42.17: Code Documentation Rules
+// الزام استفاده از JSDoc برای functions پیچیده'@typescript-eslint/require-jsdoc': ['warn', {    require: {        FunctionDeclaration: true,        MethodDefinition: true,        ClassDeclaration: true    },    contexts: [        'FunctionDeclaration',        'MethodDefinition',        'ClassDeclaration'    ]}],
+Rule 42.18: Security and Best Practices
+// ممنوعیت استفاده از innerHTML (برای Vue از v-html استفاده می‌شود)'no-restricted-properties': ['error', {    object: 'document',    property: 'innerHTML',    message: 'Use v-html with caution and only with sanitized content'}],// ممنوعیت استفاده از location.href'no-restricted-properties': ['error', {    object: 'location',    property: 'href',    message: 'Use Vue Router navigateTo() instead'}],
+Rule 42.19: Performance Optimization Rules
+// الزام استفاده از useMemo برای expensive computations (React-like patterns)// برای Vue از computed استفاده می‌شود// الزام استفاده از lazy loading برای heavy components'vue/component-tags-order': ['error', {    order: ['script', 'template', 'style']}],// الزام استفاده از v-show به جای v-if برای frequently toggled elements'vue/prefer-separate-static-class': 'warn',
+Rule 42.20: Accessibility Rules (Reinforced)
+// الزام استفاده از alt برای images'vue/require-alt-text': 'warn',// الزام استفاده از aria-label برای interactive elements'vue/require-aria-activedescendant': 'off', 
+
+
+
+Rule 43: Git Workflow and Branch Management
+Main Directive: All code changes MUST follow strict Git workflow standards. Direct commits to main/master are FORBIDDEN. All changes MUST go through feature branches and Pull Requests.
+Execution Protocol:
+43.1: Branch Naming Convention
+# ✅ CORRECT Branch Namesfeature/user-authenticationbugfix/login-error-handlinghotfix/payment-gateway-crashrefactor/user-service-cleanupdocs/api-documentation-update# ❌ FORBIDDEN Branch Namesfixupdatenew-featuretestmy-branch
+Format: {type}/{short-description}
+Types: feature, bugfix, hotfix, refactor, docs, test, chore
+43.2: Commit Message Standards
+Format (Conventional Commits):
+{type}({scope}): {subject}{body}{footer}
+Types:
+feat: New feature
+fix: Bug fix
+docs: Documentation
+style: Code style (formatting)
+refactor: Code refactoring
+test: Adding tests
+chore: Maintenance tasks
+Example:
+feat(auth): implement JWT token refresh mechanism- Add refresh token endpoint- Implement token rotation- Add token expiration handlingCloses #123
+43.3: Pull Request Requirements
+MANDATORY PR Checklist:
+[ ] Branch name follows convention
+[ ] Commit messages follow Conventional Commits
+[ ] All tests pass
+[ ] Code coverage maintained
+[ ] ESLint checks pass
+[ ] Documentation updated
+[ ] No console.log or debug code
+[ ] No hardcoded values
+[ ] Authentication verified (if applicable)
+[ ] Breaking changes documented
+[ ] Migration files included (if database changes)
+Rule 44: Secrets and Sensitive Data Management
+Main Directive: Under NO circumstances may secrets, API keys, passwords, tokens, or any sensitive data be committed to version control. This is a CRITICAL security violation.
+Execution Protocol:
+44.1: Prohibited in Code
+FORBIDDEN:
+// ❌ ABSOLUTELY FORBIDDENconst API_KEY = 'sk_live_1234567890'const DB_PASSWORD = 'mypassword123'const JWT_SECRET = 'secret-key-here'
+REQUIRED:
+// ✅ CORRECT - Use environment variablesconst API_KEY = process.env.API_KEYconst DB_PASSWORD = process.env.DB_PASSWORDconst JWT_SECRET = process.env.JWT_SECRET
+44.2: Environment Variables
+All secrets MUST be in .env files (gitignored)
+.env.example MUST exist with placeholder values
+Production secrets MUST be in secure secret management (Vault, AWS Secrets Manager, etc.)
+CI/CD secrets MUST be in CI/CD secret store
+44.3: Secret Scanning
+Pre-commit hooks MUST scan for secrets
+CI pipeline MUST run secret scanning tools
+Any detected secret MUST block commit/merge
+Rule 45: API Design and Versioning Standards
+Main Directive: All APIs MUST follow RESTful principles, have versioning, and include proper error handling.
+Execution Protocol:
+45.1: API Versioning
+// ✅ CORRECT - Versioned API/api/v1/users/api/v2/users// ❌ FORBIDDEN - Unversioned API/api/users
+45.2: Response Format Standardization
+Success Response:
+{  "status": "success",  "data": { ... },  "message": "Operation completed successfully"}
+Error Response:
+{  "status": "error",  "error": {    "code": "VALIDATION_ERROR",    "message": "Invalid input data",    "details": { ... }  }}
+45.3: HTTP Status Codes
+200 - Success
+201 - Created
+400 - Bad Request
+401 - Unauthorized
+403 - Forbidden
+404 - Not Found
+422 - Validation Error
+500 - Internal Server Error
+Rule 46: Database Migration and Rollback Procedures
+Main Directive: All database changes MUST be reversible. Every migration MUST have a corresponding rollback.
+Execution Protocol:
+46.1: Migration File Requirements
+Migration files MUST be timestamped
+Migration files MUST include both Up() and Down() methods
+Down() MUST completely reverse Up()
+Migration files MUST be tested before deployment
+46.2: Data Migration Safety
+Data migrations MUST be tested on staging
+Large data migrations MUST be done in batches
+Backup MUST be created before migration
+Rollback plan MUST be documented
+Rule 47: Error Handling and User Messages
+Main Directive: All errors MUST be handled gracefully. User-facing error messages MUST be clear, non-technical, and helpful.
+Execution Protocol:
+47.1: Error Message Standards
+User-Facing Messages:
+// ❌ FORBIDDEN - Technical error"SQLSTATE[23000]: Integrity constraint violation"// ✅ CORRECT - User-friendly message"این ایمیل قبلاً ثبت شده است. لطفاً ایمیل دیگری وارد کنید."
+47.2: Error Logging
+Technical errors MUST be logged with full stack trace
+User-facing errors MUST NOT expose technical details
+Sensitive information MUST be redacted from logs
+Rule 48: Third-Party Library Approval Process
+Main Directive: Adding new dependencies requires approval and security review.
+Execution Protocol:
+48.1: Library Evaluation
+Before adding a library, MUST check:
+[ ] Security vulnerabilities (npm audit, Snyk)
+[ ] Maintenance status (last update, open issues)
+[ ] Bundle size impact
+[ ] License compatibility
+[ ] TypeScript support
+[ ] Documentation quality
+48.2: Approval Process
+Libraries > 50KB require Tech Lead approval
+Security-sensitive libraries require Security Team review
+All new dependencies MUST be documented in PR
+Rule 49: Code Duplication Prevention (DRY Principle)
+Main Directive: Code duplication is FORBIDDEN. Repeated code MUST be extracted into reusable functions/components.
+Execution Protocol:
+49.1: Duplication Detection
+ESLint rules MUST detect code duplication
+Code review MUST identify duplicated logic
+Duplicated code MUST be refactored before merge
+49.2: Reusability Requirements
+Functions used in 2+ places MUST be extracted
+Components used in 2+ places MUST be made reusable
+Business logic MUST be in service layer, not duplicated
+Rule 50: Feature Flags and Gradual Rollout
+Main Directive: New features MUST use feature flags for gradual rollout and easy rollback.
+Execution Protocol:
+50.1: Feature Flag Requirements
+All new features MUST be behind feature flags
+Feature flags MUST be configurable without code deployment
+Feature flags MUST support A/B testing
+Disabled features MUST not impact performance
+50.2: Rollout Process
+Deploy with feature flag OFF
+Enable for internal team (10%)
+Enable for beta users (25%)
+Enable for all users (100%)
+Remove feature flag after stabilization
+Rule 51: Monitoring and Observability
+Main Directive: All critical operations MUST be monitored. Errors MUST be logged and alerted.
+Execution Protocol:
+51.1: Logging Requirements
+All API requests MUST be logged
+All errors MUST be logged with context
+All database operations MUST be logged
+Performance metrics MUST be collected
+51.2: Alerting Requirements
+Critical errors MUST trigger alerts
+Performance degradation MUST trigger alerts
+Security events MUST trigger immediate alerts
+Rule 52: Backward Compatibility Policy
+Main Directive: Breaking changes MUST be avoided. When unavoidable, proper versioning and migration path MUST be provided.
+Execution Protocol:
+52.1: Breaking Change Process
+Document breaking change
+Create migration guide
+Maintain old API for deprecation period (minimum 3 months)
+Notify all consumers
+Version bump (major version)
+Rule 53: Form Validation Standards
+Main Directive: All forms MUST have both client-side and server-side validation.
+Execution Protocol:
+53.1: Validation Requirements
+Client-side: Immediate feedback, better UX
+Server-side: Security, data integrity (MANDATORY)
+Validation rules MUST match on both sides
+Error messages MUST be user-friendly
+Rule 54: File Upload Security
+Main Directive: All file uploads MUST be validated, scanned, and stored securely.
+Execution Protocol:
+54.1: Upload Requirements
+File type validation (whitelist, not blacklist)
+File size limits (configurable)
+Virus scanning (if applicable)
+Secure storage (outside web root)
+Filename sanitization
+Rule 55: Password and Security Policies
+Main Directive: All authentication systems MUST enforce strong password policies.
+Execution Protocol:
+55.1: Password Requirements
+Minimum 8 characters
+At least one uppercase letter
+At least one lowercase letter
+At least one number
+At least one special character
+Password hashing: bcrypt/argon2 (NEVER plain text)
+
+
+
+Rule 61: Enforcement and Compliance Verification
+Main Directive: All rules MUST be enforced through automation. Manual compliance checking is not sufficient.
+Execution Protocol:
+Automated Checks (CI/CD):
+ESLint errors MUST block merges
+Test failures MUST block merges
+Coverage drops MUST block merges
+Security scans MUST block merges
+All checks MUST be mandatory (not optional)
+Pre-commit Hooks:
+ESLint checks
+Prettier formatting
+Test execution
+Secret scanning
+Code Review Automation:
+Required reviewers MUST approve
+Automated checklist validation
+Coverage report in PR
+Monitoring and Reporting:
+Weekly compliance reports
+Violation tracking
+Team education on violations
+
+
+
+Rule 62: Dead Code Elimination and Unused Code Removal
+Main Directive: Under NO circumstances may unused code, unused variables, unused functions, unused imports, or unused computed properties remain in the codebase. Dead code MUST be removed immediately. Unused code increases bundle size, reduces performance, creates confusion, and violates the principle of clean code.
+Why? (The Rationale): Unused code:
+Increases bundle size (affects load time)
+Makes code harder to understand
+Creates maintenance burden
+Can hide bugs
+Violates DRY principle
+Execution Protocol:
+62.1: Unused Code Detection
+MANDATORY Checks:
+Unused variables MUST be removed or prefixed with _
+Unused functions MUST be removed or prefixed with _
+Unused imports MUST be removed
+Unused computed properties MUST be removed
+Unused components MUST be removed
+Unused interfaces/types MUST be removed
+62.2: ESLint Enforcement
+// این قوانین در Rule 42.1 تعریف شده اما باید STRICTLY enforced شود'@typescript-eslint/no-unused-vars': ['error', {    'argsIgnorePattern': '^_',    'varsIgnorePattern': '^_',    'caughtErrorsIgnorePattern': '^_',    'destructuredArrayIgnorePattern': '^_'}],// برای Vue'vue/no-unused-vars': ['error', {    'ignorePattern': '^_'}],
+62.3: Pre-Commit Validation
+Pre-commit hook MUST check for unused code
+Commits with unused code MUST be blocked
+Developer MUST remove unused code before commit
+62.4: Code Review Requirement
+Code reviewers MUST verify no unused code exists
+PRs with unused code MUST be rejected
+Comment: "Please remove unused code before merge"
+Rule 63: Performance Optimization in Reactive Code (CRITICAL)
+Main Directive: Under NO circumstances may performance-degrading code exist in computed properties, watchers, or reactive functions. Console.log statements, expensive operations, or unnecessary computations in computed properties are STRICTLY FORBIDDEN.
+Why? (The Rationale): Computed properties execute on every dependency change. Console.log or expensive operations in computed properties:
+Execute hundreds/thousands of times
+Degrade performance significantly
+Fill browser console with noise
+Impact user experience
+Execution Protocol:
+63.1: Prohibited in Computed Properties
+ABSOLUTELY FORBIDDEN:
+// ❌ FORBIDDEN - console.log in computedconst sortedData = computed(() => {  console.log('Computing...') // ❌ Executes on EVERY change!  return data.value.sort()})// ❌ FORBIDDEN - expensive operations in computedconst processedData = computed(() => {  return data.value.map(item => {    // Heavy processing here - ❌ BAD!    return expensiveOperation(item)  })})
+REQUIRED:
+// ✅ CORRECT - Clean computed propertyconst sortedData = computed(() => {  return data.value.sort()})// ✅ CORRECT - Use method for expensive operationsconst processData = () => {  // Called only when needed  return data.value.map(item => expensiveOperation(item))}
+63.2: ESLint Rule for Computed Properties
+// Custom rule to detect console.log in computed properties'no-restricted-syntax': [    'error',    {        selector: 'CallExpression[callee.object.name="console"][callee.property.name="log"]',        message: 'console.log is forbidden in computed properties. Use watch or methods instead.'    }],
+63.3: Performance Monitoring
+Computed properties MUST be optimized
+Expensive operations MUST be moved to methods
+Console.log MUST NEVER exist in computed properties
+Watchers MUST be optimized (use immediate: false, deep: false when possible)
+63.4: Code Review Checklist
+[ ] No console.log in computed properties
+[ ] No expensive operations in computed properties
+[ ] Computed properties are pure functions
+[ ] Watchers are optimized
+[ ] No unnecessary reactivity
+Rule 64: Bundle Size and Performance Budget Enforcement
+Main Directive: Bundle size MUST be monitored and controlled. Every PR MUST include bundle size analysis. Exceeding performance budgets MUST block merges.
+Execution Protocol:
+64.1: Bundle Size Limits
+Initial JavaScript: ≤ 150 KB (gzipped)
+Initial CSS: ≤ 30 KB (gzipped)
+Total bundle: ≤ 500 KB (gzipped)
+Individual chunk: ≤ 200 KB (gzipped)
+64.2: Performance Metrics
+Lighthouse Mobile Score: ≥ 90
+First Contentful Paint (FCP): < 1.8s
+Largest Contentful Paint (LCP): < 2.5s
+Time to Interactive (TTI): < 3.8s
+Cumulative Layout Shift (CLS): < 0.1
+64.3: PR Requirements
+Every PR MUST include:
+Bundle analyzer report (before/after)
+Lighthouse score (mobile)
+Performance metrics comparison
+Rule 65: Memory Leak Prevention
+Main Directive: Memory leaks are STRICTLY FORBIDDEN. All event listeners, timers, subscriptions, and watchers MUST be properly cleaned up.
+Execution Protocol:
+65.1: Cleanup Requirements
+// ✅ CORRECT - Proper cleanuponMounted(() => {  const interval = setInterval(() => {    // Do something  }, 1000)    onUnmounted(() => {    clearInterval(interval) // ✅ Cleanup  })})// ❌ FORBIDDEN - No cleanuponMounted(() => {  setInterval(() => {    // Do something - ❌ Memory leak!  }, 1000)})
+65.2: Required Cleanup
+Event listeners MUST be removed in onUnmounted
+Timers (setInterval, setTimeout) MUST be cleared
+Subscriptions MUST be unsubscribed
+Watchers MUST be stopped
+WebSocket connections MUST be closed
+
+
+
+
+Rule 66: Duplicate Declaration Prevention
+Main Directive: Under NO circumstances may duplicate function, variable, or interface declarations exist in the same scope. Duplicate declarations MUST be detected and removed before commit.
+Execution Protocol:
+ESLint MUST detect duplicate declarations
+Pre-commit hook MUST check for duplicates
+Code review MUST verify no duplicates
+Duplicate declarations MUST block merge
+Rule 67: Interface Organization and Reusability
+Main Directive: Interfaces MUST be defined at the top of the file or in a shared types file. Interfaces MUST NOT be defined inside functions or computed properties. Duplicate interface definitions are FORBIDDEN.
+Execution Protocol:
+All interfaces MUST be at the top of <script setup>
+Shared interfaces MUST be in types/ directory
+Interface definitions inside functions are FORBIDDEN
+Duplicate interface names MUST be consolidated
+Rule 68: Computed Property Performance Optimization
+Main Directive: Computed properties MUST be pure functions with no side effects. Console.log, API calls, or expensive operations in computed properties are STRICTLY FORBIDDEN.
+Execution Protocol:
+Computed properties MUST only compute and return values
+No console.log in computed properties
+No API calls in computed properties
+No mutations in computed properties
+Use methods for side effects
+
+
+
+Rule 66: Duplicate Declaration Prevention
+Main Directive: Under NO circumstances may duplicate function, variable, or interface declarations exist in the same scope. Duplicate declarations MUST be detected and removed before commit.
+Execution Protocol:
+ESLint MUST detect duplicate declarations
+Pre-commit hook MUST check for duplicates
+Code review MUST verify no duplicates
+Duplicate declarations MUST block merge
+Rule 67: Interface Organization and Reusability
+Main Directive: Interfaces MUST be defined at the top of the file or in a shared types file. Interfaces MUST NOT be defined inside functions or computed properties. Duplicate interface definitions are FORBIDDEN.
+Execution Protocol:
+All interfaces MUST be at the top of <script setup>
+Shared interfaces MUST be in types/ directory
+Interface definitions inside functions are FORBIDDEN
+Duplicate interface names MUST be consolidated
+Using typeof props in type definitions is FORBIDDEN - use explicit interface types instead
+Rule 68: Computed Property Performance Optimization
+Main Directive: Computed properties MUST be pure functions with no side effects. Console.log, API calls, or expensive operations in computed properties are STRICTLY FORBIDDEN.
+Execution Protocol:
+Computed properties MUST only compute and return values
+No console.log in computed properties
+No API calls in computed properties
+No mutations in computed properties
+Use methods for side effects

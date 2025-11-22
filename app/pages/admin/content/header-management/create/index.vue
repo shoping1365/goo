@@ -237,7 +237,13 @@ function normalizeItems(rawItems: unknown): HeaderLayerItem[] {
   if (typeof rawItems === 'string' && rawItems.trim() !== '') {
     const parsed = parseJSON<unknown[]>(rawItems)
     if (Array.isArray(parsed)) {
-      return parsed.map(item => (typeof item === 'object' ? { ...item } : { id: item }))
+      return parsed.map(item => {
+        if (typeof item === 'object' && item !== null) {
+          const itemObj = item as Record<string, unknown>
+          return { ...itemObj, id: String(itemObj.id || item) } as HeaderLayerItem
+        }
+        return { id: String(item) } as HeaderLayerItem
+      }).filter((item): item is HeaderLayerItem => typeof item.id === 'string')
     }
   }
   return []
@@ -447,7 +453,7 @@ function getSelectedItemsText() {
 
 function editLayer(layer: HeaderLayer) {
   const layerCopy = JSON.parse(JSON.stringify(layer)) as HeaderLayer
-  newLayer.value = normalizeLayer(layerCopy)
+  newLayer.value = normalizeLayer(layerCopy as unknown as Record<string, unknown>) as HeaderLayer
   showLayerSettings.value = true
 }
 
@@ -643,7 +649,8 @@ async function saveHeader() {
     }
   } catch (error: unknown) {
     console.error('saveHeader error:', error)
-    showToastMessage(`ذخیره هدر با خطا مواجه شد: ${error?.message || error}`, 'error')
+    const errorMessage = (error as { message?: string })?.message || String(error)
+    showToastMessage(`ذخیره هدر با خطا مواجه شد: ${errorMessage}`, 'error')
   }
 }
 

@@ -18,9 +18,9 @@ export default defineEventHandler(async (event) => {
     })
     
     return response
-  } catch (error) {
+  } catch (_error) {
     // در صورت خطا یا عدم وجود backend، تنظیمات mock برمی‌گرداند
-    const mockSettings: Record<string, any> = {
+    const mockSettings: Record<string, Array<{ key: string; value: string; category: string; type: string }>> = {
       auth: [
         { key: 'auth.session_timeout', value: '3600', category: 'auth', type: 'string' },
         { key: 'auth.max_login_attempts', value: '5', category: 'auth', type: 'string' },

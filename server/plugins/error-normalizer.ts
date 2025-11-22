@@ -1,9 +1,9 @@
 export default defineNitroPlugin((nitroApp) => {
   // Only log and best-effort normalize by mutating, do NOT return custom objects
-  nitroApp.hooks.hook('error', (error: any) => {
+  nitroApp.hooks.hook('error', (error: unknown) => {
     if (!(error instanceof Error)) {
       try {
-        const normalized: any = createError({
+        const normalized = createError({
           statusCode: error?.statusCode || error?.status || 500,
           message: error?.message || error?.statusMessage || 'Internal Server Error',
           data: error

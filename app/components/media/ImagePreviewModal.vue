@@ -7,10 +7,10 @@
         </svg>
       </button>
       <img
-        v-if="image && (image.url || image.src)"
-        :src="image.url || image.src"
+        v-if="image && ((image as { url?: string; src?: string }).url || (image as { url?: string; src?: string }).src)"
+        :src="String((image as { url?: string; src?: string }).url || (image as { url?: string; src?: string }).src || '')"
         class="max-w-[70vw] max-h-[70vh] mx-auto rounded shadow block border-8 border-purple-300"
-        :alt="image.name || ''"
+        :alt="String(((image as { name?: string }).name) || '')"
         @click.stop
       />
     </div>

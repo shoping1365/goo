@@ -958,15 +958,15 @@ const fillFormWithAIContent = (content: AIContent) => {
   }
   
   if (content.meta_title) {
-    postForm.meta_title = content.meta_title
+    postForm.meta_title = String(content.meta_title)
   }
   
   if (content.meta_description) {
-    postForm.meta_description = content.meta_description
+    postForm.meta_description = String(content.meta_description)
   }
   
   if (content.meta_keywords) {
-    postForm.meta_keywords = content.meta_keywords
+    postForm.meta_keywords = String(content.meta_keywords)
   }
   
   if (content.tags && Array.isArray(content.tags)) {
@@ -974,7 +974,7 @@ const fillFormWithAIContent = (content: AIContent) => {
   }
   
   if (content.slug) {
-    postForm.slug = content.slug
+    postForm.slug = String(content.slug)
   }
   
   // محاسبه تعداد کلمات و زمان مطالعه

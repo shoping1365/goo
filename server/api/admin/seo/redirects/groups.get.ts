@@ -9,10 +9,10 @@ export default defineEventHandler(async (event) => {
     })
 
     return response
-  } catch (error: any) {
+  } catch (error: unknown) {
     throw createError({
       statusCode: 500,
-      message: 'خطا در دریافت دسته‌بندی‌ها: ' + error.message
+      message: 'خطا در دریافت دسته‌بندی‌ها: ' + ((error as { message?: string }).message || 'خطای نامشخص')
     })
   }
 })

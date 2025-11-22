@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
     })
 
     return response
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در دریافت آمار ترافیک کلی:', error)
     
     // در صورت خطا، داده‌های نمونه برگردان

@@ -189,9 +189,9 @@
                   }"
                 >
                   <img
-                    v-if="props.sliderConfig.slides && props.sliderConfig.slides.length > 0"
-                    :src="props.sliderConfig.slides[0].image"
-                    :alt="props.sliderConfig.slides[0].title"
+                    v-if="(props.sliderConfig as { slides?: Array<{ image?: string; title?: string }> }).slides && ((props.sliderConfig as { slides?: Array<{ image?: string; title?: string }> }).slides?.length || 0) > 0"
+                    :src="((props.sliderConfig as { slides?: Array<{ image?: string; title?: string }> }).slides?.[0] as { image?: string })?.image || ''"
+                    :alt="((props.sliderConfig as { slides?: Array<{ image?: string; title?: string }> }).slides?.[0] as { title?: string })?.title || ''"
                     class="w-full h-full object-cover"
                   />
                   <div v-else class="flex items-center justify-center h-full text-gray-400">
@@ -207,16 +207,16 @@
                     class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2"
                   >
                     <h4
-                      v-if="props.sliderConfig.show_title && props.sliderConfig.slides && props.sliderConfig.slides[0] && props.sliderConfig.slides[0].title"
+                      v-if="(props.sliderConfig as { show_title?: boolean; slides?: Array<{ title?: string }> }).show_title && (props.sliderConfig as { slides?: Array<{ title?: string }> }).slides && (props.sliderConfig as { slides?: Array<{ title?: string }> }).slides?.[0] && ((props.sliderConfig as { slides?: Array<{ title?: string }> }).slides?.[0] as { title?: string }).title"
                       class="text-white text-sm font-bold mb-1"
                     >
-                      {{ props.sliderConfig.slides[0].title }}
+                      {{ ((props.sliderConfig as { slides?: Array<{ title?: string }> }).slides?.[0] as { title?: string })?.title }}
                     </h4>
                     <p
-                      v-if="props.sliderConfig.show_description && props.sliderConfig.slides && props.sliderConfig.slides[0] && props.sliderConfig.slides[0].description"
+                      v-if="(props.sliderConfig as { show_description?: boolean; slides?: Array<{ description?: string }> }).show_description && (props.sliderConfig as { slides?: Array<{ description?: string }> }).slides && (props.sliderConfig as { slides?: Array<{ description?: string }> }).slides?.[0] && ((props.sliderConfig as { slides?: Array<{ description?: string }> }).slides?.[0] as { description?: string }).description"
                       class="text-white/90 text-xs"
                     >
-                      {{ props.sliderConfig.slides[0].description }}
+                      {{ ((props.sliderConfig as { slides?: Array<{ description?: string }> }).slides?.[0] as { description?: string })?.description }}
                     </p>
                   </div>
                 </div>
@@ -230,9 +230,9 @@
                   }"
                 >
                   <img
-                    v-if="props.sliderConfig.slides && props.sliderConfig.slides.length > 1"
-                    :src="props.sliderConfig.slides[1].image"
-                    :alt="props.sliderConfig.slides[1].title"
+                    v-if="(props.sliderConfig as { slides?: Array<{ image?: string; title?: string }> }).slides && ((props.sliderConfig as { slides?: Array<{ image?: string; title?: string }> }).slides?.length || 0) > 1"
+                    :src="((props.sliderConfig as { slides?: Array<{ image?: string; title?: string }> }).slides?.[1] as { image?: string })?.image || ''"
+                    :alt="((props.sliderConfig as { slides?: Array<{ image?: string; title?: string }> }).slides?.[1] as { title?: string })?.title || ''"
                     class="w-full h-full object-cover"
                   />
                   <div v-else class="flex items-center justify-center h-full text-gray-400">
@@ -248,16 +248,16 @@
                     class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2"
                   >
                     <h4
-                      v-if="props.sliderConfig.show_title && props.sliderConfig.slides && props.sliderConfig.slides[1] && props.sliderConfig.slides[1].title"
+                      v-if="(props.sliderConfig as { show_title?: boolean; slides?: Array<{ title?: string }> }).show_title && (props.sliderConfig as { slides?: Array<{ title?: string }> }).slides && (props.sliderConfig as { slides?: Array<{ title?: string }> }).slides?.[1] && ((props.sliderConfig as { slides?: Array<{ title?: string }> }).slides?.[1] as { title?: string }).title"
                       class="text-white text-sm font-bold mb-1"
                     >
-                      {{ props.sliderConfig.slides[1].title }}
+                      {{ ((props.sliderConfig as { slides?: Array<{ title?: string }> }).slides?.[1] as { title?: string }).title }}
                     </h4>
                     <p
-                      v-if="props.sliderConfig.show_description && props.sliderConfig.slides && props.sliderConfig.slides[1] && props.sliderConfig.slides[1].description"
+                      v-if="(props.sliderConfig as { show_description?: boolean; slides?: Array<{ description?: string }> }).show_description && (props.sliderConfig as { slides?: Array<{ description?: string }> }).slides && (props.sliderConfig as { slides?: Array<{ description?: string }> }).slides?.[1] && ((props.sliderConfig as { slides?: Array<{ description?: string }> }).slides?.[1] as { description?: string }).description"
                       class="text-white/90 text-xs"
                     >
-                      {{ props.sliderConfig.slides[1].description }}
+                      {{ ((props.sliderConfig as { slides?: Array<{ description?: string }> }).slides?.[1] as { description?: string }).description }}
                     </p>
                   </div>
                 </div>
@@ -274,9 +274,9 @@
                   }"
                 >
                   <img
-                    v-if="props.sliderConfig.slides && props.sliderConfig.slides.length > 0"
-                    :src="props.sliderConfig.slides[0].image"
-                    :alt="props.sliderConfig.slides[0].title"
+                    v-if="(props.sliderConfig as { slides?: Array<{ image?: string; title?: string }> }).slides && ((props.sliderConfig as { slides?: Array<{ image?: string; title?: string }> }).slides?.length || 0) > 0"
+                    :src="((props.sliderConfig as { slides?: Array<{ image?: string; title?: string }> }).slides?.[0] as { image?: string })?.image || ''"
+                    :alt="((props.sliderConfig as { slides?: Array<{ image?: string; title?: string }> }).slides?.[0] as { title?: string })?.title || ''"
                     class="w-full h-full object-cover"
                   />
                   <div v-else class="flex items-center justify-center h-full text-gray-400">
@@ -298,9 +298,9 @@
                   }"
                 >
                   <img
-                    v-if="props.sliderConfig.slides && props.sliderConfig.slides.length > 1"
-                    :src="props.sliderConfig.slides[1].image"
-                    :alt="props.sliderConfig.slides[1].title"
+                    v-if="(props.sliderConfig as { slides?: Array<{ image?: string; title?: string }> }).slides && ((props.sliderConfig as { slides?: Array<{ image?: string; title?: string }> }).slides?.length || 0) > 1"
+                    :src="((props.sliderConfig as { slides?: Array<{ image?: string; title?: string }> }).slides?.[1] as { image?: string })?.image || ''"
+                    :alt="((props.sliderConfig as { slides?: Array<{ image?: string; title?: string }> }).slides?.[1] as { title?: string })?.title || ''"
                     class="w-full h-full object-cover"
                   />
                   <div v-else class="flex items-center justify-center h-full text-gray-400">
@@ -336,25 +336,25 @@
             </button>
           </div>
 
-          <div v-if="props.sliderConfig.slides.length === 0" class="text-gray-400 text-center py-8">
+          <div v-if="!((props.sliderConfig as { slides?: unknown[] }).slides) || (((props.sliderConfig as { slides?: unknown[] }).slides?.length || 0) === 0)" class="text-gray-400 text-center py-8">
             چیزی برای نمایش وجود ندارد!
           </div>
 
           <div v-else class="flex flex-col gap-6">
             <div
-              v-for="(slide, idx) in props.sliderConfig.slides"
+              v-for="(slide, idx) in ((props.sliderConfig as { slides?: Array<{ image?: string; title?: string; description?: string; link?: string }> }).slides || [])"
               :key="idx"
               class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 w-full"
             >
               <img
-                :src="slide.image"
+                :src="(slide as { image?: string }).image || ''"
                 alt="اسلایدر"
                 class="w-28 h-20 object-cover rounded border-2 border-purple-200"
               />
               <div class="flex flex-col flex-1">
-                <div class="font-bold text-sm text-gray-700 mb-1">{{ slide.title }}</div>
-                <div v-if="slide.description" class="text-xs text-gray-600 mb-1">{{ slide.description }}</div>
-                <div v-if="slide.link" class="text-xs text-blue-600 break-all">{{ slide.link }}</div>
+                <div class="font-bold text-sm text-gray-700 mb-1">{{ (slide as { title?: string }).title }}</div>
+                <div v-if="(slide as { description?: string }).description" class="text-xs text-gray-600 mb-1">{{ (slide as { description?: string }).description }}</div>
+                <div v-if="(slide as { link?: string }).link" class="text-xs text-blue-600 break-all">{{ (slide as { link?: string }).link }}</div>
               </div>
               <div class="flex gap-2">
                 <button
@@ -386,28 +386,11 @@
 // Vue composables
 import { ref, computed } from 'vue'
 
-// Slider Config interface
-interface SliderConfig {
-  easy_load_enabled?: boolean
-  bg_enabled?: boolean
-  wide_bg?: boolean
-  bg_color?: string
-  padding_top?: number
-  padding_bottom?: number
-  margin_right?: number
-  margin_left?: number
-  mobile_slider_width?: number
-  mobile_height?: number
-  mobile_vertical_display?: boolean
-  show_title?: boolean
-  show_description?: boolean
-  slides?: unknown[]
-  [key: string]: unknown
-}
+import type { BannerConfig, SliderConfig } from '~/types/widget'
 
 // Props
 interface Props {
-  sliderConfig: SliderConfig
+  sliderConfig: BannerConfig | SliderConfig
   currentPreviewSlide: number
   openAddSliderModal: () => void
   editSlide: (index: number) => void
@@ -424,7 +407,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
-  'update:sliderConfig': [config: SliderConfig]
+  'update:sliderConfig': [config: BannerConfig | SliderConfig]
 }>()
 
 // Helper function to emit config updates
@@ -432,7 +415,7 @@ const updateConfig = (field: string, value: unknown) => {
   emit('update:sliderConfig', {
     ...props.sliderConfig,
     [field]: value
-  })
+  } as BannerConfig | SliderConfig)
 }
 
 // Computed properties for config fields using emit instead of direct mutation

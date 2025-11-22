@@ -30,14 +30,11 @@ declare const getDatabase: () => Promise<Database>
 
 export default defineEventHandler(async (event: H3Event) => {
   try {
-    console.log('🔍 API آیتم‌های سفارش فراخوانی شد');
 
     // احراز هویت ادمین
     const adminUser = await requireAdminAuth(event)
-    console.log('👤 کاربر ادمین:', adminUser ? 'موجود' : 'ناموجود');
 
     if (!adminUser) {
-      console.log('❌ احراز هویت ناموفق');
       throw createError({
         statusCode: 401,
         message: 'احراز هویت ادمین الزامی است'
@@ -46,10 +43,8 @@ export default defineEventHandler(async (event: H3Event) => {
 
     // دریافت پارامترهای URL
     const orderId = getRouterParam(event, 'id')
-    console.log('🆔 شناسه سفارش:', orderId);
 
     if (!orderId) {
-      console.log('❌ شناسه سفارش موجود نیست');
       throw createError({
         statusCode: 400,
         message: 'شناسه سفارش الزامی است'
@@ -78,7 +73,6 @@ export default defineEventHandler(async (event: H3Event) => {
       ORDER BY created_at ASC
     `, [orderId]) as unknown as OrderItemRow[]
 
-    console.log('Order items raw result:', JSON.stringify(result, null, 2));
 
     const items = result.map((row) => {
       const item = {
@@ -95,7 +89,6 @@ export default defineEventHandler(async (event: H3Event) => {
         createdAt: row.created_at,
         updatedAt: row.updated_at,
       };
-      console.log('Mapped order item:', item);
       return item;
     })
 

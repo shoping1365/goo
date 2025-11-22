@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
           SaleReferenceId
         }
       }
-    }) as any
+    }) as { data?: unknown }
 
     return {
       success: true,
@@ -33,12 +33,12 @@ export default defineEventHandler(async (event) => {
       message: 'Callback ملت با موفقیت پردازش شد'
     }
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در پردازش callback ملت:', error)
     
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.statusMessage || 'خطا در پردازش callback ملت'
+      statusCode: (error as { statusCode?: number }).statusCode || 500,
+      message: (error as { statusMessage?: string }).statusMessage || 'خطا در پردازش callback ملت'
     })
   }
 }) 

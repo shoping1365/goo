@@ -501,7 +501,7 @@ function getGroupPermissionStatus(group: { items: Array<{ id: number | string; [
   let count = 0
   for (const item of group.items) {
     for (const perm of defaultPermissions) {
-      if (selectedPermissions.value.has(getPermissionName(item.id, perm.key))) count++
+      if (selectedPermissions.value.has(getPermissionName(String(item.id), perm.key))) count++
     }
   }
   if (count === 0) return ''
@@ -513,14 +513,17 @@ function getGroupPermissionStatus(group: { items: Array<{ id: number | string; [
 function selectAllGroup(group: { items: Array<{ id: number | string; [key: string]: unknown }>; [key: string]: unknown }) {
   for (const item of group.items) {
     for (const perm of defaultPermissions) {
-      selectedPermissions.value.add(getPermissionName(item.id, perm.key))
+      selectedPermissions.value.add(getPermissionName(String(item.id), perm.key))
     }
   }
 }
 function deselectAllGroup(group: { items: Array<{ id: number | string; [key: string]: unknown }>; [key: string]: unknown }) {
   for (const item of group.items) {
+    const itemId = item.id !== undefined && item.id !== null ? String(item.id) : ''
     for (const perm of defaultPermissions) {
-      selectedPermissions.value.delete(getPermissionName(item.id, perm.key))
+      if (itemId) {
+        selectedPermissions.value.delete(getPermissionName(itemId, perm.key))
+      }
     }
   }
 }

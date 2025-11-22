@@ -683,7 +683,7 @@
 
 <script setup lang="ts">
 import { WIDGET_TYPE_LABELS } from '~/types/widget'
-import type { Widget, SliderConfig, SlideItem } from '~/types/widget'
+import type { Widget, SliderConfig, SlideItem, UpdateWidgetRequest } from '~/types/widget'
 import TemplateButton from '~/components/common/TemplateButton.vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
 import SlideModal from '~/components/common/SlideModal.vue'
@@ -1334,7 +1334,7 @@ const saveWidget = async () => {
     }
     
     // Prepare widget data for update
-    const widgetData = {
+    const widgetData: UpdateWidgetRequest = {
       title: formData.value.title,
       description: formData.value.description,
       type: formData.value.type as Widget['type'],
@@ -1346,12 +1346,22 @@ const saveWidget = async () => {
     
     if (widgetId.value) {
       // Update existing widget
-      await updateWidget(widgetId.value, widgetData)
+      const updatedWidget = await updateWidget(widgetId.value, widgetData)
       showSuccess('ابزارک با موفقیت ذخیره شد')
-      emit('updated', widgetData.value!)
+      if (updatedWidget) {
+        emit('updated', updatedWidget)
+      }
     } else {
       // Create new widget
-      const newWidget = await createWidget(widgetData)
+      if (!widgetData.title) {
+        showError('عنوان ابزارک الزامی است')
+        return
+      }
+      const createData = {
+        ...widgetData,
+        title: widgetData.title
+      } as import('~/types/widget').CreateWidgetRequest
+      const newWidget = await createWidget(createData)
       if (newWidget) {
         showSuccess('ابزارک با موفقیت ایجاد شد')
         // Redirect to the banner list page after creation

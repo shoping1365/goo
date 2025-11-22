@@ -1,20 +1,15 @@
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (_event) => {
   try {
-    console.log('Debug API called')
-    
-    const body = await readBody(event)
-    console.log('Request body:', body)
-    
+    const body = await readBody(_event)
+
     // تست اتصال به دیتابیس
     try {
       const { getDatabase } = await import('../_utils/database.js')
       const db = await getDatabase()
-      console.log('Database connection successful')
-      
+
       // تست query ساده
       const testResult = await db.query('SELECT 1 as test')
-      console.log('Test query result:', testResult)
-      
+
       return {
         success: true,
         message: 'Database connection OK',
@@ -28,7 +23,7 @@ export default defineEventHandler(async (event) => {
         details: dbError.message
       }
     }
-    
+
   } catch (error) {
     console.error('Debug API error:', error)
     return {

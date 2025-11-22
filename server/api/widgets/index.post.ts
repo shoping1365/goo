@@ -15,13 +15,13 @@ export default defineEventHandler(async (event) => {
     })
 
     return response
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در ایجاد ویجت:', error)
-    
+
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.message || 'خطا در ایجاد ویجت',
-      data: error.data
+      statusCode: (error as { statusCode?: number }).statusCode || 500,
+      message: (error as { message?: string }).message || 'خطا در ایجاد ویجت',
+      data: (error as { data?: unknown }).data
     })
   }
 }) 

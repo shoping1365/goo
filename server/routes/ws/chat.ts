@@ -6,7 +6,7 @@
 import { defineWebSocketHandler } from 'h3'
 
 export default defineWebSocketHandler({
-  open(ws) {
+  open(_ws) {
     // اتصال موفق
   },
   message(ws, message) {
@@ -15,7 +15,7 @@ export default defineWebSocketHandler({
       if (data.type === 'ping') {
         ws.send(JSON.stringify({ type: 'pong' }))
       }
-    } catch (err) {
+    } catch (_err) {
       // ignore malformed messages
     }
   },

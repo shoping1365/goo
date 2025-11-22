@@ -293,13 +293,13 @@
                   <div v-if="mobileSlides.length > 0" class="relative h-full">
                   <div
                     v-for="(slide, index) in mobileSlides"
-                    :key="slide.id || slide.order || index"
+                    :key="String((slide as { id?: string | number }).id ?? (slide as { order?: string | number }).order ?? index)"
                     class="absolute inset-0 transition-opacity duration-500"
                     :class="{ 'opacity-100': index === activeMobileSlideIndex, 'opacity-0': index !== activeMobileSlideIndex }"
                   >
                     <img
-                    :src="slide.mobile_image"
-                    :alt="slide.title"
+                    :src="(slide as { mobile_image?: string }).mobile_image || ''"
+                    :alt="(slide as { title?: string }).title || ''"
                     :class="mobileSliderImageClass"
                     />
                                         <div
@@ -307,16 +307,16 @@
                                         class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3"
                                         >
                                         <h4
-                                              v-if="localSliderConfig.show_title && slide.title && (slide.showTitle !== false)"
+                                              v-if="localSliderConfig.show_title && (slide as { title?: string; showTitle?: boolean }).title && ((slide as { showTitle?: boolean }).showTitle !== false)"
                                               class="text-white text-base font-bold mb-1"
                                         >
-                                              {{ slide.title }}
+                                              {{ (slide as { title?: string }).title }}
                                         </h4>
                                         <p
-                                              v-if="localSliderConfig.show_description && slide.description"
+                                              v-if="localSliderConfig.show_description && (slide as { description?: string }).description"
                                               class="text-white/90 text-xs"
                                         >
-                                              {{ slide.description }}
+                                              {{ (slide as { description?: string }).description }}
                                         </p>
                                         </div>
                                     </div>
@@ -337,9 +337,9 @@
                                     
                                     <!-- نقطه‌های ناوبری - کوچکتر برای موبایل -->
                   <div v-if="localSliderConfig.show_pagination" class="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1.5">
-                    <div 
-                    v-for="(slide, index) in mobileSlides" 
-                    :key="slide.id || slide.order || index"
+                    <div
+                    v-for="(slide, index) in mobileSlides"
+                    :key="String((slide as { id?: string | number }).id ?? (slide as { order?: string | number }).order ?? index)"
                     class="w-2.5 h-2.5 rounded-full transition-colors"
                     :class="index === activeMobileSlideIndex ? 'bg-white' : 'bg-white/50'"
                     ></div>
@@ -369,18 +369,18 @@
                                         <div class="h-full flex flex-col gap-2">
                                         <div
                   v-for="(banner, index) in mobileBanners"
-                  :key="banner.id || banner.order || index"
+                  :key="String((banner as { id?: string | number }).id ?? (banner as { order?: string | number }).order ?? index)"
                                               class="relative rounded-lg overflow-hidden flex-1"
                                   :style="mobileBannerItemStyle"
                                         >
                                               <img
-                  :src="banner.mobile_image"
-                                              :alt="banner.title"
+                  :src="(banner as { mobile_image?: string }).mobile_image || ''"
+                                              :alt="(banner as { title?: string }).title || ''"
                         :class="mobileBannerImageClass"
                                               />
                                               <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-                                              <h4 class="text-white text-sm font-bold mb-1">{{ banner.title }}</h4>
-                                              <p v-if="banner.description" class="text-white/90 text-xs">{{ banner.description }}</p>
+                                              <h4 class="text-white text-sm font-bold mb-1">{{ (banner as { title?: string }).title }}</h4>
+                                              <p v-if="(banner as { description?: string }).description" class="text-white/90 text-xs">{{ (banner as { description?: string }).description }}</p>
                                               </div>
                                         </div>
                                         </div>
@@ -401,8 +401,8 @@
 
                                                             <!-- اطلاعات تنظیمات موبایل -->
                                     <div class="mt-4 text-sm text-gray-600 text-center border-t border-gray-200 pt-4">
-                  <p>ارتفاع اسلایدر: {{ localSliderConfig.mobile_height === 'auto' ? 'اتوماتیک' : `${localSliderConfig.mobile_height || 150}px` }} |
-                ارتفاع بنر: {{ localSliderConfig.mobile_banner_height === 'auto' ? 'اتوماتیک' : `${localSliderConfig.mobile_banner_height || 80}px` }} |
+                  <p>ارتفاع اسلایدر: {{ (localSliderConfig.mobile_height === 'auto' || (typeof localSliderConfig.mobile_height === 'string' && localSliderConfig.mobile_height === 'auto')) ? 'اتوماتیک' : `${(typeof localSliderConfig.mobile_height === 'number' ? localSliderConfig.mobile_height : 150)}px` }} |
+                ارتفاع بنر: {{ ((localSliderConfig as { mobile_banner_height?: number | string }).mobile_banner_height === 'auto' || (typeof (localSliderConfig as { mobile_banner_height?: number | string }).mobile_banner_height === 'string' && (localSliderConfig as { mobile_banner_height?: number | string }).mobile_banner_height === 'auto')) ? 'اتوماتیک' : `${(typeof (localSliderConfig as { mobile_banner_height?: number | string }).mobile_banner_height === 'number' ? (localSliderConfig as { mobile_banner_height?: number }).mobile_banner_height : 80)}px` }} |
                                         پس‌زمینه: {{ localSliderConfig.bg_enabled ? 'فعال' : 'غیرفعال' }}</p>
                                     </div>
                                     </div>
@@ -426,22 +426,22 @@
                               <div v-else class="flex flex-col gap-6">
                                               <div
                                     v-for="(slide, idx) in mobileSlides"
-                                    :key="slide.id || slide.order || idx"
+                                    :key="String((slide as { id?: string | number }).id ?? (slide as { order?: string | number }).order ?? idx)"
                                     class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 w-full"
                                     >
                                              <div class="w-28 h-20 flex items-center justify-center rounded border-2 border-purple-200 bg-white overflow-hidden relative">
                 <img
-                v-if="slide.mobile_image"
-                :src="slide.mobile_image"
+                v-if="(slide as { mobile_image?: string }).mobile_image"
+                :src="(slide as { mobile_image?: string }).mobile_image"
                 alt="اسلایدر موبایل"
                 class="w-full h-full object-cover"
                 />
                 <span v-else class="text-xs text-gray-500 text-center px-2">بدون تصویر موبایل</span>
                 </div>
                                     <div class="flex flex-col flex-1">
-                                    <div class="font-bold text-sm text-gray-700 mb-1">{{ slide.title }}</div>
-                                    <div v-if="slide.description" class="text-xs text-gray-600 mb-1">{{ slide.description }}</div>
-                                    <div v-if="slide.link" class="text-xs text-blue-600 break-all">{{ slide.link }}</div>
+                                    <div class="font-bold text-sm text-gray-700 mb-1">{{ (slide as { title?: string }).title }}</div>
+                                    <div v-if="(slide as { description?: string }).description" class="text-xs text-gray-600 mb-1">{{ (slide as { description?: string }).description }}</div>
+                                    <div v-if="(slide as { link?: string }).link" class="text-xs text-blue-600 break-all">{{ (slide as { link?: string }).link }}</div>
                                     </div>
                                     <div class="flex gap-2">
                                     <button
@@ -492,22 +492,22 @@
                               <div v-else class="flex flex-col gap-6">
                                               <div
                                     v-for="(banner, idx) in mobileBanners"
-                                    :key="banner.id || banner.order || idx"
+                                    :key="String((banner as { id?: string | number }).id ?? (banner as { order?: string | number }).order ?? idx)"
                                     class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 w-full"
                                     >
                                              <div class="w-28 h-20 flex items-center justify-center rounded border-2 border-purple-200 bg-white overflow-hidden relative">
                 <img
-                v-if="banner.mobile_image"
-                :src="banner.mobile_image"
+                v-if="(banner as { mobile_image?: string }).mobile_image"
+                :src="(banner as { mobile_image?: string }).mobile_image"
                 alt="بنر موبایل"
                 class="w-full h-full object-cover"
                 />
                 <span v-else class="text-xs text-gray-500 text-center px-2">بدون تصویر موبایل</span>
                 </div>
                                     <div class="flex flex-col flex-1">
-                                    <div class="font-bold text-sm text-gray-700 mb-1">{{ banner.title }}</div>
-                                    <div v-if="banner.description" class="text-xs text-gray-600 mb-1">{{ banner.description }}</div>
-                                    <div v-if="banner.link" class="text-xs text-blue-600 break-all">{{ banner.link }}</div>
+                                    <div class="font-bold text-sm text-gray-700 mb-1">{{ (banner as { title?: string }).title }}</div>
+                                    <div v-if="(banner as { description?: string }).description" class="text-xs text-gray-600 mb-1">{{ (banner as { description?: string }).description }}</div>
+                                    <div v-if="(banner as { link?: string }).link" class="text-xs text-blue-600 break-all">{{ (banner as { link?: string }).link }}</div>
                                     </div>
                                     <div class="flex gap-2">
                                     <button
@@ -539,11 +539,11 @@
           // Vue composables
           import type { CSSProperties } from 'vue'
 import { computed, nextTick, onMounted, ref } from 'vue'
-import type { BannerConfig } from '~/types/widget'
+import type { SliderConfig } from '~/types/widget'
 
           // Props
           interface Props {
-          sliderConfig: BannerConfig
+          sliderConfig: SliderConfig
           currentPreviewSlide: number
           isMobileEnabled: boolean
           openAddSliderModal: () => void
@@ -562,7 +562,7 @@ import type { BannerConfig } from '~/types/widget'
 
           const emit = defineEmits<{
             (e: 'change-device', value: 'desktop' | 'mobile'): void
-            (e: 'update:sliderConfig', value: BannerConfig): void
+            (e: 'update:sliderConfig', value: SliderConfig): void
           }>()
 
           // Proxy for sliderConfig to avoid mutating props
@@ -593,7 +593,9 @@ const ensureAutoDefaults = () => {
 
   for (const key of keys) {
     const value = localSliderConfig.value[key]
-    if (value === undefined || value === null || value === '') {
+    if (value === undefined || value === null) {
+      localSliderConfig.value[key] = 'auto'
+    } else if (typeof value === 'string' && value.trim() === '') {
       localSliderConfig.value[key] = 'auto'
     }
   }
@@ -630,11 +632,23 @@ const ensureAutoDefaults = () => {
           })
 
           // Collections split per device
-          const _desktopSlides = computed(() => (props.sliderConfig?.slides ?? []))
-          const _desktopBanners = computed(() => (props.sliderConfig?.side_banners ?? []))
+          const _desktopSlides = computed(() => {
+            const config = props.sliderConfig as SliderConfig
+            return (config?.slides ?? []) as Array<Record<string, unknown>>
+          })
+          const _desktopBanners = computed(() => {
+            const config = props.sliderConfig as SliderConfig
+            return (config?.side_banners ?? []) as Array<Record<string, unknown>>
+          })
           // آرایه‌های جداگانه برای موبایل
-          const mobileSlides = computed(() => (props.sliderConfig?.mobile_slides ?? []))
-          const mobileBanners = computed(() => (props.sliderConfig?.mobile_side_banners ?? []))
+          const mobileSlides = computed(() => {
+            const config = props.sliderConfig as SliderConfig
+            return (config?.mobile_slides ?? []) as Array<Record<string, unknown>>
+          })
+          const mobileBanners = computed(() => {
+            const config = props.sliderConfig as SliderConfig
+            return (config?.mobile_side_banners ?? []) as Array<Record<string, unknown>>
+          })
 
           const activeMobileSlideIndex = computed(() => {
             const count = mobileSlides.value.length
@@ -693,16 +707,19 @@ const ensureAutoDefaults = () => {
             resolveNumeric(props.sliderConfig?.mobile_slider_width) ?? DEFAULT_PREVIEW_MAX_WIDTH
           ))
 
-          const _resolvedMobileSliderHeight = computed(() => {
-            if (props.sliderConfig?.mobile_height === 'auto') {
+          const _resolvedMobileSliderHeight = computed<number | null>(() => {
+            const config = props.sliderConfig as SliderConfig
+            const mobileHeight = config?.mobile_height
+            if (mobileHeight === 'auto' || (typeof mobileHeight === 'string' && mobileHeight === 'auto')) {
               return null
             }
-            return resolveNumeric(props.sliderConfig?.mobile_height) ?? FALLBACK_MOBILE_SECTION_HEIGHT
+            return resolveNumeric(mobileHeight) ?? FALLBACK_MOBILE_SECTION_HEIGHT
           })
 
           const mobileSliderContainerStyle = computed<CSSProperties>(() => {
-            const heightValue = props.sliderConfig?.mobile_height
-            if (heightValue === 'auto' || heightValue === '' || heightValue === undefined || heightValue === null) {
+            const config = props.sliderConfig as SliderConfig
+            const heightValue = config?.mobile_height
+            if (heightValue === 'auto' || heightValue === undefined || heightValue === null) {
               return {
                 position: 'relative',
                 width: '100%',
@@ -725,15 +742,18 @@ const ensureAutoDefaults = () => {
             return style
           })
 
-          const mobileSliderImageClass = computed(() => (
-            props.sliderConfig?.mobile_height === 'auto'
+          const mobileSliderImageClass = computed<string>(() => {
+            const config = props.sliderConfig as SliderConfig
+            const mobileHeight = config?.mobile_height
+            return (mobileHeight === 'auto' || (typeof mobileHeight === 'string' && mobileHeight === 'auto'))
               ? 'w-full h-auto object-cover'
               : 'w-full h-full object-cover'
-          ))
+          })
 
           const mobileBannerContainerStyle = computed<CSSProperties>(() => {
-            const heightValue = props.sliderConfig?.mobile_banner_height
-            if (heightValue === 'auto' || heightValue === '' || heightValue === undefined || heightValue === null) {
+            const config = props.sliderConfig as SliderConfig
+            const heightValue = config?.mobile_banner_height
+            if (heightValue === 'auto' || heightValue === undefined || heightValue === null) {
               return {
                 position: 'relative' as const,
                 width: '100%'
@@ -750,13 +770,15 @@ const ensureAutoDefaults = () => {
           })
 
           const mobileBannerItemStyle = computed<CSSProperties>(() => {
-            if (props.sliderConfig?.mobile_banner_height === 'auto' || mobileBanners.value.length === 0) {
+            const config = props.sliderConfig as SliderConfig
+            const mobileBannerHeight = config?.mobile_banner_height
+            if (mobileBannerHeight === 'auto' || (typeof mobileBannerHeight === 'string' && mobileBannerHeight === 'auto') || mobileBanners.value.length === 0) {
               return {
                 height: 'auto'
               }
             }
 
-            const totalHeight = resolveNumeric(props.sliderConfig?.mobile_banner_height) ?? FALLBACK_MOBILE_SECTION_HEIGHT
+            const totalHeight = resolveNumeric(mobileBannerHeight) ?? FALLBACK_MOBILE_SECTION_HEIGHT
             const gap = 8
             const totalGap = gap * Math.max(mobileBanners.value.length - 1, 0)
             const available = totalHeight - totalGap
@@ -767,9 +789,11 @@ const ensureAutoDefaults = () => {
             }
           })
 
-          const mobileBannerImageClass = computed(() => (
-            props.sliderConfig?.mobile_banner_height === 'auto'
+          const mobileBannerImageClass = computed<string>(() => {
+            const config = props.sliderConfig as SliderConfig
+            const mobileBannerHeight = config?.mobile_banner_height
+            return (mobileBannerHeight === 'auto' || (typeof mobileBannerHeight === 'string' && mobileBannerHeight === 'auto'))
               ? 'w-full h-auto object-contain'
               : 'w-full h-full object-cover'
-          ))
+          })
           </script>

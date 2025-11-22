@@ -443,6 +443,14 @@ const activeTab = ref('templates')
 const showTemplateForm = ref(false)
 interface Template {
   id?: number | string
+  name?: string
+  tags?: string[]
+  category?: string
+  complexity?: string
+  description?: string
+  color?: string
+  usageCount?: number
+  lastModified?: string
   [key: string]: unknown
 }
 const editingTemplate = ref<Template | null>(null)
@@ -583,12 +591,6 @@ const formatDate = (date: string): string => {
   return new Intl.DateTimeFormat('fa-IR').format(new Date(date))
 }
 
-interface Template {
-  id?: number | string
-  name?: string
-  [key: string]: unknown
-}
-
 const previewTemplate = (_template: Template) => {
   // پیاده‌سازی پیش‌نمایش قالب
 
@@ -598,15 +600,9 @@ const editTemplate = (template: Template) => {
   editingTemplate.value = template
   Object.assign(form, {
     ...template,
-    tagsInput: template.tags.join(', ')
+    tagsInput: Array.isArray(template.tags) ? template.tags.join(', ') : ''
   })
   showTemplateForm.value = true
-}
-
-interface Template {
-  id?: number | string
-  name?: string
-  [key: string]: unknown
 }
 
 interface Tool {
@@ -619,8 +615,19 @@ interface Variable {
 }
 
 const duplicateTemplate = (template: Template) => {
-  const duplicate = { ...template, id: Date.now(), name: `${template.name || 'نامشخص'} (کپی)` }
-  templates.value.unshift(duplicate)
+  const duplicate: Template = { 
+    ...template, 
+    id: Date.now(), 
+    name: `${template.name || 'نامشخص'} (کپی)`,
+    category: template.category || '',
+    complexity: template.complexity || '',
+    description: template.description || '',
+    color: template.color || '',
+    tags: template.tags || [],
+    usageCount: template.usageCount || 0,
+    lastModified: new Date().toISOString()
+  }
+  templates.value.unshift(duplicate as typeof templates.value[0])
 }
 
 const deleteTemplate = async (template: Template) => {

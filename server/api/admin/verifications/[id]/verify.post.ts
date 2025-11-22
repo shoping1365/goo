@@ -16,11 +16,11 @@ export default defineEventHandler(async (event) => {
     })
 
     return response
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error verifying request:', error)
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.message || 'خطا در تایید درخواست'
+      statusCode: (error as { statusCode?: number }).statusCode || 500,
+      message: (error as { message?: string }).message || 'خطا در تایید درخواست'
     })
   }
 })

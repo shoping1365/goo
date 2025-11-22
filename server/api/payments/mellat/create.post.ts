@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
         email,
         mobile
       }
-    }) as any
+    }) as { data?: unknown }
 
     return {
       success: true,
@@ -46,12 +46,12 @@ export default defineEventHandler(async (event) => {
       message: 'درخواست پرداخت ملت با موفقیت ایجاد شد'
     }
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در ایجاد پرداخت ملت:', error)
     
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.statusMessage || 'خطا در ایجاد پرداخت ملت'
+      statusCode: (error as { statusCode?: number }).statusCode || 500,
+      message: (error as { statusMessage?: string }).statusMessage || 'خطا در ایجاد پرداخت ملت'
     })
   }
 }) 

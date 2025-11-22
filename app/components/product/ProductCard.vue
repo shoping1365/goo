@@ -19,9 +19,9 @@
       <p class="text-gray-600 text-sm mb-4">{{ product.title }}</p>
       <div class="flex justify-between items-center">
         <div>
-          <span class="text-lg font-bold text-primary">{{ formatPrice(product.price) }}</span>
-          <span v-if="product.original_price && product.original_price > product.price" class="text-sm text-gray-500 line-through mr-2">
-            {{ formatPrice(product.original_price) }}
+          <span class="text-lg font-bold text-primary">{{ formatPrice(Number(product.price) || 0) }}</span>
+          <span v-if="product.original_price && (Number(product.original_price) > (Number(product.price) || 0))" class="text-sm text-gray-500 line-through mr-2">
+            {{ formatPrice(Number(product.original_price) || 0) }}
           </span>
         </div>
         <div class="flex items-center">
@@ -48,7 +48,8 @@ interface ProductData {
   id: number | string
   name?: string
   title?: string
-  price?: number
+  price?: number | string | null
+  original_price?: number | string | null
   final_price?: number
   discount?: number
   image?: string

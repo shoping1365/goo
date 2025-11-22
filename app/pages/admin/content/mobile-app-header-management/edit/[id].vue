@@ -472,19 +472,19 @@ const loadMobileAppHeader = async () => {
     
     mobileAppHeader.value = data
     formData.value = {
-      name: data.name || '',
-      description: data.description || '',
-      platform: data.platform || 'mobile',
-      background_color: data.background_color || '#ffffff',
-      text_color: data.text_color || '#000000',
-      pageSelection: data.pageSelection || 'all',
-      specificPages: data.specificPages || '',
-      excludedPages: data.excludedPages || '',
+      name: String(data.name || ''),
+      description: String(data.description || ''),
+      platform: String(data.platform || 'mobile'),
+      background_color: String(data.background_color || '#ffffff'),
+      text_color: String(data.text_color || '#000000'),
+      pageSelection: String(data.pageSelection || 'all'),
+      specificPages: String(data.specificPages || ''),
+      excludedPages: String(data.excludedPages || ''),
       isActive: data.isActive !== false,
-      top_image_url: data.top_image_url || '',
-      top_image_alt: data.top_image_alt || '',
-      bottom_image_url: data.bottom_image_url || '',
-      bottom_image_alt: data.bottom_image_alt || ''
+      top_image_url: String(data.top_image_url || ''),
+      top_image_alt: String(data.top_image_alt || ''),
+      bottom_image_url: String(data.bottom_image_url || ''),
+      bottom_image_alt: String(data.bottom_image_alt || '')
     }
     
     // اگر فیلدهای عکس وجود ندارند، آن‌ها را با مقادیر پیش‌فرض اضافه کن

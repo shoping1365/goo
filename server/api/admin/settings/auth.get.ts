@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
       data: response,
       message: 'تنظیمات احراز هویت با موفقیت دریافت شد'
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در دریافت تنظیمات احراز هویت:', error)
     
     return {

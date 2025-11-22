@@ -39,8 +39,8 @@ export default defineEventHandler(async (event) => {
       )
       
       if (userResult && userResult.length > 0) {
-        const userData: any = userResult[0]
-        const profileData: any = userData.profile_data
+        const userData = userResult[0] as { profile_data?: { selected_address?: string; postal_code?: string; first_name?: string; last_name?: string; mobile?: string } }
+        const profileData = userData.profile_data
         
         if (profileData && profileData.selected_address) {
           // ایجاد آدرس مجازی از profile_data
@@ -65,7 +65,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // تبدیل آدرس‌های دیتابیس به فرمت مورد انتظار
-    const formattedAddresses = addresses.map((addr: any) => ({
+    const formattedAddresses = addresses.map((addr: { id: number; user_id: number; street?: string; full_address?: string; postal_code?: string; recipient_name?: string; recipient_mobile?: string; phone?: string; province?: string; city?: string; province_id?: number; city_id?: number; is_default?: boolean; created_at: string; updated_at: string }) => ({
       id: addr.id,
       user_id: addr.user_id,
       full_address: addr.street || addr.full_address,
@@ -85,7 +85,7 @@ export default defineEventHandler(async (event) => {
 
     return formattedAddresses
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در دریافت آدرس‌های کاربر:', error)
     
     if (error.statusCode) {

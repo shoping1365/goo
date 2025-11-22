@@ -303,7 +303,16 @@ function getShipments(order: { items?: Array<Record<string, unknown>>; [key: str
     }]
   }
   
-  return order.items.map((item: OrderItem) => ({
+  const items = order.items.map((item: Record<string, unknown>) => ({
+    id: (item.id || 0) as number,
+    product_id: (item.product_id || 0) as number,
+    product_name: String(item.product_name || ''),
+    quantity: Number(item.quantity || 1),
+    price: Number(item.price || 0),
+    product_image: item.product_image ? String(item.product_image) : undefined
+  } as OrderItem))
+  
+  return items.map((item: OrderItem) => ({
     product_name: item.product_name || `محصول ${item.product_id}`,
     quantity: item.quantity || 1,
     product_image: item.product_image || '/default-product.svg',

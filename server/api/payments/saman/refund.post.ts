@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
         refID: refNum, // در سامان از refNum استفاده می‌شود
         amount
       }
-    }) as any
+    }) as { data?: unknown }
 
     return {
       success: true,
@@ -36,12 +36,12 @@ export default defineEventHandler(async (event) => {
       message: 'بازگشت وجه سامان با موفقیت انجام شد'
     }
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در بازگشت وجه سامان:', error)
     
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.message || error.statusMessage || 'خطا در بازگشت وجه سامان'
+      statusCode: (error as { statusCode?: number }).statusCode || 500,
+      message: (error as { message?: string; statusMessage?: string }).message || (error as { message?: string; statusMessage?: string }).statusMessage || 'خطا در بازگشت وجه سامان'
     })
   }
 }) 

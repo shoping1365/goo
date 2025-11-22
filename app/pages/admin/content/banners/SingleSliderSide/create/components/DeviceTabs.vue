@@ -214,39 +214,39 @@
                 }"
               >
                 <!-- نمایش اسلایدها -->
-                <div v-if="props.sliderConfig.slides.length > 0" class="relative h-full">
+                <div v-if="localSliderConfig.slides && localSliderConfig.slides.length > 0" class="relative h-full">
                   <div 
-                    v-for="(slide, index) in props.sliderConfig.slides" 
+                    v-for="(slide, index) in localSliderConfig.slides" 
                     :key="index"
                     class="absolute inset-0 transition-opacity duration-500"
                     :class="{ 'opacity-100': index === props.currentPreviewSlide, 'opacity-0': index !== props.currentPreviewSlide }"
                   >
                     <img 
-                      :src="slide.image" 
-                      :alt="slide.title"
+                      :src="(slide as { image?: string }).image || ''" 
+                      :alt="(slide as { title?: string }).title || ''"
                       class="w-full h-full object-cover"
                     />
                     <div
-                      v-if="props.sliderConfig.show_title || props.sliderConfig.show_description"
+                      v-if="localSliderConfig.show_title || localSliderConfig.show_description"
                       class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3"
                     >
                       <h4
-                        v-if="props.sliderConfig.show_title && slide.title && (slide.showTitle !== false)"
+                        v-if="localSliderConfig.show_title && (slide as { title?: string; showTitle?: boolean }).title && ((slide as { showTitle?: boolean }).showTitle !== false)"
                         class="text-white text-base font-bold mb-1"
                       >
-                        {{ slide.title }}
+                        {{ (slide as { title?: string }).title }}
                       </h4>
                       <p
-                        v-if="props.sliderConfig.show_description && slide.description"
+                        v-if="localSliderConfig.show_description && (slide as { description?: string }).description"
                         class="text-white/90 text-xs"
                       >
-                        {{ slide.description }}
+                        {{ (slide as { description?: string }).description }}
                       </p>
                     </div>
                   </div>
                   
                   <!-- دکمه‌های ناوبری - کوچکتر برای موبایل -->
-                  <div v-if="props.sliderConfig.show_navigation" class="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-2">
+                  <div v-if="localSliderConfig.show_navigation" class="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-2">
                     <button class="bg-white/20 hover:bg-white/30 text-white rounded-full p-1.5 transition-colors">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -260,9 +260,9 @@
                   </div>
                   
                   <!-- نقطه‌های ناوبری - کوچکتر برای موبایل -->
-                  <div v-if="props.sliderConfig.show_pagination" class="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1.5">
+                  <div v-if="localSliderConfig.show_pagination" class="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1.5">
                     <div 
-                      v-for="(slide, index) in props.sliderConfig.slides" 
+                      v-for="(slide, index) in localSliderConfig.slides" 
                       :key="index"
                       class="w-2.5 h-2.5 rounded-full transition-colors"
                       :class="index === props.currentPreviewSlide ? 'bg-white' : 'bg-white/50'"
@@ -303,25 +303,25 @@
             </button>
           </div>
 
-          <div v-if="props.sliderConfig.slides.length === 0" class="text-gray-400 text-center py-8">
+          <div v-if="!localSliderConfig.slides || localSliderConfig.slides.length === 0" class="text-gray-400 text-center py-8">
             چیزی برای نمایش وجود ندارد!
           </div>
 
           <div v-else class="flex flex-col gap-6">
             <div
-              v-for="(slide, idx) in props.sliderConfig.slides"
+              v-for="(slide, idx) in localSliderConfig.slides"
               :key="idx"
               class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 w-full"
             >
               <img
-                :src="slide.image"
+                :src="(slide as { image?: string }).image || ''"
                 alt="اسلایدر"
                 class="w-28 h-20 object-cover rounded border-2 border-purple-200"
               />
               <div class="flex flex-col flex-1">
-                <div class="font-bold text-sm text-gray-700 mb-1">{{ slide.title }}</div>
-                <div v-if="slide.description" class="text-xs text-gray-600 mb-1">{{ slide.description }}</div>
-                <div v-if="slide.link" class="text-xs text-blue-600 break-all">{{ slide.link }}</div>
+                <div class="font-bold text-sm text-gray-700 mb-1">{{ (slide as { title?: string }).title }}</div>
+                <div v-if="(slide as { description?: string }).description" class="text-xs text-gray-600 mb-1">{{ (slide as { description?: string }).description }}</div>
+                <div v-if="(slide as { link?: string }).link" class="text-xs text-blue-600 break-all">{{ (slide as { link?: string }).link }}</div>
               </div>
               <div class="flex gap-2">
                 <button
@@ -352,11 +352,11 @@
 <script setup lang="ts">
 // Vue composables
 import { computed, ref } from 'vue'
-import type { BannerConfig } from '~/types/widget'
+import type { SliderConfig } from '~/types/widget'
 
 // Props
 interface Props {
-  sliderConfig: BannerConfig
+  sliderConfig: SliderConfig
   currentPreviewSlide: number
   openAddSliderModal: () => void
   editSlide: (index: number) => void
@@ -368,17 +368,12 @@ interface Props {
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
-  (e: 'update:sliderConfig', value: BannerConfig): void
+  (e: 'update:sliderConfig', value: SliderConfig): void
 }>()
 
-// Proxy for sliderConfig
+// Computed properties for config fields
 const localSliderConfig = computed({
-  get: () => new Proxy(props.sliderConfig, {
-    set(obj, prop, value) {
-      emit('update:sliderConfig', { ...obj, [prop]: value })
-      return true
-    }
-  }),
+  get: () => props.sliderConfig as SliderConfig,
   set: (val) => emit('update:sliderConfig', val)
 })
 

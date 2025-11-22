@@ -337,12 +337,14 @@
 </template>
 
 <script setup lang="ts">
-import { navigateTo } from '#app'
+import { navigateTo } from '#imports'
 import { computed, onMounted, ref, watch } from 'vue'
 import Pagination from '~/components/admin/common/Pagination.vue'
 import UnitManagerModal from '~/components/admin/modals/UnitManagerModal.vue'
 import { useConfirmDialog } from '~/composables/useConfirmDialog'
 import { useNotifier } from '~/composables/useNotifier'
+import { definePageMeta } from '#imports'
+import { useRoute } from 'vue-router'
 
 definePageMeta({
   layout: 'admin-main',
@@ -723,7 +725,7 @@ const saveChanges = async () => {
     const resp = await $fetch<{ id: number }>(url, { method, body: payload })
 
     const attrId = editingId.value || resp?.id
-    await syncOptions(attrId)
+    await syncOptions(Array.isArray(attrId) ? attrId[0] : attrId)
 
     clearDraft()
     showToast('✅ ویژگی با موفقیت ایجاد شد')
@@ -743,7 +745,7 @@ const saveAndContinueEdit = async () => {
     const method = editingId.value ? 'PUT' : 'POST'
     const resp = await $fetch<{ id: number }>(url, { method, body: payload })
     const attrId = editingId.value || resp?.id
-    await syncOptions(attrId)
+    await syncOptions(Array.isArray(attrId) ? attrId[0] : attrId)
 
     savedContinue.value = true
     clearDraft()

@@ -189,9 +189,9 @@
                   }"
                 >
                   <img
-                    v-if="localSliderConfig.slides && localSliderConfig.slides.length > 0"
-                    :src="localSliderConfig.slides[0].image"
-                    :alt="localSliderConfig.slides[0].title"
+                    v-if="sliderSlides.length > 0"
+                    :src="sliderSlides[0].image"
+                    :alt="sliderSlides[0].title"
                     class="w-full h-full object-cover"
                   />
                   <div v-else class="flex items-center justify-center h-full text-gray-400">
@@ -207,16 +207,16 @@
                     class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2"
                   >
                     <h4
-                      v-if="localSliderConfig.show_title && localSliderConfig.slides && localSliderConfig.slides[0] && localSliderConfig.slides[0].title"
+                      v-if="localSliderConfig.show_title && sliderSlides.length > 0 && sliderSlides[0].title"
                       class="text-white text-sm font-bold mb-1"
                     >
-                      {{ localSliderConfig.slides[0].title }}
+                      {{ sliderSlides[0].title }}
                     </h4>
                     <p
-                      v-if="localSliderConfig.show_description && localSliderConfig.slides && localSliderConfig.slides[0] && localSliderConfig.slides[0].description"
+                      v-if="localSliderConfig.show_description && sliderSlides.length > 0 && sliderSlides[0].description"
                       class="text-white/90 text-xs"
                     >
-                      {{ localSliderConfig.slides[0].description }}
+                      {{ sliderSlides[0].description }}
                     </p>
                   </div>
                 </div>
@@ -230,9 +230,9 @@
                   }"
                 >
                   <img
-                    v-if="localSliderConfig.slides && localSliderConfig.slides.length > 1"
-                    :src="localSliderConfig.slides[1].image"
-                    :alt="localSliderConfig.slides[1].title"
+                    v-if="sliderSlides.length > 1"
+                    :src="sliderSlides[1].image"
+                    :alt="sliderSlides[1].title"
                     class="w-full h-full object-cover"
                   />
                   <div v-else class="flex items-center justify-center h-full text-gray-400">
@@ -248,16 +248,16 @@
                     class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2"
                   >
                     <h4
-                      v-if="localSliderConfig.show_title && localSliderConfig.slides && localSliderConfig.slides[1] && localSliderConfig.slides[1].title"
+                      v-if="localSliderConfig.show_title && sliderSlides.length > 1 && sliderSlides[1].title"
                       class="text-white text-sm font-bold mb-1"
                     >
-                      {{ localSliderConfig.slides[1].title }}
+                      {{ sliderSlides[1].title }}
                     </h4>
                     <p
-                      v-if="localSliderConfig.show_description && localSliderConfig.slides && localSliderConfig.slides[1] && localSliderConfig.slides[1].description"
+                      v-if="localSliderConfig.show_description && sliderSlides.length > 1 && sliderSlides[1].description"
                       class="text-white/90 text-xs"
                     >
-                      {{ localSliderConfig.slides[1].description }}
+                      {{ sliderSlides[1].description }}
                     </p>
                   </div>
                 </div>
@@ -274,9 +274,9 @@
                   }"
                 >
                   <img
-                    v-if="localSliderConfig.slides && localSliderConfig.slides.length > 0"
-                    :src="localSliderConfig.slides[0].image"
-                    :alt="localSliderConfig.slides[0].title"
+                    v-if="sliderSlides.length > 0"
+                    :src="sliderSlides[0].image"
+                    :alt="sliderSlides[0].title"
                     class="w-full h-full object-cover"
                   />
                   <div v-else class="flex items-center justify-center h-full text-gray-400">
@@ -298,9 +298,9 @@
                   }"
                 >
                   <img
-                    v-if="localSliderConfig.slides && localSliderConfig.slides.length > 1"
-                    :src="localSliderConfig.slides[1].image"
-                    :alt="localSliderConfig.slides[1].title"
+                    v-if="sliderSlides.length > 1"
+                    :src="sliderSlides[1].image"
+                    :alt="sliderSlides[1].title"
                     class="w-full h-full object-cover"
                   />
                   <div v-else class="flex items-center justify-center h-full text-gray-400">
@@ -336,13 +336,13 @@
             </button>
           </div>
 
-          <div v-if="localSliderConfig.slides.length === 0" class="text-gray-400 text-center py-8">
+          <div v-if="sliderSlides.length === 0" class="text-gray-400 text-center py-8">
             چیزی برای نمایش وجود ندارد!
           </div>
 
           <div v-else class="flex flex-col gap-6">
             <div
-              v-for="(slide, idx) in localSliderConfig.slides"
+              v-for="(slide, idx) in sliderSlides"
               :key="idx"
               class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 w-full"
             >
@@ -385,11 +385,11 @@
 <script setup lang="ts">
 // Vue composables
 import { computed, ref } from 'vue'
-import type { SliderConfig } from '~/types/widget'
+import type { BannerConfig, SliderConfig } from '~/types/widget'
 
 // Props
 interface Props {
-  sliderConfig: SliderConfig
+  sliderConfig: BannerConfig | SliderConfig
   currentPreviewSlide: number
   openAddSliderModal: () => void
   editSlide: (index: number) => void
@@ -406,18 +406,28 @@ interface Props {
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
-  'update:sliderConfig': [value: SliderConfig]
+  'update:sliderConfig': [value: BannerConfig | SliderConfig]
 }>()
+
+// Helper function to check if config is SliderConfig
+function isSliderConfig(config: BannerConfig | SliderConfig): config is SliderConfig {
+  return 'slides' in config
+}
 
 // Proxy for sliderConfig to avoid mutating props
 const localSliderConfig = computed({
   get: () => new Proxy(props.sliderConfig, {
     set(obj, prop, value) {
-      emit('update:sliderConfig', { ...obj, [prop]: value })
+      emit('update:sliderConfig', { ...obj, [prop]: value } as BannerConfig | SliderConfig)
       return true
     }
-  }),
-  set: (val) => emit('update:sliderConfig', val)
+  }) as BannerConfig | SliderConfig,
+  set: (val) => emit('update:sliderConfig', val as BannerConfig | SliderConfig)
+})
+
+// Computed property for slides with type guard
+const sliderSlides = computed(() => {
+  return isSliderConfig(localSliderConfig.value) ? localSliderConfig.value.slides : []
 })
 
 // Tab state
@@ -432,7 +442,11 @@ defineExpose({
 const mobileSliderHeight = computed({
   get: () => localSliderConfig.value.mobile_height,
   set: val => {
-    localSliderConfig.value.mobile_height = val
+    if (isSliderConfig(localSliderConfig.value)) {
+      emit('update:sliderConfig', { ...localSliderConfig.value, mobile_height: val } as SliderConfig)
+    } else {
+      emit('update:sliderConfig', { ...localSliderConfig.value, mobile_height: val } as BannerConfig)
+    }
   }
 })
 </script>

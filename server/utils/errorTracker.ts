@@ -14,7 +14,7 @@ interface ErrorLog {
   url: string
   user_agent: string
   ip_address: string
-  context?: Record<string, any>
+  context?: Record<string, unknown>
   severity: 'low' | 'medium' | 'high' | 'critical'
   timestamp: Date
   resolved: boolean

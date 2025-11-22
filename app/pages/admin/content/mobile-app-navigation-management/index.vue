@@ -253,7 +253,7 @@ const deleteMobileAppNavigation = async (navigation: { id: number | string; name
 
   itemToDelete.value = navigation
   // استفاده از فیلدهای مختلف برای نام
-  const navigationName = navigation.name || navigation.title || navigation.label || 'این ناوبری'
+    const navigationName = navigation.name || (navigation as { title?: string }).title || (navigation as { label?: string }).label || 'این ناوبری'
   deleteMessage.value = `آیا مطمئن هستید که می‌خواهید ناوبری "${navigationName}" را حذف کنید؟`
 
 
@@ -337,13 +337,13 @@ const getNavigationItemStyle = (item: Record<string, unknown>) => {
     alignItems: 'center',
     gap: '8px',
     padding: '12px 16px',
-    backgroundColor: item.backgroundColor || '#f8f9fa',
+    backgroundColor: String(item.backgroundColor || '#f8f9fa'),
     borderRadius: '8px',
     marginBottom: '8px',
-    fontSize: item.fontSize || '14px',
-    color: item.color || '#333333',
-    fontWeight: item.fontWeight || 'normal'
-  }
+    fontSize: String(item.fontSize || '14px'),
+    color: String(item.color || '#333333'),
+    fontWeight: String(item.fontWeight || 'normal')
+  } as Record<string, string>
 }
 
 // Lifecycle

@@ -1,6 +1,6 @@
 import { defineEventHandler } from 'h3'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (_event) => {
   try {
     const config = useRuntimeConfig()
     const base = config.public.goApiBase
@@ -11,7 +11,6 @@ export default defineEventHandler(async (event) => {
       },
     })
     if (!response.ok) {
-      console.error('❌ خطا در دریافت لیست درگاه‌ها:', response.status, response.statusText)
       return {
         status: 'error',
         message: 'خطا در دریافت لیست درگاه‌ها',
@@ -25,8 +24,7 @@ export default defineEventHandler(async (event) => {
     const data = Array.isArray(json.data) ? json.data : (Array.isArray(json) ? json : [])
 
     // فیلتر کردن فقط درگاه‌های فعال
-    const activeGateways = data.filter((gateway: any) => gateway.is_active === true)
-    console.log('📊 درگاه‌های فعال:', activeGateways.length)
+    const activeGateways = data.filter((gateway: { is_active?: boolean }) => gateway.is_active === true)
 
     return {
       status: 'success',

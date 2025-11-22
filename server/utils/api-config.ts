@@ -27,8 +27,8 @@ const sanitizeBaseUrl = (raw?: string | null): string | undefined => {
     url.pathname = url.pathname.replace(/\/+$/, '')
     const normalized = url.toString().replace(/\/$/, '')
     return normalized
-  } catch (error: any) {
-    console.warn('⚠️ Ignoring invalid GO API base URL:', { raw, error: error?.message })
+  } catch (error: unknown) {
+    console.warn('⚠️ Ignoring invalid GO API base URL:', { raw, error: (error as { message?: string }).message })
     return undefined
   }
 }
@@ -51,7 +51,6 @@ export function getGoApiBaseUrl(): string {
     const sanitized = sanitizeBaseUrl(source.value)
     if (sanitized) {
       if (source.label === 'config.public.goApiBase') {
-        console.log('🔍 getGoApiBaseUrl - Using config.public.goApiBase:', sanitized)
       }
       return sanitized
     }

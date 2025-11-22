@@ -8,9 +8,6 @@ export default defineEventHandler(async (event) => {
   const orderId = getRouterParam(event, 'id')
   const body = await readBody(event)
 
-  console.log('Updating order status for ID:', orderId)
-  console.log('Update data:', body)
-  console.log('Go API Base:', config.public.goApiBase)
 
   if (!orderId) {
     throw createError({
@@ -28,7 +25,6 @@ export default defineEventHandler(async (event) => {
 
   try {
     const url = `${config.public.goApiBase}/api/admin/orders/${orderId}/status`
-    console.log('Proxying to URL:', url)
 
     // دریافت توکن احراز هویت
     const authToken = getCookie(event, 'access_token') || getCookie(event, 'auth-token')
@@ -41,7 +37,6 @@ export default defineEventHandler(async (event) => {
         ...(authToken && { 'Authorization': `Bearer ${authToken}` })
       }
     })
-    console.log('Go API response:', response)
 
     return response
   } catch (error) {

@@ -31,7 +31,7 @@
         </NuxtLink>
 
         <!-- زیرمنوی معمولی -->
-        <ul v-if="hasChildren(item) && !item.isMegaMenu" class="dropdown-menu" :class="{ 'is-open': openDropdownId === item.id }">
+        <ul v-if="hasChildren(item) && !item.isMegaMenu" class="dropdown-menu" :class="{ 'is-open': openDropdownId === (item.id as number | string | null) }">
           <li v-for="child in item.children" :key="child.id" class="dropdown-item">
             <NuxtLink
               :to="child.path"
@@ -62,7 +62,7 @@
         </ul>
 
         <!-- مگامنو -->
-        <div v-else-if="item.isMegaMenu && hasChildren(item)" class="mega-menu" :class="{ 'is-open': openDropdownId === item.id }" :style="{ width: item.megaWidth || '100%' }">
+        <div v-else-if="item.isMegaMenu && hasChildren(item)" class="mega-menu" :class="{ 'is-open': openDropdownId === (item.id as number | string | null) }" :style="{ width: item.megaWidth || '100%' }">
           <div class="mega-container" :style="{ gridTemplateColumns: `repeat(${item.megaColumns || 4}, 1fr)` }">
             <div v-for="child in item.children" :key="child.id" class="mega-column">
               <h3 v-if="child.title" class="mega-title">
@@ -105,7 +105,7 @@ const props = defineProps<{
 const route = useRoute()
 const { menus, fetchMenus, isLoading } = useMenuManagement()
 
-const openDropdownId = ref<number | null>(null)
+const openDropdownId = ref<number | string | null>(null)
 
 // پیدا کردن منوی مورد نظر
 const selectedMenu = computed(() => {
@@ -162,7 +162,7 @@ const isActive = (path: string) => {
 
 const openDropdown = (item: Record<string, unknown>) => {
   if (hasChildren(item)) {
-    openDropdownId.value = item.id as string
+    openDropdownId.value = (item.id as number | string) ?? null
   }
 }
 

@@ -1,12 +1,9 @@
 import { getDatabase } from '../_utils/database.js'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (_event) => {
   try {
-    console.log('Check all tables API called')
-    
     const db = await getDatabase()
-    console.log('Database connected')
-    
+
     // بررسی تمام جداول
     const allTables = await db.query(`
       SELECT table_name 
@@ -14,18 +11,17 @@ export default defineEventHandler(async (event) => {
       WHERE table_schema = 'public' 
       ORDER BY table_name
     `)
-    
-    console.log('All tables:', allTables)
-    
+
+
     // بررسی جداول مرتبط با محصولات و عکس‌ها
-    const productRelatedTables = allTables.filter(table => 
-      table.table_name.includes('product') || 
-      table.table_name.includes('image') || 
-      table.table_name.includes('media') || 
+    const productRelatedTables = allTables.filter(table =>
+      table.table_name.includes('product') ||
+      table.table_name.includes('image') ||
+      table.table_name.includes('media') ||
       table.table_name.includes('file') ||
       table.table_name.includes('attachment')
     )
-    
+
     // بررسی ساختار جداول مرتبط
     const tableStructures = {}
     for (const table of productRelatedTables) {
@@ -36,9 +32,9 @@ export default defineEventHandler(async (event) => {
           WHERE table_name = $1 
           ORDER BY ordinal_position
         `, [table.table_name])
-        
+
         tableStructures[table.table_name] = structure
-        
+
         // بررسی تعداد رکوردها
         const count = await db.query(`SELECT COUNT(*) as count FROM ${table.table_name}`)
         tableStructures[table.table_name + '_count'] = count[0]?.count
@@ -46,7 +42,7 @@ export default defineEventHandler(async (event) => {
         tableStructures[table.table_name + '_error'] = error.message
       }
     }
-    
+
     return {
       success: true,
       all_tables: allTables.map(t => t.table_name),
@@ -54,7 +50,7 @@ export default defineEventHandler(async (event) => {
       table_structures: tableStructures,
       message: 'All tables check completed'
     }
-    
+
   } catch (error) {
     console.error('Check all tables API error:', error)
     return {

@@ -69,8 +69,8 @@
                   </div>
                 </div>
                 <div class="mr-4">
-                  <div class="text-sm font-medium text-gray-900 font-mono">{{ giftCard.code }}</div>
-                  <div class="text-sm text-gray-500">{{ formatDate(giftCard.createdAt) }}</div>
+                  <div class="text-sm font-medium text-gray-900 font-mono">{{ String(giftCard.code || '') }}</div>
+                  <div class="text-sm text-gray-500">{{ formatDate(String(giftCard.createdAt || '')) }}</div>
                 </div>
               </div>
             </td>
@@ -87,11 +87,11 @@
             <!-- مبلغ -->
             <td class="px-6 py-4 whitespace-nowrap">
               <div>
-                <div class="text-sm font-medium text-gray-900">{{ formatAmount(giftCard.amount) }} تومان</div>
-                <div v-if="giftCard.remainingAmount !== giftCard.amount" class="text-sm text-gray-500">
-                  باقی‌مانده: {{ formatAmount(giftCard.remainingAmount) }} تومان
+                <div class="text-sm font-medium text-gray-900">{{ formatAmount(Number(giftCard.amount || 0)) }} تومان</div>
+                <div v-if="Number(giftCard.remainingAmount || 0) !== Number(giftCard.amount || 0)" class="text-sm text-gray-500">
+                  باقی‌مانده: {{ formatAmount(Number(giftCard.remainingAmount || 0)) }} تومان
                 </div>
-                <div v-if="giftCard.usageHistory && giftCard.usageHistory.length > 0" class="text-xs text-blue-600">
+                <div v-if="Array.isArray(giftCard.usageHistory) && giftCard.usageHistory.length > 0" class="text-xs text-blue-600">
                   {{ giftCard.usageHistory.length }} بار استفاده شده
                 </div>
               </div>
@@ -99,33 +99,33 @@
 
             <!-- وضعیت -->
             <td class="px-6 py-4 whitespace-nowrap">
-              <span :class="getStatusClasses(giftCard.status)" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
-                <span class="w-2 h-2 rounded-full ml-1" :class="getStatusDotClasses(giftCard.status)"></span>
-                {{ getStatusText(giftCard.status) }}
+              <span :class="getStatusClasses(String(giftCard.status || ''))" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
+                <span class="w-2 h-2 rounded-full ml-1" :class="getStatusDotClasses(String(giftCard.status || ''))"></span>
+                {{ getStatusText(String(giftCard.status || '')) }}
               </span>
-              <div v-if="giftCard.status === 'expired'" class="text-xs text-red-600 mt-1">
-                {{ getDaysUntilExpiry(giftCard.expiryDate) }} روز گذشته
+              <div v-if="String(giftCard.status || '') === 'expired'" class="text-xs text-red-600 mt-1">
+                {{ getDaysUntilExpiry(String(giftCard.expiryDate || '')) }} روز گذشته
               </div>
-              <div v-else-if="giftCard.status === 'active'" class="text-xs text-green-600 mt-1">
-                {{ getDaysUntilExpiry(giftCard.expiryDate) }} روز باقی‌مانده
+              <div v-else-if="String(giftCard.status || '') === 'active'" class="text-xs text-green-600 mt-1">
+                {{ getDaysUntilExpiry(String(giftCard.expiryDate || '')) }} روز باقی‌مانده
               </div>
             </td>
 
             <!-- نوع -->
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="flex items-center">
-                <span :class="getTypeClasses(giftCard.type)" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
-                  {{ getTypeText(giftCard.type) }}
+                <span :class="getTypeClasses(String(giftCard.type || ''))" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
+                  {{ getTypeText(String(giftCard.type || '')) }}
                 </span>
                 <div v-if="giftCard.category" class="mr-2">
-                  <span class="text-xs text-gray-500">{{ getCategoryText(giftCard.category) }}</span>
+                  <span class="text-xs text-gray-500">{{ getCategoryText(String(giftCard.category || '')) }}</span>
                 </div>
               </div>
             </td>
 
             <!-- تاریخ انقضا -->
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              {{ formatDate(giftCard.expiryDate) }}
+              {{ formatDate(String(giftCard.expiryDate || '')) }}
             </td>
 
             <!-- عملیات -->
@@ -339,9 +339,9 @@ const filteredGiftCards = computed(() => {
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
     filtered = filtered.filter(card => 
-      card.code.toLowerCase().includes(query) ||
-      (card.recipientName || card.recipient || '').toLowerCase().includes(query) ||
-      card.recipientEmail.toLowerCase().includes(query)
+      String(card.code || '').toLowerCase().includes(query) ||
+      String(card.recipientName || card.recipient || '').toLowerCase().includes(query) ||
+      String(card.recipientEmail || '').toLowerCase().includes(query)
     )
   }
 
@@ -372,8 +372,8 @@ const sortedGiftCards = computed(() => {
 
     // تبدیل تاریخ‌ها
     if (sortField.value === 'createdAt' || sortField.value === 'expiryDate') {
-      aValue = new Date(aValue).getTime()
-      bValue = new Date(bValue).getTime()
+      aValue = new Date(String(aValue || '')).getTime()
+      bValue = new Date(String(bValue || '')).getTime()
     }
 
     // تبدیل اعداد
@@ -520,13 +520,6 @@ const copyCode = async (code: string) => {
   } catch (err) {
     console.error('خطا در کپی کردن کد:', err)
   }
-}
-
-interface GiftCard {
-  id?: number | string
-  code?: string
-  status?: string
-  [key: string]: unknown
 }
 
 const resendGiftCard = async (giftCard: GiftCard) => {

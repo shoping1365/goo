@@ -18,11 +18,11 @@ export default defineEventHandler(async (event) => {
                          'Content-Type': 'application/json'
                     }
                })
-          } catch (error: any) {
+          } catch (error: unknown) {
                console.error('خطا در دریافت ویجت‌های صفحه:', error)
                throw createError({
-                    statusCode: error.statusCode || 500,
-                    message: error.statusMessage || 'خطا در دریافت ویجت‌های صفحه'
+                    statusCode: (error as { statusCode?: number }).statusCode || 500,
+                    message: (error as { statusMessage?: string }).statusMessage || 'خطا در دریافت ویجت‌های صفحه'
                })
           }
      })

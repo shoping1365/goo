@@ -575,7 +575,12 @@ interface TaxExemption {
 // ویرایش معافیت
 const editExemption = (exemption: TaxExemption) => {
   editingExemption.value = exemption
-  exemptionForm.value = { ...exemption }
+  exemptionForm.value = {
+    type: String(exemption.type || ''),
+    category: String(exemption.category || ''),
+    percentage: Number(exemption.percentage || 0),
+    conditions: String(exemption.conditions || '')
+  }
   showAddExemptionModal.value = true
 }
 

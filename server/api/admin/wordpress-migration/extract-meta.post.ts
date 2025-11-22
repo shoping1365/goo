@@ -85,7 +85,7 @@ export default defineEventHandler(async (event) => {
       message: 'استخراج متادیتا با موفقیت انجام شد',
       data: metaData
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در استخراج متادیتا:', error)
     
     if (error.statusCode) {
@@ -94,7 +94,7 @@ export default defineEventHandler(async (event) => {
 
     throw createError({
       statusCode: 500,
-      message: error.message || 'خطا در استخراج متادیتا'
+      message: (error as { message?: string }).message || 'خطا در استخراج متادیتا'
     })
   }
 })

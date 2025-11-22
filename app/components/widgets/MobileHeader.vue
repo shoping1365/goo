@@ -91,7 +91,23 @@ const getHeaderType = (header: Header) => {
 onMounted(async () => {
   try {
     await loadMobileHeaders()
-    activeMobileHeader.value = getActiveMobileHeader.value
+    const header = getActiveMobileHeader.value
+    if (header) {
+      const headerRecord = header as unknown as Record<string, unknown>
+      activeMobileHeader.value = {
+        id: headerRecord.id as number | undefined,
+        name: headerRecord.name as string | undefined,
+        type: headerRecord.type as string | undefined,
+        is_active: headerRecord.is_active as boolean | undefined,
+        page_selection: headerRecord.page_selection as 'all' | 'specific' | 'exclude' | undefined,
+        specific_pages: headerRecord.specific_pages as string | undefined,
+        excluded_pages: headerRecord.excluded_pages as string | undefined,
+        description: headerRecord.description as string | undefined,
+        ...headerRecord
+      } as Header
+    } else {
+      activeMobileHeader.value = null
+    }
   } catch (error) {
     console.error('خطا در بارگذاری هدرهای موبایل:', error)
   }
@@ -99,7 +115,22 @@ onMounted(async () => {
 
 // نظارت بر تغییرات هدر فعال
 watch(getActiveMobileHeader, (newHeader) => {
-  activeMobileHeader.value = newHeader
+  if (newHeader) {
+    const headerRecord = newHeader as unknown as Record<string, unknown>
+    activeMobileHeader.value = {
+      id: headerRecord.id as number | undefined,
+      name: headerRecord.name as string | undefined,
+      type: headerRecord.type as string | undefined,
+      is_active: headerRecord.is_active as boolean | undefined,
+      page_selection: headerRecord.page_selection as 'all' | 'specific' | 'exclude' | undefined,
+      specific_pages: headerRecord.specific_pages as string | undefined,
+      excluded_pages: headerRecord.excluded_pages as string | undefined,
+      description: headerRecord.description as string | undefined,
+      ...headerRecord
+    } as Header
+  } else {
+    activeMobileHeader.value = null
+  }
 }, { immediate: true })
 
 // نظارت بر تغییرات state میدلور

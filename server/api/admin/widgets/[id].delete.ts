@@ -12,11 +12,11 @@ export default defineEventHandler(async (event) => {
           return proxy(event, `${base}/api/admin/widgets/${id}`, {
                method: 'DELETE'
           })
-     } catch (error: any) {
+     } catch (error: unknown) {
           console.error('خطا در حذف ویجت:', error)
           throw createError({
-               statusCode: error.statusCode || 500,
-               message: error.message || error.statusMessage || 'خطا در حذف ویجت'
+               statusCode: (error as { statusCode?: number }).statusCode || 500,
+               message: (error as { message?: string; statusMessage?: string }).message || (error as { message?: string; statusMessage?: string }).statusMessage || 'خطا در حذف ویجت'
           })
      }
 })

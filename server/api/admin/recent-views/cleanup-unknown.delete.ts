@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
     return await fetchGo(event, '/api/admin/recent-views/cleanup-unknown', {
       method: 'DELETE'
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در پاک کردن بازدیدهای قدیمی:', error)
     throw createError({
       statusCode: error?.statusCode || 500,

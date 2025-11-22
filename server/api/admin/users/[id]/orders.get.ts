@@ -22,7 +22,7 @@ interface OrderRow {
   name: string | null
   email: string | null
   last_login_ip: string | null
-  profile_data: any | null
+  profile_data: { national_code?: string; nationalCode?: string } | null
 }
 
 interface CountRow {
@@ -101,7 +101,6 @@ export default defineEventHandler(async (event) => {
       LIMIT $2 OFFSET $3
     `, [userId, limitNum, offset]) as unknown as OrderRow[]
 
-    console.log('Raw database result:', JSON.stringify(result, null, 2));
 
     const orders = result.map((row) => {
       // استخراج کد ملی از profile_data
@@ -131,7 +130,6 @@ export default defineEventHandler(async (event) => {
         userNationalCode: nationalCode,
       };
 
-      console.log('Mapped order data:', JSON.stringify(orderData, null, 2));
       return orderData;
     })
 

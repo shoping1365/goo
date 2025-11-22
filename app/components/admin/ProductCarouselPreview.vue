@@ -181,14 +181,18 @@ const fetchProducts = async () => {
     if (response && typeof response === 'object' && 'data' in response) {
       const data = (response as ProductResponse).data
       if (data && Array.isArray(data.products)) {
-        products.value = data.products
+        products.value = (data.products as unknown[]).filter((p): p is Product => 
+          p !== null && typeof p === 'object' && 'id' in p && 'name' in p && 'price' in p
+        ) as Product[]
       } else if (Array.isArray(data)) {
-        products.value = data
+        products.value = (data as unknown[]).filter((p): p is Product => 
+          p !== null && typeof p === 'object' && 'id' in p && 'name' in p && 'price' in p
+        ) as Product[]
       } else {
         products.value = []
       }
     } else if (Array.isArray(response)) {
-      products.value = response
+      products.value = response as Product[]
     } else {
       products.value = []
     }

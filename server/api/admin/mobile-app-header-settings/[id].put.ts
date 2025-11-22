@@ -18,7 +18,7 @@ export default defineEventHandler(async (event): Promise<MobileAppHeaderUpdateRe
                if (raw && typeof raw === 'string') {
                     try {
                          body = JSON.parse(raw)
-                    } catch (parseErr) {
+                    } catch (_parseErr) {
                          // console.error('❌ خطا در parse بدنه به‌روزرسانی هدر موبایل:', parseErr, raw)
                          throw createError({ statusCode: 400, message: 'به‌روزرسانی هدر موبایل: بدنه نامعتبر است' })
                     }
@@ -41,7 +41,7 @@ export default defineEventHandler(async (event): Promise<MobileAppHeaderUpdateRe
                     body
                })
           } catch (fetchErr: unknown) {
-               const err = fetchErr as Record<string, any>
+               const err = fetchErr as { statusCode?: number; status?: number; message?: string; data?: { message?: string; error?: string }; response?: { status?: number; _data?: unknown } }
                // console.error('❌ fetchGo به‌روزرسانی هدر موبایل شکست خورد:', {
                //      statusCode: err?.statusCode,
                //      status: err?.status,
@@ -82,7 +82,7 @@ export default defineEventHandler(async (event): Promise<MobileAppHeaderUpdateRe
 
           // console.error('خطا در به‌روزرسانی هدر موبایل:', error)
 
-          if ((error as any)?.data) {
+          if ((error as { data?: { message?: string; error?: string } })?.data) {
                const e = error as { statusCode?: number; data: { message?: string; error?: string } }
                throw createError({
                     statusCode: e?.statusCode || 500,

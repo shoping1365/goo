@@ -146,8 +146,8 @@
                 class="form-field form-field--full"
               >
                 <label>تصویر</label>
-                <div v-if="currentItems[activeIndex].imageUrl" class="selected-image-preview">
-                  <img :src="currentItems[activeIndex].imageUrl" alt="تصویر انتخاب‌شده" />
+                <div v-if="(currentItems[activeIndex] as FooterItem).imageUrl" class="selected-image-preview">
+                  <img :src="String((currentItems[activeIndex] as FooterItem).imageUrl || '')" alt="تصویر انتخاب‌شده" />
                   <button class="btn btn-sm btn-outline" @click="removeSelectedImage">حذف تصویر</button>
                 </div>
                 <button v-else class="btn btn-sm btn-primary" @click="openMediaLibrary">انتخاب تصویر</button>
@@ -163,10 +163,11 @@
                     <Suspense>
                       <template #default>
                         <RichTextEditor
-                          v-model="currentItems[activeIndex].props.text"
+                          :model-value="String((currentItems[activeIndex] as FooterItem).props?.text || '')"
                           :height="220"
                           lang="fa"
                           direction="rtl"
+                          @update:model-value="(val: string) => { if ((currentItems[activeIndex] as FooterItem).props) (currentItems[activeIndex] as FooterItem).props!.text = val }"
                         />
                       </template>
                       <template #fallback>
@@ -176,10 +177,11 @@
                   </template>
                   <template #fallback>
                     <textarea
-                      v-model="currentItems[activeIndex].props.text"
+                      :value="String((currentItems[activeIndex] as FooterItem).props?.text || '')"
                       class="form-control"
                       rows="5"
                       placeholder="© 2025 شرکت شما. تمامی حقوق محفوظ است."
+                      @input="(e) => { if ((currentItems[activeIndex] as FooterItem).props) (currentItems[activeIndex] as FooterItem).props!.text = (e.target as HTMLTextAreaElement).value }"
                     ></textarea>
                   </template>
                 </ClientOnly>

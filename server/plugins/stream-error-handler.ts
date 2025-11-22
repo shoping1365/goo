@@ -17,7 +17,7 @@ const streamErrorMessages = [
   'ECONNRESET'
 ]
 
-console.warn = function(...args: any[]) {
+console.warn = function(...args: unknown[]) {
   const message = args.join(' ')
   if (streamErrorMessages.some(msg => message.includes(msg))) {
     // خاموش کردن کامل این خطاها
@@ -26,7 +26,7 @@ console.warn = function(...args: any[]) {
   originalConsoleWarn.apply(console, args)
 }
 
-console.error = function(...args: any[]) {
+console.error = function(...args: unknown[]) {
   const message = args.join(' ')
   if (streamErrorMessages.some(msg => message.includes(msg))) {
     // خاموش کردن کامل این خطاها
@@ -37,9 +37,10 @@ console.error = function(...args: any[]) {
 
 export default defineNitroPlugin((nitroApp) => {
   // مدیریت خطاهای unhandled در سطح سرور
-  nitroApp.hooks.hook('error', (error) => {
+  nitroApp.hooks.hook('error', (error: unknown) => {
     // بررسی خطاهای مربوط به stream
-    if (streamErrorMessages.some(msg => error.message?.includes(msg))) {
+    const errorMessage = (error as { message?: string }).message || ''
+    if (streamErrorMessages.some(msg => errorMessage.includes(msg))) {
       // خاموش کردن کامل - هیچ لاگی نزن
       return
     }

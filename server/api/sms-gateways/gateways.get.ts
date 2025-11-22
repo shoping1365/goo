@@ -1,6 +1,6 @@
 import { defineEventHandler } from 'h3'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (_event) => {
      const config = useRuntimeConfig()
      const base = config.public.goApiBase
      try {
@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
           })
           const json = await response.json()
           return json
-     } catch (error: any) {
+     } catch (error: unknown) {
           return { status: 'error', message: 'خطا در دریافت لیست درگاه‌ها', error: error?.message || error }
      }
 })

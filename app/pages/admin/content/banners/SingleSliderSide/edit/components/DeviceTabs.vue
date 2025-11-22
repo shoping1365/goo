@@ -43,7 +43,7 @@
           <div class="flex items-center gap-2 border-2 border-blue-200 rounded-lg p-1 bg-blue-50">
             <input
               id="easyLoadMobile"
-              v-model="localSliderConfig.easy_load_enabled"
+              v-model="easyLoadEnabled"
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-blue-100 border-blue-300 rounded focus:ring-blue-500 focus:ring-2"
             />
@@ -56,7 +56,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ بالا (px)</label>
             <input
-              v-model="localSliderConfig.padding_top"
+              v-model.number="paddingTop"
               type="number"
               min="0"
               max="100"
@@ -69,7 +69,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ پایین (px)</label>
             <input
-              v-model="localSliderConfig.padding_bottom"
+              v-model.number="paddingBottom"
               type="number"
               min="0"
               max="100"
@@ -82,7 +82,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین راست (px)</label>
             <input
-              v-model="localSliderConfig.margin_right"
+              v-model.number="marginRight"
               type="number"
               min="0"
               max="100"
@@ -95,7 +95,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین چپ (px)</label>
             <input
-              v-model="localSliderConfig.margin_left"
+              v-model.number="marginLeft"
               type="number"
               min="0"
               max="100"
@@ -260,9 +260,9 @@
                   </div>
                   
                   <!-- نقطه‌های ناوبری - کوچکتر برای موبایل -->
-                  <div v-if="props.sliderConfig.show_pagination" class="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1.5">
+                  <div v-if="(props.sliderConfig as SliderConfig).show_pagination" class="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1.5">
                     <div 
-                      v-for="(slide, index) in props.sliderConfig.slides" 
+                      v-for="(slide, index) in (props.sliderConfig as SliderConfig).slides" 
                       :key="index"
                       class="w-2.5 h-2.5 rounded-full transition-colors"
                       :class="index === props.currentPreviewSlide ? 'bg-white' : 'bg-white/50'"
@@ -303,25 +303,25 @@
             </button>
           </div>
 
-          <div v-if="props.sliderConfig.slides.length === 0" class="text-gray-400 text-center py-8">
+          <div v-if="!(props.sliderConfig as SliderConfig).slides || (props.sliderConfig as SliderConfig).slides.length === 0" class="text-gray-400 text-center py-8">
             چیزی برای نمایش وجود ندارد!
           </div>
 
           <div v-else class="flex flex-col gap-6">
             <div
-              v-for="(slide, idx) in props.sliderConfig.slides"
+              v-for="(slide, idx) in (props.sliderConfig as SliderConfig).slides"
               :key="idx"
               class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 w-full"
             >
               <img
-                :src="slide.image"
+                :src="(slide as { image?: string }).image || ''"
                 alt="اسلایدر"
                 class="w-28 h-20 object-cover rounded border-2 border-purple-200"
               />
               <div class="flex flex-col flex-1">
-                <div class="font-bold text-sm text-gray-700 mb-1">{{ slide.title }}</div>
-                <div v-if="slide.description" class="text-xs text-gray-600 mb-1">{{ slide.description }}</div>
-                <div v-if="slide.link" class="text-xs text-blue-600 break-all">{{ slide.link }}</div>
+                <div class="font-bold text-sm text-gray-700 mb-1">{{ (slide as { title?: string }).title }}</div>
+                <div v-if="(slide as { description?: string }).description" class="text-xs text-gray-600 mb-1">{{ (slide as { description?: string }).description }}</div>
+                <div v-if="(slide as { link?: string }).link" class="text-xs text-blue-600 break-all">{{ (slide as { link?: string }).link }}</div>
               </div>
               <div class="flex gap-2">
                 <button
@@ -413,6 +413,31 @@ const mobileSliderWidth = computed({
 const mobileSliderHeight = computed({
   get: () => props.sliderConfig?.mobile_height ?? 150,
   set: (val: number | string) => updateConfig('mobile_height', val)
+})
+
+const easyLoadEnabled = computed({
+  get: () => props.sliderConfig?.easy_load_enabled ?? false,
+  set: (val: boolean) => updateConfig('easy_load_enabled', val)
+})
+
+const paddingTop = computed({
+  get: () => props.sliderConfig?.padding_top ?? 0,
+  set: (val: number) => updateConfig('padding_top', val)
+})
+
+const paddingBottom = computed({
+  get: () => props.sliderConfig?.padding_bottom ?? 0,
+  set: (val: number) => updateConfig('padding_bottom', val)
+})
+
+const marginRight = computed({
+  get: () => props.sliderConfig?.margin_right ?? 0,
+  set: (val: number) => updateConfig('margin_right', val)
+})
+
+const marginLeft = computed({
+  get: () => props.sliderConfig?.margin_left ?? 0,
+  set: (val: number) => updateConfig('margin_left', val)
 })
 
 // Tab state

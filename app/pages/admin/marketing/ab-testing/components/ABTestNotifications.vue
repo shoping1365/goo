@@ -68,8 +68,21 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+
+// تعریف نوع هشدار برای آرایه alerts
+interface AlertItem {
+  id: number
+  type: 'warning' | 'success' | 'error' | 'info'
+  title: string
+  message: string
+  action: {
+    text: string
+    handler: () => void
+  }
+}
+
 // State
-const alerts = ref([
+const alerts = ref<AlertItem[]>([
   {
     id: 1,
     type: 'warning',
@@ -199,12 +212,16 @@ const removeNotification = (id: number) => {
 }
 
 interface AlertAction {
-  handler?: () => void
+  text: string
+  handler: () => void
   [key: string]: unknown
 }
 
 interface Alert {
   id?: number | string
+  type?: 'warning' | 'success' | 'error' | 'info'
+  title?: string
+  message?: string
   action?: AlertAction
   [key: string]: unknown
 }
@@ -215,43 +232,60 @@ interface Notification {
 }
 
 // اجرای عملیات هشدار
-const handleAlertAction = (alert: Alert) => {
+const handleAlertAction = (alert: AlertItem) => {
   if (alert.action && alert.action.handler) {
     alert.action.handler()
   }
   if (alert.id) {
-    removeAlert(alert.id)
+    removeAlert(Number(alert.id))
   }
 }
 
 // اضافه کردن هشدار جدید
 const addAlert = (alert: Alert) => {
-  const newAlert = {
-    id: Date.now(),
-    ...alert
+  const alertType = alert.type && ['warning', 'success', 'error', 'info'].includes(alert.type) 
+    ? alert.type as 'warning' | 'success' | 'error' | 'info'
+    : 'info' as const
+  
+  const newAlert: AlertItem = {
+    id: Number(Date.now()),
+    type: alertType,
+    title: String(alert.title || ''),
+    message: String(alert.message || ''),
+    action: alert.action && typeof alert.action === 'object' && 'text' in alert.action && 'handler' in alert.action
+      ? {
+          text: String(alert.action.text),
+          handler: typeof alert.action.handler === 'function' ? alert.action.handler : () => {}
+        }
+      : {
+          text: '',
+          handler: () => {}
+        }
   }
   alerts.value.unshift(newAlert)
   
   // حذف خودکار بعد از 10 ثانیه
   setTimeout(() => {
     if (newAlert.id) {
-      removeAlert(newAlert.id)
+      removeAlert(Number(newAlert.id))
     }
   }, 10000)
 }
 
 // اضافه کردن اعلان جدید
 const addNotification = (notification: Notification) => {
-  const newNotification = {
-    id: Date.now(),
+  const newNotification: { id: number; type: string; title: string; message: string; timestamp: Date; [key: string]: unknown } = {
+    id: Number(Date.now()),
     timestamp: new Date(),
-    ...notification
+    type: String(notification.type || 'info'),
+    title: String(notification.title || ''),
+    message: String(notification.message || '')
   }
   notifications.value.unshift(newNotification)
   
   // حذف خودکار بعد از 5 ثانیه
   setTimeout(() => {
-    removeNotification(newNotification.id)
+    removeNotification(Number(newNotification.id))
   }, 5000)
 }
 

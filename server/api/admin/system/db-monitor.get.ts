@@ -10,10 +10,10 @@ export default defineEventHandler(async (event) => {
     })
     // انتظار داریم پاسخ شامل activeQueries و slowQueries باشد
     return {
-      activeQueries: (data as any)?.activeQueries || [],
-      slowQueries: (data as any)?.slowQueries || []
+      activeQueries: (data as { activeQueries?: unknown[]; slowQueries?: unknown[] })?.activeQueries || [],
+      slowQueries: (data as { activeQueries?: unknown[]; slowQueries?: unknown[] })?.slowQueries || []
     }
-  } catch (err) {
+  } catch (_err) {
     return { activeQueries: [], slowQueries: [] }
   }
 })

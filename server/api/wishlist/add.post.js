@@ -1,7 +1,7 @@
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event)
-    
+
     if (!body.product_id) {
       throw createError({
         statusCode: 400,
@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const userId = event.context?.user?.id
-    
+
     if (!userId) {
       throw createError({
         statusCode: 401,
@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
 
     // دریافت یا ایجاد wishlist برای کاربر (لیست پیش‌فرض)
     let wishlist = await db.query('SELECT id FROM user_collections WHERE user_id = $1 AND is_default = true', [userId])
-    
+
     if (!wishlist || wishlist.length === 0) {
       // ایجاد wishlist جدید
       const newWishlist = await db.query(
@@ -65,7 +65,6 @@ export default defineEventHandler(async (event) => {
       [wishlistId, body.product_id]
     )
 
-    console.log(`محصول ${body.product_id} به علاقه‌مندی‌های کاربر ${userId} اضافه شد`)
 
     return {
       success: true,
@@ -75,7 +74,7 @@ export default defineEventHandler(async (event) => {
 
   } catch (error) {
     console.error('خطا در افزودن به علاقه‌مندی‌ها:', error)
-    
+
     throw createError({
       statusCode: error?.statusCode || 500,
       message: error?.statusMessage || 'خطا در افزودن به علاقه‌مندی‌ها'

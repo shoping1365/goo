@@ -253,6 +253,7 @@ interface UploadItem {
   category?: string
   compressed_size?: number | null
   serverId?: number | null
+  [key: string]: unknown
 }
 
 interface RecentFile {

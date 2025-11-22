@@ -5,10 +5,12 @@ export interface User {
   id: string
   mobile: string
   username?: string
+  name?: string
   role_id?: string | number
   role?: string
   permissions?: string[]
   created_at?: string
+  [key: string]: unknown
 }
 
 export interface AuthState {

@@ -415,6 +415,7 @@ const activeTab = ref('api')
 const showWebhookForm = ref(false)
 interface Webhook {
   id?: number | string
+  name?: string
   [key: string]: unknown
 }
 const editingWebhook = ref<Webhook | null>(null)
@@ -612,12 +613,6 @@ const createNewApiKey = () => {
     lastUsed: null
   }
   apiKeys.value.unshift(newKey)
-}
-
-interface Webhook {
-  id?: number | string
-  name?: string
-  [key: string]: unknown
 }
 
 const editWebhook = (webhook: Webhook) => {

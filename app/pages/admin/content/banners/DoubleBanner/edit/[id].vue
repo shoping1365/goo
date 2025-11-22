@@ -991,9 +991,9 @@ const saveWidget = async () => {
     const widgetData = {
       title: formData.value.title,
       description: formData.value.description,
-      type: formData.value.type,
-      status: formData.value.status,
-      page: formData.value.page,
+      type: formData.value.type as import('~/types/widget').WidgetType,
+      status: formData.value.status as import('~/types/widget').WidgetStatus,
+      page: formData.value.page as import('~/types/widget').WidgetPage,
       show_on_mobile: formData.value.show_on_mobile,
       config: bannerConfig.value
     }

@@ -422,11 +422,11 @@
                 <div class="flex items-center">
                   <div class="flex-shrink-0 h-8 w-8">
                     <div class="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center">
-                      <span class="text-sm font-medium text-gray-700">{{ user.name?.charAt(0) || '?' }}</span>
+                      <span class="text-sm font-medium text-gray-700">{{ ((user as { name?: string }).name?.charAt(0)) || '?' }}</span>
                     </div>
                   </div>
                   <div class="mr-3">
-                    <div class="text-sm font-medium text-gray-900">{{ user.name || 'نامشخص' }}</div>
+                    <div class="text-sm font-medium text-gray-900">{{ (user as { name?: string }).name || 'نامشخص' }}</div>
                     <div class="text-sm text-gray-500">{{ user.ip || 'نامشخص' }}</div>
                   </div>
                 </div>

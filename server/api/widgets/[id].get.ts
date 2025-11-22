@@ -1,4 +1,4 @@
-import { defineEventHandler, getRouterParam, createError, getCookie } from 'h3'
+import { createError, defineEventHandler, getCookie, getRouterParam } from 'h3'
 import { requireAuth } from '~/server/utils/requireAuth'
 
 export default defineEventHandler(async (event) => {
@@ -29,13 +29,13 @@ export default defineEventHandler(async (event) => {
     }).then(res => res.json())
 
     return response
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در دریافت ویجت:', error)
 
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.message || error.statusMessage || 'خطا در دریافت ویجت',
-      data: error.data || error.message
+      statusCode: (error as { statusCode?: number }).statusCode || 500,
+      message: (error as { message?: string; statusMessage?: string }).message || (error as { message?: string; statusMessage?: string }).statusMessage || 'خطا در دریافت ویجت',
+      data: (error as { data?: unknown; message?: string }).data || (error as { data?: unknown; message?: string }).message
     })
   }
 })

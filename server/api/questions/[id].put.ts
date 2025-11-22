@@ -1,11 +1,11 @@
-import { defineEventHandler, getRouterParam, readBody, createError } from 'h3'
+import { createError, defineEventHandler, getRouterParam, readBody } from 'h3'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const baseURL = config.public.goApiBase
 
   const id = getRouterParam(event, 'id')
-  
+
   if (!id) {
     throw createError({
       statusCode: 400,
@@ -14,10 +14,10 @@ export default defineEventHandler(async (event) => {
   }
 
   const body = await readBody(event)
-  
+
   try {
     // نگاشت فیلدها برای سازگاری با بک‌اند Go
-    const updatePayload: Record<string, any> = {}
+    const updatePayload: Record<string, unknown> = {}
     if (typeof body.answer !== 'undefined') updatePayload.admin_reply = body.answer
     if (typeof body.status !== 'undefined') updatePayload.status = body.status
     // دسته‌بندی: هم کلید متنی (category) و هم شناسه (category_id) در صورت ارسال پشتیبانی شود

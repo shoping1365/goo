@@ -142,11 +142,12 @@
             <textarea
               v-else-if="field.type === 'textarea'"
               :id="field.id"
-              v-model="formData[field.id]"
+              :value="String(formData[field.id] ?? '')"
               :placeholder="field.placeholder"
               :required="field.required"
               :rows="field.rows || 3"
               class="w-full px-3 py-2 bg-white bg-opacity-20 border border-white border-opacity-30 rounded-lg text-white placeholder-white placeholder-opacity-60 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 focus:border-white transition-all duration-200 resize-none"
+              @input="formData[field.id] = ($event.target as HTMLTextAreaElement).value"
             ></textarea>
             
             <!-- فیلد select -->

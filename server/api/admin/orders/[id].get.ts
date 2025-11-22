@@ -8,8 +8,6 @@ export default defineEventHandler(async (event: H3Event) => {
   const config = useRuntimeConfig()
   const orderId = getRouterParam(event, 'id')
 
-  console.log('Fetching order details for ID:', orderId)
-  console.log('Go API Base:', config.public.goApiBase)
 
   if (!orderId) {
     throw createError({
@@ -20,7 +18,6 @@ export default defineEventHandler(async (event: H3Event) => {
 
   try {
     const url = `${config.public.goApiBase}/api/admin/orders/${orderId}`
-    console.log('Proxying to URL:', url)
 
     // دریافت توکن احراز هویت
     const authToken = getCookie(event, 'access_token') || getCookie(event, 'auth-token')
@@ -32,7 +29,6 @@ export default defineEventHandler(async (event: H3Event) => {
         ...(authToken && { 'Authorization': `Bearer ${authToken}` })
       }
     })
-    console.log('Go API response:', response)
 
     return response
   } catch (error: unknown) {

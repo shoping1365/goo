@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
       body: { q, limit }
     }) as { status: string; data: unknown[] }
     return res
-  } catch (e) {
+  } catch (_e) {
     // Fallback: return minimal stub to keep UI functional
     return {
       status: 'success',

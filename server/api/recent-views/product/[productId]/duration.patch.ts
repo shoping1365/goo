@@ -1,4 +1,4 @@
-import { defineEventHandler, getRouterParam, readBody, createError } from 'h3'
+import { createError, defineEventHandler, getRouterParam, readBody } from 'h3'
 
 export default defineEventHandler(async (event) => {
   // دریافت شناسه محصول از مسیر
@@ -45,11 +45,12 @@ export default defineEventHandler(async (event) => {
       method: 'PATCH',
       body: { duration }
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در بروزرسانی مدت زمان بازدید:', error)
+    const err = error as { statusCode?: number; statusMessage?: string }
     throw createError({
-      statusCode: error?.statusCode || 500,
-      message: error?.statusMessage || 'خطا در بروزرسانی مدت زمان بازدید'
+      statusCode: err.statusCode || 500,
+      message: err.statusMessage || 'خطا در بروزرسانی مدت زمان بازدید'
     })
   }
 })

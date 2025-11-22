@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     // تلاش مستقیم برای دریافت از بک‌اند با پیش‌نمایش
     const bySlug = await $fetch(`${base}/api/product-categories/slug/${slug}${previewParam}`)
     return bySlug
-  } catch (e) {
+  } catch (_e) {
     // بازگشت به لیست کامل در صورت نبود مسیر بالا
     const categories = await $fetch(`${base}/api/product-categories?all=1`)
     const list = Array.isArray(categories) ? categories : (categories.data || [])

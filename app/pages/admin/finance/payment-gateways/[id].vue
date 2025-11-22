@@ -39,7 +39,7 @@
         <GatewayForm 
           :gateway="gateway"
           mode="edit"
-          @save="handleSave"
+          @save="handleSave as (data: GatewayFormData) => Promise<void>"
           @cancel="router.push('/admin/finance/payment-gateways')"
         />
       </div>
@@ -118,9 +118,8 @@ const loadGateway = async () => {
     
     // استفاده از $fetch ساده و سریع
     interface GatewayResponse {
-      id?: number | string
-      name?: string
-      type?: string
+      status?: string
+      data?: Gateway
       [key: string]: unknown
     }
     const response = await $fetch<GatewayResponse>(apiUrl, {
@@ -128,7 +127,7 @@ const loadGateway = async () => {
     })
     
     if (response.status === 'success' && response.data) {
-      gateway.value = response.data
+      gateway.value = response.data as Gateway
     } else {
       error.value = 'درگاه پرداخت یافت نشد'
     }
@@ -140,17 +139,21 @@ const loadGateway = async () => {
   }
 }
 
+interface GatewayFormData {
+  [key: string]: unknown
+}
+
 // تابع ذخیره تغییرات
-const handleSave = async (updatedGateway: Gateway) => {
+const handleSave = async (data: GatewayFormData) => {
   try {
     const apiUrl = `/api/payment-gateways/${gatewayId}`
 
-    const response = await $fetch(apiUrl, {
+    const response = await $fetch<{ status?: string; [key: string]: unknown }>(apiUrl, {
       method: 'PUT',
-      body: updatedGateway
+      body: data
     })
     
-    if (response.status === 'success') {
+      if (response.status === 'success') {
       showToast('success', 'موفقیت', 'درگاه پرداخت با موفقیت بروزرسانی شد')
       setTimeout(() => {
         router.push('/admin/finance/payment-gateways')

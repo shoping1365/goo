@@ -116,18 +116,18 @@ class="w-full bg-gradient-to-t from-blue-500 to-indigo-500 rounded-t transition-
             <tr v-for="change in balanceChanges" :key="change.id" class="hover:bg-gray-50">
               <td class="px-4 py-3 text-gray-900 whitespace-nowrap">{{ change.date }}</td>
               <td class="px-4 py-3">
-                <span :class="getChangeTypeClass(change.type)" class="px-2 py-1 text-xs rounded-full whitespace-nowrap">
+                <span :class="getChangeTypeClass(String(change.type || ''))" class="px-2 py-1 text-xs rounded-full whitespace-nowrap">
                   {{ change.type }}
                 </span>
               </td>
-              <td class="px-4 py-3 font-medium whitespace-nowrap" :class="change.amount > 0 ? 'text-green-600' : 'text-red-600'">
-                {{ change.amount > 0 ? '+' : '' }}{{ formatCurrency(change.amount) }}
+              <td class="px-4 py-3 font-medium whitespace-nowrap" :class="Number(change.amount || 0) > 0 ? 'text-green-600' : 'text-red-600'">
+                {{ Number(change.amount || 0) > 0 ? '+' : '' }}{{ formatCurrency(Number(change.amount || 0)) }}
               </td>
-              <td class="px-4 py-3 text-gray-600 whitespace-nowrap">{{ formatCurrency(change.balanceBefore) }}</td>
-              <td class="px-4 py-3 text-gray-900 font-medium whitespace-nowrap">{{ formatCurrency(change.balanceAfter) }}</td>
+              <td class="px-4 py-3 text-gray-600 whitespace-nowrap">{{ formatCurrency(Number(change.balanceBefore || 0)) }}</td>
+              <td class="px-4 py-3 text-gray-900 font-medium whitespace-nowrap">{{ formatCurrency(Number(change.balanceAfter || 0)) }}</td>
               <td class="px-4 py-3 text-gray-600 max-w-xs truncate">{{ change.description }}</td>
               <td class="px-4 py-3">
-                <span :class="getStatusClass(change.status)" class="px-2 py-1 text-xs rounded-full whitespace-nowrap">
+                <span :class="getStatusClass(String(change.status || ''))" class="px-2 py-1 text-xs rounded-full whitespace-nowrap">
                   {{ change.status }}
                 </span>
               </td>

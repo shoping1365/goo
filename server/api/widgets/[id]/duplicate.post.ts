@@ -14,13 +14,13 @@ export default defineEventHandler(async (event) => {
     })
 
     return response
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در کپی کردن ویجت:', error)
-    
+
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.message || error.statusMessage || 'خطا در کپی کردن ویجت',
-      data: error.data || error.message
+      statusCode: (error as { statusCode?: number }).statusCode || 500,
+      message: (error as { message?: string; statusMessage?: string }).message || (error as { message?: string; statusMessage?: string }).statusMessage || 'خطا در کپی کردن ویجت',
+      data: (error as { data?: unknown; message?: string }).data || (error as { data?: unknown; message?: string }).message
     })
   }
 })

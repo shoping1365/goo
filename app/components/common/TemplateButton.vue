@@ -20,6 +20,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+
 // کامپوننت دکمه تمپلیت با قابلیت تعیین رنگ و استایل
 // props:
 // - bgGradient: کلاس گرادینت یا رنگ پس‌زمینه
@@ -37,16 +39,28 @@ defineEmits<{
   'click': [event: MouseEvent]
 }>()
 
-const props = defineProps({
-  bgGradient: { type: String, default: '' },
-  textColor: { type: String, default: '' },
-  borderColor: { type: String, default: '' },
-  hoverClass: { type: String, default: '' },
-  focusClass: { type: String, default: '' },
-  size: { type: String, default: 'medium' },
-  type: { type: String, default: 'button' },
-  customClass: { type: String, default: '' },
-  disabled: { type: Boolean, default: false }
+interface Props {
+  bgGradient?: string
+  textColor?: string
+  borderColor?: string
+  hoverClass?: string
+  focusClass?: string
+  size?: string
+  type?: 'button' | 'submit' | 'reset'
+  customClass?: string
+  disabled?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  bgGradient: '',
+  textColor: '',
+  borderColor: '',
+  hoverClass: '',
+  focusClass: '',
+  size: 'medium',
+  type: 'button',
+  customClass: '',
+  disabled: false
 })
 
 const sizeClass = computed(() => {

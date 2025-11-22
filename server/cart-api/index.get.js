@@ -1,6 +1,6 @@
 import { defineEventHandler, createError } from 'h3'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (_event) => {
   try {
     // استفاده از همان منطق موجود در get.get.js
     const { getCartItems } = await import('./data')

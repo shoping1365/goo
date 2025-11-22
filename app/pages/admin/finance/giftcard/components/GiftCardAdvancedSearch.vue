@@ -458,7 +458,7 @@
             <div class="flex items-center justify-between">
               <div class="flex items-center space-x-4 space-x-reverse">
                 <div class="flex-shrink-0">
-                  <div :class="getStatusColorClass(card.status)" class="w-3 h-3 rounded-full"></div>
+                  <div :class="getStatusColorClass(String(card.status || ''))" class="w-3 h-3 rounded-full"></div>
                 </div>
                 <div>
                   <h4 class="text-sm font-medium text-gray-900">{{ card.code }}</h4>
@@ -467,8 +467,8 @@
               </div>
               <div class="flex items-center space-x-4 space-x-reverse">
                 <div class="text-right">
-                  <p class="text-sm font-medium text-gray-900">{{ formatCurrency(card.amount) }}</p>
-                  <p class="text-xs text-gray-500">باقی‌مانده: {{ formatCurrency(card.remainingAmount) }}</p>
+                  <p class="text-sm font-medium text-gray-900">{{ formatCurrency((card.amount as number) || 0) }}</p>
+                  <p class="text-xs text-gray-500">باقی‌مانده: {{ formatCurrency((card.remainingAmount as number) || 0) }}</p>
                 </div>
                 <div class="flex items-center space-x-2 space-x-reverse">
                   <button 
@@ -632,104 +632,133 @@ const filteredResults = computed(() => {
 
   // فیلتر کد کارت
   if (filters.cardCode) {
-    results = results.filter(card => 
-      card.code.toLowerCase().includes(filters.cardCode.toLowerCase())
-    )
+    results = results.filter(card => {
+      const code = String(card.code || '')
+      return code.toLowerCase().includes(filters.cardCode.toLowerCase())
+    })
   }
 
   // فیلتر نام خریدار
   if (filters.buyerName) {
-    results = results.filter(card => 
-      card.buyerName?.toLowerCase().includes(filters.buyerName.toLowerCase())
-    )
+    results = results.filter(card => {
+      const buyerName = String(card.buyerName || '')
+      return buyerName.toLowerCase().includes(filters.buyerName.toLowerCase())
+    })
   }
 
   // فیلتر نام گیرنده
   if (filters.recipientName) {
-    results = results.filter(card => 
-      card.recipientName?.toLowerCase().includes(filters.recipientName.toLowerCase())
-    )
+    results = results.filter(card => {
+      const recipientName = String(card.recipientName || '')
+      return recipientName.toLowerCase().includes(filters.recipientName.toLowerCase())
+    })
   }
 
   // فیلتر ایمیل گیرنده
   if (filters.recipientEmail) {
-    results = results.filter(card => 
-      card.recipientEmail?.toLowerCase().includes(filters.recipientEmail.toLowerCase())
-    )
+    results = results.filter(card => {
+      const recipientEmail = String(card.recipientEmail || '')
+      return recipientEmail.toLowerCase().includes(filters.recipientEmail.toLowerCase())
+    })
   }
 
   // فیلتر شماره تماس گیرنده
   if (filters.recipientPhone) {
-    results = results.filter(card => 
-      card.recipientPhone?.includes(filters.recipientPhone)
-    )
+    results = results.filter(card => {
+      const recipientPhone = String(card.recipientPhone || '')
+      return recipientPhone.includes(filters.recipientPhone)
+    })
   }
 
   // فیلترهای تاریخ
   if (filters.createdDateFrom) {
-    results = results.filter(card => 
-      new Date(card.createdAt) >= new Date(filters.createdDateFrom)
-    )
+    results = results.filter(card => {
+      const createdAt = String(card.createdAt || '')
+      return new Date(createdAt).getTime() >= new Date(filters.createdDateFrom).getTime()
+    })
   }
 
   if (filters.createdDateTo) {
-    results = results.filter(card => 
-      new Date(card.createdAt) <= new Date(filters.createdDateTo)
-    )
+    results = results.filter(card => {
+      const createdAt = String(card.createdAt || '')
+      return new Date(createdAt).getTime() <= new Date(filters.createdDateTo).getTime()
+    })
   }
 
   if (filters.expiryDateFrom) {
-    results = results.filter(card => 
-      new Date(card.expiryDate) >= new Date(filters.expiryDateFrom)
-    )
+    results = results.filter(card => {
+      const expiryDate = String(card.expiryDate || '')
+      return new Date(expiryDate).getTime() >= new Date(filters.expiryDateFrom).getTime()
+    })
   }
 
   if (filters.expiryDateTo) {
-    results = results.filter(card => 
-      new Date(card.expiryDate) <= new Date(filters.expiryDateTo)
-    )
+    results = results.filter(card => {
+      const expiryDate = String(card.expiryDate || '')
+      return new Date(expiryDate).getTime() <= new Date(filters.expiryDateTo).getTime()
+    })
   }
 
   if (filters.deliveryDateFrom) {
-    results = results.filter(card => 
-      new Date(card.deliveryDate) >= new Date(filters.deliveryDateFrom)
-    )
+    results = results.filter(card => {
+      const deliveryDate = String(card.deliveryDate || '')
+      return new Date(deliveryDate).getTime() >= new Date(filters.deliveryDateFrom).getTime()
+    })
   }
 
   if (filters.deliveryDateTo) {
-    results = results.filter(card => 
-      new Date(card.deliveryDate) <= new Date(filters.deliveryDateTo)
-    )
+    results = results.filter(card => {
+      const deliveryDate = String(card.deliveryDate || '')
+      return new Date(deliveryDate).getTime() <= new Date(filters.deliveryDateTo).getTime()
+    })
   }
 
   // فیلترهای مالی
   if (filters.amountMin !== null) {
-    results = results.filter(card => card.amount >= filters.amountMin)
+    results = results.filter(card => {
+      const amount = Number(card.amount || 0)
+      return amount >= Number(filters.amountMin)
+    })
   }
 
   if (filters.amountMax !== null) {
-    results = results.filter(card => card.amount <= filters.amountMax)
+    results = results.filter(card => {
+      const amount = Number(card.amount || 0)
+      return amount <= Number(filters.amountMax)
+    })
   }
 
   if (filters.remainingAmountMin !== null) {
-    results = results.filter(card => card.remainingAmount >= filters.remainingAmountMin)
+    results = results.filter(card => {
+      const remainingAmount = Number(card.remainingAmount || 0)
+      return remainingAmount >= Number(filters.remainingAmountMin)
+    })
   }
 
   if (filters.remainingAmountMax !== null) {
-    results = results.filter(card => card.remainingAmount <= filters.remainingAmountMax)
+    results = results.filter(card => {
+      const remainingAmount = Number(card.remainingAmount || 0)
+      return remainingAmount <= Number(filters.remainingAmountMax)
+    })
   }
 
   if (filters.usagePercentageMin !== null) {
     results = results.filter(card => {
-      const usagePercentage = ((card.amount - card.remainingAmount) / card.amount) * 100
-      return usagePercentage >= filters.usagePercentageMin
+      const amount = Number(card.amount || 0)
+      const remainingAmount = Number(card.remainingAmount || 0)
+      if (amount === 0) return false
+      const usagePercentage = ((amount - remainingAmount) / amount) * 100
+      return usagePercentage >= Number(filters.usagePercentageMin)
     })
   }
 
   if (filters.usagePercentageMax !== null) {
     results = results.filter(card => {
-      const usagePercentage = ((card.amount - card.remainingAmount) / card.amount) * 100
-      return usagePercentage <= filters.usagePercentageMax
+      const amount = Number(card.amount || 0)
+      const remainingAmount = Number(card.remainingAmount || 0)
+      if (amount === 0) return false
+      const usagePercentage = ((amount - remainingAmount) / amount) * 100
+      return usagePercentage <= Number(filters.usagePercentageMax)
     })
   }
 
@@ -777,9 +806,15 @@ const filteredResults = computed(() => {
   if (filters.isExpired !== '') {
     const now = new Date()
     if (filters.isExpired === 'true') {
-      results = results.filter(card => new Date(card.expiryDate) < now)
+      results = results.filter(card => {
+        const expiryDate = String(card.expiryDate || '')
+        return new Date(expiryDate).getTime() < now.getTime()
+      })
     } else {
-      results = results.filter(card => new Date(card.expiryDate) >= now)
+      results = results.filter(card => {
+        const expiryDate = String(card.expiryDate || '')
+        return new Date(expiryDate).getTime() >= now.getTime()
+      })
     }
   }
 

@@ -48,7 +48,7 @@ export default defineEventHandler(async (event) => {
       WHERE user_id = $1 AND event_type = 'failed_login_attempt'
     `, [userId])
     
-    const total = parseInt((totalCount as any)[0].count)
+    const total = parseInt((totalCount as Array<{ count: string }>)[0].count)
 
     // دریافت رکوردها با pagination
     const result = await db.query(`
@@ -66,7 +66,7 @@ export default defineEventHandler(async (event) => {
       LIMIT $2 OFFSET $3
     `, [userId, limitNum, offset])
 
-    const failedAttempts = (result as any).map((row: any) => {
+    const failedAttempts = (result as Array<{ id: number; user_id: number; mobile: string | null; ip_address: string | null; user_agent: string | null; metadata: { username?: string; method?: string; failure_reason?: string; device_info?: { browser?: string; browser_version?: string; os?: string; os_version?: string; device_type?: string; device_model?: string } } | null; created_at: string }>).map((row) => {
       const metadata = row.metadata || {}
       const deviceInfo = metadata.device_info || {}
       

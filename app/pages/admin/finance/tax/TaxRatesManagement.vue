@@ -443,7 +443,14 @@ interface TaxRate {
 // ویرایش نرخ
 const editRate = (rate: TaxRate) => {
   editingRate.value = rate
-  rateForm.value = { ...rate }
+  rateForm.value = {
+    taxType: String(rate.taxType || ''),
+    category: String(rate.category || ''),
+    rate: Number(rate.rate || 0),
+    startDate: String(rate.startDate || ''),
+    endDate: String(rate.endDate || ''),
+    description: String(rate.description || '')
+  }
   showAddRateModal.value = true
 }
 

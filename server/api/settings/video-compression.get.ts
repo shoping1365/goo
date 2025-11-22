@@ -1,5 +1,5 @@
 // احراز هویت غیرفعال شده است - تنظیمات فشرده‌سازی ویدئو
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (_event) => {
   return [
     { key: 'video_compression.quality', value: '85', category: 'video_compression', type: 'string' },
     { key: 'video_compression.format', value: 'mp4', category: 'video_compression', type: 'string' },

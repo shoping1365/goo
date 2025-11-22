@@ -1,4 +1,4 @@
-import { defineEventHandler, getRouterParam, createError, getCookie } from 'h3'
+import { defineEventHandler, getRouterParam, getCookie } from 'h3'
 import { useRuntimeConfig } from '#imports'
 import { proxy } from '~/server/api/_utils/fetchProxy'
 

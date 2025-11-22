@@ -54,14 +54,14 @@ function normaliseControlType(raw: string | undefined): string | undefined {
   }
 }
 
-function faType(slug:string|undefined){
-  if(!slug) return ''
-  return slug==='select'? 'انتخاب' : (slug==='custom_text'?'متن سفارشی': slug)
+function faType(slug: string | undefined) {
+  if (!slug) return ''
+  return slug === 'select' ? 'انتخاب' : (slug === 'custom_text' ? 'متن سفارشی' : slug)
 }
 
-function faControl(slug:string|undefined){
-  if(!slug) return ''
-  switch(slug){
+function faControl(slug: string | undefined) {
+  if (!slug) return ''
+  switch (slug) {
     case 'dropdown_single': return 'لیست باز شونده تک انتخابی'
     case 'dropdown_multi': return 'لیست باز شونده چند انتخابی'
     case 'textbox_multiline': return 'متن چند خطی'
@@ -98,25 +98,33 @@ export function useAttributeGroup() {
       const res = await $fetch<AttributeGroupResponse>(`/api/attribute-groups/${groupId}`)
       const list = res?.attributes || res?.Attributes || res?.attribute_group_attributes || res?.data || []
       if (Array.isArray(list)) {
-        attributes.value = (list as AttributeItem[]).map((a) => ({
-          id: a.attribute?.id || a.Attribute?.id || a.attribute_id || a.id,
-          name: a.attribute?.name || a.Attribute?.name || a.name,
-          // Normalise Persian labels to English slugs so that downstream components
-          // can make simple equality checks.
-          type: normaliseType(a.type || a.Type || a.attribute_type || a.AttributeType),
-          controlType: normaliseControlType(a.control_type || a.ControlType || a.controlType),
-          typeDisplay: faType(normaliseType(a.type || a.Type || a.attribute_type || a.AttributeType)),
-          controlTypeDisplay: faControl(normaliseControlType(a.control_type || a.ControlType || a.controlType)),
-          isRequired: !!(a.is_required ?? a.IsRequired),
-          sort_order: a.sort_order || a.SortOrder,
-          has_filter: !!(a.has_filter ?? a.HasFilter),
-          is_key: !!(a.is_key ?? a.IsKey),
-          show_on_product: !!(a.show_on_product ?? a.ShowOnProduct),
-          values: [],
-          selectedOptionId: a.selected_option_id || a.SelectedOptionId,
-          selectedOptionIds: a.selected_option_ids || a.SelectedOptionIds || [],
-          valueText: a.value_text || a.ValueText
-        }))
+        attributes.value = (list as AttributeItem[]).map((a) => {
+          const attrId = a.attribute?.id || a.Attribute?.id || a.attribute_id || a.id
+          const idValue = typeof attrId === 'string' ? Number(attrId) : (attrId as number) || 0
+
+          const typeValue = String(a.type || a.Type || a.attribute_type || a.AttributeType || '')
+          const controlTypeValue = String(a.control_type || a.ControlType || a.controlType || '')
+
+          return {
+            id: idValue,
+            name: String(a.attribute?.name || a.Attribute?.name || a.name || ''),
+            // Normalise Persian labels to English slugs so that downstream components
+            // can make simple equality checks.
+            type: normaliseType(typeValue),
+            controlType: normaliseControlType(controlTypeValue),
+            typeDisplay: faType(normaliseType(typeValue)),
+            controlTypeDisplay: faControl(normaliseControlType(controlTypeValue)),
+            isRequired: !!(a.is_required ?? a.IsRequired),
+            sort_order: Number(a.sort_order || a.SortOrder || 0),
+            has_filter: !!(a.has_filter ?? a.HasFilter),
+            is_key: !!(a.is_key ?? a.IsKey),
+            show_on_product: !!(a.show_on_product ?? a.ShowOnProduct),
+            values: [],
+            selectedOptionId: a.selected_option_id || a.SelectedOptionId,
+            selectedOptionIds: a.selected_option_ids || a.SelectedOptionIds || [],
+            valueText: String(a.value_text || a.ValueText || '')
+          } as Attribute
+        })
 
         // Fetch possible values for each attribute in parallel
         await Promise.all(
@@ -124,10 +132,14 @@ export function useAttributeGroup() {
             const vals = await loadAttributeValues(attr.id)
             // Normalise values structure to ensure {id, value} shape
             if (Array.isArray(vals)) {
-              attr.values = vals.map((v: Record<string, unknown>) => ({
-                id: Number(v.id ?? v.ID ?? v.value_id ?? v.ValueID ?? v.value_id),
-                value: v.value ?? v.Value ?? v.name ?? v.Name ?? v.label ?? ''
-              }))
+              attr.values = vals.map((v: Record<string, unknown>) => {
+                const valueId = v.id ?? v.ID ?? v.value_id ?? v.ValueID ?? v.value_id
+                const idNum = typeof valueId === 'string' ? Number(valueId) : (valueId as number) || 0
+                return {
+                  id: idNum,
+                  value: String(v.value ?? v.Value ?? v.name ?? v.Name ?? v.label ?? '')
+                }
+              })
             } else {
               attr.values = []
             }
@@ -150,8 +162,19 @@ export function useAttributeGroup() {
   async function loadAttributeValues(attrId: string | number) {
     if (!attrId) return []
     try {
+      interface AttributeValuesResponse {
+        data?: Array<Record<string, unknown>>
+        [key: string]: unknown
+      }
       const res = await $fetch<unknown>(`/api/attribute-values/by-attribute/${attrId}`)
-      return Array.isArray(res) ? res : res?.data || []
+      if (Array.isArray(res)) {
+        return res as Array<Record<string, unknown>>
+      }
+      const response = res as AttributeValuesResponse
+      if (response && typeof response === 'object' && 'data' in response && Array.isArray(response.data)) {
+        return response.data
+      }
+      return []
     } catch (e) {
       console.error('Failed load values', e)
       return []

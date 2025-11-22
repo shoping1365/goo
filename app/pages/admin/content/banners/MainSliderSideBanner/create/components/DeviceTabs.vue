@@ -295,13 +295,13 @@
                   <div v-if="mobileSlides.length > 0" class="relative h-full">
                   <div
                     v-for="(slide, index) in mobileSlides"
-                    :key="slide.id || slide.order || index"
+                    :key="String((slide as { id?: string | number }).id ?? (slide as { order?: string | number }).order ?? index)"
                     class="absolute inset-0 transition-opacity duration-500"
                     :class="{ 'opacity-100': index === activeMobileSlideIndex, 'opacity-0': index !== activeMobileSlideIndex }"
                   >
                     <img
-                    :src="slide.mobile_image"
-                    :alt="slide.title"
+                    :src="(slide as { mobile_image?: string }).mobile_image || ''"
+                    :alt="(slide as { title?: string }).title || ''"
                     class="w-full h-full object-cover"
                     />
                                         <div
@@ -309,16 +309,16 @@
                                         class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3"
                                         >
                                         <h4
-                                              v-if="props.sliderConfig.show_title && slide.title && (slide.showTitle !== false)"
+                                              v-if="props.sliderConfig.show_title && (slide as { title?: string; showTitle?: boolean }).title && ((slide as { showTitle?: boolean }).showTitle !== false)"
                                               class="text-white text-base font-bold mb-1"
                                         >
-                                              {{ slide.title }}
+                                              {{ (slide as { title?: string }).title }}
                                         </h4>
                                         <p
-                                              v-if="props.sliderConfig.show_description && slide.description"
+                                              v-if="props.sliderConfig.show_description && (slide as { description?: string }).description"
                                               class="text-white/90 text-xs"
                                         >
-                                              {{ slide.description }}
+                                              {{ (slide as { description?: string }).description }}
                                         </p>
                                         </div>
                                     </div>
@@ -339,9 +339,9 @@
                                     
                                     <!-- نقطه‌های ناوبری - کوچکتر برای موبایل -->
                   <div v-if="props.sliderConfig.show_pagination" class="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1.5">
-                    <div 
-                    v-for="(slide, index) in mobileSlides" 
-                    :key="slide.id || slide.order || index"
+                    <div
+                    v-for="(slide, index) in mobileSlides"
+                    :key="String((slide as { id?: string | number }).id ?? (slide as { order?: string | number }).order ?? index)"
                     class="w-2.5 h-2.5 rounded-full transition-colors"
                     :class="index === activeMobileSlideIndex ? 'bg-white' : 'bg-white/50'"
                     ></div>
@@ -374,20 +374,20 @@
                                         <div class="h-full flex flex-col gap-2">
                                         <div
                   v-for="(banner, index) in mobileBanners"
-                  :key="banner.id || banner.order || index"
+                  :key="String((banner as { id?: string | number }).id ?? (banner as { order?: string | number }).order ?? index)"
                                               class="relative rounded-lg overflow-hidden flex-1"
                                                                   :style="{
-                                                                  height: `${(props.sliderConfig.mobile_banner_height || 80) / mobileBanners.length - 4}px`
+                                                                  height: `${(typeof props.sliderConfig.mobile_banner_height === 'number' ? props.sliderConfig.mobile_banner_height : 80) / mobileBanners.length - 4}px`
                                                                   }"
                                         >
                                               <img
-                  :src="banner.mobile_image"
-                                              :alt="banner.title"
+                  :src="(banner as { mobile_image?: string }).mobile_image || ''"
+                                              :alt="(banner as { title?: string }).title || ''"
                                               class="w-full h-full object-cover"
                                               />
                                               <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-                                              <h4 class="text-white text-sm font-bold mb-1">{{ banner.title }}</h4>
-                                              <p v-if="banner.description" class="text-white/90 text-xs">{{ banner.description }}</p>
+                                              <h4 class="text-white text-sm font-bold mb-1">{{ (banner as { title?: string }).title }}</h4>
+                                              <p v-if="(banner as { description?: string }).description" class="text-white/90 text-xs">{{ (banner as { description?: string }).description }}</p>
                                               </div>
                                         </div>
                                         </div>
@@ -433,22 +433,22 @@
                               <div v-else class="flex flex-col gap-6">
                                               <div
                                     v-for="(slide, idx) in mobileSlides"
-                                    :key="slide.id || slide.order || idx"
+                                    :key="String((slide as { id?: string | number }).id ?? (slide as { order?: string | number }).order ?? idx)"
                                     class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 w-full"
                                     >
                                              <div class="w-28 h-20 flex items-center justify-center rounded border-2 border-purple-200 bg-white overflow-hidden relative">
                 <img
-                v-if="slide.mobile_image"
-                :src="slide.mobile_image"
+                v-if="(slide as { mobile_image?: string }).mobile_image"
+                :src="(slide as { mobile_image?: string }).mobile_image"
                 alt="اسلایدر موبایل"
                 class="w-full h-full object-cover"
                 />
                 <span v-else class="text-xs text-gray-500 text-center px-2">بدون تصویر موبایل</span>
                 </div>
                                     <div class="flex flex-col flex-1">
-                                    <div class="font-bold text-sm text-gray-700 mb-1">{{ slide.title }}</div>
-                                    <div v-if="slide.description" class="text-xs text-gray-600 mb-1">{{ slide.description }}</div>
-                                    <div v-if="slide.link" class="text-xs text-blue-600 break-all">{{ slide.link }}</div>
+                                    <div class="font-bold text-sm text-gray-700 mb-1">{{ (slide as { title?: string }).title }}</div>
+                                    <div v-if="(slide as { description?: string }).description" class="text-xs text-gray-600 mb-1">{{ (slide as { description?: string }).description }}</div>
+                                    <div v-if="(slide as { link?: string }).link" class="text-xs text-blue-600 break-all">{{ (slide as { link?: string }).link }}</div>
                                     </div>
                                     <div class="flex gap-2">
                                     <button
@@ -499,22 +499,22 @@
                               <div v-else class="flex flex-col gap-6">
                                               <div
                                     v-for="(banner, idx) in mobileBanners"
-                                    :key="banner.id || banner.order || idx"
+                                    :key="String((banner as { id?: string | number }).id ?? (banner as { order?: string | number }).order ?? idx)"
                                     class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 w-full"
                                     >
                                              <div class="w-28 h-20 flex items-center justify-center rounded border-2 border-purple-200 bg-white overflow-hidden relative">
                 <img
-                v-if="banner.mobile_image"
-                :src="banner.mobile_image"
+                v-if="(banner as { mobile_image?: string }).mobile_image"
+                :src="((banner as { mobile_image?: string }).mobile_image || '')"
                 alt="بنر موبایل"
                 class="w-full h-full object-cover"
                 />
                 <span v-else class="text-xs text-gray-500 text-center px-2">بدون تصویر موبایل</span>
                 </div>
                                     <div class="flex flex-col flex-1">
-                                    <div class="font-bold text-sm text-gray-700 mb-1">{{ banner.title }}</div>
-                                    <div v-if="banner.description" class="text-xs text-gray-600 mb-1">{{ banner.description }}</div>
-                                    <div v-if="banner.link" class="text-xs text-blue-600 break-all">{{ banner.link }}</div>
+                                    <div class="font-bold text-sm text-gray-700 mb-1">{{ (banner as { title?: string }).title || '' }}</div>
+                                    <div v-if="(banner as { description?: string }).description" class="text-xs text-gray-600 mb-1">{{ (banner as { description?: string }).description || '' }}</div>
+                                    <div v-if="(banner as { link?: string }).link" class="text-xs text-blue-600 break-all">{{ (banner as { link?: string }).link || '' }}</div>
                                     </div>
                                     <div class="flex gap-2">
                                     <button
@@ -564,8 +564,8 @@
             bg_color?: string
             mobile_slider_width?: string | number
             mobile_banner_width?: string | number
-            mobile_height?: number
-            mobile_banner_height?: number
+            mobile_height?: number | 'auto'
+            mobile_banner_height?: number | 'auto'
             show_title?: boolean
             show_description?: boolean
             show_navigation?: boolean

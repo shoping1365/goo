@@ -193,6 +193,7 @@ import { ref, reactive, onMounted } from 'vue'
 const showIntegrationForm = ref(false)
 interface Integration {
   id?: number | string
+  name?: string
   [key: string]: unknown
 }
 const editingIntegration = ref<Integration | null>(null)
@@ -286,12 +287,6 @@ const formatDateTime = (date: string): string => {
     hour: '2-digit',
     minute: '2-digit'
   }).format(new Date(date))
-}
-
-interface Integration {
-  id?: number | string
-  name?: string
-  [key: string]: unknown
 }
 
 const editIntegration = (integration: Integration) => {

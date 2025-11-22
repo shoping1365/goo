@@ -169,16 +169,16 @@
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       <!-- Dashboard Tab -->
       <div v-if="activeTab === 'dashboard'">
-        <ReportsAndAnalytics :users="users" @export-data="handleExportData" />
+        <ReportsAndAnalytics :users="users as unknown as Array<{ id: number; name: string; email: string; avatar: string; score: number; monthlyReviews: number; monthlyPurchases: number; monthlyReferrals: number; lastActivity: string; [key: string]: unknown }>" @export-data="handleExportData" />
       </div>
 
       <!-- Users Management Tab -->
       <div v-if="activeTab === 'users'">
         <UserManagement 
-          :users="users" 
-          @view-details="handleViewUserDetails"
-          @edit-user="handleEditUser"
-          @toggle-status="handleToggleUserStatus"
+          :users="users as unknown as Array<{ id: number; name: string; email: string; avatar?: string; score: number; level: string; status: string; lastActivity: string }>" 
+          @view-details="handleViewUserDetails as unknown as (user: { id: number; name: string; email: string; avatar?: string; score: number; level: string; status: string; lastActivity: string }) => void"
+          @edit-user="handleEditUser as unknown as (user: { id: number; name: string; email: string; avatar?: string; score: number; level: string; status: string; lastActivity: string }) => void"
+          @toggle-status="handleToggleUserStatus as unknown as (user: { id: number; name: string; email: string; avatar?: string; score: number; level: string; status: string; lastActivity: string }) => void"
         />
       </div>
 
@@ -193,28 +193,28 @@
       <!-- Manual Scoring Tab -->
       <div v-if="activeTab === 'manual'">
         <ManualScoring 
-          :users="users"
-          @submit-score="handleSubmitManualScore"
-          @export-history="handleExportHistory"
+          :users="users as any"
+          @submit-score="handleSubmitManualScore as any"
+          @export-history="handleExportHistory as any"
         />
       </div>
 
       <!-- Alert System Tab -->
       <div v-if="activeTab === 'alerts'">
         <AlertSystem 
-          :users="users"
-          @send-alert="handleSendAlert"
-          @send-bulk-alerts="handleSendBulkAlerts"
-          @export-history="handleExportAlertHistory"
+          :users="users as any"
+          @send-alert="handleSendAlert as any"
+          @send-bulk-alerts="handleSendBulkAlerts as any"
+          @export-history="handleExportAlertHistory as any"
         />
       </div>
 
       <!-- Top User Benefits Tab -->
       <div v-if="activeTab === 'benefits'">
         <TopUserBenefits
-          :users="users"
-          @save-benefits="handleSaveBenefits"
-          @export-data="handleExportBenefitsData"
+          :users="users as any"
+          @save-benefits="handleSaveBenefits as any"
+          @export-data="handleExportBenefitsData as any"
         />
       </div>
 
@@ -222,8 +222,8 @@
       <div v-if="activeTab === 'reviews'">
         <ReviewQualitySystem
           :reviews="reviews"
-          @save-settings="handleSaveReviewSettings"
-          @analyze-reviews="handleAnalyzeReviews"
+          @save-settings="handleSaveReviewSettings as (settings: AISettings) => void"
+          @analyze-reviews="handleAnalyzeReviews as (reviews: Review[]) => void"
           @export-report="handleExportReviewReport"
         />
       </div>
@@ -241,17 +241,31 @@
       <!-- Purchase Continuity System Tab -->
       <div v-if="activeTab === 'purchases'">
         <PurchaseContinuitySystem
-          :users="users"
-          @save-settings="handleSaveContinuitySettings"
-          @analyze-patterns="handleAnalyzePurchasePatterns"
-          @export-report="handleExportContinuityReport"
+          :users="users as any"
+          @save-settings="handleSaveContinuitySettings as any"
+          @analyze-patterns="handleAnalyzePurchasePatterns as any"
+          @export-report="handleExportContinuityReport as any"
         />
       </div>
 
       <!-- Return Rate System Tab -->
       <div v-if="activeTab === 'returns'">
         <ReturnRateSystem
-          :users="users"
+          :users="users.map(u => ({
+            id: Number(u.id),
+            userName: u.name || u.userName || '',
+            userEmail: u.email || u.userEmail || '',
+            userAvatar: u.avatar || u.userAvatar || '',
+            totalPurchases: u.monthlyPurchases || 0,
+            totalReturns: 0,
+            returnRate: u.returnRate || 0,
+            lastReturn: '',
+            status: u.status || 'active',
+            score: u.score,
+            name: u.name,
+            email: u.email,
+            avatar: u.avatar
+          } as ReturnPattern))"
           @save-settings="handleSaveReturnSettings"
           @analyze-patterns="handleAnalyzeReturnPatterns"
           @export-report="handleExportReturnReport"
@@ -261,10 +275,10 @@
       <!-- Account Age System Tab -->
       <div v-if="activeTab === 'account-age'">
         <AccountAgeSystem
-          :users="users"
-          @save-settings="handleSaveAgeSettings"
-          @analyze-ages="handleAnalyzeAccountAges"
-          @export-report="handleExportAgeReport"
+          :users="users as any"
+          @save-settings="handleSaveAgeSettings as any"
+          @analyze-ages="handleAnalyzeAccountAges as any"
+          @export-report="handleExportAgeReport as any"
         />
       </div>
 
@@ -290,9 +304,9 @@
       <!-- Setup and Testing System Tab -->
       <div v-if="activeTab === 'setup-test'">
         <SetupAndTestingSystem
-          @run-setup="handleRunSetup"
-          @run-tests="handleRunTests"
-          @view-results="handleViewTestResults"
+          @run-setup="handleRunSetup as (steps: Step[]) => void"
+          @run-tests="handleRunTests as (tests: TestEnvironment[]) => void"
+          @view-results="handleViewTestResults as (results: TestResult) => void"
         />
       </div>
     </div>
@@ -301,27 +315,10 @@
 </div>
 </template>
 
-<script lang="ts">
-declare const definePageMeta: (meta: { layout?: string }) => void
-declare const navigateTo: (to: string) => Promise<void>
-</script>
-
 <script setup lang="ts">
+import { definePageMeta, navigateTo } from '#imports';
 import { onMounted, ref } from 'vue';
 import AccountAgeSystem from './components/AccountAgeSystem.vue';
-
-interface RatedUser {
-  id: number | string;
-  name: string;
-  email?: string;
-  avatar?: string;
-  score: number;
-  level: string;
-  lastActivity: string;
-  status?: string;
-  currentScore: number;
-}
-
 import AlertSystem from './components/AlertSystem.vue';
 import AutoScoringSystem from './components/AutoScoringSystem.vue';
 import ManualScoring from './components/ManualScoring.vue';
@@ -336,6 +333,80 @@ import SystemSettings from './components/SystemSettings.vue';
 import TopUserBenefits from './components/TopUserBenefits.vue';
 import UserManagement from './components/UserManagement.vue';
 
+// جامع‌ترین interface برای User که شامل تمام ویژگی‌های مورد نیاز کامپوننت‌های مختلف است
+interface User {
+  id: number;
+  // ویژگی‌های پایه
+  name?: string;
+  email?: string;
+  avatar?: string;
+  // ویژگی‌های جایگزین (برای سازگاری با کامپوننت‌های مختلف)
+  userName?: string;
+  userEmail?: string;
+  userAvatar?: string;
+  // ویژگی‌های امتیاز
+  score: number;
+  level: string;
+  currentScore?: number;
+  // ویژگی‌های تاریخ
+  lastActivity?: string;
+  joinDate?: string;
+  lastPurchase?: string;
+  // ویژگی‌های اضافی
+  status?: string;
+  monthlyReviews?: number;
+  monthlyPurchases?: number;
+  monthlyReferrals?: number;
+  riskLevel?: string;
+  activeBenefits?: string[];
+  lastBenefitUsage?: string;
+  pattern?: string;
+  purchaseInterval?: string;
+  streakLevel?: number;
+  age?: number;
+  loyaltyLevel?: string;
+  returnRate?: number;
+  [key: string]: unknown;
+}
+
+// Helper interface for ReturnRateSystem
+interface ReturnPattern {
+  id: number;
+  userName: string;
+  userEmail: string;
+  userAvatar: string;
+  totalPurchases: number;
+  totalReturns: number;
+  returnRate: number;
+  lastReturn: string;
+  status: string;
+  score: number;
+  name?: string;
+  email?: string;
+  avatar?: string;
+  [key: string]: unknown;
+}
+
+interface AISettings {
+  [key: string]: unknown;
+}
+
+interface Review {
+  [key: string]: unknown;
+}
+
+interface Step {
+  [key: string]: unknown;
+}
+
+interface TestEnvironment {
+  [key: string]: unknown;
+}
+
+interface TestResult {
+  [key: string]: unknown;
+}
+
 definePageMeta({ layout: 'admin-main' })
 
 // Reactive data
@@ -347,62 +418,145 @@ const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value
 }
 
-// Sample users data with updated structure
-const users = ref<RatedUser[]>([
+// Sample users data with updated structure - شامل تمام ویژگی‌های مورد نیاز کامپوننت‌های مختلف
+const users = ref<User[]>([
   {
     id: 1,
     name: 'علی احمدی',
     email: 'ali@example.com',
     avatar: '/avatars/ali.jpg',
+    userName: 'علی احمدی',
+    userEmail: 'ali@example.com',
+    userAvatar: '/avatars/ali.jpg',
     score: 850,
     level: 'diamond',
     lastActivity: '2024-01-15T10:30:00Z',
+    joinDate: '2023-01-15T10:30:00Z',
     status: 'active',
-    currentScore: 850
+    currentScore: 850,
+    monthlyReviews: 15,
+    monthlyPurchases: 8,
+    monthlyReferrals: 5,
+    riskLevel: 'low',
+    activeBenefits: ['discount_10', 'free_shipping'],
+    lastBenefitUsage: '2024-01-14T10:30:00Z',
+    lastPurchase: '2024-01-14T10:30:00Z',
+    pattern: 'regular',
+    purchaseInterval: 'monthly',
+    streakLevel: 3,
+    age: 25,
+    loyaltyLevel: 'high',
+    returnRate: 0.05
   },
   {
     id: 2,
     name: 'فاطمه محمدی',
     email: 'fateme@example.com',
     avatar: '/avatars/fateme.jpg',
+    userName: 'فاطمه محمدی',
+    userEmail: 'fateme@example.com',
+    userAvatar: '/avatars/fateme.jpg',
     score: 720,
     level: 'platinum',
     lastActivity: '2024-01-14T15:45:00Z',
+    joinDate: '2023-03-14T15:45:00Z',
     status: 'active',
-    currentScore: 720
+    currentScore: 720,
+    monthlyReviews: 12,
+    monthlyPurchases: 6,
+    monthlyReferrals: 3,
+    riskLevel: 'low',
+    activeBenefits: ['discount_5'],
+    lastBenefitUsage: '2024-01-13T15:45:00Z',
+    lastPurchase: '2024-01-13T15:45:00Z',
+    pattern: 'regular',
+    purchaseInterval: 'bi-weekly',
+    streakLevel: 2,
+    age: 28,
+    loyaltyLevel: 'medium',
+    returnRate: 0.08
   },
   {
     id: 3,
     name: 'محمد رضایی',
     email: 'mohammad@example.com',
     avatar: '/avatars/mohammad.jpg',
+    userName: 'محمد رضایی',
+    userEmail: 'mohammad@example.com',
+    userAvatar: '/avatars/mohammad.jpg',
     score: -75,
     level: 'bronze',
     lastActivity: '2024-01-13T09:20:00Z',
+    joinDate: '2023-05-13T09:20:00Z',
     status: 'blocked',
-    currentScore: -75
+    currentScore: -75,
+    monthlyReviews: 2,
+    monthlyPurchases: 1,
+    monthlyReferrals: 0,
+    riskLevel: 'high',
+    activeBenefits: [],
+    lastPurchase: '2024-01-10T09:20:00Z',
+    pattern: 'irregular',
+    purchaseInterval: 'irregular',
+    streakLevel: 0,
+    age: 35,
+    loyaltyLevel: 'low',
+    returnRate: 0.25
   },
   {
     id: 4,
     name: 'زهرا کریمی',
     email: 'zahra@example.com',
     avatar: '/avatars/zahra.jpg',
+    userName: 'زهرا کریمی',
+    userEmail: 'zahra@example.com',
+    userAvatar: '/avatars/zahra.jpg',
     score: 650,
     level: 'gold',
     lastActivity: '2024-01-15T14:10:00Z',
+    joinDate: '2023-07-15T14:10:00Z',
     status: 'active',
-    currentScore: 650
+    currentScore: 650,
+    monthlyReviews: 10,
+    monthlyPurchases: 5,
+    monthlyReferrals: 2,
+    riskLevel: 'low',
+    activeBenefits: ['discount_5', 'free_shipping'],
+    lastBenefitUsage: '2024-01-14T14:10:00Z',
+    lastPurchase: '2024-01-14T14:10:00Z',
+    pattern: 'regular',
+    purchaseInterval: 'monthly',
+    streakLevel: 2,
+    age: 24,
+    loyaltyLevel: 'medium',
+    returnRate: 0.10
   },
   {
     id: 5,
     name: 'حسین نوری',
     email: 'hossein@example.com',
     avatar: '/avatars/hossein.jpg',
+    userName: 'حسین نوری',
+    userEmail: 'hossein@example.com',
+    userAvatar: '/avatars/hossein.jpg',
     score: 150,
     level: 'silver',
     lastActivity: '2024-01-12T11:30:00Z',
+    joinDate: '2023-08-12T11:30:00Z',
     status: 'active',
-    currentScore: 150
+    currentScore: 150,
+    monthlyReviews: 5,
+    monthlyPurchases: 3,
+    monthlyReferrals: 1,
+    riskLevel: 'medium',
+    activeBenefits: ['discount_5'],
+    lastPurchase: '2024-01-11T11:30:00Z',
+    pattern: 'regular',
+    purchaseInterval: 'monthly',
+    streakLevel: 1,
+    age: 22,
+    loyaltyLevel: 'medium',
+    returnRate: 0.12
   }
 ])
 
@@ -520,59 +674,62 @@ const systemSettings = ref({
 })
 
 // Event handlers
-const handleViewUserDetails = (user: RatedUser) => {
+const handleViewUserDetails = (user: User | { id: number | string; name: string; email: string; avatar?: string; score: number; level: string; status: string; lastActivity: string; [key: string]: unknown }) => {
   // Navigate to user details page
-  navigateTo(`/admin/users/${user.id}`)
+  navigateTo(`/admin/users/${Number(user.id)}`)
 }
 
-const handleEditUser = (user: RatedUser) => {
+const handleEditUser = (_user: User | { id: number | string; name: string; email: string; avatar?: string; score: number; level: string; status: string; lastActivity: string; [key: string]: unknown }) => {
   // Open edit user modal
 }
 
-const handleToggleUserStatus = (user: RatedUser) => {
-  user.status = user.status === 'blocked' ? 'active' : 'blocked'
+const handleToggleUserStatus = (user: User | { id: number | string; name: string; email: string; avatar?: string; score: number; level: string; status: string; lastActivity: string; [key: string]: unknown }) => {
+  if ('status' in user && user.status !== undefined) {
+    (user as { status: string }).status = user.status === 'blocked' ? 'active' : 'blocked'
+  }
   // API call to update user status
 }
 
 const handleSaveScoringSettings = (settings: Record<string, unknown>) => {
-  scoringSettings.value = settings
+  scoringSettings.value = settings as typeof scoringSettings.value
   // API call to save settings
 }
 
-const handleSubmitManualScore = (data: Record<string, unknown>) => {
+const handleSubmitManualScore = (_data: Record<string, unknown>) => {
   // API call to apply manual score
 }
 
-const handleExportHistory = (data: Record<string, unknown>) => {
+const handleExportHistory = (_data: Record<string, unknown>) => {
   // Export history to Excel
 }
 
-const handleSendAlert = (data: Record<string, unknown>) => {
+const handleSendAlert = (_data: Record<string, unknown>) => {
   // API call to send alert
 }
 
-const handleSendBulkAlerts = (data: Record<string, unknown>) => {
+const handleSendBulkAlerts = (_data: Record<string, unknown>) => {
   // API call to send bulk alerts
 }
 
-const handleExportAlertHistory = (data: Record<string, unknown>) => {
+const handleExportAlertHistory = (_data: Record<string, unknown>) => {
   // Export alert history to Excel
 }
 
-const handleSaveBenefits = (data: Record<string, unknown>) => {
+const handleSaveBenefits = (_data: Record<string, unknown>) => {
   // API call to save benefits
 }
 
-const handleExportBenefitsData = (data: Record<string, unknown>) => {
+const handleExportBenefitsData = (_type: string, _data: Record<string, unknown>) => {
   // Export benefits data to Excel
+  // TODO: Implement export functionality
 }
 
 const handleSaveSystemSettings = (settings: Record<string, unknown>) => {
-  systemSettings.value = settings
+  systemSettings.value = settings as typeof systemSettings.value
   // API call to save system settings
 }
 
-const handleExportData = (type: string, data: Record<string, unknown>) => {
+const handleExportData = (_type: string, _data: Record<string, unknown>) => {
   // Export data to Excel based on type
 }
 
@@ -581,15 +738,15 @@ const exportData = () => {
 }
 
 // Review Quality System handlers
-const handleSaveReviewSettings = (settings: Record<string, unknown>) => {
+const handleSaveReviewSettings = (_settings: Record<string, unknown>) => {
   // API call to save review settings
 }
 
-const handleAnalyzeReviews = (reviews: Record<string, unknown>[]) => {
+const handleAnalyzeReviews = (_reviews: Record<string, unknown>[]) => {
   // API call to analyze reviews
 }
 
-const handleExportReviewReport = (data: Record<string, unknown>) => {
+const handleExportReviewReport = (_data: Record<string, unknown>) => {
   // Export review quality report
 }
 

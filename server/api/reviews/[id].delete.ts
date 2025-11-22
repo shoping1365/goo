@@ -1,4 +1,4 @@
-export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
-  const baseURL = config.public.goApiBase
+export default defineEventHandler(async (_event) => {
+  const _config = useRuntimeConfig()
+  const _baseURL = _config.public.goApiBase
 })

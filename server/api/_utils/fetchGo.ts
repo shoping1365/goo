@@ -88,7 +88,7 @@ export async function fetchGo(event: H3Event, path: string, opts: FetchGoOptions
       const urlObj = new URL(path)
       url = urlObj.toString()
     } catch (urlError) {
-      const err = urlError as Record<string, any>
+      const err = urlError as { message?: string }
       console.error('[fetchGo] Invalid absolute URL:', { path, error: err?.message })
       throw createError({
         statusCode: 500,
@@ -117,7 +117,7 @@ export async function fetchGo(event: H3Event, path: string, opts: FetchGoOptions
       const urlObj = new URL(url)
       url = urlObj.toString()
     } catch (urlError) {
-      const err = urlError as Record<string, any>
+      const err = urlError as { message?: string }
       console.error('[fetchGo] Failed to construct URL', {
         base,
         path,
@@ -142,7 +142,7 @@ export async function fetchGo(event: H3Event, path: string, opts: FetchGoOptions
   // Get headers using h3 v2 API - event.req.headers.get() or fallback
   try {
     // Try h3 v2 way: event.req.headers (Headers object)
-    const reqHeaders = (event as any).req?.headers || event.node?.req?.headers
+    const reqHeaders = (event as unknown as { req?: { headers?: Headers | Record<string, string | string[]> } }).req?.headers || event.node?.req?.headers
 
     if (reqHeaders) {
       // Try Headers API (h3 v2)
@@ -179,8 +179,8 @@ export async function fetchGo(event: H3Event, path: string, opts: FetchGoOptions
         }
       }
     }
-  } catch (headerError) {
-    // console.warn('[fetchGo] Failed to get headers:', headerError)
+  } catch (_headerError) {
+    // console.warn('[fetchGo] Failed to get headers:', _headerError)
   }
 
   // Merge with custom headers
@@ -188,7 +188,7 @@ export async function fetchGo(event: H3Event, path: string, opts: FetchGoOptions
     Object.assign(headers, opts.headers)
   }
 
-  let lastError: any = null
+  let lastError: unknown = null
   for (let attempt = 0; attempt <= maxRetry; attempt++) {
     try {
       // console.log('[fetchGo] Attempting request:', { url, method: opts.method || 'GET', headers })
@@ -205,7 +205,7 @@ export async function fetchGo(event: H3Event, path: string, opts: FetchGoOptions
         } else {
           fetchOptions.body = JSON.stringify(opts.body)
           if (!headers['content-type'] && !headers['Content-Type']) {
-            (fetchOptions.headers as any)['content-type'] = 'application/json'
+            (fetchOptions.headers as Record<string, string>)['content-type'] = 'application/json'
           }
         }
       }
@@ -223,7 +223,7 @@ export async function fetchGo(event: H3Event, path: string, opts: FetchGoOptions
       // Forward Set-Cookie headers from Go backend to client
       const setCookieHeader = res.headers.get('set-cookie')
       if (setCookieHeader && event.node?.res) {
-        const nodeRes = event.node.res as any
+        const nodeRes = event.node.res as { appendHeader?: (name: string, value: string) => void; getHeader?: (name: string) => string | string[] | undefined; setHeader?: (name: string, value: string | string[]) => void }
         if (typeof nodeRes.appendHeader === 'function') {
           nodeRes.appendHeader('set-cookie', setCookieHeader)
         } else {
@@ -262,7 +262,7 @@ export async function fetchGo(event: H3Event, path: string, opts: FetchGoOptions
       // console.log('[fetchGo] Success:', { url, responseType: typeof response })
       return response
     } catch (err) {
-      lastError = err as Record<string, any>
+      lastError = err as { code?: string | number; statusCode?: number; status?: number; message?: string; statusMessage?: string; name?: string; cause?: { code?: string; name?: string; message?: string }; response?: { status?: number; _data?: unknown } }
       const e = lastError
       const code = (e?.code || e?.statusCode || '').toString()
       const causeCode = (e?.cause?.code || '').toString()

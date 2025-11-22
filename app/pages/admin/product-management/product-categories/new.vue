@@ -554,7 +554,7 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
           method: 'POST',
           body: payload
         });
-          const createdId = (res && (res.id || (res.data && res.data.id)))
+          const createdId = (res && ((res as { id?: number | string }).id || ((res as { data?: { id?: number | string } }).data && (res as { data: { id?: number | string } }).data.id)))
           // پس از ایجاد، به حالت ویرایش برو
           if(createdId){
             navigateTo(`/admin/product-management/product-categories/${createdId}/edit`)

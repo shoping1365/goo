@@ -40,8 +40,8 @@
           <div 
             class="w-full h-48 rounded-lg flex flex-col items-center justify-center text-white font-bold text-2xl relative overflow-hidden"
             :style="{
-              background: `linear-gradient(135deg, ${card.primaryColor || '#3B82F6'} 0%, ${card.secondaryColor || '#8B5CF6'} 100%)`,
-              fontFamily: getFontFamily(card.font)
+              background: `linear-gradient(135deg, ${String(card.primaryColor || '#3B82F6')} 0%, ${String(card.secondaryColor || '#8B5CF6')} 100%)`,
+              fontFamily: getFontFamily(String(card.font || 'IRANSans'))
             }"
           >
             <!-- پس‌زمینه تزئینی -->
@@ -52,15 +52,15 @@
             
             <!-- محتوای کارت -->
             <div class="text-center z-10">
-              <div class="text-3xl font-bold mb-2">{{ formatCurrency(card.amount) }}</div>
-              <div class="text-lg opacity-90">{{ card.recipientName || 'گیرنده' }}</div>
-              <div class="text-sm opacity-75 mt-2">{{ card.code }}</div>
+              <div class="text-3xl font-bold mb-2">{{ formatCurrency(Number(card.amount ?? 0)) }}</div>
+              <div class="text-lg opacity-90">{{ String(card.recipientName ?? 'گیرنده') }}</div>
+              <div class="text-sm opacity-75 mt-2">{{ String(card.code ?? '') }}</div>
             </div>
             
             <!-- وضعیت کارت -->
             <div class="absolute top-6 left-4">
-              <span :class="getStatusClass(card.status)" class="inline-flex px-2 py-1 text-xs font-semibold rounded-full">
-                {{ getStatusLabel(card.status) }}
+              <span :class="getStatusClass(String(card.status ?? ''))" class="inline-flex px-2 py-1 text-xs font-semibold rounded-full">
+                {{ getStatusLabel(String(card.status ?? '')) }}
               </span>
             </div>
           </div>
@@ -69,11 +69,11 @@
           <div class="mt-4 grid grid-cols-2 gap-6">
             <div class="text-center">
               <div class="text-sm text-gray-500">مبلغ باقی‌مانده</div>
-              <div class="text-lg font-bold text-gray-900">{{ formatCurrency(card.remainingAmount) }}</div>
+              <div class="text-lg font-bold text-gray-900">{{ formatCurrency(Number(card.remainingAmount ?? 0)) }}</div>
             </div>
             <div class="text-center">
               <div class="text-sm text-gray-500">تعداد استفاده</div>
-              <div class="text-lg font-bold text-gray-900">{{ card.usageCount || 0 }} / {{ getUsageLimitText(card.usageLimit) }}</div>
+              <div class="text-lg font-bold text-gray-900">{{ Number(card.usageCount ?? 0) }} / {{ getUsageLimitText(String(card.usageLimit ?? '')) }}</div>
             </div>
           </div>
         </div>
@@ -88,24 +88,24 @@
           <div class="space-y-3">
             <div class="flex justify-between items-center">
               <span class="text-sm text-gray-600">وضعیت:</span>
-              <span :class="getStatusClass(card.status)" class="inline-flex px-2 py-1 text-xs font-semibold rounded-full">
-                {{ getStatusLabel(card.status) }}
+              <span :class="getStatusClass(String(card.status ?? ''))" class="inline-flex px-2 py-1 text-xs font-semibold rounded-full">
+                {{ getStatusLabel(String(card.status ?? '')) }}
               </span>
             </div>
             
             <div class="flex justify-between items-center">
               <span class="text-sm text-gray-600">نوع کارت:</span>
-              <span class="text-sm font-medium text-gray-900">{{ getTypeLabel(card.type) }}</span>
+              <span class="text-sm font-medium text-gray-900">{{ getTypeLabel(String(card.type ?? '')) }}</span>
             </div>
             
             <div class="flex justify-between items-center">
               <span class="text-sm text-gray-600">دسته‌بندی:</span>
-              <span class="text-sm font-medium text-gray-900">{{ getCategoryLabel(card.category) }}</span>
+              <span class="text-sm font-medium text-gray-900">{{ getCategoryLabel(String(card.category ?? '')) }}</span>
             </div>
             
             <div class="flex justify-between items-center">
               <span class="text-sm text-gray-600">روش تحویل:</span>
-              <span class="text-sm font-medium text-gray-900">{{ getDeliveryMethodLabel(card.deliveryMethod) }}</span>
+              <span class="text-sm font-medium text-gray-900">{{ getDeliveryMethodLabel(String(card.deliveryMethod ?? '')) }}</span>
             </div>
           </div>
         </div>
@@ -117,17 +117,17 @@
           <div class="space-y-3">
             <div class="flex justify-between items-center">
               <span class="text-sm text-gray-600">مبلغ اصلی:</span>
-              <span class="text-sm font-medium text-gray-900">{{ formatCurrency(card.amount) }}</span>
+              <span class="text-sm font-medium text-gray-900">{{ formatCurrency(Number(card.amount ?? 0)) }}</span>
             </div>
             
             <div class="flex justify-between items-center">
               <span class="text-sm text-gray-600">مبلغ باقی‌مانده:</span>
-              <span class="text-sm font-medium text-gray-900">{{ formatCurrency(card.remainingAmount) }}</span>
+              <span class="text-sm font-medium text-gray-900">{{ formatCurrency(Number(card.remainingAmount ?? 0)) }}</span>
             </div>
             
             <div class="flex justify-between items-center">
               <span class="text-sm text-gray-600">مبلغ استفاده شده:</span>
-              <span class="text-sm font-medium text-gray-900">{{ formatCurrency(card.amount - card.remainingAmount) }}</span>
+              <span class="text-sm font-medium text-gray-900">{{ formatCurrency((Number(card.amount ?? 0)) - (Number(card.remainingAmount ?? 0))) }}</span>
             </div>
             
             <div class="flex justify-between items-center">
@@ -161,12 +161,12 @@
         
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">تاریخ تحویل</label>
-          <p class="text-sm text-gray-900">{{ formatDate(card.deliveryDate) || 'تعیین نشده' }}</p>
+          <p class="text-sm text-gray-900">{{ formatDate(String(card.deliveryDate ?? '')) || 'تعیین نشده' }}</p>
         </div>
         
         <div class="md:col-span-2">
           <label class="block text-sm font-medium text-gray-700 mb-2">پیام شخصی</label>
-          <p class="text-sm text-gray-900 bg-gray-50 p-3 rounded-md">{{ card.personalMessage || 'پیام شخصی وجود ندارد' }}</p>
+          <p class="text-sm text-gray-900 bg-gray-50 p-3 rounded-md">{{ String(card.personalMessage ?? 'پیام شخصی وجود ندارد') }}</p>
         </div>
       </div>
     </div>
@@ -178,35 +178,35 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">محدودیت استفاده</label>
-          <p class="text-sm text-gray-900">{{ getUsageLimitText(card.usageLimit) }}</p>
+          <p class="text-sm text-gray-900">{{ getUsageLimitText(String(card.usageLimit ?? '')) }}</p>
         </div>
         
-        <div v-if="card.usageLimit === 'multiple'">
+        <div v-if="String(card.usageLimit ?? '') === 'multiple'">
           <label class="block text-sm font-medium text-gray-700 mb-2">حداکثر تعداد استفاده</label>
-          <p class="text-sm text-gray-900">{{ card.maxUsageCount || 'نامحدود' }}</p>
+          <p class="text-sm text-gray-900">{{ Number(card.maxUsageCount ?? 0) || 'نامحدود' }}</p>
         </div>
         
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">حداقل مبلغ سفارش</label>
-          <p class="text-sm text-gray-900">{{ card.minOrderAmount ? formatCurrency(card.minOrderAmount) : 'بدون محدودیت' }}</p>
+          <p class="text-sm text-gray-900">{{ card.minOrderAmount ? formatCurrency(Number(card.minOrderAmount ?? 0)) : 'بدون محدودیت' }}</p>
         </div>
         
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">حداکثر مبلغ سفارش</label>
-          <p class="text-sm text-gray-900">{{ card.maxOrderAmount ? formatCurrency(card.maxOrderAmount) : 'بدون محدودیت' }}</p>
+          <p class="text-sm text-gray-900">{{ card.maxOrderAmount ? formatCurrency(Number(card.maxOrderAmount ?? 0)) : 'بدون محدودیت' }}</p>
         </div>
         
         <div class="md:col-span-2">
           <label class="block text-sm font-medium text-gray-700 mb-2">دسته‌بندی‌های مجاز</label>
           <div class="flex flex-wrap gap-2">
             <span 
-              v-for="category in card.allowedCategories" 
-              :key="category"
+              v-for="category in (Array.isArray(card.allowedCategories) ? (card.allowedCategories as Array<unknown>) : [])" 
+              :key="String(category)"
               class="inline-flex px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full"
             >
-              {{ getCategoryLabel(category) }}
+              {{ getCategoryLabel(String(category)) }}
             </span>
-            <span v-if="!card.allowedCategories || card.allowedCategories.length === 0" class="text-sm text-gray-500">
+            <span v-if="!Array.isArray(card.allowedCategories) || (Array.isArray(card.allowedCategories) && (card.allowedCategories as Array<unknown>).length === 0)" class="text-sm text-gray-500">
               همه دسته‌بندی‌ها مجاز
             </span>
           </div>
@@ -221,7 +221,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="flex items-center">
           <input
-            :checked="card.requiresApproval"
+            :checked="Boolean(card.requiresApproval)"
             type="checkbox"
             disabled
             class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
@@ -231,7 +231,7 @@
         
         <div class="flex items-center">
           <input
-            :checked="card.isActive"
+            :checked="Boolean(card.isActive)"
             type="checkbox"
             disabled
             class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
@@ -241,12 +241,12 @@
         
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">کد امنیتی</label>
-          <p class="text-sm text-gray-900 font-mono">{{ card.securityCode || 'تعیین نشده' }}</p>
+          <p class="text-sm text-gray-900 font-mono">{{ String(card.securityCode ?? 'تعیین نشده') }}</p>
         </div>
         
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">آخرین بررسی امنیتی</label>
-          <p class="text-sm text-gray-900">{{ formatDate(card.lastSecurityCheck) || 'انجام نشده' }}</p>
+          <p class="text-sm text-gray-900">{{ formatDate(String(card.lastSecurityCheck ?? '')) || 'انجام نشده' }}</p>
         </div>
       </div>
     </div>
@@ -255,22 +255,22 @@
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
       <h3 class="text-lg font-medium text-gray-900 mb-4">تاریخچه استفاده</h3>
       
-      <div v-if="card.usageHistory && card.usageHistory.length > 0" class="space-y-4">
+      <div v-if="Array.isArray(card.usageHistory) && (card.usageHistory as Array<unknown>).length > 0" class="space-y-4">
         <div 
-          v-for="usage in card.usageHistory" 
-          :key="usage.id"
+          v-for="(usage, idx) in (Array.isArray(card.usageHistory) ? (card.usageHistory as Array<Record<string, unknown>>) : [])" 
+          :key="String(usage.id ?? idx)"
           class="border border-gray-200 rounded-lg p-6"
         >
           <div class="flex justify-between items-start">
             <div>
-              <div class="text-sm font-medium text-gray-900">{{ usage.orderNumber }}</div>
-              <div class="text-sm text-gray-500">{{ usage.userName }} ({{ usage.userEmail }})</div>
-              <div class="text-sm text-gray-500">{{ formatDate(usage.usedAt) }}</div>
+              <div class="text-sm font-medium text-gray-900">{{ String(usage.orderNumber ?? '') }}</div>
+              <div class="text-sm text-gray-500">{{ String(usage.userName ?? '') }} ({{ String(usage.userEmail ?? '') }})</div>
+              <div class="text-sm text-gray-500">{{ formatDate(String(usage.usedAt ?? '')) }}</div>
             </div>
             <div class="text-right">
-              <div class="text-sm font-medium text-gray-900">{{ formatCurrency(usage.amount) }}</div>
-              <span :class="getUsageStatusClass(usage.status)" class="inline-flex px-2 py-1 text-xs font-semibold rounded-full">
-                {{ getUsageStatusLabel(usage.status) }}
+              <div class="text-sm font-medium text-gray-900">{{ formatCurrency(Number(usage.amount ?? 0)) }}</div>
+              <span :class="getUsageStatusClass(String(usage.status ?? ''))" class="inline-flex px-2 py-1 text-xs font-semibold rounded-full">
+                {{ getUsageStatusLabel(String(usage.status ?? '')) }}
               </span>
             </div>
           </div>
@@ -294,22 +294,22 @@
         <div class="space-y-3">
           <div class="flex justify-between items-center">
             <span class="text-sm text-gray-600">تاریخ ایجاد:</span>
-            <span class="text-sm font-medium text-gray-900">{{ formatDate(card.createdAt) }}</span>
+            <span class="text-sm font-medium text-gray-900">{{ formatDate(String(card.createdAt ?? '')) }}</span>
           </div>
           
           <div class="flex justify-between items-center">
             <span class="text-sm text-gray-600">تاریخ انقضا:</span>
-            <span class="text-sm font-medium text-gray-900">{{ formatDate(card.expiresAt) }}</span>
+            <span class="text-sm font-medium text-gray-900">{{ formatDate(String(card.expiresAt ?? '')) }}</span>
           </div>
           
           <div class="flex justify-between items-center">
             <span class="text-sm text-gray-600">تاریخ تحویل:</span>
-            <span class="text-sm font-medium text-gray-900">{{ formatDate(card.deliveryDate) }}</span>
+            <span class="text-sm font-medium text-gray-900">{{ formatDate(String(card.deliveryDate ?? '')) }}</span>
           </div>
           
           <div class="flex justify-between items-center">
             <span class="text-sm text-gray-600">آخرین استفاده:</span>
-            <span class="text-sm font-medium text-gray-900">{{ formatDate(card.lastUsedAt) || 'استفاده نشده' }}</span>
+            <span class="text-sm font-medium text-gray-900">{{ formatDate(String(card.lastUsedAt ?? '')) || 'استفاده نشده' }}</span>
           </div>
         </div>
       </div>
@@ -323,19 +323,19 @@
             <span class="text-sm font-medium text-gray-900">{{ card.usageCount || 0 }}</span>
           </div>
           
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-gray-600">میانگین مبلغ استفاده:</span>
-            <span class="text-sm font-medium text-gray-900">{{ formatCurrency(card.avgUsageAmount || 0) }}</span>
-          </div>
-          
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-gray-600">بیشترین مبلغ استفاده:</span>
-            <span class="text-sm font-medium text-gray-900">{{ formatCurrency(card.maxUsageAmount || 0) }}</span>
-          </div>
-          
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-gray-600">آخرین مبلغ استفاده:</span>
-            <span class="text-sm font-medium text-gray-900">{{ formatCurrency(card.lastUsageAmount || 0) }}</span>
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-gray-600">میانگین مبلغ استفاده:</span>
+              <span class="text-sm font-medium text-gray-900">{{ formatCurrency(Number(card.avgUsageAmount ?? 0)) }}</span>
+            </div>
+            
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-gray-600">بیشترین مبلغ استفاده:</span>
+              <span class="text-sm font-medium text-gray-900">{{ formatCurrency(Number(card.maxUsageAmount ?? 0)) }}</span>
+            </div>
+            
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-gray-600">آخرین مبلغ استفاده:</span>
+              <span class="text-sm font-medium text-gray-900">{{ formatCurrency(Number(card.lastUsageAmount ?? 0)) }}</span>
           </div>
         </div>
       </div>
@@ -484,9 +484,11 @@ const getUsageLimitText = (limit: string) => {
 }
 
 const getUsagePercentage = () => {
-  if (!card.value.amount || !card.value.remainingAmount) return 0
-  const used = card.value.amount - card.value.remainingAmount
-  return Math.round((used / card.value.amount) * 100)
+  const amount = Number(card.value.amount ?? 0)
+  const remainingAmount = Number(card.value.remainingAmount ?? 0)
+  if (amount === 0) return 0
+  const used = amount - remainingAmount
+  return Math.round((used / amount) * 100)
 }
 
 const getFontFamily = (font: string) => {

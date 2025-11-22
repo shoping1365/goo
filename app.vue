@@ -8,7 +8,7 @@
 // Filter out Nuxt HMR router warnings in development
 if (process.dev && process.client) {
   const originalWarn = console.warn
-  console.warn = (...args: any[]) => {
+  console.warn = (...args: unknown[]) => {
     const message = args[0]
     if (typeof message === 'string' && message.includes('No match found for location with path "/_nuxt/')) {
       return

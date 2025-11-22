@@ -12,7 +12,6 @@ export default defineEventHandler(async (event): Promise<MobileAppHeaderUploadRe
      try {
           const config = useRuntimeConfig()
 
-          console.log('درخواست آپلود لوگو هدر موبایل')
 
           // دریافت cookies از درخواست
           const cookies = parseCookies(event)
@@ -62,7 +61,6 @@ export default defineEventHandler(async (event): Promise<MobileAppHeaderUploadRe
 
           const responseData = await response.json()
 
-          console.log('پاسخ آپلود لوگو هدر موبایل:', responseData)
 
           return {
                success: true,

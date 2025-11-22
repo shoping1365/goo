@@ -3,7 +3,7 @@ import { useRuntimeConfig } from '#imports'
 
 interface ProductResponse {
      success: boolean
-     data: any
+     data: unknown
 }
 
 export default defineEventHandler(async (event): Promise<ProductResponse> => {
@@ -12,7 +12,6 @@ export default defineEventHandler(async (event): Promise<ProductResponse> => {
           const body = await readBody(event)
           const config = useRuntimeConfig()
 
-          console.log('درخواست به‌روزرسانی محصول:', id, JSON.stringify(body, null, 2))
 
           // دریافت cookies از درخواست
           const cookies = parseCookies(event)
@@ -36,14 +35,13 @@ export default defineEventHandler(async (event): Promise<ProductResponse> => {
 
           const responseData = await response.json()
 
-          console.log('پاسخ به‌روزرسانی محصول:', responseData)
 
           return {
                success: true,
                data: responseData?.data || responseData
           }
 
-     } catch (error: any) {
+     } catch (error: unknown) {
           console.error('خطا در به‌روزرسانی محصول:', error)
 
           // اگر خطا از سرور Go آمده باشد

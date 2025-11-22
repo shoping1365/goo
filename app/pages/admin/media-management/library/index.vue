@@ -500,6 +500,7 @@ interface MediaFile {
   caption?: string
   mime_type?: string
   author?: string
+  [key: string]: unknown
   category: string
   uploader_name?: string
   uploader_username?: string
@@ -748,8 +749,8 @@ const fetchMediaList = async () => {
           }
         } else {
           // آیتم از جدول media_files
-          const mime = (item.mime_type || item.file_type || '').toLowerCase()
-          let ext = (mime.split('/').pop() || item.extension || '').toLowerCase()
+          const mime = String(item.mime_type || item.file_type || '').toLowerCase()
+          let ext = (mime.split('/').pop() || String(item.extension || '')).toLowerCase()
           if (!ext) {
             const m = publicPath.match(/\.([a-z0-9]+)(?:\?|#|$)/i)
             if (m) ext = m[1].toLowerCase()
@@ -815,8 +816,8 @@ const fetchMediaList = async () => {
           }
         }
         // MIME/Extension detection
-        const mime = (item.mime_type || item.file_type || '').toLowerCase()
-        let ext = (mime.split('/').pop() || item.extension || '').toLowerCase()
+        const mime = String(item.mime_type || item.file_type || '').toLowerCase()
+        let ext = (mime.split('/').pop() || String(item.extension || '')).toLowerCase()
         if (!ext) {
           const m = publicPath.match(/\.([a-z0-9]+)(?:\?|#|$)/i)
           if (m) ext = m[1].toLowerCase()

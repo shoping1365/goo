@@ -152,7 +152,8 @@ const roleHasPermission = (roleId: string, permId: string): boolean => {
 const togglePermission = (roleId: string, permId: string, event: Event) => {
   const perms = rolePermissions.value.get(roleId)
   if (perms) {
-    if (event.target.checked) {
+    const target = event.target as HTMLInputElement
+    if (target.checked) {
       perms.add(permId)
     } else {
       perms.delete(permId)

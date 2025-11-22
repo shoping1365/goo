@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
 
      try {
           return await tryProxy('/api/admin/wordpress-migration/abort')
-     } catch (e: any) {
+     } catch (e: unknown) {
           const status = e?.statusCode || e?.status
           if (status === 401 || status === 403 || status === 404) {
                return await tryProxy('/admin/wordpress-migration/abort')

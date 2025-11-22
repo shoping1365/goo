@@ -32,6 +32,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+
 // کامپوننت کارت آماری با استایل‌های پیش‌فرض زیبا
 // props:
 // - title: عنوان کارت

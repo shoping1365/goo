@@ -41,7 +41,6 @@ export default defineEventHandler(async (event): Promise<{ success: boolean; dat
 
           const response = await fetchResponse.json() as NavigationData
 
-          console.log('Go API response:', response)
 
           return {
                success: true,

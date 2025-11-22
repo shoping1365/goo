@@ -313,7 +313,7 @@
 <script setup lang="ts">
 // Vue composables
 import { computed, ref, watch } from 'vue'
-import type { BannerConfig } from '~/types/widget'
+import type { BannerConfig, BannerItem as BannerItemType } from '~/types/widget'
 
 // Props
 interface Props {
@@ -370,12 +370,7 @@ const _desktopBanners = computed(() => (localBannerConfig.value?.banners ?? []))
 const mobileBanners = computed(() => (localBannerConfig.value?.mobile_banners ?? []))
 
 // Helper functions for image handling
-interface BannerItem {
-  image?: string
-  mobile_image?: string
-  [key: string]: unknown
-}
-const getMobileImageUrl = (banner: BannerItem) => {
+const getMobileImageUrl = (banner: BannerItemType & { [key: string]: unknown }) => {
   // این تابع فقط برای پیش‌نمایش موبایل استفاده میشه
   // اگر عکس موبایل وجود دارد، استفاده کن
   if (banner.mobile_image) {

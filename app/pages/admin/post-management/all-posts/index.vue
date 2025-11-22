@@ -684,14 +684,14 @@ v-for="item in bulkActions" :key="item.value" type="button" class="w-full text-r
                   <h4 class="font-medium text-gray-900 mb-1">{{ session.title }}</h4>
                   <div class="flex items-center gap-6 text-sm text-gray-500">
                     <span>{{ session.model }}</span>
-                    <span>{{ session.message_count }} پیام</span>
-                    <span>{{ formatDate(session.updated_at) }}</span>
+                    <span>{{ (session.message_count as number) || 0 }} پیام</span>
+                    <span>{{ formatDate((session.updated_at as string) || '') }}</span>
                   </div>
                 </div>
                 <button 
                   class="p-1 hover:bg-red-100 rounded text-red-600 hover:text-red-700 transition-colors"
                   title="حذف"
-                  @click.stop="deleteSession(session.id)"
+                  @click.stop="deleteSession(String(session.id))"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -916,10 +916,13 @@ interface ChatSession {
   title?: string
   model?: string
   messages?: ChatMessage[]
+  message_count?: number
+  updated_at?: string
   session?: {
     messages?: ChatMessage[]
     model?: string
   }
+  [key: string]: unknown
 }
 
 interface ChatMessage {
@@ -946,11 +949,15 @@ interface APISettingsResponse {
   openai?: {
     api_key?: string
     enabled?: boolean
+    available_models?: Array<{ id: string; name?: string; [key: string]: unknown }>
+    [key: string]: unknown
   }
   data?: {
     openai?: {
       api_key?: string
       enabled?: boolean
+      available_models?: Array<{ id: string; name?: string; [key: string]: unknown }>
+      [key: string]: unknown
     }
   }
 }
@@ -1044,13 +1051,14 @@ const fetchAvailableModels = async () => {
     })
     
     const settings = apiSettings as APISettingsResponse
-    if (settings?.openai?.available_models) {
+    const openaiSettings = (settings?.openai || settings?.data?.openai) as { available_models?: Array<{ id: string; name?: string; [key: string]: unknown }>; [key: string]: unknown } | undefined
+    if (openaiSettings?.available_models) {
       interface AIModel {
         id: string
         name: string
         [key: string]: unknown
       }
-      availableModels.value = (settings.openai.available_models as AIModel[]).map((model: AIModel) => ({
+      availableModels.value = (openaiSettings.available_models as AIModel[]).map((model: AIModel) => ({
         id: model.id,
         name: model.name
       }))
@@ -1518,7 +1526,7 @@ const _saveChatHistory = async () => {
         }
       })
       const createResponse = response as CreateSessionResponse
-      currentSessionId.value = createResponse.id
+      currentSessionId.value = String(createResponse.id)
     }
     
     // ذخیره پیام‌ها
@@ -1543,7 +1551,7 @@ const loadSession = async (session: ChatSession) => {
     const response = await $fetch<ChatSession>(`/api/admin/chat/sessions/${session.id}`)
     messages.value = response.session.messages || []
     aiSettings.value.model = response.session.model
-    currentSessionId.value = session.id
+    currentSessionId.value = String(session.id)
     showChatHistory.value = false
     
 

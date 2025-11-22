@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
         refID: refId, // در ملت از refId استفاده می‌شود
         amount
       }
-    }) as any
+    }) as { data?: unknown }
 
     return {
       success: true,
@@ -36,12 +36,12 @@ export default defineEventHandler(async (event) => {
       message: 'بازگشت وجه ملت با موفقیت انجام شد'
     }
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در بازگشت وجه ملت:', error)
     
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.message || error.statusMessage || 'خطا در بازگشت وجه ملت'
+      statusCode: (error as { statusCode?: number }).statusCode || 500,
+      message: (error as { message?: string; statusMessage?: string }).message || (error as { message?: string; statusMessage?: string }).statusMessage || 'خطا در بازگشت وجه ملت'
     })
   }
 }) 

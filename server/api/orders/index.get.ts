@@ -22,17 +22,12 @@ interface OrderRow {
 
 export default defineEventHandler(async (event: H3Event) => {
   try {
-    console.log('[orders.index] شروع واکشی سفارش‌ها')
-
     const user = await requireAuth(event)
     event.context.user = user
     const userId = user.id
 
-    console.log('[orders.index] شناسه کاربر احراز شده:', { id: userId })
-
     // اتصال به پایگاه‌داده
     const db = await getDatabase()
-    console.log('[orders.index] اتصال به پایگاه‌داده موفق بود')
 
     // اجرای کوئری سفارش‌ها از پایگاه‌داده
     const ordersResult = await db.query(`
@@ -59,7 +54,6 @@ export default defineEventHandler(async (event: H3Event) => {
     `, [userId])
     const orders = ordersResult as unknown as OrderRow[]
 
-    console.log('[orders.index] تعداد ردیف‌های بازیابی‌شده:', orders.length)
 
     // ساخت Map برای گروه‌بندی سفارش‌ها
     const ordersMap = new Map()
@@ -94,7 +88,6 @@ export default defineEventHandler(async (event: H3Event) => {
     // تبدیل Map به آرایه نهایی
     const formattedOrders = Array.from(ordersMap.values())
 
-    console.log('[orders.index] تعداد سفارش‌ها پس از گروه‌بندی:', formattedOrders.length)
 
     return {
       success: true,

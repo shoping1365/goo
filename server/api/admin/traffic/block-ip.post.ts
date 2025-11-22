@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
     })
 
     return response
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در مسدود کردن IP:', error)
     throw createError({ statusCode: 500, message: 'خطا در مسدود کردن IP' })
   }

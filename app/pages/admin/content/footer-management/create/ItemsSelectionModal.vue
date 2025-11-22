@@ -194,9 +194,17 @@ const isItemSelected = inject<(id: string) => boolean>('isItemSelected')
 const newLayer = inject<Ref<Layer> | Layer>('newLayer')
 const availableItems = inject<Ref<FooterItem[]> | FooterItem[]>('availableItems')
 
+// Menu interface
+interface Menu {
+  id: number | string
+  title?: string
+  name?: string
+  [key: string]: unknown
+}
+
 // Local state for menu chooser
 const showMenuChooser = ref(false)
-const menus = ref<unknown[]>([])
+const menus = ref<Menu[]>([])
 const selectedMenuIds = ref<string[]>([])
 const pendingMenuItem = ref<unknown>(null)
 
@@ -355,11 +363,12 @@ const confirmTrustBadges = () => {
 async function fetchMenus() {
   try {
     // call admin menus endpoint
-  const res: unknown = await $fetch('/api/admin/menus').catch(() => null)
+    const res: unknown = await $fetch('/api/admin/menus').catch(() => null)
     if (!res) return
     // handle different shapes
-    const r = res as { data?: unknown[], menus?: unknown[] }
-    menus.value = (r.data || r.menus || res || []) as unknown[]
+    const r = res as { data?: Menu[], menus?: Menu[] }
+    const menuData = (r.data || r.menus || (Array.isArray(res) ? res : [])) as Menu[]
+    menus.value = menuData.filter((m): m is Menu => m && (typeof m.id === 'number' || typeof m.id === 'string'))
   } catch (_e) {
     // console.error('خطا در بارگذاری منوها:', e)
     menus.value = []
@@ -393,9 +402,12 @@ function handleItemClick(item: FooterItem) {
     } else if (newLayer) {
       const layerState = resolveLayerState()
       if (layerState && layerState.items) {
-        const exists = layerState.items.some((it: LayerItem) => 
-          (typeof it === 'object' && it.id === 'menu') || it === 'menu'
-        )
+        const exists = layerState.items.some((it: LayerItem) => {
+          if (typeof it === 'string') {
+            return it === 'menu'
+          }
+          return typeof it === 'object' && it && String(it.id) === 'menu'
+        })
         if (!exists) {
           layerState.items.push({ 
             id: 'menu', 
@@ -432,9 +444,12 @@ function handleItemClick(item: FooterItem) {
       const layerState = resolveLayerState()
       if (layerState && layerState.items) {
         // اگر قبلاً اضافه نشده، آیتم trust با props پیش‌فرض اضافه می‌شود
-        const exists = layerState.items.some((it: LayerItem) => 
-          (typeof it === 'object' && it.id === 'trust') || it === 'trust'
-        )
+        const exists = layerState.items.some((it: LayerItem) => {
+          if (typeof it === 'string') {
+            return it === 'trust'
+          }
+          return typeof it === 'object' && it && String(it.id) === 'trust'
+        })
         if (!exists) {
           layerState.items.push({ 
             id: 'trust', 

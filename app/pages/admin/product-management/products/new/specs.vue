@@ -402,7 +402,7 @@ interface NuxtApp {
   [key: string]: unknown
 }
 
-const nuxtApp = useNuxtApp() as NuxtApp
+const nuxtApp = useNuxtApp() as unknown as NuxtApp
 const api = nuxtApp.$api
 const pStore = useProductCreateStore()
 const notifier = useNotifier()
@@ -504,10 +504,11 @@ async function fetchAttributeGroups() {
       params: { category_id: categoryId, per_page: 200 }
     })
 
-    if (res && res.data) {
-      attributeGroups.value = res.data
-    } else if (Array.isArray(res)) {
-      attributeGroups.value = res
+    const response = res as { data?: AttributeGroup[] } | AttributeGroup[]
+    if (response && typeof response === 'object' && 'data' in response && Array.isArray(response.data)) {
+      attributeGroups.value = response.data as AttributeGroup[]
+    } else if (Array.isArray(response)) {
+      attributeGroups.value = response as AttributeGroup[]
     } else {
       attributeGroups.value = []
     }

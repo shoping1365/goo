@@ -197,6 +197,7 @@ const _handleCertificateClick = (_cert: Certificate) => {
   // اینجا می‌توانید عملیات مورد نظر را انجام دهید
 
 }
+const handleCertificateClick = _handleCertificateClick
 
 // تبدیل متن وضعیت
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

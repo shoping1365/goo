@@ -53,6 +53,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { definePageMeta } from '#imports'
 // ایمپورت تمام کامپوننت‌ها
 import ContentManagement from './components/ContentManagement.vue'
 import LoyaltyDashboard from './components/LoyaltyDashboard.vue'

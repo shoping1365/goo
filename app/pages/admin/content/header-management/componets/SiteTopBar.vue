@@ -26,6 +26,7 @@
 
 <script setup lang="ts">
 import CartBadge from '~/components/cart/CartBadge.vue';
+import { useAuth } from '~/composables/useAuth';
 const { user, isAuthenticated } = useAuth()
 </script> 
 

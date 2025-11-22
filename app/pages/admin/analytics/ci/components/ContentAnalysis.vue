@@ -167,64 +167,64 @@
           <div class="flex items-start space-x-3 space-x-reverse mb-3">
             <div class="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0">
               <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path v-if="content.type === 'blog'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                <path v-else-if="content.type === 'video'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                <path v-else-if="content.type === 'podcast'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                <path v-if="contentItem.type === 'blog'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                <path v-else-if="contentItem.type === 'video'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                <path v-else-if="contentItem.type === 'podcast'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
                 <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
               </svg>
             </div>
             <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-gray-900">{{ content.title }}</p>
-              <p class="text-xs text-gray-500">{{ getContentTypeName(content.type) }} • {{ formatDate(content.date) }}</p>
+              <p class="text-sm font-medium text-gray-900">{{ contentItem.title }}</p>
+              <p class="text-xs text-gray-500">{{ getContentTypeName(contentItem.type) }} • {{ formatDate(contentItem.date) }}</p>
               <div class="flex items-center space-x-2 space-x-reverse mt-1">
-                <span class="text-xs text-gray-600">{{ content.author }}</span>
-                <span v-if="content.isFeatured" class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full">
+                <span class="text-xs text-gray-600">{{ contentItem.author }}</span>
+                <span v-if="contentItem.isFeatured" class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full">
                   ویژه
                 </span>
               </div>
             </div>
             <span
 :class="[
-              content.performance === 'excellent' ? 'bg-green-100 text-green-800' :
-              content.performance === 'good' ? 'bg-blue-100 text-blue-800' :
-              content.performance === 'fair' ? 'bg-yellow-100 text-yellow-800' :
+              contentItem.performance === 'excellent' ? 'bg-green-100 text-green-800' :
+              contentItem.performance === 'good' ? 'bg-blue-100 text-blue-800' :
+              contentItem.performance === 'fair' ? 'bg-yellow-100 text-yellow-800' :
               'bg-red-100 text-red-800',
               'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium'
             ]">
-              {{ getPerformanceText(content.performance) }}
+              {{ getPerformanceText(contentItem.performance) }}
             </span>
           </div>
           
           <div class="grid grid-cols-2 gap-2 text-center mb-3">
             <div class="bg-white rounded p-2">
               <p class="text-xs text-gray-500">بازدید</p>
-              <p class="text-sm font-semibold text-gray-900">{{ formatNumber(content.views) }}</p>
+              <p class="text-sm font-semibold text-gray-900">{{ formatNumber(contentItem.views) }}</p>
             </div>
             <div class="bg-white rounded p-2">
               <p class="text-xs text-gray-500">زمان حضور</p>
-              <p class="text-sm font-semibold text-gray-900">{{ content.timeOnPage }} دقیقه</p>
+              <p class="text-sm font-semibold text-gray-900">{{ contentItem.timeOnPage }} دقیقه</p>
             </div>
           </div>
           
           <div class="space-y-2 text-xs">
             <div class="flex justify-between">
               <span class="text-gray-500">کلمات کلیدی:</span>
-              <span class="text-gray-900">{{ content.keywords.join(', ') }}</span>
+              <span class="text-gray-900">{{ contentItem.keywords.join(', ') }}</span>
             </div>
             <div class="flex justify-between">
               <span class="text-gray-500">نرخ تعامل:</span>
-              <span class="font-medium text-blue-600">{{ content.engagementRate }}%</span>
+              <span class="font-medium text-blue-600">{{ contentItem.engagementRate }}%</span>
             </div>
             <div class="flex justify-between">
               <span class="text-gray-500">وضعیت SEO:</span>
               <span
 :class="[
-                content.seoScore >= 80 ? 'text-green-600' :
-                content.seoScore >= 60 ? 'text-yellow-600' :
+                contentItem.seoScore >= 80 ? 'text-green-600' :
+                contentItem.seoScore >= 60 ? 'text-yellow-600' :
                 'text-red-600',
                 'font-medium'
               ]">
-                {{ content.seoScore }}/100
+                {{ contentItem.seoScore }}/100
               </span>
             </div>
           </div>
@@ -302,6 +302,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from 'vue'
+
 // متغیرهای reactive
 const selectedContentType = ref('all')
 const contentSearch = ref('')

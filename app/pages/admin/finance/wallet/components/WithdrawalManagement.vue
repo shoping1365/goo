@@ -179,8 +179,8 @@ type="text" placeholder="شماره درخواست یا نام کاربر"
               <td class="px-4 py-3">
                 <div class="flex space-x-2 space-x-reverse">
                   <button class="text-blue-600 hover:text-blue-800 text-sm">جزئیات</button>
-                  <button v-if="withdrawal.status === 'new' || withdrawal.status === 'در انتظار تأیید'" class="text-green-600 hover:text-green-800 text-sm" @click="updateStatus(withdrawal.id, 'success')">تأیید</button>
-                  <button v-if="withdrawal.status === 'new' || withdrawal.status === 'در انتظار تأیید'" class="text-red-600 hover:text-red-800 text-sm" @click="updateStatus(withdrawal.id, 'failed')">رد</button>
+                  <button v-if="withdrawal.status === 'new' || withdrawal.status === 'در انتظار تأیید'" class="text-green-600 hover:text-green-800 text-sm" @click="updateStatus(Number(withdrawal.id), 'success')">تأیید</button>
+                  <button v-if="withdrawal.status === 'new' || withdrawal.status === 'در انتظار تأیید'" class="text-red-600 hover:text-red-800 text-sm" @click="updateStatus(Number(withdrawal.id), 'failed')">رد</button>
                 </div>
               </td>
             </tr>
@@ -325,7 +325,12 @@ const { data: txs, refresh } = await useFetch('/api/admin/wallet/transactions', 
 const { data: _summary } = await useFetch('/api/admin/wallet/summary', { method:'GET', credentials:'include', key:'admin-wallet-summary', defaultCache:true })
 interface TransactionItem {
   id?: number | string
-  amount?: number
+  amount?: number | string
+  username?: string | number
+  user_id?: string | number
+  email?: string
+  created_at?: string
+  status?: string
   [key: string]: unknown
 }
 interface TransactionsResponse {
@@ -338,13 +343,13 @@ watchEffect(()=>{
     withdrawals.value = res.items.map((r: TransactionItem)=>({
       id: r.id,
       requestId: r.id,
-      userName: r.username || r.user_id,
-      userEmail: r.email || '-',
-      userInitials: (r.username || '-').slice(0,2),
+      userName: (r.username || r.user_id || '-') as string | number,
+      userEmail: (r.email || '-') as string,
+      userInitials: String(r.username || '-').slice(0, 2),
       amount: Number(r.amount||0),
       bankName: '-',
       accountNumber: '-',
-      requestDate: r.created_at,
+      requestDate: (r.created_at || '') as string,
       status: r.status === 'success' ? 'تأیید شده' : (r.status==='pending' ? 'در انتظار تأیید' : (r.status==='failed' ? 'رد شده' : 'جدید'))
     }))
     // آمار ساده از لیست

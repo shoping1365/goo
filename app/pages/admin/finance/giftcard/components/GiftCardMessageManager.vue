@@ -654,14 +654,34 @@ const closeModal = () => {
 }
 
 const handleMessageCreated = (message: Message) => {
-  customMessages.value.unshift(message)
+  const messageData = {
+    id: message.id || Date.now(),
+    title: String(message.title || ''),
+    content: String(message.content || ''),
+    category: String(message.category || ''),
+    status: String(message.status || 'active'),
+    usageCount: Number(message.usageCount || 0),
+    createdAt: message.createdAt instanceof Date ? message.createdAt : new Date(),
+    createdBy: String(message.createdBy || 'کاربر فعلی')
+  } as typeof customMessages.value[0]
+  customMessages.value.unshift(messageData)
   closeModal()
 }
 
 const handleMessageUpdated = (message: Message) => {
   const index = customMessages.value.findIndex(m => m.id === message.id)
   if (index > -1) {
-    customMessages.value[index] = message
+    const messageData = {
+      id: message.id,
+      title: String(message.title || ''),
+      content: String(message.content || ''),
+      category: String(message.category || ''),
+      status: String(message.status || 'active'),
+      usageCount: Number(message.usageCount || 0),
+      createdAt: message.createdAt instanceof Date ? message.createdAt : new Date(),
+      createdBy: String(message.createdBy || 'کاربر فعلی')
+    } as typeof customMessages.value[0]
+    customMessages.value[index] = messageData
   }
   closeModal()
 }

@@ -203,7 +203,7 @@ const selectedLevel = ref('')
 
 // مودال ویدیو
 const showVideoModal = ref(false)
-const selectedVideo = ref(null)
+const selectedVideo = ref<SelectedVideo | null>(null)
 
 // ویدیوهای پیشنهادی
 const featuredVideos = ref([
@@ -319,7 +319,7 @@ const getCategoryLabel = (category: string) => {
   return labels[category] || category
 }
 
-interface Video {
+interface SelectedVideo {
   id: number | string
   title?: string
   url?: string
@@ -327,7 +327,7 @@ interface Video {
 }
 
 // پخش ویدیو
-const playVideo = (video: Video) => {
+const playVideo = (video: SelectedVideo) => {
   selectedVideo.value = video
   showVideoModal.value = true
 }

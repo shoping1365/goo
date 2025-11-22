@@ -124,8 +124,14 @@ interface Coupon {
 }
 
 interface Campaign {
-  id?: number | string
-  name?: string
+  id?: number
+  name: string
+  type: string
+  description: string
+  startsAt: string
+  endsAt: string
+  budget: number
+  status: string
   [key: string]: unknown
 }
 
@@ -139,7 +145,18 @@ function handleCouponSave(coupon: Coupon) {
 
 // مدیریت ذخیره کمپین
 function handleCampaignSave(campaign: Campaign) {
-
+  // Ensure campaign matches the expected interface
+  const campaignData: Campaign = {
+    id: campaign.id,
+    name: String(campaign.name || ''),
+    type: String(campaign.type || ''),
+    description: String(campaign.description || ''),
+    startsAt: String(campaign.startsAt || ''),
+    endsAt: String(campaign.endsAt || ''),
+    budget: Number(campaign.budget || 0),
+    status: String(campaign.status || 'draft'),
+    ...campaign
+  }
   showCampaignForm.value = false
   editingCampaign.value = null
   // TODO: فراخوانی API برای ذخیره کمپین

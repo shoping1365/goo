@@ -27,7 +27,6 @@ export default defineEventHandler(async (event) => {
     if (!hasAccess) {
       // برای کاربران مهمان: لاگ سبک و موفقیت ظاهری
       // استفاده از console.debug برای جلوگیری از نویز لاگ‌ها
-      console.debug('recent-views: guest view (no auth cookies) for product', productId)
       return { ok: true, guest: true }
     }
 
@@ -37,16 +36,15 @@ export default defineEventHandler(async (event) => {
       return await fetchGo(event, `/api/recent-views/product/${productId}`, {
         method: 'POST'
       })
-    } catch (err: any) {
+    } catch (err: unknown) {
       // اگر توکن نامعتبر/منقضی باشد، به عنوان مهمان ادامه می‌دهیم و خطا پرتاب نمی‌کنیم
       const status = err?.statusCode || err?.response?.status
       if (status === 401 || status === 403) {
-        console.debug('recent-views: auth rejected by backend, treating as guest for product', productId)
         return { ok: true, guest: true }
       }
       throw err
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در ثبت بازدید محصول:', error)
     throw createError({
       statusCode: error?.statusCode || 500,

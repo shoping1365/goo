@@ -155,7 +155,7 @@ export default defineEventHandler(async (event) => {
       const cleanResponse = aiResponse.replace(/```json\n?|\n?```/g, '').trim()
       generatedContent = JSON.parse(cleanResponse)
       // console.log('✅ JSON با موفقیت parse شد')
-    } catch (parseError) {
+    } catch (_parseError) {
       // console.warn('⚠️ خطا در parse کردن JSON، استفاده از محتوای متنی:', parseError)
       // اگر JSON نبود، محتوای متنی برگردان
       generatedContent = {

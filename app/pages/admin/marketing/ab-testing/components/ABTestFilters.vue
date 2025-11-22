@@ -416,18 +416,18 @@ const clearAllFilters = () => {
 // Watch برای تغییرات props
 watch(() => props.modelValue, (newValue) => {
   if (newValue) {
-    searchQuery.value = newValue.search || ''
+    searchQuery.value = String(newValue.search || '')
     filters.value = {
-      testType: newValue.testType || '',
-      status: newValue.status || '',
-      startDate: newValue.startDate || '',
-      endDate: newValue.endDate || '',
-      result: newValue.result || '',
-      minConversionRate: newValue.minConversionRate || '',
-      minParticipants: newValue.minParticipants || '',
-      minConfidenceLevel: newValue.minConfidenceLevel || '',
-      successMetric: newValue.successMetric || '',
-      createdBy: newValue.createdBy || ''
+      testType: String(newValue.testType || ''),
+      status: String(newValue.status || ''),
+      startDate: String(newValue.startDate || ''),
+      endDate: String(newValue.endDate || ''),
+      result: String(newValue.result || ''),
+      minConversionRate: String(newValue.minConversionRate || ''),
+      minParticipants: String(newValue.minParticipants || ''),
+      minConfidenceLevel: String(newValue.minConfidenceLevel || ''),
+      successMetric: String(newValue.successMetric || ''),
+      createdBy: String(newValue.createdBy || '')
     }
   }
 }, { immediate: true })

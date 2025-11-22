@@ -153,7 +153,7 @@
                                   >
                                     {{ cat.parent_id ? 'فرعی' : 'اصلی' }}
                                   </span>
-                                  <span v-if="cat.product_count > 0" class="text-xs text-gray-500">
+                                  <span v-if="(cat.product_count as number) > 0" class="text-xs text-gray-500">
                                     {{ cat.product_count }} محصول
                                   </span>
                                 </div>
@@ -195,7 +195,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import type { CategoryConfig } from '~/types/widget'
+import type { CategoryConfig, CategoryItem } from '~/types/widget'
 // useWidgetRegistry is not used in this component
 import { useWidget } from '~/composables/useWidget'
 import CategoryBoxPreview from '~/components/admin/CategoryBoxPreview.vue'
@@ -391,7 +391,7 @@ const loadWidget = async () => {
       
       // Load form data
       formData.value.title = widget.title || ''
-      formData.value.page = widget.page || 'home'
+      formData.value.page = (widget.page || 'home') as 'home'
       
       // Load config
       config.value = {
@@ -401,7 +401,7 @@ const loadWidget = async () => {
     } else if (response && response.config) {
       // Load form data
       formData.value.title = response.title || ''
-      formData.value.page = response.page || 'home'
+      formData.value.page = (response.page || 'home') as 'home'
       
       // Load config
       config.value = {
@@ -485,7 +485,7 @@ const removeCategory = (index: number) => {
 }
 
 const _editCategory = (_index: number) => {
-  const category = config.value.categories[index]
+  const category = config.value.categories[_index]
   
   // باز کردن dropdown برای ویرایش
   category.showDropdown = true
@@ -495,7 +495,7 @@ const _editCategory = (_index: number) => {
   
   // اسکرول به input field
   setTimeout(() => {
-    const inputElement = document.querySelector(`input[data-category-index="${index}"]`) as HTMLInputElement
+    const inputElement = document.querySelector(`input[data-category-index="${_index}"]`) as HTMLInputElement
     if (inputElement) {
       inputElement.focus()
     }

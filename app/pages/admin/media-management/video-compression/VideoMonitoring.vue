@@ -349,17 +349,18 @@ const fetchRecentActivities = async () => {
       const activities: Activity[] = []
       
       // تبدیل کارها به فعالیت‌ها
-      const typedJobs = (response.data || []) as Job[]
-      typedJobs.slice(0, 10).forEach((job: Job) => {
+      const typedJobs = ((response.data || []) as unknown as Array<{ id?: string | number; status?: string; media?: { filename?: string; [key: string]: unknown }; updated_at?: string; created_at?: string; [key: string]: unknown }>)
+      typedJobs.slice(0, 10).forEach((job) => {
+        const mediaFilename = (job.media as { filename?: string; [key: string]: unknown } | undefined)?.filename
         const activity: Activity = {
-          id: job.id,
+          id: Number(job.id) || 0,
           type: job.status === 'completed' ? 'complete' : 
                 job.status === 'error' ? 'error' : 
                 job.status === 'processing' ? 'start' : 'info',
-          message: job.status === 'completed' ? `فشرده‌سازی ${job.media?.filename || 'فایل'} تکمیل شد` :
-                   job.status === 'error' ? `خطا در فشرده‌سازی ${job.media?.filename || 'فایل'}` :
-                   job.status === 'processing' ? `شروع فشرده‌سازی ${job.media?.filename || 'فایل'}` :
-                   `در انتظار فشرده‌سازی ${job.media?.filename || 'فایل'}`,
+          message: job.status === 'completed' ? `فشرده‌سازی ${mediaFilename || 'فایل'} تکمیل شد` :
+                   job.status === 'error' ? `خطا در فشرده‌سازی ${mediaFilename || 'فایل'}` :
+                   job.status === 'processing' ? `شروع فشرده‌سازی ${mediaFilename || 'فایل'}` :
+                   `در انتظار فشرده‌سازی ${mediaFilename || 'فایل'}`,
           timestamp: job.updated_at || job.created_at,
           duration: getTimeAgo(job.updated_at || job.created_at)
         }

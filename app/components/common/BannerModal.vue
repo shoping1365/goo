@@ -184,7 +184,7 @@ class="border-2 border-dashed rounded-lg p-6 text-center transition-colors"
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import type { BannerItem } from '~/types/widget'
 
 // Props

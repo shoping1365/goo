@@ -65,9 +65,11 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
                if (activeHeader) {
                     // استفاده از نام‌های صحیح فیلدهای دیتابیس
-                    const pageSelection = activeHeader.page_selection
-                    const specificPages = activeHeader.specific_pages
-                    const excludedPages = activeHeader.excluded_pages
+                    const pageSelection = activeHeader.page_selection as string | undefined
+                    const specificPagesRaw = activeHeader.specific_pages
+                    const excludedPagesRaw = activeHeader.excluded_pages
+                    const specificPages = typeof specificPagesRaw === 'string' ? specificPagesRaw : undefined
+                    const excludedPages = typeof excludedPagesRaw === 'string' ? excludedPagesRaw : undefined
                     const currentPath = to.path
 
                     let shouldShowHeader = true

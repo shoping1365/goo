@@ -152,7 +152,7 @@ const {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <TemplateCard
             title="تنظیمات عمومی"
-            subtitle="پیکربندی پایه سیستم"
+            :value="''"
             variant="blue"
             @click="showSettings = true; activeSettingsTab = 'general'"
           >
@@ -165,7 +165,7 @@ const {
 
           <TemplateCard
             title="تنظیمات ایمیل"
-            subtitle="پیکربندی ارسال ایمیل"
+            :value="''"
             variant="green"
             @click="showSettings = true; activeSettingsTab = 'email'"
           >
@@ -178,7 +178,7 @@ const {
 
           <TemplateCard
             title="تنظیمات پیامک"
-            subtitle="پیکربندی ارسال پیامک"
+            :value="''"
             variant="purple"
             @click="showSettings = true; activeSettingsTab = 'sms'"
           >
@@ -191,7 +191,7 @@ const {
 
           <TemplateCard
             title="مشاهده لاگ‌ها"
-            subtitle="فعالیت‌ها و گزارش‌ها"
+            :value="''"
             variant="orange"
             @click="showSettings = true; activeSettingsTab = 'logs'"
           >

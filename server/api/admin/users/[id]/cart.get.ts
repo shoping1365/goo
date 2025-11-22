@@ -76,7 +76,7 @@ export default defineEventHandler(async (event) => {
       WHERE c.user_id = $1 AND ci.deleted_at IS NULL AND ci.is_next_purchase = false
     `, [userId]) as unknown as { count: string }[]
     
-    const total = parseInt(totalCount[0].count)
+    const _total = parseInt(totalCount[0].count)
 
     // دریافت رکوردها با pagination
     const result = await db.query(`
@@ -120,8 +120,8 @@ export default defineEventHandler(async (event) => {
         const sessionCartItems = []
         
         // پیدا کردن همه آیتم‌های سبد خرید جاری در همه session ها
-        for (const [sessionId, cart] of Object.entries(allCarts)) {
-          const cartData = cart as any
+        for (const [_sessionId, cart] of Object.entries(allCarts)) {
+          const cartData = cart as { items?: Array<{ id?: number; product_id?: number; quantity?: number; unit_price?: number; final_price?: number; price?: number; name?: string; image?: string; sku?: string; added_at?: string; is_next?: boolean }> }
           if (cartData && cartData.items && Array.isArray(cartData.items)) {
             for (const item of cartData.items) {
               // چک کنیم که is_next تنظیم نشده یا false است
@@ -130,7 +130,7 @@ export default defineEventHandler(async (event) => {
                 const productInfo = await db.query(`
                   SELECT id, name, image, sku, price, sale_price 
                   FROM products WHERE id = $1
-                `, [item.product_id]) as any[]
+                `, [item.product_id]) as Array<{ id: number; name: string; image: string | null; sku: string; price: number; sale_price: number | null }>
                 
                 if (productInfo && productInfo.length > 0) {
                   const product = productInfo[0]

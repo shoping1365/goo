@@ -14,8 +14,8 @@ export function isResponseStreamSafe(event: H3Event): boolean {
   }
   
   // بررسی متد کمکی که در middleware تعریف شده
-  if (typeof (res as any).isStreamClosed === 'function') {
-    return !(res as any).isStreamClosed()
+  if (typeof (res as { isStreamClosed?: () => boolean }).isStreamClosed === 'function') {
+    return !(res as { isStreamClosed: () => boolean }).isStreamClosed()
   }
   
   return true
@@ -24,7 +24,7 @@ export function isResponseStreamSafe(event: H3Event): boolean {
 /**
  * ارسال پاسخ امن با بررسی وضعیت stream
  */
-export function safeSendResponse(event: H3Event, data: any): boolean {
+export function safeSendResponse(event: H3Event, _data: unknown): boolean {
   if (!isResponseStreamSafe(event)) {
     console.warn('Cannot send response: stream is closed or destroyed')
     return false
@@ -46,7 +46,7 @@ export function safeSendResponse(event: H3Event, data: any): boolean {
 /**
  * مدیریت خطا با بررسی وضعیت stream
  */
-export function safeHandleError(event: H3Event, error: any): boolean {
+export function safeHandleError(event: H3Event, _error: unknown): boolean {
   if (!isResponseStreamSafe(event)) {
     console.warn('Cannot send error response: stream is closed or destroyed')
     return false
@@ -75,8 +75,8 @@ export function logStreamStatus(event: H3Event, context: string = 'Unknown'): vo
     writableEnded: res.writableEnded,
     finished: res.finished,
     writable: res.writable,
-    isStreamClosed: typeof (res as any).isStreamClosed === 'function' ? (res as any).isStreamClosed() : 'N/A'
+    isStreamClosed: typeof (res as { isStreamClosed?: () => boolean }).isStreamClosed === 'function' ? (res as { isStreamClosed: () => boolean }).isStreamClosed() : 'N/A'
   }
   
-  console.log(`Stream status [${context}]:`, status)
+  console.warn(`Stream status [${context}]:`, status)
 }

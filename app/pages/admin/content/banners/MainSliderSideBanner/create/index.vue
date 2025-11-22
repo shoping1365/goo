@@ -979,7 +979,7 @@ const sliderConfig = ref<SliderConfig>({
   banner_position: 'right',
   display_order: 'asc',
   height: 400,
-  mobile_height: 'auto',
+  mobile_height: 150,
   mobile_banner_height: 'auto',
   mobile_slider_width: 'auto',
   mobile_banner_width: 'auto',
@@ -1425,12 +1425,23 @@ const saveWidget = async () => {
     
     if (widgetId.value) {
       // Update existing widget
-      await updateWidget(widgetId.value, widgetData)
+      const updatedWidget = await updateWidget(widgetId.value, widgetData)
       showSuccess('ابزارک با موفقیت ذخیره شد')
-      emit('updated', widgetData.value!)
+      if (updatedWidget) {
+        emit('updated', updatedWidget)
+      }
     } else {
       // Create new widget
-      const newWidget = await createWidget(widgetData)
+      const createData: import('~/types/widget').CreateWidgetRequest = {
+        title: widgetData.title || '',
+        description: widgetData.description,
+        type: widgetData.type,
+        status: widgetData.status,
+        page: widgetData.page,
+        show_on_mobile: widgetData.show_on_mobile,
+        config: widgetData.config
+      }
+      const newWidget = await createWidget(createData)
       if (newWidget) {
         showSuccess('ابزارک با موفقیت ایجاد شد')
         // Redirect to the banner list page after creation
@@ -1456,8 +1467,8 @@ onMounted(async () => {
   initializeFormData()
   
   // Only copy specific config fields, don't overwrite defaults
-  if (widget.value?.config) {
-    const config = widget.value.config as SliderConfig
+  if (widgetData.value?.config) {
+    const config = widgetData.value.config as SliderConfig
     if (config.slides) sliderConfig.value.slides = config.slides
     if (config.side_banners) sliderConfig.value.side_banners = config.side_banners
     if (config.height) sliderConfig.value.height = config.height

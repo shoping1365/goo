@@ -143,7 +143,7 @@
                 <!-- دکمه‌های عملیات -->
                 <div class="flex items-center gap-6 mr-auto">
                   <!-- تست ارسال -->
-                  <div class="text-center bg-orange-50 rounded-lg p-2 border border-orange-200 w-20 h-16 flex flex-col justify-center cursor-pointer hover:bg-orange-100 transition-colors duration-200" @click="testGatewaySend(gatewayData.gateway)">
+                  <div class="text-center bg-orange-50 rounded-lg p-2 border border-orange-200 w-20 h-16 flex flex-col justify-center cursor-pointer hover:bg-orange-100 transition-colors duration-200" @click="testGatewaySend(gatewayData.gateway as Gateway)">
                     <div class="text-lg font-bold text-orange-600">
                       <svg class="w-5 h-5 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
@@ -169,7 +169,7 @@
                   </div>
                   
                   <!-- اطلاعات درگاه -->
-                  <div class="text-center bg-indigo-50 rounded-lg p-2 border border-indigo-200 w-20 h-16 flex flex-col justify-center cursor-pointer hover:bg-indigo-100 transition-colors duration-200" @click="showGatewayDetails(gatewayData.gateway)">
+                  <div class="text-center bg-indigo-50 rounded-lg p-2 border border-indigo-200 w-20 h-16 flex flex-col justify-center cursor-pointer hover:bg-indigo-100 transition-colors duration-200" @click="showGatewayDetails(gatewayData.gateway as Gateway)">
                     <div class="text-lg font-bold text-indigo-600">
                       <svg class="w-5 h-5 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -398,7 +398,7 @@ interface Gateway {
   name: string
   status: 'active' | 'inactive'
   responseTime: number
-  type?: string
+  type: string
   priority?: number
   is_active: boolean
   balance?: number
@@ -506,16 +506,6 @@ const smsList = ref<SmsRecord[]>([])
 // لیست SMS های ارسالی بر اساس درگاه‌ها
 const gatewaySmsData = ref<GatewaySmsData[]>([])
 
-interface Gateway {
-  id: number
-  name: string
-  type: string
-  priority?: number
-  is_active: boolean
-  balance?: number
-  credit?: number
-  [key: string]: unknown
-}
 
 // درگاه‌های فعال با اولویت
 const activeGateways = ref<Gateway[]>([])
@@ -635,7 +625,9 @@ const loadGatewaysStatus = async () => {
           id: gateway.id,
           name: gateway.name,
           status: status,
-          responseTime: responseTime
+          responseTime: responseTime,
+          type: gateway.type || '',
+          is_active: gateway.is_active
         })
       }
       
@@ -973,7 +965,7 @@ const showGatewayDetails = (gateway: Gateway) => {
   try {
     // بررسی چندین فیلد برای کلید API یا اطلاعات ورود
     // اگر api_url نبود، سراغ apiKey، api_key، username و password هم برو
-    const apiKey = gateway.api_url || gateway.apiKey || gateway.api_key || '';
+    const apiKey = String(gateway.api_url || gateway.apiKey || gateway.api_key || '');
     const apiKeyDisplay = apiKey ? apiKey.substring(0, 15) + '...' : 'تنظیم نشده';
     const apiKeyLength = apiKey ? apiKey.length : 0;
     // اگر هیچ کلیدی نبود اما username و password وجود داشت، آن‌ها را هم نمایش بده
@@ -991,8 +983,8 @@ const showGatewayDetails = (gateway: Gateway) => {
                    `فعال: ${gateway.is_active ? 'بله' : 'خیر'}\n` +
                    `بر اساس پترن: ${gateway.pattern_based ? 'بله' : 'خیر'}\n` +
                    `اولویت: ${gateway.priority || 1}\n` +
-                   `تاریخ ایجاد: ${gateway.created_at ? new Date(gateway.created_at).toLocaleDateString('fa-IR') : 'نامشخص'}\n` +
-                   `آخرین بروزرسانی: ${gateway.updated_at ? new Date(gateway.updated_at).toLocaleDateString('fa-IR') : 'نامشخص'}`
+                   `تاریخ ایجاد: ${gateway.created_at ? new Date(String(gateway.created_at)).toLocaleDateString('fa-IR') : 'نامشخص'}\n` +
+                   `آخرین بروزرسانی: ${gateway.updated_at ? new Date(String(gateway.updated_at)).toLocaleDateString('fa-IR') : 'نامشخص'}`
     
     alert(details)
   } catch (error) {
@@ -1038,16 +1030,16 @@ const handlePageChange = async (gatewayId: number, newPage: number) => {
       if (response.status === 'success' && response.data && response.data.messages) {
         // تبدیل داده‌ها به فرمت جدول
         const smsList = (response.data.messages as SMSMessage[]).map((msg: SMSMessage) => ({
-          id: msg.id || Math.random(),
-          timestamp: msg.created_at,
-          sent_at: msg.sent_at,
-          message: msg.message,
-          phoneNumber: msg.phone_number,
-          phone_number: msg.phone_number,
-          status: msg.status,
-          type: msg.type,
-          cost: msg.cost,
-          gateway: gateway.name
+          id: Number(msg.id || Math.random()),
+          timestamp: msg.created_at || '',
+          sent_at: msg.sent_at || '',
+          message: msg.message || '',
+          phoneNumber: msg.phone_number || '',
+          phone_number: msg.phone_number || '',
+          status: (msg.status || 'unknown') as 'success' | 'failed' | 'pending' | 'finish' | 'error' | 'sending' | 'delivered' | 'undelivered',
+          type: String(msg.type || ''),
+          cost: Number(msg.cost || 0),
+          gateway: gateway.name || ''
         }))
         // به‌روزرسانی smsList و pagination
         gatewaySmsData.value[gatewayIndex].smsList = smsList

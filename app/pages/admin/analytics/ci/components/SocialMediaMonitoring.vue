@@ -317,6 +317,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from 'vue'
+
 // متغیرهای reactive
 const selectedPlatform = ref('all')
 const selectedPostType = ref('all')

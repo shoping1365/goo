@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
           state
         }
       }
-    }) as any
+    }) as { data?: unknown }
 
     return {
       success: true,
@@ -32,12 +32,12 @@ export default defineEventHandler(async (event) => {
       message: 'Callback سامان با موفقیت پردازش شد'
     }
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در پردازش callback سامان:', error)
     
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.message || error.statusMessage || 'خطا در پردازش callback سامان'
+      statusCode: (error as { statusCode?: number }).statusCode || 500,
+      message: (error as { message?: string; statusMessage?: string }).message || (error as { message?: string; statusMessage?: string }).statusMessage || 'خطا در پردازش callback سامان'
     })
   }
 }) 

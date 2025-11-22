@@ -285,7 +285,7 @@ const loadGatewaySettings = async () => {
     }
     const response = await $fetch<MellatGatewayResponse>('/api/admin/payment-gateways/mellat')
     if (response.success && response.data) {
-      gateway.value = response.data
+      gateway.value = response.data as unknown as PaymentGateway
       form.merchantId = gateway.value.merchant_id || ''
       form.publicKey = gateway.value.public_key || ''
       form.privateKey = gateway.value.private_key || ''
@@ -321,7 +321,8 @@ const saveSettings = async () => {
     }
   } catch (error: unknown) {
     console.error('خطا در ذخیره تنظیمات ملت:', error)
-    alert(error.data?.message || 'خطا در ذخیره تنظیمات')
+    const errorData = error as { data?: { message?: string }; message?: string }
+    alert(errorData.data?.message || errorData.message || 'خطا در ذخیره تنظیمات')
   } finally {
     saving.value = false
   }
@@ -344,8 +345,8 @@ const testConnection = async () => {
     }) as { success?: boolean; [key: string]: unknown }
 
     testResult.value = {
-      success: response.success,
-      message: response.message || (response.success ? 'اتصال موفقیت‌آمیز' : 'اتصال ناموفق')
+      success: Boolean(response.success),
+      message: String(response.message || (response.success ? 'اتصال موفقیت‌آمیز' : 'اتصال ناموفق'))
     }
   } catch (error: unknown) {
     testResult.value = {

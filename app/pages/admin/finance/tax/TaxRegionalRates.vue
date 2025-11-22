@@ -478,7 +478,7 @@ const editRegion = (region: Region) => {
   editingRegion.value = region
   regionForm.value = {
     name: region.name,
-    taxRate: region.taxRate,
+    taxRate: Number(region.taxRate || 0),
     postalCodeFrom: '',
     postalCodeTo: '',
     cities: Array.isArray(region.cities) ? region.cities.map((c: { name?: string }) => c.name || '').join(', ') : '',

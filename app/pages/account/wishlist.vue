@@ -146,6 +146,10 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { definePageMeta, useHead } from '#imports'
+import { useCSRF } from '~/composables/useCSRF'
+
 // تعریف متا صفحه
 definePageMeta({
   layout: 'default',
@@ -176,13 +180,19 @@ async function loadWishlist() {
   try {
     loading.value = true
 
-    const response = await $fetch('/api/wishlist', { credentials: 'include' })
+    interface WishlistResponse {
+      success?: boolean
+      data?: unknown[]
+      message?: string
+      [key: string]: unknown
+    }
+    const response = await $fetch<WishlistResponse>('/api/wishlist', { credentials: 'include' })
 
-    if (response.success) {
+    if (response?.success && Array.isArray(response.data)) {
       products.value = response.data
 
     } else {
-      console.error('خطا در دریافت علاقه‌مندی‌ها:', response.message)
+      console.error('خطا در دریافت علاقه‌مندی‌ها:', response?.message || 'خطای نامشخص')
       products.value = []
     }
   } catch (e) {
@@ -214,9 +224,14 @@ async function toggleFavorite(productId) {
       return
     }
 
+    interface ApiResponse {
+      success?: boolean
+      [key: string]: unknown
+    }
+    
     if (isInWishlist) {
       // حذف از لیست
-      const response = await $fetch(`/api/wishlist/remove/${productId}`, {
+      const response = await $fetch<ApiResponse>(`/api/wishlist/remove/${productId}`, {
         method: 'DELETE',
         headers: {
           'x-csrf-token': csrfToken
@@ -224,14 +239,14 @@ async function toggleFavorite(productId) {
         credentials: 'include'
       })
       
-      if (response.success) {
+      if (response?.success) {
         // حذف از لیست محلی
-        products.value = products.value.filter(p => p.id !== productId)
+        products.value = products.value.filter((p: { id: unknown }) => p.id !== productId)
 
       }
     } else {
       // اضافه کردن به لیست
-      const response = await $fetch('/api/wishlist/add', {
+      const response = await $fetch<ApiResponse>('/api/wishlist/add', {
         method: 'POST',
         headers: {
           'x-csrf-token': csrfToken
@@ -240,7 +255,7 @@ async function toggleFavorite(productId) {
         body: { product_id: productId }
       })
       
-      if (response.success) {
+      if (response?.success) {
 
         // بارگذاری مجدد لیست
         await loadWishlist()

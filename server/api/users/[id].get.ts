@@ -1,6 +1,6 @@
 import { defineEventHandler, getRequestHeader, getRouterParam } from 'h3'
 
-export default defineEventHandler(async (event): Promise<any> => {
+export default defineEventHandler(async (event): Promise<unknown> => {
   const config = useRuntimeConfig()
   const base = config.public.goApiBase
   const cookie = getRequestHeader(event, 'cookie') || ''

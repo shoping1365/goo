@@ -285,8 +285,8 @@ const form = reactive({
 // بارگذاری تنظیمات درگاه
 const loadGateway = async () => {
   try {
-    const response = await $fetch('/api/payments/admin/gateway/saman') as { success?: boolean; data?: unknown }
-    if (response.success) {
+    const response = await $fetch('/api/payments/admin/gateway/saman') as { success?: boolean; data?: PaymentGateway }
+    if (response.success && response.data) {
       gateway.value = response.data
       // پر کردن فرم با داده‌های موجود
       form.name = gateway.value.name || 'سامان'

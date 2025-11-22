@@ -176,7 +176,7 @@ const clearAllLayers = () => {
 }
 
 const saveLayer = () => {
-  if (!newLayer.value.name.trim()) {
+  if (!String(newLayer.value.name || '').trim()) {
     showToastMessage('نام لایه الزامی است', 'error')
     return
   }
@@ -301,9 +301,11 @@ const addItemToLayer = (item: Record<string, unknown>) => {
 }
 
 const removeItemFromLayer = (itemIndex: number) => {
-  if (newLayer.value.items && newLayer.value.items[itemIndex]) {
+  if (newLayer.value.items && Array.isArray(newLayer.value.items) && newLayer.value.items[itemIndex]) {
     const removedItem = newLayer.value.items[itemIndex]
-    newLayer.value.items.splice(itemIndex, 1)
+    const itemsArray = newLayer.value.items as Array<string | Record<string, unknown>>
+    itemsArray.splice(itemIndex, 1)
+    newLayer.value.items = itemsArray
     showToastMessage(`${typeof removedItem === 'string' ? removedItem : removedItem.name} از لایه حذف شد`, 'success')
   }
 }
@@ -314,20 +316,23 @@ const toggleItem = (itemId: string) => {
     newLayer.value.items = []
   }
   
-  const itemIndex = newLayer.value.items.findIndex(item => 
+  const items = Array.isArray(newLayer.value.items) ? newLayer.value.items : []
+  const itemIndex = items.findIndex((item: string | Record<string, unknown>) => 
     (typeof item === 'string' && item === itemId) ||
-    (typeof item === 'object' && item.id === itemId)
+    (typeof item === 'object' && item && item.id === itemId)
   )
   
   if (itemIndex !== -1) {
     // حذف آیتم اگر قبلاً انتخاب شده
-    newLayer.value.items.splice(itemIndex, 1)
+    items.splice(itemIndex, 1)
+    newLayer.value.items = items
     showToastMessage('آیتم از انتخاب حذف شد', 'success')
   } else {
     // اضافه کردن آیتم جدید
     const item = availableItems.find(ai => ai.id === itemId)
     if (item) {
-      newLayer.value.items.push(item)
+      items.push(item)
+      newLayer.value.items = items
       showToastMessage(`${item.name} انتخاب شد`, 'success')
     }
   }
@@ -335,10 +340,10 @@ const toggleItem = (itemId: string) => {
 
 const isItemSelected = (itemId: string): boolean => {
   if (!newLayer.value.items) return false
-  
-  return newLayer.value.items.some(item => 
+  const items = Array.isArray(newLayer.value.items) ? newLayer.value.items : []
+  return items.some(item => 
     (typeof item === 'string' && item === itemId) ||
-    (typeof item === 'object' && item.id === itemId)
+    (typeof item === 'object' && (item as { id?: string }).id === itemId)
   )
 }
 

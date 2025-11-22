@@ -96,7 +96,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, reactive, nextTick, triggerRef } from 'vue'
 import { useRequestHeaders } from 'nuxt/app'
-
+import { useAuth } from '~/composables/useAuth'
 
 import ImageSelector from '~/components/media/ImageSelector.vue'
 
@@ -119,7 +119,21 @@ const { hasPermission } = useAuth() as UseAuthReturn
 const canDeleteMedia = computed(() => hasPermission('media_library.delete'))
 
 interface MediaFile {
-  id:number; url:string; thumbnail:string; type:string; name:string; size:number; category:string;
+  id:number
+  url:string
+  thumbnail:string
+  type:string
+  name:string
+  size:number
+  category:string
+  extension?: string
+  file_path?: string
+  mime_type?: string
+  file_type?: string
+  original_name?: string
+  file_name?: string
+  file_size?: number
+  [key: string]: unknown
 }
 
 const props = defineProps<{ modelValue:boolean, modelSelected?:number[], defaultCategory?:string, fileType?:string, contextTitle?: string, maxSelect?: number }>()
@@ -171,8 +185,21 @@ async function fetchList(){
       ? response 
       : ((response as MediaResponse)?.data || [])
     
-    list.value = raw.map(r=>{ 
-      const p=r.url||r.file_path||''; 
+    interface MediaFileRaw {
+      url?: string
+      file_path?: string
+      mime_type?: string
+      file_type?: string
+      original_name?: string
+      file_name?: string
+      size?: number
+      file_size?: number
+      category?: string
+      [key: string]: unknown
+    }
+    
+    list.value = raw.map((r: MediaFileRaw)=> { 
+      const p = (r.url || r.file_path || '') as string
       let path = normalizePath(p)
       // سازگارسازی مسیرهای ویدیوهای products به مسیر سروینگ public
       path = path.replace(/\/public\//,'/')
@@ -182,28 +209,28 @@ async function fetchList(){
       if(!/\/uploads\//.test(path) && /^\/(products|product-categories|brands|banners|customer|library)\//.test(path)){
         path = '/uploads/media' + path
       }
-      const mime=r.mime_type||r.file_type||''
-      const ext=(mime.split('/')?.pop()||'').toLowerCase()
-      const isImg=mime.startsWith('image')||['webp','jpg','jpeg','png','gif'].includes(ext)
-      const isVid=mime.startsWith('video')||['mp4','webm','mov','avi'].includes(ext)
-      const isGif=ext==='gif'
+      const mime = (r.mime_type || r.file_type || '') as string
+      const ext = (mime.split('/')?.pop()||'').toLowerCase()
+      const isImg = mime.startsWith('image')||['webp','jpg','jpeg','png','gif'].includes(ext)
+      const isVid = mime.startsWith('video')||['mp4','webm','mov','avi'].includes(ext)
+      const isGif = ext==='gif'
       return { 
-        ...r,
+        id: r.id as number,
         url:path,
         thumbnail:isImg && !isGif ? path : '',
         type:isImg?'image':(isVid?'video':'other'),
-        name:r.original_name||r.file_name,
-        size:r.size||r.file_size||0,
+        name:(r.original_name || r.file_name || '') as string,
+        size:(r.size || r.file_size || 0) as number,
         extension: ext,
-          category: (
-            r.category ||
-            (p.includes('/product-categories/') ? 'product-categories' :
-            p.includes('/brands/') ? 'brands' :
-            p.includes('/banners/') ? 'banners' :
-            p.includes('/products/') ? 'products' :
-            p.includes('/customer/') ? 'customer' : 'library')
-        )
-      }
+        category: (
+          (r.category || '') as string ||
+          (p.includes('/product-categories/') ? 'product-categories' :
+          p.includes('/brands/') ? 'brands' :
+          p.includes('/banners/') ? 'banners' :
+          p.includes('/products/') ? 'products' :
+          p.includes('/customer/') ? 'customer' : 'library')
+        ) as string
+      } as MediaFile
     })
 
   } catch (error) {
@@ -316,7 +343,7 @@ async function handleFileChange(e:Event){
   }
   
   function buildMedia(obj: MediaFileRaw): MediaFile {
-    const p=obj.url||obj.file_path||''
+    const p=(obj.url||obj.file_path||'') as string
     let path = normalizePath(p)
     path = path.replace(/\/public\//,'/')
     if(!/^https?:\/\//i.test(path)){
@@ -325,28 +352,35 @@ async function handleFileChange(e:Event){
     if(!/\/uploads\//.test(path) && /^\/(products|product-categories|brands|banners|customer|library)\//.test(path)){
       path = '/uploads/media' + path
     }
-    const mime=obj.mime_type||obj.file_type||''
+    const mime=(obj.mime_type||obj.file_type||'') as string
     const ext=(mime.split('/')?.pop()||'').toLowerCase()
     const isImg=mime.startsWith('image')||['webp','jpg','jpeg','png','gif'].includes(ext)
     const isVid=mime.startsWith('video')||['mp4','webm','mov','avi'].includes(ext)
     const isGif=ext==='gif'
     
     // اطمینان از اینکه category درست تنظیم شده
-    let category = obj.category || selectedCategory.value
+    let category = (obj.category || selectedCategory.value) as string
     if (category === 'all') {
       category = selectedCategory.value
     }
     
-    return { 
-      ...obj, 
+    const mediaFile: MediaFile = {
+      id: (obj.id || 0) as number,
       url:path, 
       thumbnail:isImg && !isGif ? path : '', 
       type:isImg?'image':(isVid?'video':'other'), 
-      name:obj.original_name||obj.file_name, 
-      size:obj.size||obj.file_size||0, 
-      extension:ext, 
-      category: category
+      name:(obj.original_name||obj.file_name||'') as string, 
+      size:(obj.size||obj.file_size||0) as number, 
+      category: category,
+      extension: ext,
+      file_path: obj.file_path,
+      mime_type: obj.mime_type,
+      file_type: obj.file_type,
+      original_name: obj.original_name,
+      file_name: obj.file_name,
+      file_size: obj.file_size
     }
+    return mediaFile
   }
   
   // reset states
@@ -358,6 +392,7 @@ async function handleFileChange(e:Event){
 
   const _completed = 0
   const _total = filesArr.length
+  // completed and total are unused, but kept for potential future use
 
   const tasks = filesArr.map(file=>{
     const item = reactive({ name:file.name, progress:0 })
@@ -377,50 +412,57 @@ async function handleFileChange(e:Event){
         }
       }
 
+      const fd=new FormData()
+      fd.append('file', file)
+      fd.append('category', selectedCategory.value)
+      // پارامترهای اختیاری برای پردازش AI با تاخیر
+      fd.append('context_title', props.contextTitle || document?.title || '')
+      fd.append('context_lang', 'fa')
+      fd.append('auto_ai_meta','1')
+
       xhr.onreadystatechange = ()=>{
         if(xhr.readyState===4){
-          completed++
           item.progress = 100
           // schedule removal of completed entry
           setTimeout(()=>{ const pos=uploads.indexOf(item); if(pos>-1) uploads.splice(pos,1) },0)
 
           if(xhr.status===200){
             try{
-              const json = JSON.parse(xhr.responseText)
+              const json = JSON.parse(xhr.responseText) as { success?: boolean; data?: unknown; files?: unknown[] }
               const payload = json.data || (Array.isArray(json.files)? json.files[0]: null)
-              if(json.success && payload){
+              if(json.success && payload && typeof payload === 'object' && 'id' in payload){
                 // insert minimal record immediately
-                const temp = { ...buildMedia(payload) }
+                const temp = { ...buildMedia(payload as MediaFileRaw) }
                 if(temp.type === 'image') {
                   temp.type = 'image'
                   if(!temp.thumbnail) temp.thumbnail = temp.url
                 }
 
+                // اضافه کردن فایل جدید به لیست
+                list.value = [temp, ...list.value]
 
-                                  // اضافه کردن فایل جدید به لیست
-                  list.value = [temp, ...list.value]
+                // emit event برای اطلاع از آپلود فایل جدید
+                emit('media-uploaded', temp)
+                
+                // اطمینان از اینکه لیست به‌روزرسانی شده
+                // force reactivity update
+                const currentList = [...list.value]
+                list.value = []
+                list.value = currentList
 
-
-                  // emit event برای اطلاع از آپلود فایل جدید
-                  emit('media-uploaded', temp)
-                  
-                  // اطمینان از اینکه لیست به‌روزرسانی شده
-                  // force reactivity update
-                  const currentList = [...list.value]
-                  list.value = []
-                  list.value = currentList
-
-                  // force trigger reactivity
-                  triggerRef(list)
+                // force trigger reactivity
+                triggerRef(list)
 
                 // scroll to top to reveal new item
                 const el = document.querySelector('.media-scroll') as HTMLElement | null
                 if(el) el.scrollTo({ top:0, behavior:'smooth' })
 
-                                 // fetch complete record (with generated thumbnail) and update
-                  $fetch(`/api/media/${payload.id}`).then((data)=>{
-                    if(data){
-                      const full = buildMedia(data)
+                // fetch complete record (with generated thumbnail) and update
+                const payloadId = (payload as { id?: number | string }).id
+                if (payloadId) {
+                  $fetch(`/api/media/${payloadId}`).then((data)=>{
+                    if(data && typeof data === 'object'){
+                      const full = buildMedia(data as MediaFileRaw)
                       const p = list.value.findIndex(x=>x.id===full.id)
                       if(p>-1){
                         const newArr=[...list.value]
@@ -430,14 +472,16 @@ async function handleFileChange(e:Event){
                         }
                         newArr[p]=full
                         list.value=newArr
-
                       }
                     }
-                  }).catch(error => {
+                  }).catch((error: unknown) => {
                     console.error('خطا در دریافت فایل کامل:', error)
                   })
                 }
-            }catch{}
+              }
+            } catch (error) {
+              console.error('خطا در پردازش پاسخ:', error)
+            }
           }
 
           // recompute overall
@@ -447,13 +491,6 @@ async function handleFileChange(e:Event){
         }
       }
 
-      const fd=new FormData()
-      fd.append('file', file)
-      fd.append('category', selectedCategory.value)
-      // پارامترهای اختیاری برای پردازش AI با تاخیر
-      fd.append('context_title', props.contextTitle || document?.title || '')
-      fd.append('context_lang', 'fa')
-      fd.append('auto_ai_meta','1')
       xhr.send(fd)
     })
   })

@@ -10,11 +10,17 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-  data: { type: Array, required: true },
-  filename: { type: String, default: 'data.csv' },
-  buttonClass: { type: String, default: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-emerald-400 to-green-600 hover:from-emerald-500 hover:to-green-700 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105' }
-});
+interface Props {
+  data?: Record<string, unknown>[]
+  filename?: string
+  buttonClass?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  data: () => [],
+  filename: 'data.csv',
+  buttonClass: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-emerald-400 to-green-600 hover:from-emerald-500 hover:to-green-700 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105'
+})
 
 // تابع ساده برای تبدیل آرایه به CSV
 function arrayToCSV(data: Record<string, unknown>[]): string {
@@ -27,7 +33,7 @@ function arrayToCSV(data: Record<string, unknown>[]): string {
   const headerRow = headers.map(header => `"${header}"`).join(',');
   
   // ایجاد data rows
-  const dataRows = data.map(row =>
+  const dataRows = (data as Record<string, unknown>[]).map(row =>
     headers.map(header => {
       const value = row[header];
       // اگر مقدار شامل کاما، نقل قول یا خط جدید باشد، آن را در نقل قول قرار بده
@@ -44,7 +50,7 @@ function arrayToCSV(data: Record<string, unknown>[]): string {
 function exportToCSV() {
   if (!props.data || !props.data.length) return;
   
-  const csv = '\uFEFF' + arrayToCSV(props.data); // BOM برای اکسل و فارسی
+  const csv = '\uFEFF' + arrayToCSV(props.data as Record<string, unknown>[]); // BOM برای اکسل و فارسی
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);

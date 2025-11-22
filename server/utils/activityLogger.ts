@@ -142,7 +142,7 @@ export const logUserAction = async (
   resourceType: string,
   resourceId: string | undefined,
   status: 'success' | 'failure',
-  details?: Record<string, any>,
+  details?: Record<string, unknown>,
   ipAddress?: string,
   userAgent?: string
 ): Promise<void> => {
@@ -189,7 +189,7 @@ export const logCreateUser = async (
 export const logUpdateUser = async (
   actorId: string,
   userId: string,
-  changes: Record<string, any>,
+  changes: Record<string, unknown>,
   status: 'success' | 'failure'
 ): Promise<void> => {
   await logUserAction(actorId, 'update', 'user', userId, status, { changes })

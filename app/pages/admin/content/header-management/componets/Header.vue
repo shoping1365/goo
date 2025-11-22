@@ -2,9 +2,9 @@
     <header v-if="shouldShowHeader && activeHeader && activeHeader.layers" :style="headerStyle as any" class="sticky-header">
 
   <!-- حذف نمایش اطلاعات دیباگ لایه -->
-    <div v-for="layer in activeHeader.layers" :key="layer.id" :style="getLayerStyle(layer)">
+    <div v-for="layer in activeHeader.layers" :key="(layer as { id?: number | string }).id" :style="getLayerStyle(layer)">
       <template v-for="(item, idx) in getLayerItems(layer)" :key="item.id || idx">
-        <div :style="getItemStyle(item)" class="header-item-wrapper">
+        <div :style="getItemStyle(item as Record<string, unknown>)" class="header-item-wrapper">
           <component
             :is="resolveWidgetComponent(item)"
             v-if="resolveWidgetComponent(item)"
@@ -37,7 +37,7 @@
         
         <!-- جداکننده بین آیتم‌ها -->
         <div 
-          v-if="layer.showSeparator && idx < getLayerItems(layer).length - 1" 
+          v-if="(layer as { showSeparator?: boolean }).showSeparator && idx < getLayerItems(layer).length - 1" 
           class="header-separator"
           :style="getSeparatorStyle(layer)"
         ></div>
@@ -92,7 +92,11 @@ const headerStyle = computed(() => {
   let headerHeight = '80px'
   
   if (activeHeader.value && activeHeader.value.layers) {
-    const totalHeight = activeHeader.value.layers.reduce((total, layer) => total + (layer.height || 80), 0)
+    const layers = Array.isArray(activeHeader.value.layers) ? activeHeader.value.layers : []
+    const totalHeight = layers.reduce((total: number, layer: Record<string, unknown>) => {
+      const height = typeof layer.height === 'number' ? layer.height : (typeof layer.height === 'string' ? parseInt(layer.height) || 80 : 80)
+      return total + height
+    }, 0)
     headerHeight = totalHeight + 'px'
   }
   
@@ -101,18 +105,18 @@ const headerStyle = computed(() => {
   }
 })
 
-function getLayerStyle(layer: Record<string, unknown>) {
+function getLayerStyle(layer: Record<string, unknown>): Record<string, string | number> {
   // سبک پایه هدر را تعریف می‌کنیم و سپس هر استایل سفارشی درج‌شده در لایه را روی آن اعمال می‌کنیم
-  const baseStyle: Record<string, unknown> = {
+  const baseStyle: Record<string, string | number> = {
     height: ((layer.height as number) ?? 80) + 'px',
-    backgroundColor: layer.color || '#ffffff',
-    width: layer.width ? layer.width + '%' : '100%',
+    backgroundColor: String(layer.color || '#ffffff'),
+    width: layer.width ? String(layer.width) + '%' : '100%',
     display: 'flex',
     alignItems: 'stretch',
     justifyContent: getLayerJustifyContent(layer),
-    direction: layer.direction || 'rtl',
+    direction: String(layer.direction || 'rtl'),
     textAlign: layer.direction === 'ltr' ? ('left' as const) : ('right' as const),
-    opacity: layer.opacity || 1,
+    opacity: Number(layer.opacity || 1),
     transition: 'all 0.3s ease'
   }
 
@@ -141,7 +145,15 @@ function getLayerStyle(layer: Record<string, unknown>) {
     }
   }
 
-  return { ...baseStyle, ...customStyle }
+  // تبدیل customStyle به Record<string, string | number> برای سازگاری با نوع بازگشتی
+  const convertedCustomStyle: Record<string, string | number> = {}
+  for (const [key, value] of Object.entries(customStyle)) {
+    if (typeof value === 'string' || typeof value === 'number') {
+      convertedCustomStyle[key] = value
+    }
+  }
+
+  return { ...baseStyle, ...convertedCustomStyle }
 }
 
 function resolveToggle(value: unknown): boolean {
@@ -328,7 +340,7 @@ function resolveShadowStyles(layer: Record<string, unknown>) {
   }
 }
 
-function getLayerItems(layer) {
+function getLayerItems(layer: Record<string, unknown>) {
   if (!layer || !layer.items) return []
   try {
     if (typeof layer.items === 'string') {
@@ -353,14 +365,14 @@ function resolveWidgetComponent(item: Record<string, unknown>): string | null {
     raw = (item?.component || item?.type) as string | undefined
   }
 
-  if (!raw && typeof item === 'object' && item.id) raw = item.id as string
+  if (!raw && typeof item === 'object' && item.id) raw = String(item.id)
 
   if (!raw) return null
 
-  const pascal = toPascalCase(raw)
+  const pascal = toPascalCase(String(raw))
   const key = `HeaderWidget${pascal}`
 
-  return widgetRegistry[key] ?? null
+  return (widgetRegistry[key] as string | undefined) ?? null
 }
 
 function toPascalCase(str: string): string {
@@ -387,7 +399,7 @@ function getJustifyContent(align: string): string {
 
 function getItemStyle(item: Record<string, unknown>) {
   if (typeof item !== 'object') return {}
-  const style: Record<string, unknown> = {
+  const style: Record<string, string | number> = {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -410,7 +422,7 @@ function getItemStyle(item: Record<string, unknown>) {
   
   // تنظیم پس‌زمینه
   if (item.bgColor && item.bgColor !== 'transparent') {
-    style.backgroundColor = item.bgColor
+    style.backgroundColor = String(item.bgColor)
   }
   
   // تنظیم پدینگ راست و چپ
@@ -421,19 +433,19 @@ function getItemStyle(item: Record<string, unknown>) {
     style.paddingLeft = `${item.paddingLeft}px`
   }
   
-  // برای متن، align اعمال شود
+  // برای متن， align اعمال شود
   if (item.align) {
     style.textAlign = item.align === 'left' ? 'left' : item.align === 'right' ? 'right' : 'center'
   }
   
-  return style
+  return style as Record<string, string | number>
 }
 
 /**
  * تعیین استایل جداکننده لایه
  */
 function getSeparatorStyle(layer: Record<string, unknown>) {
-  const style: Record<string, unknown> = {}
+  const style: Record<string, string | number> = {}
   
   // تنظیم نوع خط
   if (layer.separatorType) {
@@ -474,7 +486,7 @@ for (const path in widgetModules) {
 onMounted(async () => {
   try {
     await loadHeaders()
-    activeHeader.value = getActiveHeader()
+    activeHeader.value = getActiveHeader() as Record<string, unknown> | null
     // اضافه کردن watch برای تغییرات route
     watch(() => route.path, async (newPath) => {
       // بررسی مجدد اینکه آیا هدر باید نمایش داده شود
@@ -486,7 +498,7 @@ onMounted(async () => {
             activeHeader.value = null
           } else {
             // اگر هدر برای صفحه جدید وجود داشته باشد، آن را تنظیم کن
-            activeHeader.value = headerForPage
+            activeHeader.value = headerForPage as Record<string, unknown>
           }
         } catch {
           // در صورت خطا، هدر را پاک کن

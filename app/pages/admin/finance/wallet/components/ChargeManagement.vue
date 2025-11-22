@@ -411,10 +411,19 @@ const { data: trend } = await useFetch('/api/admin/wallet/trend', {
 interface ChargeItem {
   id?: number | string
   transactionId?: number | string
+  username?: string | number
+  user_id?: string | number
+  email?: string
+  amount?: number | string
+  gateway?: string
+  method?: string
+  created_at?: string
+  status?: string
   [key: string]: unknown
 }
 interface ChargesResponse {
   items?: ChargeItem[]
+  total?: number | string
   [key: string]: unknown
 }
 watchEffect(() => {
@@ -423,12 +432,12 @@ watchEffect(() => {
     recentCharges.value = res.items.map((r: ChargeItem) => ({
       id: r.id,
       transactionId: r.id,
-      userName: r.username || r.user_id,
-      userEmail: r.email || '-',
-      userInitials: (r.username || '-').slice(0,2),
+      userName: (r.username || r.user_id || '-') as string | number,
+      userEmail: (r.email || '-') as string,
+      userInitials: String(r.username || '-').slice(0, 2),
       amount: Number(r.amount || 0),
-      gateway: r.gateway || r.method || '-',
-      date: r.created_at,
+      gateway: (r.gateway || r.method || '-') as string,
+      date: (r.created_at || '') as string,
       status: r.status === 'success' ? 'موفق' : (r.status === 'pending' ? 'در انتظار' : 'ناموفق')
     }))
     // آمار ساده

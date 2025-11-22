@@ -234,9 +234,10 @@ const fetchTransactions = async () => {
       }
     })
     
-    if (response.data) {
-      recentTransactions.value = response.data
-      total.value = response.total || 0
+    const responseData = response as { data?: unknown[]; total?: number; [key: string]: unknown }
+    if (responseData.data) {
+      recentTransactions.value = responseData.data as typeof recentTransactions.value
+      total.value = Number(responseData.total || 0)
       totalPages.value = Math.ceil(total.value / filters.value.limit)
     }
   } catch (error) {

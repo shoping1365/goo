@@ -152,29 +152,29 @@ async function loadExistingFooter() {
         const existingFooter = response.data as Record<string, unknown>
         
         footerData.value = {
-          name: existingFooter.name || '',
-          description: existingFooter.description || '',
-          pageSelection: existingFooter.page_selection || 'all',
-          specificPages: existingFooter.specific_pages || '',
-          excludedPages: existingFooter.excluded_pages || '',
-          isActive: existingFooter.is_active !== undefined ? existingFooter.is_active : true
+          name: String(existingFooter.name || ''),
+          description: String(existingFooter.description || ''),
+          pageSelection: String(existingFooter.page_selection || 'all'),
+          specificPages: String(existingFooter.specific_pages || ''),
+          excludedPages: String(existingFooter.excluded_pages || ''),
+          isActive: existingFooter.is_active !== undefined ? Boolean(existingFooter.is_active) : true
         }
         
         createdLayers.value = []
         
-        if (existingFooter.layers && existingFooter.layers.length > 0) {
-          createdLayers.value = existingFooter.layers.map(l => ({
+        if (existingFooter.layers && Array.isArray(existingFooter.layers) && existingFooter.layers.length > 0) {
+          createdLayers.value = (existingFooter.layers as Array<Record<string, unknown>>).map((l: Record<string, unknown>) => ({
             ...l,
             name: l.name || '',
             width: l.width || 100,
             height: l.height || 50,
             rowCount: l.row_count || 1,
             color: l.color || '#ffffff',
-            opacity: (l.opacity || 1.0) * 100,
+            opacity: (typeof l.opacity === 'number' ? l.opacity : parseFloat(String(l.opacity || 1.0))) * 100,
             showSeparator: l.show_separator || false,
             separatorType: l.separator_type || 'solid',
             separatorColor: l.separator_color || '#e9ecef',
-            separatorOpacity: (l.separator_opacity || 0.2) * 100,
+            separatorOpacity: (typeof l.separator_opacity === 'number' ? l.separator_opacity : parseFloat(String(l.separator_opacity || 0.2))) * 100,
             separatorWidth: l.separator_width || 1,
             items: Array.isArray(l.items)
               ? l.items
@@ -279,7 +279,7 @@ watch(() => newLayer.value.opacity, (_newOpacity) => {
 // }
 
 async function saveLayer() {
-  if (!newLayer.value.name.trim()) {
+  if (!String(newLayer.value.name || '').trim()) {
     showToastMessage('لطفاً نام لایه را وارد کنید!', 'error')
     return
   }
@@ -374,25 +374,29 @@ function closeItemsModal() {
   showItemsModal.value = false
 }
 
-function toggleItem(itemId) {
+function toggleItem(itemId: string | number) {
   const item = availableItems.find(ai => ai.id === itemId)
   if (!item) return
   
-  const existingIndex = newLayer.value.items.findIndex(i => 
+  const items = Array.isArray(newLayer.value.items) ? newLayer.value.items : []
+  const existingIndex = items.findIndex((i: string | Record<string, unknown>) => 
     (typeof i === 'string' && i === itemId) || 
-    (typeof i === 'object' && i.id === itemId)
+    (typeof i === 'object' && i && i.id === itemId)
   )
   
   if (existingIndex > -1) {
-    newLayer.value.items.splice(existingIndex, 1)
-    const totalAfter = newLayer.value.items.length
+    items.splice(existingIndex, 1)
+    const totalAfter = items.length
     if (totalAfter) {
-      newLayer.value.items.forEach(it => {
-        it.width = Math.round((100 / totalAfter) * 100) / 100
+      items.forEach((it: string | Record<string, unknown>) => {
+        if (typeof it === 'object' && it) {
+          it.width = Math.round((100 / totalAfter) * 100) / 100
+        }
       })
     }
+    newLayer.value.items = items
   } else {
-    newLayer.value.items.push({
+    items.push({
       id: item.id,
       name: item.name,
       path: item.path,
@@ -402,35 +406,43 @@ function toggleItem(itemId) {
       width: 0,
       items: [item.id]
     })
-    const total = newLayer.value.items.length
-    newLayer.value.items.forEach(it => {
-      it.width = Math.round((100 / total) * 100) / 100
+    newLayer.value.items = items
+    const total = items.length
+    items.forEach((it: string | Record<string, unknown>) => {
+      if (typeof it === 'object' && it) {
+        (it as Record<string, unknown>).width = Math.round((100 / total) * 100) / 100
+      }
     })
   }
   
-  const totalWidth = newLayer.value.items.reduce((sum, item) => sum + (item.width || 0), 0)
+  const itemsArray = Array.isArray(newLayer.value.items) ? newLayer.value.items : []
+  const totalWidth = itemsArray.reduce((sum: number, item: string | Record<string, unknown>) => sum + (typeof item === 'object' && item && typeof item.width === 'number' ? item.width : 0), 0)
   if (Math.abs(totalWidth - 100) > 0.01) {
-    const lastIndex = newLayer.value.items.length - 1
+    const lastIndex = itemsArray.length - 1
     if (lastIndex >= 0) {
-      const currentTotal = newLayer.value.items.reduce((sum, item, index) => 
-        index === lastIndex ? sum : sum + (item.width || 0), 0)
-      newLayer.value.items[lastIndex].width = Math.round((100 - currentTotal) * 100) / 100
+      const currentTotal = itemsArray.reduce((sum: number, item: string | Record<string, unknown>, index: number) => 
+        index === lastIndex ? sum : sum + (typeof item === 'object' && item && typeof item.width === 'number' ? item.width : 0), 0)
+      if (typeof itemsArray[lastIndex] === 'object' && itemsArray[lastIndex]) {
+        (itemsArray[lastIndex] as Record<string, unknown>).width = Math.round((100 - currentTotal) * 100) / 100
+      }
     }
   }
 }
 
-function isItemSelected(itemId) {
-  return newLayer.value.items.some(item => 
+function isItemSelected(itemId: string | number) {
+  const items = Array.isArray(newLayer.value.items) ? newLayer.value.items : []
+  return items.some((item: string | Record<string, unknown>) => 
     (typeof item === 'string' && item === itemId) || 
-    (typeof item === 'object' && item.id === itemId)
+    (typeof item === 'object' && item && item.id === itemId)
   )
 }
 
 function getSelectedItemsText() {
-  if (newLayer.value.items.length === 0) {
+  const items = Array.isArray(newLayer.value.items) ? newLayer.value.items : []
+  if (items.length === 0) {
     return 'انتخاب ایتم ها'
   }
-  return `${newLayer.value.items.length} ایتم انتخاب شده`
+  return `${items.length} ایتم انتخاب شده`
 }
 
 async function clearAllLayers() {
@@ -439,11 +451,11 @@ async function clearAllLayers() {
 }
 
 async function saveFooter() {
-  if (!footerData.value.name.trim()) {
+  if (!String(footerData.value.name || '').trim()) {
     showToastMessage('لطفاً نام فوتر را وارد کنید!', 'error')
     return
   }
-  if (createdLayers.value.length === 0) {
+  if (!Array.isArray(createdLayers.value) || createdLayers.value.length === 0) {
     showToastMessage('لطفاً حداقل یک لایه ایجاد کنید!', 'error')
     return
   }
@@ -483,11 +495,11 @@ async function saveFooter() {
         height: layer.height,
         row_count: layer.rowCount,
         color: layer.color,
-        opacity: layer.opacity / 100.0,
-        showSeparator: layer.showSeparator,
-        separatorType: layer.separatorType,
-        separatorColor: layer.separatorColor,
-        separatorOpacity: layer.separatorOpacity / 100.0,
+        opacity: (typeof layer.opacity === 'number' ? layer.opacity : 100) / 100.0,
+        showSeparator: layer.showSeparator || false,
+        separatorType: layer.separatorType || 'solid',
+        separatorColor: layer.separatorColor || '#e9ecef',
+        separatorOpacity: (typeof layer.separatorOpacity === 'number' ? layer.separatorOpacity : 20) / 100.0,
         separatorWidth: layer.separatorWidth,
         items: JSON.stringify(layer.items),
         styleSettings: JSON.stringify(styleSettings)
@@ -501,10 +513,11 @@ async function saveFooter() {
 
 
   try {
-    let response: unknown
+    let fetchResponse: Response
+    let response: Record<string, unknown> | null = null
     if (isEditing.value) {
       const footerId = parseInt(route.query.id as string)
-  response = await fetch(`/api/admin/footer-settings/${footerId}`, {
+      fetchResponse = await fetch(`/api/admin/footer-settings/${footerId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -512,13 +525,13 @@ async function saveFooter() {
         body: JSON.stringify(footerPayload)
       })
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+      if (!fetchResponse.ok) {
+        throw new Error(`HTTP error! status: ${fetchResponse.status}`)
       }
       
-      response = await response.json()
+      response = await fetchResponse.json()
     } else {
-      response = await fetch('/api/admin/footer-settings', {
+      fetchResponse = await fetch('/api/admin/footer-settings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -526,14 +539,14 @@ async function saveFooter() {
         body: JSON.stringify(footerPayload)
       })
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+      if (!fetchResponse.ok) {
+        throw new Error(`HTTP error! status: ${fetchResponse.status}`)
       }
       
-      response = await response.json()
+      response = await fetchResponse.json()
     }
 
-    if (response?.success) {
+    if (response && typeof response === 'object' && 'success' in response && response.success) {
       showToastMessage(isEditing.value ? 'فوتر با موفقیت بروزرسانی شد!' : 'فوتر با موفقیت ذخیره شد!', 'success')
       sessionStorage.removeItem('footerLayers')
       goBack()

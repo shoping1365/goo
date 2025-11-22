@@ -499,7 +499,7 @@ const editGateway = (gateway: Gateway) => {
 }
 
 const confirmDelete = (gateway: Gateway) => {
-  gatewayToDelete.value = gateway
+  gatewayToDelete.value = gateway as unknown as PaymentGateway
   showDeleteModal.value = true
 }
 

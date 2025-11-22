@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
       // دریافت اطلاعات سیستم
       const { stdout: systemInfo } = await execAsync('systeminfo | findstr /C:"Total Physical Memory" /C:"Available Physical Memory" /C:"Processor"')
       logs += `=== اطلاعات سیستم ===\n${systemInfo}\n\n`
-    } catch (error) {
+    } catch (_error) {
       logs += '=== اطلاعات سیستم ===\nخطا در دریافت اطلاعات سیستم\n\n'
     }
 
@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
       if (nuxtLogs) {
         logs += `=== لاگ‌های Nuxt (آخرین 20 خط) ===\n${nuxtLogs.split('\n').slice(-20).join('\n')}\n\n`
       }
-    } catch (error) {
+    } catch (_error) {
       logs += '=== لاگ‌های Nuxt ===\nفایل لاگ یافت نشد\n\n'
     }
 
@@ -46,7 +46,7 @@ export default defineEventHandler(async (event) => {
       if (errorLogs) {
         logs += `=== لاگ‌های خطا (آخرین 10 خط) ===\n${errorLogs.split('\n').slice(-10).join('\n')}\n\n`
       }
-    } catch (error) {
+    } catch (_error) {
       logs += '=== لاگ‌های خطا ===\nفایل لاگ خطا یافت نشد\n\n'
     }
 

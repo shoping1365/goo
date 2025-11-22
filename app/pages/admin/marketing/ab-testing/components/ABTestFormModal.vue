@@ -333,25 +333,26 @@ const form = ref({
 // بارگذاری داده‌های ویرایش
 watch(() => props.editingTest, (test) => {
   if (test) {
+    const testData = test as Record<string, unknown>
     form.value = {
-      name: test.name || '',
-      description: test.description || '',
-      type: test.type || '',
-      startDate: test.startDate || '',
-      endDate: test.endDate || '',
-      trafficSplitA: test.trafficSplitA || 50,
-      trafficSplitB: test.trafficSplitB || 50,
-      successMetrics: test.successMetrics || ['conversion_rate'],
-      minSampleSize: test.minSampleSize || 1000,
-      confidenceLevel: test.confidenceLevel || 95,
-      testPower: test.testPower || 80,
+      name: String(testData.name || ''),
+      description: String(testData.description || ''),
+      type: String(testData.type || ''),
+      startDate: String(testData.startDate || ''),
+      endDate: String(testData.endDate || ''),
+      trafficSplitA: Number(testData.trafficSplitA || 50),
+      trafficSplitB: Number(testData.trafficSplitB || 50),
+      successMetrics: Array.isArray(testData.successMetrics) ? testData.successMetrics as string[] : ['conversion_rate'],
+      minSampleSize: Number(testData.minSampleSize || 1000),
+      confidenceLevel: Number(testData.confidenceLevel || 95),
+      testPower: Number(testData.testPower || 80),
       ageRange: {
-        min: test.ageRange?.min || null,
-        max: test.ageRange?.max || null
+        min: (testData.ageRange as { min?: number | null; max?: number | null } | undefined)?.min ?? null,
+        max: (testData.ageRange as { min?: number | null; max?: number | null } | undefined)?.max ?? null
       },
-      gender: test.gender || '',
-      location: test.location || '',
-      deviceType: test.deviceType || ''
+      gender: String(testData.gender || ''),
+      location: String(testData.location || ''),
+      deviceType: String(testData.deviceType || '')
     }
   } else {
     // ریست فرم برای تست جدید

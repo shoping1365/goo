@@ -58,7 +58,7 @@
           <div class="flex items-center justify-between">
             <div class="flex items-center">
               <i class="fas fa-folder ml-2 text-gray-400"></i>
-              <span class="font-medium text-gray-900">{{ category.name }}</span>
+              <span class="font-medium text-gray-900">{{ category.title }}</span>
             </div>
             <span v-if="category.product_count" class="text-xs bg-gray-100 px-2 py-1 rounded-full">
               {{ category.product_count }} محصول
@@ -97,7 +97,7 @@
           <i class="fas fa-times"></i>
         </button>
       </div>
-      <p class="text-sm text-gray-800 mt-1">{{ selectedCategory.name }}</p>
+      <p class="text-sm text-gray-800 mt-1">{{ selectedCategory.title }}</p>
     </div>
   </div>
 </template>
@@ -136,8 +136,8 @@ const filteredCategories = computed(() => {
   const filtered = props.categories.filter(category => {
     if (!category) return false
 
-    const nameMatch = category.name && typeof category.name === 'string' &&
-                     category.name.toLowerCase().includes(searchTerm)
+    const nameMatch = category.title && typeof category.title === 'string' &&
+                     category.title.toLowerCase().includes(searchTerm)
     const descMatch = category.description && typeof category.description === 'string' &&
                      category.description.toLowerCase().includes(searchTerm)
     return nameMatch || descMatch
@@ -153,7 +153,7 @@ const selectedCategoryName = computed(() => {
   }
 
   const category = props.categories.find(c => c.id === props.modelValue)
-  return category ? category.name : 'دسته‌بندی نامشخص'
+  return category ? category.title : 'دسته‌بندی نامشخص'
 })
 
 // محاسبه دسته‌بندی انتخاب شده

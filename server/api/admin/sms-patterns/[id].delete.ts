@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
     })
     const json = await response.json()
     return json
-  } catch (error: any) {
+  } catch (_error) {
     throw createError({
       statusCode: 500,
       message: 'خطا در حذف پترن'

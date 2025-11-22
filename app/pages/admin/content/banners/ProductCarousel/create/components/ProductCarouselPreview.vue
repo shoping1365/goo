@@ -69,22 +69,22 @@
                 <!-- قیمت -->
                 <div v-if="config.showPrice && product.price" class="flex items-center space-x-2">
                   <span class="text-lg font-bold text-green-600">{{ formatPrice(product.price) }}</span>
-                  <span v-if="product.original_price && product.original_price > product.price" class="text-sm text-gray-500 line-through">
-                    {{ formatPrice(product.original_price) }}
+                  <span v-if="(product as { original_price?: number }).original_price && ((product as { original_price?: number }).original_price as number) > product.price" class="text-sm text-gray-500 line-through">
+                    {{ formatPrice((product as { original_price?: number }).original_price as number) }}
                   </span>
                 </div>
                 
                 <!-- امتیاز -->
                 <div v-if="config.showRating && product.rating" class="flex items-center space-x-1">
                   <div class="flex text-yellow-400">
-                    <i v-for="i in 5" :key="i" class="fas fa-star text-xs" :class="{ 'text-gray-300': i > product.rating }"></i>
+                    <i v-for="i in 5" :key="i" class="fas fa-star text-xs" :class="{ 'text-gray-300': i > (product.rating || 0) }"></i>
                   </div>
-                  <span class="text-xs text-gray-700">({{ product.rating_count || 0 }})</span>
+                  <span class="text-xs text-gray-700">({{ (product as { rating_count?: number }).rating_count || 0 }})</span>
                 </div>
                 
                 <!-- تخفیف -->
-                <div v-if="config.showDiscount && product.discount_percentage" class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full inline-block">
-                  {{ product.discount_percentage }}% تخفیف
+                <div v-if="config.showDiscount && (product as { discount_percentage?: number }).discount_percentage" class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full inline-block">
+                  {{ (product as { discount_percentage?: number }).discount_percentage }}% تخفیف
                 </div>
               </div>
             </div>
@@ -173,17 +173,25 @@ const fetchProducts = async () => {
       data?: {
         products?: Product[]
       } | Product[]
+      products?: Product[]
     }
     
     if (response && typeof response === 'object' && 'data' in response) {
       const data = (response as ProductResponse).data
-      if (Array.isArray(data.products)) {
-        products.value = data.products
+      if (data && typeof data === 'object' && !Array.isArray(data)) {
+        const dataObj = data as { products?: Product[] }
+        if ('products' in dataObj && Array.isArray(dataObj.products)) {
+          products.value = dataObj.products
+        } else {
+          products.value = []
+        }
       } else if (Array.isArray(data)) {
         products.value = data
       } else {
         products.value = []
       }
+    } else if (response && typeof response === 'object' && 'products' in response && Array.isArray((response as ProductResponse).products)) {
+      products.value = (response as ProductResponse).products as Product[]
     } else if (Array.isArray(response)) {
       products.value = response
     } else {
@@ -211,17 +219,25 @@ const fetchGeneralProducts = async () => {
       data?: {
         products?: Product[]
       } | Product[]
+      products?: Product[]
     }
     
     if (response && typeof response === 'object' && 'data' in response) {
       const data = (response as ProductResponse).data
-      if (Array.isArray(data.products)) {
-        products.value = data.products
+      if (data && typeof data === 'object' && !Array.isArray(data)) {
+        const dataObj = data as { products?: Product[] }
+        if ('products' in dataObj && Array.isArray(dataObj.products)) {
+          products.value = dataObj.products
+        } else {
+          products.value = []
+        }
       } else if (Array.isArray(data)) {
         products.value = data
       } else {
         products.value = []
       }
+    } else if (response && typeof response === 'object' && 'products' in response && Array.isArray((response as ProductResponse).products)) {
+      products.value = (response as ProductResponse).products as Product[]
     } else if (Array.isArray(response)) {
       products.value = response
     } else {

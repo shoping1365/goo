@@ -54,7 +54,7 @@
         <ProductCarouselSettings
           :form-data="formData"
           :config="config"
-          :categories="categories"
+          :categories="categories as CategoryItem[]"
         />
 
         <!-- پیش‌نمایش ویجت -->
@@ -230,9 +230,44 @@ const saveAsDraft = async () => {
   await saveWidget()
 }
 
+// Methods
+interface CategoryResponse {
+  data?: CategoryItem[]
+}
+
+const loadCategories = async () => {
+  try {
+    const response = await $fetch<CategoryResponse | CategoryItem[] | Array<Record<string, unknown>>>('/api/admin/product-categories')
+
+    if (response && typeof response === 'object' && 'data' in response) {
+      const data = (response as CategoryResponse).data || []
+      categories.value = data.map(cat => ({
+        id: (cat as { id?: number }).id || 0,
+        title: (cat as { title?: string; name?: string }).title || (cat as { name?: string }).name || '',
+        description: (cat as { description?: string }).description,
+        image: (cat as { image?: string }).image || '',
+        link: (cat as { link?: string }).link || '',
+        product_count: (cat as { product_count?: number }).product_count
+      } as CategoryItem))
+    } else if (Array.isArray(response)) {
+      categories.value = response.map(cat => ({
+        id: (cat as { id?: number }).id || 0,
+        title: (cat as { title?: string; name?: string }).title || (cat as { name?: string }).name || '',
+        description: (cat as { description?: string }).description,
+        image: (cat as { image?: string }).image || '',
+        link: (cat as { link?: string }).link || '',
+        product_count: (cat as { product_count?: number }).product_count
+      } as CategoryItem))
+    }
+  } catch (error) {
+    console.error('خطا در بارگذاری دسته‌بندی‌ها:', error)
+  }
+}
+
 // بارگذاری اولیه
 onMounted(() => {
   loadWidget()
+  loadCategories()
 })
 </script>
 

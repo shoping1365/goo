@@ -28,7 +28,7 @@ export function checkRateLimit(
   options: RateLimitOptions
 ): { allowed: boolean; remaining: number; resetAt: number } {
   // اگر امنیت موقتاً غیرفعال باشد، rate limit هم غیرفعال می‌شود
-  const cfg: any = useRuntimeConfig(event)
+  const cfg = useRuntimeConfig(event) as { public?: { disableSecurity?: boolean } }
   if (cfg?.public?.disableSecurity) {
     return { allowed: true, remaining: options.maxAttempts, resetAt: Date.now() + options.windowMs }
   }

@@ -148,7 +148,7 @@
 import { ref, computed } from 'vue'
 
 // درخواست‌های پاداش
-const requests = ref([
+const requests = ref<RewardRequest[]>([
   {
     id: 1,
     userName: 'علی احمدی',
@@ -156,6 +156,7 @@ const requests = ref([
     userAvatar: '/default-avatar.png',
     rewardType: 'cash',
     amount: 50000,
+    rewardAmount: 50000,
     requestDate: '2024-01-15',
     status: 'pending',
     description: 'درخواست پاداش برای ارجاعات موفق ماه گذشته'
@@ -167,6 +168,7 @@ const requests = ref([
     userAvatar: '/default-avatar.png',
     rewardType: 'credit',
     amount: 75000,
+    rewardAmount: 75000,
     requestDate: '2024-01-14',
     status: 'approved',
     description: 'پاداش ارجاعات هفته گذشته'
@@ -178,6 +180,7 @@ const requests = ref([
     userAvatar: '/default-avatar.png',
     rewardType: 'cash',
     amount: 30000,
+    rewardAmount: 30000,
     requestDate: '2024-01-13',
     status: 'rejected',
     description: 'درخواست پاداش ارجاعات',
@@ -243,10 +246,13 @@ interface RewardRequest {
   userEmail: string
   userAvatar: string
   rewardType: string
+  amount: number
   rewardAmount: number
   requestDate: string
-  status: string
+  status: 'pending' | 'approved' | 'rejected'
+  description?: string
   rejectionReason?: string
+  [key: string]: unknown
 }
 
 // تایید درخواست

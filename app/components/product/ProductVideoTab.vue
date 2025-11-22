@@ -589,30 +589,44 @@ const onMediaSelected = async (payload: Record<string, unknown> | Array<Record<s
 
 
 
-  let url = media.url || media.path || media.file_path || media.src || ''
+  interface MediaItem {
+    url?: string
+    path?: string
+    file_path?: string
+    src?: string
+    [key: string]: unknown
+  }
+  
+  const mediaItem = media as MediaItem
+  const urlValue = mediaItem.url || mediaItem.path || mediaItem.file_path || mediaItem.src || ''
+  let url = String(urlValue || '')
   // normalize path for public serving
-  url = (url || '').toString().replace(/\\\\/g,'/').replace(/\/public\//,'/')
-  if (!/^https?:\/\//i.test(url)) { if (!url.startsWith('/')) url = '/' + url }
+  url = url.toString().replace(/\\\\/g,'/').replace(/\/public\//,'/')
+  const urlStr = String(url)
+  if (!/^https?:\/\//i.test(urlStr)) { if (!urlStr.startsWith('/')) url = '/' + urlStr }
   // map bare /products/* to /uploads/media/products/* (actual public path)
-  if (!/\/uploads\//.test(url) && /^\/products\//.test(url)) {
-    url = '/uploads/media' + url
+  const normalizedUrl = String(url)
+  if (!/\/uploads\//.test(normalizedUrl) && /^\/products\//.test(normalizedUrl)) {
+    url = '/uploads/media' + normalizedUrl
   }
   if (!url) {
     showMediaLibrary.value = false
     return
   }
 
+  const finalUrl = String(url)
+
   if (mediaLibraryType.value === 'video') {
     if (isEditing.value && editingVideo.value) {
-      editingVideo.value.video_url = url
+      editingVideo.value.video_url = finalUrl
 
       // ذخیره فوری در حالت ویرایش
       try {
         await updateVideo(editingVideo.value.id!, {
           title: editingVideo.value.title,
           description: editingVideo.value.description,
-          video_url: editingVideo.value.video_url,
-          thumbnail_url: editingVideo.value.thumbnail_url,
+          video_url: String(editingVideo.value.video_url),
+          thumbnail_url: String(editingVideo.value.thumbnail_url || ''),
           show_in_gallery: editingVideo.value.show_in_gallery,
           autoplay: editingVideo.value.autoplay,
           show_controls: editingVideo.value.show_controls,
@@ -622,14 +636,14 @@ const onMediaSelected = async (payload: Record<string, unknown> | Array<Record<s
       } catch {}
     } else {
       // در حالت افزودن: پس از انتخاب رسانه، فوراً رکورد را ایجاد کن
-      videoForm.video_url = url
+      videoForm.video_url = finalUrl
 
       try {
         const ok = await addVideo({
           title: videoForm.title,
           description: videoForm.description,
-          video_url: videoForm.video_url,
-          thumbnail_url: videoForm.thumbnail_url,
+          video_url: String(videoForm.video_url),
+          thumbnail_url: String(videoForm.thumbnail_url || ''),
           show_in_gallery: videoForm.show_in_gallery,
           autoplay: videoForm.autoplay,
           show_controls: videoForm.show_controls,
@@ -644,10 +658,10 @@ const onMediaSelected = async (payload: Record<string, unknown> | Array<Record<s
     }
   } else {
     if (isEditing.value && editingVideo.value) {
-      editingVideo.value.thumbnail_url = url
+      editingVideo.value.thumbnail_url = finalUrl
 
     } else {
-      videoForm.thumbnail_url = url
+      videoForm.thumbnail_url = finalUrl
 
     }
   }

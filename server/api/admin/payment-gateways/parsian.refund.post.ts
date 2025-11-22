@@ -6,11 +6,6 @@ interface RefundBody {
   amount: number
 }
 
-interface RefundResponse {
-  success: boolean
-  message?: string
-  data?: unknown
-}
 
 export default defineEventHandler(async (event) => {
   try {

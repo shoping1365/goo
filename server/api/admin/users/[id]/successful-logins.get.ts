@@ -48,7 +48,7 @@ export default defineEventHandler(async (event) => {
       WHERE user_id = $1 AND event_type = 'login_attempt' AND status = 'success'
     `, [userId])
     
-    const total = parseInt((totalCount as any)[0].count)
+    const total = parseInt((totalCount as Array<{ count: string }>)[0].count)
 
     // دریافت رکوردها با pagination
     const result = await db.query(`
@@ -66,7 +66,7 @@ export default defineEventHandler(async (event) => {
       LIMIT $2 OFFSET $3
     `, [userId, limitNum, offset])
 
-    const successfulLogins = (result as any).map((row: any) => {
+    const successfulLogins = (result as Array<{ id: number; user_id: number; mobile: string | null; ip_address: string | null; user_agent: string | null; metadata: { method?: string; device_info?: { browser?: string; browser_version?: string; os?: string; os_version?: string; device_type?: string; device_model?: string } } | null; created_at: string }>).map((row) => {
       const metadata = row.metadata || {}
       const deviceInfo = metadata.device_info || {}
       
@@ -100,7 +100,7 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در دریافت ورودهای موفق:', error)
     
     if (error.statusCode) {

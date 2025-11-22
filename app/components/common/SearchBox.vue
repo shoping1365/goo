@@ -245,10 +245,14 @@ interface SearchResult {
   id: string | number
   type: 'product' | 'category' | 'post' | 'brand' | string
   title: string
+  name?: string
   description?: string
   url: string
   image?: string
   price?: number | string | null
+  final_price?: number | string | null
+  sale_price?: number | string | null
+  min_price?: number | string | null
   slug?: string
   link?: string
   data?: {
@@ -281,6 +285,7 @@ interface SearchResult {
   cover?: string
   picture?: string
   excerpt?: string
+  [key: string]: unknown
 }
 
 interface SearchResponse {
@@ -297,6 +302,7 @@ interface SearchParams {
   q: string
   type?: 'all' | 'products' | 'posts' | 'categories' | 'brands'
   limit?: number
+  [key: string]: string | number | undefined
 }
 
 interface SearchResultGroup {
@@ -584,7 +590,7 @@ const viewAllResults = () => {
   if (props.searchType !== 'all') {
     params.type = props.searchType
   }
-  router.push({ path: '/search-results', query: params })
+  router.push({ path: '/search-results', query: params as Record<string, string | number | undefined> })
 
   nextTick(() => {
     searchQuery.value = ''
@@ -658,7 +664,7 @@ const getTypeBadgeClass = (type: string) => {
 }
 
 const resolveTitle = (item: SearchResult) => {
-  return item.title || item.name || item.data?.title || item.data?.name || 'بدون عنوان'
+  return item.title || (item.name as string | undefined) || item.data?.title || item.data?.name || 'بدون عنوان'
 }
 
 const resolveDescription = (item: SearchResult) => {

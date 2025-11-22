@@ -355,7 +355,20 @@ watch(() => formData.value.content, (newContent) => {
 onMounted(() => {
   if (editingMessage.value) {
     // ویرایش پیام موجود
-    formData.value = { ...editingMessage.value }
+    const message = editingMessage.value as Record<string, unknown>
+    formData.value = {
+      title: String(message.title || ''),
+      content: String(message.content || ''),
+      category: String(message.category || ''),
+      type: String(message.type || 'custom'),
+      language: String(message.language || 'fa'),
+      priority: String(message.priority || 'medium'),
+      isActive: Boolean(message.isActive ?? true),
+      allowPersonalization: Boolean(message.allowPersonalization ?? true),
+      requireApproval: Boolean(message.requireApproval ?? false),
+      isTemplate: Boolean(message.isTemplate ?? false),
+      templateId: message.templateId || null
+    }
   }
 })
 </script>

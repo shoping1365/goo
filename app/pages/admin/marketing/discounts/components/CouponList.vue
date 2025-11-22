@@ -435,17 +435,22 @@ const _handleSaveCoupon = (couponData: CouponData) => {
     // ویرایش کوپن موجود
     const index = coupons.value.findIndex(c => c.id === editingCoupon.value?.id)
     if (index !== -1) {
-      coupons.value[index] = { ...coupons.value[index], ...couponData }
+      coupons.value[index] = { 
+        ...coupons.value[index], 
+        ...couponData,
+        id: Number(couponData.id || coupons.value[index].id)
+      } as Coupon
     }
   } else {
     // افزودن کوپن جدید
     const newCoupon: Coupon = {
-      id: Date.now(),
+      id: Date.now() as number,
       ...couponData,
       usedCount: 0,
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    }
+      updatedAt: new Date().toISOString(),
+      status: 'active'
+    } as Coupon
     coupons.value.unshift(newCoupon)
   }
   closeCouponForm()

@@ -1,12 +1,9 @@
 import { getDatabase } from '../_utils/database.js'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (_event) => {
   try {
-    console.log('Check media variants API called')
-    
     const db = await getDatabase()
-    console.log('Database connected')
-    
+
     // بررسی ساختار جدول media_variants
     const tableStructure = await db.query(`
       SELECT column_name, data_type, is_nullable
@@ -14,30 +11,24 @@ export default defineEventHandler(async (event) => {
       WHERE table_name = 'media_variants' 
       ORDER BY ordinal_position
     `)
-    
-    console.log('Media variants table structure:', tableStructure)
-    
+
     // بررسی داده‌های جدول media_variants
     const mediaVariants = await db.query(`
       SELECT * FROM media_variants 
       ORDER BY id 
       LIMIT 10
     `)
-    
-    console.log('Media variants data:', mediaVariants)
-    
+
     // بررسی تعداد رکوردها
     const count = await db.query(`SELECT COUNT(*) as count FROM media_variants`)
-    
+
     // بررسی variant های 150x150
     const variants150x150 = await db.query(`
       SELECT * FROM media_variants 
       WHERE width = 150 AND height = 150
       LIMIT 5
     `)
-    
-    console.log('150x150 variants:', variants150x150)
-    
+
     return {
       success: true,
       table_structure: tableStructure,
@@ -46,7 +37,7 @@ export default defineEventHandler(async (event) => {
       variants_150x150: variants150x150,
       message: 'Media variants check completed'
     }
-    
+
   } catch (error) {
     console.error('Check media variants API error:', error)
     return {

@@ -65,7 +65,6 @@ export default defineEventHandler(async (event: H3Event) => {
     if (images.length > 0 || videos.length > 0) {
       // For now, we'll skip file uploads and just send the review data
       // File uploads can be implemented later with proper multipart handling
-      console.log('File uploads detected but not implemented yet')
     }
 
     const response = await $fetch(`${baseURL}/api/reviews`, {

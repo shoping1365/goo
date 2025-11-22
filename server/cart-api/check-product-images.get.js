@@ -1,12 +1,9 @@
 import { getDatabase } from '../_utils/database.js'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (_event) => {
   try {
-    console.log('Check product images API called')
-    
     const db = await getDatabase()
-    console.log('Database connected')
-    
+
     // بررسی عکس‌های محصولات
     const products = await db.query(`
       SELECT id, name, sku, price, image 
@@ -14,15 +11,13 @@ export default defineEventHandler(async (event) => {
       ORDER BY id 
       LIMIT 10
     `)
-    
-    console.log('Products with images:', products)
-    
+
     return {
       success: true,
       products: products,
       message: 'Product images check completed'
     }
-    
+
   } catch (error) {
     console.error('Check product images API error:', error)
     return {

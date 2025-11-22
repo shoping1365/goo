@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
   try {
     const response = await $fetch(`${baseURL}/api/reviews?${params.toString()}`)
     return response
-  } catch (error) {
+  } catch (_error) {
     throw createError({
       statusCode: 500,
       message: 'Failed to fetch reviews'

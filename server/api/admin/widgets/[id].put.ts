@@ -14,11 +14,11 @@ export default defineEventHandler(async (event) => {
                method: 'PUT',
                body
           })
-     } catch (error: any) {
+     } catch (error: unknown) {
           console.error('خطا در آپدیت ویجت:', error)
           throw createError({
-               statusCode: error.statusCode || 500,
-               message: error.statusMessage || 'خطا در آپدیت ویجت'
+               statusCode: (error as { statusCode?: number }).statusCode || 500,
+               message: (error as { statusMessage?: string }).statusMessage || 'خطا در آپدیت ویجت'
           })
      }
 })

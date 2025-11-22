@@ -139,8 +139,8 @@
                       <td class="px-3 py-2">{{ j.id }}</td>
                       <td class="px-3 py-2">{{ j.media_id }}</td>
                       <td class="px-3 py-2">{{ j.status }}</td>
-                      <td class="px-3 py-2">{{ formatDateTime(j.scheduled_at) }}</td>
-                      <td class="px-3 py-2">{{ formatDateTime(j.finished_at) }}</td>
+                      <td class="px-3 py-2">{{ formatDateTime(j.scheduled_at as string | number | Date | null | undefined) }}</td>
+                      <td class="px-3 py-2">{{ formatDateTime(j.finished_at as string | number | Date | null | undefined) }}</td>
                       <td class="px-3 py-2 flex items-center gap-2">
                         <button v-if="j.status==='error' || j.status==='completed'" class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded hover:bg-blue-200" @click="retryJob(j.id)">Retry</button>
                         <span v-if="j.error_message" class="text-xs text-red-600 truncate max-w-[240px]">{{ j.error_message }}</span>
@@ -549,10 +549,11 @@
                           name: result.name,
                           size: result.compressedSize,
                           url: result.compressedUrl || result.thumbnail,
-                          preview: result.compressedUrl || result.thumbnail,
+                          thumbnail: result.compressedUrl || result.thumbnail,
+                          dimensions: result.dimensions || '',
                           extension: result.name.split('.').pop() || '',
                           type: 'image'
-                        })"
+                        } as ImageFile)"
                       >
                     </div>
                     <div class="mr-4">
@@ -1145,7 +1146,7 @@ const startCompression = async () => {
           compressedSize: 0,
           reduction: 0,
           status: 'error',
-          errorMessage: e?.message || 'خطا',
+          errorMessage: (e as { message?: string })?.message || 'خطا',
           outputFormat: outFmt,
           originalUrl: img.url
         })
@@ -1664,11 +1665,11 @@ async function scanImages() {
       const hasCompressedSize = m.compressed_size && Number(m.compressed_size) > 0
       return !(isCompressed || hasCompressedSize)
     }).map(m => ({
-      id: m.id,
-      name: m.file_name || m.name,
-      url: m.url,
-      thumbnail: m.url,
-      size: m.size,
+      id: Number(m.id) || 0,
+      name: m.file_name || m.name || '',
+      url: m.url || '',
+      thumbnail: m.url || '',
+      size: Number(m.size) || 0,
       dimensions: m.width && m.height ? `${m.width}x${m.height}` : ''
     }))
     if (images.value.length > 0) {
@@ -1713,7 +1714,7 @@ const backupState = reactive({
   periods: [] as string[],
   selected: '',
   restoring: false,
-  report: null as BackupReport | null
+  report: null as { period?: string; file_count?: number; total_size?: number; [key: string]: unknown } | null
 })
 
 async function loadBackupPeriods() {
@@ -1762,26 +1763,13 @@ async function restoreBackup() {
 }
 
 function openPreviewUrl(url: string, title: string) {
-  // تعیین نوع تصویر بر اساس پسوند
-  let ext = url.split('.').pop() || ''
-  let type = 'image'
-  if (url.startsWith('blob:')) {
-    type = 'image/jpeg'
-  } else if (ext) {
-    ext = ext.toLowerCase()
-    if (ext === 'jpg' || ext === 'jpeg') type = 'image/jpeg'
-    else if (ext === 'png') type = 'image/png'
-    else if (ext === 'webp') type = 'image/webp'
-    else type = 'image'
-  }
   previewFile.value = {
     id: 0,
     name: title,
     size: 0,
     url,
-    preview: url,
-    extension: ext,
-    type
+    thumbnail: url,
+    dimensions: ''
   }
   // اطمینان از reactive بودن
   previewFile.value = { ...previewFile.value }
@@ -2009,7 +1997,7 @@ async function loadImageSeoSettings(){
       if (openai?.available_models && Array.isArray(openai.available_models)) {
         availableModels.value = openai.available_models
       }
-      const sectionModel = openai?.section_models?.image_seo
+      const sectionModel = (openai as { section_models?: { image_seo?: string }; [key: string]: unknown })?.section_models?.image_seo
       if (sectionModel) imageSeo.model = sectionModel
     }catch{}
     // در صورت نبود مقدار، روی gpt-4o-mini

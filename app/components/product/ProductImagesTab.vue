@@ -387,16 +387,23 @@ import { useProductCreateStore } from '~/stores/productCreate'
    store.images = arr
  }
 
- function openMedia(){
-   showMediaModal.value = true
- }
+function openMedia(){
+  showMediaModal.value = true
+}
 
- function onImagesSelected(files: Array<Record<string, unknown>>){
-   if(files && files.length){
-     store.addImages(files)
-   }
-   showMediaModal.value = false
- }
+function onImagesSelected(files: Array<Record<string, unknown>>){
+  if(files && files.length){
+    const mediaImages = files.map((file) => ({
+      id: Number(file.id) || 0,
+      url: String(file.url || ''),
+      thumbnail: String(file.thumbnail || file.url || ''),
+      name: String(file.name || ''),
+      ...file
+    }))
+    store.addImages(mediaImages)
+  }
+  showMediaModal.value = false
+}
 
  // Handle delete emitted from preview modal
  async function onDeleteImage(id:number){

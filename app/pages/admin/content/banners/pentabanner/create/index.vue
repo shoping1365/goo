@@ -944,7 +944,7 @@ import TemplateButton from '~/components/common/TemplateButton.vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
 import { useToast } from '~/composables/useToast'
 import { useWidget } from '~/composables/useWidget'
-import type { BannerConfig, BannerItem, Widget, WidgetType, WidgetStatus, WidgetPage } from '~/types/widget'
+import type { BannerConfig, BannerItem, CreateWidgetRequest, Widget, WidgetConfig, WidgetType, WidgetStatus, WidgetPage } from '~/types/widget'
 
 interface ImageCropResponse {
   success: boolean
@@ -1256,13 +1256,13 @@ const saveWidget = async () => {
     configToSave.mobile_padding_top = bannerConfig.value.mobile_padding_top
     configToSave.mobile_padding_bottom = bannerConfig.value.mobile_padding_bottom
 
-    const widgetData = {
+    const widgetData: CreateWidgetRequest = {
       title: formData.value.title,
       description: formData.value.description,
       type: formData.value.type as WidgetType,
       status: formData.value.status as WidgetStatus,
       page: formData.value.page as WidgetPage,
-      config: configToSave
+      config: configToSave as WidgetConfig
     }
 
     const createdWidget = await createWidget(widgetData)

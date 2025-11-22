@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
     })
 
     return response
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در حذف درگاه پرداخت:', error)
     throw createError({
       statusCode: 500,

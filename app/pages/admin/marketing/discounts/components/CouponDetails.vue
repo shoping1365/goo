@@ -38,8 +38,8 @@
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700">وضعیت</label>
-                  <span :class="`mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeClass(coupon.status)}`">
-                    {{ getStatusName(coupon.status) }}
+                  <span :class="`mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeClass(String(coupon.status || ''))}`">
+                    {{ getStatusName(String(coupon.status || '')) }}
                   </span>
                 </div>
               </div>
@@ -52,19 +52,19 @@
                 <div>
                   <label class="block text-sm font-medium text-gray-700">نوع تخفیف</label>
                   <div class="mt-1 flex items-center gap-2">
-                    <span :class="`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getTypeBadgeClass(coupon.type)}`">
-                      {{ getTypeName(coupon.type) }}
+                    <span :class="`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getTypeBadgeClass(String(coupon.type || ''))}`">
+                      {{ getTypeName(String(coupon.type || '')) }}
                     </span>
                     <span class="text-sm text-gray-900">{{ formatDiscount(coupon) }}</span>
                   </div>
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700">حداقل مبلغ سفارش</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ formatCurrency(coupon.minOrderAmount) }}</p>
+                  <p class="mt-1 text-sm text-gray-900">{{ formatCurrency(Number(coupon.minOrderAmount || 0)) }}</p>
                 </div>
                 <div v-if="coupon.maxDiscount">
                   <label class="block text-sm font-medium text-gray-700">حداکثر تخفیف</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ formatCurrency(coupon.maxDiscount) }}</p>
+                  <p class="mt-1 text-sm text-gray-900">{{ formatCurrency(Number(coupon.maxDiscount || 0)) }}</p>
                 </div>
               </div>
             </div>
@@ -86,11 +86,11 @@
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700">تاریخ شروع</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ formatDate(coupon.startsAt) }}</p>
+                  <p class="mt-1 text-sm text-gray-900">{{ formatDate(String(coupon.startsAt || '')) }}</p>
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700">تاریخ انقضا</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ formatDate(coupon.expiresAt) }}</p>
+                  <p class="mt-1 text-sm text-gray-900">{{ formatDate(String(coupon.expiresAt || '')) }}</p>
                 </div>
               </div>
             </div>
@@ -135,16 +135,16 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                <tr v-for="usage in coupon.usageHistory" :key="usage.id" class="hover:bg-gray-50">
-                  <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">{{ usage.userName }}</td>
-                  <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">#{{ usage.orderId }}</td>
-                  <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">{{ formatCurrency(usage.discountAmount) }}</td>
-                  <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">{{ formatDate(usage.usedAt) }}</td>
+                <tr v-for="usage in (Array.isArray(coupon.usageHistory) ? coupon.usageHistory : [])" :key="(usage as { id?: number | string }).id" class="hover:bg-gray-50">
+                  <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">{{ String((usage as { userName?: string }).userName || '') }}</td>
+                  <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">#{{ String((usage as { orderId?: string }).orderId || '') }}</td>
+                  <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">{{ formatCurrency(Number((usage as { discountAmount?: number }).discountAmount || 0)) }}</td>
+                  <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">{{ formatDate(String((usage as { usedAt?: string }).usedAt || '')) }}</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div v-if="!coupon.usageHistory || coupon.usageHistory.length === 0" class="text-center py-8">
+          <div v-if="!Array.isArray(coupon.usageHistory) || coupon.usageHistory.length === 0" class="text-center py-8">
             <p class="text-gray-500">هنوز از این کوپن استفاده نشده است.</p>
           </div>
         </div>
@@ -167,6 +167,16 @@
 // Props
 interface Coupon {
   id?: number | string
+  code?: string
+  discount?: number
+  status?: string
+  minOrderAmount?: number
+  maxDiscount?: number
+  startsAt?: string
+  expiresAt?: string
+  maxUses?: number
+  usedCount?: number
+  usageHistory?: Array<{ id?: number | string; userName?: string; orderId?: string; discountAmount?: number; usedAt?: string; [key: string]: unknown }>
   [key: string]: unknown
 }
 
@@ -175,14 +185,6 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-
-// Emits
-interface Coupon {
-  id?: number | string
-  code?: string
-  discount?: number
-  [key: string]: unknown
-}
 const emit = defineEmits<{
   close: []
   edit: [coupon: Coupon]
@@ -241,17 +243,11 @@ const getTypeName = (type: string) => {
   }
 }
 
-interface Coupon {
-  type?: string
-  discountValue?: number | string
-  [key: string]: unknown
-}
-
 const formatDiscount = (coupon: Coupon) => {
   if (coupon.type === 'percentage') {
     return `${coupon.discountValue}%`
   } else if (coupon.type === 'fixed') {
-    return formatCurrency(coupon.discountValue)
+    return formatCurrency(Number(coupon.discountValue || 0))
   } else if (coupon.type === 'free_shipping') {
     return 'ارسال رایگان'
   }
@@ -276,13 +272,15 @@ const formatDate = (date: string) => {
 }
 
 const getRemainingUses = () => {
-  if (!props.coupon.maxUses) return 'نامحدود'
-  return Math.max(0, props.coupon.maxUses - (props.coupon.usedCount || 0))
+  const maxUses = Number(props.coupon.maxUses || 0)
+  if (!maxUses) return 'نامحدود'
+  return Math.max(0, maxUses - Number(props.coupon.usedCount || 0))
 }
 
 const getUsagePercentage = () => {
-  if (!props.coupon.maxUses) return 0
-  return Math.round(((props.coupon.usedCount || 0) / props.coupon.maxUses) * 100)
+  const maxUses = Number(props.coupon.maxUses || 0)
+  if (!maxUses) return 0
+  return Math.round((Number(props.coupon.usedCount || 0) / maxUses) * 100)
 }
 
 const getUsageProgressClass = () => {

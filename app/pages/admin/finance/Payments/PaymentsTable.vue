@@ -38,18 +38,18 @@
         <tbody>
           <tr v-for="payment in filteredPayments" :key="payment.id" class="border-b hover:bg-gray-50 transition-colors">
             <td class="py-2 px-4">{{ payment.transactionId }}</td>
-            <td class="py-2 px-4">{{ formatDate(payment.date) }}</td>
+            <td class="py-2 px-4">{{ formatDate(String(payment.date || '')) }}</td>
             <td class="py-2 px-4">{{ payment.customerName }}</td>
-            <td class="py-2 px-4">{{ formatPrice(payment.amount) }}</td>
-            <td class="py-2 px-4">{{ getMethodName(payment.paymentMethod) }}</td>
+            <td class="py-2 px-4">{{ formatPrice(payment.amount || 0) }}</td>
+            <td class="py-2 px-4">{{ getMethodName(String(payment.paymentMethod || '')) }}</td>
             <td class="py-2 px-4">
-              <span :class="statusClass(payment.status)">{{ getStatusName(payment.status) }}</span>
+              <span :class="statusClass(String(payment.status || ''))">{{ getStatusName(String(payment.status || '')) }}</span>
             </td>
             <td class="py-2 px-4">{{ payment.orderNumber }}</td>
             <td class="py-2 px-4">
               <!-- منوی عملیات -->
               <div class="relative inline-block text-left">
-                <button class="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" @click="openActionMenu(payment.id)">
+                <button class="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" @click="openActionMenu(typeof payment.id === 'number' ? payment.id : Number(payment.id) || 0)">
                   <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <circle cx="12" cy="6" r="1.5" />
                     <circle cx="12" cy="12" r="1.5" />
@@ -136,6 +136,12 @@ interface Payment {
   id?: number | string
   amount?: number
   status?: string
+  transactionId?: string
+  orderNumber?: string | number
+  date?: string
+  customerName?: string
+  paymentMethod?: string
+  note?: string
   [key: string]: unknown
 }
 const props = defineProps<{ payments: Payment[] }>()
@@ -143,9 +149,6 @@ const props = defineProps<{ payments: Payment[] }>()
 const search = ref('')
 const actionMenuOpen = ref<number|null>(null)
 const modal = ref({ manualConfirm: false, refund: false, sendReceipt: false, note: false })
-interface Payment {
-  [key: string]: unknown
-}
 
 const selectedPayment = ref<Payment | null>(null)
 const noteText = ref('')
@@ -153,10 +156,12 @@ const successMessage = ref('')
 
 const filteredPayments = computed(() => {
   if (!search.value) return props.payments
-  return props.payments.filter(p =>
-    (p.transactionId && p.transactionId.includes(search.value)) ||
-    (p.orderNumber && p.orderNumber.includes(search.value))
-  )
+  return props.payments.filter(p => {
+    const transactionId = String(p.transactionId || '')
+    const orderNumber = String(p.orderNumber || '')
+    return (transactionId && transactionId.includes(search.value)) ||
+           (orderNumber && orderNumber.includes(search.value))
+  })
 })
 
 const formatDate = (date: string) => {
@@ -223,7 +228,7 @@ function showSendReceipt(payment: Payment) {
 }
 function showNote(payment: Payment) {
   selectedPayment.value = payment
-  noteText.value = payment.note || ''
+  noteText.value = String(payment.note || '')
   modal.value = { manualConfirm: false, refund: false, sendReceipt: false, note: true }
   actionMenuOpen.value = null
 }

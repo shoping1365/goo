@@ -283,10 +283,10 @@ v-for="tab in tabs" :key="tab.value" :class="['px-6 py-3 -mb-px font-medium text
             <div v-if="testResults.details" class="bg-gray-50 p-6 rounded">
               <h6 class="text-sm font-medium text-gray-700 mb-2">جزئیات اجرا:</h6>
               <div class="space-y-2 text-sm">
-                <div v-for="(detail, index) in testResults.details" :key="index" class="flex items-center justify-between">
-                  <span class="text-gray-600">{{ detail.condition }}</span>
-                  <span :class="['px-2 py-1 rounded text-xs', detail.result ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800']">
-                    {{ detail.result ? 'صحیح' : 'غلط' }}
+                <div v-for="(detail, index) in (Array.isArray(testResults.details) ? testResults.details : [])" :key="index" class="flex items-center justify-between">
+                  <span class="text-gray-600">{{ String((detail as { condition?: string }).condition || '') }}</span>
+                  <span :class="['px-2 py-1 rounded text-xs', (detail as { result?: boolean }).result ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800']">
+                    {{ (detail as { result?: boolean }).result ? 'صحیح' : 'غلط' }}
                   </span>
                 </div>
               </div>
@@ -445,16 +445,21 @@ const canDeleteRule = computed(() => {
 
 const activeTab = ref('rules')
 const showRuleForm = ref(false)
-interface Rule {
-  id?: number | string
-  [key: string]: unknown
-}
 
 interface TestData {
   [key: string]: unknown
 }
 
+interface TestDetail {
+  condition: string
+  result: boolean
+  [key: string]: unknown
+}
+
 interface TestResults {
+  success?: boolean
+  executionTime?: number
+  details?: TestDetail[]
   [key: string]: unknown
 }
 
@@ -637,14 +642,21 @@ const editRule = (rule: Rule) => {
 }
 
 const duplicateRule = (rule: Rule) => {
-  const duplicate = { ...rule, id: Date.now(), name: `${rule.name} (کپی)` }
-  rules.value.unshift(duplicate)
-}
-
-interface Rule {
-  id?: number | string
-  name?: string
-  [key: string]: unknown
+  const duplicate: Rule = { 
+    ...rule, 
+    id: Date.now(), 
+    name: `${rule.name || ''} (کپی)`,
+    category: rule.category || '',
+    description: rule.description || '',
+    color: rule.color || '',
+    status: rule.status || '',
+    conditions: rule.conditions || [],
+    logicOperator: rule.logicOperator || 'and',
+    lastExecuted: rule.lastExecuted || '',
+    executionCount: rule.executionCount || 0,
+    successRate: rule.successRate || 0
+  }
+  rules.value.unshift(duplicate as typeof rules.value[0])
 }
 
 const deleteRule = async (rule: Rule) => {

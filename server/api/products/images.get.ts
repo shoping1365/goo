@@ -1,10 +1,10 @@
 interface ApiResponse {
   success: boolean
-  data?: any
+  data?: unknown
   error?: string
 }
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (_event) => {
   try {
     const config = useRuntimeConfig()
     const base = config.public.goApiBase

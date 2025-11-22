@@ -12,18 +12,18 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const response: any = await fetchGo(event, `/api/product-videos/${videoId}`, { method: 'DELETE' })
+    const response = await fetchGo(event, `/api/product-videos/${videoId}`, { method: 'DELETE' })
 
     return {
       success: true,
       data: response
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در حذف ویدیو:', error)
 
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.message || error.statusMessage || 'خطا در حذف ویدیو'
+      statusCode: (error as { statusCode?: number }).statusCode || 500,
+      message: (error as { message?: string; statusMessage?: string }).message || (error as { message?: string; statusMessage?: string }).statusMessage || 'خطا در حذف ویدیو'
     })
   }
 }) 

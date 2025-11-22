@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
       }
     })
     return response
-  } catch (error) {
+  } catch (_error) {
     throw createError({
       statusCode: 500,
       message: 'Failed to add reply to review'

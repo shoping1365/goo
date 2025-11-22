@@ -1,20 +1,10 @@
-import { defineEventHandler, readBody, createError } from 'h3'
+import { createError, defineEventHandler, readBody } from 'h3'
 
 export default defineEventHandler(async (event) => {
   try {
-    // بررسی method و headers
-    console.log('Request Method:', event.node.req.method)
-    console.log('Content-Type:', event.node.req.headers['content-type'])
-    
     const body = await readBody(event)
-    
-    // دیباگ: نمایش محتوای درخواست
-    console.log('Cart Add Request Body:', body)
-    console.log('Body type:', typeof body)
-    console.log('product_id:', body?.product_id, 'Type:', typeof body?.product_id)
-    
+
     if (!body || !body.product_id) {
-      console.error('Missing product_id in body:', body)
       throw createError({
         statusCode: 400,
         message: 'شناسه محصول الزامی است'
@@ -41,7 +31,7 @@ export default defineEventHandler(async (event) => {
 
   } catch (error) {
     console.error('خطا در افزودن به سبد خرید:', error)
-    
+
     throw createError({
       statusCode: error.statusCode || 500,
       message: error.statusMessage || 'خطا در افزودن به سبد خرید'

@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
           body: { category_id: target.id }
         })
         results.push({ id: qid, ok: true })
-      } catch (err) {
+      } catch (_err) {
         results.push({ id: qid, ok: false })
       }
     }

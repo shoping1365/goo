@@ -12,7 +12,7 @@
         <div class="layers-list">
           <div 
             v-for="(layer, idx) in createdLayers" 
-            :key="layer.id"
+            :key="(layer as { id?: number | string }).id"
             class="layer-item"
             draggable="true"
             @dragstart="onDragStart(idx)"
@@ -21,19 +21,19 @@
             @dragend="onDragEnd"
           >
             <div class="layer-info">
-              <div class="layer-name">{{ layer.name || 'لایه بدون نام' }}</div>
+              <div class="layer-name">{{ ((layer as { name?: string }).name) || 'لایه بدون نام' }}</div>
               <div class="layer-details">
-                <span class="detail-item">نام لایه: {{ layer.name || 'بدون نام' }}</span>
-                <span class="detail-item">عرض: {{ layer.width }}%</span>
-                <span class="detail-item">ارتفاع: {{ layer.height }}px</span>
-                <span class="detail-item">شفافیت: {{ layer.opacity }}%</span>
-                <span class="detail-item">تعداد ردیف: {{ layer.rowCount }}</span>
-                <span class="detail-item">ایتم ها: {{ layer.items.length }} مورد انتخاب شده</span>
+                <span class="detail-item">نام لایه: {{ ((layer as { name?: string }).name) || 'بدون نام' }}</span>
+                <span class="detail-item">عرض: {{ ((layer as { width?: number }).width) || 0 }}%</span>
+                <span class="detail-item">ارتفاع: {{ ((layer as { height?: number }).height) || 0 }}px</span>
+                <span class="detail-item">شفافیت: {{ ((layer as { opacity?: number }).opacity) || 0 }}%</span>
+                <span class="detail-item">تعداد ردیف: {{ ((layer as { rowCount?: number }).rowCount) || 0 }}</span>
+                <span class="detail-item">ایتم ها: {{ Array.isArray((layer as { items?: unknown[] }).items) ? ((layer as { items?: unknown[] }).items?.length || 0) : 0 }} مورد انتخاب شده</span>
               </div>
             </div>
             <div class="layer-actions">
-              <button class="btn btn-sm btn-outline" @click="editLayer(layer)">ویرایش</button>
-              <button class="btn btn-sm btn-danger" @click="deleteLayer(layer.id)">حذف</button>
+              <button class="btn btn-sm btn-outline" @click="editLayer(layer as HeaderLayer)">ویرایش</button>
+              <button class="btn btn-sm btn-danger" @click="deleteLayer((layer as { id?: number | string }).id)">حذف</button>
             </div>
           </div>
         </div>
@@ -69,6 +69,42 @@
 import type { Ref } from 'vue'
 import { inject, ref } from 'vue'
 
+interface HeaderLayer {
+  id?: string | number
+  name: string
+  width: number
+  height: number
+  rowCount: number
+  color: string
+  opacity: number
+  enableBorder: boolean
+  borderPosition: string
+  borderColor: string
+  borderWidth: number
+  borderStyle: string
+  enableShadow: boolean
+  shadowIntensity: string
+  shadowDirection: string
+  showSeparator: boolean
+  separatorType: string
+  separatorColor: string
+  separatorOpacity: number
+  separatorWidth: number
+  items: unknown[]
+  direction: string
+  mobileResponsive: boolean
+  tabletResponsive: boolean
+  paddingRight: number
+  paddingLeft: number
+  paddingTop: number
+  paddingBottom: number
+  styleSettings?: Record<string, unknown>
+  boxWidths?: number[]
+  createdAt?: string
+  updatedAt?: string
+  [key: string]: unknown
+}
+
 // Inject data and functions from parent
 // const headerData = inject<Ref<unknown>>('headerData', ref({}))
 // const saveHeader = inject<() => void>('saveHeader', () => {})
@@ -89,17 +125,17 @@ const dragIndex = ref<number|null>(null)
 
 
 
-function editLayer(layer) {
+function editLayer(layer: HeaderLayer | Record<string, unknown>) {
   // کپی کردن اطلاعات لایه به فرم ویرایش
   Object.assign(newLayer.value, layer)
   // Ensure the ID is preserved for editing
-  newLayer.value.id = layer.id
+  ;(newLayer.value as Record<string, unknown>).id = (layer as { id?: number | string }).id
   showLayerSettings.value = true
 }
 
-function deleteLayer(layerId) {
-
-  const index = createdLayers.value.findIndex(layer => layer.id === layerId)
+function deleteLayer(layerId: number | string | undefined) {
+  if (layerId === undefined) return
+  const index = createdLayers.value.findIndex(layer => ((layer as { id?: number | string }).id) === layerId)
   if (index > -1) {
     // const deletedLayer = createdLayers.value.splice(index, 1)[0]
     createdLayers.value.splice(index, 1)
@@ -119,7 +155,7 @@ function confirmClearAllLayers() {
 // تابع بررسی و نمایش هشدار
 function handleAddNewLayer() {
   // بررسی اینکه آیا لایه‌ای در حال ویرایش است
-  if (newLayer.value && newLayer.value.id) {
+  if (newLayer.value && ((newLayer.value as { id?: number | string }).id)) {
     showWarningModal.value = true
   } else {
     // اگر لایه‌ای در حال ویرایش نیست، فرم جدید را باز کن

@@ -199,26 +199,26 @@
           <tbody class="bg-white divide-y divide-gray-200">
             <tr v-for="transaction in filteredTransactions" :key="transaction.id" class="hover:bg-gray-50">
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {{ transaction.transactionId }}
+                {{ String(transaction.transactionId || '') }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                {{ transaction.cardCode }}
+                {{ String(transaction.cardCode || '') }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span :class="getTypeBadgeClass(transaction.type)" class="inline-flex px-2 py-1 text-xs font-semibold rounded-full">
-                  {{ getTypeLabel(transaction.type) }}
+                <span :class="getTypeBadgeClass(String(transaction.type || ''))" class="inline-flex px-2 py-1 text-xs font-semibold rounded-full">
+                  {{ getTypeLabel(String(transaction.type || '')) }}
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                {{ formatCurrency(transaction.amount) }}
+                {{ formatCurrency(Number(transaction.amount || 0)) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span :class="getStatusBadgeClass(transaction.status)" class="inline-flex px-2 py-1 text-xs font-semibold rounded-full">
-                  {{ getStatusLabel(transaction.status) }}
+                <span :class="getStatusBadgeClass(String(transaction.status || ''))" class="inline-flex px-2 py-1 text-xs font-semibold rounded-full">
+                  {{ getStatusLabel(String(transaction.status || '')) }}
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                {{ formatDate(transaction.date) }}
+                {{ formatDate(transaction.date instanceof Date ? transaction.date : new Date(String(transaction.date || ''))) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <button 
@@ -228,14 +228,14 @@
                   جزئیات
                 </button>
                 <button 
-                  v-if="transaction.status === 'failed'"
+                  v-if="String(transaction.status || '') === 'failed'"
                   class="text-green-600 hover:text-green-900 ml-3"
                   @click="retryTransaction(transaction)"
                 >
                   تلاش مجدد
                 </button>
                 <button 
-                  v-if="transaction.status === 'successful' && transaction.type === 'usage'"
+                  v-if="String(transaction.status || '') === 'successful' && String(transaction.type || '') === 'usage'"
                   class="text-red-600 hover:text-red-900 ml-3"
                   @click="openRefundModal(transaction)"
                 >
@@ -594,30 +594,59 @@ const exportTransactions = () => {
   alert('فایل Excel آماده شد')
 }
 
+interface TransactionData {
+  id: number
+  transactionId: string
+  cardCode: string
+  type: string
+  amount: number
+  status: string
+  date: Date
+  description: string
+  orderId: string
+  customerName: string
+  customerEmail: string
+  [key: string]: unknown
+}
+
 const handleTransactionCreated = (transaction: Transaction) => {
-  transactions.value.unshift(transaction)
+  const transactionData: TransactionData = {
+    id: Number(transaction.id || Date.now()),
+    transactionId: String(transaction.transactionId || `TXN-${Date.now()}`),
+    cardCode: String(transaction.cardCode || ''),
+    type: String(transaction.type || 'purchase'),
+    amount: Number(transaction.amount || 0),
+    status: String(transaction.status || 'pending'),
+    date: transaction.date instanceof Date ? transaction.date : new Date(),
+    description: String(transaction.description || ''),
+    orderId: String(transaction.orderId || ''),
+    customerName: String(transaction.customerName || ''),
+    customerEmail: String(transaction.customerEmail || ''),
+    ...transaction
+  } as TransactionData
+  transactions.value.unshift(transactionData as typeof transactions.value[0])
   showCreateModal.value = false
 }
 
 const handleRefundRequested = (refundData: RefundData) => {
   // ایجاد تراکنش بازپرداخت
-  const refundTransaction = {
+  const refundTransaction: TransactionData = {
     id: transactions.value.length + 1,
     transactionId: `TXN-${Date.now()}`,
-    cardCode: refundData.cardCode,
+    cardCode: String(refundData.cardCode || ''),
     type: 'refund',
-    amount: refundData.amount,
+    amount: Number(refundData.amount || 0),
     status: 'pending',
     date: new Date(),
-    description: `بازپرداخت: ${refundData.reason}`,
-    orderId: refundData.orderId,
-    customerName: refundData.customerName,
-    customerEmail: refundData.customerEmail,
-    refundReason: refundData.reason,
-    originalTransactionId: refundData.originalTransactionId
-  }
+    description: `بازپرداخت: ${String(refundData.reason || '')}`,
+    orderId: String(refundData.orderId || ''),
+    customerName: String(refundData.customerName || ''),
+    customerEmail: String(refundData.customerEmail || ''),
+    refundReason: String(refundData.reason || ''),
+    originalTransactionId: String(refundData.originalTransactionId || '')
+  } as TransactionData
   
-  transactions.value.unshift(refundTransaction)
+  transactions.value.unshift(refundTransaction as typeof transactions.value[0])
   showRefundModal.value = false
   alert('درخواست بازپرداخت ثبت شد')
 }

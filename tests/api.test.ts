@@ -3,7 +3,7 @@
  * Test API endpoints and composables
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 
 // Mock API responses
 const mockUsers = [
@@ -82,7 +82,7 @@ describe('Permission API', () => {
 
   it('should group permissions by category', async () => {
     const permissions = mockPermissions
-    const grouped = permissions.reduce((acc: Record<string, any[]>, perm) => {
+    const grouped = permissions.reduce((acc: Record<string, Array<{ id: string; name: string; description: string }>>, perm) => {
       const category = 'default'
       if (!acc[category]) acc[category] = []
       acc[category].push(perm)

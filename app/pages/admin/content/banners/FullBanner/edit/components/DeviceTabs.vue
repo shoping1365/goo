@@ -201,7 +201,7 @@
                   >
                     <img 
                       :src="getMobileImageUrl(banner)" 
-                      :alt="banner.title"
+                      :alt="(banner as { title?: string }).title || ''"
                       class="w-full h-full"
                       :class="getMobileImageClass()"
                     />
@@ -210,16 +210,16 @@
                       class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3"
                     >
                       <h4
-                        v-if="props.bannerConfig.show_title && banner.title && (banner.showTitle !== false)"
+                        v-if="props.bannerConfig.show_title && (banner as { title?: string; showTitle?: boolean }).title && ((banner as { showTitle?: boolean }).showTitle !== false)"
                         class="text-white text-base font-bold mb-1"
                       >
-                        {{ banner.title }}
+                        {{ (banner as { title?: string }).title }}
                       </h4>
                       <p
-                        v-if="props.bannerConfig.show_description && banner.description"
+                        v-if="props.bannerConfig.show_description && (banner as { description?: string }).description"
                         class="text-white/90 text-xs"
                       >
-                        {{ banner.description }}
+                        {{ (banner as { description?: string }).description }}
                       </p>
                     </div>
                   </div>
@@ -298,17 +298,17 @@
             >
               <div class="w-28 h-20 flex items-center justify-center rounded border-2 border-purple-200 bg-white overflow-hidden relative">
                 <img
-                  v-if="banner.mobile_image"
-                  :src="banner.mobile_image"
+                  v-if="(banner as { mobile_image?: string }).mobile_image"
+                  :src="(banner as { mobile_image?: string }).mobile_image"
                   alt="بنر موبایل"
                   class="w-full h-full object-cover"
                 />
                 <span v-else class="text-xs text-gray-500 text-center px-2">بدون تصویر موبایل</span>
               </div>
               <div class="flex flex-col flex-1">
-                <div class="font-bold text-sm text-gray-700 mb-1">{{ banner.title }}</div>
-                <div v-if="banner.description" class="text-xs text-gray-600 mb-1">{{ banner.description }}</div>
-                <div v-if="banner.link" class="text-xs text-blue-600 break-all">{{ banner.link }}</div>
+                <div class="font-bold text-sm text-gray-700 mb-1">{{ (banner as { title?: string }).title }}</div>
+                <div v-if="(banner as { description?: string }).description" class="text-xs text-gray-600 mb-1">{{ (banner as { description?: string }).description }}</div>
+                <div v-if="(banner as { link?: string }).link" class="text-xs text-blue-600 break-all">{{ (banner as { link?: string }).link }}</div>
               </div>
               <div class="flex gap-2">
                 <button
@@ -402,10 +402,22 @@ defineExpose({
 })
 
 // Collections split per device
-const mobileBanners = computed(() => (props.bannerConfig?.mobile_banners ?? []))
+interface MobileBanner {
+  title?: string
+  description?: string
+  mobile_image?: string
+  image?: string
+  link?: string
+  showTitle?: boolean
+  [key: string]: unknown
+}
+const mobileBanners = computed((): MobileBanner[] => {
+  const banners = props.bannerConfig?.mobile_banners ?? []
+  return Array.isArray(banners) ? banners as MobileBanner[] : []
+})
 
 // Helper functions for image handling
-const getMobileImageUrl = (banner: { mobile_image?: string; image?: string }): string => {
+const getMobileImageUrl = (banner: MobileBanner): string => {
   // این تابع فقط برای پیش‌نمایش موبایل استفاده میشه
   // اگر عکس موبایل وجود دارد، استفاده کن
   if (banner.mobile_image) {

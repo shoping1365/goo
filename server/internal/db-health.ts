@@ -21,11 +21,11 @@ export default defineEventHandler(async () => {
       status: 'ok',
       message: 'Database connection successful'
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     // DATABASE CONNECTION FAILED
     return {
       status: 'error',
-      message: err.message
+      message: (err as { message?: string }).message || 'Database connection failed'
     }
   }
 }) 

@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, h } from 'vue'
 import type { Widget } from '~/types/widget'
 import WidgetNotFound from '~/components/common/WidgetNotFound.vue'
 import WidgetLoading from '~/components/common/WidgetLoading.vue'

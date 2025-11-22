@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
     })
 
     return response
-  } catch (error) {
+  } catch (_error) {
     throw createError({
       statusCode: 500,
       message: 'خطا در ویرایش درگاه پرداخت',

@@ -8,15 +8,11 @@ export default defineEventHandler(async (event) => {
   const base = config.public.goApiBase
   const previewParam = isPreview ? '?preview=1' : ''
 
-  console.log('🔍 Fetching combined category slug:', slug)
-
   try {
     // تلاش مستقیم برای دریافت از بک‌اند با پیش‌نمایش
     const bySlug = await $fetch(`${base}/api/product-categories/slug/${slug}${previewParam}`)
-    console.log('✅ Found category by combined slug:', bySlug)
     return bySlug
-  } catch (e) {
-    console.log('⚠️ Direct slug fetch failed, trying fallback method')
+  } catch (_e) {
     // بازگشت به لیست کامل در صورت نبود مسیر بالا
     const categories = await $fetch(`${base}/api/product-categories?all=1`)
     const list = Array.isArray(categories) ? categories : (categories.data || [])
@@ -33,11 +29,9 @@ export default defineEventHandler(async (event) => {
     })
 
     if (!cat) {
-      console.log('❌ Category not found with slug:', slug)
       throw createError({ statusCode: 404, statusMessage: 'Category not found' })
     }
 
-    console.log('✅ Found category by fallback method:', cat)
     return cat
   }
 })

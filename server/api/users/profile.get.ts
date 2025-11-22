@@ -18,8 +18,7 @@ export default defineEventHandler(async (event) => {
       })
     }
     
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const user: any = userResult[0]
+    const user = userResult[0] as { id: number; name: string | null; email: string | null; mobile: string | null; profile_data: unknown }
     
     return {
       id: user.id,
@@ -29,7 +28,7 @@ export default defineEventHandler(async (event) => {
       profile_data: user.profile_data
     }
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching user profile:', error)
     
     if (error.statusCode) {

@@ -4,7 +4,6 @@ import { fetchGo } from '../../_utils/fetchGo'
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event)
-    console.log('📥 Received body:', body)
     
     // Validation
     if (!body || typeof body !== 'object') {
@@ -67,11 +66,10 @@ export default defineEventHandler(async (event) => {
     })
     
     // بروزرسانی تنظیمات در Go backend (سازگار با نسخه‌های قدیمی که bulk PUT ندارند)
-    console.log('📤 Updating', settingsToUpdate.length, 'social media settings individually')
-    const results: Array<{ key: string; success: boolean; error?: any }> = []
+    const results: Array<{ key: string; success: boolean; error?: unknown }> = []
 
     for (const setting of settingsToUpdate) {
-      const payload: Record<string, any> = {
+      const payload: Record<string, unknown> = {
         value: setting.value,
         description: setting.description,
         category: setting.category
@@ -82,22 +80,12 @@ export default defineEventHandler(async (event) => {
 
       try {
         const endpoint = `/api/admin/settings/${encodeURIComponent(setting.key)}`
-        console.log('➡️ Updating setting:', setting.key, 'payload:', payload)
-        const response = await fetchGo(event, endpoint, {
+        await fetchGo(event, endpoint, {
           method: 'PUT',
           body: payload
         })
-        console.log('✅ Setting updated:', setting.key, 'response:', response)
         results.push({ key: setting.key, success: true })
-      } catch (error: any) {
-        console.error('❌ Failed to update setting:', setting.key, error)
-        console.error('❌ Error details:', {
-          key: setting.key,
-          statusCode: error?.statusCode,
-          statusMessage: error?.statusMessage,
-          data: error?.data,
-          message: error?.message
-        })
+      } catch (error: unknown) {
         results.push({ key: setting.key, success: false, error })
       }
     }
@@ -117,16 +105,15 @@ export default defineEventHandler(async (event) => {
       data: { updated: results.length }
     }
     
-  } catch (error: any) {
-    console.error('❌ خطا در بروزرسانی تنظیمات شبکه‌های اجتماعی:', error)
-    console.error('❌ Error stack:', error?.stack)
+     } catch (error: unknown) {
+    const err = error as { statusCode?: number; statusMessage?: string; message?: string; data?: unknown; stack?: string }
     
     throw createError({
-      statusCode: error?.statusCode || 500,
-      statusMessage: error?.statusMessage || 'خطا در بروزرسانی تنظیمات شبکه‌های اجتماعی',
+      statusCode: err?.statusCode || 500,
+      statusMessage: err?.statusMessage || 'خطا در بروزرسانی تنظیمات شبکه‌های اجتماعی',
       data: {
-        message: error?.message,
-        details: error?.data
+        message: err?.message,
+        details: err?.data
       }
     })
   }

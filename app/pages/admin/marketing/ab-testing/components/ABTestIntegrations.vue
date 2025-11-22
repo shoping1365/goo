@@ -449,7 +449,7 @@ interface IntegrationData {
   [key: string]: unknown
 }
 
-const _emit = defineEmits<{
+const emit = defineEmits<{
   'update:modelValue': [value: IntegrationValue]
   'integration-changed': [integration: string, data: IntegrationData]
 }>()
@@ -543,16 +543,16 @@ const testConnection = (type: string) => {
 watch(() => props.modelValue, (newValue) => {
   if (newValue) {
     if (newValue.googleAnalytics) {
-      googleAnalytics.value = { ...googleAnalytics.value, ...newValue.googleAnalytics }
+      googleAnalytics.value = { ...googleAnalytics.value, ...(newValue.googleAnalytics as Record<string, unknown>) }
     }
     if (newValue.facebookPixel) {
-      facebookPixel.value = { ...facebookPixel.value, ...newValue.facebookPixel }
+      facebookPixel.value = { ...facebookPixel.value, ...(newValue.facebookPixel as Record<string, unknown>) }
     }
     if (newValue.crmIntegration) {
-      crmIntegration.value = { ...crmIntegration.value, ...newValue.crmIntegration }
+      crmIntegration.value = { ...crmIntegration.value, ...(newValue.crmIntegration as Record<string, unknown>) }
     }
     if (newValue.emailMarketing) {
-      emailMarketing.value = { ...emailMarketing.value, ...newValue.emailMarketing }
+      emailMarketing.value = { ...emailMarketing.value, ...(newValue.emailMarketing as Record<string, unknown>) }
     }
   }
 }, { immediate: true })

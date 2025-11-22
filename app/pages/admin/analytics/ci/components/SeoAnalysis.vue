@@ -256,6 +256,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from 'vue'
+
 // متغیرهای reactive
 const selectedDomain = ref('main')
 const keywordSearch = ref('')

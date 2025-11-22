@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
     })
 
     return response
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در دریافت IP های مسدود شده:', error)
     
     // در صورت خطا، لیست خالی برگردان

@@ -15,12 +15,12 @@ export default eventHandler(async (event) => {
   const isDev = process.env.NODE_ENV === 'development'
 
   // Override کردن متدهای response برای ردیابی وضعیت
-  event.node.res.end = function (chunk?: any, encoding?: any, cb?: any) {
+  event.node.res.end = function (chunk?: unknown, encoding?: BufferEncoding, cb?: (() => void) | undefined) {
     streamClosed = true
     return originalEnd.call(this, chunk, encoding, cb)
   }
 
-  event.node.res.write = function (chunk: any, encoding?: any, cb?: any) {
+  event.node.res.write = function (chunk: unknown, encoding?: BufferEncoding, cb?: ((error?: Error | null) => void) | undefined) {
     if (streamClosed) {
       // فقط در محیط development لاگ می‌کنیم
       if (isDev) {
@@ -31,7 +31,7 @@ export default eventHandler(async (event) => {
     return originalWrite.call(this, chunk, encoding, cb)
   }
 
-  event.node.res.writeHead = function (statusCode: number, ...args: any[]) {
+  event.node.res.writeHead = function (statusCode: number, ...args: unknown[]) {
     if (streamClosed) {
       // فقط در محیط development لاگ می‌کنیم
       if (isDev) {

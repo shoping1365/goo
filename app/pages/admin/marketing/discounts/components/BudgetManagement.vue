@@ -174,6 +174,7 @@ import { ref, reactive } from 'vue'
 
 interface Budget {
   id?: number | string
+  campaignName?: string
   [key: string]: unknown
 }
 
@@ -226,12 +227,6 @@ const form = reactive({
 
 const formatPrice = (price: number): string => {
   return new Intl.NumberFormat('fa-IR').format(price) + ' تومان'
-}
-
-interface Budget {
-  id?: number | string
-  campaignName?: string
-  [key: string]: unknown
 }
 
 const editBudget = (budget: Budget) => {

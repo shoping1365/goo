@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   }
   const body = await readBody(event)
   try {
-    const payload: Record<string, any> = {}
+    const payload: Record<string, unknown> = {}
     if (typeof body.name !== 'undefined') payload.name = body.name
     if (typeof body.email !== 'undefined') payload.email = body.email
     if (typeof body.mobile !== 'undefined') payload.mobile = body.mobile
@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
       body: payload
     })
     return res
-  } catch (error: any) {
+  } catch (_error) {
     console.error('Error updating user:', error)
     throw createError({ statusCode: 500, message: 'خطا در بروزرسانی کاربر' })
   }

@@ -167,6 +167,7 @@
 <script setup lang="ts">
 interface Product {
   description?: string
+  full_description?: string
   strengths?: string[]
   weaknesses?: string[]
   usage_guide?: string

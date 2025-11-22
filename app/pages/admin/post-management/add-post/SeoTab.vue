@@ -52,6 +52,7 @@ const isGeneratingSlug = ref(false)
 const { checkSlugUnique: checkSlugUniqueAPI, generateUniqueSlug: generateUniqueSlugAPI, generateSlugFromTitle } = useSlugManagement()
 
 // Try to get title provided by parent via provide('pageTitle')
+import type { Ref } from 'vue'
 const providedTitle = inject<string | Ref<string> | null>('pageTitle', null)
 const seoTitleTouched = ref(false)
 

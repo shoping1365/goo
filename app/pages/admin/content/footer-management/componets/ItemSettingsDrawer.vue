@@ -277,14 +277,14 @@
                     :id="`menu-${menu.id}`"
                     type="checkbox"
                     :value="menu.id"
-                    :checked="isMenuSelected(menu.id)"
+                    :checked="isMenuSelected(typeof menu.id === 'number' ? menu.id : Number(menu.id))"
                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                    @change="toggleMenuSelection(menu.id)"
+                    @change="toggleMenuSelection(typeof menu.id === 'number' ? menu.id : Number(menu.id))"
                   />
                   <label :for="`menu-${menu.id}`" class="mr-3 flex-1 text-sm cursor-pointer">
                     <div class="font-medium text-gray-900">{{ menu.name }}</div>
-                    <div v-if="menu.items && menu.items.length > 0" class="text-xs text-gray-500">
-                      {{ menu.items.length }} آیتم
+                    <div v-if="menu.items && Array.isArray(menu.items) && menu.items.length > 0" class="text-xs text-gray-500">
+                      {{ (menu.items as any[]).length }} آیتم
                     </div>
                   </label>
                 </div>
@@ -681,8 +681,8 @@ const _addSocial = () => {
   })
 }
 
-const _removeSocial = (_index: number) => {
-  if (local.value.props?.socials && local.value.props.socials.length > 1) {
+const _removeSocial = (index: number) => {
+  if (local.value.props?.socials && Array.isArray(local.value.props.socials) && local.value.props.socials.length > 1) {
     local.value.props.socials.splice(index, 1)
   }
 }

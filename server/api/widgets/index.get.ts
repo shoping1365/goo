@@ -1,10 +1,10 @@
-import { defineEventHandler, getQuery, createError } from 'h3'
+import { createError, defineEventHandler, getQuery } from 'h3'
 
 export default defineEventHandler(async (event) => {
   try {
     const config = useRuntimeConfig()
     const apiBase = config.public.goApiBase
-    
+
     // دریافت query parameters
     const query = getQuery(event)
     const page = query.page as string | undefined
@@ -30,13 +30,13 @@ export default defineEventHandler(async (event) => {
     }).then(res => res.json())
 
     return response
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در دریافت ویجت‌ها:', error)
 
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.message || error.statusMessage || 'خطا در دریافت ویجت‌ها',
-      data: error.data || error.message
+      statusCode: (error as { statusCode?: number }).statusCode || 500,
+      message: (error as { message?: string; statusMessage?: string }).message || (error as { message?: string; statusMessage?: string }).statusMessage || 'خطا در دریافت ویجت‌ها',
+      data: (error as { data?: unknown; message?: string }).data || (error as { data?: unknown; message?: string }).message
     })
   }
 })

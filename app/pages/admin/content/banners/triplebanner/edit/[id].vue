@@ -3,7 +3,7 @@
     <!-- Title Section -->
     <div class="bg-white w-full shadow-sm border-2 border-blue-200 rounded-lg mt-4">
       <div class="flex justify-between items-center px-8 py-6">
-        <h1 class="text-2xl font-bold text-gray-800">ویرایش {{ widget?.title || 'ابزارک' }}</h1>
+        <h1 class="text-2xl font-bold text-gray-800">ویرایش {{ fetchedWidget?.title || 'ابزارک' }}</h1>
         <div class="flex items-center gap-6">
           <button
             :disabled="isSaving"
@@ -595,7 +595,7 @@ const route = useRoute()
 const widgetId = parseInt(route.params.id as string)
 
 // Composables
-const { fetchWidget, createWidget: _createWidget, updateWidget, loading: _loading, error: _error, clearError, widget: _fetchedWidget } = useWidget()
+const { fetchWidget, createWidget: _createWidget, updateWidget, loading: _loading, error: _error, clearError, widget: fetchedWidget } = useWidget()
 
 // Props
 interface Props {
@@ -605,7 +605,7 @@ interface Props {
 const _props = defineProps<Props>()
 
 // Emits
-const _emit = defineEmits<{
+const emit = defineEmits<{
   updated: [widget: Widget]
 }>()
 
@@ -661,20 +661,21 @@ const formData = ref({
 
 // Initialize form data when widget is available
 const initializeFormData = () => {
-  if (widget.value) {
+  if (fetchedWidget.value) {
+    const widget = fetchedWidget.value
     formData.value = {
-      title: widget.value.title || '',
-      description: widget.value.description || '',
-      type: widget.value.type || 'triple-banner',
-      status: widget.value.status || 'active',
-      page: widget.value.page || 'home',
-      show_on_mobile: widget.value.show_on_mobile !== undefined ? widget.value.show_on_mobile : true
+      title: widget.title || '',
+      description: widget.description || '',
+      type: widget.type || 'triple-banner',
+      status: widget.status || 'active',
+      page: widget.page || 'home',
+      show_on_mobile: widget.show_on_mobile !== undefined ? widget.show_on_mobile : true
     }
   }
 }
 
 // Watch for widget changes
-watch(widget, (newWidget) => {
+watch(fetchedWidget, (newWidget) => {
   if (newWidget) {
     initializeFormData()
   }
@@ -687,10 +688,10 @@ watch(() => deviceTabsRef.value?.activeTab, (newTab) => {
 })
 
 // Computed properties for reactive form data
-const _widgetTitle = computed(() => widget.value?.title || '')
-const _widgetType = computed(() => widget.value?.type || 'triple-banner')
-const _widgetStatus = computed(() => widget.value?.status || 'active')
-const _widgetPage = computed(() => widget.value?.page || 'home')
+const _widgetTitle = computed(() => fetchedWidget.value?.title || '')
+const _widgetType = computed(() => fetchedWidget.value?.type || 'triple-banner')
+const _widgetStatus = computed(() => fetchedWidget.value?.status || 'active')
+const _widgetPage = computed(() => fetchedWidget.value?.page || 'home')
 
 // Banner config
 const bannerConfig = ref<BannerConfig>({
@@ -957,8 +958,8 @@ onMounted(async () => {
   initializeFormData()
   
   // Only copy specific config fields, don't overwrite defaults
-  if (widget.value?.config) {
-    const config = widget.value.config as BannerConfig
+  if (fetchedWidget.value?.config) {
+    const config = fetchedWidget.value.config as BannerConfig
     if (config.banners) bannerConfig.value.banners = config.banners
     if (config.mobile_banners) bannerConfig.value.mobile_banners = config.mobile_banners
     if (config.height) bannerConfig.value.height = config.height

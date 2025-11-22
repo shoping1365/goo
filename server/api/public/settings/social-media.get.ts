@@ -4,11 +4,11 @@ import { fetchGo } from '../../_utils/fetchGo'
 type BackendSetting = {
   key?: string
   Key?: string
-  value?: any
-  Value?: any
+  value?: unknown
+  Value?: unknown
 }
 
-type SocialSettings = Record<string, any>
+type SocialSettings = Record<string, unknown>
 
 function mapSettings(items: BackendSetting[]): SocialSettings {
   const settings: SocialSettings = {}
@@ -57,8 +57,8 @@ export default defineEventHandler(async (event) => {
 
     const rawSettings = Array.isArray(response)
       ? response
-      : Array.isArray((response as any)?.data)
-        ? (response as any).data
+      : Array.isArray((response as { data?: BackendSetting[] })?.data)
+        ? (response as { data: BackendSetting[] }).data
         : []
 
     const settings = mapSettings(rawSettings)
@@ -68,12 +68,12 @@ export default defineEventHandler(async (event) => {
       data: settings,
       message: 'تنظیمات شبکه‌های اجتماعی عمومی با موفقیت دریافت شد'
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ خطا در دریافت تنظیمات عمومی شبکه‌های اجتماعی:', error)
     return {
       success: false,
       data: {},
-      message: error?.data?.message || error?.message || 'خطا در دریافت تنظیمات شبکه‌های اجتماعی'
+      message: (error as { data?: { message?: string }; message?: string }).data?.message || (error as { data?: { message?: string }; message?: string }).message || 'خطا در دریافت تنظیمات شبکه‌های اجتماعی'
     }
   }
 })

@@ -282,11 +282,11 @@ const isLoading = ref(true)
 watchEffect(() => {
   if (gatewayData.value?.data) {
     const gw = gatewayData.value.data
-    selectedGateway.value = gw.type || gw.gateway_type
+    selectedGateway.value = String(gw.type || gw.gateway_type || '')
     
     // تنظیم apiUrl و apiKey از دیتابیس
-    apiUrl.value = gw.api_url || ''
-    apiKey.value = gw.api_key || ''
+    apiUrl.value = String(gw.api_url || '')
+    apiKey.value = String(gw.api_key || '')
     
     // اگر نام درگاه در دیتابیس موجود نیست، از نوع درگاه بگیر
     if (!gw.name && selectedGateway.value) {
@@ -295,12 +295,12 @@ watchEffect(() => {
     }
     
     // مقداردهی فیلدهای اضافی بر اساس ساختار backend
-    const fields = getGatewayFields(gw.type || gw.gateway_type)
+    const fields = getGatewayFields(String(gw.type || gw.gateway_type || ''))
     fields.forEach(f => {
       if (f.name === 'from') {
-        form.value[f.name] = gw.sender_number || gw.from || gw.sender || ''
+        form.value[f.name] = String(gw.sender_number || gw.from || gw.sender || '')
       } else {
-        form.value[f.name] = gw[f.name] || gw[f.name.toLowerCase()] || ''
+        form.value[f.name] = String(gw[f.name] || gw[String(f.name).toLowerCase()] || '')
       }
     })
     
@@ -308,7 +308,7 @@ watchEffect(() => {
     form.value.pattern_based = gw.pattern_based ? 'yes' : 'no'
     
     // تنظیم وضعیت درگاه
-    gatewayStatus.value = gw.is_active || false
+    gatewayStatus.value = Boolean(gw.is_active) || false
     
     isLoading.value = false
   } else if (error.value) {
@@ -453,7 +453,7 @@ async function testConnection() {
     testConnectionStatus.value = 'error'
     let errorMessage = 'خطا در اتصال!'
     if (error.response && error.response._data) {
-      const errorData = error.response._data
+      const errorData = error.response._data as { error_message?: string; message?: string; [key: string]: unknown }
       if (errorData.error_message) {
         errorMessage = errorData.error_message
         testConnectionMessage.value = errorData.error_message

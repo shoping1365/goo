@@ -1,6 +1,6 @@
-import { eventHandler, setResponseHeaders, getMethod } from 'h3'
+import { eventHandler } from 'h3'
 
-export default eventHandler((event) => {
+export default eventHandler((_event) => {
      // موقتاً غیرفعال برای رفع مشکلات
      return;
 

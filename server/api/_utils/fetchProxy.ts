@@ -28,7 +28,7 @@ function parseCookieHeader(header?: string | null) {
 const getCookieCompat = (event: H3Event, name: string) => {
   try {
     // Try h3 v2 way: event.req.headers (Headers object)
-    const reqHeaders = (event as unknown as Record<string, any>).req?.headers || event.node?.req?.headers
+    const reqHeaders = (event as unknown as { req?: { headers?: Headers | Record<string, string | string[]> } }).req?.headers || event.node?.req?.headers
     
     if (!reqHeaders) return undefined
     
@@ -39,7 +39,8 @@ const getCookieCompat = (event: H3Event, name: string) => {
       cookieHeader = reqHeaders.get('cookie') || undefined
     } else {
       // Fallback: plain object (legacy)
-      const cookie = reqHeaders.cookie || reqHeaders.Cookie
+      const headersObj = reqHeaders as Record<string, string | string[]>
+      const cookie = headersObj.cookie || headersObj.Cookie
       cookieHeader = cookie ? (Array.isArray(cookie) ? cookie.join('; ') : cookie) : undefined
     }
     
@@ -59,7 +60,7 @@ export async function proxy(
   opts: RequestInit & { retry?: number; timeout?: number } = {}
 ) {
   // درخواست اصلی از Nuxt شامل body (stream) و رأس‌های اصلی است؛ آن‌ها را به backend فوروارد می‌کنیم
-  const nodeReq = event.node?.req || (event.req as unknown as Record<string, any>)
+  const nodeReq = event.node?.req || (event.req as unknown as { method?: string; headers?: Record<string, string | string[]> })
   if (!nodeReq || !nodeReq.headers) {
     throw createError({ statusCode: 500, message: 'Request headers are unavailable for proxying' })
   }
@@ -111,7 +112,7 @@ export async function proxy(
     try {
       new URL(url)
     } catch (urlError: unknown) {
-      const err = urlError as Record<string, any>
+      const err = urlError as { message?: string }
       // console.error('[fetchProxy] Invalid URL:', { url, error: err?.message })
       throw createError({
         statusCode: 500,
@@ -125,7 +126,7 @@ export async function proxy(
 
     return processResponse(event, res)
   } catch (error: unknown) {
-    const err = error as Record<string, any>
+    const err = error as { statusCode?: number; message?: string }
     // اگر خطا از createError است، مستقیماً throw کن
     if (err?.statusCode) {
       throw error
@@ -147,7 +148,7 @@ export async function proxy(
 function processResponse(event: H3Event, res: unknown) {
   // Forward Set-Cookie headers from upstream so browser stores auth cookies
   try {
-    const anyHeaders = (res as Record<string, any>).headers
+    const anyHeaders = (res as { headers?: { getSetCookie?: () => string[]; get?: (name: string) => string | null } }).headers
     const setCookies: string[] = typeof anyHeaders?.getSetCookie === 'function'
       ? anyHeaders.getSetCookie()
       : ([] as string[])
@@ -159,10 +160,11 @@ function processResponse(event: H3Event, res: unknown) {
     }
   } catch { }
 
-  const data = (res as Record<string, any>)._data
+  const data = (res as { _data?: unknown })._data
   const response = res as Response
   if (!response.ok) {
-    const msg = data?.message || data?.error || response.statusText || 'خطا'
+    const dataObj = data as { message?: string; error?: string } | undefined
+    const msg = dataObj?.message || dataObj?.error || response.statusText || 'خطا'
     throw createError({
       statusCode: response.status,
       message: msg,

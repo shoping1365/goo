@@ -359,7 +359,7 @@ const forecasts = ref({
 })
 
 watchEffect(()=>{
-  if (summaryData.value) summary.value = summaryData.value
+  if (summaryData.value) summary.value = summaryData.value as SummaryData
 })
 
 function sumRange(items: TrendItem[], start:number, count:number){

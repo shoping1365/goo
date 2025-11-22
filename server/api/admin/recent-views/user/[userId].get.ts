@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
     return await fetchGo(event, `/api/admin/recent-views/user/${userId}?limit=${limit}`, {
       method: 'GET'
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در دریافت بازدیدهای کاربر:', error)
     throw createError({
       statusCode: error?.statusCode || 500,

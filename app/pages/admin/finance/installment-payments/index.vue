@@ -57,7 +57,7 @@
 
         <!-- تب خریدهای اقساطی -->
         <div v-if="activeTab === 'installments'" class="space-y-6">
-          <InstallmentFilters @filter-change="handleFilterChange" />
+          <InstallmentFilters @filter-change="handleFilterChange as (filters: Filters) => void" />
           <InstallmentTable :installments="filteredInstallments" />
         </div>
 
@@ -202,8 +202,9 @@ interface Filters {
 }
 
 // متدها
-const handleFilterChange = (_filters: Filters) => {
-
+const handleFilterChange = (filters: Filters) => {
+  // Apply filters
+  Object.assign({}, filters)
 }
 
 // دریافت داده‌ها

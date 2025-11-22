@@ -1,4 +1,4 @@
-import { defineEventHandler, readBody, createError, H3Event } from 'h3'
+import { createError, defineEventHandler, H3Event, readBody } from 'h3'
 import { goApiFetch } from '~/server/utils/goApi'
 
 interface QuestionBody {
@@ -13,7 +13,7 @@ interface QuestionBody {
 interface QuestionResponse {
   success: boolean
   message: string
-  data?: any
+  data?: unknown
 }
 
 export default defineEventHandler(async (event: H3Event): Promise<QuestionResponse> => {
@@ -33,11 +33,11 @@ export default defineEventHandler(async (event: H3Event): Promise<QuestionRespon
       }
     })
     return response
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error creating question:', error)
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.message || error.statusMessage || 'خطا در ثبت سوال'
+      statusCode: (error as { statusCode?: number }).statusCode || 500,
+      message: (error as { message?: string; statusMessage?: string }).message || (error as { message?: string; statusMessage?: string }).statusMessage || 'خطا در ثبت سوال'
     })
   }
 })
@@ -69,7 +69,7 @@ function getClientIP(event: H3Event): string {
   }
 
   // بررسی socket.remoteAddress (برای HTTP/2)
-  const socketAddress = (event.node.req as any).socket?.remoteAddress
+  const socketAddress = (event.node.req as { socket?: { remoteAddress?: string } }).socket?.remoteAddress
   if (socketAddress) {
     return socketAddress
   }

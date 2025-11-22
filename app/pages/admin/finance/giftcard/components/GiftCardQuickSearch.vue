@@ -111,7 +111,7 @@
             </div>
             <div class="flex items-center space-x-2 space-x-reverse">
               <div class="text-right">
-                <div class="text-sm font-medium text-gray-900">{{ formatCurrency(result.amount) }}</div>
+                <div class="text-sm font-medium text-gray-900">{{ formatCurrency(Number(result.amount || 0)) }}</div>
                 <div class="text-xs text-gray-500">{{ getStatusLabel(result.status) }}</div>
               </div>
               <div class="flex items-center space-x-1 space-x-reverse">

@@ -10,11 +10,11 @@ export default defineEventHandler(async (event) => {
 
     // fetchProxy automatically forwards cookies and creates Authorization header
     return proxy(event, `${base}/api/admin/widgets/${id}`)
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در دریافت ویجت:', error)
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.statusMessage || 'خطا در دریافت ویجت'
+      statusCode: (error as { statusCode?: number }).statusCode || 500,
+      message: (error as { statusMessage?: string }).statusMessage || 'خطا در دریافت ویجت'
     })
   }
 })

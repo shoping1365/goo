@@ -7,7 +7,7 @@ import { appendHeader, getCookie, setCookie } from 'h3'
 export default defineNitroPlugin((nitro) => {
   nitro.hooks.hook('request', (event) => {
     // در هر درخواست وضعیت CSRF را از runtimeConfig می‌خوانیم
-    const cfg: any = useRuntimeConfig(event)
+    const cfg = useRuntimeConfig(event) as { security?: { csrf?: boolean } }
     if (cfg?.security?.csrf !== false) return // اگر فعال بود کاری نکن
 
     const existing = getCookie(event, 'csrf')

@@ -595,7 +595,7 @@ import TemplateButton from '~/components/common/TemplateButton.vue'
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
 import { useToast } from '~/composables/useToast'
 import { useWidget } from '~/composables/useWidget'
-import type { SlideItem, SliderConfig, Widget, WidgetPage, WidgetStatus, WidgetType } from '~/types/widget'
+import type { CreateWidgetRequest, SlideItem, SliderConfig, Widget, WidgetConfig, WidgetPage, WidgetStatus, WidgetType } from '~/types/widget'
 import { WIDGET_TYPE_LABELS } from '~/types/widget'
 import DeviceTabs from './components/DeviceTabs.vue'
 
@@ -809,13 +809,13 @@ const saveWidget = async () => {
   try {
     isSaving.value = true
 
-    const widgetData = {
+    const widgetData: CreateWidgetRequest = {
       title: formData.value.title,
       description: formData.value.description,
       type: formData.value.type as WidgetType,
       status: formData.value.status as WidgetStatus,
       page: formData.value.page as WidgetPage,
-      config: sliderConfig.value
+      config: sliderConfig.value as WidgetConfig
     }
 
     const createdWidget = await createWidget(widgetData)

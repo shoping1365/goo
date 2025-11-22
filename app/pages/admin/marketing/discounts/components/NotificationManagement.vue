@@ -551,7 +551,19 @@ const editNotification = (notification: Notification) => {
 }
 
 const duplicateNotification = (notification: Notification) => {
-  const duplicate = { ...notification, id: Date.now(), title: `${notification.title} (کپی)` }
+  const duplicate: { id: number; title: string; type: string; trigger: string; content: string; color: string; status: string; lastSent: string; sentCount: number; openRate: number; [key: string]: unknown } = { 
+    ...notification, 
+    id: Date.now(), 
+    title: `${notification.title || ''} (کپی)`,
+    type: String(notification.type || ''),
+    trigger: String(notification.trigger || ''),
+    content: String(notification.content || ''),
+    color: String(notification.color || ''),
+    status: String(notification.status || ''),
+    lastSent: String(notification.lastSent || ''),
+    sentCount: Number(notification.sentCount || 0),
+    openRate: Number(notification.openRate || 0)
+  }
   notifications.value.unshift(duplicate)
 }
 

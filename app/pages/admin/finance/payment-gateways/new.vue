@@ -5,7 +5,7 @@
       <div class="bg-white rounded-xl shadow-sm border border-gray-200">
         <GatewayForm 
           mode="create"
-          @save="handleSave"
+          @save="handleSave as (data: { [key: string]: unknown }) => Promise<void>"
           @cancel="router.push('/admin/finance/payment-gateways')"
         />
       </div>
@@ -61,18 +61,14 @@ const showToast = (type: 'success' | 'error', title: string, message: string) =>
   showNotification.value = true
 }
 
-interface Gateway {
-  [key: string]: unknown
-}
-
 // تابع ذخیره درگاه جدید
-const handleSave = async (newGateway: Gateway) => {
+const handleSave = async (data: { [key: string]: unknown }) => {
   try {
 
     const response = await $fetch('/api/payment-gateways', {
       method: 'POST',
-      body: newGateway
-    })
+      body: data
+    }) as { success?: boolean; message?: string }
 
     // بررسی response از backend
     if (response.success || response.message) {

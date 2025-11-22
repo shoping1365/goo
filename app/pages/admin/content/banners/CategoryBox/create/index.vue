@@ -142,7 +142,7 @@
                                   >
                                     {{ cat.parent_id ? 'فرعی' : 'اصلی' }}
                                   </span>
-                                  <span v-if="cat.product_count > 0" class="text-xs text-gray-500">
+                                  <span v-if="(cat.product_count as number) > 0" class="text-xs text-gray-500">
                                     {{ cat.product_count }} محصول
                                   </span>
                                 </div>

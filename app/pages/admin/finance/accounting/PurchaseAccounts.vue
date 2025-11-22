@@ -61,17 +61,22 @@ const purchaseAccounts = ref([
 ])
 const showAddModal = ref(false)
 const showEditModal = ref(false)
-const form = ref({ id: null, name: '', code: '', description: '' })
+const form = ref<{ id: number | string | null; name: string; code: string; description: string }>({ id: null, name: '', code: '', description: '' })
 interface Account {
-  id?: number | string
-  name?: string
-  code?: string
-  description?: string
+  id: number
+  name: string
+  code: string
+  description: string
   [key: string]: unknown
 }
 
 const editAccount = (account: Account) => {
-  form.value = { ...account }
+  form.value = {
+    id: account.id,
+    name: account.name || '',
+    code: account.code || '',
+    description: account.description || ''
+  }
   showEditModal.value = true
 }
 const addAccount = () => {
@@ -79,8 +84,13 @@ const addAccount = () => {
   closeModal()
 }
 const updateAccount = () => {
-  const idx = purchaseAccounts.value.findIndex(a => a.id === form.value.id)
-  if (idx !== -1) purchaseAccounts.value[idx] = { ...form.value }
+  const idx = purchaseAccounts.value.findIndex(a => a.id === Number(form.value.id))
+  if (idx !== -1) purchaseAccounts.value[idx] = { 
+    id: Number(form.value.id) || 0,
+    name: form.value.name,
+    code: form.value.code,
+    description: form.value.description
+  } as Account
   closeModal()
 }
 const deleteAccount = (account: Account) => {

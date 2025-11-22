@@ -13,18 +13,18 @@ export default defineEventHandler(async (event) => {
     }
 
     // فراخوانی بک‌اند Go (کوکی/هدر Auth به‌صورت خودکار فوروارد می‌شود)
-    const response: any = await fetchGo(event, `/api/product-videos/${productId}`, { method: 'GET' })
+    const response = await fetchGo(event, `/api/product-videos/${productId}`, { method: 'GET' }) as { data?: unknown[] }
 
     return {
       success: true,
       data: Array.isArray(response?.data) ? response.data : (Array.isArray(response) ? response : [])
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در دریافت ویدیوهای محصول:', error)
 
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.message || error.statusMessage || 'خطا در دریافت ویدیوهای محصول'
+      statusCode: (error as { statusCode?: number }).statusCode || 500,
+      message: (error as { message?: string; statusMessage?: string }).message || (error as { message?: string; statusMessage?: string }).statusMessage || 'خطا در دریافت ویدیوهای محصول'
     })
   }
 }) 

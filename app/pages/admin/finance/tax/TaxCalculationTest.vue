@@ -327,6 +327,55 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 
+// Type definitions
+interface TestInput {
+  amount: number
+  vatRate?: number
+  incomeTaxRate?: number
+  customsRate?: number
+  minAmount?: number
+}
+
+interface TestOutput {
+  vatAmount?: number
+  totalAmount?: number
+  incomeTaxAmount?: number
+  customsAmount?: number
+}
+
+interface CalculationTest {
+  id: number
+  name: string
+  description: string
+  status: string
+  input: TestInput
+  expectedOutput: TestOutput
+  actualOutput: TestOutput | null
+  error: string | null
+}
+
+interface ExemptionTest {
+  id: number
+  name: string
+  description: string
+  status: string
+  productType: string
+  amount: number
+  expectedExemption: number
+  actualExemption?: number
+}
+
+interface DiscountTest {
+  id: number
+  name: string
+  description: string
+  status: string
+  discountCode: string
+  amount: number
+  expectedDiscount: number
+  actualDiscount?: number
+}
+
 // تب‌های تست
 const testTabs = [
   { id: 'calculations', label: 'تست محاسبات' },
@@ -346,7 +395,7 @@ const testStats = ref({
 })
 
 // تست‌های محاسباتی
-const calculationTests = ref([
+const calculationTests = ref<CalculationTest[]>([
   {
     id: 1,
     name: 'محاسبه مالیات بر ارزش افزوده ساده',
@@ -380,7 +429,7 @@ const calculationTests = ref([
 ])
 
 // تست‌های معافیت
-const exemptionTests = ref([
+const exemptionTests = ref<ExemptionTest[]>([
   {
     id: 1,
     name: 'معافیت مواد غذایی',
@@ -404,7 +453,7 @@ const exemptionTests = ref([
 ])
 
 // تست‌های تخفیف
-const discountTests = ref([
+const discountTests = ref<DiscountTest[]>([
   {
     id: 1,
     name: 'تخفیف درصدی',
@@ -473,43 +522,27 @@ const getTestStatusLabel = (status: string) => {
   return labels[status] || status
 }
 
-interface TestInput {
-  amount?: number
-  vatRate?: number
-  incomeTaxRate?: number
-  customsRate?: number
-  minAmount?: number
-  [key: string]: unknown
-}
-interface Test {
-  input: TestInput
-  [key: string]: unknown
-}
-interface TestOutput {
-  [key: string]: unknown
-}
-
 // اجرای تست محاسباتی
-const runTest = async (test: Test) => {
+const runTest = async (test: CalculationTest) => {
   try {
     // شبیه‌سازی محاسبه
     const { amount, vatRate, incomeTaxRate, customsRate, minAmount } = test.input
     
     const actualOutput: TestOutput = {}
     
-    if (vatRate) {
+    if (vatRate !== undefined) {
       actualOutput.vatAmount = (amount * vatRate) / 100
-      actualOutput.totalAmount = amount + actualOutput.vatAmount
+      actualOutput.totalAmount = amount + (actualOutput.vatAmount || 0)
     }
     
-    if (incomeTaxRate) {
+    if (incomeTaxRate !== undefined) {
       actualOutput.incomeTaxAmount = (amount * incomeTaxRate) / 100
-      actualOutput.totalAmount = amount + actualOutput.incomeTaxAmount
+      actualOutput.totalAmount = amount + (actualOutput.incomeTaxAmount || 0)
     }
     
-    if (customsRate) {
+    if (customsRate !== undefined) {
       actualOutput.customsAmount = Math.max((amount * customsRate) / 100, minAmount || 0)
-      actualOutput.totalAmount = amount + actualOutput.customsAmount
+      actualOutput.totalAmount = amount + (actualOutput.customsAmount || 0)
     }
     
     test.actualOutput = actualOutput
@@ -525,21 +558,16 @@ const runTest = async (test: Test) => {
     updateTestStats()
   } catch (error) {
     test.status = 'failed'
-    test.error = error.message
+    test.error = error instanceof Error ? error.message : 'خطای نامشخص'
     updateTestStats()
   }
 }
 
-interface Test {
-  status?: string
-  [key: string]: unknown
-}
-
 // اجرای تست معافیت
-const runExemptionTest = async (test: Test) => {
+const runExemptionTest = async (test: ExemptionTest) => {
   try {
     // شبیه‌سازی محاسبه معافیت
-    const exemptions = {
+    const exemptions: Record<string, number> = {
       food: 100,
       medical: 25,
       education: 50,
@@ -557,10 +585,10 @@ const runExemptionTest = async (test: Test) => {
 }
 
 // اجرای تست تخفیف
-const runDiscountTest = async (test: Test) => {
+const runDiscountTest = async (test: DiscountTest) => {
   try {
     // شبیه‌سازی محاسبه تخفیف
-    const discounts = {
+    const discounts: Record<string, { type: string; value: number }> = {
       'TAX2024': { type: 'percentage', value: 10 },
       'SAVE50K': { type: 'fixed', value: 50000 }
     }

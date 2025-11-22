@@ -43,7 +43,7 @@
           <div class="flex items-center gap-2 border-2 border-blue-200 rounded-lg p-1 bg-blue-50">
             <input
               id="easyLoadMobile"
-              v-model="localBannerConfig.easy_load_enabled"
+              v-model="easyLoadEnabled"
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-blue-100 border-blue-300 rounded focus:ring-blue-500 focus:ring-2"
             />
@@ -56,7 +56,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پس‌زمینه فعال</label>
             <select
-              v-model="localBannerConfig.bg_enabled"
+              v-model="bgEnabled"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">فعال</option>
@@ -65,10 +65,10 @@
           </div>
 
           <!-- عریض پس‌زمینه -->
-          <div v-if="localBannerConfig.bg_enabled">
+          <div v-if="bgEnabled">
             <label class="block mb-2 text-sm font-medium text-gray-700">عریض پس‌زمینه</label>
             <select
-              v-model="localBannerConfig.wide_bg"
+              v-model="wideBg"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="true">بله</option>
@@ -77,10 +77,10 @@
           </div>
 
           <!-- رنگ پس‌زمینه -->
-          <div v-if="localBannerConfig.bg_enabled">
+          <div v-if="bgEnabled">
             <label class="block mb-2 text-sm font-medium text-gray-700">رنگ پس‌زمینه</label>
             <input
-              v-model="localBannerConfig.bg_color"
+              v-model="bgColor"
               type="color"
               class="w-full h-10 border border-gray-300 rounded-md"
             />
@@ -90,7 +90,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ بالا (px)</label>
             <input
-              v-model="localBannerConfig.padding_top"
+              v-model="paddingTop"
               type="number"
               min="0"
               max="100"
@@ -103,7 +103,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">پدینگ پایین (px)</label>
             <input
-              v-model="localBannerConfig.padding_bottom"
+              v-model="paddingBottom"
               type="number"
               min="0"
               max="100"
@@ -116,7 +116,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین راست (px)</label>
             <input
-              v-model="localBannerConfig.margin_right"
+              v-model="marginRight"
               type="number"
               min="0"
               max="100"
@@ -129,7 +129,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">مارجین چپ (px)</label>
             <input
-              v-model="localBannerConfig.margin_left"
+              v-model="marginLeft"
               type="number"
               min="0"
               max="100"
@@ -142,7 +142,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">عرض بنر در موبایل</label>
             <select
-              v-model="localBannerConfig.mobile_banner_width"
+              v-model="mobileBannerWidth"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option :value="100">کوچک (100px)</option>
@@ -180,35 +180,35 @@
               <div
                 class="relative overflow-hidden rounded-lg w-full"
                 :style="{
-                  height: `${localBannerConfig.mobile_height || 150}px`,
+                  height: `${props.bannerConfig.mobile_height || 150}px`,
                   position: 'relative',
                 }"
               >
                 <!-- نمایش بنرها -->
-                <div v-if="localBannerConfig.banners.length > 0" class="relative h-full">
+                <div v-if="(props.bannerConfig.banners as Array<unknown>)?.length > 0" class="relative h-full">
                   <div 
-                    v-for="(banner, index) in localBannerConfig.banners" 
+                    v-for="(banner, index) in (props.bannerConfig.banners as Array<Record<string, unknown>>)" 
                     :key="index"
                     class="absolute inset-0 transition-opacity duration-500"
                     :class="{ 'opacity-100': index === props.currentPreviewBanner, 'opacity-0': index !== props.currentPreviewBanner }"
                   >
                     <img 
-                      :src="banner.image" 
-                      :alt="banner.title"
+                      :src="(banner.image as string)" 
+                      :alt="(banner.title as string)"
                       class="w-full h-full object-cover"
                     />
                     <div
-                      v-if="localBannerConfig.show_title || localBannerConfig.show_description"
+                      v-if="(props.bannerConfig.show_title as boolean) || (props.bannerConfig.show_description as boolean)"
                       class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3"
                     >
                       <h4
-                        v-if="localBannerConfig.show_title && banner.title && (banner.showTitle !== false)"
+                        v-if="(props.bannerConfig.show_title as boolean) && (banner.title as string) && ((banner.showTitle as boolean) !== false)"
                         class="text-white text-base font-bold mb-1"
                       >
                         {{ banner.title }}
                       </h4>
                       <p
-                        v-if="localBannerConfig.show_description && banner.description"
+                        v-if="(props.bannerConfig.show_description as boolean) && (banner.description as string)"
                         class="text-white/90 text-xs"
                       >
                         {{ banner.description }}
@@ -233,8 +233,8 @@
 
           <!-- اطلاعات تنظیمات موبایل -->
           <div class="mt-4 text-sm text-gray-600 text-center border-t border-gray-200 pt-4">
-            <p>ارتفاع بنر: {{ localBannerConfig.mobile_height || 150 }}px |
-              پس‌زمینه: {{ localBannerConfig.bg_enabled ? 'فعال' : 'غیرفعال' }}</p>
+            <p>ارتفاع بنر: {{ props.bannerConfig.mobile_height || 150 }}px |
+              پس‌زمینه: {{ bgEnabled ? 'فعال' : 'غیرفعال' }}</p>
           </div>
         </div>
 
@@ -250,18 +250,18 @@
             </button>
           </div>
 
-          <div v-if="localBannerConfig.banners.length === 0" class="text-gray-400 text-center py-8">
+          <div v-if="(props.bannerConfig.banners as Array<unknown>)?.length === 0" class="text-gray-400 text-center py-8">
             چیزی برای نمایش وجود ندارد!
           </div>
 
           <div v-else class="flex flex-col gap-6">
             <div
-              v-for="(banner, idx) in localBannerConfig.banners"
+              v-for="(banner, idx) in (props.bannerConfig.banners as Array<Record<string, unknown>>)"
               :key="idx"
               class="flex items-center gap-3 p-2 rounded-lg bg-gray-50 w-full"
             >
               <img
-                :src="banner.image"
+                :src="(banner.image as string)"
                 alt="بنر"
                 class="w-28 h-20 object-cover rounded border-2 border-purple-200"
               />
@@ -328,7 +328,7 @@ const updateConfig = (field: string, value: unknown) => {
   emit('update:bannerConfig', {
     ...props.bannerConfig,
     [field]: value
-  })
+  } as BannerConfig)
 }
 
 // Tab state
@@ -339,7 +339,52 @@ defineExpose({
   activeTab
 })
 
-// Computed values with default fallbacks - using emit instead of direct mutation
+// Computed properties for config fields using emit instead of direct mutation
+const easyLoadEnabled = computed({
+  get: () => props.bannerConfig?.easy_load_enabled ?? false,
+  set: (val: boolean) => updateConfig('easy_load_enabled', val)
+})
+
+const bgEnabled = computed({
+  get: () => props.bannerConfig?.bg_enabled ?? false,
+  set: (val: boolean) => updateConfig('bg_enabled', val)
+})
+
+const wideBg = computed({
+  get: () => props.bannerConfig?.wide_bg ?? false,
+  set: (val: boolean) => updateConfig('wide_bg', val)
+})
+
+const bgColor = computed({
+  get: () => props.bannerConfig?.bg_color ?? '#ffffff',
+  set: (val: string) => updateConfig('bg_color', val)
+})
+
+const paddingTop = computed({
+  get: () => props.bannerConfig?.padding_top ?? 0,
+  set: (val: number) => updateConfig('padding_top', val)
+})
+
+const paddingBottom = computed({
+  get: () => props.bannerConfig?.padding_bottom ?? 0,
+  set: (val: number) => updateConfig('padding_bottom', val)
+})
+
+const marginRight = computed({
+  get: () => props.bannerConfig?.margin_right ?? 0,
+  set: (val: number) => updateConfig('margin_right', val)
+})
+
+const marginLeft = computed({
+  get: () => props.bannerConfig?.margin_left ?? 0,
+  set: (val: number) => updateConfig('margin_left', val)
+})
+
+const mobileBannerWidth = computed({
+  get: () => props.bannerConfig?.mobile_banner_width ?? 500,
+  set: (val: number) => updateConfig('mobile_banner_width', val)
+})
+
 const mobileBannerHeight = computed({
   get: () => props.bannerConfig?.mobile_height ?? 150,
   set: (val: number) => updateConfig('mobile_height', val)

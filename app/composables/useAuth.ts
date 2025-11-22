@@ -1,12 +1,12 @@
 import { usePermissions } from '@/composables/usePermissions'
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore, type User } from '@/stores/auth'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 interface LoginResponse {
   token: string
   refresh_token: string
-  user: Record<string, unknown>
+  user: User
 }
 
 export const useAuth = () => {
@@ -42,9 +42,15 @@ export const useAuth = () => {
 
       await router.push('/admin')
     } catch (err: unknown) {
-      const error = err as { message?: string; [key: string]: unknown }
-      console.error('❌ Login error:', error)
-      error.value = err.data?.error || err.statusMessage || 'ورود ناموفق بود'
+      interface ErrorResponse {
+        data?: { error?: string }
+        statusMessage?: string
+        message?: string
+        [key: string]: unknown
+      }
+      const errorObj = err as ErrorResponse
+      console.error('❌ Login error:', errorObj)
+      error.value = (errorObj?.data?.error) || (errorObj?.statusMessage) || 'ورود ناموفق بود'
     } finally {
       loading.value = false
     }
@@ -62,7 +68,17 @@ export const useAuth = () => {
       })
 
       authStore.setTokens(response.token, response.refresh_token)
-      authStore.setUser(response.user)
+      // Ensure user has required properties
+      const userData: User = {
+        id: String(response.user.id || ''),
+        mobile: String(response.user.mobile || ''),
+        username: response.user.username ? String(response.user.username) : undefined,
+        role_id: response.user.role_id,
+        role: response.user.role ? String(response.user.role) : undefined,
+        permissions: Array.isArray(response.user.permissions) ? response.user.permissions as string[] : undefined,
+        created_at: response.user.created_at ? String(response.user.created_at) : undefined
+      }
+      authStore.setUser(userData)
 
       await router.push('/dashboard')
     } catch (err: unknown) {
@@ -112,7 +128,7 @@ export const useAuth = () => {
   // دریافت اطلاعات کاربر جاری
   const fetchCurrentUser = async () => {
     try {
-      const response = await $fetch<Record<string, unknown>>('/api/auth/me', {
+      const response = await $fetch<User>('/api/auth/me', {
         headers: {
           Authorization: `Bearer ${authStore.accessToken}`,
         },

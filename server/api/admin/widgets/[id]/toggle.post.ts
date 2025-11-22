@@ -12,11 +12,11 @@ export default defineEventHandler(async (event) => {
                     'Content-Type': 'application/json'
                }
           })
-     } catch (error: any) {
+     } catch (error: unknown) {
           console.error('خطا در تغییر وضعیت ویجت:', error)
           throw createError({
-               statusCode: error.statusCode || 500,
-               message: error.message || error.statusMessage || 'خطا در تغییر وضعیت ویجت'
+               statusCode: (error as { statusCode?: number }).statusCode || 500,
+               message: (error as { message?: string; statusMessage?: string }).message || (error as { message?: string; statusMessage?: string }).statusMessage || 'خطا در تغییر وضعیت ویجت'
           })
      }
 })

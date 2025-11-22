@@ -727,7 +727,38 @@ const handleSubmit = async () => {
 onMounted(() => {
   if (props.giftCard) {
     // ویرایش گیفت کارت موجود
-    formData.value = { ...props.giftCard }
+    const card = props.giftCard as Record<string, unknown>
+    formData.value = {
+      type: String(card.type || 'digital'),
+      category: String(card.category || 'general'),
+      amount: Number(card.amount || 500000),
+      amountType: String(card.amountType || 'fixed'),
+      minAmount: Number(card.minAmount || 0),
+      maxAmount: Number(card.maxAmount || 0),
+      expiryDate: String(card.expiryDate || ''),
+      quantity: Number(card.quantity || 1),
+      autoGenerateCode: Boolean(card.autoGenerateCode ?? true),
+      customCode: String(card.customCode || card.code || ''),
+      templateId: String(card.templateId || ''),
+      primaryColor: String(card.primaryColor || '#3B82F6'),
+      secondaryColor: String(card.secondaryColor || '#1F2937'),
+      fontFamily: String(card.fontFamily || 'IRANSans'),
+      logo: card.logo || null,
+      recipientName: String(card.recipientName || ''),
+      recipientEmail: String(card.recipientEmail || ''),
+      recipientPhone: String(card.recipientPhone || ''),
+      deliveryMethod: String(card.deliveryMethod || 'email'),
+      personalMessage: String(card.personalMessage || ''),
+      deliveryDate: String(card.deliveryDate || ''),
+      usageLimit: String(card.usageLimit || 'unlimited'),
+      maxUsageCount: Number(card.maxUsageCount || 1),
+      minOrderAmount: Number(card.minOrderAmount || 0),
+      maxOrderAmount: Number(card.maxOrderAmount || 0),
+      allowedCategories: Array.isArray(card.allowedCategories) ? card.allowedCategories : [],
+      requireVerification: Boolean(card.requireVerification ?? false),
+      allowPartialUsage: Boolean(card.allowPartialUsage ?? true),
+      autoRenew: Boolean(card.autoRenew ?? false)
+    }
   }
 })
 </script>

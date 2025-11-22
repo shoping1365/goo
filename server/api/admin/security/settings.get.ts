@@ -15,7 +15,7 @@ interface SecuritySettings {
 // کلید ذخیره در حافظه globalThis
 const KEY = '__security_settings__'
 
-function getSettings(): SecuritySettings {
+function _getSettings(): SecuritySettings {
   // @ts-ignore
   if (!globalThis[KEY]) {
     // مقادیر پیش‌فرض (همه فعال)
@@ -32,7 +32,7 @@ function getSettings(): SecuritySettings {
   return globalThis[KEY] as SecuritySettings
 }
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (_event) => {
   try {
     // اینجا باید از دیتابیس تنظیمات امنیت خوانده شود
     // فعلاً مقادیر پیش‌فرض برمی‌گردانیم
@@ -75,7 +75,7 @@ export default defineEventHandler(async (event) => {
         rateLimit: rateLimitSettings
       }
     }
-  } catch (error) {
+  } catch (_error) {
     throw createError({
       statusCode: 500,
       message: 'خطا در دریافت تنظیمات امنیت'

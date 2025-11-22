@@ -512,21 +512,25 @@ interface GatewayFormData {
     privateKey: string
     testKey: string
     secretKey: string
+    [key: string]: unknown
   }
   apiEndpoints: {
     payment: string
     verification: string
     callback: string
+    [key: string]: unknown
     webhook: string
   }
   security: {
     ipWhitelist: string
     httpsRequired: boolean
     maxAttempts: number
+    [key: string]: unknown
   }
   testMode: boolean
   testCard: string
   testAmount: number
+  [key: string]: unknown
 }
 
 interface Gateway {

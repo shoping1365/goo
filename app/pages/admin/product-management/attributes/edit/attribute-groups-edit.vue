@@ -374,6 +374,8 @@ import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useConfirmDialog } from '~/composables/useConfirmDialog';
 import { useNotifier } from '~/composables/useNotifier';
+import { definePageMeta } from '#imports';
+import { useHead } from '#imports';
 
 definePageMeta({
   layout: 'admin-main'

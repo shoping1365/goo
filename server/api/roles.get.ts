@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   
   // فیلتر کردن نقش customer از لیست نمایشی پنل ادمین
   if (response && response.data && Array.isArray(response.data)) {
-    response.data = response.data.filter((role: any) => role.name !== 'customer')
+    response.data = response.data.filter((role: { name?: string }) => role.name !== 'customer')
   }
   
   return response

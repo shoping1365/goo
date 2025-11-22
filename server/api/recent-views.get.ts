@@ -15,8 +15,8 @@ export default defineEventHandler(async (event) => {
     // Fetch recent views from Go backend service
     const response = await fetchGo(event, '/api/recent-views', { method: 'GET' })
 
-    const data = Array.isArray((response as any)?.data)
-      ? (response as any).data
+    const data = Array.isArray((response as { data?: unknown[] })?.data)
+      ? (response as { data: unknown[] }).data
       : Array.isArray(response) ? response : []
 
     return {
@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
       data,
       count: data.length
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Handle errors from Go backend or network issues
     console.error('Error fetching recent views:', error)
     throw createError({

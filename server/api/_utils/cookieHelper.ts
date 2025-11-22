@@ -34,7 +34,7 @@ function parseCookieHeader(header?: string | null): Map<string, string> {
 export function getCookieValue(event: H3Event, name: string): string | undefined {
   try {
     // Try h3 v2 way: event.req.headers (Headers object)
-    const reqHeaders = (event as any).req?.headers || event.node?.req?.headers
+    const reqHeaders = (event as unknown as { req?: { headers?: Headers | Record<string, string | string[]> } }).req?.headers || event.node?.req?.headers
     
     if (!reqHeaders) return undefined
     

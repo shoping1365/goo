@@ -707,7 +707,7 @@ interface Redirect {
 }
 const editRedirect = (redirect: Redirect) => {
   // Navigate to group redirects page
-  navigateTo(`/admin/seo/redirects/group/${encodeURIComponent(redirect.group_name || 'بدون گروه')}`)
+  navigateTo(`/admin/seo/redirects/group/${encodeURIComponent(String(redirect.group_name || 'بدون گروه'))}`)
 }
 
 const saveRedirect = async () => {

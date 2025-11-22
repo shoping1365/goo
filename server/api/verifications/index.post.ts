@@ -1,4 +1,4 @@
-import { defineEventHandler, readBody, createError } from 'h3'
+import { createError, defineEventHandler, readBody } from 'h3'
 import { fetchGo } from '../_utils/fetchGo'
 
 // ایجاد درخواست احراز هویت جدید
@@ -13,8 +13,8 @@ export default defineEventHandler(async (event) => {
     })
 
     return response
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error creating verification request:', error)
-    throw createError({ statusCode: error.statusCode || 500, message: error.message || 'خطا در ایجاد درخواست احراز هویت' })
+    throw createError({ statusCode: (error as { statusCode?: number }).statusCode || 500, message: (error as { message?: string }).message || 'خطا در ایجاد درخواست احراز هویت' })
   }
 })

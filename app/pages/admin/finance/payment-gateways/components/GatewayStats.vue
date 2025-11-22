@@ -299,14 +299,14 @@ const fetchTopGateways = async () => {
         .sort((a: Gateway, b: Gateway) => (b.today_transactions || 0) - (a.today_transactions || 0))
         .slice(0, 5)
         .map((gateway: Gateway, index: number) => ({
-          id: gateway.id,
-          name: gateway.name,
-          englishName: gateway.english_name || gateway.name,
-          transactions: gateway.today_transactions || 0,
+          id: Number(gateway.id || 0),
+          name: String(gateway.name || ''),
+          englishName: String(gateway.english_name || gateway.name || ''),
+          transactions: Number(gateway.today_transactions || 0),
           color: ['bg-green-500', 'bg-blue-500', 'bg-orange-500', 'bg-teal-500', 'bg-indigo-500'][index] || 'bg-gray-500'
         }))
       
-      topGateways.value = activeGateways
+      topGateways.value = activeGateways as typeof topGateways.value
     }
   } catch (error) {
     console.error('خطا در دریافت درگاه‌های برتر:', error)

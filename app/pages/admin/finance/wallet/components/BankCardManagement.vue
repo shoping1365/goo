@@ -191,10 +191,10 @@ type="text" placeholder="نام کاربر یا شماره کارت"
               <td class="px-4 py-3">
                 <div class="flex space-x-2 space-x-reverse">
                   <button class="text-blue-600 hover:text-blue-800 text-sm">جزئیات</button>
-                  <button v-if="card.status === 'در انتظار تأیید'" class="text-green-600 hover:text-green-800 text-sm" @click="verifyCard(card.id)">تأیید</button>
-                  <button v-if="card.status === 'در انتظار تأیید'" class="text-red-600 hover:text-red-800 text-sm" @click="rejectCard(card.id)">رد</button>
-                  <button v-if="card.status === 'تأیید شده'" class="text-red-600 hover:text-red-800 text-sm" @click="blockCard(card.id)">مسدود</button>
-                  <button v-if="card.status === 'مسدود شده'" class="text-green-600 hover:text-green-800 text-sm" @click="unblockCard(card.id)">باز کردن</button>
+                  <button v-if="card.status === 'در انتظار تأیید'" class="text-green-600 hover:text-green-800 text-sm" @click="verifyCard(Number(card.id))">تأیید</button>
+                  <button v-if="card.status === 'در انتظار تأیید'" class="text-red-600 hover:text-red-800 text-sm" @click="rejectCard(Number(card.id))">رد</button>
+                  <button v-if="card.status === 'تأیید شده'" class="text-red-600 hover:text-red-800 text-sm" @click="blockCard(Number(card.id))">مسدود</button>
+                  <button v-if="card.status === 'مسدود شده'" class="text-green-600 hover:text-green-800 text-sm" @click="unblockCard(Number(card.id))">باز کردن</button>
                 </div>
               </td>
             </tr>

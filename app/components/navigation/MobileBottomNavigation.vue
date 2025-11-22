@@ -95,7 +95,7 @@ const loadMobileNavigations = async () => {
               label: item.label || item.name || item.text || item.title || `آیتم ${index + 1}`,
               url: item.url || item.path || item.link || '/',
               icon: item.icon || item.iconName || 'home',
-              template: item.template || getTemplateFromId(item.id) || 'Home'
+              template: item.template || getTemplateFromId(String(item.id || item.id?.toString() || '')) || 'Home'
             }
           })
         } catch (e) {

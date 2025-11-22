@@ -7,7 +7,7 @@ declare const createError: (options: { statusCode: number; message: string; data
 // تابع امن برای استخراج پیام خطا
 export function safeGetErrorMessage(error: unknown): string {
   if (!error) return 'خطای غیرمنتظره رخ داده است'
-  const err = error as Record<string, any>
+  const err = error as { message?: string; error?: string; data?: { message?: string; error?: string }; user_message?: string }
 
   // بررسی انواع مختلف error object
   return err.message ||
@@ -21,7 +21,7 @@ export function safeGetErrorMessage(error: unknown): string {
 // تابع امن برای استخراج کد خطا
 export function safeGetErrorCode(error: unknown): number {
   if (!error) return 500
-  const err = error as Record<string, any>
+  const err = error as { message?: string; error?: string; data?: { message?: string; error?: string }; user_message?: string }
 
   return err.status ||
     err.statusCode ||
@@ -32,7 +32,7 @@ export function safeGetErrorCode(error: unknown): number {
 // تابع امن برای استخراج جزئیات خطا
 export function safeGetErrorDetails(error: unknown): unknown {
   if (!error) return {}
-  const err = error as Record<string, any>
+  const err = error as { message?: string; error?: string; data?: { message?: string; error?: string }; user_message?: string }
 
   return err.data ||
     err.details ||
@@ -53,6 +53,6 @@ export function safeCreateError(error: unknown, defaultMessage: string = 'خطا
 }
 
 // تابع امن برای لاگ کردن خطا
-export function safeLogError(error: any, context?: string): void {
+export function safeLogError(_error: unknown, _context?: string): void {
   // خطا لاگ شده است
 } 

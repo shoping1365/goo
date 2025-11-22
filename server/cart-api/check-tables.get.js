@@ -1,16 +1,13 @@
 import { getDatabase } from '../_utils/database.js'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (_event) => {
   try {
-    console.log('Check tables API called')
-    
     const db = await getDatabase()
-    console.log('Database connected')
-    
+
     // بررسی وجود جداول
     const tables = ['carts', 'cart_items', 'products']
     const results = {}
-    
+
     for (const table of tables) {
       try {
         const result = await db.query(`SELECT COUNT(*) as count FROM ${table}`)
@@ -18,22 +15,20 @@ export default defineEventHandler(async (event) => {
           exists: true,
           count: result[0]?.count
         }
-        console.log(`Table ${table} exists with ${result[0]?.count} records`)
       } catch (error) {
         results[table] = {
           exists: false,
-          error: error.message
+          error: (error as { message?: string }).message
         }
-        console.log(`Table ${table} does not exist:`, error.message)
       }
     }
-    
+
     return {
       success: true,
       tables: results,
       message: 'Table check completed'
     }
-    
+
   } catch (error) {
     console.error('Check tables API error:', error)
     return {

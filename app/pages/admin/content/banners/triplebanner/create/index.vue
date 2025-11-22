@@ -613,7 +613,7 @@ const _route = useRoute()
 const _router = useRouter()
 
 // Composables
-const { fetchWidget: _fetchWidget, createWidget, updateWidget: _updateWidget, loading: _loading, error: _error, clearError, widget: _fetchedWidget } = useWidget()
+const { fetchWidget: _fetchWidget, createWidget, updateWidget: _updateWidget, loading: _loading, error: _error, clearError, widget: fetchedWidget } = useWidget()
 const { showSuccess } = useToast()
 
 // Props
@@ -680,20 +680,21 @@ const formData = ref({
 
 // Initialize form data when widget is available
 const initializeFormData = () => {
-  if (widget.value) {
+  if (fetchedWidget.value) {
+    const widget = fetchedWidget.value
     formData.value = {
-      title: widget.value.title || '',
-      description: widget.value.description || '',
-      type: widget.value.type || 'triple-banner',
-      status: widget.value.status || 'active',
-      page: widget.value.page || 'home',
-      show_on_mobile: widget.value.show_on_mobile !== undefined ? widget.value.show_on_mobile : true
+      title: widget.title || '',
+      description: widget.description || '',
+      type: widget.type || 'triple-banner',
+      status: widget.status || 'active',
+      page: widget.page || 'home',
+      show_on_mobile: widget.show_on_mobile !== undefined ? widget.show_on_mobile : true
     }
   }
 }
 
 // Watch for widget changes
-watch(widget, (newWidget) => {
+watch(fetchedWidget, (newWidget) => {
   if (newWidget) {
     initializeFormData()
   }
@@ -706,10 +707,10 @@ watch(() => deviceTabsRef.value?.activeTab, (newTab) => {
 })
 
 // Computed properties for reactive form data
-const _widgetTitle = computed(() => widget.value?.title || '')
-const _widgetType = computed(() => widget.value?.type || 'triple-banner')
-const _widgetStatus = computed(() => widget.value?.status || 'active')
-const _widgetPage = computed(() => widget.value?.page || 'home')
+const _widgetTitle = computed(() => fetchedWidget.value?.title || '')
+const _widgetType = computed(() => fetchedWidget.value?.type || 'triple-banner')
+const _widgetStatus = computed(() => fetchedWidget.value?.status || 'active')
+const _widgetPage = computed(() => fetchedWidget.value?.page || 'home')
 
 // Banner config
 const bannerConfig = ref<BannerConfig>({

@@ -151,6 +151,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { definePageMeta } from '#imports';
 
 definePageMeta({
   layout: 'admin-main'

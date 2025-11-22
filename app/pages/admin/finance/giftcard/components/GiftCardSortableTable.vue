@@ -150,41 +150,41 @@
               
               <!-- خریدار -->
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">{{ card.buyerName }}</div>
-                <div class="text-sm text-gray-500">{{ card.buyerEmail }}</div>
+                <div class="text-sm text-gray-900">{{ String(card.buyerName || '') }}</div>
+                <div class="text-sm text-gray-500">{{ String(card.buyerEmail || '') }}</div>
               </td>
               
               <!-- گیرنده -->
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">{{ card.recipientName }}</div>
-                <div class="text-sm text-gray-500">{{ card.recipientEmail }}</div>
+                <div class="text-sm text-gray-900">{{ String(card.recipientName || '') }}</div>
+                <div class="text-sm text-gray-500">{{ String(card.recipientEmail || '') }}</div>
               </td>
               
               <!-- مبلغ -->
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">{{ formatCurrency(card.amount) }}</div>
-                <div class="text-sm text-gray-500">{{ formatCurrency(card.remainingAmount) }} باقی‌مانده</div>
+                <div class="text-sm font-medium text-gray-900">{{ formatCurrency(Number(card.amount || 0)) }}</div>
+                <div class="text-sm text-gray-500">{{ formatCurrency(Number(card.remainingAmount || 0)) }} باقی‌مانده</div>
               </td>
               
               <!-- تاریخ ایجاد -->
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">{{ formatDate(card.createdAt) }}</div>
-                <div class="text-sm text-gray-500">{{ formatTime(card.createdAt) }}</div>
+                <div class="text-sm text-gray-900">{{ formatDate(String(card.createdAt || '')) }}</div>
+                <div class="text-sm text-gray-500">{{ formatTime(String(card.createdAt || '')) }}</div>
               </td>
               
               <!-- تاریخ انقضا -->
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">{{ formatDate(card.expiresAt) }}</div>
-                <div class="text-sm text-gray-500">{{ getDaysUntilExpiry(card.expiresAt) }}</div>
+                <div class="text-sm text-gray-900">{{ formatDate(String(card.expiresAt || '')) }}</div>
+                <div class="text-sm text-gray-500">{{ getDaysUntilExpiry(String(card.expiresAt || '')) }}</div>
               </td>
               
               <!-- وضعیت -->
               <td class="px-6 py-4 whitespace-nowrap">
-                <span :class="getStatusClass(card.status)" class="inline-flex px-2 py-1 text-xs font-semibold rounded-full">
-                  {{ getStatusLabel(card.status) }}
+                <span :class="getStatusClass(String(card.status || ''))" class="inline-flex px-2 py-1 text-xs font-semibold rounded-full">
+                  {{ getStatusLabel(String(card.status || '')) }}
                 </span>
-                <div v-if="card.usageCount > 0" class="text-xs text-gray-500 mt-1">
-                  {{ card.usageCount }} بار استفاده
+                <div v-if="Number(card.usageCount || 0) > 0" class="text-xs text-gray-500 mt-1">
+                  {{ Number(card.usageCount || 0) }} بار استفاده
                 </div>
               </td>
               
@@ -372,11 +372,11 @@ const filteredCards = computed(() => {
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
     filtered = filtered.filter(card => 
-      card.code.toLowerCase().includes(query) ||
-      card.buyerName.toLowerCase().includes(query) ||
-      card.buyerEmail.toLowerCase().includes(query) ||
-      card.recipientName.toLowerCase().includes(query) ||
-      card.recipientEmail.toLowerCase().includes(query)
+      String(card.code || '').toLowerCase().includes(query) ||
+      String(card.buyerName || '').toLowerCase().includes(query) ||
+      String(card.buyerEmail || '').toLowerCase().includes(query) ||
+      String(card.recipientName || '').toLowerCase().includes(query) ||
+      String(card.recipientEmail || '').toLowerCase().includes(query)
     )
   }
   
@@ -398,21 +398,21 @@ const filteredCards = computed(() => {
     switch (dateFilter.value) {
       case 'today':
         filtered = filtered.filter(card => {
-          cardDate.setTime(new Date(card.createdAt).getTime())
+          cardDate.setTime(new Date(String(card.createdAt || '')).getTime())
           return cardDate.toDateString() === today.toDateString()
         })
         break
       case 'week':
         const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000)
-        filtered = filtered.filter(card => new Date(card.createdAt) >= weekAgo)
+        filtered = filtered.filter(card => new Date(String(card.createdAt || '')).getTime() >= weekAgo.getTime())
         break
       case 'month':
         const monthAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000)
-        filtered = filtered.filter(card => new Date(card.createdAt) >= monthAgo)
+        filtered = filtered.filter(card => new Date(String(card.createdAt || '')).getTime() >= monthAgo.getTime())
         break
       case 'last30':
         const thirtyDaysAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000)
-        filtered = filtered.filter(card => new Date(card.createdAt) >= thirtyDaysAgo)
+        filtered = filtered.filter(card => new Date(String(card.createdAt || '')).getTime() >= thirtyDaysAgo.getTime())
         break
     }
   }
@@ -423,14 +423,14 @@ const filteredCards = computed(() => {
     let bValue = b[sortKey.value]
     
     if (sortKey.value === 'amount' || sortKey.value === 'remainingAmount') {
-      aValue = parseFloat(aValue) || 0
-      bValue = parseFloat(bValue) || 0
+      aValue = parseFloat(String(aValue || 0)) || 0
+      bValue = parseFloat(String(bValue || 0)) || 0
     } else if (sortKey.value === 'createdAt' || sortKey.value === 'expiresAt') {
-      aValue = new Date(aValue).getTime()
-      bValue = new Date(bValue).getTime()
+      aValue = new Date(String(aValue || '')).getTime()
+      bValue = new Date(String(bValue || '')).getTime()
     } else {
-      aValue = String(aValue).toLowerCase()
-      bValue = String(bValue).toLowerCase()
+      aValue = String(aValue || '').toLowerCase()
+      bValue = String(bValue || '').toLowerCase()
     }
     
     if (sortOrder.value === 'asc') {
@@ -497,12 +497,6 @@ const goToPage = (page: number) => {
   currentPage.value = page
 }
 
-interface GiftCard {
-  id?: number | string
-  code?: string
-  [key: string]: unknown
-}
-
 const viewCard = (card: GiftCard) => {
   emit('view-card', card)
 }
@@ -516,7 +510,7 @@ const duplicateCard = (card: GiftCard) => {
 }
 
 const deleteCard = (card: GiftCard) => {
-  if (confirm(`آیا از حذف کارت ${card.code} اطمینان دارید؟`)) {
+  if (confirm(`آیا از حذف کارت ${String(card.code || '')} اطمینان دارید؟`)) {
     emit('delete-card', card)
   }
 }

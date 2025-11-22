@@ -548,6 +548,8 @@ class="w-5 h-5"
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from 'vue'
+
 // تعریف interface ها (Rule 67 - Interface Organization and Reusability)
 interface User {
   status?: string

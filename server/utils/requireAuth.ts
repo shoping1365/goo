@@ -5,7 +5,7 @@ export interface AuthUser {
   id: number
   role: string
   email?: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 /**
@@ -29,7 +29,7 @@ export async function requireAuth(event: H3Event): Promise<AuthUser> {
     const config = useRuntimeConfig()
     const base = config.public.goApiBase
     
-    const response = await $fetch<any>(`${base}/api/auth/me`, {
+    const response = await $fetch<{ id?: number; ID?: number; role?: string; effective_role_name?: string; email?: string }>(`${base}/api/auth/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
         Cookie: `access_token=${token}`
@@ -50,7 +50,7 @@ export async function requireAuth(event: H3Event): Promise<AuthUser> {
       email: response.email,
       ...response
     }
-  } catch (error) {
+  } catch (_error) {
     throw createError({
       statusCode: 401,
       statusMessage: 'Unauthorized',

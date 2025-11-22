@@ -145,32 +145,32 @@
               </td>
             </tr>
             
-            <tr v-for="transaction in recentTransactions" v-else :key="transaction.id" class="hover:bg-gray-50">
+            <tr v-for="transaction in recentTransactions" v-else :key="String((transaction as { id?: string | number }).id ?? Math.random())" class="hover:bg-gray-50">
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                 {{ transaction.transaction_id }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
-                  <div :class="['w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-medium', getGatewayColor(transaction.gateway?.type)]">
-                    {{ getGatewayIcon(transaction.gateway?.type) }}
+                  <div :class="['w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-medium', getGatewayColor(String((transaction.gateway as Record<string, unknown>)?.type || ''))]">
+                    {{ getGatewayIcon(String((transaction.gateway as Record<string, unknown>)?.type || '')) }}
                   </div>
-                  <span class="mr-3 text-sm text-gray-900">{{ transaction.gateway?.name || 'نامشخص' }}</span>
+                  <span class="mr-3 text-sm text-gray-900">{{ String((transaction.gateway as Record<string, unknown>)?.name || 'نامشخص') }}</span>
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                {{ formatCurrency(transaction.amount) }}
+                {{ formatCurrency(Number(transaction.amount || 0)) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span
 :class="[
                   'inline-flex px-2 py-1 text-xs font-semibold rounded-full',
-                  getStatusClass(transaction.status)
+                  getStatusClass(String(transaction.status || ''))
                 ]">
-                  {{ getStatusText(transaction.status) }}
+                  {{ getStatusText(String(transaction.status || '')) }}
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {{ formatDate(transaction.created_at) }}
+                {{ formatDate(String(transaction.created_at || '')) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <TemplateButton 
@@ -258,24 +258,24 @@
               </td>
             </tr>
             
-            <tr v-for="transaction in getGatewayTransactions(gateway.id)" v-else :key="transaction.id">
+            <tr v-for="transaction in getGatewayTransactions(gateway.id)" v-else :key="String(transaction.id || '')">
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {{ transaction.transaction_id }}
+                {{ String(transaction.transaction_id || '') }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                {{ formatCurrency(transaction.amount) }}
+                {{ formatCurrency(Number(transaction.amount || 0)) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span
 :class="[
                   'px-2 py-1 text-xs font-semibold rounded-full',
-                  getStatusClass(transaction.status)
+                  getStatusClass(String(transaction.status || ''))
                 ]">
-                  {{ getStatusText(transaction.status) }}
+                  {{ getStatusText(String(transaction.status || '')) }}
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {{ formatDate(transaction.created_at) }}
+                {{ formatDate(String(transaction.created_at || '')) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <TemplateButton 
@@ -344,7 +344,7 @@ const loadingGateways = ref(true)
 // آمار کلی - محاسبه شده از داده‌های واقعی
 const stats = computed(() => {
   const totalTransactions = allTransactions.value.length
-  const totalAmount = allTransactions.value.reduce((sum, t) => sum + (t.amount || 0), 0)
+  const totalAmount = allTransactions.value.reduce((sum, t) => sum + (Number((t as { amount?: unknown }).amount) || 0), 0)
   const successfulTransactions = allTransactions.value.filter(t => t.status === 'success').length
   const successRate = totalTransactions > 0 ? (successfulTransactions / totalTransactions) * 100 : 0
   
@@ -364,7 +364,7 @@ const fetchActualGateways = async () => {
   try {
     loadingGateways.value = true
     const response = await $fetch('/api/payment-gateways') as { data?: unknown[] }
-    actualGateways.value = response.data || []
+    actualGateways.value = (response.data || []) as PaymentGateway[]
 
     // اگر API در دسترس نباشد، از داده‌های نمونه استفاده کن
     if (!actualGateways.value.length) {
@@ -424,10 +424,10 @@ const fetchAllTransactions = async () => {
       query: {
         limit: 100 // دریافت 100 تراکنش اخیر
       }
-    })
+    }) as { data?: unknown[] }
     
-    if (response.data) {
-      allTransactions.value = response.data
+    if (response.data && Array.isArray(response.data)) {
+      allTransactions.value = response.data as Transaction[]
     }
   } catch (error) {
     console.error('خطا در دریافت تراکنش‌ها:', error)
@@ -499,10 +499,6 @@ const getGatewayTransactions = (gatewayId: number) => {
 const recentTransactions = computed(() => {
   return allTransactions.value.slice(0, 10) // 10 تراکنش اخیر
 })
-
-interface Transaction {
-  [key: string]: unknown
-}
 
 // توابع عملیات
 const viewTransaction = (_transaction: Transaction) => {

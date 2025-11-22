@@ -33,7 +33,7 @@ export default defineEventHandler(async (event): Promise<DeleteResponse> => {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
 
-    const responseData = await response.json()
+    await response.json()
 
     // console.log('پاسخ حذف هدر:', responseData)
 

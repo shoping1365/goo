@@ -231,7 +231,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { ProductCarouselConfig } from '~/types/widget'
+import type { ProductCarouselConfig, CategoryItem } from '~/types/widget'
 import CategorySelector from './CategorySelector.vue'
 
 interface Props {
@@ -241,12 +241,7 @@ interface Props {
     page: string
   }
   config: ProductCarouselConfig
-  categories: Array<{
-    id: number | string
-    name: string
-    slug?: string
-    [key: string]: unknown
-  }>
+  categories: CategoryItem[]
 }
 
 const props = defineProps<Props>()

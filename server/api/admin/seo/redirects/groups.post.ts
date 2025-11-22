@@ -67,10 +67,10 @@ export default defineEventHandler(async (event) => {
                data: newGroup
           }
 
-     } catch (error: any) {
+     } catch (error: unknown) {
           throw createError({
                statusCode: 500,
-               message: 'خطا در ایجاد دسته‌بندی: ' + error.message
+               message: 'خطا در ایجاد دسته‌بندی: ' + ((error as { message?: string }).message || 'خطای نامشخص')
           })
      }
 })

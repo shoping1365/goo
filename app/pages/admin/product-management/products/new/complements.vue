@@ -65,8 +65,8 @@ v-model="q"
               <div class="flex gap-3">
                 <div class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
                   <img
-                    v-if="product.thumbnail || product.image || product.main_image || (product.images && (product.images[0]?.thumbnail || product.images[0]?.image_url))"
-                    :src="product.thumbnail || product.image || product.main_image || product.images[0]?.thumbnail || product.images[0]?.image_url"
+                    v-if="product.thumbnail || product.image || product.main_image || (product.images && (product.images[0] && ('thumbnail' in product.images[0] ? product.images[0].thumbnail : product.images[0].image_url)))"
+                    :src="String(product.thumbnail || product.image || product.main_image || (product.images && product.images[0] && ('thumbnail' in product.images[0] ? product.images[0].thumbnail : product.images[0].image_url)) || '')"
                     alt=""
                     class="w-full h-full object-cover"
                     @click="openPreview(product)"
@@ -104,7 +104,7 @@ v-model="q"
                 <div class="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg flex items-center justify-center overflow-hidden">
                   <img
                     v-if="item.thumbnail || item.image_url || item.image || item.main_image"
-                    :src="item.thumbnail || item.image_url || item.image || item.main_image"
+                    :src="String(item.thumbnail || item.image_url || item.image || item.main_image || '')"
                     alt=""
                     class="w-full h-full object-cover"
                     @click="openPreview(item)"
@@ -192,7 +192,7 @@ async function searchProducts(){
       return {
         id: p.id,
         name: p.name,
-        category: p?.category?.name || '',
+        category: (p?.category && typeof p.category === 'object' && 'name' in p.category ? String(p.category.name) : '') || '',
         price: p.price,
         sku: p.sku,
         slug: p.slug,
@@ -258,8 +258,19 @@ async function refreshSelected(){
     const arr = Array.isArray(data) ? data : []
     selected.value = arr.map((it: ComplementItem) => {
       const base = it.image_url || it.image || it.main_image || it.thumbnail
-      const thumb = toThumbnail(base)
-      return { ...it, thumbnail: thumb || base }
+      const thumb = toThumbnail(base as string | null)
+      return { 
+        id: it.id ?? 0,
+        name: String(it.name ?? ''),
+        category: (it.category && typeof it.category === 'object' && 'name' in it.category ? String(it.category.name) : String(it.category ?? '')),
+        price: Number(it.price ?? 0),
+        sku: it.sku ? String(it.sku) : undefined,
+        slug: it.slug ? String(it.slug) : undefined,
+        image: base ? String(base) : undefined,
+        main_image: it.main_image ? String(it.main_image) : undefined,
+        thumbnail: thumb || base ? String(thumb || base) : undefined,
+        images: it.images
+      } as ComplementProduct
     })
   } catch { selected.value = [] }
 }

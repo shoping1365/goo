@@ -10,7 +10,6 @@ export default defineEventHandler(async (event) => {
       },
     })
 
-    console.log('📥 Raw response from backend:', response)
 
     // بررسی اینکه response یک object تکی هست یا آرایه
     let responseData = response
@@ -18,24 +17,20 @@ export default defineEventHandler(async (event) => {
     // اگر response یک object با key و value هست، به آرایه تبدیل کن
     if (response && !Array.isArray(response) && typeof response === 'object') {
       if (response.key || response.Key) {
-        console.log('⚠️ Response is single object, wrapping in array')
         responseData = [response]
       } else if (response.data && Array.isArray(response.data)) {
-        console.log('📦 Response has data array, using it')
         responseData = response.data
       }
     }
 
     // تبدیل داده‌های دریافتی به فرمت مناسب
-  const settings: any = {}
+  const settings: Record<string, unknown> = {}
   const prefixedKeys = new Set<string>()
     
     if (Array.isArray(responseData)) {
-      responseData.forEach((item: any) => {
+      responseData.forEach((item: { key?: string; Key?: string; value?: string; Value?: string }) => {
         const key = item.key || item.Key
         const value = item.value || item.Value
-        
-        console.log(`🔍 Processing: key="${key}", value="${value}"`)
         
         if (key) {
           // حذف پیشوند social-media. از key اگر وجود دارد
@@ -45,17 +40,11 @@ export default defineEventHandler(async (event) => {
           if (isPrefixed) {
             prefixedKeys.add(cleanKey)
             settings[cleanKey] = value
-            console.log(`✅ Mapped (prefixed): "${key}" -> "${cleanKey}" = "${value}"`)
           } else if (!prefixedKeys.has(cleanKey) && settings[cleanKey] === undefined) {
             settings[cleanKey] = value
-            console.log(`⚙️ Mapped (legacy): "${key}" -> "${cleanKey}" = "${value}"`)
-          } else {
-            console.log(`ℹ️ Skipped legacy key for "${cleanKey}" because prefixed value already loaded`)
           }
         }
       })
-    } else {
-      console.log('❌ Invalid response format - expected array but got:', typeof responseData)
     }
 
     // تبدیل خودکار لینک‌های سفارشی به آرایه قابل استفاده
@@ -63,8 +52,7 @@ export default defineEventHandler(async (event) => {
     if (typeof rawCustomLinks === 'string') {
       try {
         settings.customLinks = JSON.parse(rawCustomLinks)
-      } catch (parseError) {
-        console.warn('⚠️ Failed to parse custom_links JSON:', parseError)
+      } catch (_parseError) {
         settings.customLinks = []
       }
     } else if (Array.isArray(rawCustomLinks)) {
@@ -73,15 +61,12 @@ export default defineEventHandler(async (event) => {
       settings.customLinks = []
     }
 
-    console.log('📦 Final settings object:', settings)
-
     return {
       success: true,
       data: settings,
       message: 'تنظیمات شبکه‌های اجتماعی با موفقیت دریافت شد'
     }
-  } catch (error: any) {
-    console.error('❌ خطا در دریافت تنظیمات شبکه‌های اجتماعی:', error)
+  } catch (error: unknown) {
     
     return {
       success: false,

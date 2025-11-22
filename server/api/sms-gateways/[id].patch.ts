@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
 
           const json = await response.json()
           return json
-     } catch (error) {
+     } catch (_error) {
           return {
                success: false,
                message: 'خطا در ارتباط با سرور',

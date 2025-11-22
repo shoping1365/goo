@@ -1,6 +1,6 @@
 import { defineEventHandler, sendStream } from 'h3'
 import { createReadStream, existsSync } from 'fs'
-import { resolve, join } from 'path'
+import { resolve } from 'path'
 import { stat } from 'fs/promises'
 
 export default defineEventHandler(async (event) => {

@@ -17,13 +17,14 @@ export default defineEventHandler(async (event) => {
     })
 
     return response
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در دریافت قابلیت‌های درگاه:', error)
     
-    if (error.statusCode) {
+    const err = error as { statusCode?: number; statusMessage?: string }
+    if (err.statusCode) {
       throw createError({
-        statusCode: error.statusCode,
-        message: error.statusMessage || 'خطا در دریافت قابلیت‌های درگاه'
+        statusCode: err.statusCode,
+        message: err.statusMessage || 'خطا در دریافت قابلیت‌های درگاه'
       })
     }
     

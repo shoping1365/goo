@@ -283,13 +283,15 @@ const averageFee = computed(() => {
 
 const highestTransaction = computed(() => {
   if (allTransactions.value.length === 0) return 0
-  return Math.max(...allTransactions.value.map(t => t.amount || 0))
+  return Math.max(...allTransactions.value.map(t => Number((t as { amount?: unknown }).amount) || 0))
 })
 
 const todayTransactions = computed(() => {
   const today = new Date().toDateString()
   return allTransactions.value.filter(t => {
-    const transactionDate = new Date(t.created_at).toDateString()
+    const createdAt = (t as { created_at?: string | number | Date }).created_at
+    if (!createdAt) return false
+    const transactionDate = new Date(createdAt).toDateString()
     return transactionDate === today
   }).length
 })
@@ -322,7 +324,7 @@ const loadingGateways = ref(true)
 const fetchActualGateways = async () => {
   try {
     loadingGateways.value = true
-    const response = await $fetch('/api/payment-gateways') as { data?: unknown[] }
+    const response = await $fetch('/api/payment-gateways') as { data?: PaymentGateway[] }
     actualGateways.value = response.data || []
 
     // اگر API در دسترس نباشد، از داده‌های نمونه استفاده کن
@@ -439,7 +441,7 @@ const fetchAllTransactions = async () => {
       query: {
         limit: 100 // دریافت 100 تراکنش اخیر
       }
-    })
+    }) as { data?: Transaction[] }
     
     if (response.data) {
       allTransactions.value = response.data

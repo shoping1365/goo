@@ -1,16 +1,16 @@
 import { exec } from 'child_process'
 import { promisify } from 'util'
 
-const execAsync = promisify(exec)
+const _execAsync = promisify(exec)
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const base = config.public.goApiBase
-  return await $fetch(`${base}/api/admin/monitoring/overview`, { headers: event.node.req.headers as any });
+  return await $fetch(`${base}/api/admin/monitoring/overview`, { headers: event.node.req.headers as Record<string, string | string[] | undefined> });
 })
 
 // تابع پردازش اطلاعات حافظه
-function parseMemoryInfo(physicalMemory, virtualMemory, memoryUsage) {
+function _parseMemoryInfo(_physicalMemory: string, _virtualMemory: string, _memoryUsage: string) {
   // پردازش حافظه فیزیکی
   const physicalLines = physicalMemory.split('\n').filter(line => line.trim())
   const physicalData = physicalLines[1]?.split(',')[1] || '0'

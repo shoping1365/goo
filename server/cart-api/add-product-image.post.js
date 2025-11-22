@@ -3,7 +3,7 @@ import { getDatabase } from '../_utils/database.js'
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event)
-    
+
     if (!body.product_id || !body.image_url) {
       throw createError({
         statusCode: 400,
@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const db = await getDatabase()
-    
+
     // اضافه کردن عکس به محصول
     const result = await db.query(`
       INSERT INTO product_images (product_id, image_url, type, sort_order, is_active, created_at)
@@ -25,15 +25,14 @@ export default defineEventHandler(async (event) => {
       body.sort_order || 0,
       body.is_active !== false
     ])
-    
-    console.log('Product image added:', result)
-    
+
+
     return {
       success: true,
       image_id: result[0]?.id,
       message: 'عکس محصول با موفقیت اضافه شد'
     }
-    
+
   } catch (error) {
     console.error('Error adding product image:', error)
     throw createError({

@@ -570,7 +570,7 @@
       v-if="showTemplateModal"
       :template="selectedTemplate"
       @close="showTemplateModal = false"
-      @saved="handleTemplateSaved"
+      @saved="handleTemplateSaved as (template: Template) => void"
     />
   </div>
 </template>
@@ -762,22 +762,40 @@ interface Template {
   [key: string]: unknown
 }
 
+interface TemplateType {
+  id?: number | string
+  name?: string
+  description?: string
+  variables?: string[]
+  type?: string
+  [key: string]: unknown
+}
+
 const editTemplate = (template: Template) => {
-  selectedTemplate.value = template
+  selectedTemplate.value = template as TemplateType
   showTemplateModal.value = true
 }
 
 const handleTemplateSaved = (template: Template) => {
   // به‌روزرسانی قالب در لیست
-  if (template.type === 'email') {
+  const templateType = String(template.type || '')
+  const templateData: TemplateType = {
+    id: template.id,
+    name: String(template.name || ''),
+    description: String(template.description || ''),
+    variables: Array.isArray(template.variables) ? template.variables : [],
+    type: templateType,
+    ...template
+  }
+  if (templateType === 'email') {
     const index = emailTemplates.value.findIndex(t => t.id === template.id)
     if (index > -1) {
-      emailTemplates.value[index] = template
+      emailTemplates.value[index] = templateData as typeof emailTemplates.value[0]
     }
   } else {
     const index = smsTemplates.value.findIndex(t => t.id === template.id)
     if (index > -1) {
-      smsTemplates.value[index] = template
+      smsTemplates.value[index] = templateData as typeof smsTemplates.value[0]
     }
   }
   

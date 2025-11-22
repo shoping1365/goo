@@ -75,12 +75,24 @@ const editAccount = (account: Account) => {
   showEditModal.value = true
 }
 const addAccount = () => {
-  salesAccounts.value.push({ ...form.value, id: Date.now() })
+  salesAccounts.value.push({ 
+    id: Date.now(), 
+    name: form.value.name || '', 
+    code: form.value.code || '', 
+    description: form.value.description || '' 
+  })
   closeModal()
 }
 const updateAccount = () => {
   const idx = salesAccounts.value.findIndex(a => a.id === form.value.id)
-  if (idx !== -1) salesAccounts.value[idx] = { ...form.value }
+  if (idx !== -1) {
+    salesAccounts.value[idx] = { 
+      id: form.value.id as number, 
+      name: form.value.name || '', 
+      code: form.value.code || '', 
+      description: form.value.description || '' 
+    }
+  }
   closeModal()
 }
 const deleteAccount = (account: Account) => {

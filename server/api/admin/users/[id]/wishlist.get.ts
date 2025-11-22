@@ -77,7 +77,7 @@ export default defineEventHandler(async (event) => {
       WHERE uc.user_id = $1 AND uc.is_default = true
       ORDER BY uci.created_at DESC
       LIMIT $2 OFFSET $3
-    `, [userId, limitNum, offset]) as unknown as any[]
+    `, [userId, limitNum, offset]) as unknown as Array<{ id: number; product_id: number; created_at: string; product_name: string | null; product_price: number; sale_price: number | null; sale_start_at: string | null; sale_end_at: string | null; product_image: string | null; product_sku: string | null; effective_price: number }>
 
     const wishlistItems = result.map((row) => ({
       id: row.id,

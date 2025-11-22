@@ -108,6 +108,15 @@ interface Coupon {
   name?: string
   code?: string
   discount?: number
+  description?: string
+  type?: 'fixed' | 'percentage' | 'free_shipping'
+  discountValue?: number
+  minOrderAmount?: number
+  maxUses?: number
+  maxUsesPerUser?: number
+  startsAt?: string
+  expiresAt?: string
+  isActive?: boolean
   [key: string]: unknown
 }
 
@@ -119,13 +128,6 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   coupon: undefined
 })
-
-interface Coupon {
-  id?: number | string
-  code?: string
-  discount?: number
-  [key: string]: unknown
-}
 
 // Emits
 const emit = defineEmits<{
@@ -157,13 +159,28 @@ const updateDiscountValue = () => {
 
 // ارسال فرم
 const handleSubmit = () => {
-  emit('save', { ...form.value })
+  emit('save', { 
+    ...form.value,
+    type: form.value.type as 'percentage' | 'fixed' | 'free_shipping'
+  } as Coupon)
 }
 
 // مقداردهی اولیه
 onMounted(() => {
   if (props.coupon) {
-    form.value = { ...props.coupon }
+    form.value = {
+      name: String(props.coupon.name || ''),
+      code: String(props.coupon.code || ''),
+      description: String(props.coupon.description || ''),
+      type: (props.coupon.type || 'percentage') as 'percentage' | 'fixed' | 'free_shipping',
+      discountValue: Number(props.coupon.discountValue || 0),
+      minOrderAmount: Number(props.coupon.minOrderAmount || 0),
+      maxUses: props.coupon.maxUses !== undefined && props.coupon.maxUses !== null ? Number(props.coupon.maxUses) : null,
+      maxUsesPerUser: Number(props.coupon.maxUsesPerUser || 1),
+      startsAt: String(props.coupon.startsAt || ''),
+      expiresAt: String(props.coupon.expiresAt || ''),
+      isActive: Boolean(props.coupon.isActive !== undefined ? props.coupon.isActive : true)
+    } as typeof form.value
   }
 })
 </script> 

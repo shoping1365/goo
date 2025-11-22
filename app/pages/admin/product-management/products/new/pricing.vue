@@ -796,8 +796,8 @@ async function runPriceAnalysis() {
       priceFormatted: r?.price ? `${formatToman(r.price)} تومان` : '-'
     }))
   } catch (err: unknown) {
-    const e = err as { message?: string; [key: string]: unknown }
-    errorMsg.value = e?.data?.message || e?.message || 'خطا در تحلیل قیمت'
+    const e = err as { message?: string; data?: { message?: string }; [key: string]: unknown }
+    errorMsg.value = (e?.data && typeof e.data === 'object' && 'message' in e.data ? String(e.data.message) : undefined) || e?.message || 'خطا در تحلیل قیمت'
   } finally {
     loading.value = false
   }

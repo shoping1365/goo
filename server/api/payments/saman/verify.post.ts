@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
         amount,
         authority: refNum // در سامان از refNum استفاده می‌شود
       }
-    }) as any
+    }) as { data?: unknown }
 
     return {
       success: true,
@@ -36,12 +36,12 @@ export default defineEventHandler(async (event) => {
       message: 'پرداخت سامان با موفقیت تایید شد'
     }
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در تایید پرداخت سامان:', error)
     
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.message || error.statusMessage || 'خطا در تایید پرداخت سامان'
+      statusCode: (error as { statusCode?: number }).statusCode || 500,
+      message: (error as { message?: string; statusMessage?: string }).message || (error as { message?: string; statusMessage?: string }).statusMessage || 'خطا در تایید پرداخت سامان'
     })
   }
 }) 

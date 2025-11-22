@@ -1,12 +1,9 @@
 import { exec } from 'child_process'
 import { promisify } from 'util'
-import { writeFile } from 'fs/promises'
-import { readFileSync } from 'fs'
-import path from 'path'
 import { defineEventHandler, readBody } from 'h3'
 import { useRuntimeConfig } from '#imports'
 
-const execAsync = promisify(exec)
+const _execAsync = promisify(exec)
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()

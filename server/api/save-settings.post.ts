@@ -1,6 +1,4 @@
 import { defineEventHandler, readBody, createError } from 'h3'
-import { writeFile } from 'fs/promises'
-import { join } from 'path'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody<{ databaseUrl?: string }>(event)

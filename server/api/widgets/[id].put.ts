@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
   try {
     // دریافت ID از URL
     const id = getRouterParam(event, 'id')
-    
+
     // دریافت body درخواست
     const body = await readBody(event)
 
@@ -18,13 +18,13 @@ export default defineEventHandler(async (event) => {
     })
 
     return response
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در به‌روزرسانی ویجت:', error)
-    
+
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.message || error.statusMessage || 'خطا در به‌روزرسانی ویجت',
-      data: error.data || error.message
+      statusCode: (error as { statusCode?: number }).statusCode || 500,
+      message: (error as { message?: string; statusMessage?: string }).message || (error as { message?: string; statusMessage?: string }).statusMessage || 'خطا در به‌روزرسانی ویجت',
+      data: (error as { data?: unknown; message?: string }).data || (error as { data?: unknown; message?: string }).message
     })
   }
 })

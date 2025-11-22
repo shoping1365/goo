@@ -157,14 +157,31 @@ const config = computed(() => {
   }
 })
 
+interface BannerItem {
+  id?: number | string
+  image?: string
+  title?: string
+  description?: string
+  link?: string
+  [key: string]: unknown
+}
+
 // Desktop banners computed
-const desktopBanners = computed(() => {
-  return config.value.banners || []
+const desktopBanners = computed((): BannerItem[] => {
+  const banners = config.value.banners
+  if (Array.isArray(banners)) {
+    return banners as BannerItem[]
+  }
+  return []
 })
 
 // Mobile banners computed - fallback to desktop if not set
-const mobileBanners = computed(() => {
-  return config.value.mobile_banners || []
+const mobileBanners = computed((): BannerItem[] => {
+  const banners = config.value.mobile_banners
+  if (Array.isArray(banners)) {
+    return banners as BannerItem[]
+  }
+  return []
 })
 
 // Container style for width and padding/margin

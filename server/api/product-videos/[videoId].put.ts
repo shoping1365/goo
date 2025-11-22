@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const response: any = await fetchGo(event, `/api/product-videos/${videoId}`, {
+    const response = await fetchGo(event, `/api/product-videos/${videoId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -32,12 +32,12 @@ export default defineEventHandler(async (event) => {
       success: true,
       data: response
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در ویرایش ویدیو:', error)
 
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.message || error.statusMessage || 'خطا در ویرایش ویدیو'
+      statusCode: (error as { statusCode?: number }).statusCode || 500,
+      message: (error as { message?: string; statusMessage?: string }).message || (error as { message?: string; statusMessage?: string }).statusMessage || 'خطا در ویرایش ویدیو'
     })
   }
 }) 

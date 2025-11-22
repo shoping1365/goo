@@ -1,4 +1,4 @@
-import { defineEventHandler, getRouterParam, createError } from 'h3'
+import { createError, defineEventHandler, getRouterParam } from 'h3'
 import { fetchGo } from '../_utils/fetchGo'
 
 // دریافت اطلاعات یک درخواست احراز هویت
@@ -15,11 +15,11 @@ export default defineEventHandler(async (event) => {
     })
 
     return response
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching verification:', error)
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.message || 'خطا در دریافت اطلاعات'
+      statusCode: (error as { statusCode?: number }).statusCode || 500,
+      message: (error as { message?: string }).message || 'خطا در دریافت اطلاعات'
     })
   }
 })

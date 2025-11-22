@@ -9,7 +9,7 @@
     "build:memory": "cross-env NODE_OPTIONS=\"--max-old-space-size=8192\" UV_THREADPOOL_SIZE=128 nuxt build --parallel --no-fork-ts-checker",
     "build:debug": "cross-env NODE_OPTIONS=\"--max-old-space-size=20192\" nuxt build --verbose",
     "postbuild": "node scripts/restore-backup.cjs",
-    "dev": "cross-env NODE_OPTIONS=\"--max-old-space-size=16192\" nuxt dev",
+    "dev": "cross-env NODE_OPTIONS=\"--max-old-space-size=26192\" nuxt dev",
     "generate": "cross-env NODE_OPTIONS=\"--max-old-space-size=16288\" nuxt generate",
     "preview": "nuxt preview",
     "start": "node .output/server/index.mjs",

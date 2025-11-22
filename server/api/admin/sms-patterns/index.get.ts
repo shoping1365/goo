@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
                status: json.status,
                data
           }
-     } catch (error: any) {
+     } catch (error: unknown) {
           return { status: 'error', message: 'خطا در دریافت لیست پترن‌ها', error: error?.message || error }
      }
 })

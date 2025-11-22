@@ -24,7 +24,7 @@
       <div v-if="createdLayers.length > 0" class="layers-list">
         <div
           v-for="(layer, index) in createdLayers"
-          :key="layer.id"
+          :key="layer.id || index"
           class="layer-item"
           :class="{ 
             'is-dragging': draggingIndex === index,
@@ -38,11 +38,11 @@
         >
           <div class="drag-handle">⋮⋮</div>
           <div class="layer-info">
-            <div class="layer-name">{{ layer.name || 'لایه بدون نام' }}</div>
+            <div class="layer-name">{{ String(layer.name || 'لایه بدون نام') }}</div>
             <div class="layer-details">
-              <span class="detail-item">عرض: {{ layer.width }}%</span>
-              <span class="detail-item">ارتفاع: {{ layer.height }}px</span>
-              <span class="detail-item">آیتم‌ها: {{ (typeof layer.items === 'string' ? JSON.parse(layer.items) : layer.items).length }}</span>
+              <span class="detail-item">عرض: {{ typeof layer.width === 'number' ? layer.width : 100 }}%</span>
+              <span class="detail-item">ارتفاع: {{ typeof layer.height === 'number' ? layer.height : 50 }}px</span>
+              <span class="detail-item">آیتم‌ها: {{ Array.isArray(layer.items) ? layer.items.length : (typeof layer.items === 'string' ? (() => { try { return JSON.parse(layer.items).length } catch { return 0 } })() : 0) }}</span>
             </div>
           </div>
           
@@ -55,7 +55,7 @@
             </button>
             <button
               class="btn btn-sm btn-danger"
-              @click="deleteLayer(layer.id)"
+              @click="deleteLayer(layer.id as string | number | undefined)"
             >
               حذف
             </button>
@@ -78,10 +78,18 @@
 import { inject, ref, type Ref } from 'vue'
 
 // Inject functions and data from parent
-const createdLayers = inject<Ref<unknown[]>>('createdLayers', ref([]))
+interface LayerItem {
+  id?: string | number
+  name?: string
+  width?: number
+  height?: number
+  items?: unknown[] | string
+  [key: string]: unknown
+}
+const createdLayers = inject<Ref<LayerItem[]>>('createdLayers', ref([]))
 const showLayerSettings = inject<Ref<boolean>>('showLayerSettings')!
-const editLayer = inject<(layer: unknown) => void>('editLayer')!
-const deleteLayer = inject<(id: string) => void>('deleteLayer')!
+const editLayer = inject<(layer: LayerItem) => void>('editLayer')!
+const deleteLayer = inject<(id: string | number | undefined) => void>('deleteLayer')!
 const clearAllLayers = inject<() => void>('clearAllLayers')!
 
 // Drag & Drop state

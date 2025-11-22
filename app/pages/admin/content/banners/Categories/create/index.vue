@@ -372,7 +372,7 @@ const selectCategoryForItem = (index: number, category: Category) => {
   const item = form.value.categories[index]
   item.selectedCategory = category
   item.name = category.name
-  item.link = category.slug || category.name
+  item.link = String(category.slug || category.name || '')
   item.searchTerm = category.name
   item.showDropdown = false
 

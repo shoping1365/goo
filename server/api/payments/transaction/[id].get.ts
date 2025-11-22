@@ -17,13 +17,14 @@ export default defineEventHandler(async (event) => {
     })
 
     return response
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('خطا در دریافت اطلاعات تراکنش:', error)
     
-    if (error.statusCode) {
+    const err = error as { statusCode?: number; message?: string; statusMessage?: string }
+    if (err.statusCode) {
       throw createError({
-        statusCode: error.statusCode,
-        message: error.message || error.statusMessage || 'خطا در دریافت اطلاعات تراکنش'
+        statusCode: err.statusCode,
+        message: err.message || err.statusMessage || 'خطا در دریافت اطلاعات تراکنش'
       })
     }
     
