@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow p-6">
+  <div v-if="hasAccess" class="bg-white rounded-lg shadow p-6">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xl font-semibold text-gray-900">مدیریت کدهای ارجاع</h2>
       <button 
@@ -124,8 +124,8 @@
                   required
                 >
                   <option value="">انتخاب کاربر</option>
-                  <option v-for="user in users" :key="user.id" :value="user.id">
-                    {{ user.name }} ({{ user.email }})
+                  <option v-for="userItem in users" :key="userItem.id" :value="userItem.id">
+                    {{ userItem.name }} ({{ userItem.email }})
                   </option>
                 </select>
               </div>
@@ -183,7 +183,43 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>;
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer', 'super_admin', 'manager', 'operator'];
+  return adminRoles.includes(userRole);
+});
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false });
+  }
+};
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth();
+});
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth();
+  }
+});
 
 // کدهای ارجاع
 const referralCodes = ref([

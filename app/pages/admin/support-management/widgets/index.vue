@@ -550,13 +550,13 @@ v-for="i in 20" :key="i"
 </template>
 
 <script lang="ts">
-declare const definePageMeta: (meta: { layout?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 </script>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 interface Widget {
   id: number | string;

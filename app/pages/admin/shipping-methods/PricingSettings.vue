@@ -27,7 +27,11 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
+<script setup lang="ts">
 import { reactive } from 'vue'
 import DistanceBasedPricing from './DistanceBasedPricing.vue'
 import FlatRatePricing from './FlatRatePricing.vue'
@@ -37,6 +41,8 @@ import RegionalPricing from './RegionalPricing.vue'
 import SpecialDiscountPricing from './SpecialDiscountPricing.vue'
 import TimeBasedPricing from './TimeBasedPricing.vue'
 import WeightBasedPricing from './WeightBasedPricing.vue'
+
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 const pricingData = reactive({
   flatRate: { enabled: false, price: 0, currency: 'IRR' },
@@ -49,8 +55,8 @@ const pricingData = reactive({
   timeBased: { enabled: false, timeRanges: [] }
 })
 
-function getSettingName(key) {
-  const names = {
+function getSettingName(key: string): string {
+  const names: Record<string, string> = {
     flatRate: 'قیمت ثابت',
     weightBased: 'قیمت بر اساس وزن',
     distanceBased: 'قیمت بر اساس فاصله',
@@ -60,7 +66,7 @@ function getSettingName(key) {
     regional: 'قیمت‌گذاری منطقه‌ای',
     timeBased: 'قیمت‌گذاری در ساعات خاص'
   }
-  return names[key] || key
+  return names[key] ?? key
 }
 </script>
 

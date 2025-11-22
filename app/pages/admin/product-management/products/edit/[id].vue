@@ -72,7 +72,7 @@ v-for="tab in tabs" :key="tab.value" href="#" :class="['px-4 py-2 rounded-t text
 
 <script setup lang="ts">
 // @ts-ignore: Nuxt macro
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 import { computed, defineAsyncComponent, onMounted, onUnmounted, provide, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'

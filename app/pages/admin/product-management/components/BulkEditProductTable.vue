@@ -130,8 +130,9 @@
             />
             <ImagePreviewModal
               v-if="modalProductId === product.id"
-              v-model="modalProductId"
-              :image="{ url: getProductOriginalImage(product), name: product.name }"
+              :model-value="Boolean(modalProductId === product.id)"
+              :image="{ url: getProductOriginalImage(product) || '', name: product.name || '' }"
+              @update:model-value="modalProductId = null"
             />
           </td>
           <td v-if="visibleColumns.includes('name')" class="px-3 py-2 border-b border-gray-200 text-xs font-normal cursor-pointer" @click="startEditing(product.id, 'name')">
@@ -207,42 +208,101 @@
   </div>
 </template>
 
-<script setup>
-import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue'
-import ImagePreviewModal from '~/components/media/ImagePreviewModal.vue'
+<script setup lang="ts">
+import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue';
+import ImagePreviewModal from '~/components/media/ImagePreviewModal.vue';
 
-const props = defineProps({
-  products: {
-    type: Array,
-    default: () => []
-  },
-  visibleColumns: {
-    type: Array,
-    default: () => []
-  }
-})
+// تعریف interface برای Product
+interface Product {
+  id: number | string
+  name?: string
+  price?: number
+  old_price?: number
+  cost?: number
+  stock_quantity?: number
+  track_inventory?: boolean
+  status?: string
+  disable_buy_button?: boolean
+  call_for_price?: boolean
+  isNew?: boolean
+  showOnHomepage?: boolean
+  sku?: string
+  image?: string | { url?: string; thumbnail?: string }
+  image_url?: string
+  thumbnail?: string
+  featured_image?: string
+  primary_image?: string
+  images?: Array<{ url?: string; thumbnail?: string; image_url?: string; thumbnail_url?: string }>
+  [key: string]: unknown
+}
 
-const emit = defineEmits(['stats-updated'])
+// تعریف interface برای EditedProduct
+interface EditedProduct {
+  name?: string
+  price?: number
+  old_price?: number
+  cost?: number
+  stock_quantity?: number
+  track_inventory?: boolean
+  isPublished?: boolean
+  disableBuyButton?: boolean
+  callForPrice?: boolean
+  isNew?: boolean
+  showOnHomepage?: boolean
+  [key: string]: unknown
+}
 
-const isEditing = reactive({})
-const editedProducts = reactive({})
-const modalProductId = ref(null)
-const selectedProducts = reactive({})
-const selectAllCheckbox = ref(null)
-const priceIncreasePercent = ref(null)
-const priceDecreasePercent = ref(null)
+// تعریف interface برای Payload
+interface ProductPayload {
+  status?: string
+  name?: string
+  disable_buy_button?: boolean
+  call_for_price?: boolean
+  [key: string]: unknown
+}
+
+interface PricingPayload {
+  price?: number
+  old_price?: number
+  cost?: number
+  [key: string]: unknown
+}
+
+interface InventoryPayload {
+  stock_quantity?: number
+  track_inventory?: boolean
+  [key: string]: unknown
+}
+
+const props = defineProps<{
+  products?: Product[]
+  visibleColumns?: string[]
+}>()
+
+const emit = defineEmits<{
+  (e: 'stats-updated'): void
+}>()
+
+const isEditing = reactive<Record<string | number, Record<string, boolean>>>({})
+const editedProducts = reactive<Record<string | number, EditedProduct>>({})
+const modalProductId = ref<number | string | null>(null)
+const selectedProducts = reactive<Record<string | number, boolean>>({})
+const selectAllCheckbox = ref<HTMLInputElement | null>(null)
+const priceIncreasePercent = ref<number | null>(null)
+const priceDecreasePercent = ref<number | null>(null)
 const hasChanges = ref(false)
 
 // متابع اضافی برای دریافت داده‌ها از API با sync
 const fetchProducts = async () => {
   // این تابع برای sync کردن editedProducts با محصولات جدید است
-  const allProducts = props.products || []
+  const allProducts = (props.products || []) as Product[]
   
   // ایجاد نسخه‌ی editable برای هر محصول
-  allProducts.forEach(p => {
-    if (!editedProducts[p.id]) {
-      editedProducts[p.id] = {
-        name: p.name,
+  allProducts.forEach((p: Product) => {
+    const productId = p.id
+    if (!editedProducts[productId]) {
+      editedProducts[productId] = {
+        name: p.name || '',
         price: p.price || 0,
         old_price: p.old_price || 0,
         cost: p.cost || 0,
@@ -256,8 +316,8 @@ const fetchProducts = async () => {
       }
       
       // تهیه‌سازی isEditing state
-      if (!isEditing[p.id]) {
-        isEditing[p.id] = {}
+      if (!isEditing[productId]) {
+        isEditing[productId] = {}
       }
     }
   })
@@ -280,9 +340,9 @@ watch(someSelected, async (newVal) => {
   }
 })
 
-function getProductThumbnail(product) {
+function getProductThumbnail(product: Product): string {
   // Return thumbnail version if available, otherwise fallback to original or placeholder
-  function toThumbnail(url) {
+  function toThumbnail(url: string): string {
     if (!url) return 'https://via.placeholder.com/50';
     const dotIdx = url.lastIndexOf('.')
     if (dotIdx === -1) return url + '_thumbnail';
@@ -294,21 +354,25 @@ function getProductThumbnail(product) {
   return 'https://via.placeholder.com/50'
 }
 
-function getProductOriginalImage(product) {
+function getProductOriginalImage(product: Product): string {
   const imageUrl = getImageUrlFromProduct(product)
   if (imageUrl) return imageUrl
   return 'https://via.placeholder.com/400'
 }
 
-function getImageUrlFromProduct(product) {
+function getImageUrlFromProduct(product: Product): string | null {
   if (!product) return null
   
   // سعی مختلف راه‌های ممکن برای یافتن URL تصویر
   
   // راه 1: product.images[0].image_url (ساختار معمول API)
   if (product.images && Array.isArray(product.images) && product.images.length > 0) {
-    if (product.images[0].image_url) return product.images[0].image_url
-    if (product.images[0].url) return product.images[0].url
+    const firstImage = product.images[0]
+    if (firstImage && typeof firstImage === 'object') {
+      if ('image_url' in firstImage && typeof firstImage.image_url === 'string') return firstImage.image_url
+      if ('url' in firstImage && typeof firstImage.url === 'string') return firstImage.url
+      if ('thumbnail_url' in firstImage && typeof firstImage.thumbnail_url === 'string') return firstImage.thumbnail_url
+    }
   }
   
   // راه 2: product.image (فیلد مستقیم)
@@ -326,133 +390,30 @@ function getImageUrlFromProduct(product) {
   // راه 6: محصول شاید یک شی تصویر دارد
   if (product.primary_image) {
     if (typeof product.primary_image === 'string') return product.primary_image
-    if (product.primary_image.url) return product.primary_image.url
-    if (product.primary_image.image_url) return product.primary_image.image_url
+    if (typeof product.primary_image === 'object' && product.primary_image !== null) {
+      const primaryImage = product.primary_image as Record<string, unknown>
+      if ('url' in primaryImage && typeof primaryImage.url === 'string') return primaryImage.url
+      if ('image_url' in primaryImage && typeof primaryImage.image_url === 'string') return primaryImage.image_url
+    }
   }
   
   return null
 }
 
-function openModal(productId) {
+function openModal(productId: number | string): void {
   modalProductId.value = productId
 }
 
-function emitStats() {
-  const selected = selectedCount.value
+function emitStats(): void {
+  // بررسی آمار برای emit
   // تعداد محصولاتی که تغییر کرده‌اند (چه انتخاب شده باشند چه نه)
-  const changed = (props.products || []).filter(p => {
-    const orig = p
-    const edited = editedProducts[p.id]
+  const allProducts = (props.products || []) as Product[]
+  allProducts.filter((p: Product) => {
+    const productId = p.id
+    const edited = editedProducts[productId]
     if (!edited) return false
     // بررسی تغییرات فیلد به فیلد
-    const hasChanges = (
-      edited.name !== orig.name ||
-      (edited.price || 0) !== (orig.price || 0) ||
-      (edited.old_price || 0) !== (orig.old_price || 0) ||
-      (edited.cost || 0) !== (orig.cost || 0) ||
-      (edited.stock_quantity || 0) !== (orig.stock_quantity || 0) ||
-      !!edited.track_inventory !== !!orig.track_inventory ||
-      !!edited.isPublished !== (orig.status === 'active' || orig.status === 'published') ||
-      !!edited.disableBuyButton !== !!orig.disable_buy_button ||
-      !!edited.callForPrice !== !!orig.call_for_price
-    )
-    
-    if (hasChanges) {
-      // Product changed
-    }
-    
-    return hasChanges
-  }).length
-  
-  emit('stats-updated', {
-    selected,
-    changed,
-    saved: 0,
-    errors: 0
-  })
-}
-
-function startEditing(productId, field) {
-  const product = (props.products || []).find(p => p.id === productId)
-  if (product && !editedProducts[productId]) {
-    editedProducts[productId] = { ...product }
-    editedProducts[productId].isPublished = product.status === 'published' || product.status === 'active'
-    editedProducts[productId].disableBuyButton = !!product.disable_buy_button
-    editedProducts[productId].callForPrice = !!product.call_for_price
-    editedProducts[productId].track_inventory = !!product.track_inventory
-  }
-  // Close all other editors
-  Object.keys(isEditing).forEach(id => {
-    Object.keys(isEditing[id] || {}).forEach(f => {
-      isEditing[id][f] = false
-    })
-  })
-  if (!isEditing[productId]) isEditing[productId] = {}
-  isEditing[productId][field] = true
-}
-
-function stopEditing(productId, field) {
-  if (isEditing[productId]?.[field]) {
-    isEditing[productId][field] = false
-    saveEdit(productId, field)
-  }
-}
-
-function saveEdit(_productId, _field) {
-  // تغییرات در editedProducts ذخیره می‌شود
-  emitStats()
-}
-
-function toggleCheckbox(product, field) {
-  if (!editedProducts[product.id]) {
-    editedProducts[product.id] = { ...product }
-    editedProducts[product.id].isPublished = product.status === 'published' || product.status === 'active'
-    editedProducts[product.id].disableBuyButton = !!product.disable_buy_button
-    editedProducts[product.id].callForPrice = !!product.call_for_price
-    editedProducts[product.id].track_inventory = !!product.track_inventory
-  }
-  if (field === 'isPublished') {
-    editedProducts[product.id].isPublished = !editedProducts[product.id].isPublished
-  } else if (field === 'disableBuyButton') {
-    editedProducts[product.id].disableBuyButton = !editedProducts[product.id].disableBuyButton
-    if (editedProducts[product.id].disableBuyButton) {
-      editedProducts[product.id].callForPrice = false
-    }
-  } else if (field === 'callForPrice') {
-    editedProducts[product.id].callForPrice = !editedProducts[product.id].callForPrice
-    if (editedProducts[product.id].callForPrice) {
-      editedProducts[product.id].disableBuyButton = false
-    }
-  } else if (field === 'trackInventory') {
-    editedProducts[product.id].track_inventory = !editedProducts[product.id].track_inventory
-  } else {
-    editedProducts[product.id][field] = !editedProducts[product.id][field]
-  }
-  saveEdit(product.id, field)
-}
-
-function toggleSelectAll() {
-  const newState = !allSelected.value
-  if (props.products && Array.isArray(props.products)) {
-    props.products.forEach(product => {
-      selectedProducts[product.id] = newState
-    })
-  }
-  updateSelection()
-}
-
-function updateSelection() {
-  emitStats()
-}
-
-const saveAllEdits = async () => {
-  // همه محصولاتی که تغییر کرده‌اند (چه انتخاب شده باشند چه نه)
-  const allProducts = props.products || []
-  const changed = allProducts.filter(p => {
-    const edited = editedProducts[p.id]
-    if (!edited) return false
-    // بررسی تغییرات فیلد به فیلد
-    const hasChanges = (
+    const hasChangesValue = (
       edited.name !== p.name ||
       (edited.price || 0) !== (p.price || 0) ||
       (edited.old_price || 0) !== (p.old_price || 0) ||
@@ -464,21 +425,149 @@ const saveAllEdits = async () => {
       !!edited.callForPrice !== !!p.call_for_price
     )
     
-    if (hasChanges) {
-      // Product changed
+    return hasChangesValue
+  })
+  
+  emit('stats-updated')
+}
+
+function startEditing(productId: number | string, field: string): void {
+  const allProducts = (props.products || []) as Product[]
+  const product = allProducts.find((p: Product) => p.id === productId)
+  if (product && !editedProducts[productId]) {
+    editedProducts[productId] = {
+      name: product.name || '',
+      price: product.price || 0,
+      old_price: product.old_price || 0,
+      cost: product.cost || 0,
+      stock_quantity: product.stock_quantity || 0,
+      track_inventory: !!product.track_inventory,
+      isPublished: product.status === 'published' || product.status === 'active',
+      disableBuyButton: !!product.disable_buy_button,
+      callForPrice: !!product.call_for_price,
+      isNew: !!product.isNew,
+      showOnHomepage: !!product.showOnHomepage
     }
+  }
+  // Close all other editors
+  Object.keys(isEditing).forEach(id => {
+    if (isEditing[id]) {
+      Object.keys(isEditing[id] || {}).forEach(f => {
+        if (isEditing[id]) {
+          isEditing[id][f] = false
+        }
+      })
+    }
+  })
+  if (!isEditing[productId]) {
+    isEditing[productId] = {}
+  }
+  if (isEditing[productId]) {
+    isEditing[productId][field] = true
+  }
+}
+
+function stopEditing(productId: number | string, field: string): void {
+  if (isEditing[productId]?.[field]) {
+    if (isEditing[productId]) {
+      isEditing[productId][field] = false
+    }
+    saveEdit(productId, field)
+  }
+}
+
+function saveEdit(_productId: number | string, _field: string): void {
+  // تغییرات در editedProducts ذخیره می‌شود
+  hasChanges.value = true
+  emitStats()
+}
+
+function toggleCheckbox(product: Product, field: string): void {
+  const productId = product.id
+  if (!editedProducts[productId]) {
+    editedProducts[productId] = {
+      name: product.name || '',
+      price: product.price || 0,
+      old_price: product.old_price || 0,
+      cost: product.cost || 0,
+      stock_quantity: product.stock_quantity || 0,
+      track_inventory: !!product.track_inventory,
+      isPublished: product.status === 'published' || product.status === 'active',
+      disableBuyButton: !!product.disable_buy_button,
+      callForPrice: !!product.call_for_price,
+      isNew: !!product.isNew,
+      showOnHomepage: !!product.showOnHomepage
+    }
+  }
+  const edited = editedProducts[productId]
+  if (!edited) return
+  
+  if (field === 'isPublished') {
+    edited.isPublished = !edited.isPublished
+  } else if (field === 'disableBuyButton') {
+    edited.disableBuyButton = !edited.disableBuyButton
+    if (edited.disableBuyButton) {
+      edited.callForPrice = false
+    }
+  } else if (field === 'callForPrice') {
+    edited.callForPrice = !edited.callForPrice
+    if (edited.callForPrice) {
+      edited.disableBuyButton = false
+    }
+  } else if (field === 'trackInventory') {
+    edited.track_inventory = !edited.track_inventory
+  } else {
+    (edited as Record<string, unknown>)[field] = !(edited as Record<string, unknown>)[field]
+  }
+  saveEdit(productId, field)
+}
+
+function toggleSelectAll(): void {
+  const newState = !allSelected.value
+  const allProducts = (props.products || []) as Product[]
+  allProducts.forEach((product: Product) => {
+    selectedProducts[product.id] = newState
+  })
+  updateSelection()
+}
+
+function updateSelection() {
+  emitStats()
+}
+
+const saveAllEdits = async () => {
+  // همه محصولاتی که تغییر کرده‌اند (چه انتخاب شده باشند چه نه)
+  const allProducts = (props.products || []) as Product[]
+  const changed = allProducts.filter((p: Product) => {
+    const productId = p.id
+    const edited = editedProducts[productId]
+    if (!edited) return false
+    // بررسی تغییرات فیلد به فیلد
+    const hasChangesValue = (
+      edited.name !== p.name ||
+      (edited.price || 0) !== (p.price || 0) ||
+      (edited.old_price || 0) !== (p.old_price || 0) ||
+      (edited.cost || 0) !== (p.cost || 0) ||
+      (edited.stock_quantity || 0) !== (p.stock_quantity || 0) ||
+      !!edited.track_inventory !== !!p.track_inventory ||
+      !!edited.isPublished !== (p.status === 'active' || p.status === 'published') ||
+      !!edited.disableBuyButton !== !!p.disable_buy_button ||
+      !!edited.callForPrice !== !!p.call_for_price
+    )
     
-    return hasChanges
+    return hasChangesValue
   })
   
   if (changed.length === 0) {
     return
   }
-  const tasks = []
-  changed.forEach(orig => {
-    const edited = editedProducts[orig.id]
+  const tasks: Promise<unknown>[] = []
+  changed.forEach((orig: Product) => {
+    const productId = orig.id
+    const edited = editedProducts[productId]
+    if (!edited) return
     
-    const productPayload = {}
+    const productPayload: ProductPayload = {}
     if (!!edited.isPublished !== (orig.status === 'active' || orig.status === 'published')) {
       productPayload.status = edited.isPublished ? 'active' : 'draft'
     }
@@ -487,10 +576,10 @@ const saveAllEdits = async () => {
     if (!!edited.callForPrice !== !!orig.call_for_price) productPayload.call_for_price = !!edited.callForPrice
     if (Object.keys(productPayload).length > 0) {
       delete productPayload.images
-      tasks.push($fetch(`/api/products/${orig.id}`, { method: 'PUT', body: productPayload }))
+      tasks.push($fetch(`/api/products/${productId}`, { method: 'PUT', body: productPayload }))
     }
     
-    const pricingPayload = {}
+    const pricingPayload: PricingPayload = {}
     if ((edited.price || 0) !== (orig.price || 0)) pricingPayload.price = edited.price || 0
     if ((edited.old_price || 0) !== (orig.old_price || 0)) pricingPayload.old_price = edited.old_price || 0
     if ((edited.cost || 0) !== (orig.cost || 0)) pricingPayload.cost = edited.cost || 0
@@ -499,14 +588,14 @@ const saveAllEdits = async () => {
       delete pricingPayload.id
       delete pricingPayload.created_at
       delete pricingPayload.updated_at
-      tasks.push($fetch(`/api/product-prices/${orig.id}`, { method: 'PUT', body: pricingPayload }))
+      tasks.push($fetch(`/api/product-prices/${productId}`, { method: 'PUT', body: pricingPayload }))
     }
     
-    const inventoryPayload = {}
+    const inventoryPayload: InventoryPayload = {}
     if ((edited.stock_quantity || 0) !== (orig.stock_quantity || 0)) inventoryPayload.stock_quantity = edited.stock_quantity || 0
     if (!!edited.track_inventory !== !!orig.track_inventory) inventoryPayload.track_inventory = !!edited.track_inventory
     if (Object.keys(inventoryPayload).length > 0) {
-      tasks.push($fetch(`/api/product-inventories/${orig.id}`, { method: 'PUT', body: inventoryPayload }))
+      tasks.push($fetch(`/api/product-inventories/${productId}`, { method: 'PUT', body: inventoryPayload }))
     }
   })
   
@@ -524,14 +613,23 @@ const saveAllEdits = async () => {
 
 const resetEdits = () => {
   // بازنشانی همه محصولات تغییر کرده
-  const allProducts = props.products || []
-  allProducts.forEach(p => {
-    if (editedProducts[p.id]) {
-      editedProducts[p.id] = { ...p }
-      editedProducts[p.id].isPublished = p.status === 'published' || p.status === 'active'
-      editedProducts[p.id].disableBuyButton = !!p.disable_buy_button
-      editedProducts[p.id].callForPrice = !!p.call_for_price
-      editedProducts[p.id].track_inventory = !!p.track_inventory
+  const allProducts = (props.products || []) as Product[]
+  allProducts.forEach((p: Product) => {
+    const productId = p.id
+    if (editedProducts[productId]) {
+      editedProducts[productId] = {
+        name: p.name || '',
+        price: p.price || 0,
+        old_price: p.old_price || 0,
+        cost: p.cost || 0,
+        stock_quantity: p.stock_quantity || 0,
+        track_inventory: !!p.track_inventory,
+        isPublished: p.status === 'published' || p.status === 'active',
+        disableBuyButton: !!p.disable_buy_button,
+        callForPrice: !!p.call_for_price,
+        isNew: !!p.isNew,
+        showOnHomepage: !!p.showOnHomepage
+      }
     }
   })
   // بازنشانی selection state
@@ -541,7 +639,9 @@ const resetEdits = () => {
   // Close all editing cells
   Object.keys(isEditing).forEach(id => {
     Object.keys(isEditing[id] || {}).forEach(f => {
-      isEditing[id][f] = false
+      if (isEditing[id]) {
+        isEditing[id][f] = false
+      }
     })
   })
   hasChanges.value = false // Reset changes flag
@@ -550,32 +650,79 @@ const resetEdits = () => {
   emitStats() // بروزرسانی آمار پس از بازنشانی
 }
 
-const bulkDisableBuyButton = () => {
+const bulkDisableBuyButton = (): void => {
   const selectedProductIds = Object.keys(selectedProducts).filter(id => selectedProducts[id])
   selectedProductIds.forEach(id => {
-    editedProducts[id].disableBuyButton = true
-    editedProducts[id].callForPrice = false // mutual exclusion
+    const productId = id as string | number
+    if (!editedProducts[productId]) {
+      const allProducts = (props.products || []) as Product[]
+      const product = allProducts.find((p: Product) => p.id === productId)
+      if (product) {
+        editedProducts[productId] = {
+          name: product.name || '',
+          price: product.price || 0,
+          old_price: product.old_price || 0,
+          cost: product.cost || 0,
+          stock_quantity: product.stock_quantity || 0,
+          track_inventory: !!product.track_inventory,
+          isPublished: product.status === 'published' || product.status === 'active',
+          disableBuyButton: !!product.disable_buy_button,
+          callForPrice: !!product.call_for_price,
+          isNew: !!product.isNew,
+          showOnHomepage: !!product.showOnHomepage
+        }
+      }
+    }
+    if (editedProducts[productId]) {
+      editedProducts[productId].disableBuyButton = true
+      editedProducts[productId].callForPrice = false // mutual exclusion
+    }
   })
   hasChanges.value = true
   emitStats()
 }
 
-const bulkCallForPrice = () => {
+const bulkCallForPrice = (): void => {
   const selectedProductIds = Object.keys(selectedProducts).filter(id => selectedProducts[id])
   selectedProductIds.forEach(id => {
-    editedProducts[id].callForPrice = true
-    editedProducts[id].disableBuyButton = false // mutual exclusion
+    const productId = id as string | number
+    if (!editedProducts[productId]) {
+      const allProducts = (props.products || []) as Product[]
+      const product = allProducts.find((p: Product) => p.id === productId)
+      if (product) {
+        editedProducts[productId] = {
+          name: product.name || '',
+          price: product.price || 0,
+          old_price: product.old_price || 0,
+          cost: product.cost || 0,
+          stock_quantity: product.stock_quantity || 0,
+          track_inventory: !!product.track_inventory,
+          isPublished: product.status === 'published' || product.status === 'active',
+          disableBuyButton: !!product.disable_buy_button,
+          callForPrice: !!product.call_for_price,
+          isNew: !!product.isNew,
+          showOnHomepage: !!product.showOnHomepage
+        }
+      }
+    }
+    if (editedProducts[productId]) {
+      editedProducts[productId].callForPrice = true
+      editedProducts[productId].disableBuyButton = false // mutual exclusion
+    }
   })
   hasChanges.value = true
   emitStats()
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const bulkClearFlags = () => {
+const bulkClearFlags = (): void => {
   const selectedProductIds = Object.keys(selectedProducts).filter(id => selectedProducts[id])
   selectedProductIds.forEach(id => {
-    editedProducts[id].disableBuyButton = false
-    editedProducts[id].callForPrice = false
+    const productId = id as string | number
+    if (editedProducts[productId]) {
+      editedProducts[productId].disableBuyButton = false
+      editedProducts[productId].callForPrice = false
+    }
   })
   hasChanges.value = true
   emitStats()

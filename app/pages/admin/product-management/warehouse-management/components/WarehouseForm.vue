@@ -16,7 +16,7 @@
   
 </template>
 
-<script setup>
+<script setup lang="ts">
 const model = defineModel({
   type: Object,
   default: () => ({ code: '', name: '', city: '', address: '', is_default: false, is_active: true, priority: 100 })

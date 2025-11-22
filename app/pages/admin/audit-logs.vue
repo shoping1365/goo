@@ -98,12 +98,16 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { usePermission } from '@/composables/usePermission'
 import { useApiClient } from '@/utils/api'
 
-// تعریف definePageMeta و navigateTo برای Nuxt 3
+definePageMeta({ layout: 'admin-main', middleware: 'admin' });
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 declare const navigateTo: (to: string) => Promise<void>
 

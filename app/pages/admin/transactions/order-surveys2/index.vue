@@ -176,7 +176,7 @@
 </template>
 
 <script lang="ts">
-declare const definePageMeta: (meta: { layout?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 </script>
 
 <script setup lang="ts">
@@ -196,9 +196,7 @@ import StatsDashboard from './StatsDashboard.vue';
 import SurveyTemplates from './SurveyTemplates.vue';
 import UIPersonalization from './UIPersonalization.vue';
 
-definePageMeta({
-  layout: 'admin-main'
-})
+definePageMeta({ layout: 'admin-main', middleware: 'admin' });
 
 const activeTab = ref('dashboard')
 

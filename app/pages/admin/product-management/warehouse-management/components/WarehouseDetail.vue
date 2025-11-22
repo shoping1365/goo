@@ -158,6 +158,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import InboundTab from './InboundTab.vue'
+
 import InventoryTab from './InventoryTab.vue'
 
 // تعریف تب‌ها

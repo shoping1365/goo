@@ -188,7 +188,7 @@ declare const useFetch: <T>(url: string, options?: unknown) => Promise<{ data: {
 import { computed, ref, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 // لیست انواع درگاه و فیلدهای هرکدام
 const gateways = [

@@ -179,6 +179,10 @@ v-for="tab in tabs" :key="tab.key" :class="['px-4 py-2 text-sm font-medium round
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
 <script setup>
 import CallArchive from './call-archive.vue'
 import CallStatistics from './call-statistics.vue'
@@ -186,7 +190,7 @@ import CustomerSatisfaction from './customer-satisfaction.vue'
 import OperatorStatistics from './operator-statistics.vue'
 import UserArchive from './user-archive.vue'
 
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
 const { user: _user, hasPermission: _hasPermission } = useAuth()

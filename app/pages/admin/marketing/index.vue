@@ -241,7 +241,7 @@ class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
 
 <script setup>
 // آمار بازاریابی
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 const marketingStats = ref({
   totalSales: '125,000,000 تومان',
   activeCampaigns: 8,

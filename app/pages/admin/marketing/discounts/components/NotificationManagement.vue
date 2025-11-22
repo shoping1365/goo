@@ -381,8 +381,17 @@ v-for="tab in tabs" :key="tab.value" :class="['px-6 py-3 -mb-px font-medium text
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 
 const activeTab = ref('notifications')
 const showNotificationForm = ref(false)

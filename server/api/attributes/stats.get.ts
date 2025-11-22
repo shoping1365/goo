@@ -6,9 +6,6 @@ export default defineEventHandler(async () => {
   try {
     const res = await fetch(`${base}/api/attributes/stats`)
     const json = await res.json()
-    if (process.env.NODE_ENV === 'development') {
-      console.debug('[dev] /api/attributes/stats →', json)
-    }
     return json
   } catch (error) {
     console.error('Error fetching attributes stats', error)

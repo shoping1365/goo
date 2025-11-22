@@ -279,7 +279,8 @@ import { ref, computed, onMounted } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 // Loading state

@@ -1034,7 +1034,8 @@
 
 <script setup>
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 import { computed, ref } from 'vue'

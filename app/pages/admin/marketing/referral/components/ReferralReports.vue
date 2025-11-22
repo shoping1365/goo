@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow p-6">
+  <div v-if="hasAccess" class="bg-white rounded-lg shadow p-6">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xl font-semibold text-gray-900">گزارش‌ها و تحلیل</h2>
       <div class="flex space-x-2 space-x-reverse">
@@ -120,7 +120,7 @@
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="(user, index) in topReferrers" :key="user.id">
+            <tr v-for="(referrer, index) in topReferrers" :key="referrer.id">
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
                   <span class="text-lg font-semibold text-gray-900">{{ index + 1 }}</span>
@@ -133,24 +133,24 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
-                  <img class="h-8 w-8 rounded-full ml-2" :src="user.avatar" :alt="user.name">
+                  <img class="h-8 w-8 rounded-full ml-2" :src="referrer.avatar" :alt="referrer.name">
                   <div>
-                    <div class="text-sm font-medium text-gray-900">{{ user.name }}</div>
-                    <div class="text-sm text-gray-500">{{ user.email }}</div>
+                    <div class="text-sm font-medium text-gray-900">{{ referrer.name }}</div>
+                    <div class="text-sm text-gray-500">{{ referrer.email }}</div>
                   </div>
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">{{ user.totalReferrals }}</div>
+                <div class="text-sm text-gray-900">{{ referrer.totalReferrals }}</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">{{ user.successfulReferrals }}</div>
+                <div class="text-sm text-gray-900">{{ referrer.successfulReferrals }}</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-green-600">{{ user.totalReward.toLocaleString() }} تومان</div>
+                <div class="text-sm font-medium text-green-600">{{ referrer.totalReward.toLocaleString() }} تومان</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">{{ user.successRate }}%</div>
+                <div class="text-sm text-gray-900">{{ referrer.successRate }}%</div>
               </td>
             </tr>
           </tbody>
@@ -161,7 +161,43 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>;
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer', 'super_admin', 'manager', 'operator'];
+  return adminRoles.includes(userRole);
+});
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false });
+  }
+};
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth();
+});
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth();
+  }
+});
 
 // نوع گزارش
 const reportType = ref('monthly')

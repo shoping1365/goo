@@ -184,7 +184,8 @@ import RichTextEditor from '~/components/common/RichTextEditor.vue';
 import ProductSeoTab from '~/components/product/ProductSeoTab.vue';
 
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 });
 
 const activeTab = ref('info');

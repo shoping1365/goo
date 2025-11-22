@@ -37,8 +37,14 @@
   </div>
 </template>
 
-<script setup>
-import { ref, reactive } from 'vue'
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
+<script setup lang="ts">
+import { ref, reactive } from 'vue';
+
+definePageMeta({ layout: 'admin-main', middleware: 'admin' });
 
 const faqs = ref([
   { id: 1, question: 'چگونه می‌توانم روش ارسال را تغییر دهم؟', answer: 'در صفحه سبد خرید، گزینه تغییر روش ارسال را انتخاب کنید.', open: false },

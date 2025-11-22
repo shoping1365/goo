@@ -3,7 +3,7 @@
     <table class="min-w-full text-sm">
       <thead class="bg-gray-100">
         <tr>
-          <th class="px-3 py-2"><input type="checkbox" :checked="allCurrentSelected" @change="$emit('toggleSelectAll', items.map(i=>i.id))"/></th>
+          <th class="px-3 py-2"><input type="checkbox" :checked="allCurrentSelected" @change="$emit('toggleSelectAll', (items || []).map((i: Warehouse) => i.id))"/></th>
           <th class="px-3 py-2 text-right select-none">
             <button class="inline-flex items-center gap-1" @click="$emit('sort','id')">
               <span>ID</span>
@@ -41,13 +41,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="w in items" :key="w.id" class="border-b hover:bg-gray-50">
-          <td class="px-3 py-2"><input type="checkbox" :checked="selectedIds.includes(w.id)" @change="$emit('toggleSelect', w.id)"/></td>
+        <tr v-for="w in (items || [])" :key="String(w.id)" class="border-b hover:bg-gray-50">
+          <td class="px-3 py-2"><input type="checkbox" :checked="(selectedIds || []).includes(w.id)" @change="$emit('toggleSelect', w.id)"/></td>
           <td class="px-3 py-2">{{ w.id }}</td>
-          <td class="px-3 py-2 font-mono">{{ w.code }}</td>
-          <td class="px-3 py-2 font-medium">{{ w.name }}</td>
+          <td class="px-3 py-2 font-mono">{{ w.code || '-' }}</td>
+          <td class="px-3 py-2 font-medium">{{ w.name || '-' }}</td>
           <td class="px-3 py-2">{{ w.city || '-' }}</td>
-          <td class="px-3 py-2 truncate max-w-[300px]" :title="w.address">{{ w.address || '-' }}</td>
+          <td class="px-3 py-2 truncate max-w-[300px]" :title="w.address ? String(w.address) : ''">{{ w.address || '-' }}</td>
           <td class="px-3 py-2">{{ w.priority ?? 100 }}</td>
           <td class="px-3 py-2">
             <input type="radio" name="defaultWarehouse" :checked="w.is_default" @change="$emit('setDefault', w)"/>
@@ -65,19 +65,46 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 
-defineEmits(['toggleSelectAll', 'sort', 'toggleSelect', 'setDefault', 'toggleActive', 'edit', 'remove'])
+// تعریف interface برای Warehouse
+interface Warehouse {
+  id: number | string
+  code?: string
+  name?: string
+  city?: string
+  address?: string
+  priority?: number
+  is_default?: boolean
+  is_active?: boolean
+  [key: string]: unknown
+}
 
-const props = defineProps({
-  items: { type: Array, default: () => [] },
-  selectedIds: { type: Array, default: () => [] },
-  sortKey: { type: String, default: 'id' },
-  sortOrder: { type: String, default: 'desc' },
+// emit در template استفاده می‌شود
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const emit = defineEmits<{
+  (e: 'toggleSelectAll', ids: (number | string)[]): void
+  (e: 'sort', key: string): void
+  (e: 'toggleSelect', id: number | string): void
+  (e: 'setDefault', warehouse: Warehouse): void
+  (e: 'toggleActive', warehouse: Warehouse): void
+  (e: 'edit', warehouse: Warehouse): void
+  (e: 'remove', warehouse: Warehouse): void
+}>()
+
+const props = defineProps<{
+  items?: Warehouse[]
+  selectedIds?: (number | string)[]
+  sortKey?: string
+  sortOrder?: 'asc' | 'desc'
+}>()
+
+const allCurrentSelected = computed(() => {
+  const items = (props.items || []) as Warehouse[]
+  const selectedIds = (props.selectedIds || []) as (number | string)[]
+  return items.length > 0 && items.every((i: Warehouse) => selectedIds.includes(i.id))
 })
-
-const allCurrentSelected = computed(() => props.items.length > 0 && props.items.every((i) => props.selectedIds.includes(i.id)))
 </script>
 
 

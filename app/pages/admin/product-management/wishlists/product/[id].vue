@@ -367,17 +367,18 @@
 </template>
 
 <script lang="ts">
-declare const definePageMeta: (meta: { layout?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 declare const useHead: (head: { title?: string }) => void
 declare const navigateTo: (to: string) => Promise<void>
 </script>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 useHead({

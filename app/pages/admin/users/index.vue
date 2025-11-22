@@ -82,7 +82,7 @@
 </template>
 
 <script lang="ts">
-declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 declare const $fetch: <T = unknown>(url: string, options?: { method?: string }) => Promise<T>
 </script>
 

@@ -291,7 +291,7 @@ import { useAuth } from '~/composables/useAuth'
 import { useCompetitiveIntelligence, type CompetitorProfile } from '../composables/useCompetitiveIntelligence'
 
 // تعریف definePageMeta برای Nuxt 3
-declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 
 definePageMeta({
   layout: 'admin-main',

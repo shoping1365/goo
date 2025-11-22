@@ -1,6 +1,15 @@
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
 import TemplateButton from '@/components/common/TemplateButton.vue';
 import { useNotifyRequests } from '~/composables/useNotifyRequests';
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 
 interface Props {
   activeNavItem: string

@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-x-auto">
+  <div v-if="hasAccess" class="overflow-x-auto">
     <table class="min-w-full text-xs text-right rtl border-collapse">
       <thead>
       <tr class="bg-gray-100 border-b border-blue-200">
@@ -33,6 +33,50 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const createError: (options: { statusCode: number; statusMessage: string }) => Error
+</script>
+
 <script setup lang="ts">
+import { computed, onMounted, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer', 'super_admin', 'manager', 'operator'];
+  return adminRoles.includes(userRole);
+});
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = (): void => {
+  if (!hasAccess.value) {
+    // استفاده از createError که به صورت خودکار توسط Nuxt import می‌شود
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Not Found'
+    });
+  }
+};
+
+// بررسی احراز هویت در هنگام mount
+onMounted(() => {
+  checkAuth();
+});
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], () => {
+  if (!hasAccess.value) {
+    checkAuth();
+  }
+});
+
 // اسکلت اولیه، بعداً دیتا و عملکرد اضافه می‌شود
 </script> 

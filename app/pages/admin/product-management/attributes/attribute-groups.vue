@@ -365,7 +365,8 @@ import { useRouter } from 'vue-router';
 import { useAuth } from '~/composables/useAuth';
 
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 // Set page title

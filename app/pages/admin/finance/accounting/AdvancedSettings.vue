@@ -83,8 +83,14 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
+
+definePageMeta({ layout: 'admin-main', middleware: 'admin' });
 
 // Import کامپوننت‌های زیربخش‌ها
 // @ts-ignore

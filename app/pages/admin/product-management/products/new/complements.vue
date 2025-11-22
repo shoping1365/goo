@@ -138,10 +138,19 @@ v-model="q"
   <ImagePreviewModal v-model="showPreview" :image="previewImage" />
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import ImagePreviewModal from '~/components/media/ImagePreviewModal.vue'
 import { useProductCreateStore } from '~/stores/productCreate'
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 
 interface ComplementProduct {
   id: number

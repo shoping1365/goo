@@ -410,7 +410,7 @@
 </template>
 
 <script setup>
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'developer-only' })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
 // const { user, hasPermission } = useAuth()

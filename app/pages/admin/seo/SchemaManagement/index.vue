@@ -181,7 +181,7 @@
 </template>
 
 <script lang="ts">
-declare const definePageMeta: (meta: { layout?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 declare const useHead: (head: { title?: string }) => void
 declare const navigateTo: (to: string) => Promise<void>
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -192,7 +192,8 @@ declare const useSchema: () => any
 import { computed, onMounted } from 'vue'
 
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 useHead({

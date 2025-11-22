@@ -422,7 +422,7 @@ interface Message {
   [key: string]: unknown;
 }
 
-declare const definePageMeta: (meta: { layout?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 declare const useLiveChat: () => {
   chatSessions: Ref<ChatSession[]>;
   selectedSession: Ref<ChatSession | null>;
@@ -444,7 +444,8 @@ declare const useLiveChat: () => {
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 // Use the live chat composable

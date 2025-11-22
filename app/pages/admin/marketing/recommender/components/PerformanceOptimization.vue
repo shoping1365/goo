@@ -102,6 +102,14 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 // کامپوننت بهینه‌سازی عملکرد
 </script> 

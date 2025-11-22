@@ -212,7 +212,7 @@ import WalletBalanceManagement from './components/WalletBalanceManagement.vue'
 import WalletSettings from './components/WalletSettings.vue'
 import WithdrawalManagement from './components/WithdrawalManagement.vue'
 
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 // تعریف تب‌های اصلی - با توجه به ماهیت کانتینرها دسته‌بندی شده
 const tabs = [

@@ -1634,7 +1634,7 @@ interface Form {
   fields: { type: string; label: string; required: boolean }[]
 }
 
-declare const definePageMeta: (meta: { layout?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 declare const $fetch: <T = unknown>(url: string, options?: { method?: string; body?: unknown; responseType?: string }) => Promise<T>
 declare const $toast: { success: (msg: string) => void; error: (msg: string) => void; warning: (msg: string) => void }
 
@@ -1646,7 +1646,7 @@ export default {
 <script setup lang="ts">
 import { ref } from 'vue'
 
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 const activeTab = ref('departments')
 const showCreateTeamModal = ref(false)

@@ -248,7 +248,7 @@ import TemplateCard from '~/components/common/TemplateCard.vue';
 import SectionCard from '~/pages/admin/shipping-methods/SectionCard.vue';
 
 // تعریف definePageMeta و useHead برای Nuxt 3
-declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 declare const useHead: (head: { title?: string }) => void
 
 // تعریف interface برای خطا

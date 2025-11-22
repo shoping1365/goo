@@ -67,7 +67,7 @@ import ReferralSettings from './components/ReferralSettings.vue'
 import RewardRequests from './components/RewardRequests.vue'
 import RewardRules from './components/RewardRules.vue'
 
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 // State برای مودال‌ها
 const showReferralDetails = ref(false)

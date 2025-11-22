@@ -120,8 +120,17 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
 import { useAuth } from '~/composables/useAuth'
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 // تعریف interface برای مشخصات فنی
 interface Attribute {
   id: string

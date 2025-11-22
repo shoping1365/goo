@@ -5,6 +5,6 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const base = config.public.goApiBase
   const query = getQuery(event)
-  const qs = Object.keys(query).length ? '?' + new URLSearchParams(query as any).toString() : ''
+  const qs = Object.keys(query).length ? '?' + new URLSearchParams(query as Record<string, string>).toString() : ''
   return proxy(event, `${base}/api/attribute-groups${qs}`)
 })

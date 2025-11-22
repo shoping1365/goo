@@ -195,7 +195,8 @@ declare const definePageMeta: (meta: { layout?: string; middleware?: string | st
 import { ref } from 'vue'
 
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 // تعریف interface برای داده‌های صفحه

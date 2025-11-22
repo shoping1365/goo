@@ -26,8 +26,14 @@ v-for="tab in tabs" :key="tab.value"
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
+
+definePageMeta({ layout: 'admin-main', middleware: 'admin' });
 // @ts-ignore
 import SalesAccounts from './SalesAccounts.vue'
 // @ts-ignore

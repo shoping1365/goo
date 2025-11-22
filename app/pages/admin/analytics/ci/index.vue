@@ -196,7 +196,7 @@ import OverviewDashboard from './components/OverviewDashboard.vue'
 import { useAuth } from '~/composables/useAuth'
 
 // تعریف definePageMeta برای Nuxt 3
-declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 
 definePageMeta({
   layout: 'admin-main',

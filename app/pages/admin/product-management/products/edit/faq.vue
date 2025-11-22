@@ -1,11 +1,21 @@
-<script setup>
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
+<script setup lang="ts">
+import { computed, reactive, ref } from 'vue'
 import RichTextEditor from '~/components/common/RichTextEditor.vue'
 import { useConfirmDialog } from '~/composables/useConfirmDialog'
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 
 const tinyApiKey = 'qwa4j6x5mh2e3241igpyi345b4uhe2d5qeq6f8hy9qfkw2ro'
 
 // Section collapse/expand states for FAQ tab
-const sections = reactive({
+const sections = reactive<Record<string, boolean>>({
   faq: true
 })
 

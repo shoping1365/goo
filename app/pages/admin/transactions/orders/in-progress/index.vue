@@ -64,7 +64,13 @@
   </ClientOnly>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
 <script setup>
+definePageMeta({ layout: 'admin-main', middleware: 'admin' });
+
 // Import کامپوننت‌ها
 import InProgressDashboard from './InProgressDashboard.vue'
 import InProgressOrdersTable from './InProgressOrdersTable.vue'

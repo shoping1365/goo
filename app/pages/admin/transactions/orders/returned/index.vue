@@ -70,7 +70,8 @@
 
 <script setup>
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 // Import کامپوننت‌ها

@@ -32,8 +32,17 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
 import { h } from 'vue';
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 
 interface Device {
   device: string

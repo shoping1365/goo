@@ -427,11 +427,19 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 // کامپوننت تشخیص تصویر و ویدیو
 // قابلیت‌های ۶۱-۶۵: تشخیص محصول، تشخیص برند، تشخیص کیفیت، تشخیص چهره، تشخیص احساسات
-
-import { ref, onMounted } from 'vue'
 
 // متغیرهای کامپوننت
 const _productRecognitionStats = ref({

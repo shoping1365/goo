@@ -76,8 +76,17 @@ v-if="tooltipVisible && tooltipIndex === index && tooltipType === 'unique'"
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 
 interface ChartData {
   date: string

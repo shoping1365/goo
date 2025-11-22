@@ -346,6 +346,10 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
 import { useNuxtApp } from 'nuxt/app'
 import { reactive, ref, watch, watchEffect } from 'vue'
@@ -353,6 +357,11 @@ import { useAttributeGroup } from '~/composables/useAttributeGroup'
 import { useConfirmDialog } from '~/composables/useConfirmDialog'
 import { useNotifier } from '~/composables/useNotifier'
 import { useProductCreateStore } from '~/stores/productCreate'
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 
 const sections = reactive({
   technicalSpecs: true,

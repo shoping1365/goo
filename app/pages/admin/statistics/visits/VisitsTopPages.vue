@@ -33,7 +33,16 @@ class="flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold"
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
+
 interface Page {
   page: string
   visits: number

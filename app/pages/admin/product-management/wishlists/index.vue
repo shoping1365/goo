@@ -724,7 +724,7 @@ v-for="userWishlist in productGroup.users" :key="userWishlist.user.id"
 </template>
 
 <script lang="ts">
-declare const definePageMeta: (meta: { layout?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 declare const useHead: (head: { title?: string }) => void
 declare const navigateTo: (to: string) => Promise<void>
 declare const useAsyncData: <T>(key: string, fn: () => Promise<T>, options?: { watch?: unknown[] }) => Promise<{ data: { value: T } }>
@@ -738,7 +738,8 @@ import { useConfirmDialog } from '~/composables/useConfirmDialog'
 import { useNotifier } from '~/composables/useNotifier'
 
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 useHead({

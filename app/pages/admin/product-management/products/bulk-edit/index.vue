@@ -149,7 +149,8 @@ import ColumnSettingsModal from '~/pages/admin/product-management/components/Col
 import ProductFilters from '~/pages/admin/product-management/components/ProductFilters.vue';
 
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 });
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
@@ -268,8 +269,9 @@ async function loadColumnSettings() {
   }
 }
 
-function updateStats(newStats) {
-  Object.assign(stats, newStats)
+function updateStats() {
+  // Stats are updated internally by the component
+  // No parameters needed
 }
 
 function showNotification(type, message) {

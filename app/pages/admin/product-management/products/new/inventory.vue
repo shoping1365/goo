@@ -469,10 +469,19 @@
       </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
-import { useProductCreateStore } from '~/stores/productCreate'
+import { reactive } from 'vue';
+
+import { useProductCreateStore } from '~/stores/productCreate';
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 
 const store = useProductCreateStore()
 

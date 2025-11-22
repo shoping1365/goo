@@ -319,8 +319,17 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
 import { ref } from 'vue'
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 // داده‌های دقت
 const accuracyData = ref([
   { date: 'دوشنبه', accuracy: 85.2, trend: 2.1 },

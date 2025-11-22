@@ -39,16 +39,21 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string | false; middleware?: string | string[] }) => void
+</script>
+
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue'
 // استفاده از auto-import Nuxt: کامپوننت‌های پوشه components/admin/chat با پیشوند AdminChat*
 
-const waitingUsers = ref([])
-
 // Disable layout
 definePageMeta({
-  layout: false
+  layout: false,
+  middleware: 'admin'
 })
+
+const waitingUsers = ref([])
 
 // Reactive data
 const selectedUser = ref(null)

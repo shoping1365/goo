@@ -69,26 +69,32 @@
   </div>
 </template>
 
-<script setup>
-// useToast is now available globally through the composable
+<script lang="ts">
+declare const useToast: () => { success: (message: string) => void; error: (message: string) => void }
+</script>
 
-const props = defineProps({
-  isOpen: {
-    type: Boolean,
-    default: false
-  },
-  visibleColumns: {
-    type: Array,
-    default: () => []
-  }
-})
+<script setup lang="ts">
+import { ref, watch } from 'vue';
 
-const emit = defineEmits(['close', 'update:visibleColumns'])
+interface Column {
+  key: string
+  label: string
+}
+
+const props = defineProps<{
+  isOpen?: boolean
+  visibleColumns?: string[]
+}>()
+
+const emit = defineEmits<{
+  (e: 'close'): void
+  (e: 'update:visibleColumns', value: string[]): void
+}>()
 
 const isLoading = ref(false)
 
 // ستون‌های موجود برای انتخاب
-const availableColumns = [
+const availableColumns: Column[] = [
   { key: 'select', label: 'انتخاب' },
   { key: 'index', label: '#' },
   { key: 'image', label: 'تصویر' },
@@ -107,7 +113,7 @@ const availableColumns = [
 ]
 
 // ستون‌های انتخاب شده
-const selectedColumns = ref([])
+const selectedColumns = ref<string[]>([])
 
 // وقتی modal باز می‌شود، ستون‌های فعلی را تنظیم کن
 watch(() => props.isOpen, (newValue) => {

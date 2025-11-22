@@ -41,6 +41,7 @@
 </template>
 
 <script setup lang="ts">
+
 defineProps({
   member: { type: Object, required: true }
 })

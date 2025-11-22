@@ -401,7 +401,7 @@
 </template>
 
 <script lang="ts">
-declare const definePageMeta: (meta: { layout?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const useSchema: () => any
 </script>
@@ -412,7 +412,8 @@ import { useRouter, useRoute } from 'vue-router'
 
 // تعریف layout برای استفاده از سایدبار ادمین
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 const router = useRouter()

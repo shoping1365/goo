@@ -378,7 +378,8 @@ import { definePageMeta } from '#imports';
 import { useHead } from '#imports';
 
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 useHead({

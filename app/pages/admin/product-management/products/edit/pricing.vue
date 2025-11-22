@@ -250,8 +250,8 @@
               <h5 class="text-sm font-bold text-purple-800">طرح‌های فروش ویژه (قیمت/تعداد)</h5>
               <button type="button" class="px-3 py-1 text-xs rounded bg-purple-600 text-white hover:bg-purple-700" @click="addSpecialOffer()">+ افزودن طرح</button>
             </div>
-            <div v-if="(specialOffers && specialOffers.value ? specialOffers.value.length : 0) === 0" class="text-xs text-gray-500">هنوز طرحی اضافه نشده است.</div>
-            <div v-for="(offer, idx) in (specialOffers?.value || [])" :key="idx" class="grid grid-cols-1 md:grid-cols-6 gap-3 items-end mb-3">
+            <div v-if="!specialOffers || specialOffers.length === 0" class="text-xs text-gray-500">هنوز طرحی اضافه نشده است.</div>
+            <div v-for="(offer, idx) in (specialOffers || [])" :key="idx" class="grid grid-cols-1 md:grid-cols-6 gap-3 items-end mb-3">
               <!-- قیمت فروش (پایه) -->
               <div class="md:col-span-2">
                 <label class="text-xs font-semibold text-gray-700">قیمت فروش</label>
@@ -672,9 +672,19 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
+<script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useProductCreateStore } from '~/stores/productCreate'
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 
 // Props for edit mode
 defineProps({
@@ -699,11 +709,10 @@ defineProps({
 })
 
 const store = useProductCreateStore()
+const { specialOffers } = storeToRefs(store)
 // const notifier = useNotifier()
 
 // const { sections: sectionSettings } = store
-// استفاده مستقیم از ref داخل استور برای جلوگیری از مشکلات واکنش‌پذیری هنگام افزوده شدن آیتم جدید
-const specialOffers = store.specialOffers
 
 // Formatting numbers for display
 const formatPrice = (price) => new Intl.NumberFormat('fa-IR').format(price)
@@ -723,8 +732,9 @@ const salePriceWarning = computed(() => {
   return ''
 })
 
-function updatePricingField(field, event) {
-  const value = (event.target).value
+function updatePricingField(field: string, event: Event): void {
+  const target = event.target as HTMLInputElement
+  const value = target.value
   const numericValue = Number(value)
 
   if (field === 'price' || field === 'cost' || field === 'old_price' || field === 'discount_amount') {
@@ -749,19 +759,23 @@ function addSpecialOffer() {
   specialOffers.value = [...(specialOffers.value || []), item]
 }
 
-function removeSpecialOffer(index) {
-  specialOffers.value.splice(index, 1)
+function removeSpecialOffer(index: number): void {
+  if (specialOffers.value) {
+    specialOffers.value.splice(index, 1)
+  }
 }
 
-function onDisableBuyButtonChange(event) {
-  const isChecked = (event.target).checked
+function onDisableBuyButtonChange(event: Event): void {
+  const target = event.target as HTMLInputElement
+  const isChecked = target.checked
   if (isChecked) {
     store.pricingForm.callForPrice = false
   }
 }
 
-function onCallForPriceChange(event) {
-  const isChecked = (event.target).checked
+function onCallForPriceChange(event: Event): void {
+  const target = event.target as HTMLInputElement
+  const isChecked = target.checked
   if (isChecked) {
     store.pricingForm.disableBuyButton = false
   }
@@ -808,8 +822,14 @@ async function runPriceAnalysis() {
       method: 'POST',
       body: { q: keyword.value.trim(), limit: Number(limit.value) || 10 }
     })
-    const rows = Array.isArray(res?.data) ? res.data : (res?.results || [])
-    results.value = rows.map((r) => ({
+    interface PriceAnalysisResponse {
+      data?: unknown[]
+      results?: unknown[]
+      [key: string]: unknown
+    }
+    const response = res as PriceAnalysisResponse
+    const rows = Array.isArray(response?.data) ? response.data : (Array.isArray(response?.results) ? response.results : [])
+    results.value = rows.map((r: { price?: number; [key: string]: unknown }) => ({
       ...r,
       priceFormatted: r?.price ? `${formatToman(r.price)} تومان` : '-'
     }))

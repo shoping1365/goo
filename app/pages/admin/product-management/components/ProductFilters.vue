@@ -141,7 +141,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import SearchableSelect from '~/components/admin/common/SearchableSelect.vue'
 
@@ -213,8 +213,8 @@ const getStockStatusLabel = (status) => {
 // Methods
 const loadCategories = async () => {
   try {
-    const response = await $fetch('/api/product-categories?all=1')
-    categories.value = Array.isArray(response) ? response : (response?.data || [])
+    const response = await $fetch('/api/product-categories?all=1') as unknown
+    categories.value = Array.isArray(response) ? response : (Array.isArray((response as { data?: unknown[] })?.data) ? (response as { data: unknown[] }).data : [])
   } catch (error) {
     console.error('خطا در دریافت دسته‌بندی‌ها:', error)
     categories.value = []
@@ -223,8 +223,8 @@ const loadCategories = async () => {
 
 const loadBrands = async () => {
   try {
-    const response = await $fetch('/api/brands')
-    brands.value = Array.isArray(response) ? response : (response?.data || [])
+    const response = await $fetch('/api/brands') as unknown
+    brands.value = Array.isArray(response) ? response : (Array.isArray((response as { data?: unknown[] })?.data) ? (response as { data: unknown[] }).data : [])
   } catch (error) {
     console.error('خطا در دریافت برندها:', error)
     brands.value = []

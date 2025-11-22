@@ -195,7 +195,7 @@
 </template>
 
 <script lang="ts">
-declare const definePageMeta: (meta: { layout?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 declare const navigateTo: (to: string) => Promise<void>
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const useSchema: () => any
@@ -204,7 +204,10 @@ declare const useSchema: () => any
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
 
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ 
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 
 // استفاده از composable
 const { createTemplate, fetchSchemaTypes, loading } = useSchema()

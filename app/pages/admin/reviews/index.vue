@@ -74,13 +74,13 @@
 </template>
 
 <script lang="ts">
-declare const definePageMeta: (meta: { layout?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 </script>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const items = ref<any[]>([])

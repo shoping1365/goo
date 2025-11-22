@@ -187,8 +187,17 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 
 const showIntegrationForm = ref(false)
 interface Integration {

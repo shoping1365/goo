@@ -439,8 +439,17 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from 'vue'
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 // تنظیمات الگوریتم‌ها
 const algorithms = ref({
   collaborative: {

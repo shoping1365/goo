@@ -1,7 +1,16 @@
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import RichTextEditor from '~/components/common/RichTextEditor.vue';
 import { useConfirmDialog } from '~/composables/useConfirmDialog';
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 
 // Section collapse/expand states for FAQ tab
 const sections = reactive({

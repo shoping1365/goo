@@ -469,9 +469,18 @@
 </template>
 
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue'
 import { useProductCreateStore } from '~/stores/productCreate'
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 
 interface Warehouse {
   id: number | string

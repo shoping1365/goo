@@ -104,7 +104,7 @@
 
 <script setup lang="ts">
 // @ts-ignore: Nuxt macro
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'

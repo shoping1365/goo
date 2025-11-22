@@ -267,5 +267,5 @@ import EmailsTrafficManagement from './components/EmailsTrafficManagement.vue'
 import EmailsUserManagement from './components/EmailsUserManagement.vue'
 import EmailsUserSurvey from './components/EmailsUserSurvey.vue'
 
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 </script> 

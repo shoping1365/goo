@@ -107,7 +107,7 @@ import RuleManagement from './components/RuleManagement.vue'
 import SecuritySettings from './components/SecuritySettings.vue'
 import SystemIntegration from './components/SystemIntegration.vue'
 
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 // State برای مودال‌ها
 const showCouponForm = ref(false)

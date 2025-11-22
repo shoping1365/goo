@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts">
-declare const definePageMeta: (meta: { layout?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 </script>
 
 <script setup lang="ts">
@@ -60,7 +60,7 @@ import BotModal from './components/BotModal.vue'
 import BotsTable from './components/BotsTable.vue'
 import StatsCards from './components/StatsCards.vue'
 
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 // متغیرهای reactive
 interface Bot {

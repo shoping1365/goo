@@ -166,7 +166,8 @@ import { onMounted } from 'vue'
 import { useMonitoring } from '~/composables/useMonitoring'
 
 definePageMeta({
-  middleware: 'auth',
+  layout: 'admin-main',
+  middleware: 'admin',
   title: 'مراقبت سیستم',
 })
 

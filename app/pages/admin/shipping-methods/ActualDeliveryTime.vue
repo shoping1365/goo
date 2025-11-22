@@ -263,8 +263,14 @@
      </div>
    </template>
    
-   <script setup lang="ts">
-   import { nextTick, onMounted, reactive, ref } from 'vue';
+   <script lang="ts">
+  declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+  </script>
+
+  <script setup lang="ts">
+  import { nextTick, onMounted, reactive, ref } from 'vue';
+
+  definePageMeta({ layout: 'admin-main', middleware: 'admin' })
    
    // Props
    interface Props {

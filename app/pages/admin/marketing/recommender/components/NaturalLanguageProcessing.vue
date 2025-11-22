@@ -291,11 +291,19 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 // کامپوننت پردازش زبان طبیعی (NLP)
 // قابلیت‌های ۵۶-۶۰: تحلیل نظرات، تشخیص موضوع، خلاصه‌سازی، تشخیص زبان، تشخیص اسپم
-
-import { ref, onMounted } from 'vue'
 
 // متغیرهای کامپوننت
 const _sentimentData = ref({

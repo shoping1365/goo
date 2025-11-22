@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow p-6">
+  <div v-if="hasAccess" class="bg-white rounded-lg shadow p-6">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xl font-semibold text-gray-900">آمار کلی برنامه ارجاع</h2>
       <div class="flex space-x-2 space-x-reverse">
@@ -100,7 +100,32 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>;
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer', 'super_admin', 'manager', 'operator'];
+  return adminRoles.includes(userRole);
+});
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false });
+  }
+};
+
 
 // آمار برنامه ارجاع
 const referralStats = ref({
@@ -111,8 +136,16 @@ const referralStats = ref({
   averageReward: 0
 })
 
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth();
+  }
+});
+
 // بارگذاری آمار
 onMounted(async () => {
+  await checkAuth();
   // TODO: فراخوانی API برای دریافت آمار
   referralStats.value = {
     totalReferrals: 850,
@@ -120,6 +153,6 @@ onMounted(async () => {
     conversionRate: 50,
     totalRewards: 8500000,
     averageReward: 20000
-  }
-})
+  };
+});
 </script> 

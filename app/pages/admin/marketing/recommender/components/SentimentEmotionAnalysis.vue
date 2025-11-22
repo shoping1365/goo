@@ -470,9 +470,18 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
-// کامپوننت تحلیل احساسات و عواطف
 import { ref, reactive } from 'vue'
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
+// کامپوننت تحلیل احساسات و عواطف
 
 // متغیرهای reactive برای تنظیمات
 const features = reactive({

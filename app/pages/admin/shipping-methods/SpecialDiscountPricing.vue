@@ -142,8 +142,14 @@
   </div>
 </template>
 
-<script setup>
-import { ref, watch } from 'vue'
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
+<script setup lang="ts">
+import { ref, watch } from 'vue';
+
+definePageMeta({ layout: 'admin-main', middleware: 'admin' });
 
 const props = defineProps({
   modelValue: {

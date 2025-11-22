@@ -338,7 +338,7 @@ import { computed, onMounted, ref } from 'vue';
 // تعریف definePageMeta برای Nuxt 3
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 // تعریف interface ها
 interface ApiResponse<T> {

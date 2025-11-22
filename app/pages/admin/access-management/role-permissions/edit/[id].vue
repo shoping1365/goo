@@ -85,11 +85,13 @@ type="checkbox"
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 // تعریف definePageMeta برای Nuxt 3
-declare const definePageMeta: (meta: { layout?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+
+definePageMeta({ layout: 'admin-main', middleware: 'admin' });
 
 // تعریف interface برای Permission
 interface Permission {
@@ -114,8 +116,6 @@ interface RoleApiResponse {
   permissions?: Permission[]
   [key: string]: unknown
 }
-
-definePageMeta({ layout: 'admin-main' })
 
 const route = useRoute()
 const roleId = route.params.id

@@ -4,12 +4,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // VideoManager component logic will go here
 </script>
 
 <style scoped>
-.video-manager {
-  /* Component styles will go here */
-}
+/* Component styles will go here */
 </style>

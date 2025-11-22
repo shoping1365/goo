@@ -68,7 +68,7 @@ import PointRules from './components/PointRules.vue'
 import RewardsManagement from './components/RewardsManagement.vue'
 import TransactionHistory from './components/TransactionHistory.vue'
 
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 // State برای مودال‌ها
 const showMemberDetails = ref(false)

@@ -114,7 +114,7 @@
 </template>
 
 <script lang="ts">
-declare const definePageMeta: (meta: { layout?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 </script>
 
 <script setup lang="ts">
@@ -124,7 +124,8 @@ import WarehouseList from './components/WarehouseList.vue'
 
 // تعریف layout صفحه
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 // مدیریت تب فعال

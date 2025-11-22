@@ -371,7 +371,7 @@ v-for="reply in selectedTicket.replies" :key="reply.id"
 </template>
 
 <script lang="ts">
-declare const definePageMeta: (meta: { layout?: string; title?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; title?: string; middleware?: string | string[] }) => void
 </script>
 
 <script setup lang="ts">
@@ -659,7 +659,8 @@ const goToPage = (page: number) => {
 // تنظیمات صفحه
 definePageMeta({
   title: 'پشتیبانی و تیکت‌ها',
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 });
 </script>
 

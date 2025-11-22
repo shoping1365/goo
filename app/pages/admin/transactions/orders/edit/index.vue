@@ -207,8 +207,14 @@ const formatPersianDateTime = (dateString) => {
   }
 }
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
 <script setup>
 import { computed, onMounted, ref } from 'vue'
+
+definePageMeta({ layout: 'admin-main', middleware: 'admin' });
 
 // Import کامپوننت
 import OrderFilters from './components/OrderFilters.vue'

@@ -110,7 +110,16 @@ class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
+
 interface Visit {
   id: number
   timestamp: string

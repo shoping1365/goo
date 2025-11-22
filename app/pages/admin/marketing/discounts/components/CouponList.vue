@@ -74,9 +74,18 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useAuth } from '~/composables/useAuth'
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 
 // تعریف interface برای کوپن
 interface Coupon {

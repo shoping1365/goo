@@ -315,9 +315,15 @@
 </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+declare const navigateTo: (path: string) => Promise<void>
+</script>
+
 <script setup lang="ts">
-import { definePageMeta, navigateTo } from '#imports';
 import { onMounted, ref } from 'vue';
+
+definePageMeta({ layout: 'admin-main', middleware: 'admin' });
 import AccountAgeSystem from './components/AccountAgeSystem.vue';
 import AlertSystem from './components/AlertSystem.vue';
 import AutoScoringSystem from './components/AutoScoringSystem.vue';
@@ -406,8 +412,6 @@ interface TestEnvironment {
 interface TestResult {
   [key: string]: unknown;
 }
-
-definePageMeta({ layout: 'admin-main' })
 
 // Reactive data
 const activeTab = ref('dashboard')

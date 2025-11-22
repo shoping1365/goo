@@ -370,11 +370,19 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 // کامپوننت تشخیص تقلب و امنیت
 // قابلیت‌های ۸۱-۸۵: تشخیص بوت، تشخیص خرید جعلی، تشخیص نظرات جعلی، تشخیص حملات، تشخیص ناهنجاری
-
-import { ref, onMounted } from 'vue'
 
 // متغیرهای کامپوننت
 const _botDetectionStats = ref({

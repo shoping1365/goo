@@ -1,6 +1,0 @@
-# Ignore TinyMCE files from ESLint
-public/tinymce-assets/**
-**/tinymce.js
-**/tinymce.min.js
-**/tinymce-assets/**
-

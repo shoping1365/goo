@@ -86,8 +86,14 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue';
+
+definePageMeta({ layout: 'admin-main', middleware: 'admin' });
 
 const timeframe = ref('daily')
 const analysis = ref({

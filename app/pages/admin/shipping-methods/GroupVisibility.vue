@@ -50,8 +50,14 @@ type="checkbox"
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive } from 'vue';
+
+definePageMeta({ layout: 'admin-main', middleware: 'admin' });
 
 const customerGroups = ref([
   { id: 'all', name: 'همه مشتریان' },

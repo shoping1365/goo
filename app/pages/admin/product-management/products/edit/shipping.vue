@@ -513,9 +513,21 @@
       </div>
 </template>
 
-<script setup>
-// Reactive sections for collapsible functionality
-const sections = reactive({
+<script lang="ts">
+// definePageMeta در <script setup> استفاده می‌شود
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
+<script setup lang="ts">
+import { reactive } from 'vue';
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
+
+const sections = reactive<Record<string, boolean>>({
   dimensions: true,
   shippingSettings: true,
   shippingCosts: true,

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow p-6">
+  <div v-if="hasAccess" class="bg-white rounded-lg shadow p-6">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xl font-semibold text-gray-900">مدیریت محتوا و راهنما</h2>
       <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
@@ -27,8 +27,46 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth()
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || ''
+  const adminRoles = ['admin', 'developer']
+  return adminRoles.includes(userRole)
+})
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async () => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false })
+  }
+}
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth()
+})
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth()
+  }
+})
 
 const content = ref({
   intro: 'برنامه وفاداری ما به شما این امکان را می‌دهد تا با هر خرید امتیاز جمع‌آوری کنید و از مزایای ویژه بهره‌مند شوید.',

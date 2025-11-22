@@ -354,7 +354,7 @@
 <script setup lang="ts">
 // صفحه مدیریت پیشنهادات هوشمند
 // @ts-ignore: Nuxt macro
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 // Import Vue composables
 import { ref } from 'vue'

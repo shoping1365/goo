@@ -341,7 +341,8 @@ import ProductFAQTab from '~/pages/admin/product-management/products/new/faq.vue
     
       
     definePageMeta({
-      layout: 'admin-main'
+      layout: 'admin-main',
+      middleware: 'admin'
     });
       
     interface Category {

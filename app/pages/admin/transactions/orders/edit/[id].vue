@@ -158,9 +158,15 @@
   </ClientOnly>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
 <script setup>
 import { nextTick, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+
+definePageMeta({ layout: 'admin-main', middleware: 'admin' });
 
 // Import کامپوننت‌ها
 import AdvancedLogistics from './components/AdvancedLogistics.vue'

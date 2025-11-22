@@ -17,6 +17,10 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+</script>
+
 <script setup lang="ts">
 import { ref } from 'vue'
 import SalesAdvancedAnalytics from './SalesAdvancedAnalytics.vue'
@@ -29,6 +33,11 @@ import SalesRevenueTrends from './SalesRevenueTrends.vue'
 import SalesSummaryCards from './SalesSummaryCards.vue'
 import SalesTable from './SalesTable.vue'
 import SalesTopProducts from './SalesTopProducts.vue'
+
+definePageMeta({
+  layout: 'admin-main',
+  middleware: 'admin'
+})
 
 // Sample/fake data for UI demo
 const stats = ref({

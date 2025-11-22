@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 import { onMounted, ref } from 'vue'
 
 const settings = ref({

@@ -63,7 +63,13 @@
   </ClientOnly>
 </template>
 
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
 <script setup>
+definePageMeta({ layout: 'admin-main', middleware: 'admin' });
+
 // Import کامپوننت‌ها
 import ProcessingDashboard from './ProcessingDashboard.vue'
 import ProcessingOrdersTable from './ProcessingOrdersTable.vue'

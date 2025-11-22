@@ -301,7 +301,7 @@
 </template>
 
 <script lang="ts">
-declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 declare const useHead: (head: { title?: string; meta?: Array<{ name?: string; content?: string }> }) => void
 </script>
 

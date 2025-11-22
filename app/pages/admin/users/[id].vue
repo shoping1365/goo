@@ -114,7 +114,7 @@
 </template>
 
 <script lang="ts">
-declare const definePageMeta: (meta: { layout?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 declare const useRoute: () => { params: { id: string } }
 declare const useRouter: () => { push: (path: string) => void }
 declare const $fetch: <T = unknown>(url: string, options?: { method?: string; body?: unknown; credentials?: string }) => Promise<T>
@@ -141,7 +141,7 @@ import UserSuccessfulLoginsSection from './UserSuccessfulLoginsSection.vue';
 import UserWalletSection from './UserWalletSection.vue';
 import UserWishlistSection from './UserWishlistSection.vue';
 
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' });
 
 interface UserDetail {
   id: number | string
