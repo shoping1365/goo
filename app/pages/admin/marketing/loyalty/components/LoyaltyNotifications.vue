@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow p-6">
+  <div v-if="hasAccess" class="bg-white rounded-lg shadow p-6">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xl font-semibold text-gray-900">مدیریت اعلان‌ها</h2>
       <button 
@@ -124,7 +124,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuth } from '~/composables/useAuth'
+
+const { user } = useAuth()
+const router = useRouter()
+
+const hasAccess = computed(() => {
+  return ['admin', 'developer'].includes(user.value?.role || '')
+})
+
+watch(hasAccess, (newValue) => {
+  if (!newValue) {
+    router.push('/404')
+  }
+})
+
+onMounted(() => {
+  if (!hasAccess.value) {
+    router.push('/404')
+  }
+})
 
 const notifications = ref([
   {

@@ -18,7 +18,7 @@ export default defineEventHandler(async (event: H3Event) => {
   const base = config.public.goApiBase
 
   try {
-    const [ping, monitor] = await Promise.all([
+    const [_, monitor] = await Promise.all([
       $fetch(`${base}/health`, { method: 'GET' }),
       $fetch(`${base}/api/admin/monitoring/health`, {
         method: 'GET',

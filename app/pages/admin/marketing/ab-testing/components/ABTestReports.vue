@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+  <div v-if="hasAccess" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-xl font-bold text-gray-900">گزارش‌گیری</h2>
       <div class="flex items-center space-x-4 space-x-reverse">
@@ -241,7 +241,23 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuth } from '~/composables/useAuth'
+
+const { user } = useAuth()
+const router = useRouter()
+
+const hasAccess = computed(() => {
+  return ['admin', 'developer'].includes(user.value?.role || '')
+})
+
+watch(hasAccess, (newValue) => {
+  if (!newValue) {
+    router.push('/404')
+  }
+})
+
 // State
 const reportType = ref('performance')
 const timeRange = ref('30')
@@ -421,6 +437,10 @@ const formatDate = (dateString: string) => {
 
 // ایجاد گزارش اولیه
 onMounted(() => {
+  if (!hasAccess.value) {
+    router.push('/404')
+    return
+  }
   generateReport()
 })
 </script> 

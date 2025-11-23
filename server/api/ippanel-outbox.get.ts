@@ -24,7 +24,6 @@ export default defineEventHandler(async (event) => {
     }
     
     const json = await response.json()
-    console.log('📡 پاسخ outbox IPPanel:', json)
     
     return json
   } catch (error) {

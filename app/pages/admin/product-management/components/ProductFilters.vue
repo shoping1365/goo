@@ -146,9 +146,9 @@ declare const navigateTo: (to: string, options?: { redirectCode?: number; extern
 </script>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from 'vue'
-import { useAuth } from '~/composables/useAuth'
-import SearchableSelect from '~/components/admin/common/SearchableSelect.vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue';
+import SearchableSelect from '~/components/admin/common/SearchableSelect.vue';
+import { useAuth } from '~/composables/useAuth';
 
 // احراز هویت
 const { user, isAuthenticated } = useAuth()
@@ -160,7 +160,7 @@ const hasAccess = computed(() => {
   }
 
   const userRole = user.value?.role?.toLowerCase() || ''
-  const adminRoles = ['admin', 'developer']
+  const adminRoles = ['admin', 'developer', 'super_admin', 'manager', 'operator']
   return adminRoles.includes(userRole)
 })
 

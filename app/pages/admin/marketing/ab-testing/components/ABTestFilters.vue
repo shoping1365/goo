@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+  <div v-if="hasAccess" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-lg font-semibold text-gray-900">فیلترها و جستجو</h3>
       <button 
@@ -227,7 +227,29 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { useAuth } from '@/composables/useAuth';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+
+const { user } = useAuth()
+const router = useRouter()
+
+const hasAccess = computed(() => {
+  return user.value?.role === 'admin' || user.value?.role === 'developer'
+})
+
+watch(() => user.value, (newUser) => {
+  if (!newUser || (newUser.role !== 'admin' && newUser.role !== 'developer')) {
+    router.push('/404')
+  }
+})
+
+onMounted(() => {
+  if (!user.value || (user.value.role !== 'admin' && user.value.role !== 'developer')) {
+    router.push('/404')
+  }
+})
+
 // Props
 interface FilterValue {
   [key: string]: unknown
@@ -431,4 +453,4 @@ watch(() => props.modelValue, (newValue) => {
     }
   }
 }, { immediate: true })
-</script> 
+</script>

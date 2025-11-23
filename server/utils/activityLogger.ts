@@ -11,7 +11,7 @@ interface ActivityLog {
   action: string
   resource_type: string
   resource_id?: string
-  details?: Record<string, any>
+  details?: Record<string, unknown>
   ip_address: string
   user_agent: string
   status: 'success' | 'failure'

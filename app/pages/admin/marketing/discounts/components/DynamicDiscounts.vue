@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow-sm border border-gray-200 w-full">
+  <div v-if="hasAccess" class="bg-white rounded-lg shadow-sm border border-gray-200 w-full">
     <!-- هدر بخش -->
     <div class="p-6 border-b border-gray-200">
       <div class="flex items-center justify-between">
@@ -425,7 +425,28 @@ v-for="tab in tabs" :key="tab.value" :class="['px-6 py-3 -mb-px font-medium text
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuth } from '~/composables/useAuth'
+
+const { user } = useAuth()
+const router = useRouter()
+
+const hasAccess = computed(() => {
+  return ['admin', 'developer'].includes(user.value?.role || '')
+})
+
+watch(hasAccess, (newValue) => {
+  if (!newValue) {
+    router.push('/404')
+  }
+})
+
+onMounted(() => {
+  if (!hasAccess.value) {
+    router.push('/404')
+  }
+})
 
 const activeTab = ref('rules')
 const showRuleForm = ref(false)

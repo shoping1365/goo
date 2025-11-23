@@ -1,23 +1,19 @@
-import { defineEventHandler, createError, setResponseHeader } from 'h3'
+import { createError, defineEventHandler, setResponseHeader } from 'h3'
 import { fetchGo } from './_utils/fetchGo'
 
 interface PublicFooterResponse {
      success: boolean
-     data: any[]
+     data: unknown[]
 }
 
 export default defineEventHandler(async (event): Promise<PublicFooterResponse> => {
      try {
-          console.log('درخواست دریافت تنظیمات فوتر (عمومی)')
-
           const responseData = await fetchGo(event, '/api/footer-settings', {
                method: 'GET'
           })
 
-          console.log('پاسخ تنظیمات فوتر:', responseData)
-
           const cacheControl = 'no-store, max-age=0, must-revalidate'
-          const nodeRes = event.node?.res as any
+          const nodeRes = event.node?.res
           if (nodeRes && typeof nodeRes.setHeader === 'function') {
                nodeRes.setHeader('Cache-Control', cacheControl)
           } else {
@@ -29,10 +25,10 @@ export default defineEventHandler(async (event): Promise<PublicFooterResponse> =
           }
 
           if (responseData && typeof responseData === 'object') {
-               const payload = responseData as Record<string, any>
+               const payload = responseData as Record<string, unknown>
                return {
                     success: payload.success !== false,
-                    data: payload.data || []
+                    data: (payload.data as unknown[]) || []
                }
           }
 
@@ -41,17 +37,18 @@ export default defineEventHandler(async (event): Promise<PublicFooterResponse> =
                data: Array.isArray(responseData) ? responseData : []
           }
 
-     } catch (error: any) {
+     } catch (error: unknown) {
+          const err = error as { statusCode?: number; status?: number; message?: string; data?: unknown }
           console.error('خطا در دریافت تنظیمات فوتر:', {
-               statusCode: error?.statusCode,
-               status: error?.status,
-               message: error?.message,
-               data: error?.data
+               statusCode: err?.statusCode,
+               status: err?.status,
+               message: err?.message,
+               data: err?.data
           })
 
           throw createError({
-               statusCode: error?.statusCode || error?.status || 500,
-               message: error?.data?.message || error?.data?.error || error?.message || 'خطا در دریافت تنظیمات فوتر',
+               statusCode: err?.statusCode || err?.status || 500,
+               message: (err?.data as any)?.message || (err?.data as any)?.error || err?.message || 'خطا در دریافت تنظیمات فوتر',
                data: error?.data
           })
      }

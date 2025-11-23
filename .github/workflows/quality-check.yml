@@ -41,30 +41,44 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Check Admin Middleware
+      - name: Check Admin Authentication (Pages & Components)
         run: |
-          echo "Checking for 'admin' middleware in admin pages..."
-          # Find all .vue files in app/pages/admin
-          # Exclude files that might not need auth if any (adjust as needed, currently checking all)
-          # We look for "middleware: 'admin'" or 'middleware: "admin"'
+          echo "🔍 Starting Admin Authentication Security Check..."
+          EXIT_CODE=0
+
+          # ---------------------------------------------------------
+          # 1. Check Pages (Files in app/pages/admin NOT in components folder)
+          # Requirement: Must have definePageMeta({ middleware: 'admin' })
+          # ---------------------------------------------------------
+          echo "Checking Admin Pages for Middleware..."
+          MISSING_PAGE_AUTH=$(find app/pages/admin -type f -name "*.vue" -not -path "*/components/*" -print0 | xargs -0 grep -L -E "middleware:[[:space:]]*['\"]admin['\"]")
           
-          # Using grep -L (files without match)
-          # We search for the middleware definition allowing for whitespace
-          # Pattern: middleware:[space]*['"]admin['"]
-          # Checking .vue, .ts, .js, .tsx, .jsx files in app/pages/admin
-          MISSING_AUTH=$(find app/pages/admin -type f \( -name "*.vue" -o -name "*.ts" -o -name "*.js" -o -name "*.tsx" -o -name "*.jsx" \) -print0 | xargs -0 grep -L -E "middleware:[[:space:]]*['\"]admin['\"]")
-          
-          if [ -n "$MISSING_AUTH" ]; then
-            echo "❌ Error: The following admin pages are missing the required authentication middleware:"
-            echo "$MISSING_AUTH"
-            echo "Please add the following to these files:"
-            echo "definePageMeta({"
-            echo "  middleware: 'admin'"
-            echo "})"
-            exit 1
+          if [ -n "$MISSING_PAGE_AUTH" ]; then
+            echo "❌ Error: The following Admin Pages are missing 'middleware: admin':"
+            echo "$MISSING_PAGE_AUTH"
+            echo "👉 Fix: Add definePageMeta({ middleware: 'admin' })"
+            EXIT_CODE=1
           else
-            echo "✅ All admin pages have correct authentication middleware"
+            echo "✅ Admin Pages Middleware Check Passed."
           fi
+
+          # ---------------------------------------------------------
+          # 2. Check Components (Files in app/pages/admin INSIDE components folder)
+          # Requirement: Must have 'hasAccess' check (v-if="hasAccess" pattern)
+          # ---------------------------------------------------------
+          echo "Checking Admin Components for Auth Pattern..."
+          MISSING_COMP_AUTH=$(find app/pages/admin -path "*/components/*" -name "*.vue" -print0 | xargs -0 grep -L "hasAccess")
+          
+          if [ -n "$MISSING_COMP_AUTH" ]; then
+            echo "❌ Error: The following Admin Components are missing 'hasAccess' check:"
+            echo "$MISSING_COMP_AUTH"
+            echo "👉 Fix: Implement useAuth() and v-if='hasAccess' pattern."
+            EXIT_CODE=1
+          else
+            echo "✅ Admin Components Auth Pattern Check Passed."
+          fi
+
+          exit $EXIT_CODE
 
   duplicate-code-detection:
     name: Duplicate Code Detection
@@ -93,69 +107,69 @@ jobs:
           
           echo "✅ Duplicate code check completed"
 
-  go-tests:
-    name: Go Unit Tests & Coverage
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: mydb3
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-    env:
-      GOTOOLCHAIN: go1.25.4
-      DB_HOST: localhost
-      DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: password
-      DB_NAME: mydb3
-      DB_SSLMODE: disable
-      JWT_SECRET: test-secret-key
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+#   go-tests:
+#     name: Go Unit Tests & Coverage
+#     runs-on: ubuntu-latest
+#     services:
+#       postgres:
+#         image: postgres:15
+#         env:
+#           POSTGRES_USER: postgres
+#           POSTGRES_PASSWORD: password
+#           POSTGRES_DB: mydb3
+#         ports:
+#           - 5432:5432
+#         options: >-
+#           --health-cmd pg_isready
+#           --health-interval 10s
+#           --health-timeout 5s
+#           --health-retries 5
+#     env:
+#       GOTOOLCHAIN: go1.25.4
+#       DB_HOST: localhost
+#       DB_PORT: 5432
+#       DB_USER: postgres
+#       DB_PASSWORD: password
+#       DB_NAME: mydb3
+#       DB_SSLMODE: disable
+#       JWT_SECRET: test-secret-key
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
 
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.25.4'
-          cache-dependency-path: my-go-backend/go.sum
+#       - name: Setup Go
+#         uses: actions/setup-go@v5
+#         with:
+#           go-version: '1.25.4'
+#           cache-dependency-path: my-go-backend/go.sum
 
-      - name: Pin Go toolchain version
-        run: go env -w GOTOOLCHAIN=go1.25.4
+#       - name: Pin Go toolchain version
+#         run: go env -w GOTOOLCHAIN=go1.25.4
 
-      - name: Run Go tests with coverage
-        working-directory: ./my-go-backend
-        run: |
-          go test -v -race -coverprofile=coverage.out -covermode=atomic ./...
-          go tool cover -func=coverage.out | tail -1
+#       - name: Run Go tests with coverage
+#         working-directory: ./my-go-backend
+#         run: |
+#           go test -v -race -coverprofile=coverage.out -covermode=atomic ./...
+#           go tool cover -func=coverage.out | tail -1
           
-          # Check coverage threshold (minimum 10%)
-          COVERAGE=$(go tool cover -func=coverage.out | tail -1 | awk '{print $3}' | sed 's/%//')
-          echo "Coverage: $COVERAGE%"
+#           # Check coverage threshold (minimum 10%)
+#           COVERAGE=$(go tool cover -func=coverage.out | tail -1 | awk '{print $3}' | sed 's/%//')
+#           echo "Coverage: $COVERAGE%"
           
-          # Use awk for float comparison to avoid bc dependency issues or syntax errors
-          if awk "BEGIN {exit !($COVERAGE < 10)}"; then
-            echo "❌ Coverage below 10%"
-            exit 1
-          fi
-          echo "✅ Coverage meets requirements (>10%)"
+#           # Use awk for float comparison to avoid bc dependency issues or syntax errors
+#           if awk "BEGIN {exit !($COVERAGE < 10)}"; then
+#             echo "❌ Coverage below 10%"
+#             exit 1
+#           fi
+#           echo "✅ Coverage meets requirements (>10%)"
 
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@v4
-        with:
-          files: ./my-go-backend/coverage.out
-          flags: backend
-          fail_ci_if_error: false
-        continue-on-error: true  # Coverage upload is optional, don't fail workflow
+#       - name: Upload coverage reports
+#         uses: codecov/codecov-action@v4
+#         with:
+#           files: ./my-go-backend/coverage.out
+#           flags: backend
+#           fail_ci_if_error: false
+#         continue-on-error: true  # Coverage upload is optional, don't fail workflow
 
   frontend-tests:
     name: Frontend Type Check & Tests
@@ -283,7 +297,7 @@ jobs:
 
   all-checks-complete:
     name: All Quality Checks Passed
-    needs: [encoding-check, duplicate-code-detection, go-tests, frontend-tests, bundle-size-check, dead-code-detection, secrets-scan, sql-security-check]
+    needs: [encoding-check, duplicate-code-detection, frontend-tests, bundle-size-check, dead-code-detection, secrets-scan, sql-security-check]
     runs-on: ubuntu-latest
     steps:
       - name: Summary

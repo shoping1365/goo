@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow p-6">
+  <div v-if="hasAccess" class="bg-white rounded-lg shadow p-6">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xl font-semibold text-gray-900">تاریخچه تراکنش‌ها</h2>
       <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
@@ -41,7 +41,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuth } from '~/composables/useAuth'
+
+const { user } = useAuth()
+const router = useRouter()
+
+const hasAccess = computed(() => {
+  return ['admin', 'developer'].includes(user.value?.role || '')
+})
+
+watch(hasAccess, (newValue) => {
+  if (!newValue) {
+    router.push('/404')
+  }
+})
+
+onMounted(() => {
+  if (!hasAccess.value) {
+    router.push('/404')
+  }
+})
 
 const transactions = ref([
   {

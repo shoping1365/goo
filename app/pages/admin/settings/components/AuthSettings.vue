@@ -656,24 +656,39 @@ watch([isAuthenticated, hasAccess], async () => {
   }
 });
 
+interface AuthSettings {
+  unifiedAuthEnabled: boolean
+  autoRegisterEnabled: boolean
+  defaultAuthMethod: string
+  otpLength: number
+  otpExpiryMinutes: number
+  maxOtpAttempts: number
+  otpResendDelaySeconds: number
+  maxLoginAttempts: number
+  lockoutDurationMinutes: number
+  sessionTimeoutMinutes: number
+  passwordMinLength: number
+  passwordRequireUppercase: boolean
+  passwordRequireLowercase: boolean
+  passwordRequireNumbers: boolean
+  passwordRequireSpecial: boolean
+  jwtSecret: string
+  jwtExpiryMinutes: number
+  refreshTokenExpiryDays: number
+  jwtIssuer: string
+  jwtAudience: string
+}
+
 // تعریف Props
-const props = defineProps({
-  authSettings: {
-    type: Object,
-    required: true
-  },
-  authActiveTab: {
-    type: String,
-    default: 'login-register'
-  },
-  showJwtSecret: {
-    type: Boolean,
-    default: false
-  },
-  savingAuth: {
-    type: Boolean,
-    default: false
-  }
+const props = withDefaults(defineProps<{
+  authSettings: AuthSettings
+  authActiveTab?: string
+  showJwtSecret?: boolean
+  savingAuth?: boolean
+}>(), {
+  authActiveTab: 'login-register',
+  showJwtSecret: false,
+  savingAuth: false
 })
 
 // تعریف Emits
@@ -685,7 +700,7 @@ const emit = defineEmits([
   'update:authSettings'
 ])
 
-const localAuthSettings = ref({ ...props.authSettings })
+const localAuthSettings = ref<AuthSettings>({ ...props.authSettings })
 
 watch(() => props.authSettings, (newVal) => {
   localAuthSettings.value = { ...newVal }

@@ -213,9 +213,9 @@ declare const navigateTo: (to: string, options?: { redirectCode?: number; extern
 </script>
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue'
-import { useAuth } from '~/composables/useAuth'
-import ImagePreviewModal from '~/components/media/ImagePreviewModal.vue'
+import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue';
+import ImagePreviewModal from '~/components/media/ImagePreviewModal.vue';
+import { useAuth } from '~/composables/useAuth';
 
 // احراز هویت
 const { user, isAuthenticated } = useAuth()
@@ -226,9 +226,9 @@ const hasAccess = computed(() => {
     return false
   }
 
-  const userRole = user.value?.role?.toLowerCase() || ''
-  const adminRoles = ['admin', 'developer']
-  return adminRoles.includes(userRole)
+ const userRole = user.value?.role?.toLowerCase() || ''
+ const adminRoles = ['admin', 'developer']
+ return adminRoles.includes(userRole)
 })
 
 // بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی

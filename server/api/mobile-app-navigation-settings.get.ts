@@ -1,6 +1,6 @@
-import { getHeader } from './_utils/getHeader'
+import { getHeader } from './_utils/getHeader';
 
-export default defineEventHandler(async (event): Promise<{ success: boolean; data: any[] }> => {
+export default defineEventHandler(async (event): Promise<{ success: boolean; data: unknown[] }> => {
      try {
           const config = useRuntimeConfig()
           const baseURL = config.public.goApiBase
@@ -20,18 +20,18 @@ export default defineEventHandler(async (event): Promise<{ success: boolean; dat
           }
 
           const response = await fetchResponse.json()
-          console.log('Public navigation settings response:', response)
 
           return {
                success: true,
-               data: response.data || []
+               data: (response.data as unknown[]) || []
           }
-     } catch (error: any) {
-          console.error('Error fetching public navigation settings:', error)
+     } catch (error: unknown) {
+          const err = error as { statusCode?: number; statusMessage?: string }
+          console.error('Error fetching public navigation settings:', err)
 
           throw createError({
-               statusCode: error.statusCode || 500,
-               message: error.statusMessage || 'خطا در دریافت تنظیمات ناوبری'
+               statusCode: err.statusCode || 500,
+               message: err.statusMessage || 'خطا در دریافت تنظیمات ناوبری'
           })
      }
 })

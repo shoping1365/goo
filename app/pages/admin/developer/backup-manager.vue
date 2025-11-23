@@ -252,10 +252,15 @@ class="text-red-600 hover:text-red-900"
   </div>
 </template>
 
-<script setup>
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+
 definePageMeta({
   layout: 'admin-main',
-  middleware: ['developer-only'],
   middleware: ['developer-only']
 })
 
@@ -331,7 +336,7 @@ const filteredBackups = computed(() => {
 })
 
 // Methods
-const createBackup = async (type) => {
+const createBackup = async (type: string) => {
   isCreatingBackup.value = true
   try {
     // Simulate API call
@@ -373,23 +378,23 @@ const saveConfiguration = async () => {
   }
 }
 
-const downloadBackup = (_id) => {
+const downloadBackup = (_id: number) => {
 
 }
 
-const restoreBackup = (_id) => {
+const restoreBackup = (_id: number) => {
 
 }
 
-const deleteBackup = (id) => {
+const deleteBackup = (id: number) => {
   const index = backups.value.findIndex(b => b.id === id)
   if (index > -1) {
     backups.value.splice(index, 1)
   }
 }
 
-const getTypeLabel = (type) => {
-  const labels = {
+const getTypeLabel = (type: string) => {
+  const labels: Record<string, string> = {
     database: 'دیتابیس',
     files: 'فایل‌ها',
     full: 'کامل'
@@ -397,8 +402,8 @@ const getTypeLabel = (type) => {
   return labels[type] || type
 }
 
-const getTypeBadgeClass = (type) => {
-  const classes = {
+const getTypeBadgeClass = (type: string) => {
+  const classes: Record<string, string> = {
     database: 'bg-blue-100 text-blue-800',
     files: 'bg-green-100 text-green-800',
     full: 'bg-purple-100 text-purple-800'
@@ -406,8 +411,8 @@ const getTypeBadgeClass = (type) => {
   return classes[type] || 'bg-gray-100 text-gray-800'
 }
 
-const getStatusLabel = (status) => {
-  const labels = {
+const getStatusLabel = (status: string) => {
+  const labels: Record<string, string> = {
     completed: 'موفق',
     failed: 'ناموفق',
     running: 'در حال اجرا'
@@ -415,8 +420,8 @@ const getStatusLabel = (status) => {
   return labels[status] || status
 }
 
-const getStatusBadgeClass = (status) => {
-  const classes = {
+const getStatusBadgeClass = (status: string) => {
+  const classes: Record<string, string> = {
     completed: 'bg-green-100 text-green-800',
     failed: 'bg-red-100 text-red-800',
     running: 'bg-yellow-100 text-yellow-800'
@@ -424,7 +429,7 @@ const getStatusBadgeClass = (status) => {
   return classes[status] || 'bg-gray-100 text-gray-800'
 }
 
-const formatDate = (date) => {
+const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat('fa-IR', {
     year: 'numeric',
     month: 'long',
@@ -434,7 +439,7 @@ const formatDate = (date) => {
   }).format(date)
 }
 
-const formatSize = (bytes) => {
+const formatSize = (bytes: number) => {
   const sizes = ['B', 'KB', 'MB', 'GB']
   let i = 0
   let size = bytes

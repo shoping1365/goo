@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow p-6">
+  <div v-if="hasAccess" class="bg-white rounded-lg shadow p-6">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xl font-semibold text-gray-900">آمار کلی برنامه وفاداری</h2>
       <div class="flex space-x-2 space-x-reverse">
@@ -100,7 +100,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuth } from '~/composables/useAuth'
+
+const { user } = useAuth()
+const router = useRouter()
+
+const hasAccess = computed(() => {
+  return ['admin', 'developer'].includes(user.value?.role || '')
+})
+
+watch(hasAccess, (newValue) => {
+  if (!newValue) {
+    router.push('/404')
+  }
+})
 
 // آمار برنامه وفاداری
 const loyaltyStats = ref({
@@ -113,6 +128,10 @@ const loyaltyStats = ref({
 
 // بارگذاری آمار
 onMounted(async () => {
+  if (!hasAccess.value) {
+    router.push('/404')
+    return
+  }
   // TODO: فراخوانی API برای دریافت آمار
   loyaltyStats.value = {
     totalMembers: 1250,

@@ -1,103 +1,104 @@
 <template>
-  <div v-if="isOpen" class="fixed inset-0 z-50 overflow-y-auto">
-    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-      <!-- Overlay -->
-      <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" @click="$emit('close')"></div>
+  <div v-if="hasAccess">
+    <div v-if="isOpen" class="fixed inset-0 z-50 overflow-y-auto">
+      <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Overlay -->
+        <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" @click="$emit('close')"></div>
 
-      <!-- Modal -->
-      <div class="inline-block w-full max-w-6xl px-6 py-6 my-8 overflow-hidden text-right transition-all transform bg-white rounded-lg shadow-xl align-middle">
-        <!-- Header -->
-        <div class="flex items-center justify-between mb-6">
-          <h3 class="text-lg font-medium text-gray-900">ویرایشگر محتوا - {{ testName }}</h3>
-          <div class="flex items-center space-x-4 space-x-reverse">
-            <button class="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200" @click="previewContent">
-              پیش‌نمایش
-            </button>
-            <button class="text-gray-400 hover:text-gray-600" @click="$emit('close')">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+        <!-- Modal -->
+        <div class="inline-block w-full max-w-6xl px-6 py-6 my-8 overflow-hidden text-right transition-all transform bg-white rounded-lg shadow-xl align-middle">
+          <!-- Header -->
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-medium text-gray-900">ویرایشگر محتوا - {{ testName }}</h3>
+            <div class="flex items-center space-x-4 space-x-reverse">
+              <button class="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200" @click="previewContent">
+                پیش‌نمایش
+              </button>
+              <button class="text-gray-400 hover:text-gray-600" @click="$emit('close')">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
-        </div>
 
-        <!-- Content -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- ویرایشگر -->
-          <div class="space-y-4">
-            <!-- انتخاب نوع محتوا -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">نوع محتوا</label>
-              <select v-model="contentType" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                <option value="page">صفحه</option>
-                <option value="product">محصول</option>
-                <option value="button">دکمه</option>
-                <option value="image">تصویر</option>
-                <option value="price">قیمت</option>
-              </select>
-            </div>
+          <!-- Content -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- ویرایشگر -->
+            <div class="space-y-4">
+              <!-- انتخاب نوع محتوا -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">نوع محتوا</label>
+                <select v-model="contentType" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                  <option value="page">صفحه</option>
+                  <option value="product">محصول</option>
+                  <option value="button">دکمه</option>
+                  <option value="image">تصویر</option>
+                  <option value="price">قیمت</option>
+                </select>
+              </div>
 
-            <!-- ویرایشگر HTML/CSS برای صفحات -->
-            <div v-if="contentType === 'page'" class="space-y-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">نسخه A - HTML</label>
-                <textarea
-                  v-model="contentA.html"
-                  rows="8"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
-                  placeholder="کد HTML نسخه A را وارد کنید..."
-                ></textarea>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">نسخه A - CSS</label>
-                <textarea
-                  v-model="contentA.css"
-                  rows="6"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
-                  placeholder="کد CSS نسخه A را وارد کنید..."
-                ></textarea>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">نسخه B - HTML</label>
-                <textarea
-                  v-model="contentB.html"
-                  rows="8"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
-                  placeholder="کد HTML نسخه B را وارد کنید..."
-                ></textarea>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">نسخه B - CSS</label>
-                <textarea
-                  v-model="contentB.css"
-                  rows="6"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
-                  placeholder="کد CSS نسخه B را وارد کنید..."
-                ></textarea>
-              </div>
-            </div>
-
-            <!-- ویرایشگر محصولات -->
-            <div v-if="contentType === 'product'" class="space-y-4">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- ویرایشگر HTML/CSS برای صفحات -->
+              <div v-if="contentType === 'page'" class="space-y-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">انتخاب محصول</label>
-                  <select v-model="selectedProduct" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    <option value="">انتخاب کنید</option>
-                    <option v-for="product in products" :key="product.id" :value="product.id">
-                      {{ product.name }}
-                    </option>
-                  </select>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">نسخه A - HTML</label>
+                  <textarea
+                    v-model="contentA.html"
+                    rows="8"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+                    placeholder="کد HTML نسخه A را وارد کنید..."
+                  ></textarea>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">نسخه A - CSS</label>
+                  <textarea
+                    v-model="contentA.css"
+                    rows="6"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+                    placeholder="کد CSS نسخه A را وارد کنید..."
+                  ></textarea>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">نسخه B - HTML</label>
+                  <textarea
+                    v-model="contentB.html"
+                    rows="8"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+                    placeholder="کد HTML نسخه B را وارد کنید..."
+                  ></textarea>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">نسخه B - CSS</label>
+                  <textarea
+                    v-model="contentB.css"
+                    rows="6"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+                    placeholder="کد CSS نسخه B را وارد کنید..."
+                  ></textarea>
                 </div>
               </div>
-              
-              <!-- تغییرات قیمت -->
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">قیمت نسخه A</label>
-                  <input
-                    v-model.number="contentA.price"
-                    type="number"
+
+              <!-- ویرایشگر محصولات -->
+              <div v-if="contentType === 'product'" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">انتخاب محصول</label>
+                    <select v-model="selectedProduct" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                      <option value="">انتخاب کنید</option>
+                      <option v-for="product in products" :key="product.id" :value="product.id">
+                        {{ product.name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                
+                <!-- تغییرات قیمت -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">قیمت نسخه A</label>
+                    <input
+                      v-model.number="contentA.price"
+                      type="number"
                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="قیمت به تومان"
                   />
@@ -367,10 +368,33 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { useAuth } from '@/composables/useAuth'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+
+const { user } = useAuth()
+const router = useRouter()
+
+const hasAccess = computed(() => {
+  return user.value?.role === 'admin' || user.value?.role === 'developer'
+})
+
+watch(() => user.value, (newUser) => {
+  if (!newUser || (newUser.role !== 'admin' && newUser.role !== 'developer')) {
+    router.push('/404')
+  }
+})
+
+onMounted(() => {
+  if (!user.value || (user.value.role !== 'admin' && user.value.role !== 'developer')) {
+    router.push('/404')
+  }
+})
+
 // Props
 const _props = defineProps<{
   isOpen: boolean
@@ -486,4 +510,4 @@ const saveContent = () => {
   emit('save', content)
   emit('close')
 }
-</script> 
+</script>

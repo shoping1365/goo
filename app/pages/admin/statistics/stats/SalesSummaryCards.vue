@@ -15,9 +15,9 @@ declare const navigateTo: (to: string, options?: { redirectCode?: number; extern
 </script>
 
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
-import { useAuth } from '~/composables/useAuth'
-import SalesSummaryCard from './SalesSummaryCard.vue'
+import { computed, onMounted, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+import SalesSummaryCard from './SalesSummaryCard.vue';
 
 interface SalesStats {
   totalRevenue: number

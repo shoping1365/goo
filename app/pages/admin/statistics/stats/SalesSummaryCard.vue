@@ -12,8 +12,8 @@ declare const navigateTo: (to: string, options?: { redirectCode?: number; extern
 </script>
 
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
-import { useAuth } from '~/composables/useAuth'
+import { computed, onMounted, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
 
 defineProps<{ title: string; value: unknown; icon: string; color: string }>()
 

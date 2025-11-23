@@ -1,4 +1,4 @@
-import { defineEventHandler, getRouterParam, readBody, createError } from 'h3'
+import { createError, defineEventHandler, getRouterParam, readBody } from 'h3'
 import { fetchGo } from '../_utils/fetchGo'
 
 export default defineEventHandler(async (event) => {
@@ -9,13 +9,14 @@ export default defineEventHandler(async (event) => {
 
      const body = await readBody(event)
      try {
-          const json: any = await fetchGo(event, `/api/media/${id}`, {
+          const json = await fetchGo(event, `/api/media/${id}`, {
                method: 'PUT',
                body
-          })
+          }) as { data?: unknown }
           return { success: true, data: json?.data || json || {} }
-     } catch (err: any) {
-          throw createError({ statusCode: err?.statusCode || 400, message: err?.message || err?.statusMessage || 'خطا در بروزرسانی رسانه' })
+     } catch (err: unknown) {
+          const error = err as { statusCode?: number; message?: string; statusMessage?: string }
+          throw createError({ statusCode: error?.statusCode || 400, message: error?.message || error?.statusMessage || 'خطا در بروزرسانی رسانه' })
      }
 })
 

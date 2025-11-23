@@ -1,65 +1,67 @@
 <template>
-  <div class="fixed bottom-4 left-4 z-50 space-y-2">
-    <!-- هشدارهای تست -->
-    <div v-for="alert in alerts" :key="alert.id" class="max-w-sm bg-white rounded-lg shadow-lg border-l-4 p-6" :class="getAlertBorderClass(alert.type)">
-      <div class="flex items-start">
-        <div class="flex-shrink-0">
-          <svg class="w-5 h-5" :class="getAlertIconClass(alert.type)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path v-if="alert.type === 'warning'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-            <path v-else-if="alert.type === 'success'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            <path v-else-if="alert.type === 'error'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </div>
-        <div class="mr-3 flex-1">
-          <h4 class="text-sm font-medium" :class="getAlertTitleClass(alert.type)">
-            {{ alert.title }}
-          </h4>
-          <p class="text-sm text-gray-600 mt-1">
-            {{ alert.message }}
-          </p>
-          <div v-if="alert.action" class="mt-3">
-            <button class="text-sm font-medium" :class="getAlertActionClass(alert.type)" @click="handleAlertAction(alert)">
-              {{ alert.action.text }}
+  <div v-if="hasAccess">
+    <div class="fixed bottom-4 left-4 z-50 space-y-2">
+      <!-- هشدارهای تست -->
+      <div v-for="alert in alerts" :key="alert.id" class="max-w-sm bg-white rounded-lg shadow-lg border-l-4 p-6" :class="getAlertBorderClass(alert.type)">
+        <div class="flex items-start">
+          <div class="flex-shrink-0">
+            <svg class="w-5 h-5" :class="getAlertIconClass(alert.type)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path v-if="alert.type === 'warning'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              <path v-else-if="alert.type === 'success'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path v-else-if="alert.type === 'error'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div class="mr-3 flex-1">
+            <h4 class="text-sm font-medium" :class="getAlertTitleClass(alert.type)">
+              {{ alert.title }}
+            </h4>
+            <p class="text-sm text-gray-600 mt-1">
+              {{ alert.message }}
+            </p>
+            <div v-if="alert.action" class="mt-3">
+              <button class="text-sm font-medium" :class="getAlertActionClass(alert.type)" @click="handleAlertAction(alert)">
+                {{ alert.action.text }}
+              </button>
+            </div>
+          </div>
+          <div class="flex-shrink-0">
+            <button class="text-gray-400 hover:text-gray-600" @click="removeAlert(alert.id)">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
           </div>
         </div>
-        <div class="flex-shrink-0">
-          <button class="text-gray-400 hover:text-gray-600" @click="removeAlert(alert.id)">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
       </div>
     </div>
-  </div>
 
-  <!-- اعلان‌های نتایج (Toast) -->
-  <div class="fixed top-6 right-4 z-50 space-y-2">
-    <div v-for="notification in notifications" :key="notification.id" class="max-w-sm bg-white rounded-lg shadow-lg border-l-4 p-6 transform transition-all duration-300" :class="getNotificationBorderClass(notification.type)">
-      <div class="flex items-start">
-        <div class="flex-shrink-0">
-          <svg class="w-5 h-5" :class="getNotificationIconClass(notification.type)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path v-if="notification.type === 'winner'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            <path v-else-if="notification.type === 'completion'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </div>
-        <div class="mr-3 flex-1">
-          <h4 class="text-sm font-medium" :class="getNotificationTitleClass(notification.type)">
-            {{ notification.title }}
-          </h4>
-          <p class="text-sm text-gray-600 mt-1">
-            {{ notification.message }}
-          </p>
-        </div>
-        <div class="flex-shrink-0">
-          <button class="text-gray-400 hover:text-gray-600" @click="removeNotification(notification.id)">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+    <!-- اعلان‌های نتایج (Toast) -->
+    <div class="fixed top-6 right-4 z-50 space-y-2">
+      <div v-for="notification in notifications" :key="notification.id" class="max-w-sm bg-white rounded-lg shadow-lg border-l-4 p-6 transform transition-all duration-300" :class="getNotificationBorderClass(notification.type)">
+        <div class="flex items-start">
+          <div class="flex-shrink-0">
+            <svg class="w-5 h-5" :class="getNotificationIconClass(notification.type)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path v-if="notification.type === 'winner'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path v-else-if="notification.type === 'completion'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-          </button>
+          </div>
+          <div class="mr-3 flex-1">
+            <h4 class="text-sm font-medium" :class="getNotificationTitleClass(notification.type)">
+              {{ notification.title }}
+            </h4>
+            <p class="text-sm text-gray-600 mt-1">
+              {{ notification.message }}
+            </p>
+          </div>
+          <div class="flex-shrink-0">
+            <button class="text-gray-400 hover:text-gray-600" @click="removeNotification(notification.id)">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -67,9 +69,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { useAuth } from '@/composables/useAuth'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
-// تعریف نوع هشدار برای آرایه alerts
+const { user } = useAuth()
+const router = useRouter()
+
+const hasAccess = computed(() => {
+  return user.value?.role === 'admin' || user.value?.role === 'developer'
+})
+
+watch(() => user.value, (newUser) => {
+  if (!newUser || (newUser.role !== 'admin' && newUser.role !== 'developer')) {
+    router.push('/404')
+  }
+})
+
+onMounted(() => {
+  if (!user.value || (user.value.role !== 'admin' && user.value.role !== 'developer')) {
+    router.push('/404')
+  }
+})
+
 interface AlertItem {
   id: number
   type: 'warning' | 'success' | 'error' | 'info'
@@ -294,4 +316,4 @@ defineExpose({
   addAlert,
   addNotification
 })
-</script> 
+</script>

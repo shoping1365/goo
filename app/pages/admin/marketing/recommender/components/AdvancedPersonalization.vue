@@ -1,4 +1,5 @@
 <template>
+  <div v-if="hasAccess">
   <div class="space-y-8">
     <!-- هدر بخش -->
     <div class="flex justify-between items-center">
@@ -467,11 +468,36 @@
       </div>
     </div>
   </div>
+  </div>
+  <div v-else class="text-center p-8 text-gray-500">
+    <p>شما مجوز دسترسی به این بخش را ندارید.</p>
+  </div>
 </template>
 
 <script setup lang="ts">
-// کامپوننت شخصی‌سازی پیشرفته
-import { reactive } from 'vue';
+import { useAuth } from '@/composables/useAuth';
+import { computed, onMounted, reactive, watch } from 'vue';
+import { useRouter } from 'vue-router';
+
+const { user } = useAuth();
+const router = useRouter();
+
+const hasAccess = computed(() => {
+  return ['admin', 'developer'].includes(user.value?.role || '');
+});
+
+watch(hasAccess, (newValue) => {
+  if (!newValue) {
+    router.push('/404');
+  }
+});
+
+onMounted(() => {
+  if (!hasAccess.value) {
+    router.push('/404');
+  }
+});
+
 
 // متغیرهای reactive برای تنظیمات
 const features = reactive({

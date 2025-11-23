@@ -1,5 +1,5 @@
-import { defineEventHandler, getRouterParam, parseCookies, createError } from 'h3'
 import { useRuntimeConfig } from '#imports'
+import { createError, defineEventHandler, getRouterParam, parseCookies } from 'h3'
 
 interface DeleteResponse {
      success: boolean
@@ -39,20 +39,19 @@ export default defineEventHandler(async (event): Promise<DeleteResponse> => {
                throw new Error(`HTTP error! status: ${response.status}`)
           }
 
-          const responseData = await response.json() as any
-
-          console.log('پاسخ حذف فوتر:', responseData)
+          const responseData = await response.json() as unknown
 
           return {
                success: true,
                message: 'فوتر با موفقیت حذف شد'
           }
 
-     } catch (error: any) {
+     } catch (error: unknown) {
           console.error('خطا در حذف فوتر:', error)
 
+          const err = error as { data?: any }
           // اگر خطا از سرور Go آمده باشد
-          if (error.data) {
+          if (err.data) {
                throw createError({
                     statusCode: error.statusCode || 500,
                     message: error.data.message || error.data.error || 'خطا در حذف فوتر',

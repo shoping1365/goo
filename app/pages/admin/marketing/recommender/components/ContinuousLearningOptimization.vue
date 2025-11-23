@@ -1,4 +1,5 @@
 <template>
+  <div v-if="hasAccess">
   <div class="space-y-6">
     <!-- هدر بخش -->
     <div class="border-b border-gray-200 pb-4">
@@ -326,13 +327,36 @@
       </div>
     </div>
   </div>
+  </div>
+  <div v-else class="text-center p-8 text-gray-500">
+    <p>شما مجوز دسترسی به این بخش را ندارید.</p>
+  </div>
 </template>
 
 <script setup lang="ts">
-// کامپوننت بهینه‌سازی و یادگیری مداوم
-// قابلیت‌های ۷۶-۸۰: یادگیری آنلاین، Multi-Armed Bandit، بهینه‌سازی Hyperparameter، Ensemble Methods
+import { useAuth } from '@/composables/useAuth';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
-import { ref } from 'vue'
+const { user } = useAuth();
+const router = useRouter();
+
+const hasAccess = computed(() => {
+  return ['admin', 'developer'].includes(user.value?.role || '');
+});
+
+watch(hasAccess, (newValue) => {
+  if (!newValue) {
+    router.push('/404');
+  }
+});
+
+onMounted(() => {
+  if (!hasAccess.value) {
+    router.push('/404');
+  }
+});
+
 
 // متغیرهای کامپوننت
 const _onlineLearningStats = ref({

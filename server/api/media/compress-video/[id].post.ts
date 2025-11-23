@@ -1,4 +1,4 @@
-import { defineEventHandler, getQuery, getRouterParam, createError } from 'h3'
+import { createError, defineEventHandler, getQuery, getRouterParam } from 'h3'
 
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
@@ -57,7 +57,6 @@ export default defineEventHandler(async (event) => {
         const result = await response.json()
         
         // ذخیره نتیجه در کش یا دیتابیس
-        console.log(`Compression completed for video ${videoId}:`, result)
         
       } catch (error) {
         console.error(`Compression failed for video ${videoId}:`, error)
@@ -73,11 +72,12 @@ export default defineEventHandler(async (event) => {
       compression_type: isSmartCompression ? 'smart' : 'normal'
     }
     
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Video compression error:', error)
+    const err = error as { message?: string }
     throw createError({
       statusCode: 500,
-      message: error.message || 'خطا در فشرده‌سازی ویدیو'
+      message: err.message || 'خطا در فشرده‌سازی ویدیو'
     })
   }
 })

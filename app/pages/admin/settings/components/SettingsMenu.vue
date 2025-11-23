@@ -30,25 +30,23 @@ v-for="child in item.children" :key="child.key"
   </div>
 </template>
 
-<script setup>
-defineProps({
-  menu: {
-    type: Array,
-    required: true
-  },
-  activeKey: {
-    type: String,
-    required: true
-  },
-  expanded: {
-    type: Object,
-    required: true
-  }
-})
+<script setup lang="ts">
+interface MenuItem {
+  key: string
+  title: string
+  icon?: string
+  children?: MenuItem[]
+}
+
+defineProps<{
+  menu: MenuItem[]
+  activeKey: string
+  expanded: Record<string, boolean>
+}>()
 
 const emit = defineEmits(['update:activeKey', 'menuClick'])
 
-function handleMenuClick(item) {
+function handleMenuClick(item: MenuItem) {
   if (item.children && item.children.length > 0) {
     // اگر آیتم فرزند دارد، فقط expand/collapse کن
     toggleGroup(item.key)
@@ -59,7 +57,7 @@ function handleMenuClick(item) {
   }
 }
 
-function toggleGroup(k) {
+function toggleGroup(k: string) {
   emit('menuClick', { key: k, action: 'toggle' })
 }
 </script>

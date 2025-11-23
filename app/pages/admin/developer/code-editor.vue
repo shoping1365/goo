@@ -216,7 +216,11 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
+<script setup lang="ts">
 import { reactive, ref, watch } from 'vue';
 
 definePageMeta({
@@ -227,14 +231,36 @@ definePageMeta({
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
 // const { user, hasPermission } = useAuth()
 
-const selectedFile = ref(null)
+interface FileNode {
+  name: string
+  type: 'folder' | 'file'
+  path: string
+}
+
+interface EditorError {
+  line: number
+  message: string
+}
+
+interface EditorWarning {
+  line: number
+  message: string
+}
+
+interface TerminalLine {
+  type: 'input' | 'output' | 'error' | 'command'
+  content: string
+  timestamp?: string
+}
+
+const selectedFile = ref<FileNode | null>(null)
 const codeContent = ref('')
 const editorTheme = ref('vs-dark')
 const editorLanguage = ref('javascript')
 const currentCommand = ref('')
-const terminalOutput = ref([])
+const terminalOutput = ref<TerminalLine[]>([])
 
-const fileTree = ref([
+const fileTree = ref<FileNode[]>([
   { name: 'src', type: 'folder', path: '/src' },
   { name: 'components', type: 'folder', path: '/src/components' },
   { name: 'App.vue', type: 'file', path: '/src/App.vue' },
@@ -245,8 +271,8 @@ const fileTree = ref([
   { name: 'index.js', type: 'file', path: '/src/api/index.js' }
 ])
 
-const syntaxErrors = ref([])
-const warnings = ref([])
+const syntaxErrors = ref<EditorError[]>([])
+const warnings = ref<EditorWarning[]>([])
 const codeMetrics = reactive({
   lines: 0,
   functions: 0,
@@ -254,7 +280,7 @@ const codeMetrics = reactive({
   complexity: 0
 })
 
-function selectFile(file) {
+function selectFile(file: FileNode) {
   if (file.type === 'file') {
     selectedFile.value = file
     loadFileContent(file)
@@ -262,8 +288,8 @@ function selectFile(file) {
   }
 }
 
-function loadFileContent(file) {
-  const mockContents = {
+function loadFileContent(file: FileNode) {
+  const mockContents: Record<string, string> = {
     '/src/App.vue': '<template>\n  <div id="app">\n    <h1>{{ message }}</h1>\n  </div>\n</template>\n\n<script>\nexport default {\n  name: \'App\',\n  data() {\n    return {\n      message: \'Hello Vue!\'\n    }\n  }\n}\n<\/script>',
     '/src/main.js': 'import { createApp } from \'vue\'\nimport App from \'./App.vue\'\n\ncreateApp(App).mount(\'#app\')',
     '/src/utils/helpers.js': 'export function formatDate(date) {\n  return new Date(date).toLocaleDateString()\n}\n\nexport function calculateTotal(items) {\n  return items.reduce((sum, item) => sum + item.price, 0)\n}',
@@ -274,9 +300,9 @@ function loadFileContent(file) {
   updateLanguage(file.name)
 }
 
-function updateLanguage(fileName) {
-  const extension = fileName.split('.').pop()
-  const languageMap = {
+function updateLanguage(fileName: string) {
+  const extension = fileName.split('.').pop() || ''
+  const languageMap: Record<string, string> = {
     'js': 'javascript',
     'ts': 'typescript',
     'vue': 'vue',
@@ -393,7 +419,7 @@ function onCodeChange() {
 }
 
 function getPlaceholder() {
-  const placeholders = {
+  const placeholders: Record<string, string> = {
     javascript: '// کد JavaScript خود را اینجا بنویسید',
     typescript: '// کد TypeScript خود را اینجا بنویسید',
     html: '<!-- کد HTML خود را اینجا بنویسید -->',

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+  <div v-if="hasAccess" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
     <div class="flex items-center justify-between mb-6">
       <h3 class="text-lg font-semibold text-gray-900">کنترل‌های مدیریتی</h3>
       <button 
@@ -23,15 +23,15 @@
           <h5 class="text-sm font-medium text-gray-700 mb-3">مجوزهای کاربران</h5>
           
           <div class="space-y-3">
-            <div v-for="user in users" :key="user.id" class="flex items-center justify-between">
+            <div v-for="userItem in users" :key="userItem.id" class="flex items-center justify-between">
               <div>
-                <p class="text-sm font-medium text-gray-900">{{ user.name }}</p>
-                <p class="text-xs text-gray-500">{{ user.role }}</p>
+                <p class="text-sm font-medium text-gray-900">{{ userItem.name }}</p>
+                <p class="text-xs text-gray-500">{{ userItem.role }}</p>
               </div>
               <div class="flex items-center space-x-2 space-x-reverse">
                 <label class="flex items-center">
                   <input 
-                    v-model="user.permissions.createTest" 
+                    v-model="userItem.permissions.createTest" 
                     type="checkbox" 
                     class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
@@ -39,7 +39,7 @@
                 </label>
                 <label class="flex items-center">
                   <input 
-                    v-model="user.permissions.viewResults" 
+                    v-model="userItem.permissions.viewResults" 
                     type="checkbox" 
                     class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
@@ -47,7 +47,7 @@
                 </label>
                 <label class="flex items-center">
                   <input 
-                    v-model="user.permissions.editTest" 
+                    v-model="userItem.permissions.editTest" 
                     type="checkbox" 
                     class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
@@ -249,41 +249,49 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-// Props
-interface AccessControlValue {
-  [key: string]: unknown
-}
+import { useAuth } from '@/composables/useAuth'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
-interface Props {
-  modelValue?: AccessControlValue
-}
+const { user } = useAuth()
+const router = useRouter()
+const emit = defineEmits(['permissions-changed', 'limits-changed'])
 
-const _props = withDefaults(defineProps<Props>(), {
-  modelValue: () => ({})
+const hasAccess = computed(() => {
+  return user.value?.role === 'admin' || user.value?.role === 'developer'
 })
 
-// Emits
-interface Permissions {
-  [key: string]: unknown
-}
+watch(() => user.value, (newUser) => {
+  if (!newUser || (newUser.role !== 'admin' && newUser.role !== 'developer')) {
+    router.push('/404')
+  }
+})
 
-interface Limits {
-  [key: string]: unknown
-}
-
-const emit = defineEmits<{
-  'update:modelValue': [value: AccessControlValue]
-  'permissions-changed': [permissions: Permissions]
-  'limits-changed': [limits: Limits]
-}>()
+onMounted(() => {
+  if (!user.value || (user.value.role !== 'admin' && user.value.role !== 'developer')) {
+    router.push('/404')
+  }
+})
 
 // State
 const currentLogFilter = ref('all')
 const currentPage = ref(1)
 const pageSize = 10
 const showLogModal = ref(false)
-const selectedLog = ref(null)
+const selectedLog = ref<LogItem | null>(null)
+
+interface Permissions {
+  createTest: boolean
+  viewResults: boolean
+  editTest: boolean
+}
+
+interface User {
+  id: number
+  name: string
+  role: string
+  permissions: Permissions
+}
 
 // فیلترهای لاگ
 const logFilters = [
@@ -294,7 +302,7 @@ const logFilters = [
 ]
 
 // کاربران و مجوزها
-const users = ref([
+const users = ref<User[]>([
   {
     id: 1,
     name: 'مدیر سیستم',
@@ -411,8 +419,7 @@ const refreshLogs = () => {
 }
 
 const saveUserPermissions = () => {
-  emit('permissions-changed', users.value as unknown as Permissions)
-
+  emit('permissions-changed', users.value)
 }
 
 const saveSystemLimits = () => {
@@ -423,7 +430,11 @@ const saveSystemLimits = () => {
 interface LogItem {
   id?: number | string
   type?: string
-  [key: string]: unknown
+  timestamp: Date
+  user: string
+  action: string
+  // جزئیات لاگ
+  details: Record<string, unknown>
 }
 
 const showLogDetails = (log: LogItem) => {
@@ -463,4 +474,4 @@ const getLogTypeClass = (type: string) => {
   }
   return classes[type] || 'bg-gray-100 text-gray-800'
 }
-</script> 
+</script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-10">
+  <div v-if="hasAccess" class="mb-10">
     <!-- آمار کلی تست‌ها -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
       <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
@@ -196,7 +196,29 @@ cx="50" cy="50" r="40" stroke="#10b981" stroke-width="10" fill="none"
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuth } from '~/composables/useAuth'
+
+const { user } = useAuth()
+const router = useRouter()
+
+const hasAccess = computed(() => {
+  return ['admin', 'developer'].includes(user.value?.role || '')
+})
+
+watch(hasAccess, (newValue) => {
+  if (!newValue) {
+    router.push('/404')
+  }
+})
+
+onMounted(() => {
+  if (!hasAccess.value) {
+    router.push('/404')
+  }
+})
+
 // داده‌های آماری (mock data)
 const stats = ref({
   totalTests: 24,

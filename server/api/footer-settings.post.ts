@@ -1,4 +1,4 @@
-import { defineEventHandler, readBody, createError } from 'h3'
+import { createError, defineEventHandler, readBody } from 'h3'
 import { fetchGo } from './_utils/fetchGo'
 
 interface FooterPayload {
@@ -20,10 +20,6 @@ interface FooterResponse {
 export default defineEventHandler(async (event): Promise<FooterResponse> => {
      try {
           const body = await readBody(event) as FooterPayload
-
-          console.log('درخواست ایجاد فوتر:', body)
-          console.log('Body type:', typeof body)
-          console.log('Body keys:', Object.keys(body || {}))
 
           // اعتبارسنجی داده‌ها
           if (!body) {
@@ -54,44 +50,41 @@ export default defineEventHandler(async (event): Promise<FooterResponse> => {
                })
           }
 
-          console.log('Validation passed, proceeding with API call...')
-
-          let responseData: any
+          let responseData: unknown
           try {
                responseData = await fetchGo(event, '/api/admin/footer-settings', {
                     method: 'POST',
                     body
                })
-          } catch (fetchErr: any) {
-               console.log('Error response:', fetchErr?.data)
+          } catch (fetchErr: unknown) {
+               const err = fetchErr as { statusCode?: number; status?: number; message?: string; data?: any }
                throw createError({
-                    statusCode: fetchErr?.statusCode || fetchErr?.status || 500,
-                    message: fetchErr?.data?.message || fetchErr?.data?.error || fetchErr?.message || 'خطا در ایجاد فوتر',
-                    data: fetchErr?.data
+                    statusCode: err?.statusCode || err?.status || 500,
+                    message: err?.data?.message || err?.data?.error || err?.message || 'خطا در ایجاد فوتر',
+                    data: err?.data
                })
           }
 
-          console.log('پاسخ ایجاد فوتر:', responseData)
-
           return {
                success: true,
-               data: responseData?.data || responseData,
+               data: (responseData as any)?.data || responseData,
                message: 'فوتر با موفقیت ایجاد شد'
           }
 
-     } catch (error: any) {
+     } catch (error: unknown) {
+          const err = error as { statusCode?: number; message?: string; data?: any }
           console.error('خطا در ایجاد فوتر:', error)
           console.error('Error details:', {
-               message: error.message,
-               statusCode: error.statusCode,
-               data: error.data
+               message: err.message,
+               statusCode: err.statusCode,
+               data: err.data
           })
 
-          if (error.data) {
+          if (err.data) {
                throw createError({
-                    statusCode: error.statusCode || 500,
-                    message: error.data.message || error.data.error || 'خطا در ایجاد فوتر',
-                    data: error.data
+                    statusCode: err.statusCode || 500,
+                    message: err.data.message || err.data.error || 'خطا در ایجاد فوتر',
+                    data: err.data
                })
           }
 

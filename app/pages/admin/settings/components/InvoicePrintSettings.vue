@@ -312,30 +312,43 @@ watch([isAuthenticated, hasAccess], async () => {
   }
 });
 
-const props = defineProps({
-  invoiceSettings: {
-    type: Object,
-    required: true
-  },
-  printSettings: {
-    type: Object,
-    required: true
-  },
-  templateSettings: {
-    type: Object,
-    required: true
-  },
-  savingInvoicePrint: {
-    type: Boolean,
-    default: false
-  }
-})
+interface InvoiceSettings {
+  companyName: string
+  taxNumber: string
+  companyAddress: string
+  companyPhone: string
+}
+
+interface PrintSettings {
+  defaultPaperSize: string
+  orientation: string
+  defaultFont: string
+  fontSize: string
+  showLogo: boolean
+  showQRCode: boolean
+  showBarcode: boolean
+}
+
+interface TemplateSettings {
+  primaryColor: string
+  secondaryColor: string
+  showHeader: boolean
+  showFooter: boolean
+  showPageNumbers: boolean
+}
+
+const props = defineProps<{
+  invoiceSettings: InvoiceSettings
+  printSettings: PrintSettings
+  templateSettings: TemplateSettings
+  savingInvoicePrint: boolean
+}>()
 
 const emit = defineEmits(['save', 'reset', 'update:templateSettings', 'update:invoiceSettings', 'update:printSettings'])
 
-const localTemplateSettings = ref({ ...props.templateSettings })
-const localInvoiceSettings = ref({ ...props.invoiceSettings })
-const localPrintSettings = ref({ ...props.printSettings })
+const localTemplateSettings = ref<TemplateSettings>({ ...props.templateSettings })
+const localInvoiceSettings = ref<InvoiceSettings>({ ...props.invoiceSettings })
+const localPrintSettings = ref<PrintSettings>({ ...props.printSettings })
 
 watch(() => props.templateSettings, (newVal) => {
   localTemplateSettings.value = { ...newVal }

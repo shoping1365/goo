@@ -1,4 +1,4 @@
-import { defineEventHandler, getRouterParam, createError } from 'h3'
+import { createError, defineEventHandler, getRouterParam } from 'h3'
 
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
         done: progress.done || false
       }
       
-    } catch (backendError) {
+    } catch (_backendError) {
       // اگر backend در دسترس نباشد، وضعیت پیش‌فرض برمی‌گردانیم
       return {
         success: true,

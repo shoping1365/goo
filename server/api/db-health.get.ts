@@ -13,10 +13,11 @@ export default defineEventHandler(async (event) => {
       }
     })
     return data
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const error = err as { status?: number; data?: { message?: string }; message?: string }
     throw createError({
-      statusCode: err?.status || 500,
-      message: err?.data?.message || err?.message || 'خطا در دریافت وضعیت دیتابیس/سیستم'
+      statusCode: error?.status || 500,
+      message: error?.data?.message || error?.message || 'خطا در دریافت وضعیت دیتابیس/سیستم'
     })
   }
 })

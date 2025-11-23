@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+  <div v-if="hasAccess" class="bg-white rounded-lg shadow-sm border border-gray-200">
     <!-- هدر بخش -->
     <div class="p-6 border-b border-gray-200">
       <div class="flex items-center justify-between">
@@ -225,19 +225,44 @@
         <div class="bg-white border border-gray-200 rounded-lg p-6">
           <h4 class="font-medium text-gray-900 mb-4">کاربران فعال</h4>
           <div class="space-y-2">
-            <div v-for="user in topUsers" :key="user.id" class="flex justify-between text-sm">
-              <span class="text-gray-600">{{ user.name }}</span>
-              <span class="font-medium">{{ user.couponCount }} کوپن</span>
+            <div v-for="topUser in topUsers" :key="topUser.id" class="flex justify-between text-sm">
+              <span class="text-gray-600">{{ topUser.name }}</span>
+              <span class="font-medium">{{ topUser.couponCount }} کوپن</span>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <div v-else class="text-center p-8 text-gray-500">
+    <p>شما مجوز دسترسی به این بخش را ندارید.</p>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { useAuth } from '@/composables/useAuth';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+
+const { user } = useAuth();
+const router = useRouter();
+
+const hasAccess = computed(() => {
+  return ['admin', 'developer'].includes(user.value?.role || '');
+});
+
+watch(hasAccess, (newValue) => {
+  if (!newValue) {
+    router.push('/404');
+  }
+});
+
+onMounted(() => {
+  if (!hasAccess.value) {
+    router.push('/404');
+  }
+});
+
 
 // فیلترها
 const filters = ref({

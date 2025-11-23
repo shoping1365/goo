@@ -2,7 +2,7 @@ import { createError, getCookie, type H3Event } from 'h3'
 
 interface UploadResponse {
   success: boolean
-  files?: any[]
+  files?: unknown[]
   error?: string
 }
 

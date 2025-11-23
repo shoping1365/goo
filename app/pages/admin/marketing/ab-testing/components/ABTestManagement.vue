@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-10">
+  <div v-if="hasAccess" class="mb-10">
     <!-- هدر و دکمه ایجاد تست جدید -->
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-xl font-bold text-gray-900">مدیریت تست‌ها</h2>
@@ -200,8 +200,30 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { useAuth } from '~/composables/useAuth'
+import { useAuth } from '@/composables/useAuth'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+
+const { user } = useAuth()
+const router = useRouter()
+
+const hasAccess = computed(() => {
+  return user.value?.role === 'admin' || user.value?.role === 'developer'
+})
+
+watch(() => user.value, (newUser) => {
+  if (!newUser || (newUser.role !== 'admin' && newUser.role !== 'developer')) {
+    router.push('/404')
+  }
+})
+
+onMounted(() => {
+  if (!user.value || (user.value.role !== 'admin' && user.value.role !== 'developer')) {
+    router.push('/404')
+  }
+})
+
+
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
 const { hasPermission } = useAuth()
 
@@ -369,4 +391,4 @@ const formatDate = (dateString: string) => {
 const formatNumber = (num: number) => {
   return new Intl.NumberFormat('fa-IR').format(num)
 }
-</script> 
+</script>

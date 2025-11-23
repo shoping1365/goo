@@ -51,7 +51,7 @@ const hasAccess = computed(() => {
   }
 
   const userRole = user.value?.role?.toLowerCase() || '';
-  const adminRoles = ['admin', 'developer', 'super_admin', 'manager', 'operator'];
+  const adminRoles = ['admin', 'developer'];
   return adminRoles.includes(userRole);
 });
 

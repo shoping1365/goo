@@ -1,5 +1,5 @@
 <template>
-  <div v-if="member !== undefined" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+  <div v-if="hasAccess && member !== undefined" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md relative">
       <button class="absolute left-4 top-6 text-gray-400 hover:text-gray-600 text-2xl" @click="$emit('cancel')">×</button>
       <h3 class="text-xl font-bold text-gray-900 mb-6">{{ member ? 'ویرایش عضو' : 'افزودن عضو جدید' }}</h3>
@@ -48,7 +48,28 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, watch } from 'vue'
+import { computed, onMounted, reactive, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuth } from '~/composables/useAuth'
+
+const { user } = useAuth()
+const router = useRouter()
+
+const hasAccess = computed(() => {
+  return ['admin', 'developer'].includes(user.value?.role || '')
+})
+
+watch(hasAccess, (newValue) => {
+  if (!newValue) {
+    router.push('/404')
+  }
+})
+
+onMounted(() => {
+  if (!hasAccess.value) {
+    router.push('/404')
+  }
+})
 
 const props = defineProps({
   member: { type: Object, default: null }

@@ -40,7 +40,7 @@ export default defineEventHandler(async (event): Promise<PublicHeaderResponse> =
     }
 
   } catch (error: unknown) {
-    const err = error as { statusCode?: number; status?: number; message?: string; data?: any; error?: string }
+    const err = error as { statusCode?: number; status?: number; message?: string; data?: unknown; error?: string }
     console.error('خطا در دریافت تنظیمات هدر:', {
       statusCode: err?.statusCode,
       status: err?.status,

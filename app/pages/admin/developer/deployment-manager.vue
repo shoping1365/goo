@@ -348,7 +348,13 @@ class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mr-4"
   </div>
 </template>
 
-<script setup>
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+
 definePageMeta({
   layout: 'admin-main',
   middleware: ['developer-only']
@@ -487,7 +493,7 @@ const filteredDeployments = computed(() => {
 })
 
 // Methods
-const startDeployment = async (environment) => {
+const startDeployment = async (environment: string) => {
   isDeploying.value = true
   try {
     // Simulate deployment
@@ -534,20 +540,20 @@ const saveDeploymentConfiguration = async () => {
   }
 }
 
-const viewDeploymentLogs = (_id) => {
+const viewDeploymentLogs = (_id: number) => {
 
 }
 
-const rollbackToVersion = (_id) => {
+const rollbackToVersion = (_id: number) => {
 
 }
 
-const scaleEnvironment = (_name, _direction) => {
+const scaleEnvironment = (_name: string, _direction: string) => {
 
 }
 
-const getEnvironmentBadgeClass = (environment) => {
-  const classes = {
+const getEnvironmentBadgeClass = (environment: string) => {
+  const classes: Record<string, string> = {
     production: 'bg-red-100 text-red-800',
     staging: 'bg-yellow-100 text-yellow-800',
     testing: 'bg-blue-100 text-blue-800'
@@ -555,8 +561,8 @@ const getEnvironmentBadgeClass = (environment) => {
   return classes[environment] || 'bg-gray-100 text-gray-800'
 }
 
-const getEnvironmentLabel = (environment) => {
-  const labels = {
+const getEnvironmentLabel = (environment: string) => {
+  const labels: Record<string, string> = {
     production: 'Production',
     staging: 'Staging',
     testing: 'Testing'
@@ -564,8 +570,8 @@ const getEnvironmentLabel = (environment) => {
   return labels[environment] || environment
 }
 
-const getStatusBadgeClass = (status) => {
-  const classes = {
+const getStatusBadgeClass = (status: string) => {
+  const classes: Record<string, string> = {
     successful: 'bg-green-100 text-green-800',
     failed: 'bg-red-100 text-red-800',
     running: 'bg-yellow-100 text-yellow-800',
@@ -575,8 +581,8 @@ const getStatusBadgeClass = (status) => {
   return classes[status] || 'bg-gray-100 text-gray-800'
 }
 
-const getStatusLabel = (status) => {
-  const labels = {
+const getStatusLabel = (status: string) => {
+  const labels: Record<string, string> = {
     successful: 'موفق',
     failed: 'ناموفق',
     running: 'در حال اجرا',
@@ -586,8 +592,8 @@ const getStatusLabel = (status) => {
   return labels[status] || status
 }
 
-const getStageStatusClass = (status) => {
-  const classes = {
+const getStageStatusClass = (status: string) => {
+  const classes: Record<string, string> = {
     completed: 'bg-green-500',
     running: 'bg-blue-500',
     failed: 'bg-red-500',
@@ -596,7 +602,7 @@ const getStageStatusClass = (status) => {
   return classes[status] || 'bg-gray-300'
 }
 
-const formatDate = (date) => {
+const formatDate = (date: Date | null) => {
   if (!date) return '-'
   return new Intl.DateTimeFormat('fa-IR', {
     year: 'numeric',

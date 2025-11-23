@@ -1,6 +1,6 @@
 import { defineEventHandler } from 'h3'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (_event) => {
   // احراز هویت غیرفعال شده است - لیست ویدیوها mock برمی‌گرداند
   const sampleVideos = [
     {

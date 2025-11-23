@@ -1,5 +1,4 @@
 import { defineEventHandler } from 'h3'
-import { getCookieValue } from '../_utils/cookieHelper'
 
 /**
  * GET /api/auth/me
@@ -11,17 +10,12 @@ export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
     const targetUrl = `${config.goApiBaseUrl}/api/auth/me`
     
-    // Debug: بررسی کوکی‌های موجود
-    const accessToken = getCookieValue(event, 'access_token')
-    const authToken = getCookieValue(event, 'auth-token')
-    const allCookies = event.node?.req?.headers?.cookie
-    
     // استفاده از proxy برای forward کردن کوکی‌ها به درستی
     const response = await proxy(event, targetUrl)
 
     return response
 
-  } catch (error: unknown) {
+  } catch (error: any) {
     console.error('❌ Error in auth/me:', error)
     console.error('❌ Error status:', error?.statusCode, error?.status)
     console.error('❌ Error message:', error?.message)

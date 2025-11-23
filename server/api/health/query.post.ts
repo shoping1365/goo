@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
           executed_at: new Date().toISOString(),
           response_time_ms: elapsed,
           query,
-          result: JSON.stringify((data as any)?.result ?? data)
+          result: JSON.stringify((data as { result?: unknown })?.result ?? data)
         })
       }
     } catch {}

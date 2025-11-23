@@ -320,22 +320,45 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
+<script setup lang="ts">
 import { onMounted, reactive, ref, watch } from 'vue';
 
 definePageMeta({
   layout: 'admin-main',
-  middleware: ['developer-only'],
   middleware: ['developer-only']
 });
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
 // const { user, hasPermission } = useAuth()
 
+interface TestResult {
+  success: boolean
+  responseTime: number
+  error: string | null
+  details: Record<string, unknown> | null
+}
+
+interface ConnectionTest {
+  id?: number
+  timestamp?: string
+  type: string
+  host: string
+  port: string
+  username?: string
+  password?: string
+  database?: string
+  responseTime?: number
+  success?: boolean
+}
+
 // Reactive data
 const testing = ref(false)
-const testResult = ref(null)
-const testHistory = ref([])
+const testResult = ref<TestResult | null>(null)
+const testHistory = ref<ConnectionTest[]>([])
 const pingHost = ref('')
 const pingResult = ref('')
 const dnsHost = ref('')
@@ -405,7 +428,8 @@ async function testConnection() {
       success
     })
 
-  } catch (error) {
+  } catch (err: unknown) {
+    const error = err as Error
     const responseTime = Date.now() - startTime
     
     testResult.value = {
@@ -422,7 +446,7 @@ async function testConnection() {
   }
 }
 
-function addToHistory(test) {
+function addToHistory(test: ConnectionTest) {
   test.id = Date.now()
   test.timestamp = new Date().toLocaleString('fa-IR')
   testHistory.value.unshift(test)
@@ -433,14 +457,14 @@ function addToHistory(test) {
   }
 }
 
-function loadTest(test) {
+function loadTest(test: ConnectionTest) {
   connectionConfig.type = test.type
   connectionConfig.host = test.host
   connectionConfig.port = test.port
 }
 
-async function quickTest(type) {
-  const tests = {
+async function quickTest(type: string) {
+  const tests: Record<string, ConnectionTest> = {
     database: {
       type: 'database',
       host: 'localhost',
@@ -492,7 +516,8 @@ async function performPing() {
     // Simulate ping
     await new Promise(resolve => setTimeout(resolve, 1000))
     pingResult.value = `PING ${pingHost.value} (192.168.1.1): 56 data bytes\n64 bytes from 192.168.1.1: icmp_seq=0 ttl=64 time=1.234 ms\n64 bytes from 192.168.1.1: icmp_seq=1 ttl=64 time=1.456 ms\n64 bytes from 192.168.1.1: icmp_seq=2 ttl=64 time=1.345 ms\n\n--- ${pingHost.value} ping statistics ---\n3 packets transmitted, 3 packets received, 0.0% packet loss\nround-trip min/avg/max/stddev = 1.234/1.345/1.456/0.111 ms`
-  } catch (error) {
+  } catch (err: unknown) {
+    const error = err as Error
     pingResult.value = `Error: ${error.message}`
   }
 }
@@ -507,7 +532,8 @@ async function lookupDNS() {
     // Simulate DNS lookup
     await new Promise(resolve => setTimeout(resolve, 500))
     dnsResult.value = `Name: ${dnsHost.value}\nAddress: 192.168.1.1\nAliases: www.${dnsHost.value}\n\nName: ${dnsHost.value}\nAddress: 2001:db8::1`
-  } catch (error) {
+  } catch (err: unknown) {
+    const error = err as Error
     dnsResult.value = `Error: ${error.message}`
   }
 }

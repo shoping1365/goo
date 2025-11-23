@@ -484,8 +484,12 @@ v-for="(route, index) in settings.ssr.customRoutes" :key="index"
   </div>
 </template>
 
-<script setup>
-import { onMounted, reactive, ref } from 'vue'
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
+<script setup lang="ts">
+import { onMounted, reactive, ref } from 'vue';
 
 definePageMeta({
   layout: 'admin-main',
@@ -549,8 +553,14 @@ const newRoute = ref({ path: '', mode: 'ssr' })
 const newChunk = ref({ name: '', pattern: '' })
 const newLazyComponent = ref({ name: '', path: '' })
 
+interface ApiResponse<T = unknown> {
+  success: boolean
+  message?: string
+  data?: T
+}
+
 // Stats
-const stats = ref(null)
+const stats = ref<Record<string, unknown> | null>(null)
 
 // Load current settings
 onMounted(async () => {
@@ -560,22 +570,22 @@ onMounted(async () => {
 
 const loadSettings = async () => {
   try {
-    const response = await $fetch('/api/admin/performance/settings')
+    const response = await $fetch<ApiResponse>('/api/admin/performance/settings')
     if (response.success) {
       Object.assign(settings, response.data)
     }
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('خطا در بارگذاری تنظیمات:', error)
   }
 }
 
 const loadStats = async () => {
   try {
-    const response = await $fetch('/api/admin/performance/stats')
+    const response = await $fetch<ApiResponse>('/api/admin/performance/stats')
     if (response.success) {
       stats.value = response.data
     }
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('خطا در بارگذاری آمار:', error)
   }
 }
@@ -583,7 +593,7 @@ const loadStats = async () => {
 const clearCache = async () => {
   isClearing.value = true
   try {
-    const response = await $fetch('/api/admin/performance/clear-cache', {
+    const response = await $fetch<ApiResponse>('/api/admin/performance/clear-cache', {
       method: 'POST'
     })
     
@@ -593,7 +603,8 @@ const clearCache = async () => {
     } else {
       alert('خطا در پاک کردن کش: ' + response.message)
     }
-  } catch (error) {
+  } catch (err: unknown) {
+    const error = err as Error
     alert('خطا در پاک کردن کش: ' + error.message)
   } finally {
     isClearing.value = false
@@ -603,7 +614,7 @@ const clearCache = async () => {
 const reloadServer = async () => {
   isReloading.value = true
   try {
-    const response = await $fetch('/api/admin/performance/reload-server', {
+    const response = await $fetch<ApiResponse>('/api/admin/performance/reload-server', {
       method: 'POST'
     })
     
@@ -616,7 +627,8 @@ const reloadServer = async () => {
     } else {
       alert('خطا در ری‌استارت سرور: ' + response.message)
     }
-  } catch (error) {
+  } catch (err: unknown) {
+    const error = err as Error
     alert('خطا در ری‌استارت سرور: ' + error.message)
   } finally {
     isReloading.value = false
@@ -626,7 +638,7 @@ const reloadServer = async () => {
 const analyzeBundle = async () => {
   isAnalyzing.value = true
   try {
-    const response = await $fetch('/api/admin/performance/analyze-bundle', {
+    const response = await $fetch<ApiResponse>('/api/admin/performance/analyze-bundle', {
       method: 'POST'
     })
     
@@ -636,7 +648,8 @@ const analyzeBundle = async () => {
     } else {
       alert('خطا در تحلیل باندل: ' + response.message)
     }
-  } catch (error) {
+  } catch (err: unknown) {
+    const error = err as Error
     alert('خطا در تحلیل باندل: ' + error.message)
   } finally {
     isAnalyzing.value = false
@@ -646,7 +659,7 @@ const analyzeBundle = async () => {
 const saveSettings = async () => {
   isSaving.value = true
   try {
-    const response = await $fetch('/api/admin/performance/settings', {
+    const response = await $fetch<ApiResponse>('/api/admin/performance/settings', {
       method: 'PUT',
       body: settings
     })
@@ -656,7 +669,8 @@ const saveSettings = async () => {
     } else {
       alert('خطا در ذخیره تنظیمات: ' + response.message)
     }
-  } catch (error) {
+  } catch (err: unknown) {
+    const error = err as Error
     alert('خطا در ذخیره تنظیمات: ' + error.message)
   } finally {
     isSaving.value = false
@@ -709,7 +723,7 @@ const addCustomRoute = () => {
   }
 }
 
-const removeCustomRoute = (index) => {
+const removeCustomRoute = (index: number) => {
   settings.ssr.customRoutes.splice(index, 1)
 }
 
@@ -724,7 +738,7 @@ const addCustomChunk = () => {
   }
 }
 
-const removeCustomChunk = (index) => {
+const removeCustomChunk = (index: number) => {
   settings.bundleSplitting.customChunks.splice(index, 1)
 }
 
@@ -740,11 +754,11 @@ const addLazyComponent = () => {
   }
 }
 
-const removeLazyComponent = (index) => {
+const removeLazyComponent = (index: number) => {
   settings.lazyLoading.customComponents.splice(index, 1)
 }
 
-const toggleLazyComponent = (index) => {
+const toggleLazyComponent = (index: number) => {
   settings.lazyLoading.customComponents[index].enabled = !settings.lazyLoading.customComponents[index].enabled
 }
 </script>

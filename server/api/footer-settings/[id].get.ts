@@ -45,7 +45,7 @@ export default defineEventHandler(async (event): Promise<FooterResponse> => {
           }
 
      } catch (error: unknown) {
-          const err = error as { statusCode?: number; data?: any; message?: string; error?: string }
+          const err = error as { statusCode?: number; data?: unknown; message?: string; error?: string }
           console.error('خطا در دریافت فوتر:', err)
 
           // اگر خطا از سرور Go آمده باشد

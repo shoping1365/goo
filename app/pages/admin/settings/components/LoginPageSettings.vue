@@ -320,16 +320,29 @@ watch([isAuthenticated, hasAccess], async () => {
   }
 });
 
-const props = defineProps({
-  settings: {
-    type: Object,
-    required: true
-  },
-  saving: {
-    type: Boolean,
-    default: false
-  }
-})
+interface LoginSettings {
+  otpLength: number
+  otpExpiryMinutes: number
+  maxOtpAttempts: number
+  otpResendDelaySeconds: number
+  firstAttemptsWaitTime: number
+  secondAttemptsWaitTime: number
+  fifthAttemptWaitTime: number
+  blockTimeMinutes: number
+  maxLoginAttempts: number
+  lockoutDurationMinutes: number
+  sessionTimeoutMinutes: number
+  mobileAuthEnabled: boolean
+  loginPageTitle: string
+  helperText: string
+  showBackButton: boolean
+  showPasswordLogin: boolean
+}
+
+const props = defineProps<{
+  settings: LoginSettings
+  saving: boolean
+}>()
 
 const emit = defineEmits(['save', 'reset'])
 

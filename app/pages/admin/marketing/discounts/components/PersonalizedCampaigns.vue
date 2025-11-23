@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+  <div v-if="hasAccess" class="bg-white rounded-lg shadow-sm border border-gray-200">
     <!-- هدر بخش -->
     <div class="p-6 border-b border-gray-200">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
@@ -161,11 +161,28 @@
       </div>
     </div>
   </div>
+  <div v-else class="text-center p-8 text-gray-500">
+    <p>شما مجوز دسترسی به این بخش را ندارید.</p>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
+
+const { user, hasPermission } = useAuth()
+const router = useRouter()
+
+const hasAccess = computed(() => {
+  return ['admin', 'developer'].includes(user.value?.role || '')
+})
+
+watch(hasAccess, (newValue) => {
+  if (!newValue) {
+    router.push('/404')
+  }
+})
 
 // تعریف interface برای کمپین شخصی‌سازی شده
 interface PersonalizedCampaign {
@@ -437,13 +454,17 @@ function formatNumber(num: number) {
 }
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
-const { hasPermission } = useAuth()
+// const { hasPermission } = useAuth()
 
 // Computed برای چک کردن پرمیژن حذف
 const canDeleteCampaign = computed(() => hasPermission('campaign.delete'))
 
 // مقداردهی اولیه
 onMounted(() => {
+  if (!hasAccess.value) {
+    router.push('/404')
+    return
+  }
   campaigns.value = sampleCampaigns
 })
 </script> 

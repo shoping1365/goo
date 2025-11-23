@@ -538,8 +538,9 @@ declare const navigateTo: (to: string, options?: { redirectCode?: number; extern
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue';
 import { useAuth } from '~/composables/useAuth';
-import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue'
+
 
 // احراز هویت
 const { user, isAuthenticated } = useAuth();
@@ -574,20 +575,40 @@ watch([isAuthenticated, hasAccess], async () => {
   }
 });
 
-const props = defineProps({
-  settings: {
-    type: Object,
-    required: true
-  },
-  saving: {
-    type: Boolean,
-    default: false
-  }
-})
+interface Location {
+  id?: string | number
+  title: string
+  address: string
+  phones: string[]
+}
+
+interface HomeSettings {
+  shopNameFa: string
+  shopNameEn: string
+  logo: string
+  logoRetina: string
+  favicon: string
+  defaultLanguage: string
+  timezone: string
+  defaultCurrency: string
+  maintenanceMode: boolean
+  maintenanceMessage: string
+  locations: Location[]
+  adminPhones: string[]
+  email: string
+  coordinates: string
+  workingHours: string[]
+  shortDescription: string
+}
+
+const props = defineProps<{
+  settings: HomeSettings
+  saving: boolean
+}>()
 
 const emit = defineEmits(['save', 'reset', 'selectImage', 'addPhone', 'removePhone', 'addAdminPhone', 'removeAdminPhone', 'addWorkingHour', 'removeWorkingHour', 'addLocation', 'removeLocation', 'addLocationPhone', 'removeLocationPhone', 'update:settings'])
 
-const localSettings = ref({ ...props.settings })
+const localSettings = ref<HomeSettings>({ ...props.settings })
 
 watch(() => props.settings, (newVal) => {
   localSettings.value = { ...newVal }
@@ -598,7 +619,6 @@ watch(localSettings, (newVal) => {
 }, { deep: true })
 
 // State for modals
-const showLogoUploader = ref(false)
 const showMediaLibrary = ref(false)
 const currentLogoType = ref('')
 
@@ -612,17 +632,23 @@ const resetSettings = () => {
 }
 
 // Logo upload methods
-const openLogoUploader = (type) => {
-  currentLogoType.value = type
-  showLogoUploader.value = true
-}
-
-const openMediaLibrary = (type) => {
+const openLogoUploader = (type: string) => {
   currentLogoType.value = type
   showMediaLibrary.value = true
 }
 
-const handleLogoUploaded = (imageData) => {
+const openMediaLibrary = (type: string) => {
+  currentLogoType.value = type
+  showMediaLibrary.value = true
+}
+
+interface MediaItem {
+  url?: string
+  path?: string
+  [key: string]: unknown
+}
+
+const handleLogoUploaded = (imageData: MediaItem) => {
   if (imageData && imageData.url) {
     // به‌روزرسانی لوگو در تنظیمات
     switch (currentLogoType.value) {
@@ -642,7 +668,7 @@ const handleLogoUploaded = (imageData) => {
   }
 }
 
-const handleMediaSelected = (selectedMedia) => {
+const handleMediaSelected = (selectedMedia: MediaItem[]) => {
   if (selectedMedia && selectedMedia.length > 0) {
     const media = selectedMedia[0]
     handleLogoUploaded({ url: media.url || media.path })
@@ -653,7 +679,7 @@ const addAdminPhone = () => {
   emit('addAdminPhone')
 }
 
-const removeAdminPhone = (index) => {
+const removeAdminPhone = (index: number) => {
   emit('removeAdminPhone', index)
 }
 
@@ -661,7 +687,7 @@ const addWorkingHour = () => {
   emit('addWorkingHour')
 }
 
-const removeWorkingHour = (index) => {
+const removeWorkingHour = (index: number) => {
   emit('removeWorkingHour', index)
 }
 
@@ -669,15 +695,15 @@ const addLocation = () => {
   emit('addLocation')
 }
 
-const removeLocation = (index) => {
+const removeLocation = (index: number) => {
   emit('removeLocation', index)
 }
 
-const addLocationPhone = (locationIndex) => {
+const addLocationPhone = (locationIndex: number) => {
   emit('addLocationPhone', locationIndex)
 }
 
-const removeLocationPhone = (locationIndex, phoneIndex) => {
+const removeLocationPhone = (locationIndex: number, phoneIndex: number) => {
   emit('removeLocationPhone', locationIndex, phoneIndex)
 }
 </script>

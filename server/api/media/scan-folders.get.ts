@@ -1,7 +1,5 @@
-import { defineEventHandler, createError, getQuery } from 'h3'
 import { useRuntimeConfig } from '#imports'
-import { readdir, stat } from 'fs/promises'
-import { join, extname } from 'path'
+import { createError, defineEventHandler, getQuery } from 'h3'
 
 export default defineEventHandler(async (event) => {
   try {

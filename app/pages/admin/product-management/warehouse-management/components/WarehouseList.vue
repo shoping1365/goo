@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-6">
+  <div v-if="hasAccess" class="space-y-6">
     <!-- هدر و ابزارها -->
     <div class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-3xl shadow-xl p-8 border border-blue-100">
       <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
@@ -286,14 +286,49 @@
 
 <script lang="ts">
 declare const useFetch: <T>(url: string, options?: unknown) => Promise<{ data: { value: T }; refresh: () => Promise<void> }>
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>;
 </script>
 
 <script setup lang="ts">
-import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
+import ConfirmDialog from '@/components/common/ConfirmDialog.vue';
+import WarehouseForm from './WarehouseForm.vue';
 
-import ChatNotification from '@/pages/admin/support-management/live-chat/components/ChatNotification.vue'
-import { computed, ref } from 'vue'
-import WarehouseForm from './WarehouseForm.vue'
+import ChatNotification from '@/pages/admin/support-management/live-chat/components/ChatNotification.vue';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth()
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || ''
+  const adminRoles = ['admin', 'developer']
+  return adminRoles.includes(userRole)
+})
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async () => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false })
+  }
+}
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth()
+})
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth()
+  }
+})
 
 type ApiWarehouse = {
   id: number

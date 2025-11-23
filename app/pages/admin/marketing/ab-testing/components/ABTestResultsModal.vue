@@ -1,103 +1,104 @@
 <template>
-  <div v-if="isOpen" class="fixed inset-0 z-50 overflow-y-auto">
-    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-      <!-- Overlay -->
-      <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" @click="$emit('close')"></div>
+  <div v-if="hasAccess">
+    <div v-if="isOpen" class="fixed inset-0 z-50 overflow-y-auto">
+      <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Overlay -->
+        <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" @click="$emit('close')"></div>
 
-      <!-- Modal -->
-      <div class="inline-block w-full max-w-6xl px-6 py-6 my-8 overflow-hidden text-right transition-all transform bg-white rounded-lg shadow-xl align-middle">
-        <!-- Header -->
-        <div class="flex items-center justify-between mb-6">
-          <h3 class="text-lg font-medium text-gray-900">نتایج و تحلیل تست</h3>
-          <div class="flex items-center space-x-4 space-x-reverse">
-            <button class="px-3 py-1 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200" @click="exportResults">
-              صادرات
-            </button>
-            <button class="text-gray-400 hover:text-gray-600" @click="$emit('close')">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- Content -->
-        <div class="space-y-6">
-          <!-- آمار تفصیلی -->
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div class="bg-blue-50 rounded-lg p-6">
-              <div class="text-sm text-blue-600 mb-1">بازدیدکنندگان A</div>
-              <div class="text-2xl font-bold text-blue-900">{{ formatNumber(results.visitorsA) }}</div>
-              <div class="text-xs text-blue-600 mt-1">{{ results.trafficSplitA }}% ترافیک</div>
-            </div>
-            <div class="bg-green-50 rounded-lg p-6">
-              <div class="text-sm text-green-600 mb-1">بازدیدکنندگان B</div>
-              <div class="text-2xl font-bold text-green-900">{{ formatNumber(results.visitorsB) }}</div>
-              <div class="text-xs text-green-600 mt-1">{{ results.trafficSplitB }}% ترافیک</div>
-            </div>
-            <div class="bg-purple-50 rounded-lg p-6">
-              <div class="text-sm text-purple-600 mb-1">نرخ تبدیل A</div>
-              <div class="text-2xl font-bold text-purple-900">{{ results.conversionRateA }}%</div>
-              <div class="text-xs text-purple-600 mt-1">{{ formatNumber(results.conversionsA) }} تبدیل</div>
-            </div>
-            <div class="bg-orange-50 rounded-lg p-6">
-              <div class="text-sm text-orange-600 mb-1">نرخ تبدیل B</div>
-              <div class="text-2xl font-bold text-orange-900">{{ results.conversionRateB }}%</div>
-              <div class="text-xs text-orange-600 mt-1">{{ formatNumber(results.conversionsB) }} تبدیل</div>
-            </div>
-          </div>
-
-          <!-- تحلیل آماری -->
-          <div class="bg-gray-50 rounded-lg p-6">
-            <h4 class="text-lg font-semibold text-gray-900 mb-4">تحلیل آماری</h4>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <!-- تست معناداری آماری -->
-              <div class="bg-white rounded-lg p-6">
-                <div class="flex items-center justify-between mb-2">
-                  <span class="text-sm font-medium text-gray-700">معناداری آماری</span>
-                  <span :class="results.statisticalSignificance ? 'text-green-600' : 'text-red-600'" class="text-sm font-bold">
-                    {{ results.statisticalSignificance ? 'معنادار' : 'غیرمعنادار' }}
-                  </span>
-                </div>
-                <div class="text-2xl font-bold text-gray-900">{{ results.pValue }}</div>
-                <div class="text-xs text-gray-500 mt-1">P-Value</div>
-              </div>
-
-              <!-- فاصله اطمینان -->
-              <div class="bg-white rounded-lg p-6">
-                <div class="text-sm font-medium text-gray-700 mb-2">فاصله اطمینان</div>
-                <div class="text-lg font-bold text-gray-900">{{ results.confidenceInterval.min }}% - {{ results.confidenceInterval.max }}%</div>
-                <div class="text-xs text-gray-500 mt-1">95% اطمینان</div>
-              </div>
-
-              <!-- قدرت تست -->
-              <div class="bg-white rounded-lg p-6">
-                <div class="text-sm font-medium text-gray-700 mb-2">قدرت تست</div>
-                <div class="text-2xl font-bold text-gray-900">{{ results.testPower }}%</div>
-                <div class="text-xs text-gray-500 mt-1">احتمال تشخیص تفاوت</div>
-              </div>
-            </div>
-
-            <!-- پیشنهاد برنده -->
-            <div class="mt-6 p-6 bg-yellow-50 rounded-lg border border-yellow-200">
-              <div class="flex items-center">
-                <svg class="w-5 h-5 text-yellow-600 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <!-- Modal -->
+        <div class="inline-block w-full max-w-6xl px-6 py-6 my-8 overflow-hidden text-right transition-all transform bg-white rounded-lg shadow-xl align-middle">
+          <!-- Header -->
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-medium text-gray-900">نتایج و تحلیل تست</h3>
+            <div class="flex items-center space-x-4 space-x-reverse">
+              <button class="px-3 py-1 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200" @click="exportResults">
+                صادرات
+              </button>
+              <button class="text-gray-400 hover:text-gray-600" @click="$emit('close')">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
-                <div>
-                  <div class="text-sm font-medium text-yellow-800">پیشنهاد برنده</div>
-                  <div class="text-sm text-yellow-700">{{ results.winnerSuggestion }}</div>
-                </div>
-              </div>
+              </button>
             </div>
           </div>
 
-          <!-- نمودارهای تعاملی -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- نمودار روند نرخ تبدیل -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h4 class="text-lg font-semibold text-gray-900 mb-4">روند نرخ تبدیل</h4>
+          <!-- Content -->
+          <div class="space-y-6">
+            <!-- آمار تفصیلی -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div class="bg-blue-50 rounded-lg p-6">
+                <div class="text-sm text-blue-600 mb-1">بازدیدکنندگان A</div>
+                <div class="text-2xl font-bold text-blue-900">{{ formatNumber(results.visitorsA) }}</div>
+                <div class="text-xs text-blue-600 mt-1">{{ results.trafficSplitA }}% ترافیک</div>
+              </div>
+              <div class="bg-green-50 rounded-lg p-6">
+                <div class="text-sm text-green-600 mb-1">بازدیدکنندگان B</div>
+                <div class="text-2xl font-bold text-green-900">{{ formatNumber(results.visitorsB) }}</div>
+                <div class="text-xs text-green-600 mt-1">{{ results.trafficSplitB }}% ترافیک</div>
+              </div>
+              <div class="bg-purple-50 rounded-lg p-6">
+                <div class="text-sm text-purple-600 mb-1">نرخ تبدیل A</div>
+                <div class="text-2xl font-bold text-purple-900">{{ results.conversionRateA }}%</div>
+                <div class="text-xs text-purple-600 mt-1">{{ formatNumber(results.conversionsA) }} تبدیل</div>
+              </div>
+              <div class="bg-orange-50 rounded-lg p-6">
+                <div class="text-sm text-orange-600 mb-1">نرخ تبدیل B</div>
+                <div class="text-2xl font-bold text-orange-900">{{ results.conversionRateB }}%</div>
+                <div class="text-xs text-orange-600 mt-1">{{ formatNumber(results.conversionsB) }} تبدیل</div>
+              </div>
+            </div>
+
+            <!-- تحلیل آماری -->
+            <div class="bg-gray-50 rounded-lg p-6">
+              <h4 class="text-lg font-semibold text-gray-900 mb-4">تحلیل آماری</h4>
+              
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- تست معناداری آماری -->
+                <div class="bg-white rounded-lg p-6">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium text-gray-700">معناداری آماری</span>
+                    <span :class="results.statisticalSignificance ? 'text-green-600' : 'text-red-600'" class="text-sm font-bold">
+                      {{ results.statisticalSignificance ? 'معنادار' : 'غیرمعنادار' }}
+                    </span>
+                  </div>
+                  <div class="text-2xl font-bold text-gray-900">{{ results.pValue }}</div>
+                  <div class="text-xs text-gray-500 mt-1">P-Value</div>
+                </div>
+
+                <!-- فاصله اطمینان -->
+                <div class="bg-white rounded-lg p-6">
+                  <div class="text-sm font-medium text-gray-700 mb-2">فاصله اطمینان</div>
+                  <div class="text-lg font-bold text-gray-900">{{ results.confidenceInterval.min }}% - {{ results.confidenceInterval.max }}%</div>
+                  <div class="text-xs text-gray-500 mt-1">95% اطمینان</div>
+                </div>
+
+                <!-- قدرت تست -->
+                <div class="bg-white rounded-lg p-6">
+                  <div class="text-sm font-medium text-gray-700 mb-2">قدرت تست</div>
+                  <div class="text-2xl font-bold text-gray-900">{{ results.testPower }}%</div>
+                  <div class="text-xs text-gray-500 mt-1">احتمال تشخیص تفاوت</div>
+                </div>
+              </div>
+
+              <!-- پیشنهاد برنده -->
+              <div class="mt-6 p-6 bg-yellow-50 rounded-lg border border-yellow-200">
+                <div class="flex items-center">
+                  <svg class="w-5 h-5 text-yellow-600 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <div>
+                    <div class="text-sm font-medium text-yellow-800">پیشنهاد برنده</div>
+                    <div class="text-sm text-yellow-700">{{ results.winnerSuggestion }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- نمودارهای تعاملی -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <!-- نمودار روند نرخ تبدیل -->
+              <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h4 class="text-lg font-semibold text-gray-900 mb-4">روند نرخ تبدیل</h4>
               <div class="h-64 flex items-end justify-between space-x-2 space-x-reverse">
                 <div v-for="(day, index) in conversionTrend" :key="index" class="flex-1 flex flex-col items-center">
                   <div class="w-full flex space-x-1 space-x-reverse">
@@ -223,10 +224,33 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { useAuth } from '@/composables/useAuth'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+
+const { user } = useAuth()
+const router = useRouter()
+
+const hasAccess = computed(() => {
+  return user.value?.role === 'admin' || user.value?.role === 'developer'
+})
+
+watch(() => user.value, (newUser) => {
+  if (!newUser || (newUser.role !== 'admin' && newUser.role !== 'developer')) {
+    router.push('/404')
+  }
+})
+
+onMounted(() => {
+  if (!user.value || (user.value.role !== 'admin' && user.value.role !== 'developer')) {
+    router.push('/404')
+  }
+})
+
 // Props
 const _props = defineProps<{
   isOpen: boolean
@@ -315,4 +339,4 @@ const exportResults = () => {
 
   alert('نتایج با موفقیت صادر شد')
 }
-</script> 
+</script>

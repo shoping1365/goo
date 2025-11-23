@@ -396,12 +396,15 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
+<script setup lang="ts">
 import { reactive, ref } from 'vue';
 
 definePageMeta({
   layout: 'admin-main',
-  middleware: ['developer-only'],
   middleware: ['developer-only']
 });
 
@@ -414,6 +417,28 @@ if (import.meta.client) {
 }
 
 // Reactive data
+interface ApiCollection {
+  id: number
+  name: string
+  description: string
+  endpoints: number
+}
+
+interface ApiEndpoint {
+  id: number
+  method: string
+  path: string
+  description: string
+  parameters: { name: string; type: string; required: boolean; description: string }[]
+  responseExample: string
+}
+
+interface ApiResponse {
+  status: number
+  time: number
+  data: string
+}
+
 const requestConfig = reactive({
   method: 'GET',
   url: 'https://api.example.com/users',
@@ -424,7 +449,7 @@ const requestConfig = reactive({
   body: ''
 })
 
-const response = ref(null)
+const response = ref<ApiResponse | null>(null)
 
 const stats = reactive({
   totalApis: 45,
@@ -537,7 +562,7 @@ function addHeader() {
   requestConfig.headers.push({ key: '', value: '' })
 }
 
-function removeHeader(index) {
+function removeHeader(index: number) {
   requestConfig.headers.splice(index, 1)
 }
 
@@ -584,11 +609,11 @@ function clearRequest() {
   response.value = null
 }
 
-function loadCollection(collection) {
+function loadCollection(collection: ApiCollection) {
   alert(`مجموعه ${collection.name} بارگذاری شد`)
 }
 
-function exportCollection(collection) {
+function exportCollection(collection: ApiCollection) {
   alert(`مجموعه ${collection.name} صادر شد`)
 }
 
@@ -600,13 +625,13 @@ function exportDocs() {
   alert('مستندات API صادر شد')
 }
 
-function testEndpoint(endpoint) {
+function testEndpoint(endpoint: ApiEndpoint) {
   requestConfig.method = endpoint.method
   requestConfig.url = `https://api.example.com${endpoint.path}`
   alert(`Endpoint ${endpoint.method} ${endpoint.path} برای تست آماده شد`)
 }
 
-function editEndpoint(endpoint) {
+function editEndpoint(endpoint: ApiEndpoint) {
   alert(`ویرایش endpoint ${endpoint.method} ${endpoint.path}`)
 }
 

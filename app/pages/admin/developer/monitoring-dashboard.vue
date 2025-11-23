@@ -264,22 +264,35 @@ v-for="alert in alerts" :key="alert.id"
   </div>
 </template>
 
-<script setup>
+<script lang="ts">
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+</script>
+
+<script setup lang="ts">
+import { onMounted, onUnmounted, ref } from 'vue';
+
 definePageMeta({
   layout: 'admin-main',
-  middleware: ['developer-only'],
   middleware: ['developer-only']
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
 // const { user, hasPermission } = useAuth()
 
+interface MonitoringStatusResponse {
+  enabled: boolean
+}
+
+interface SettingResponse {
+  value: string | number | boolean
+}
+
 // وضعیت مانیتورینگ (آن/آف)
 const monitoringEnabled = ref(true)
 const { $toast } = useNuxtApp()
 const loadMonitoringStatus = async () => {
   try {
-    const resp = await $fetch('/api/admin/monitoring/status')
+    const resp = await $fetch<MonitoringStatusResponse>('/api/admin/monitoring/status')
     monitoringEnabled.value = !!resp?.enabled
   } catch {
     monitoringEnabled.value = true
@@ -290,7 +303,7 @@ const loadMonitoringStatus = async () => {
 const trafficLoggingEnabled = ref(true)
 const loadTrafficLoggingMD = async () => {
   try {
-    const setting = await $fetch('/api/admin/settings/traffic.logging.enabled')
+    const setting = await $fetch<SettingResponse>('/api/admin/settings/traffic.logging.enabled')
     const val = (setting?.value || '').toString().toLowerCase()
     trafficLoggingEnabled.value = val === 'true' || val === '1' || val === 'yes'
   } catch {
@@ -416,15 +429,15 @@ const refreshAlerts = () => {
 
 }
 
-const dismissAlert = (id) => {
+const dismissAlert = (id: number) => {
   const index = alerts.value.findIndex(alert => alert.id === id)
   if (index > -1) {
     alerts.value.splice(index, 1)
   }
 }
 
-const getAlertClass = (severity) => {
-  const classes = {
+const getAlertClass = (severity: string) => {
+  const classes: Record<string, string> = {
     error: 'border-red-200 bg-red-50',
     warning: 'border-yellow-200 bg-yellow-50',
     info: 'border-blue-200 bg-blue-50'
@@ -432,8 +445,8 @@ const getAlertClass = (severity) => {
   return classes[severity] || 'border-gray-200 bg-gray-50'
 }
 
-const getAlertIconClass = (severity) => {
-  const classes = {
+const getAlertIconClass = (severity: string) => {
+  const classes: Record<string, string> = {
     error: 'text-red-400',
     warning: 'text-yellow-400',
     info: 'text-blue-400'
@@ -441,8 +454,8 @@ const getAlertIconClass = (severity) => {
   return classes[severity] || 'text-gray-400'
 }
 
-const getAlertTitleClass = (severity) => {
-  const classes = {
+const getAlertTitleClass = (severity: string) => {
+  const classes: Record<string, string> = {
     error: 'text-red-800',
     warning: 'text-yellow-800',
     info: 'text-blue-800'
@@ -450,7 +463,7 @@ const getAlertTitleClass = (severity) => {
   return classes[severity] || 'text-gray-800'
 }
 
-const formatDate = (date) => {
+const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat('fa-IR', {
     year: 'numeric',
     month: 'long',
@@ -468,7 +481,7 @@ onMounted(() => {
     systemStats.value.cpu = Math.floor(Math.random() * 30) + 30
     systemStats.value.memory = Math.floor(Math.random() * 20) + 55
     systemStats.value.disk = Math.floor(Math.random() * 10) + 50
-    systemStats.value.network = (Math.random() * 10 + 5).toFixed(1)
+    systemStats.value.network = parseFloat((Math.random() * 10 + 5).toFixed(1))
   }, 5000)
 
   onUnmounted(() => {

@@ -1,4 +1,4 @@
-import { defineEventHandler, getQuery, createError } from 'h3'
+import { createError, defineEventHandler, getQuery } from 'h3'
 import { fetchGo } from '../_utils/fetchGo'
 
 export default defineEventHandler(async (event) => {
@@ -10,11 +10,12 @@ export default defineEventHandler(async (event) => {
      }
 
      try {
-          const json: any = await fetchGo(event, `/api/media/delete?id=${id}`, {
+          const json = await fetchGo(event, `/api/media/delete?id=${id}`, {
                method: 'DELETE'
-          })
+          }) as { data?: unknown }
           return { success: true, data: json?.data || json || {} }
-     } catch (err: any) {
-          throw createError({ statusCode: err?.statusCode || 400, message: err?.message || err?.statusMessage || 'خطا در حذف رسانه' })
+     } catch (err: unknown) {
+          const error = err as { statusCode?: number; message?: string; statusMessage?: string }
+          throw createError({ statusCode: error?.statusCode || 400, message: error?.message || error?.statusMessage || 'خطا در حذف رسانه' })
      }
 })

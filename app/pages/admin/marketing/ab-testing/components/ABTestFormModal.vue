@@ -1,103 +1,104 @@
 <template>
-  <div v-if="isOpen" class="fixed inset-0 z-50 overflow-y-auto">
-    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-      <!-- Overlay -->
-      <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" @click="$emit('close')"></div>
+  <div v-if="hasAccess">
+    <div v-if="isOpen" class="fixed inset-0 z-50 overflow-y-auto">
+      <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Overlay -->
+        <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" @click="$emit('close')"></div>
 
-      <!-- Modal -->
-      <div class="inline-block w-full max-w-4xl px-6 py-6 my-8 overflow-hidden text-right transition-all transform bg-white rounded-lg shadow-xl align-middle">
-        <!-- Header -->
-        <div class="flex items-center justify-between mb-6">
-          <h3 class="text-lg font-medium text-gray-900">
-            {{ editingTest ? 'ویرایش تست' : 'ایجاد تست جدید' }}
-          </h3>
-          <button class="text-gray-400 hover:text-gray-600" @click="$emit('close')">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
+        <!-- Modal -->
+        <div class="inline-block w-full max-w-4xl px-6 py-6 my-8 overflow-hidden text-right transition-all transform bg-white rounded-lg shadow-xl align-middle">
+          <!-- Header -->
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-medium text-gray-900">
+              {{ editingTest ? 'ویرایش تست' : 'ایجاد تست جدید' }}
+            </h3>
+            <button class="text-gray-400 hover:text-gray-600" @click="$emit('close')">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
 
-        <!-- Form -->
-        <form class="space-y-6" @submit.prevent="handleSubmit">
-          <!-- اطلاعات پایه -->
-          <div class="bg-gray-50 rounded-lg p-6">
-            <h4 class="text-md font-semibold text-gray-900 mb-4">اطلاعات پایه</h4>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <!-- نام تست -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">نام تست *</label>
-                <input
-                  v-model="form.name"
-                  type="text"
-                  required
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="نام تست را وارد کنید"
-                />
-              </div>
+          <!-- Form -->
+          <form class="space-y-6" @submit.prevent="handleSubmit">
+            <!-- اطلاعات پایه -->
+            <div class="bg-gray-50 rounded-lg p-6">
+              <h4 class="text-md font-semibold text-gray-900 mb-4">اطلاعات پایه</h4>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- نام تست -->
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">نام تست *</label>
+                  <input
+                    v-model="form.name"
+                    type="text"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="نام تست را وارد کنید"
+                  />
+                </div>
 
-              <!-- نوع تست -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">نوع تست *</label>
-                <select
-                  v-model="form.type"
-                  required
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                >
-                  <option value="">انتخاب کنید</option>
-                  <option value="page">صفحه</option>
-                  <option value="button">دکمه</option>
-                  <option value="price">قیمت</option>
-                  <option value="image">تصویر</option>
-                  <option value="product">محصول</option>
-                </select>
-              </div>
+                <!-- نوع تست -->
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">نوع تست *</label>
+                  <select
+                    v-model="form.type"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="">انتخاب کنید</option>
+                    <option value="page">صفحه</option>
+                    <option value="button">دکمه</option>
+                    <option value="price">قیمت</option>
+                    <option value="image">تصویر</option>
+                    <option value="product">محصول</option>
+                  </select>
+                </div>
 
-              <!-- تاریخ شروع -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">تاریخ شروع *</label>
-                <input
-                  v-model="form.startDate"
-                  type="date"
-                  required
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
+                <!-- تاریخ شروع -->
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">تاریخ شروع *</label>
+                  <input
+                    v-model="form.startDate"
+                    type="date"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
 
-              <!-- تاریخ پایان -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">تاریخ پایان *</label>
-                <input
-                  v-model="form.endDate"
-                  type="date"
-                  required
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
+                <!-- تاریخ پایان -->
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">تاریخ پایان *</label>
+                  <input
+                    v-model="form.endDate"
+                    type="date"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
 
-              <!-- درصد تقسیم ترافیک -->
-              <div class="md:col-span-2">
-                <label class="block text-sm font-medium text-gray-700 mb-1">درصد تقسیم ترافیک</label>
-                <div class="flex items-center space-x-4 space-x-reverse">
-                  <div class="flex-1">
-                    <label class="block text-xs text-gray-500 mb-1">نسخه A</label>
-                    <input
-                      v-model.number="form.trafficSplitA"
-                      type="number"
-                      min="0"
-                      max="100"
-                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </div>
-                  <div class="flex-1">
-                    <label class="block text-xs text-gray-500 mb-1">نسخه B</label>
-                    <input
-                      v-model.number="form.trafficSplitB"
-                      type="number"
-                      min="0"
-                      max="100"
-                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                <!-- درصد تقسیم ترافیک -->
+                <div class="md:col-span-2">
+                  <label class="block text-sm font-medium text-gray-700 mb-1">درصد تقسیم ترافیک</label>
+                  <div class="flex items-center space-x-4 space-x-reverse">
+                    <div class="flex-1">
+                      <label class="block text-xs text-gray-500 mb-1">نسخه A</label>
+                      <input
+                        v-model.number="form.trafficSplitA"
+                        type="number"
+                        min="0"
+                        max="100"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    </div>
+                    <div class="flex-1">
+                      <label class="block text-xs text-gray-500 mb-1">نسخه B</label>
+                      <input
+                        v-model.number="form.trafficSplitB"
+                        type="number"
+                        min="0"
+                        max="100"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
                 </div>
@@ -290,10 +291,14 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { useAuth } from '@/composables/useAuth';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+
 // Props
 interface TestData {
   id?: number | string
@@ -404,4 +409,23 @@ watch(() => form.value.trafficSplitA, (newVal) => {
 watch(() => form.value.trafficSplitB, (newVal) => {
   form.value.trafficSplitA = 100 - newVal
 })
-</script> 
+
+const { user } = useAuth()
+const router = useRouter()
+
+const hasAccess = computed(() => {
+  return user.value?.role === 'admin' || user.value?.role === 'developer'
+})
+
+watch(() => user.value, (newUser) => {
+  if (!newUser || (newUser.role !== 'admin' && newUser.role !== 'developer')) {
+    router.push('/404')
+  }
+})
+
+onMounted(() => {
+  if (!user.value || (user.value.role !== 'admin' && user.value.role !== 'developer')) {
+    router.push('/404')
+  }
+})
+</script>

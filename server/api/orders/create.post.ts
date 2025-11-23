@@ -28,8 +28,6 @@ export default defineEventHandler(async (event) => {
       total
     } = body
 
-    console.log('ایجاد سفارش جدید:', { notes, paymentMethod, items, total })
-
     if (!items || !Array.isArray(items) || items.length === 0) {
       throw createError({
         statusCode: 400,
@@ -54,28 +52,26 @@ export default defineEventHandler(async (event) => {
         })
       }
       
-      if ((product[0] as any).stock_quantity < item.quantity) {
+      const productData = product[0] as { stock_quantity: number; name: string; price: number }
+      if (productData.stock_quantity < item.quantity) {
         throw createError({
           statusCode: 400,
-          message: `موجودی محصول ${(product[0] as any).name} کافی نیست`
+          message: `موجودی محصول ${productData.name} کافی نیست`
         })
       }
       
       // اضافه کردن مبلغ این آیتم به مجموع کل
-      calculatedTotal += (product[0] as any).price * item.quantity
+      calculatedTotal += productData.price * item.quantity
     }
     
     // در حال حاضر تخفیف و هزینه اضافی در نظر گرفته نشده است
     const finalTotal = calculatedTotal
 
     // دریافت آدرس کاربر از profile_data
-    console.log('دریافت آدرس از profile_data برای کاربر:', userId)
     const userResult = await db.query(
       'SELECT profile_data FROM users WHERE id = $1',
       [userId]
     )
-    
-    console.log('نتیجه دریافت profile_data کاربر:', userResult)
     
     if (!userResult || userResult.length === 0) {
       throw createError({
@@ -84,7 +80,7 @@ export default defineEventHandler(async (event) => {
       })
     }
     
-    const userData = userResult[0] as any
+    const userData = userResult[0] as { profile_data: { selected_address: string; first_name: string; last_name: string; postal_code: string } }
     const profileData = userData.profile_data
     
     if (!profileData || !profileData.selected_address) {
@@ -244,7 +240,7 @@ export default defineEventHandler(async (event) => {
               'درگاه پیش‌فرض سیستم پرداخت'
             ]
           )
-          gatewayId = (newGatewayResult[0] as any).id
+          gatewayId = (newGatewayResult[0] as { id: number }).id
         }
       } catch (gatewayError) {
         console.error('خطا در دریافت/ایجاد درگاه پرداخت:', gatewayError)
@@ -270,7 +266,7 @@ export default defineEventHandler(async (event) => {
         data: {
           orderId,
           orderNumber,
-          paymentTransactionId: (paymentResult[0] as any).id,
+          paymentTransactionId: (paymentResult[0] as { id: number }).id,
           redirectToPayment: true
         }
       }
@@ -287,10 +283,11 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const err = error as { statusCode?: number }
     console.error('خطا در ایجاد سفارش:', error)
     
-    if (error.statusCode) {
+    if (err.statusCode) {
       throw error
     }
     
@@ -302,13 +299,13 @@ export default defineEventHandler(async (event) => {
 })
 
 // دریافت کاربر از session (در حال حاضر غیرفعال)
-async function getUserFromSession(event: any) {
+async function _getUserFromSession(event: unknown) {
   try {
     // قبلاً از requireAuth در _utils/auth.ts استفاده می‌شد
     // بررسی‌های احراز هویت در این نسخه غیرفعال شده است
     
-    return event.context?.user || null
-  } catch (error: any) {
+    return (event as { context?: { user?: unknown } }).context?.user || null
+  } catch (error: unknown) {
     console.error('خطا در دریافت کاربر از session:', error)
     return null
   }
@@ -316,8 +313,8 @@ async function getUserFromSession(event: any) {
 
 // دریافت IP کاربر از هدرهای درخواست
 function getClientIP(event: any): string {
-  return event.node.req.headers['x-forwarded-for'] || 
-         event.node.req.headers['x-real-ip'] || 
-         event.node.req.connection?.remoteAddress || 
+  return (event.node.req.headers['x-forwarded-for'] as string) || 
+         (event.node.req.headers['x-real-ip'] as string) || 
+         (event.node.req.connection?.remoteAddress as string) || 
          'unknown'
 } 

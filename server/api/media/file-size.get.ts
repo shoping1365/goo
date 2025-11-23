@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
         size: stats.size,
         exists: true
       }
-    } catch (error) {
+    } catch (_error) {
       return {
         success: true,
         size: 0,

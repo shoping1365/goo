@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 bg-white rounded-lg shadow-sm">
+  <div v-if="hasAccess" class="p-6 bg-white rounded-lg shadow-sm">
     <div class="mb-6">
       <h1 class="text-2xl font-bold text-gray-900 mb-2">ویجت‌های نمایشی</h1>
       <p class="text-gray-600">مدیریت محتوای نمایشی در صفحات مختلف سایت</p>
@@ -232,7 +232,41 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { useAuth } from '~/composables/useAuth'
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth()
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || ''
+  const adminRoles = ['admin', 'developer']
+  return adminRoles.includes(userRole)
+})
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async () => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false });
+  }
+};
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth();
+});
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth();
+  }
+});
 
 // تنظیمات صفحه
 definePageMeta({

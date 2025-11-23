@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-xl bg-white shadow p-6" dir="rtl">
+  <div v-if="hasAccess" class="rounded-xl bg-white shadow p-6" dir="rtl">
     <div class="flex items-center justify-between mb-3">
       <h3 class="font-semibold">حرکات موجودی</h3>
       <div class="flex gap-2 text-xs">
@@ -44,7 +44,43 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>;
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth()
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || ''
+  const adminRoles = ['admin', 'developer']
+  return adminRoles.includes(userRole)
+})
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async () => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false })
+  }
+}
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth()
+})
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth()
+  }
+})
 
 const items = ref([])
 const filters = ref({ type: '', product: undefined, warehouse: undefined })
@@ -61,5 +97,4 @@ async function load() {
   }
 }
 
-onMounted(load)
 </script>

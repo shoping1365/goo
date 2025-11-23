@@ -408,6 +408,41 @@ watch([isAuthenticated, hasAccess], async () => {
   }
 });
 
+interface OpenAISettings {
+  accountBalance?: string
+  lastBalanceUpdate?: string
+  monthlyUsage?: string
+  totalRequests?: string | number
+  todayRequests?: string | number
+  apiKey: string
+  baseUrl: string
+  organizationId: string
+  defaultModel: string
+  temperature: number
+  maxTokens: number
+  timeout: number
+  retryCount: number
+  consumingPages: string[]
+}
+
+interface SectionConfig {
+  enabled: boolean
+  model: string
+  temperature?: number
+  max_tokens?: number
+  system_prompt?: string
+  size?: string
+  quality?: string
+  style?: string
+}
+
+interface SectionConfigs {
+  product_description: SectionConfig
+  seo_meta: SectionConfig
+  blog_post: SectionConfig
+  image_generation: SectionConfig
+}
+
 interface ApiModel {
   id: string | number
   name: string
@@ -419,9 +454,9 @@ interface ApiModel {
 }
 
 const props = defineProps<{
-  openAISettings: Record<string, unknown>
+  openAISettings: OpenAISettings
   availableModels: ApiModel[]
-  sectionConfigs: Record<string, unknown>
+  sectionConfigs: SectionConfigs
   showApiKey: boolean
   fetchingUsage: boolean
   testingConnection: boolean
@@ -430,8 +465,8 @@ const props = defineProps<{
 
 const emit = defineEmits(['save', 'reset', 'testConnection', 'fetchUsage', 'toggleApiKey', 'addConsumingPage', 'removeConsumingPage', 'update:openAISettings', 'update:sectionConfigs'])
 
-const localOpenAISettings = ref({ ...props.openAISettings })
-const localSectionConfigs = ref(JSON.parse(JSON.stringify(props.sectionConfigs)))
+const localOpenAISettings = ref<OpenAISettings>({ ...props.openAISettings })
+const localSectionConfigs = ref<SectionConfigs>(JSON.parse(JSON.stringify(props.sectionConfigs)))
 
 watch(() => props.openAISettings, (newVal) => {
   localOpenAISettings.value = { ...newVal }

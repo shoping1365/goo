@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div v-if="hasAccess" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
       <div class="p-6 border-b border-gray-200">
         <h2 class="text-lg font-semibold text-gray-900">{{ isEditing ? 'ویرایش کمپین' : 'افزودن کمپین جدید' }}</h2>
@@ -57,7 +57,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuth } from '~/composables/useAuth'
+
+const { user } = useAuth()
+const router = useRouter()
+
+const hasAccess = computed(() => {
+  return ['admin', 'developer'].includes(user.value?.role || '')
+})
+
+watch(hasAccess, (newValue) => {
+  if (!newValue) {
+    router.push('/404')
+  }
+})
 
 interface Campaign {
   id?: number
@@ -92,6 +107,10 @@ const form = ref<Campaign>({
 const isEditing = computed(() => !!props.campaign)
 
 onMounted(() => {
+  if (!hasAccess.value) {
+    router.push('/404')
+    return
+  }
   if (props.campaign) {
     form.value = { ...props.campaign }
   }

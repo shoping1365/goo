@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-6">
+  <div v-if="hasAccess" class="space-y-6">
     <!-- هدر و ابزارها -->
     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
       <div>
@@ -147,7 +147,45 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>;
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth()
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || ''
+  const adminRoles = ['admin', 'developer']
+  return adminRoles.includes(userRole)
+})
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async () => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false })
+  }
+}
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth()
+})
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth()
+  }
+})
+
+const searchQuery = ref('')
 
 // Props
 interface Props {
@@ -201,7 +239,6 @@ const items = ref([
 ])
 
 // فیلترها
-const searchQuery = ref('')
 const categoryFilter = ref('')
 const stockFilter = ref('')
 
@@ -234,28 +271,29 @@ const expiredCount = computed(() =>
 // توابع کمکی
 const getStockColor = (stock: number) => {
   if (stock === 0) return 'text-red-600'
-  if (stock <= 10) return 'text-orange-600'
+  if (stock < 10) return 'text-orange-600'
   return 'text-green-600'
 }
 
-const getStockStatus = (stock: number, minStock: number) => {
+const getStockStatus = (stock: number, min: number) => {
   if (stock === 0) return 'ناموجود'
-  if (stock <= minStock) return 'کم موجود'
+  if (stock <= min) return 'کم موجود'
   return 'موجود'
 }
 
-const getExpiryColor = (expiryDate: string) => {
-  const today = new Date()
-  const expiry = new Date(expiryDate)
-  const daysUntilExpiry = Math.ceil((expiry.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
-  
-  if (daysUntilExpiry < 0) return 'text-red-600'
-  if (daysUntilExpiry <= 30) return 'text-orange-600'
-  return 'text-green-600'
+const getExpiryColor = (date: string) => {
+  if (!date) return ''
+  const d = new Date(date)
+  const now = new Date()
+  if (d < now) return 'text-red-600'
+  const diffTime = d.getTime() - now.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+  if (diffDays < 30) return 'text-orange-600'
+  return 'text-gray-600'
 }
 
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('fa-IR')
+const formatDate = (date: string) => {
+  if (!date) return '-'
+  return new Date(date).toLocaleDateString('fa-IR')
 }
 </script>

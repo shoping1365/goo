@@ -18,7 +18,6 @@ export default defineEventHandler(async (_event) => {
       }
     }
     const json = await response.json()
-    console.log('📡 پاسخ API درگاه‌ها:', json)
 
     // پشتیبانی از هر دو ساختار خروجی (data یا خود آرایه)
     const data = Array.isArray(json.data) ? json.data : (Array.isArray(json) ? json : [])

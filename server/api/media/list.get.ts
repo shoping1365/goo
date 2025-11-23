@@ -1,7 +1,7 @@
 import type { H3Event } from 'h3'
 import { createError, defineEventHandler, getQuery } from 'h3'
-import { proxy } from '../_utils/fetchProxy'
 import { getGoApiBaseUrl } from '~/server/utils/api-config'
+import { proxy } from '../_utils/fetchProxy'
 
 export default defineEventHandler(async (event: H3Event) => {
   try {
@@ -12,8 +12,6 @@ export default defineEventHandler(async (event: H3Event) => {
     const baseUrl = getGoApiBaseUrl()
     const targetUrl = new URL('/api/media/list', baseUrl)
     targetUrl.searchParams.set('category', resolvedCategory)
-
-    console.log('[media/list] Target URL:', targetUrl.toString(), { baseUrl, resolvedCategory })
 
     return await proxy(event, targetUrl.toString(), {
       method: 'GET'
