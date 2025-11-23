@@ -409,12 +409,12 @@ definePageMeta({
 });
 
 // Authentication setup
-const { checkAuth } = useAuth()
+// const { checkAuth } = useAuth()
 
 // Check authentication on mount
-if (import.meta.client) {
-  checkAuth()
-}
+// if (import.meta.client) {
+//   checkAuth()
+// }
 
 // Reactive data
 interface ApiCollection {

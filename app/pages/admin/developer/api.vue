@@ -741,7 +741,7 @@ const refreshApiStatus = async () => {
       totalEndpoints: 24 + Math.floor(Math.random() * 5),
       activeEndpoints: 22 + Math.floor(Math.random() * 3),
       todayCalls: 15420 + Math.floor(Math.random() * 1000),
-      errorRate: (2.3 + Math.random() * 2).toFixed(1)
+      errorRate: parseFloat((2.3 + Math.random() * 2).toFixed(1))
     }
     
     alert('آمار API به‌روزرسانی شد')

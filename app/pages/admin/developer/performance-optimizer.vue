@@ -583,7 +583,7 @@ const loadStats = async () => {
   try {
     const response = await $fetch<ApiResponse>('/api/admin/performance/stats')
     if (response.success) {
-      stats.value = response.data
+      stats.value = response.data as Record<string, unknown>
     }
   } catch (error: unknown) {
     console.error('خطا در بارگذاری آمار:', error)

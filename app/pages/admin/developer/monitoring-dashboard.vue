@@ -269,6 +269,7 @@ declare const definePageMeta: (meta: { layout?: string; middleware?: string | st
 </script>
 
 <script setup lang="ts">
+import { useNuxtApp } from 'nuxt/app';
 import { onMounted, onUnmounted, ref } from 'vue';
 
 definePageMeta({
@@ -287,9 +288,14 @@ interface SettingResponse {
   value: string | number | boolean
 }
 
+interface ToastService {
+  success(message: string): void;
+  error(message: string): void;
+}
+
 // وضعیت مانیتورینگ (آن/آف)
 const monitoringEnabled = ref(true)
-const { $toast } = useNuxtApp()
+const { $toast } = useNuxtApp() as unknown as { $toast: ToastService }
 const loadMonitoringStatus = async () => {
   try {
     const resp = await $fetch<MonitoringStatusResponse>('/api/admin/monitoring/status')

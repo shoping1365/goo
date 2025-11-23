@@ -238,11 +238,13 @@ interface FileNode {
 }
 
 interface EditorError {
+  id?: number
   line: number
   message: string
 }
 
 interface EditorWarning {
+  id?: number
   line: number
   message: string
 }
@@ -317,7 +319,7 @@ function updateLanguage(fileName: string) {
 function createNewFile() {
   const fileName = prompt('نام فایل را وارد کنید:')
   if (fileName) {
-    const newFile = {
+    const newFile: FileNode = {
       name: fileName,
       type: 'file',
       path: `/src/${fileName}`

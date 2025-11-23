@@ -660,23 +660,40 @@ interface AuthSettings {
   unifiedAuthEnabled: boolean
   autoRegisterEnabled: boolean
   defaultAuthMethod: string
+  defaultUserRole?: string
+  mobileAuthEnabled?: boolean
   otpLength: number
   otpExpiryMinutes: number
   maxOtpAttempts: number
   otpResendDelaySeconds: number
+  otpResendCooldown?: number
+  otpPatternCode?: string
+  usernameAuthEnabled?: boolean
   maxLoginAttempts: number
   lockoutDurationMinutes: number
   sessionTimeoutMinutes: number
   passwordMinLength: number
+  minPasswordLength?: number
   passwordRequireUppercase: boolean
   passwordRequireLowercase: boolean
   passwordRequireNumbers: boolean
   passwordRequireSpecial: boolean
+  accountLockoutMinutes?: number
+  passwordExpiryDays?: number
+  twoFactorEnabled?: boolean
+  suspiciousActivityDetection?: boolean
+  loginHistoryRetentionDays?: number
+  autoBlockFailedLogins?: number
+  autoBlockDurationHours?: number
+  emailVerificationEnabled?: boolean
+  phoneVerificationEnabled?: boolean
   jwtSecret: string
   jwtExpiryMinutes: number
+  jwtExpiryHours?: number
   refreshTokenExpiryDays: number
   jwtIssuer: string
   jwtAudience: string
+  maxConcurrentSessions?: number
 }
 
 // تعریف Props

@@ -415,6 +415,7 @@ interface OpenAISettings {
   totalRequests?: string | number
   todayRequests?: string | number
   apiKey: string
+  apiUrl?: string
   baseUrl: string
   organizationId: string
   defaultModel: string
@@ -423,13 +424,22 @@ interface OpenAISettings {
   timeout: number
   retryCount: number
   consumingPages: string[]
+  rateLimit?: number
+  maxDailyCost?: number
+  enabled?: boolean
 }
 
 interface SectionConfig {
+  title?: string
+  link?: string
+  linkText?: string
+  description?: string
+  isEnabled?: boolean
   enabled: boolean
   model: string
   temperature?: number
   max_tokens?: number
+  maxTokens?: number
   system_prompt?: string
   size?: string
   quality?: string
