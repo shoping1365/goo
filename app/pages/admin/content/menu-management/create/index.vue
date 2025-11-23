@@ -93,7 +93,8 @@ import { useRoute, navigateTo } from "#app"
 import { useToast } from "~/composables/useToast"
 
 definePageMeta({
-  layout: "admin-main"
+  layout: "admin-main",
+  middleware: 'admin'
 })
 
 const { currentMenu, isSaving, pages, posts, categories, productCategories, saveMenu, createNewMenu, addMenuItem, handleDropItem, initializeContent, refreshContent, fetchMenu, generateSlug, registerDeletedMenuBranch } = useMenuManagement()

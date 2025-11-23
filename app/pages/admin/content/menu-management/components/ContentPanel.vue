@@ -1,5 +1,5 @@
 <template>
-  <div class="meta-box">
+  <div v-if="hasAccess" class="meta-box">
     <button
       class="meta-box__header"
       @click="$emit('toggle-panel')"
@@ -92,25 +92,70 @@
   </div>
 </template>
 
-<script setup>
-import { ref, computed, watch } from 'vue'
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
 
-const props = defineProps({
-  panelName: String,
-  title: String,
-  isOpen: Boolean,
-  items: {
-    type: Array,
-    default: () => [],
-  },
-  searchQuery: String,
-  selectedItems: Array,
-  filteredItems: Array,
-  itemLabel: String,
-  selectAllText: String,
-  deselectAllText: String,
-  addButtonText: String,
-})
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+
+interface ContentItem {
+  id?: string | number
+  name?: string
+  title?: string
+  displayName?: string
+  depth?: number
+  slug?: string
+  [key: string]: unknown
+}
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer'];
+  return adminRoles.includes(userRole);
+});
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false });
+  }
+};
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth();
+});
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth();
+  }
+});
+
+const props = defineProps<{
+  panelName: string
+  title: string
+  isOpen: boolean
+  items?: ContentItem[]
+  searchQuery?: string
+  selectedItems?: (string | number)[]
+  filteredItems?: ContentItem[]
+  itemLabel?: string
+  selectAllText?: string
+  deselectAllText?: string
+  addButtonText?: string
+}>()
 
 const emit = defineEmits([
   'toggle-panel',
@@ -150,19 +195,19 @@ watch(localSearchQuery, (value) => {
   emit('update:search-query', value)
 })
 
-const baseItems = computed(() => (Array.isArray(props.items) ? props.items : []))
+const baseItems = computed<ContentItem[]>(() => (Array.isArray(props.items) ? props.items : []))
 
-const mostUsedItems = computed(() => {
+const mostUsedItems = computed<ContentItem[]>(() => {
   const items = baseItems.value.slice(0, 10)
   const selectedExtras = baseItems.value.filter(
-    (item) =>
+    (item: ContentItem) =>
       localSelectedItems.value.includes(item?.id) &&
-      !items.some((baseItem) => baseItem?.id === item?.id)
+      !items.some((baseItem: ContentItem) => baseItem?.id === item?.id)
   )
   return [...items, ...selectedExtras]
 })
 
-const displayedItems = computed(() => {
+const displayedItems = computed<ContentItem[]>(() => {
   if (activeTab.value === 'search') {
     if (!localSearchQuery.value) {
       return []
@@ -176,16 +221,16 @@ const displayedItems = computed(() => {
 })
 
 const allDisplayedSelected = computed(() => {
-  const ids = displayedItems.value.map((item) => item?.id)
+  const ids = displayedItems.value.map((item: ContentItem) => item?.id)
   if (!ids.length) return false
   return ids.every((id) => localSelectedItems.value.includes(id))
 })
 
-const isItemSelected = (itemId) => {
+const isItemSelected = (itemId: string | number): boolean => {
   return localSelectedItems.value.includes(itemId)
 }
 
-const toggleItemSelection = (itemId) => {
+const toggleItemSelection = (itemId: string | number): void => {
   const index = localSelectedItems.value.indexOf(itemId)
   if (index > -1) {
     localSelectedItems.value.splice(index, 1)
@@ -195,8 +240,8 @@ const toggleItemSelection = (itemId) => {
   emit('update:selected-items', [...localSelectedItems.value])
 }
 
-const toggleSelectAll = () => {
-  const ids = displayedItems.value.map((item) => item?.id).filter(Boolean)
+const toggleSelectAll = (): void => {
+  const ids = displayedItems.value.map((item: ContentItem) => item?.id).filter(Boolean)
   if (!ids.length) return
 
   if (allDisplayedSelected.value) {

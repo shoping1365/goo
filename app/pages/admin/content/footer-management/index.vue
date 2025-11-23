@@ -115,7 +115,8 @@ v-if="showToast"
 <script setup>
 // تعریف متا صفحه
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 // متغیرهای reactive

@@ -58,16 +58,42 @@
             <td class="px-4 py-3 text-sm text-gray-600">{{ formatDate(item.created_at) }}</td>
             <td class="px-4 py-3">
               <div class="flex flex-wrap gap-2">
-                <button v-if="item.status==='pending'" class="px-3 py-1 text-sm bg-green-600 text-white rounded" @click="approve(item)">تایید</button>
-                <button v-if="item.status!=='rejected'" class="px-3 py-1 text-sm bg-red-600 text-white rounded" @click="reject(item)">رد</button>
-                <button class="px-3 py-1 text-sm bg-blue-600 text-white rounded" @click="reply(item)">پاسخ</button>
-                <button class="px-3 py-1 text-sm bg-gray-600 text-white rounded" @click="remove(item)">حذف</button>
+                <button v-if="item.status==='pending'" class="px-3 py-1 text-sm bg-green-600 text-white rounded" @click="approveReview(item)">تایید</button>
+                <button v-if="item.status!=='rejected'" class="px-3 py-1 text-sm bg-red-600 text-white rounded" @click="rejectReview(item)">رد</button>
+                <button class="px-3 py-1 text-sm bg-blue-600 text-white rounded" @click="openReplyForm(item)">پاسخ</button>
+                <button class="px-3 py-1 text-sm bg-gray-600 text-white rounded" @click="requestDeleteConfirmation(item)">حذف</button>
               </div>
             </td>
           </tr>
         </tbody>
       </table>
       <div v-if="!items.length" class="p-6 text-center text-gray-500">موردی یافت نشد</div>
+    </div>
+
+    <div v-if="replyContext.review" class="mt-6 border rounded-lg bg-white p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="text-lg font-semibold text-gray-900">ارسال پاسخ مدیر</h2>
+          <p class="text-sm text-gray-500">نظر انتخاب شده: {{ replyContext.review.product?.name || replyContext.review.id }}</p>
+        </div>
+        <button class="text-sm text-gray-500" @click="resetReplyForm">بستن</button>
+      </div>
+      <textarea v-model="replyContext.content" rows="4" class="w-full border rounded-md p-3" placeholder="متن پاسخ را وارد کنید"></textarea>
+      <div class="flex gap-3 mt-4">
+        <button class="px-4 py-2 rounded-md bg-blue-600 text-white disabled:opacity-50" :disabled="isReplySubmitDisabled" @click="submitReply">
+          ارسال پاسخ
+        </button>
+        <button class="px-4 py-2 rounded-md bg-gray-100 text-gray-700" @click="resetReplyForm">انصراف</button>
+      </div>
+    </div>
+
+    <div v-if="deleteContext.review" class="mt-6 border rounded-lg bg-white p-6">
+      <h2 class="text-lg font-semibold text-gray-900">تایید حذف نظر</h2>
+      <p class="text-sm text-gray-600 mt-2">آیا از حذف نظر مربوط به "{{ deleteContext.review.product?.name || deleteContext.review.id }}" مطمئن هستید؟</p>
+      <div class="flex gap-3 mt-4">
+        <button class="px-4 py-2 rounded-md bg-red-600 text-white disabled:opacity-50" :disabled="deleteContext.isSubmitting" @click="confirmDelete">حذف</button>
+        <button class="px-4 py-2 rounded-md bg-gray-100 text-gray-700" @click="resetDeleteContext">لغو</button>
+      </div>
     </div>
   </div>
   
@@ -78,62 +104,172 @@ declare const definePageMeta: (meta: { layout?: string; middleware?: string | st
 </script>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const items = ref<any[]>([])
-const filters = ref<{ status: string | number | ''; rating: string | number | ''; search: string }>({ status: '', rating: '', search: '' })
+interface ReviewProduct {
+  id?: number | string
+  name?: string
+  image?: string
+  thumbnail?: string
+}
 
+interface ReviewCustomer {
+  id?: number | string
+  name?: string
+}
+
+interface Review {
+  id?: number | string
+  status?: string
+  rating?: number
+  created_at?: string
+  admin_reply?: string
+  product?: ReviewProduct
+  customer?: ReviewCustomer
+  [key: string]: unknown
+}
+
+interface ReviewFilters {
+  status: string | number | ''
+  rating: string | number | ''
+  search: string
+}
+
+interface ReviewsResponse {
+  reviews?: Review[]
+  [key: string]: unknown
+}
+
+interface ReplyContextState {
+  review: Review | null
+  content: string
+  isSubmitting: boolean
+}
+
+interface DeleteContextState {
+  review: Review | null
+  isSubmitting: boolean
+}
+
+const items = ref<Review[]>([])
+const filters = ref<ReviewFilters>({ status: '', rating: '', search: '' })
+const replyContext = ref<ReplyContextState>({ review: null, content: '', isSubmitting: false })
+const deleteContext = ref<DeleteContextState>({ review: null, isSubmitting: false })
+
+/**
+ * این تابع تمام فیلترهای اعمال‌شده را به کوئری تبدیل کرده و فهرست نظرات را از سرور دریافت می‌کند.
+ */
 const fetchReviews = async () => {
   const params = new URLSearchParams()
   if (filters.value.status) params.append('status', String(filters.value.status))
   if (filters.value.rating) params.append('rating', String(filters.value.rating))
   if (filters.value.search) params.append('search', String(filters.value.search))
-  interface ReviewsResponse {
-    reviews?: Array<{
-      id?: number | string
-      [key: string]: unknown
-    }>
-    [key: string]: unknown
-  }
   const res = await $fetch<ReviewsResponse>('/api/admin/reviews?' + params.toString())
   items.value = res?.reviews || []
 }
 
-interface Review {
-  id?: number | string
-  [key: string]: unknown
-}
-const approve = async (row: Review) => {
+/**
+ * این تابع یک نظر را تایید کرده و پس از موفقیت، فهرست به‌روزرسانی می‌شود.
+ */
+const approveReview = async (row: Review) => {
   await $fetch(`/api/admin/reviews/${row.id}/approve`, { method: 'POST' })
-  fetchReviews()
+  await fetchReviews()
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const reject = async (row: any) => {
+/**
+ * این تابع یک نظر را با وضعیت رد به‌روز می‌کند.
+ */
+const rejectReview = async (row: Review) => {
   await $fetch(`/api/admin/reviews/${row.id}/reject`, { method: 'POST', body: { reason: '' } })
-  fetchReviews()
+  await fetchReviews()
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const reply = async (row: any) => {
-  const content = prompt('پاسخ مدیر:', row.admin_reply || '')
-  if (content == null) return
-  await $fetch(`/api/admin/reviews/${row.id}/reply`, { method: 'POST', body: { reply: content } })
-  fetchReviews()
+/**
+ * این تابع زمینه‌ی لازم برای نوشتن پاسخ را فعال می‌کند.
+ */
+const openReplyForm = (row: Review) => {
+  replyContext.value = {
+    review: row,
+    content: typeof row.admin_reply === 'string' ? row.admin_reply : '',
+    isSubmitting: false
+  }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const remove = async (row: any) => {
-  if (!confirm('حذف این نظر؟')) return
-  await $fetch(`/api/admin/reviews/${row.id}`, { method: 'DELETE' })
-  fetchReviews()
+/**
+ * این تابع فرم پاسخ را ریست می‌کند.
+ */
+const resetReplyForm = () => {
+  replyContext.value = { review: null, content: '', isSubmitting: false }
 }
 
+/**
+ * این تابع پاسخ مدیر را برای نظر انتخاب شده ارسال می‌کند.
+ */
+const submitReply = async () => {
+  if (!replyContext.value.review) return
+  const content = replyContext.value.content.trim()
+  if (!content) return
+  replyContext.value.isSubmitting = true
+  try {
+    await $fetch(`/api/admin/reviews/${replyContext.value.review.id}/reply`, {
+      method: 'POST',
+      body: { reply: content }
+    })
+    await fetchReviews()
+    resetReplyForm()
+  } finally {
+    replyContext.value.isSubmitting = false
+  }
+}
+
+/**
+ * این تابع درخواست حذف را برای تایید ثانویه ثبت می‌کند.
+ */
+const requestDeleteConfirmation = (row: Review) => {
+  deleteContext.value = { review: row, isSubmitting: false }
+}
+
+/**
+ * این تابع درخواست حذف را لغو می‌کند.
+ */
+const resetDeleteContext = () => {
+  deleteContext.value = { review: null, isSubmitting: false }
+}
+
+/**
+ * این تابع حذف قطعی نظر را انجام می‌دهد.
+ */
+const confirmDelete = async () => {
+  if (!deleteContext.value.review) return
+  deleteContext.value.isSubmitting = true
+  try {
+    await $fetch(`/api/admin/reviews/${deleteContext.value.review.id}`, { method: 'DELETE' })
+    await fetchReviews()
+    resetDeleteContext()
+  } finally {
+    deleteContext.value.isSubmitting = false
+  }
+}
+
+const isReplySubmitDisabled = computed(() => {
+  return replyContext.value.isSubmitting || !replyContext.value.content.trim()
+})
+
+/**
+ * این تابع تاریخ ذخیره شده را به فرمت شمسی نمایش می‌دهد.
+ */
 const formatDate = (d: string) => new Date(d).toLocaleDateString('fa-IR')
+
+/**
+ * این تابع کلاس‌های نمایشی وضعیت را بازمی‌گرداند.
+ */
 const statusClass = (s: string) => s === 'approved' ? 'bg-green-100 text-green-700' : s === 'rejected' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'
+
+/**
+ * این تابع وضعیت قابل خواندن برای مدیر را تامین می‌کند.
+ */
 const humanStatus = (s: string) => s === 'approved' ? 'تایید شده' : s === 'rejected' ? 'رد شده' : 'در انتظار'
 
 onMounted(fetchReviews)

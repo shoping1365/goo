@@ -93,11 +93,12 @@ import AddMenuItemsPanel from "../components/AddMenuItemsPanel.vue"
 import MenuPreview from "../components/MenuPreview.vue"
 
 // Declare Nuxt auto-imports for TypeScript
-declare const definePageMeta: (meta: { layout: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 declare const navigateTo: (to: string | { path: string }) => Promise<void> | void
 
 definePageMeta({
-  layout: "admin-main"
+  layout: "admin-main",
+  middleware: 'admin'
 })
 
 const { currentMenu, isSaving, pages, posts, categories, productCategories, saveMenu, addMenuItem, handleDropItem, initializeContent, refreshContent, fetchMenu, generateSlug, registerDeletedMenuBranch } = useMenuManagement()

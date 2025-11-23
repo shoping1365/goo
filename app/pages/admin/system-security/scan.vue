@@ -182,7 +182,7 @@
 
 <script setup>
 import TemplateCard from '@/components/common/TemplateCard.vue'
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
 // Auth disabled

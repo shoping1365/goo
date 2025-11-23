@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isOpen" class="fixed inset-0 z-50 overflow-y-auto">
+  <div v-if="isOpen && hasAccess" class="fixed inset-0 z-50 overflow-y-auto">
     <!-- Backdrop -->
     <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" @click="closeModal"></div>
     
@@ -337,6 +337,8 @@
 </template>
 
 <script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+
 // تعریف interface ها
 interface ApiResponse<T> {
   data?: T
@@ -379,8 +381,44 @@ export default {
 </script>
 
 <script setup lang="ts">
-import PersianDateFormatter from '@/components/common/PersianDateFormatter.vue'
-import { computed, ref, watch } from 'vue'
+import PersianDateFormatter from '@/components/common/PersianDateFormatter.vue';
+import { computed, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth()
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || ''
+  const adminRoles = ['admin', 'developer']
+  return adminRoles.includes(userRole)
+})
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async () => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false })
+  }
+}
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth()
+  }
+})
+
+// بررسی احراز هویت هنگام باز شدن modal
+watch(() => props.isOpen, async (newValue) => {
+  if (newValue) {
+    await checkAuth()
+  }
+})
 
 const props = defineProps({
   isOpen: {

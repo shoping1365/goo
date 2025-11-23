@@ -237,7 +237,7 @@
 </template>
 
 <script lang="ts">
-declare const definePageMeta: (meta: { layout?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 declare const useAuth: () => { user: { id?: number; name?: string; email?: string } | null; hasPermission: (perm: string) => boolean }
 declare const $fetch: <T = unknown>(url: string, options?: { method?: string; body?: unknown }) => Promise<T>
 </script>
@@ -246,7 +246,7 @@ declare const $fetch: <T = unknown>(url: string, options?: { method?: string; bo
 import TemplateCard from '@/components/common/TemplateCard.vue';
 import { onMounted, ref } from 'vue';
 
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 // استفاده از کامپوزابل احراز هویت
 // Auth disabled

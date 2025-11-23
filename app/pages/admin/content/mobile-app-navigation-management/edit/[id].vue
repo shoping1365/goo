@@ -226,7 +226,8 @@ import MobileNavigationPreview from '~/components/widgets/MobileNavigationPrevie
 
 // Meta
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها

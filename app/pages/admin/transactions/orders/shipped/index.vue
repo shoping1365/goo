@@ -74,22 +74,18 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+declare const useHead: (head: { title?: string; meta?: Array<{ name?: string; content?: string }> }) => void
+declare const $fetch: <T = unknown>(url: string, options?: { method?: string; headers?: Record<string, string> }) => Promise<T>
 </script>
 
-<script setup>
-definePageMeta({ layout: 'admin-main', middleware: 'admin' });
-
-// Import کامپوننت‌ها
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import ShippedAdvancedFilters from './ShippedAdvancedFilters.vue'
 import ShippedDashboard from './ShippedDashboard.vue'
 import ShippedOrdersTable from './ShippedOrdersTable.vue'
 import ShippedReports from './ShippedReports.vue'
 
-// تعریف متا صفحه
-definePageMeta({
-  layout: 'admin-main',
-  middleware: 'admin'
-})
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 // تب‌های صفحه
 const tabs = ref([
@@ -110,13 +106,95 @@ onMounted(async () => {
   filteredOrders.value = [...orders.value]
 })
 
+// Interface برای shipping method
+interface ShippingMethod {
+  shipping_method?: string
+  count?: number
+  percentage?: number
+  color?: string
+}
+
+// Interface برای stats
+interface Stats {
+  totalShipped?: number
+  delivered?: number
+  inTransit?: number
+  totalAmount?: number
+  deliverySuccessRate?: number
+  avgDeliveryTime?: number
+  shippingMethods?: Record<string, ShippingMethod>
+}
+
+// Interface برای response API stats
+interface StatsResponse {
+  data?: {
+    totalShipped?: number
+    delivered?: number
+    inTransit?: number
+    todaySales?: number
+    weeklySales?: number
+    monthlySales?: number
+    deliverySuccessRate?: number
+    avgDeliveryTime?: number
+    shippingMethods?: Array<{
+      shipping_method?: string
+      count?: number
+      percentage?: number
+    }>
+  }
+}
+
+// Interface برای order از API
+interface Order {
+  id?: number | string
+  orderNumber?: string
+  customerName?: string
+  customerPhone?: string
+  totalAmount?: number
+  createdAt?: string | number | Date
+  shippingMethod?: string
+  trackingCode?: string
+  status?: string
+  carrier?: string
+  deliveredAt?: string | number | Date | null
+  region?: string
+  packageType?: string
+  priority?: string
+  trackingStatus?: string
+  [key: string]: unknown
+}
+
+// Interface برای order در فرمت نمایش
+interface OrderDisplay {
+  id: number | string
+  orderNumber: string
+  customerName: string
+  customerPhone: string
+  totalAmount: number
+  shippedAt: string
+  shippingMethod: string
+  trackingNumber: string
+  status: string
+  carrier?: string
+  deliveredAt?: string | null
+  region?: string
+  packageType?: string
+  priority?: string
+  trackingStatus?: string
+}
+
+// Interface برای response API orders
+interface OrdersResponse {
+  data?: Order[]
+}
+
 // داده‌های واقعی از API
-const stats = ref({})
-const orders = ref([])
+const stats = ref<Stats>({})
+const orders = ref<OrderDisplay[]>([])
 
 // متغیرهای مدیریت وضعیت بارگذاری
 const loading = ref(false)
-const error = ref(null)
+const error = ref<string | null>(null)
 
 // تابع دریافت داده‌های آمار
 const fetchStats = async () => {
@@ -124,29 +202,23 @@ const fetchStats = async () => {
     loading.value = true
     error.value = null
 
-    const { data } = await $fetch('/api/admin/orders/shipped/stats', {
+    const response = await $fetch<StatsResponse>('/api/admin/orders/shipped/stats', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       }
     })
 
-    // تبدیل داده‌های API به فرمت مورد نیاز کامپوننت
-    stats.value = {
-      totalShipped: data.totalShipped || 0,
-      delivered: data.delivered || 0,
-      inTransit: data.inTransit || 0,
-      totalAmount: (data.todaySales || 0) + (data.weeklySales || 0) + (data.monthlySales || 0),
-      deliverySuccessRate: data.deliverySuccessRate || 0,
-      avgDeliveryTime: data.avgDeliveryTime || 0,
-      shippingMethods: {}
-    }
+    const data = response?.data
 
+    // تبدیل داده‌های API به فرمت مورد نیاز کامپوننت
+    const shippingMethodsMap: Record<string, ShippingMethod> = {}
+    
     // تبدیل shippingMethods به فرمت مورد نیاز
-    if (data.shippingMethods && Array.isArray(data.shippingMethods)) {
+    if (data?.shippingMethods && Array.isArray(data.shippingMethods)) {
       data.shippingMethods.forEach(method => {
         if (method && method.shipping_method) {
-          stats.value.shippingMethods[method.shipping_method] = {
+          shippingMethodsMap[method.shipping_method] = {
             count: method.count || 0,
             percentage: method.percentage || 0,
             color: '#3B82F6' // رنگ پیش‌فرض
@@ -158,16 +230,29 @@ const fetchStats = async () => {
     // تنظیم رنگ‌های مختلف برای شرکت‌های حمل و نقل
     const colors = ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#6B7280']
     let colorIndex = 0
-    Object.keys(stats.value.shippingMethods || {}).forEach(method => {
-      if (stats.value.shippingMethods && stats.value.shippingMethods[method] && !stats.value.shippingMethods[method].color) {
-        stats.value.shippingMethods[method].color = colors[colorIndex % colors.length]
+    Object.keys(shippingMethodsMap).forEach(method => {
+      if (shippingMethodsMap[method] && !shippingMethodsMap[method].color) {
+        shippingMethodsMap[method].color = colors[colorIndex % colors.length]
         colorIndex++
       }
     })
 
+    stats.value = {
+      totalShipped: data?.totalShipped || 0,
+      delivered: data?.delivered || 0,
+      inTransit: data?.inTransit || 0,
+      totalAmount: (data?.todaySales || 0) + (data?.weeklySales || 0) + (data?.monthlySales || 0),
+      deliverySuccessRate: data?.deliverySuccessRate || 0,
+      avgDeliveryTime: data?.avgDeliveryTime || 0,
+      shippingMethods: shippingMethodsMap
+    }
+
   } catch (err) {
     console.error('خطا در دریافت آمار:', err)
-    error.value = err.message || 'خطا در دریافت آمار'
+    const errorMessage = err instanceof Error ? err.message : 'خطا در دریافت آمار'
+    error.value = errorMessage
+  } finally {
+    loading.value = false
   }
 }
 
@@ -177,28 +262,50 @@ const fetchOrders = async () => {
     loading.value = true
     error.value = null
 
-    const { data } = await $fetch('/api/admin/orders/shipped', {
+    const response = await $fetch<OrdersResponse>('/api/admin/orders/shipped', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       }
     })
 
-    orders.value = (data || []).map(order => ({
-      id: order.id || 0,
-      orderNumber: order.orderNumber || 'نامشخص',
-      customerName: order.customerName || 'نامشخص',
-      customerPhone: order.customerPhone || 'نامشخص',
-      totalAmount: order.totalAmount || 0,
-      shippedAt: order.createdAt ? new Date(order.createdAt).toLocaleDateString('fa-IR') : 'نامشخص',
-      shippingMethod: order.shippingMethod || 'نامشخص',
-      trackingNumber: order.trackingCode || order.orderNumber || 'نامشخص',
-      status: order.status || 'نامشخص'
-    }))
+    const data = response?.data || []
+
+    orders.value = data.map((order): OrderDisplay => {
+      const createdAt = order.createdAt
+      const shippedAtString = createdAt 
+        ? (typeof createdAt === 'string' || typeof createdAt === 'number' || createdAt instanceof Date
+          ? new Date(createdAt).toLocaleDateString('fa-IR')
+          : 'نامشخص')
+        : 'نامشخص'
+      
+      return {
+        id: order.id || 0,
+        orderNumber: typeof order.orderNumber === 'string' ? order.orderNumber : 'نامشخص',
+        customerName: typeof order.customerName === 'string' ? order.customerName : 'نامشخص',
+        customerPhone: typeof order.customerPhone === 'string' ? order.customerPhone : 'نامشخص',
+        totalAmount: typeof order.totalAmount === 'number' ? order.totalAmount : 0,
+        shippedAt: shippedAtString,
+        shippingMethod: typeof order.shippingMethod === 'string' ? order.shippingMethod : 'نامشخص',
+        trackingNumber: typeof order.trackingCode === 'string' ? order.trackingCode : (typeof order.orderNumber === 'string' ? order.orderNumber : 'نامشخص'),
+        status: typeof order.status === 'string' ? order.status : 'نامشخص',
+        carrier: typeof order.carrier === 'string' ? order.carrier : undefined,
+        deliveredAt: order.deliveredAt 
+          ? (typeof order.deliveredAt === 'string' || typeof order.deliveredAt === 'number' || order.deliveredAt instanceof Date
+            ? new Date(order.deliveredAt).toLocaleDateString('fa-IR')
+            : null)
+          : null,
+        region: typeof order.region === 'string' ? order.region : undefined,
+        packageType: typeof order.packageType === 'string' ? order.packageType : undefined,
+        priority: typeof order.priority === 'string' ? order.priority : undefined,
+        trackingStatus: typeof order.trackingStatus === 'string' ? order.trackingStatus : undefined
+      }
+    })
 
   } catch (err) {
     console.error('خطا در دریافت سفارشات:', err)
-    error.value = err.message || 'خطا در دریافت سفارشات'
+    const errorMessage = err instanceof Error ? err.message : 'خطا در دریافت سفارشات'
+    error.value = errorMessage
   } finally {
     loading.value = false
   }
@@ -244,18 +351,52 @@ const handleAdvancedFilter = (filters) => {
   
   // فیلتر تاریخ ارسال
   if (filters.shippedFrom) {
-    filtered = filtered.filter(order => new Date(order.shippedAt) >= new Date(filters.shippedFrom))
+    filtered = filtered.filter(order => {
+      try {
+        const orderDate = new Date(order.shippedAt)
+        const filterDate = new Date(filters.shippedFrom)
+        return !isNaN(orderDate.getTime()) && !isNaN(filterDate.getTime()) && orderDate >= filterDate
+      } catch {
+        return false
+      }
+    })
   }
   if (filters.shippedTo) {
-    filtered = filtered.filter(order => new Date(order.shippedAt) <= new Date(filters.shippedTo))
+    filtered = filtered.filter(order => {
+      try {
+        const orderDate = new Date(order.shippedAt)
+        const filterDate = new Date(filters.shippedTo)
+        return !isNaN(orderDate.getTime()) && !isNaN(filterDate.getTime()) && orderDate <= filterDate
+      } catch {
+        return false
+      }
+    })
   }
-  
+
   // فیلتر تاریخ تحویل
   if (filters.deliveredFrom) {
-    filtered = filtered.filter(order => order.deliveredAt && new Date(order.deliveredAt) >= new Date(filters.deliveredFrom))
+    filtered = filtered.filter(order => {
+      if (!order.deliveredAt) return false
+      try {
+        const orderDate = new Date(order.deliveredAt)
+        const filterDate = new Date(filters.deliveredFrom)
+        return !isNaN(orderDate.getTime()) && !isNaN(filterDate.getTime()) && orderDate >= filterDate
+      } catch {
+        return false
+      }
+    })
   }
   if (filters.deliveredTo) {
-    filtered = filtered.filter(order => order.deliveredAt && new Date(order.deliveredAt) <= new Date(filters.deliveredTo))
+    filtered = filtered.filter(order => {
+      if (!order.deliveredAt) return false
+      try {
+        const orderDate = new Date(order.deliveredAt)
+        const filterDate = new Date(filters.deliveredTo)
+        return !isNaN(orderDate.getTime()) && !isNaN(filterDate.getTime()) && orderDate <= filterDate
+      } catch {
+        return false
+      }
+    })
   }
   
   // فیلتر منطقه

@@ -1,5 +1,5 @@
 <template>
-  <button class="mobile-nav-item" @click="toggleDarkMode">
+  <button v-if="hasAccess" class="mobile-nav-item" @click="toggleDarkMode">
     <svg v-if="isDark" class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
     </svg>
@@ -10,9 +10,47 @@
   </button>
 </template>
 
-<script setup>
-// آیتم ناوبری موبایل - حالت تاریک
-// این کامپوننت برای نمایش آیتم تغییر تم در ناوبری پایین موبایل استفاده می‌شود
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer'];
+  return adminRoles.includes(userRole);
+});
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false });
+  }
+};
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth();
+  isDark.value = document.documentElement.classList.contains('dark')
+});
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth();
+  }
+});
 
 const isDark = ref(false)
 
@@ -29,10 +67,6 @@ const toggleDarkMode = () => {
   }
 }
 
-// بررسی حالت اولیه
-onMounted(() => {
-  isDark.value = document.documentElement.classList.contains('dark')
-})
 </script>
 
 <style scoped>

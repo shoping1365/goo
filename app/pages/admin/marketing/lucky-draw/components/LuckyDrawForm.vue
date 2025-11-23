@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+  <div v-if="hasAccess" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
     <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
       <div class="mt-3">
         <!-- هدر مودال -->
@@ -187,19 +187,74 @@
   </div>
 </template>
 
-<script setup>
-const props = defineProps({
-  luckyDraw: {
-    type: Object,
-    default: null
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
   }
-})
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer'];
+  return adminRoles.includes(userRole);
+});
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false });
+  }
+};
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth();
+});
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth();
+  }
+});
+
+// تعریف interface برای LuckyDraw
+interface LuckyDraw {
+  id?: number | string
+  name: string
+  description: string
+  type: string
+  startDate: string
+  endDate: string
+  prizeCount: number
+  maxParticipants: number | null
+  participants?: number
+  requirePurchase: boolean
+  minPurchaseAmount: number
+  requireRegistration: boolean
+  oneEntryPerUser: boolean
+  status: string
+}
+
+const props = defineProps<{
+  luckyDraw?: LuckyDraw | null
+}>()
 
 const emit = defineEmits(['close', 'saved'])
 
 // متغیرهای reactive
 const isSaving = ref(false)
-const form = ref({
+const form = ref<LuckyDraw>({
   name: '',
   description: '',
   type: '',
@@ -220,7 +275,7 @@ const isEditing = computed(() => !!props.luckyDraw)
 // تنظیم مقادیر اولیه
 onMounted(() => {
   if (props.luckyDraw) {
-    form.value = { ...props.luckyDraw }
+    form.value = { ...props.luckyDraw } as LuckyDraw
   } else {
     // تنظیم تاریخ‌های پیش‌فرض
     const today = new Date()
@@ -247,9 +302,8 @@ const saveLuckyDraw = async () => {
     }
     
     emit('saved', savedData)
-  } catch (error) {
-    console.error('خطا در ذخیره گرونه:', error)
-    alert('خطا در ذخیره گرونه')
+  } catch (_error) {
+    // TODO: نمایش پیام خطا با toast
   } finally {
     isSaving.value = false
   }

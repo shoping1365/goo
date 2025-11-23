@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts">
-declare const definePageMeta: (meta: { layout?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 declare const useFetch: <T = unknown>(url: string, options?: { key?: string; server?: boolean; default?: () => T; swr?: boolean; query?: Record<string, string | number>; method?: string; body?: unknown; credentials?: string }) => { data: { value: T }; pending: { value: boolean }; error: { value: Error | null }; refresh: () => Promise<void> }
 </script>
 
@@ -60,7 +60,7 @@ declare const useFetch: <T = unknown>(url: string, options?: { key?: string; ser
 import { reactive, ref } from 'vue';
 
 // meta
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها
 // Auth disabled

@@ -355,7 +355,8 @@ interface MediaFile {
 }
 
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 useHead({

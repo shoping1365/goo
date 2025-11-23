@@ -162,13 +162,9 @@
 declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 </script>
 
-<script setup>
+<script setup lang="ts">
 import { nextTick, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-
-definePageMeta({ layout: 'admin-main', middleware: 'admin' });
-
-// Import کامپوننت‌ها
 import AdvancedLogistics from './components/AdvancedLogistics.vue'
 import CustomerInfo from './components/CustomerInfo.vue'
 import Invoice from './components/Invoice.vue'
@@ -183,12 +179,10 @@ import SupportCommunication from './components/SupportCommunication.vue'
 import TaxAccounting from './components/TaxAccounting.vue'
 import WalletGiftCard from './components/WalletGiftCard.vue'
 
-definePageMeta({
-  layout: 'admin-main'
-})
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 const route = useRoute()
-const orderId = route.params.id
+const orderId = typeof route.params.id === 'string' ? route.params.id : Array.isArray(route.params.id) ? route.params.id[0] : String(route.params.id || '')
 
 // تب فعال
 const activeTab = ref('summary')
@@ -837,11 +831,29 @@ const checkScrollButtons = () => {
   canScrollRight.value = container.scrollLeft < (container.scrollWidth - container.clientWidth)
 }
 
+// Interface برای اطلاعات سفارش
+interface OrderInfo {
+  status?: string
+  paymentStatus?: string
+  paymentMethod?: string
+  customerName?: string
+  customerPhone?: string
+  totalAmount?: number
+  [key: string]: unknown
+}
+
+// Interface برای پاسخ API
+interface OrderResponse {
+  success?: boolean
+  data?: OrderInfo
+  [key: string]: unknown
+}
+
 // دریافت اطلاعات سفارش از API
 const fetchOrderData = async () => {
   try {
     // دریافت اطلاعات سفارش از API
-    const response = await $fetch(`/api/admin/orders/${orderId}`)
+    const response = await $fetch<OrderResponse>(`/api/admin/orders/${orderId}`)
     
     if (response && response.success && response.data) {
       const orderInfo = response.data
@@ -855,15 +867,19 @@ const fetchOrderData = async () => {
       if (orderInfo.customerName) {
         orderData.value.customer.name = orderInfo.customerName
       }
-      if (orderInfo.customerPhone) {
+      if (orderInfo.customerPhone && typeof orderInfo.customerPhone === 'string') {
         orderData.value.customer.phone = orderInfo.customerPhone
       }
       
       // به‌روزرسانی مبلغ کل
-      if (orderInfo.totalAmount) {
-        orderData.value.items.forEach(item => {
-          item.totalPrice = orderInfo.totalAmount / orderData.value.items.length
-        })
+      if (orderInfo.totalAmount && typeof orderInfo.totalAmount === 'number') {
+        const itemCount = orderData.value.items.length
+        if (itemCount > 0) {
+          const pricePerItem = orderInfo.totalAmount / itemCount
+          orderData.value.items.forEach(item => {
+            item.totalPrice = pricePerItem
+          })
+        }
       }
     }
   } catch {

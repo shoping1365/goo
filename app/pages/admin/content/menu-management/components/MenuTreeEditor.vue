@@ -1,5 +1,5 @@
 <template>
-  <div class="menu-tree-editor bg-white rounded-lg shadow-md p-3 text-xs">
+  <div v-if="hasAccess" class="menu-tree-editor bg-white rounded-lg shadow-md p-3 text-xs">
     <div class="font-bold text-gray-700 text-center border-b pb-2 mb-2">ساختار منو</div>
     <div v-if="items.length === 0" class="text-center text-gray-400 py-8">
       <i class="fas fa-list-ul text-2xl mb-2"></i>
@@ -23,9 +23,47 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
 import MenuTreeNode from './MenuTreeNode.vue'
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer'];
+  return adminRoles.includes(userRole);
+});
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false });
+  }
+};
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth();
+});
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth();
+  }
+});
 
 interface MenuItem {
   id: string | number

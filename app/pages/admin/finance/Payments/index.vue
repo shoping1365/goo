@@ -130,8 +130,8 @@ import PaymentsCustomers from './PaymentsCustomers.vue'
 
 // تعریف متا برای صفحه
 definePageMeta({
-  layout: 'admin-main',
-  middleware: 'admin'
+  middleware: 'admin',
+  layout: 'admin-main'
 })
 
 // تب‌های صفحه

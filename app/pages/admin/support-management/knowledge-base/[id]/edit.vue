@@ -228,9 +228,13 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+declare const navigateTo: (to: string) => Promise<void>
 </script>
 
-<script setup>
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+
 definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 // دریافت پارامترهای URL

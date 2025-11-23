@@ -154,7 +154,8 @@ import { useRouter } from 'vue-router';
 import { definePageMeta } from '#imports';
 
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 interface Item {

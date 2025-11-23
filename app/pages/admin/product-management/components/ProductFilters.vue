@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden mb-6">
+  <div v-if="hasAccess" class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden mb-6">
     <!-- Header -->
     <div class="bg-gradient-to-r from-indigo-50 to-purple-50 px-4 py-3 border-b border-gray-200">
       <div class="flex items-center justify-between">
@@ -141,9 +141,42 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { useAuth } from '~/composables/useAuth'
 import SearchableSelect from '~/components/admin/common/SearchableSelect.vue'
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth()
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || ''
+  const adminRoles = ['admin', 'developer']
+  return adminRoles.includes(userRole)
+})
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async () => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false })
+  }
+}
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth()
+  }
+})
 
 const emit = defineEmits(['filtersChanged'])
 
@@ -251,8 +284,13 @@ const clearAllFilters = () => {
   onFilterChange()
 }
 
-// Load data on mount
+// Load data on mount and check auth
 onMounted(async () => {
+  await checkAuth()
+  if (!hasAccess.value) {
+    return
+  }
+
   isLoading.value = true
   try {
     await Promise.all([

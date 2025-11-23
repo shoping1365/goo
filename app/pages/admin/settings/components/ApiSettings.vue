@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-8">
+  <div v-if="hasAccess" class="space-y-8">
     <!-- هدر بخش -->
     <div class="relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-2xl p-8">
       <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-200/30 to-purple-200/30 rounded-full -translate-y-16 translate-x-16"></div>
@@ -367,39 +367,66 @@
   </div>
 </template>
 
-<script setup>
-import { ref, watch } from 'vue'
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
 
-const props = defineProps({
-  openAISettings: {
-    type: Object,
-    required: true
-  },
-  availableModels: {
-    type: Array,
-    required: true
-  },
-  sectionConfigs: {
-    type: Object,
-    required: true
-  },
-  showApiKey: {
-    type: Boolean,
-    default: false
-  },
-  fetchingUsage: {
-    type: Boolean,
-    default: false
-  },
-  testingConnection: {
-    type: Boolean,
-    default: false
-  },
-  savingApi: {
-    type: Boolean,
-    default: false
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
   }
-})
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer'];
+  return adminRoles.includes(userRole);
+});
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false });
+  }
+};
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth();
+});
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth();
+  }
+});
+
+interface ApiModel {
+  id: string | number
+  name: string
+  description: string
+  category: string
+  cost_per_1k: string
+  max_tokens: number
+  is_active: boolean
+}
+
+const props = defineProps<{
+  openAISettings: Record<string, unknown>
+  availableModels: ApiModel[]
+  sectionConfigs: Record<string, unknown>
+  showApiKey: boolean
+  fetchingUsage: boolean
+  testingConnection: boolean
+  savingApi: boolean
+}>()
 
 const emit = defineEmits(['save', 'reset', 'testConnection', 'fetchUsage', 'toggleApiKey', 'addConsumingPage', 'removeConsumingPage', 'update:openAISettings', 'update:sectionConfigs'])
 
@@ -449,11 +476,11 @@ const addConsumingPage = () => {
   emit('addConsumingPage')
 }
 
-const removeConsumingPage = (index) => {
+const removeConsumingPage = (index: number): void => {
   emit('removeConsumingPage', index)
 }
 
-const getModelStatusClass = (isActive) => {
+const getModelStatusClass = (isActive: boolean): string => {
   return isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
 }
 </script>

@@ -205,9 +205,12 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+declare const navigateTo: (to: string) => Promise<void>
 </script>
 
-<script setup>
+<script setup lang="ts">
+import { ref } from 'vue'
+
 definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 // تب فعال

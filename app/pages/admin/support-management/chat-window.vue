@@ -43,7 +43,7 @@
 declare const definePageMeta: (meta: { layout?: string | false; middleware?: string | string[] }) => void
 </script>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 // استفاده از auto-import Nuxt: کامپوننت‌های پوشه components/admin/chat با پیشوند AdminChat*
 

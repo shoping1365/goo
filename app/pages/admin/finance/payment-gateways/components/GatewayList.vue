@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-lg shadow-sm border border-gray-200 bg-white">
+  <div v-if="hasAccess" class="rounded-lg shadow-sm border border-gray-200 bg-white">
     <!-- Header -->
     <div class="px-16 py-10 border-b border-gray-200 bg-white shadow-sm">
       <div class="flex items-center justify-between">
@@ -351,11 +351,49 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import TemplateButton from '~/components/common/TemplateButton.vue'
+import { useAuth } from '~/composables/useAuth'
 import GatewayTransactionSummary from './GatewayTransactionSummary.vue'
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer'];
+  return adminRoles.includes(userRole);
+});
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false });
+  }
+};
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth();
+});
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth();
+  }
+});
 
 // Types
 interface PaymentGateway {

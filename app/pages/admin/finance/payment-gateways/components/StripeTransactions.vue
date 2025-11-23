@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow-md p-6">
+  <div v-if="hasAccess" class="bg-white rounded-lg shadow-md p-6">
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-xl font-bold text-gray-800">تراکنش‌های درگاه استرایپ</h2>
       <div class="flex items-center space-x-2 space-x-reverse">
@@ -90,7 +90,7 @@
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
-          <tr v-for="transaction in transactions" :key="transaction.id" class="hover:bg-gray-50">
+          <tr v-for="transaction in transactions" :key="transaction.id || transaction.payment_intent_id" class="hover:bg-gray-50">
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
               {{ transaction.payment_intent_id }}
             </td>
@@ -203,8 +203,49 @@
   </div>
 </template>
 
-<script setup>
-const { $toast } = useNuxtApp()
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+import { useToast } from '~/composables/useToast';
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer'];
+  return adminRoles.includes(userRole);
+});
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false });
+  }
+};
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth();
+});
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth();
+  }
+});
+
+const $toast = useToast()
 
 // Reactive data
 const transactions = ref([])
@@ -233,21 +274,44 @@ onMounted(async () => {
 const loadTransactions = async () => {
   loading.value = true
   try {
+    interface Transaction {
+      id?: string | number
+      payment_intent_id?: string
+      amount?: number
+      status?: string
+      [key: string]: unknown
+    }
+    interface TransactionsData {
+      transactions: Transaction[]
+      pagination: {
+        current_page: number
+        total_pages: number
+        total: number
+        from: number
+        to: number
+      }
+    }
+    interface ApiResponse {
+      success?: boolean
+      data?: TransactionsData
+    }
     const query = {
       page: pagination.value.current_page,
       ...filters.value
     }
     
-    const response = await $fetch('/api/admin/payment-gateways/stripe.transactions.get', {
+    const response = await $fetch<ApiResponse>('/api/admin/payment-gateways/stripe.transactions.get', {
       query
     })
     
-    if (response.success) {
+    if (response.success && response.data) {
       transactions.value = response.data.transactions
       pagination.value = response.data.pagination
     }
   } catch (_error) {
-    $toast.error('خطا در بارگذاری تراکنش‌ها')
+    if ($toast && typeof $toast.showError === 'function') {
+      $toast.showError('خطا در بارگذاری تراکنش‌ها')
+    }
   } finally {
     loading.value = false
   }
@@ -275,13 +339,17 @@ const viewTransaction = (transaction) => {
 }
 
 // Refund transaction
-const refundTransaction = async (transaction) => {
+const refundTransaction = async (transaction: { payment_intent_id?: string; amount?: number }) => {
   if (!confirm('آیا از بازگشت وجه این تراکنش اطمینان دارید؟')) {
     return
   }
   
   try {
-    const response = await $fetch('/api/admin/payment-gateways/stripe.refund.post', {
+    interface ApiResponse {
+      success?: boolean
+      message?: string
+    }
+    const response = await $fetch<ApiResponse>('/api/admin/payment-gateways/stripe.refund.post', {
       method: 'POST',
       body: {
         payment_intent_id: transaction.payment_intent_id,
@@ -290,13 +358,19 @@ const refundTransaction = async (transaction) => {
     })
     
     if (response.success) {
-      $toast.success('بازگشت وجه با موفقیت انجام شد')
+      if ($toast && typeof $toast.showSuccess === 'function') {
+        $toast.showSuccess('بازگشت وجه با موفقیت انجام شد')
+      }
       loadTransactions()
     } else {
-      $toast.error(response.message || 'خطا در بازگشت وجه')
+      if ($toast && typeof $toast.showError === 'function') {
+        $toast.showError(response.message || 'خطا در بازگشت وجه')
+      }
     }
   } catch (_error) {
-    $toast.error('خطا در بازگشت وجه')
+    if ($toast && typeof $toast.showError === 'function') {
+      $toast.showError('خطا در بازگشت وجه')
+    }
   }
 }
 

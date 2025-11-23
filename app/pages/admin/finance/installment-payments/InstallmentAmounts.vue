@@ -165,10 +165,7 @@ declare const definePageMeta: (meta: { layout?: string; middleware?: string | st
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-// تعریف navigateTo برای Nuxt 3
-declare const _navigateTo: (to: string) => Promise<void>
-
-definePageMeta({ layout: 'admin-main', middleware: 'admin' });
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 const router = useRouter()
 

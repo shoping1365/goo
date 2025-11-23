@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow-lg p-6">
+  <div v-if="hasAccess" class="bg-white rounded-lg shadow-lg p-6">
     <div class="flex items-center justify-between mb-6">
       <div class="flex items-center space-x-3 space-x-reverse">
         <div class="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -187,15 +187,46 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
 
-// Type declaration for Nuxt 4 auto-imported functions
-declare const definePageMeta: (meta: { layout?: string }) => void
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
 
-definePageMeta({
-  layout: 'admin-main'
-})
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer'];
+  return adminRoles.includes(userRole);
+});
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false });
+  }
+};
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth();
+});
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth();
+  }
+});
 
 // متغیرهای reactive
 const loading = ref(false)

@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-6">
+  <div v-if="hasAccess" class="space-y-6">
     <!-- آمار کلی -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gapx-4 py-4">
       <!-- کل سفارشات مرجوع شده -->
@@ -321,26 +321,76 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
+<script setup lang="ts">
 // Import کامپوننت‌ها
+import { computed, onMounted, ref, watch } from 'vue'
 import Pagination from '~/components/admin/common/Pagination.vue'
 import OrderDetailsModal from '~/components/admin/modals/OrderDetailsModal.vue'
+import { useAuth } from '~/composables/useAuth'
 
-// Props
-const props = defineProps({
-  stats: {
-    type: Object,
-    default: () => ({
-      totalReturned: 0,
-      pendingReview: 0,
-      approved: 0
-    })
-  },
-  orders: {
-    type: Array,
-    default: () => []
+// احراز هویت
+const { user, isAuthenticated } = useAuth()
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || ''
+  const adminRoles = ['admin', 'developer']
+  return adminRoles.includes(userRole)
+})
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async () => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false })
+  }
+}
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth()
+})
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth()
   }
 })
+
+// Props
+interface ReturnedOrder {
+  id: string | number
+  orderNumber: string
+  customerName: string
+  customerPhone: string
+  totalAmount: number
+  reason: string
+  status: string
+}
+
+interface ShippingMethod {
+  count: number
+  percentage: number
+  color: string
+}
+
+const props = defineProps<{
+  stats: {
+    totalReturned: number
+    pendingReview: number
+    approved: number
+    shippingMethods?: Record<string, ShippingMethod>
+  }
+  orders: ReturnedOrder[]
+}>()
 
 // دوره‌های نمودار
 const chartPeriods = ref([

@@ -425,7 +425,8 @@ import MinimalTemplate from '../templates/minimal-template.vue'
 
 // @ts-ignore
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 const router = useRouter()

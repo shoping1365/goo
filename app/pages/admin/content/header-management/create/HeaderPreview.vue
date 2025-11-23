@@ -1,5 +1,5 @@
 <template>
-  <div class="preview-section" :class="{ 'full-width': isEditing }">
+  <div v-if="hasAccess" class="preview-section" :class="{ 'full-width': isEditing }">
     <div class="header-info">
       <div class="header-form-row">
       </div>
@@ -280,9 +280,48 @@
     </div>
   </div>
 </template>
-<script setup lang="ts">import type { Ref } from 'vue';
-import { computed, inject, nextTick, onUnmounted, ref } from 'vue';
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
+<script setup lang="ts">
+import type { Ref } from 'vue';
+import { computed, inject, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
 import MediaLibraryModal from '~/components/media/MediaLibraryModal.vue';
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer'];
+  return adminRoles.includes(userRole);
+});
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false });
+  }
+};
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth();
+});
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth();
+  }
+});
 
 interface HeaderItem {
   id: string;

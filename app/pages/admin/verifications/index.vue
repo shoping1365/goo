@@ -196,7 +196,7 @@
           انصراف
         </button>
         <button
-          :disabled="actionLoading"
+          :disabled="!!actionLoading"
           class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:bg-gray-400 transition-colors"
           @click="confirmReject"
         >
@@ -232,16 +232,37 @@
 declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 </script>
 
-<script setup>
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+
 definePageMeta({
   layout: 'admin-main',
   middleware: 'admin'
 })
 
+// Interface برای verification
+interface Verification {
+  id?: number | string
+  status?: string
+  user_id?: number | string
+  field_name?: string
+  field_value?: string
+  created_at?: string | number | Date
+  verification_method?: string
+  documents?: string[]
+  [key: string]: unknown
+}
+
+// Interface برای response API
+interface VerificationsResponse {
+  data?: Verification[]
+  [key: string]: unknown
+}
+
 // State
-const verifications = ref([])
+const verifications = ref<Verification[]>([])
 const loading = ref(false)
-const actionLoading = ref(null)
+const actionLoading = ref<string | null>(null)
 const currentFilter = ref('pending')
 
 const stats = ref({
@@ -267,28 +288,30 @@ const filteredVerifications = computed(() => {
   if (currentFilter.value === 'all') {
     return verifications.value
   }
-  return verifications.value.filter(v => v.status === currentFilter.value)
+  return verifications.value.filter((v: Verification) => v.status === currentFilter.value)
 })
 
 // Methods
 const loadVerifications = async () => {
   loading.value = true
   try {
-    const response = await $fetch('/api/admin/verifications', {
+    const response = await $fetch<VerificationsResponse>('/api/admin/verifications', {
       credentials: 'include'
     })
 
-    verifications.value = response.data || []
+    const data = response?.data || []
+    verifications.value = data
     
     // محاسبه آمار
     stats.value.total = verifications.value.length
-    stats.value.pending = verifications.value.filter(v => v.status === 'pending').length
-    stats.value.verified = verifications.value.filter(v => v.status === 'verified').length
-    stats.value.rejected = verifications.value.filter(v => v.status === 'rejected').length
+    stats.value.pending = verifications.value.filter((v: Verification) => v.status === 'pending').length
+    stats.value.verified = verifications.value.filter((v: Verification) => v.status === 'verified').length
+    stats.value.rejected = verifications.value.filter((v: Verification) => v.status === 'rejected').length
 
-  } catch (error) {
-    console.error('خطا در بارگیری درخواست‌ها:', error)
-    alert('خطا در بارگیری درخواست‌ها')
+  } catch (err) {
+    console.error('خطا در بارگیری درخواست‌ها:', err)
+    const errorMessage = err instanceof Error ? err.message : 'خطا در بارگیری درخواست‌ها'
+    console.error(errorMessage)
   } finally {
     loading.value = false
   }

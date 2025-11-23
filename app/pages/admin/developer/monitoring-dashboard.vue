@@ -267,6 +267,7 @@ v-for="alert in alerts" :key="alert.id"
 <script setup>
 definePageMeta({
   layout: 'admin-main',
+  middleware: ['developer-only'],
   middleware: ['developer-only']
 })
 

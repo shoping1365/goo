@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-4">
+  <div v-if="hasAccess" class="space-y-4">
       <!-- Pages Section -->
       <ContentPanel
         v-model:search-query="localSearchPages"
@@ -70,17 +70,76 @@
   </div>
 </template>
 
-<script setup>
-import { ref, computed } from 'vue'
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
 import ContentPanel from './ContentPanel.vue'
 
-const props = defineProps({
-  openPanel: String,
-  pages: Array,
-  posts: Array,
-  categories: Array,
-  productCategories: Array,
-})
+interface PageItem {
+  id?: string | number
+  title?: string
+  slug?: string
+  [key: string]: unknown
+}
+
+interface PostItem {
+  id?: string | number
+  title?: string
+  slug?: string
+  [key: string]: unknown
+}
+
+interface CategoryItem {
+  id?: string | number
+  name?: string
+  slug?: string
+  [key: string]: unknown
+}
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer'];
+  return adminRoles.includes(userRole);
+});
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false });
+  }
+};
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth();
+});
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth();
+  }
+});
+
+const props = defineProps<{
+  openPanel?: string
+  pages?: PageItem[]
+  posts?: PostItem[]
+  categories?: CategoryItem[]
+  productCategories?: CategoryItem[]
+}>()
 
 const emit = defineEmits([
   'toggle-panel',
@@ -100,43 +159,43 @@ const localSelectedPosts = ref([])
 const localSelectedCategories = ref([])
 const localSelectedProductCategories = ref([])
 
-const normalizeString = (value) => (value || '').toString().toLowerCase()
+const normalizeString = (value: unknown): string => (value || '').toString().toLowerCase()
 
-const filteredPages = computed(() => {
+const filteredPages = computed<PageItem[]>(() => {
   const query = normalizeString(localSearchPages.value)
   const list = Array.isArray(props.pages) ? props.pages : []
   if (!query) return list
-  return list.filter(page =>
+  return list.filter((page: PageItem) =>
     normalizeString(page?.title).includes(query) ||
     normalizeString(page?.slug).includes(query)
   )
 })
 
-const filteredPosts = computed(() => {
+const filteredPosts = computed<PostItem[]>(() => {
   const query = normalizeString(localSearchPosts.value)
   const list = Array.isArray(props.posts) ? props.posts : []
   if (!query) return list
-  return list.filter(post =>
+  return list.filter((post: PostItem) =>
     normalizeString(post?.title).includes(query) ||
     normalizeString(post?.slug).includes(query)
   )
 })
 
-const filteredCategories = computed(() => {
+const filteredCategories = computed<CategoryItem[]>(() => {
   const query = normalizeString(localSearchCategories.value)
   const list = Array.isArray(props.categories) ? props.categories : []
   if (!query) return list
-  return list.filter(category =>
+  return list.filter((category: CategoryItem) =>
     normalizeString(category?.name).includes(query) ||
     normalizeString(category?.slug).includes(query)
   )
 })
 
-const filteredProductCategories = computed(() => {
+const filteredProductCategories = computed<CategoryItem[]>(() => {
   const query = normalizeString(localSearchProductCategories.value)
   const list = Array.isArray(props.productCategories) ? props.productCategories : []
   if (!query) return list
-  return list.filter(category =>
+  return list.filter((category: CategoryItem) =>
     normalizeString(category?.name).includes(query) ||
     normalizeString(category?.slug).includes(query)
   )

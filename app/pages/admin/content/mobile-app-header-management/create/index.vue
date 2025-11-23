@@ -435,7 +435,8 @@ import { useRouter } from 'nuxt/app'
 
 // @ts-ignore
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 const router = useRouter()

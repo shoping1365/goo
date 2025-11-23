@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isOpen" class="fixed inset-0 z-50 overflow-y-auto">
+  <div v-if="isOpen && hasAccess" class="fixed inset-0 z-50 overflow-y-auto">
     <!-- Backdrop -->
     <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" @click="closeModal"></div>
     
@@ -164,16 +164,46 @@
 </template>
 
 <script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
 declare const hasPermission: (perm: string) => boolean
 </script>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-// // حذف شد، فقط auto-import استفاده شود
+import { computed, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth()
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || ''
+  const adminRoles = ['admin', 'developer']
+  return adminRoles.includes(userRole)
+})
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async () => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false })
+  }
+}
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth()
+  }
+})
 
 // Auth disabled
 const canDeleteOrder = computed(() => hasPermission('order.delete'))
 
+// بررسی احراز هویت هنگام باز شدن modal
 const props = defineProps({
   isOpen: {
     type: Boolean,
@@ -182,6 +212,12 @@ const props = defineProps({
   order: {
     type: Object,
     default: null
+  }
+})
+
+watch(() => props.isOpen, async (newValue) => {
+  if (newValue) {
+    await checkAuth()
   }
 })
 

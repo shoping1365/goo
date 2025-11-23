@@ -177,51 +177,15 @@
   </ClientOnly>
 </template>
 
-// تابع تبدیل تاریخ میلادی به شمسی
-const formatPersianDate = (dateString) => {
-  if (!dateString) return 'نامشخص'
-  
-  try {
-    const PersianDate = require('persian-date')
-    const date = new Date(dateString)
-    const persianDate = new PersianDate(date)
-    return `${persianDate.year()}/${persianDate.month().toString().padStart(2, '0')}/${persianDate.date().toString().padStart(2, '0')}`
-  } catch (error) {
-    return 'نامشخص'
-  }
-}
-
-// تابع تبدیل تاریخ و زمان میلادی به شمسی
-const formatPersianDateTime = (dateString) => {
-  if (!dateString) return 'نامشخص'
-  
-  try {
-    const PersianDate = require('persian-date')
-    const date = new Date(dateString)
-    const persianDate = new PersianDate(date)
-    const hours = date.getHours().toString().padStart(2, '0')
-    const minutes = date.getMinutes().toString().padStart(2, '0')
-    return `${persianDate.year()}/${persianDate.month().toString().padStart(2, '0')}/${persianDate.date().toString().padStart(2, '0')} - ${hours}:${minutes}`
-  } catch (error) {
-    return 'نامشخص'
-  }
-}
-
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 </script>
 
-<script setup>
-import { computed, onMounted, ref } from 'vue'
+<script setup lang="ts">
+import { computed, onMounted, ref } from 'vue';
+import OrderFilters from './components/OrderFilters.vue';
 
-definePageMeta({ layout: 'admin-main', middleware: 'admin' });
-
-// Import کامپوننت
-import OrderFilters from './components/OrderFilters.vue'
-
-definePageMeta({
-  layout: 'admin-main'
-})
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 // متغیرهای فیلتر
 const filters = ref({
@@ -377,9 +341,28 @@ const formatPrice = (price) => {
   return new Intl.NumberFormat('fa-IR').format(price)
 }
 
-const _formatDate = (date) => {
+const _formatDate = (date: string) => {
   if (!date) return 'نامشخص'
   return new Date(date).toLocaleDateString('fa-IR')
+}
+
+/**
+ * این تابع تاریخ و زمان میلادی را به شمسی تبدیل می‌کند.
+ */
+const formatPersianDateTime = (dateString: string | null | undefined): string => {
+  if (!dateString) return 'نامشخص'
+  
+  try {
+    // استفاده از require برای کتابخانه persian-date (کتابخانه قدیمی که import ندارد)
+    const PersianDate = require('persian-date')
+    const date = new Date(dateString)
+    const persianDate = new PersianDate(date)
+    const hours = date.getHours().toString().padStart(2, '0')
+    const minutes = date.getMinutes().toString().padStart(2, '0')
+    return `${persianDate.year()}/${persianDate.month().toString().padStart(2, '0')}/${persianDate.date().toString().padStart(2, '0')} - ${hours}:${minutes}`
+  } catch (_error) {
+    return 'نامشخص'
+  }
 }
 
 onMounted(() => {

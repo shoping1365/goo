@@ -321,23 +321,23 @@ declare const navigateTo: (path: string) => Promise<void>
 </script>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue'
+import AccountAgeSystem from './components/AccountAgeSystem.vue'
+import AlertSystem from './components/AlertSystem.vue'
+import AutoScoringSystem from './components/AutoScoringSystem.vue'
+import ManualScoring from './components/ManualScoring.vue'
+import PurchaseContinuitySystem from './components/PurchaseContinuitySystem.vue'
+import ReferralSystem from './components/ReferralSystem.vue'
+import ReportsAndAnalytics from './components/ReportsAndAnalytics.vue'
+import ReturnRateSystem from './components/ReturnRateSystem.vue'
+import ReviewQualitySystem from './components/ReviewQualitySystem.vue'
+import ScenarioManagementSystem from './components/ScenarioManagementSystem.vue'
+import SetupAndTestingSystem from './components/SetupAndTestingSystem.vue'
+import SystemSettings from './components/SystemSettings.vue'
+import TopUserBenefits from './components/TopUserBenefits.vue'
+import UserManagement from './components/UserManagement.vue'
 
-definePageMeta({ layout: 'admin-main', middleware: 'admin' });
-import AccountAgeSystem from './components/AccountAgeSystem.vue';
-import AlertSystem from './components/AlertSystem.vue';
-import AutoScoringSystem from './components/AutoScoringSystem.vue';
-import ManualScoring from './components/ManualScoring.vue';
-import PurchaseContinuitySystem from './components/PurchaseContinuitySystem.vue';
-import ReferralSystem from './components/ReferralSystem.vue';
-import ReportsAndAnalytics from './components/ReportsAndAnalytics.vue';
-import ReturnRateSystem from './components/ReturnRateSystem.vue';
-import ReviewQualitySystem from './components/ReviewQualitySystem.vue';
-import ScenarioManagementSystem from './components/ScenarioManagementSystem.vue';
-import SetupAndTestingSystem from './components/SetupAndTestingSystem.vue';
-import SystemSettings from './components/SystemSettings.vue';
-import TopUserBenefits from './components/TopUserBenefits.vue';
-import UserManagement from './components/UserManagement.vue';
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 // جامع‌ترین interface برای User که شامل تمام ویژگی‌های مورد نیاز کامپوننت‌های مختلف است
 interface User {

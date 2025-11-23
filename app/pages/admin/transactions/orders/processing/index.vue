@@ -65,20 +65,16 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+declare const useHead: (head: { title?: string; meta?: Array<{ name?: string; content?: string }> }) => void
 </script>
 
-<script setup>
-definePageMeta({ layout: 'admin-main', middleware: 'admin' });
-
-// Import کامپوننت‌ها
+<script setup lang="ts">
+import { ref } from 'vue'
 import ProcessingDashboard from './ProcessingDashboard.vue'
 import ProcessingOrdersTable from './ProcessingOrdersTable.vue'
 import ProcessingReports from './ProcessingReports.vue'
 
-// تعریف متا صفحه
-definePageMeta({
-  layout: 'admin-main'
-})
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 // تب‌های صفحه
 const tabs = ref([
@@ -90,21 +86,13 @@ const tabs = ref([
 const activeTab = ref('dashboard')
 
 // تابع بروزرسانی داده‌ها
+/**
+ * این تابع داده‌های صفحه را بروزرسانی می‌کند.
+ * در Vue 3، باید از emit یا props برای ارتباط با کامپوننت‌های فرزند استفاده کرد.
+ */
 const refreshData = () => {
-  // بروزرسانی داده‌ها در کامپوننت‌های فرزند
-  if (activeTab.value === 'dashboard') {
-    // بروزرسانی آمار داشبورد
-    const dashboardComponent = document.querySelector('[data-component="dashboard"]')
-    if (dashboardComponent && dashboardComponent.__vue__) {
-      dashboardComponent.__vue__.fetchStats?.()
-    }
-  } else if (activeTab.value === 'processing-orders') {
-    // بروزرسانی لیست سفارشات
-    const ordersComponent = document.querySelector('[data-component="orders"]')
-    if (ordersComponent && ordersComponent.__vue__) {
-      ordersComponent.__vue__.fetchProcessingOrders?.()
-    }
-  }
+  // TODO: استفاده از emit یا ref برای بروزرسانی کامپوننت‌های فرزند
+  // این کد قبلی از __vue__ استفاده می‌کرد که در Vue 3 وجود ندارد
 }
 
 // تنظیم عنوان صفحه

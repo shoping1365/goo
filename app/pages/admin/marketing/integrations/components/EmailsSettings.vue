@@ -72,11 +72,13 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { computed, onMounted, watch } from 'vue';
-import { useAuth } from '~/composables/useAuth';
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
 
-declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>;
+<script setup lang="ts">
+import { computed, onMounted, watch } from 'vue'
+import { useAuth } from '~/composables/useAuth'
 
 // احراز هویت
 const { user, isAuthenticated } = useAuth();

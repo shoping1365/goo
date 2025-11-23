@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow-sm border border-gray-200 relative">
+  <div v-if="hasAccess" class="bg-white rounded-lg shadow-sm border border-gray-200 relative">
     <!-- Loading Overlay -->
     <div v-if="loading" class="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10 rounded-lg">
       <div class="flex items-center space-x-2">
@@ -199,23 +199,69 @@
   </div>
 </template>
 
-<script setup>
-import PersianDateFormatter from '@/components/common/PersianDateFormatter.vue'
-import { computed, ref } from 'vue'
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
 
-const props = defineProps({
-  orders: {
-    type: Array,
-    default: () => []
-  },
-  loading: {
-    type: Boolean,
-    default: false
+<script setup lang="ts">
+import PersianDateFormatter from '@/components/common/PersianDateFormatter.vue';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth()
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || ''
+  const adminRoles = ['admin', 'developer']
+  return adminRoles.includes(userRole)
+})
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async () => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false })
+  }
+}
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth()
+})
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth()
   }
 })
 
+interface Order {
+  id: string | number
+  orderNumber: string
+  itemsCount?: number
+  customerName: string
+  customerPhone?: string
+  totalAmount: number
+  paymentMethod?: string
+  status: string
+  orderIntegrity?: string
+  createdAt: string
+  [key: string]: unknown
+}
+
+const props = defineProps<{
+  orders: Order[]
+  loading?: boolean
+}>()
+
 // استفاده از کامپوزابل تاریخ شمسی
-const { } = usePersianDate()
+// const { } = usePersianDate()
 
 const emit = defineEmits(['view-details', 'edit-order', 'quick-actions', 'refresh', 'export', 'bulk-delete'])
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="page-header">
+  <div v-if="hasAccess" class="page-header">
     <div class="header-content">
       <div class="header-title">
         <h1>{{ isEditing ? 'ویرایش فوتر' : 'ایجاد فوتر جدید' }}</h1>
@@ -26,8 +26,46 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
 <script setup lang="ts">
-import { inject } from 'vue'
+import { computed, inject, onMounted, watch } from 'vue'
+import { useAuth } from '~/composables/useAuth'
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth()
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || ''
+  const adminRoles = ['admin', 'developer']
+  return adminRoles.includes(userRole)
+})
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false })
+  }
+}
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth()
+})
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth()
+  }
+})
 
 // Inject functions and data from parent
 const isEditing = inject<boolean | undefined>('isEditing')

@@ -299,7 +299,7 @@
 </template>
 
 <script lang="ts">
-declare const definePageMeta: (meta: { layout?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 declare const useRoute: () => { params: Record<string, string>; query: Record<string, string>; path: string }
 declare const useFetch: <T = unknown>(url: string, options?: { method?: string; key?: string; body?: unknown }) => Promise<{ data: { value: T }; error: { value: Error | null } }>
 
@@ -319,7 +319,7 @@ type CloudflareOverviewResponse = {
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 const route = useRoute()
 

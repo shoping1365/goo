@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow-md">
+  <div v-if="hasAccess" class="bg-white rounded-lg shadow-md">
     <!-- Header -->
     <div class="px-6 py-4 border-b border-gray-200">
       <div class="flex items-center justify-between">
@@ -235,8 +235,23 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue';
+import { useAuth } from '~/composables/useAuth';
 import { useToast } from '~/composables/useToast'
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer'];
+  return adminRoles.includes(userRole);
+});
 
 // Types
 interface Transaction {

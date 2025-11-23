@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showLayerSettings" class="settings-sidebar">
+  <div v-if="showLayerSettings && hasAccess" class="settings-sidebar">
     <!-- تنظیمات لایه - فقط وقتی لایه جدید در حال ایجاد است نمایش داده می‌شود -->
     <div class="layer-settings-section">
       <div class="settings-header">
@@ -197,8 +197,46 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
 <script setup lang="ts">
-import { inject, type Ref } from 'vue'
+import { computed, inject, onMounted, type Ref, watch } from 'vue'
+import { useAuth } from '~/composables/useAuth'
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth()
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || ''
+  const adminRoles = ['admin', 'developer']
+  return adminRoles.includes(userRole)
+})
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false })
+  }
+}
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth()
+})
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth()
+  }
+})
 
 interface LayerData {
   id?: string

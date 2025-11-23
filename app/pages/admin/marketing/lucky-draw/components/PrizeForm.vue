@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+  <div v-if="hasAccess" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
     <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
       <div class="mt-3">
         <!-- هدر مودال -->
@@ -233,19 +233,75 @@
   </div>
 </template>
 
-<script setup>
-const props = defineProps({
-  prize: {
-    type: Object,
-    default: null
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
   }
-})
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer'];
+  return adminRoles.includes(userRole);
+});
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false });
+  }
+};
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth();
+});
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth();
+  }
+});
+
+// تعریف interface برای Prize
+interface Prize {
+  id?: number | string
+  name: string
+  description: string
+  type: string
+  value: number
+  quantity: number
+  status: string
+  minAmount: number
+  expiryDate: string
+  discountPercent: number
+  minPurchaseAmount: number
+  validityDays: number
+  requireRegistration: boolean
+  oneTimeUse: boolean
+  combinable: boolean
+}
+
+const props = defineProps<{
+  prize?: Prize | null
+}>()
 
 const emit = defineEmits(['close', 'saved'])
 
 // متغیرهای reactive
 const isSaving = ref(false)
-const form = ref({
+const form = ref<Prize>({
   name: '',
   description: '',
   type: '',
@@ -272,7 +328,7 @@ const isEditing = computed(() => !!props.prize)
 // تنظیم مقادیر اولیه
 onMounted(() => {
   if (props.prize) {
-    form.value = { ...props.prize }
+    form.value = { ...props.prize } as Prize
   } else {
     // تنظیم تاریخ انقضای پیش‌فرض (یک ماه بعد)
     const nextMonth = new Date()
@@ -296,9 +352,8 @@ const savePrize = async () => {
     }
     
     emit('saved', savedData)
-  } catch (error) {
-    console.error('خطا در ذخیره جایزه:', error)
-    alert('خطا در ذخیره جایزه')
+  } catch (_error) {
+    // TODO: نمایش پیام خطا با toast
   } finally {
     isSaving.value = false
   }

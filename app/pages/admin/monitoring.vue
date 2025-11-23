@@ -158,7 +158,7 @@
 </template>
 
 <script lang="ts">
-declare const definePageMeta: (meta: { middleware?: string | string[]; title?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[]; title?: string }) => void
 </script>
 
 <script setup lang="ts">

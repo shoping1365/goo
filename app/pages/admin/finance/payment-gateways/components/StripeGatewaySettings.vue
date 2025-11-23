@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow-md p-6">
+  <div v-if="hasAccess" class="bg-white rounded-lg shadow-md p-6">
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-xl font-bold text-gray-800">تنظیمات درگاه پرداخت استرایپ</h2>
       <div class="flex items-center space-x-2 space-x-reverse">
@@ -156,8 +156,49 @@
   </div>
 </template>
 
-<script setup>
-const { $toast: _$toast } = useNuxtApp()
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+import { useToast } from '~/composables/useToast';
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer'];
+  return adminRoles.includes(userRole);
+});
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false });
+  }
+};
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth();
+});
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth();
+  }
+});
+
+const _$toast = useToast()
 
 // Reactive data
 const settings = ref({
@@ -185,8 +226,15 @@ onMounted(async () => {
 // Load gateway settings
 const loadSettings = async () => {
   try {
-    const response = await $fetch('/api/admin/payment-gateways/stripe.settings.get')
-    if (response.success) {
+    interface SettingsData {
+      [key: string]: unknown
+    }
+    interface ApiResponse {
+      success?: boolean
+      data?: SettingsData
+    }
+    const response = await $fetch<ApiResponse>('/api/admin/payment-gateways/stripe.settings.get')
+    if (response.success && response.data) {
       Object.assign(settings.value, response.data)
     }
   } catch (_error) {
@@ -198,7 +246,11 @@ const loadSettings = async () => {
 const saveSettings = async () => {
   saving.value = true
   try {
-    const response = await $fetch('/api/admin/payment-gateways/stripe.settings.put', {
+    interface ApiResponse {
+      success?: boolean
+      message?: string
+    }
+    const response = await $fetch<ApiResponse>('/api/admin/payment-gateways/stripe.settings.put', {
       method: 'PUT',
       body: settings.value
     })
@@ -219,7 +271,11 @@ const saveSettings = async () => {
 const testConnection = async () => {
   testing.value = true
   try {
-    const response = await $fetch('/api/admin/payment-gateways/stripe.test-connection.post', {
+    interface ApiResponse {
+      success?: boolean
+      message?: string
+    }
+    const response = await $fetch<ApiResponse>('/api/admin/payment-gateways/stripe.test-connection.post', {
       method: 'POST'
     })
     

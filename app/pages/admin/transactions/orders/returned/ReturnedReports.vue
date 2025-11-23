@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="hasAccess">
     <!-- آمار کلی گزارشات -->
     <div class="grid grid-cols-1 md:grid-cols-4 gapx-4 py-4 mb-6">
       <!-- کل مرجوع -->
@@ -248,7 +248,7 @@
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="report in paginatedReports" :key="report.period || report.id" class="hover:bg-gray-50">
+            <tr v-for="(report, index) in paginatedReports" :key="report.period || index" class="hover:bg-gray-50">
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                 {{ report.period || 'نامشخص' }}
               </td>
@@ -287,9 +287,48 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
+<script setup lang="ts">
 // Import کامپوننت Pagination
-import Pagination from '~/components/admin/common/Pagination.vue'
+import { computed, onMounted, ref, watch } from 'vue';
+import Pagination from '~/components/admin/common/Pagination.vue';
+import { useAuth } from '~/composables/useAuth';
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth()
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || ''
+  const adminRoles = ['admin', 'developer']
+  return adminRoles.includes(userRole)
+})
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async () => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false })
+  }
+}
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth()
+})
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth()
+  }
+})
 
 // داده‌های آماری
 const stats = ref({
@@ -442,7 +481,7 @@ const filteredReports = computed(() => {
   // فیلتر نرخ مرجوع
   if (filters.value.returnRate) {
     reports = reports.filter(report => {
-      const rate = parseFloat(report.returnRate)
+      const rate = typeof report.returnRate === 'number' ? report.returnRate : parseFloat(String(report.returnRate))
       if (filters.value.returnRate === 'low') {
         return rate < 2
       } else if (filters.value.returnRate === 'medium') {

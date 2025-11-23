@@ -1,5 +1,5 @@
 <template>
-  <div class="font-iranyekan">
+  <div v-if="hasAccess" class="font-iranyekan">
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 px-4 py-4">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-bold text-gray-900 font-iranyekan">پیش‌نمایش فوتر</h3>
@@ -78,8 +78,47 @@ class="w-2 h-2 rounded-full mr-2"
   </div>
 </template>
 
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
 <script setup lang="ts">
+import { computed, onMounted, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
 import SanitizedHtml from '~/components/common/SanitizedHtml.vue'
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer'];
+  return adminRoles.includes(userRole);
+});
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false });
+  }
+};
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth();
+});
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth();
+  }
+});
 
 // تعریف props
 const _props = defineProps({

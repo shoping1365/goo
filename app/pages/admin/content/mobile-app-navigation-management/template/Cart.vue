@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink to="/cart" class="mobile-nav-item">
+  <NuxtLink v-if="hasAccess" to="/cart" class="mobile-nav-item">
     <div class="relative">
       <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m8 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01"></path>
@@ -13,18 +13,55 @@
   </NuxtLink>
 </template>
 
-<script setup>
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue'
+import { useAuth } from '~/composables/useAuth'
+
 // آیتم ناوبری موبایل - سبد خرید
 // این کامپوننت برای نمایش آیتم سبد خرید در ناوبری پایین موبایل استفاده می‌شود
 
-// دریافت تعداد آیتم‌های سبد خرید
-const cartCount = ref(0)
+// احراز هویت
+const { user, isAuthenticated } = useAuth()
 
-// TODO: اتصال به store یا composable سبد خرید
-onMounted(() => {
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || ''
+  const adminRoles = ['admin', 'developer']
+  return adminRoles.includes(userRole)
+})
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async () => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false })
+  }
+}
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth()
+  
   // اینجا باید تعداد آیتم‌های سبد خرید را از store دریافت کنید
   // cartCount.value = useCartStore().items.length
 })
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth()
+  }
+})
+
+// دریافت تعداد آیتم‌های سبد خرید
+const cartCount = ref(0)
 </script>
 
 <style scoped>

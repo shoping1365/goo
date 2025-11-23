@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isOpen" class="fixed inset-0 z-50 overflow-y-auto">
+  <div v-if="isOpen && hasAccess" class="fixed inset-0 z-50 overflow-y-auto">
     <!-- Backdrop -->
     <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" @click="closeModal"></div>
     
@@ -274,10 +274,44 @@
   </div>
 </template>
 
-<script setup>
-import { computed, ref } from 'vue'
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
 
-defineProps({
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth()
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || ''
+  const adminRoles = ['admin', 'developer']
+  return adminRoles.includes(userRole)
+})
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async () => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false })
+  }
+}
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth()
+  }
+})
+
+// بررسی احراز هویت هنگام باز شدن modal
+const _props = defineProps({
   isOpen: {
     type: Boolean,
     default: false
@@ -318,7 +352,9 @@ const form = ref({
 
 const totalAmount = computed(() => {
   return form.value.items.reduce((total, item) => {
-    return total + (parseInt(item.price) || 0) * (parseInt(item.quantity) || 0)
+    const price = typeof item.price === 'number' ? item.price : parseInt(String(item.price)) || 0
+    const quantity = typeof item.quantity === 'number' ? item.quantity : parseInt(String(item.quantity)) || 0
+    return total + price * quantity
   }, 0)
 })
 

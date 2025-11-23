@@ -603,7 +603,7 @@ import DeviceTabs from './components/DeviceTabs.vue'
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 declare const useHead: (head: { title?: string }) => void
 
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 useHead({ title: 'ایجاد اسلایدر تکی - پنل ادمین' })
 
 // Router

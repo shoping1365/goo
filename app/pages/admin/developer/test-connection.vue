@@ -325,6 +325,7 @@ import { onMounted, reactive, ref, watch } from 'vue';
 
 definePageMeta({
   layout: 'admin-main',
+  middleware: ['developer-only'],
   middleware: ['developer-only']
 });
 

@@ -108,7 +108,8 @@ declare const definePageMeta: (meta: { layout?: string; middleware?: string }) =
 
 // تعریف layout
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 // Import کامپوننت‌های installment

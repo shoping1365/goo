@@ -401,6 +401,7 @@ import { reactive, ref } from 'vue';
 
 definePageMeta({
   layout: 'admin-main',
+  middleware: ['developer-only'],
   middleware: ['developer-only']
 });
 

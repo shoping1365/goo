@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen">
+  <div v-if="hasAccess" class="min-h-screen">
     <!-- Header -->
     <div class="bg-white shadow-sm border-b">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -122,13 +122,48 @@
   </div>
 </template>
 
-<script setup>
-import { onMounted } from 'vue'
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
+<script setup lang="ts">
+import { computed, onMounted, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
 import { useMenuManagement } from '~/composables/useMenuManagement'
 
-definePageMeta({
-  layout: 'admin-main'
-})
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer'];
+  return adminRoles.includes(userRole);
+});
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false });
+  }
+};
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth();
+  fetchMenus()
+});
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth();
+  }
+});
 
 // Use the composable
 const {
@@ -139,20 +174,15 @@ const {
 } = useMenuManagement()
 
 // Methods
-const deleteMenu = async (id) => {
+const deleteMenu = async (id: string | number): Promise<void> => {
   try {
-    await deleteMenuFromAPI(id)
-    // Use console instead of alert
+    await deleteMenuFromAPI(Number(id))
+    // TODO: نمایش پیام موفقیت با toast
 
   } catch (error) {
-    console.error('Error deleting menu:', error)
-    // Use console instead of alert
+    // TODO: نمایش پیام خطا با toast
     console.error('خطا در حذف منو')
   }
 }
 
-// Lifecycle
-onMounted(() => {
-  fetchMenus()
-})
 </script>

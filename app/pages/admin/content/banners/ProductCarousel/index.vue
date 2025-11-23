@@ -237,7 +237,8 @@
 <script setup lang="ts">
 // Page meta definition
 definePageMeta({
-  layout: 'admin'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 import { ref, computed } from 'vue'

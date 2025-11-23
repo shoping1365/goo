@@ -117,7 +117,8 @@ import { useRoute, useRouter } from 'vue-router';
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 const router = useRouter()

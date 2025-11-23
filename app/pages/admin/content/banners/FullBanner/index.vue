@@ -205,7 +205,7 @@ import { ref, computed } from 'vue'
 declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
 declare const useHead: (head: { title?: string }) => void
 
-definePageMeta({ layout: 'admin', })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 useHead({ title: 'مدیریت بنرهای تمام عرض - پنل ادمین' })
 
 // فیلترها

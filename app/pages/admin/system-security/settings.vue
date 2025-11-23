@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-declare const definePageMeta: (meta: { layout?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 </script>
 
 <script setup lang="ts">
@@ -36,7 +36,7 @@ import { reactive, ref, watchEffect } from 'vue';
 import { useSecuritySettings, type SecuritySettings } from '~/composables/useSecuritySettings';
 
 // meta
-definePageMeta({ layout: 'admin-main' })
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 const { settings, loading, fetchSettings, saveSettings } = useSecuritySettings()
 

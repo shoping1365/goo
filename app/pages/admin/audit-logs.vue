@@ -100,6 +100,7 @@
 
 <script lang="ts">
 declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
+declare const navigateTo: (to: string) => Promise<void>
 </script>
 
 <script setup lang="ts">
@@ -107,14 +108,7 @@ import { ref, computed, onMounted } from 'vue'
 import { usePermission } from '@/composables/usePermission'
 import { useApiClient } from '@/utils/api'
 
-definePageMeta({ layout: 'admin-main', middleware: 'admin' });
-declare const definePageMeta: (meta: { layout?: string; middleware?: string }) => void
-declare const navigateTo: (to: string) => Promise<void>
-
-definePageMeta({
-  layout: 'admin',
-  middleware: 'auth',
-})
+definePageMeta({ layout: 'admin-main', middleware: 'admin' })
 
 const permission = usePermission()
 const { api } = useApiClient()

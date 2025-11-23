@@ -70,12 +70,13 @@ import { useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 
 // تعریف definePageMeta برای Nuxt 3
-declare const definePageMeta: (meta: { layout?: string }) => void
+declare const definePageMeta: (meta: { layout?: string; middleware?: string | string[] }) => void
 
 const router = useRouter()
 
 definePageMeta({
-  layout: 'admin-main'
+  layout: 'admin-main',
+  middleware: 'admin'
 })
 
 // استفاده از useAuth برای چک کردن پرمیژن‌ها

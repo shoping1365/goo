@@ -112,14 +112,14 @@ declare const navigateTo: (to: string) => Promise<void>
 </script>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
 import { usePermission } from '@/composables/usePermission'
 import { usePermissionsAPI } from '@/composables/usePermissionsAPI'
 import { useRoles } from '@/composables/useRoles'
+import { onMounted, ref } from 'vue'
 
 definePageMeta({
-  layout: 'admin',
-  middleware: 'auth',
+  middleware: 'admin',
+  layout: 'admin'
 })
 
 const permission = usePermission()

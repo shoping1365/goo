@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-x-auto">
+  <div v-if="hasAccess" class="overflow-x-auto">
     <!-- Bulk Actions Panel -->
     <div v-if="selectedCount > 0" class="mb-4 px-4 py-4 bg-blue-50 border border-blue-200 rounded-lg shadow-sm">
       <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gapx-4 py-4">
@@ -208,9 +208,42 @@
   </div>
 </template>
 
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
 <script setup lang="ts">
-import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue';
-import ImagePreviewModal from '~/components/media/ImagePreviewModal.vue';
+import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue'
+import { useAuth } from '~/composables/useAuth'
+import ImagePreviewModal from '~/components/media/ImagePreviewModal.vue'
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth()
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || ''
+  const adminRoles = ['admin', 'developer']
+  return adminRoles.includes(userRole)
+})
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async () => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false })
+  }
+}
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth()
+  }
+})
 
 // تعریف interface برای Product
 interface Product {
@@ -806,7 +839,13 @@ watch(() => props.products, () => {
   fetchProducts()
 }, { deep: true, immediate: true })
 
-onMounted(fetchProducts)
+onMounted(async () => {
+  await checkAuth()
+  if (!hasAccess.value) {
+    return
+  }
+  fetchProducts()
+})
 </script>
 
 <style scoped>

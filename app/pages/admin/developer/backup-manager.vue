@@ -255,6 +255,7 @@ class="text-red-600 hover:text-red-900"
 <script setup>
 definePageMeta({
   layout: 'admin-main',
+  middleware: ['developer-only'],
   middleware: ['developer-only']
 })
 

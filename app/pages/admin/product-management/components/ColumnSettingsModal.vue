@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isOpen" class="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+  <div v-if="isOpen && hasAccess" class="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
     <!-- Backdrop -->
     
     <!-- Modal -->
@@ -70,11 +70,34 @@
 </template>
 
 <script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
 declare const useToast: () => { success: (message: string) => void; error: (message: string) => void }
 </script>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth()
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || ''
+  const adminRoles = ['admin', 'developer']
+  return adminRoles.includes(userRole)
+})
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false })
+  }
+}
 
 interface Column {
   key: string
@@ -115,10 +138,21 @@ const availableColumns: Column[] = [
 // ستون‌های انتخاب شده
 const selectedColumns = ref<string[]>([])
 
-// وقتی modal باز می‌شود، ستون‌های فعلی را تنظیم کن
-watch(() => props.isOpen, (newValue) => {
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth()
+  }
+})
+
+// وقتی modal باز می‌شود، ستون‌های فعلی را تنظیم کن و احراز هویت را چک کن
+watch(() => props.isOpen, async (newValue) => {
   if (newValue) {
-    selectedColumns.value = [...props.visibleColumns]
+    await checkAuth()
+    if (!hasAccess.value) {
+      return
+    }
+    selectedColumns.value = [...(props.visibleColumns || [])]
   }
 })
 

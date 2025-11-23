@@ -1,5 +1,5 @@
 <template>
-  <div class="border-t border-gray-100 bg-gray-50">
+  <div v-if="hasAccess" class="border-t border-gray-100 bg-gray-50">
     <div class="p-6">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Basic Settings -->
@@ -18,7 +18,7 @@
               :value="item.title"
               type="text"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-              @input="$emit('update-item', { ...item, title: $event.target.value })"
+              @input="(e: Event) => $emit('update-item', { ...item, title: (e.target as HTMLInputElement).value })"
             />
           </div>
 
@@ -29,7 +29,7 @@
               :value="item.path"
               type="text"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-              @input="$emit('update-item', { ...item, path: $event.target.value })"
+              @input="(e: Event) => $emit('update-item', { ...item, path: (e.target as HTMLInputElement).value })"
             />
           </div>
 
@@ -47,7 +47,7 @@
               <select
                 :value="item.iconType"
                 class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white"
-                @change="$emit('update-item', { ...item, iconType: $event.target.value })"
+                @change="(e: Event) => $emit('update-item', { ...item, iconType: (e.target as HTMLSelectElement).value })"
               >
                 <option value="icon">آیکون</option>
                 <option value="image">تصویر</option>
@@ -69,7 +69,7 @@
                 :checked="item.enabled"
                 type="checkbox"
                 class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
-                @change="$emit('update-item', { ...item, enabled: $event.target.checked })"
+                @change="(e: Event) => $emit('update-item', { ...item, enabled: (e.target as HTMLInputElement).checked })"
               />
               <label :for="`enabled-${item.id ?? item.clientId}`" class="text-sm font-semibold text-gray-900 cursor-pointer">
                 وضعیت نمایش
@@ -100,7 +100,7 @@
               :checked="item.openInNewTab"
               type="checkbox"
               class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-              @change="$emit('update-item', { ...item, openInNewTab: $event.target.checked })"
+              @change="(e: Event) => $emit('update-item', { ...item, openInNewTab: (e.target as HTMLInputElement).checked })"
             />
             <label :for="`new-tab-${item.id ?? item.clientId}`" class="text-sm font-medium text-gray-700">
               باز شدن در تب جدید
@@ -115,7 +115,7 @@
               type="text"
               placeholder="متن نشان"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-              @input="$emit('update-item', { ...item, badge: $event.target.value })"
+              @input="(e: Event) => $emit('update-item', { ...item, badge: (e.target as HTMLInputElement).value })"
             />
           </div>
 
@@ -125,7 +125,7 @@
             <select
               :value="item.badgeColor"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-              @change="$emit('update-item', { ...item, badgeColor: $event.target.value })"
+              @change="(e: Event) => $emit('update-item', { ...item, badgeColor: (e.target as HTMLSelectElement).value })"
             >
               <option value="red">قرمز</option>
               <option value="green">سبز</option>
@@ -152,7 +152,7 @@
                 :checked="item.isMegaMenu"
                 type="checkbox"
                 class="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
-                @change="$emit('update-item', { ...item, isMegaMenu: $event.target.checked })"
+                @change="(e: Event) => $emit('update-item', { ...item, isMegaMenu: (e.target as HTMLInputElement).checked })"
               />
               <label :for="`mega-menu-${item.id ?? item.clientId}`" class="text-sm font-medium text-gray-700">
                 مگا منو باشد
@@ -165,7 +165,7 @@
               <select
                 :value="item.megaWidth"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                @change="$emit('update-item', { ...item, megaWidth: $event.target.value })"
+                @change="(e: Event) => $emit('update-item', { ...item, megaWidth: (e.target as HTMLSelectElement).value })"
               >
                 <option value="full">کامل</option>
                 <option value="container">کانتینر</option>
@@ -179,7 +179,7 @@
               <select
                 :value="item.megaColumns"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                @change="$emit('update-item', { ...item, megaColumns: $event.target.value })"
+                @change="(e: Event) => $emit('update-item', { ...item, megaColumns: (e.target as HTMLSelectElement).value })"
               >
                 <option value="2">2 ستون</option>
                 <option value="3">3 ستون</option>
@@ -194,7 +194,47 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts">
+declare const navigateTo: (to: string, options?: { redirectCode?: number; external?: boolean }) => Promise<void>
+</script>
+
+<script setup lang="ts">
+import { computed, onMounted, watch } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+
+// احراز هویت
+const { user, isAuthenticated } = useAuth();
+
+// بررسی دسترسی admin
+const hasAccess = computed(() => {
+  if (!isAuthenticated.value) {
+    return false;
+  }
+
+  const userRole = user.value?.role?.toLowerCase() || '';
+  const adminRoles = ['admin', 'developer'];
+  return adminRoles.includes(userRole);
+});
+
+// بررسی احراز هویت و دسترسی admin - نمایش 404 در صورت عدم دسترسی
+const checkAuth = async (): Promise<void> => {
+  if (!hasAccess.value) {
+    await navigateTo('/404', { external: false });
+  }
+};
+
+// بررسی احراز هویت در هنگام mount
+onMounted(async () => {
+  await checkAuth();
+});
+
+// بررسی احراز هویت هنگام تغییر وضعیت احراز هویت
+watch([isAuthenticated, hasAccess], async () => {
+  if (!hasAccess.value) {
+    await checkAuth();
+  }
+});
+
 defineProps({
   item: Object,
 })

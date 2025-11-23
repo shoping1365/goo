@@ -1053,6 +1053,9 @@ interface Order {
   status: string
   createdAt: string
   totalAmount: number
+  itemsCount?: number
+  paymentMethod?: string
+  orderIntegrity?: string
   [key: string]: unknown
 }
 
