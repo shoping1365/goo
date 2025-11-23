@@ -15,7 +15,7 @@ export async function getDatabase() {
   })
 
   return {
-    query: async (text: string, params?: any[]) => {
+    query: async (text: string, params?: (string | number | boolean | null | Date)[]) => {
       try {
         const result = await pool.query(text, params)
         return result.rows

@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     const db = await getDatabase()
     
     // اضافه کردن عکس به محصول
-    const result: any = await db.query(`
+    const result = await db.query(`
       INSERT INTO product_images (product_id, image_url, type, sort_order, is_active, created_at)
       VALUES ($1, $2, $3, $4, $5, NOW())
       RETURNING id

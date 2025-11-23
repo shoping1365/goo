@@ -48,11 +48,12 @@ export default defineEventHandler(async (event) => {
       }
     }
     
-  } catch (error: any) {
-    console.error('Progress check error:', error)
+  } catch (error: unknown) {
+    const err = error as Error
+    console.error('Progress check error:', err)
     throw createError({
       statusCode: 500,
-      message: error.message || 'خطا در بررسی پیشرفت'
+      message: err.message || 'خطا در بررسی پیشرفت'
     })
   }
 })

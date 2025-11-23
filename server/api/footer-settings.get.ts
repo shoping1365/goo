@@ -39,6 +39,7 @@ export default defineEventHandler(async (event): Promise<PublicFooterResponse> =
 
      } catch (error: unknown) {
           const err = error as { statusCode?: number; status?: number; message?: string; data?: unknown }
+          const errData = err?.data as Record<string, unknown> | undefined
           console.error('خطا در دریافت تنظیمات فوتر:', {
                statusCode: err?.statusCode,
                status: err?.status,
@@ -48,8 +49,8 @@ export default defineEventHandler(async (event): Promise<PublicFooterResponse> =
 
           throw createError({
                statusCode: err?.statusCode || err?.status || 500,
-               message: (err?.data as any)?.message || (err?.data as any)?.error || err?.message || 'خطا در دریافت تنظیمات فوتر',
-               data: error?.data
+               message: (errData?.message as string) || (errData?.error as string) || err?.message || 'خطا در دریافت تنظیمات فوتر',
+               data: err?.data
           })
      }
 })

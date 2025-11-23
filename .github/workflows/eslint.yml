@@ -44,9 +44,21 @@ jobs:
         env:
           SARIF_ESLINT_IGNORE_SUPPRESSED: "true"
         run: |
+          set +e
+          npx eslint . --format stylish
+          ESLINT_EXIT_CODE=$?
+          set -e
+
+          echo "Generating SARIF report for code scanning..."
           npx eslint . \
             --format @microsoft/eslint-formatter-sarif \
-            --output-file eslint-results.sarif
+            --output-file eslint-results.sarif || true
+
+          if [ $ESLINT_EXIT_CODE -ne 0 ]; then
+            echo "::error::ESLint failed. Review the logs above for the list of files."
+          fi
+
+          exit $ESLINT_EXIT_CODE
 
       - name: Ensure SARIF file exists
         run: |

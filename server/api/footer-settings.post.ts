@@ -8,12 +8,12 @@ interface FooterPayload {
      specific_pages?: string
      excluded_pages?: string
      is_active: boolean
-     layers?: any[]
+     layers?: unknown[]
 }
 
 interface FooterResponse {
      success: boolean
-     data?: any
+     data?: unknown
      message?: string
 }
 
@@ -57,22 +57,23 @@ export default defineEventHandler(async (event): Promise<FooterResponse> => {
                     body
                })
           } catch (fetchErr: unknown) {
-               const err = fetchErr as { statusCode?: number; status?: number; message?: string; data?: any }
+               const err = fetchErr as { statusCode?: number; status?: number; message?: string; data?: unknown }
+               const errData = err?.data as Record<string, unknown> | undefined
                throw createError({
                     statusCode: err?.statusCode || err?.status || 500,
-                    message: err?.data?.message || err?.data?.error || err?.message || 'خطا در ایجاد فوتر',
+                    message: (errData?.message as string) || (errData?.error as string) || err?.message || 'خطا در ایجاد فوتر',
                     data: err?.data
                })
           }
 
           return {
                success: true,
-               data: (responseData as any)?.data || responseData,
+               data: (responseData as Record<string, unknown>)?.data || responseData,
                message: 'فوتر با موفقیت ایجاد شد'
           }
 
      } catch (error: unknown) {
-          const err = error as { statusCode?: number; message?: string; data?: any }
+          const err = error as { statusCode?: number; message?: string; data?: unknown }
           console.error('خطا در ایجاد فوتر:', error)
           console.error('Error details:', {
                message: err.message,

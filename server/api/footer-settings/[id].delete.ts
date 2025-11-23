@@ -11,6 +11,7 @@ export default defineEventHandler(async (event): Promise<DeleteResponse> => {
           const id = getRouterParam(event, 'id')
           const config = useRuntimeConfig()
 
+          // eslint-disable-next-line no-console
           console.log('درخواست حذف فوتر:', id)
 
           if (!id) {
@@ -39,6 +40,7 @@ export default defineEventHandler(async (event): Promise<DeleteResponse> => {
                throw new Error(`HTTP error! status: ${response.status}`)
           }
 
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const responseData = await response.json() as unknown
 
           return {
@@ -49,13 +51,13 @@ export default defineEventHandler(async (event): Promise<DeleteResponse> => {
      } catch (error: unknown) {
           console.error('خطا در حذف فوتر:', error)
 
-          const err = error as { data?: any }
+          const err = error as { data?: unknown; statusCode?: number; message?: string; error?: string }
           // اگر خطا از سرور Go آمده باشد
           if (err.data) {
                throw createError({
-                    statusCode: error.statusCode || 500,
-                    message: error.data.message || error.data.error || 'خطا در حذف فوتر',
-                    data: error.data
+                    statusCode: err.statusCode || 500,
+                    message: (err.data as any).message || (err.data as any).error || 'خطا در حذف فوتر',
+                    data: err.data
                })
           }
 

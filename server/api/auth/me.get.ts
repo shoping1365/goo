@@ -15,13 +15,14 @@ export default defineEventHandler(async (event) => {
 
     return response
 
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const err = error as { statusCode?: number; status?: number; message?: string }
     console.error('❌ Error in auth/me:', error)
-    console.error('❌ Error status:', error?.statusCode, error?.status)
-    console.error('❌ Error message:', error?.message)
+    console.error('❌ Error status:', err?.statusCode, err?.status)
+    console.error('❌ Error message:', err?.message)
 
     // اگر 401 unauthorized بود، user authenticated نیست (حالت طبیعی)
-    if (error?.statusCode === 401 || error?.status === 401) {
+    if (err?.statusCode === 401 || err?.status === 401) {
       return {
         authenticated: false,
         user: null,

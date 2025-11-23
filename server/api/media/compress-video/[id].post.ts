@@ -54,7 +54,8 @@ export default defineEventHandler(async (event) => {
           throw new Error(`Backend responded with status: ${response.status}`)
         }
         
-        const result = await response.json()
+        // const result = await response.json()
+        await response.json()
         
         // ذخیره نتیجه در کش یا دیتابیس
         
